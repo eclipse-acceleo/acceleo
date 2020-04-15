@@ -14,6 +14,7 @@ package org.eclipse.acceleo.impl;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ForStatement;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -31,13 +32,14 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBinding <em>Binding</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getSeparator <em>Separator</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -93,6 +95,16 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	protected Binding binding;
 
 	/**
+	 * The cached value of the '{@link #getSeparator() <em>Separator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSeparator()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression separator;
+
+	/**
 	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -126,6 +138,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -135,6 +148,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -148,6 +162,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -157,6 +172,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -170,6 +186,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Binding getBinding() {
 		return binding;
 	}
@@ -198,6 +215,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBinding(Binding newBinding) {
 		if (newBinding != binding) {
 			NotificationChain msgs = null;
@@ -220,6 +238,59 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public Expression getSeparator() {
+		return separator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetSeparator(Expression newSeparator, NotificationChain msgs) {
+		Expression oldSeparator = separator;
+		separator = newSeparator;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.FOR_STATEMENT__SEPARATOR, oldSeparator, newSeparator);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setSeparator(Expression newSeparator) {
+		if (newSeparator != separator) {
+			NotificationChain msgs = null;
+			if (separator != null)
+				msgs = ((InternalEObject)separator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FOR_STATEMENT__SEPARATOR, null, msgs);
+			if (newSeparator != null)
+				msgs = ((InternalEObject)newSeparator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FOR_STATEMENT__SEPARATOR, null, msgs);
+			msgs = basicSetSeparator(newSeparator, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FOR_STATEMENT__SEPARATOR,
+					newSeparator, newSeparator));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Block getBody() {
 		return body;
 	}
@@ -248,6 +319,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Block newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -261,8 +333,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FOR_STATEMENT__BODY,
-					newBody, newBody));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FOR_STATEMENT__BODY, newBody,
+					newBody));
 	}
 
 	/**
@@ -275,6 +347,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 		switch (featureID) {
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				return basicSetBinding(null, msgs);
+			case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
+				return basicSetSeparator(null, msgs);
 			case AcceleoPackage.FOR_STATEMENT__BODY:
 				return basicSetBody(null, msgs);
 		}
@@ -295,6 +369,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 				return getEndPosition();
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				return getBinding();
+			case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
+				return getSeparator();
 			case AcceleoPackage.FOR_STATEMENT__BODY:
 				return getBody();
 		}
@@ -317,6 +393,9 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 				return;
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				setBinding((Binding)newValue);
+				return;
+			case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
+				setSeparator((Expression)newValue);
 				return;
 			case AcceleoPackage.FOR_STATEMENT__BODY:
 				setBody((Block)newValue);
@@ -342,6 +421,9 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				setBinding((Binding)null);
 				return;
+			case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
+				setSeparator((Expression)null);
+				return;
 			case AcceleoPackage.FOR_STATEMENT__BODY:
 				setBody((Block)null);
 				return;
@@ -363,6 +445,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				return binding != null;
+			case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
+				return separator != null;
 			case AcceleoPackage.FOR_STATEMENT__BODY:
 				return body != null;
 		}
@@ -379,7 +463,7 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

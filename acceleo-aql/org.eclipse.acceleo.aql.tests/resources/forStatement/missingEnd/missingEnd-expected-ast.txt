@@ -10,6 +10,7 @@ module myModule
     missing open parenthesis: -1
     missing binding: -1
     missing close parenthesis: -1
+    missing separator close parenthesis: -1
     missing end header: -1
     missing end: 204
     [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (159..179) (125..179)

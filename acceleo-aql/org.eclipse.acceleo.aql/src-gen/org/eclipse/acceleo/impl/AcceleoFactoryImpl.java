@@ -43,7 +43,6 @@ import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
@@ -83,8 +82,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 */
 	public static AcceleoFactory init() {
 		try {
-			AcceleoFactory theAcceleoFactory = (AcceleoFactory)EPackage.Registry.INSTANCE
-					.getEFactory(AcceleoPackage.eNS_URI);
+			AcceleoFactory theAcceleoFactory = (AcceleoFactory)EPackage.Registry.INSTANCE.getEFactory(
+					AcceleoPackage.eNS_URI);
 			if (theAcceleoFactory != null) {
 				return theAcceleoFactory;
 			}
@@ -195,8 +194,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 			case AcceleoPackage.TEXT_STATEMENT:
 				return createTextStatement();
 			default:
-				throw new IllegalArgumentException(
-						"The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 
@@ -217,8 +216,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 			case AcceleoPackage.MODULE_QUALIFIED_NAME:
 				return createModuleQualifiedNameFromString(eDataType, initialValue);
 			default:
-				throw new IllegalArgumentException(
-						"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 
@@ -239,8 +238,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 			case AcceleoPackage.MODULE_QUALIFIED_NAME:
 				return convertModuleQualifiedNameToString(eDataType, instanceValue);
 			default:
-				throw new IllegalArgumentException(
-						"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 
@@ -249,7 +248,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Module createModule() {
+	@Override
+	public org.eclipse.acceleo.Module createModule() {
 		ModuleImpl module = new ModuleImpl();
 		return module;
 	}
@@ -259,6 +259,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorModule createErrorModule() {
 		ErrorModuleImpl errorModule = new ErrorModuleImpl();
 		return errorModule;
@@ -269,6 +270,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Metamodel createMetamodel() {
 		MetamodelImpl metamodel = new MetamodelImpl();
 		return metamodel;
@@ -279,6 +281,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorMetamodel createErrorMetamodel() {
 		ErrorMetamodelImpl errorMetamodel = new ErrorMetamodelImpl();
 		return errorMetamodel;
@@ -289,6 +292,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Import createImport() {
 		ImportImpl import_ = new ImportImpl();
 		return import_;
@@ -299,6 +303,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorImport createErrorImport() {
 		ErrorImportImpl errorImport = new ErrorImportImpl();
 		return errorImport;
@@ -309,6 +314,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ModuleReference createModuleReference() {
 		ModuleReferenceImpl moduleReference = new ModuleReferenceImpl();
 		return moduleReference;
@@ -319,6 +325,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorModuleReference createErrorModuleReference() {
 		ErrorModuleReferenceImpl errorModuleReference = new ErrorModuleReferenceImpl();
 		return errorModuleReference;
@@ -329,6 +336,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Comment createComment() {
 		CommentImpl comment = new CommentImpl();
 		return comment;
@@ -339,6 +347,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorComment createErrorComment() {
 		ErrorCommentImpl errorComment = new ErrorCommentImpl();
 		return errorComment;
@@ -349,6 +358,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CommentBody createCommentBody() {
 		CommentBodyImpl commentBody = new CommentBodyImpl();
 		return commentBody;
@@ -359,6 +369,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ModuleDocumentation createModuleDocumentation() {
 		ModuleDocumentationImpl moduleDocumentation = new ModuleDocumentationImpl();
 		return moduleDocumentation;
@@ -369,6 +380,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorModuleDocumentation createErrorModuleDocumentation() {
 		ErrorModuleDocumentationImpl errorModuleDocumentation = new ErrorModuleDocumentationImpl();
 		return errorModuleDocumentation;
@@ -379,6 +391,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ModuleElementDocumentation createModuleElementDocumentation() {
 		ModuleElementDocumentationImpl moduleElementDocumentation = new ModuleElementDocumentationImpl();
 		return moduleElementDocumentation;
@@ -389,6 +402,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorModuleElementDocumentation createErrorModuleElementDocumentation() {
 		ErrorModuleElementDocumentationImpl errorModuleElementDocumentation = new ErrorModuleElementDocumentationImpl();
 		return errorModuleElementDocumentation;
@@ -399,6 +413,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ParameterDocumentation createParameterDocumentation() {
 		ParameterDocumentationImpl parameterDocumentation = new ParameterDocumentationImpl();
 		return parameterDocumentation;
@@ -409,6 +424,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block createBlock() {
 		BlockImpl block = new BlockImpl();
 		return block;
@@ -419,6 +435,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public TypedElement createTypedElement() {
 		TypedElementImpl typedElement = new TypedElementImpl();
 		return typedElement;
@@ -429,6 +446,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Template createTemplate() {
 		TemplateImpl template = new TemplateImpl();
 		return template;
@@ -439,6 +457,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorTemplate createErrorTemplate() {
 		ErrorTemplateImpl errorTemplate = new ErrorTemplateImpl();
 		return errorTemplate;
@@ -449,6 +468,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Query createQuery() {
 		QueryImpl query = new QueryImpl();
 		return query;
@@ -459,6 +479,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorQuery createErrorQuery() {
 		ErrorQueryImpl errorQuery = new ErrorQueryImpl();
 		return errorQuery;
@@ -469,6 +490,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression createExpression() {
 		ExpressionImpl expression = new ExpressionImpl();
 		return expression;
@@ -479,6 +501,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorExpression createErrorExpression() {
 		ErrorExpressionImpl errorExpression = new ErrorExpressionImpl();
 		return errorExpression;
@@ -489,6 +512,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Variable createVariable() {
 		VariableImpl variable = new VariableImpl();
 		return variable;
@@ -499,6 +523,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorVariable createErrorVariable() {
 		ErrorVariableImpl errorVariable = new ErrorVariableImpl();
 		return errorVariable;
@@ -509,6 +534,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Binding createBinding() {
 		BindingImpl binding = new BindingImpl();
 		return binding;
@@ -519,6 +545,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorBinding createErrorBinding() {
 		ErrorBindingImpl errorBinding = new ErrorBindingImpl();
 		return errorBinding;
@@ -529,6 +556,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ExpressionStatement createExpressionStatement() {
 		ExpressionStatementImpl expressionStatement = new ExpressionStatementImpl();
 		return expressionStatement;
@@ -539,6 +567,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorExpressionStatement createErrorExpressionStatement() {
 		ErrorExpressionStatementImpl errorExpressionStatement = new ErrorExpressionStatementImpl();
 		return errorExpressionStatement;
@@ -549,6 +578,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ProtectedArea createProtectedArea() {
 		ProtectedAreaImpl protectedArea = new ProtectedAreaImpl();
 		return protectedArea;
@@ -559,6 +589,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorProtectedArea createErrorProtectedArea() {
 		ErrorProtectedAreaImpl errorProtectedArea = new ErrorProtectedAreaImpl();
 		return errorProtectedArea;
@@ -569,6 +600,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ForStatement createForStatement() {
 		ForStatementImpl forStatement = new ForStatementImpl();
 		return forStatement;
@@ -579,6 +611,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorForStatement createErrorForStatement() {
 		ErrorForStatementImpl errorForStatement = new ErrorForStatementImpl();
 		return errorForStatement;
@@ -589,6 +622,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public IfStatement createIfStatement() {
 		IfStatementImpl ifStatement = new IfStatementImpl();
 		return ifStatement;
@@ -599,6 +633,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorIfStatement createErrorIfStatement() {
 		ErrorIfStatementImpl errorIfStatement = new ErrorIfStatementImpl();
 		return errorIfStatement;
@@ -609,6 +644,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public LetStatement createLetStatement() {
 		LetStatementImpl letStatement = new LetStatementImpl();
 		return letStatement;
@@ -619,6 +655,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorLetStatement createErrorLetStatement() {
 		ErrorLetStatementImpl errorLetStatement = new ErrorLetStatementImpl();
 		return errorLetStatement;
@@ -629,6 +666,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public FileStatement createFileStatement() {
 		FileStatementImpl fileStatement = new FileStatementImpl();
 		return fileStatement;
@@ -639,6 +677,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ErrorFileStatement createErrorFileStatement() {
 		ErrorFileStatementImpl errorFileStatement = new ErrorFileStatementImpl();
 		return errorFileStatement;
@@ -649,6 +688,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public TextStatement createTextStatement() {
 		TextStatementImpl textStatement = new TextStatementImpl();
 		return textStatement;
@@ -662,8 +702,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
 		VisibilityKind result = VisibilityKind.get(initialValue);
 		if (result == null)
-			throw new IllegalArgumentException(
-					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			throw new IllegalArgumentException("The value '" + initialValue //$NON-NLS-1$
+					+ "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		return result;
 	}
 
@@ -684,8 +724,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public OpenModeKind createOpenModeKindFromString(EDataType eDataType, String initialValue) {
 		OpenModeKind result = OpenModeKind.get(initialValue);
 		if (result == null)
-			throw new IllegalArgumentException(
-					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			throw new IllegalArgumentException("The value '" + initialValue //$NON-NLS-1$
+					+ "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		return result;
 	}
 
@@ -739,6 +779,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AcceleoPackage getAcceleoPackage() {
 		return (AcceleoPackage)getEPackage();
 	}

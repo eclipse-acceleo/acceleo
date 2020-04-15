@@ -20,10 +20,10 @@ import org.eclipse.emf.ecore.EPackage;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.Metamodel#getReferencedPackage <em>Referenced Package</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getMetamodel()
  * @model

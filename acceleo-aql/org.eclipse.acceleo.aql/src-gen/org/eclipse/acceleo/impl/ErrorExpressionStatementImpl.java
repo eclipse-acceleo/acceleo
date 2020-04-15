@@ -31,13 +31,13 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#getExpression <em>Expression</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -136,6 +136,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -145,6 +146,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -159,6 +161,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -168,6 +171,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -181,6 +185,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getExpression() {
 		if (expression != null && expression.eIsProxy()) {
 			InternalEObject oldExpression = (InternalEObject)expression;
@@ -188,7 +193,8 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 			if (expression != oldExpression) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION, oldExpression, expression));
+							AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION, oldExpression,
+							expression));
 			}
 		}
 		return expression;
@@ -208,6 +214,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setExpression(Expression newExpression) {
 		Expression oldExpression = expression;
 		expression = newExpression;
@@ -221,6 +228,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -230,6 +238,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndHeader(int newMissingEndHeader) {
 		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
@@ -387,7 +396,7 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

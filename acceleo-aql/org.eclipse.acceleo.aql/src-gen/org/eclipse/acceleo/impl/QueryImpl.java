@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#isDeprecated <em>Deprecated</em>}</li>
@@ -46,7 +47,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getVisibility <em>Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -185,6 +185,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Documentation getDocumentation() {
 		return documentation;
 	}
@@ -213,6 +214,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentation(Documentation newDocumentation) {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
@@ -235,6 +237,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDeprecated() {
 		return deprecated;
 	}
@@ -244,6 +247,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDeprecated(boolean newDeprecated) {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
@@ -257,6 +261,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -266,6 +271,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -278,6 +284,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AstResult getType() {
 		return type;
 	}
@@ -287,6 +294,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setType(AstResult newType) {
 		AstResult oldType = type;
 		type = newType;
@@ -299,6 +307,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
@@ -312,6 +321,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public VisibilityKind getVisibility() {
 		return visibility;
 	}
@@ -321,6 +331,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
@@ -334,6 +345,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getBody() {
 		if (body != null && body.eIsProxy()) {
 			InternalEObject oldBody = (InternalEObject)body;
@@ -361,6 +373,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Expression newBody) {
 		Expression oldBody = body;
 		body = newBody;
@@ -605,7 +618,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (deprecated: "); //$NON-NLS-1$
 		result.append(deprecated);
 		result.append(", name: "); //$NON-NLS-1$

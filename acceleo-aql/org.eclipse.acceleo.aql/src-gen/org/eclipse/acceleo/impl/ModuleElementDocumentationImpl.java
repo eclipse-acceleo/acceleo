@@ -38,11 +38,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleElementDocumentationImpl#getDocumentedElement <em>Documented Element</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleElementDocumentationImpl#getParameterDocumentation <em>Parameter Documentation</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -81,6 +81,7 @@ public class ModuleElementDocumentationImpl extends CommentImpl implements Modul
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public DocumentedElement getDocumentedElement() {
 		if (eContainerFeatureID() != AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT)
 			return null;
@@ -104,9 +105,11 @@ public class ModuleElementDocumentationImpl extends CommentImpl implements Modul
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentedElement(DocumentedElement newDocumentedElement) {
 		if (newDocumentedElement != eInternalContainer()
-				|| (eContainerFeatureID() != AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT && newDocumentedElement != null)) {
+				|| (eContainerFeatureID() != AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT
+						&& newDocumentedElement != null)) {
 			if (EcoreUtil.isAncestor(this, newDocumentedElement))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
 			NotificationChain msgs = null;
@@ -129,6 +132,7 @@ public class ModuleElementDocumentationImpl extends CommentImpl implements Modul
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ParameterDocumentation> getParameterDocumentation() {
 		if (parameterDocumentation == null) {
 			parameterDocumentation = new EObjectContainmentEList<ParameterDocumentation>(

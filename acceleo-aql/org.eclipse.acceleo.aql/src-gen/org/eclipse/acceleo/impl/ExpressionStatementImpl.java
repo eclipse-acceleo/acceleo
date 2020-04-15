@@ -29,12 +29,12 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ExpressionStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ExpressionStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ExpressionStatementImpl#getExpression <em>Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -113,6 +113,7 @@ public class ExpressionStatementImpl extends MinimalEObjectImpl.Container implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -122,6 +123,7 @@ public class ExpressionStatementImpl extends MinimalEObjectImpl.Container implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -135,6 +137,7 @@ public class ExpressionStatementImpl extends MinimalEObjectImpl.Container implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -144,6 +147,7 @@ public class ExpressionStatementImpl extends MinimalEObjectImpl.Container implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -157,6 +161,7 @@ public class ExpressionStatementImpl extends MinimalEObjectImpl.Container implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getExpression() {
 		if (expression != null && expression.eIsProxy()) {
 			InternalEObject oldExpression = (InternalEObject)expression;
@@ -184,6 +189,7 @@ public class ExpressionStatementImpl extends MinimalEObjectImpl.Container implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setExpression(Expression newExpression) {
 		Expression oldExpression = expression;
 		expression = newExpression;
@@ -282,7 +288,7 @@ public class ExpressionStatementImpl extends MinimalEObjectImpl.Container implem
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

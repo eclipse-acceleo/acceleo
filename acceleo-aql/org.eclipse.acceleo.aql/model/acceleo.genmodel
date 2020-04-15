@@ -177,12 +177,14 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ForStatement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/binding"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/separator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/body"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorForStatement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorForStatement/missingOpenParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorForStatement/missingBinding"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorForStatement/missingCloseParenthesis"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorForStatement/missingSeparatorCloseParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorForStatement/missingEndHeader"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorForStatement/missingEnd"/>
     </genClasses>

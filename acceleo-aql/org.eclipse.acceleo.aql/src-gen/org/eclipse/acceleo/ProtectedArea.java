@@ -18,11 +18,11 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ProtectedArea#getId <em>Id</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ProtectedArea#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getProtectedArea()
  * @model

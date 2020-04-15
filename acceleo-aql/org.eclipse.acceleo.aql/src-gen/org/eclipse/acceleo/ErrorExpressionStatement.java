@@ -18,10 +18,10 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorExpressionStatement#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorExpressionStatement()
  * @model

@@ -29,10 +29,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.BindingImpl#getInitExpression <em>Init Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -71,6 +71,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getInitExpression() {
 		return initExpression;
 	}
@@ -99,6 +100,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setInitExpression(Expression newInitExpression) {
 		if (newInitExpression != initExpression) {
 			NotificationChain msgs = null;

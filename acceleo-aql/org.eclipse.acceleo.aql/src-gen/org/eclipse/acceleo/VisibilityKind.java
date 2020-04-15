@@ -116,13 +116,15 @@ public enum VisibilityKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<VisibilityKind> VALUES = Collections.unmodifiableList(Arrays
-			.asList(VALUES_ARRAY));
+	public static final List<VisibilityKind> VALUES = Collections.unmodifiableList(Arrays.asList(
+			VALUES_ARRAY));
 
 	/**
 	 * Returns the '<em><b>Visibility Kind</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param literal the literal.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static VisibilityKind get(String literal) {
@@ -139,6 +141,8 @@ public enum VisibilityKind implements Enumerator {
 	 * Returns the '<em><b>Visibility Kind</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param name the name.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static VisibilityKind getByName(String name) {
@@ -155,6 +159,8 @@ public enum VisibilityKind implements Enumerator {
 	 * Returns the '<em><b>Visibility Kind</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the integer value.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static VisibilityKind get(int value) {
@@ -207,6 +213,7 @@ public enum VisibilityKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getValue() {
 		return value;
 	}
@@ -216,6 +223,7 @@ public enum VisibilityKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -225,6 +233,7 @@ public enum VisibilityKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getLiteral() {
 		return literal;
 	}

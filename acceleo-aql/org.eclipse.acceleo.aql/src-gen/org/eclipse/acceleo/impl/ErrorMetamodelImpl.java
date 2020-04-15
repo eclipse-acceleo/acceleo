@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getEndPosition <em>End Position</em>}</li>
@@ -37,7 +38,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getFragment <em>Fragment</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getMissingEndQuote <em>Missing End Quote</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -156,6 +156,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -165,6 +166,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -178,6 +180,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -187,6 +190,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -200,6 +204,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EPackage getReferencedPackage() {
 		if (referencedPackage != null && referencedPackage.eIsProxy()) {
 			InternalEObject oldReferencedPackage = (InternalEObject)referencedPackage;
@@ -228,6 +233,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setReferencedPackage(EPackage newReferencedPackage) {
 		EPackage oldReferencedPackage = referencedPackage;
 		referencedPackage = newReferencedPackage;
@@ -242,6 +248,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getFragment() {
 		return fragment;
 	}
@@ -251,6 +258,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFragment(String newFragment) {
 		String oldFragment = fragment;
 		fragment = newFragment;
@@ -264,6 +272,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEndQuote() {
 		return missingEndQuote;
 	}
@@ -273,6 +282,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndQuote(int newMissingEndQuote) {
 		int oldMissingEndQuote = missingEndQuote;
 		missingEndQuote = newMissingEndQuote;
@@ -427,7 +437,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

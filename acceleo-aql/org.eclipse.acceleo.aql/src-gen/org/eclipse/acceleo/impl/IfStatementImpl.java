@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getEndPosition <em>End Position</em>}</li>
@@ -38,7 +39,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getThen <em>Then</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getElse <em>Else</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -137,6 +137,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -146,12 +147,13 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.IF_STATEMENT__START_POSITION, oldStartPosition, startPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.IF_STATEMENT__START_POSITION,
+					oldStartPosition, startPosition));
 	}
 
 	/**
@@ -159,6 +161,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -168,6 +171,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -181,6 +185,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getCondition() {
 		return condition;
 	}
@@ -209,6 +214,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCondition(Expression newCondition) {
 		if (newCondition != condition) {
 			NotificationChain msgs = null;
@@ -231,6 +237,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getThen() {
 		return then;
 	}
@@ -259,6 +266,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setThen(Block newThen) {
 		if (newThen != then) {
 			NotificationChain msgs = null;
@@ -281,6 +289,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getElse() {
 		return else_;
 	}
@@ -309,6 +318,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setElse(Block newElse) {
 		if (newElse != else_) {
 			NotificationChain msgs = null;
@@ -452,7 +462,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

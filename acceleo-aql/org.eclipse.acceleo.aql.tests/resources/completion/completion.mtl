@@ -29,6 +29,10 @@
     <<statementInForStatement>>
     some static text.
   [/for]
+  [for (myVariable | myParam.eClassifiers) <<forStatementSeparator>>separator(<<forStatementSeparatorExpression>>myVariable.name<<forStatementSeparatorCloseParenthesis>>)<<forStatementAfterSeparator>>]
+    <<statementInForStatement>>
+    some static text.
+  [/for]
   [if <<ifStatementOpenParenthesis>>(<<ifStatementExpression>>myParam.<<ifStatementExpressionAfterDot>>eClassifiers->size() = 0<<ifStatementCloseParenthesis>>)<<ifStatementEndHeader>>]
     <<statementInIfStatementThen>>
     some static text.

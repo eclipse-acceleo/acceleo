@@ -696,6 +696,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					forceCollectionBinding = false;
 				}
 			}
+			if (forStatement.getSeparator() != null) {
+				doSwitch(forStatement.getSeparator());
+			}
 			doSwitch(forStatement.getBody());
 		} finally {
 			stack.pop();
@@ -717,6 +720,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorForStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
 					AcceleoParser.CLOSE_PARENTHESIS), errorForStatement.getMissingCloseParenthesis(),
 					errorForStatement.getMissingCloseParenthesis());
+		} else if (errorForStatement.getMissingSeparatorCloseParenthesis() != -1) {
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorForStatement.getMissingSeparatorCloseParenthesis(),
+					errorForStatement.getMissingSeparatorCloseParenthesis());
 		} else if (errorForStatement.getMissingEndHeader() != -1) {
 			addMessage(errorForStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
 					AcceleoParser.FOR_HEADER_END), errorForStatement.getMissingEndHeader(), errorForStatement

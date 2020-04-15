@@ -18,11 +18,12 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ForStatement#getBinding <em>Binding</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ForStatement#getSeparator <em>Separator</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ForStatement#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getForStatement()
  * @model
@@ -54,6 +55,28 @@ public interface ForStatement extends Statement {
 	 * @generated
 	 */
 	void setBinding(Binding value);
+
+	/**
+	 * Returns the value of the '<em><b>Separator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Separator</em>' containment reference.
+	 * @see #setSeparator(Expression)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getForStatement_Separator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Expression getSeparator();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ForStatement#getSeparator <em>Separator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Separator</em>' containment reference.
+	 * @see #getSeparator()
+	 * @generated
+	 */
+	void setSeparator(Expression value);
 
 	/**
 	 * Returns the value of the '<em><b>Body</b></em>' containment reference.

@@ -90,6 +90,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	/** Prefix we'll use for the error messages on a missing closing parenthesis. */
 	private static final String MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX = "missing close parenthesis: ";
 
+	/** Prefix we'll use for the error messages on a missing separator closing parenthesis. */
+	private static final String MISSING_SEPARATOR_CLOSE_PARENTHESIS_MESSAGE_PREFIX = "missing separator close parenthesis: ";
+
 	/** Prefix we'll use for the error messages on a missing header ending. */
 	private static final String MISSING_END_HEADER_MESSAGE_PREFIX = "missing end header: ";
 
@@ -670,7 +673,11 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		if (forStatement.getBinding() != null) {
 			doSwitch(forStatement.getBinding());
 		} else {
-			builder.append("null binding]");
+			builder.append("null binding");
+		}
+		if (forStatement.getSeparator() != null) {
+			builder.append(" separator ");
+			doSwitch(forStatement.getSeparator());
 		}
 		doSwitch(forStatement.getBody());
 		newLine();
@@ -690,6 +697,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		newLine();
 		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorForStatement
 				.getMissingCloseParenthesis());
+		newLine();
+		builder.append(MISSING_SEPARATOR_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorForStatement
+				.getMissingSeparatorCloseParenthesis());
 		newLine();
 		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorForStatement.getMissingEndHeader());
 		newLine();

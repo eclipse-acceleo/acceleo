@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getEndPosition <em>End Position</em>}</li>
@@ -44,7 +45,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -223,6 +223,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -232,6 +233,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -245,6 +247,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -254,6 +257,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -267,6 +271,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getCondition() {
 		return condition;
 	}
@@ -295,6 +300,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCondition(Expression newCondition) {
 		if (newCondition != condition) {
 			NotificationChain msgs = null;
@@ -317,6 +323,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getThen() {
 		return then;
 	}
@@ -345,6 +352,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setThen(Block newThen) {
 		if (newThen != then) {
 			NotificationChain msgs = null;
@@ -367,6 +375,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getElse() {
 		return else_;
 	}
@@ -395,6 +404,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setElse(Block newElse) {
 		if (newElse != else_) {
 			NotificationChain msgs = null;
@@ -417,6 +427,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -426,6 +437,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
 		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
@@ -440,6 +452,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
@@ -449,6 +462,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
 		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
@@ -463,6 +477,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -472,6 +487,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndHeader(int newMissingEndHeader) {
 		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
@@ -486,6 +502,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEnd() {
 		return missingEnd;
 	}
@@ -495,6 +512,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEnd(int newMissingEnd) {
 		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
@@ -725,7 +743,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

@@ -15,6 +15,7 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.ErrorForStatement;
+import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.Statement;
 
@@ -33,18 +34,20 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBinding <em>Binding</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getSeparator <em>Separator</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBody <em>Body</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingBinding <em>Missing Binding</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingSeparatorCloseParenthesis <em>Missing Separator Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -98,6 +101,16 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * @ordered
 	 */
 	protected Binding binding;
+
+	/**
+	 * The cached value of the '{@link #getSeparator() <em>Separator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSeparator()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression separator;
 
 	/**
 	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
@@ -170,6 +183,26 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getMissingSeparatorCloseParenthesis() <em>Missing Separator Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingSeparatorCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_SEPARATOR_CLOSE_PARENTHESIS_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingSeparatorCloseParenthesis() <em>Missing Separator Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingSeparatorCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingSeparatorCloseParenthesis = MISSING_SEPARATOR_CLOSE_PARENTHESIS_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -233,6 +266,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -242,6 +276,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -255,6 +290,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -264,6 +300,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -277,6 +314,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Binding getBinding() {
 		return binding;
 	}
@@ -305,6 +343,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBinding(Binding newBinding) {
 		if (newBinding != binding) {
 			NotificationChain msgs = null;
@@ -318,8 +357,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_FOR_STATEMENT__BINDING, newBinding, newBinding));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_FOR_STATEMENT__BINDING,
+					newBinding, newBinding));
 	}
 
 	/**
@@ -327,6 +366,59 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public Expression getSeparator() {
+		return separator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetSeparator(Expression newSeparator, NotificationChain msgs) {
+		Expression oldSeparator = separator;
+		separator = newSeparator;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR, oldSeparator, newSeparator);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setSeparator(Expression newSeparator) {
+		if (newSeparator != separator) {
+			NotificationChain msgs = null;
+			if (separator != null)
+				msgs = ((InternalEObject)separator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR, null, msgs);
+			if (newSeparator != null)
+				msgs = ((InternalEObject)newSeparator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR, null, msgs);
+			msgs = basicSetSeparator(newSeparator, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR, newSeparator, newSeparator));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Block getBody() {
 		return body;
 	}
@@ -355,6 +447,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Block newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -377,6 +470,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -386,6 +480,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
 		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
@@ -400,6 +495,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingBinding() {
 		return missingBinding;
 	}
@@ -409,6 +505,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingBinding(int newMissingBinding) {
 		int oldMissingBinding = missingBinding;
 		missingBinding = newMissingBinding;
@@ -422,6 +519,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
@@ -431,13 +529,14 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
 		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS,
-					oldMissingCloseParenthesis, missingCloseParenthesis));
+					AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS, oldMissingCloseParenthesis,
+					missingCloseParenthesis));
 	}
 
 	/**
@@ -445,6 +544,32 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public int getMissingSeparatorCloseParenthesis() {
+		return missingSeparatorCloseParenthesis;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setMissingSeparatorCloseParenthesis(int newMissingSeparatorCloseParenthesis) {
+		int oldMissingSeparatorCloseParenthesis = missingSeparatorCloseParenthesis;
+		missingSeparatorCloseParenthesis = newMissingSeparatorCloseParenthesis;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS,
+					oldMissingSeparatorCloseParenthesis, missingSeparatorCloseParenthesis));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -454,6 +579,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndHeader(int newMissingEndHeader) {
 		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
@@ -468,6 +594,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEnd() {
 		return missingEnd;
 	}
@@ -477,6 +604,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEnd(int newMissingEnd) {
 		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
@@ -495,6 +623,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 		switch (featureID) {
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BINDING:
 				return basicSetBinding(null, msgs);
+			case AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR:
+				return basicSetSeparator(null, msgs);
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BODY:
 				return basicSetBody(null, msgs);
 		}
@@ -515,6 +645,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return getEndPosition();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BINDING:
 				return getBinding();
+			case AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR:
+				return getSeparator();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BODY:
 				return getBody();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS:
@@ -523,6 +655,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return getMissingBinding();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				return getMissingCloseParenthesis();
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS:
+				return getMissingSeparatorCloseParenthesis();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END_HEADER:
 				return getMissingEndHeader();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END:
@@ -548,6 +682,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BINDING:
 				setBinding((Binding)newValue);
 				return;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR:
+				setSeparator((Expression)newValue);
+				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BODY:
 				setBody((Block)newValue);
 				return;
@@ -559,6 +696,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS:
+				setMissingSeparatorCloseParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END_HEADER:
 				setMissingEndHeader((Integer)newValue);
@@ -587,6 +727,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BINDING:
 				setBinding((Binding)null);
 				return;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR:
+				setSeparator((Expression)null);
+				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BODY:
 				setBody((Block)null);
 				return;
@@ -598,6 +741,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis(MISSING_CLOSE_PARENTHESIS_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS:
+				setMissingSeparatorCloseParenthesis(MISSING_SEPARATOR_CLOSE_PARENTHESIS_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END_HEADER:
 				setMissingEndHeader(MISSING_END_HEADER_EDEFAULT);
@@ -623,6 +769,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BINDING:
 				return binding != null;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR:
+				return separator != null;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__BODY:
 				return body != null;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS:
@@ -631,6 +779,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return missingBinding != MISSING_BINDING_EDEFAULT;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				return missingCloseParenthesis != MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS:
+				return missingSeparatorCloseParenthesis != MISSING_SEPARATOR_CLOSE_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END_HEADER:
 				return missingEndHeader != MISSING_END_HEADER_EDEFAULT;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END:
@@ -656,6 +806,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 			switch (derivedFeatureID) {
 				case AcceleoPackage.ERROR_FOR_STATEMENT__BINDING:
 					return AcceleoPackage.FOR_STATEMENT__BINDING;
+				case AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR:
+					return AcceleoPackage.FOR_STATEMENT__SEPARATOR;
 				case AcceleoPackage.ERROR_FOR_STATEMENT__BODY:
 					return AcceleoPackage.FOR_STATEMENT__BODY;
 				default:
@@ -682,6 +834,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 			switch (baseFeatureID) {
 				case AcceleoPackage.FOR_STATEMENT__BINDING:
 					return AcceleoPackage.ERROR_FOR_STATEMENT__BINDING;
+				case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
+					return AcceleoPackage.ERROR_FOR_STATEMENT__SEPARATOR;
 				case AcceleoPackage.FOR_STATEMENT__BODY:
 					return AcceleoPackage.ERROR_FOR_STATEMENT__BODY;
 				default:
@@ -701,7 +855,7 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$
@@ -712,6 +866,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 		result.append(missingBinding);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
 		result.append(missingCloseParenthesis);
+		result.append(", missingSeparatorCloseParenthesis: "); //$NON-NLS-1$
+		result.append(missingSeparatorCloseParenthesis);
 		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);
 		result.append(", missingEnd: "); //$NON-NLS-1$

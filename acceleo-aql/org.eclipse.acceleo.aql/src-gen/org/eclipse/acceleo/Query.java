@@ -20,12 +20,12 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.Query#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Query#getVisibility <em>Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Query#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getQuery()
  * @model

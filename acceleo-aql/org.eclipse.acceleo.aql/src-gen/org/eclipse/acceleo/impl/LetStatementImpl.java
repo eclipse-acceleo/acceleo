@@ -38,13 +38,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getVariables <em>Variables</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -133,6 +133,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -142,6 +143,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -155,6 +157,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -164,6 +167,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -177,6 +181,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Binding> getVariables() {
 		if (variables == null) {
 			variables = new EObjectContainmentEList<Binding>(Binding.class, this,
@@ -190,6 +195,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getBody() {
 		return body;
 	}
@@ -218,6 +224,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Block newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -231,8 +238,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.LET_STATEMENT__BODY,
-					newBody, newBody));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.LET_STATEMENT__BODY, newBody,
+					newBody));
 	}
 
 	/**
@@ -351,7 +358,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

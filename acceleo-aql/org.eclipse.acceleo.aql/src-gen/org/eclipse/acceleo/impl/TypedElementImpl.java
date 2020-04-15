@@ -25,10 +25,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.TypedElementImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -77,6 +77,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AstResult getType() {
 		return type;
 	}
@@ -86,12 +87,13 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setType(AstResult newType) {
 		AstResult oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TYPED_ELEMENT__TYPE,
-					oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TYPED_ELEMENT__TYPE, oldType,
+					type));
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (type: "); //$NON-NLS-1$
 		result.append(type);
 		result.append(')');

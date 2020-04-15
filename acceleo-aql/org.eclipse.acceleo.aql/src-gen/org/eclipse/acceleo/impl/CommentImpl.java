@@ -29,10 +29,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.CommentImpl#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -71,6 +71,7 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CommentBody getBody() {
 		return body;
 	}
@@ -99,6 +100,7 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(CommentBody newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;

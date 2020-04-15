@@ -18,13 +18,13 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorProtectedArea()
  * @model

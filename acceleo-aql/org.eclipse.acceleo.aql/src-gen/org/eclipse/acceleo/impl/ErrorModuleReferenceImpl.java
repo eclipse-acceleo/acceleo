@@ -28,12 +28,12 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleReferenceImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleReferenceImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleReferenceImpl#getQualifiedName <em>Qualified Name</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -122,6 +122,7 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -131,6 +132,7 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -144,6 +146,7 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -153,6 +156,7 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -166,6 +170,7 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getQualifiedName() {
 		return qualifiedName;
 	}
@@ -175,6 +180,7 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setQualifiedName(String newQualifiedName) {
 		String oldQualifiedName = qualifiedName;
 		qualifiedName = newQualifiedName;
@@ -256,8 +262,8 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 			case AcceleoPackage.ERROR_MODULE_REFERENCE__END_POSITION:
 				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE_REFERENCE__QUALIFIED_NAME:
-				return QUALIFIED_NAME_EDEFAULT == null ? qualifiedName != null : !QUALIFIED_NAME_EDEFAULT
-						.equals(qualifiedName);
+				return QUALIFIED_NAME_EDEFAULT == null ? qualifiedName != null
+						: !QUALIFIED_NAME_EDEFAULT.equals(qualifiedName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -308,7 +314,7 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

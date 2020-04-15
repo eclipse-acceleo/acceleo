@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getEndPosition <em>End Position</em>}</li>
@@ -43,7 +44,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -212,6 +212,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -221,6 +222,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -234,6 +236,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -243,6 +246,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -256,6 +260,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getId() {
 		return id;
 	}
@@ -284,6 +289,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setId(Expression newId) {
 		if (newId != id) {
 			NotificationChain msgs = null;
@@ -306,6 +312,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getBody() {
 		return body;
 	}
@@ -334,6 +341,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Block newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -356,6 +364,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -365,6 +374,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
 		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
@@ -379,6 +389,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
@@ -388,6 +399,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
 		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
@@ -402,6 +414,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -411,6 +424,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndHeader(int newMissingEndHeader) {
 		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
@@ -425,6 +439,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEnd() {
 		return missingEnd;
 	}
@@ -434,6 +449,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEnd(int newMissingEnd) {
 		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
@@ -648,7 +664,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

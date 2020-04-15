@@ -44,6 +44,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getEndPosition <em>End Position</em>}</li>
@@ -52,7 +53,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getParameterDocumentation <em>Parameter Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -161,6 +161,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -170,6 +171,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -184,6 +186,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -193,6 +196,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -207,6 +211,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CommentBody getBody() {
 		return body;
 	}
@@ -235,6 +240,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(CommentBody newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -257,6 +263,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public DocumentedElement getDocumentedElement() {
 		if (eContainerFeatureID() != AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT)
 			return null;
@@ -280,9 +287,11 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentedElement(DocumentedElement newDocumentedElement) {
 		if (newDocumentedElement != eInternalContainer()
-				|| (eContainerFeatureID() != AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT && newDocumentedElement != null)) {
+				|| (eContainerFeatureID() != AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT
+						&& newDocumentedElement != null)) {
 			if (EcoreUtil.isAncestor(this, newDocumentedElement))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
 			NotificationChain msgs = null;
@@ -305,6 +314,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ParameterDocumentation> getParameterDocumentation() {
 		if (parameterDocumentation == null) {
 			parameterDocumentation = new EObjectContainmentEList<ParameterDocumentation>(
@@ -319,6 +329,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -328,6 +339,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndHeader(int newMissingEndHeader) {
 		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
@@ -598,7 +610,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

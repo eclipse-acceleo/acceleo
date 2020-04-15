@@ -18,12 +18,12 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ModuleDocumentation#getAuthor <em>Author</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ModuleDocumentation#getVersion <em>Version</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ModuleDocumentation#getSince <em>Since</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getModuleDocumentation()
  * @model

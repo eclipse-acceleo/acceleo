@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.Module#getMetamodels <em>Metamodels</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Module#getExtends <em>Extends</em>}</li>
@@ -28,7 +29,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.acceleo.Module#getStartHeaderPosition <em>Start Header Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Module#getEndHeaderPosition <em>End Header Position</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getModule()
  * @model

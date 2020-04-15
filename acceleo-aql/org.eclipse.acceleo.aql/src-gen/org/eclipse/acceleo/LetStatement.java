@@ -20,11 +20,11 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.LetStatement#getVariables <em>Variables</em>}</li>
  *   <li>{@link org.eclipse.acceleo.LetStatement#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getLetStatement()
  * @model

@@ -18,6 +18,7 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingName <em>Missing Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingColon <em>Missing Colon</em>}</li>
@@ -25,7 +26,6 @@ package org.eclipse.acceleo;
  *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingAffectationSymbole <em>Missing Affectation Symbole</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingAffectationSymbolePosition <em>Missing Affectation Symbole Position</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorBinding()
  * @model

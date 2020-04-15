@@ -412,16 +412,26 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 							.getInitExpression(), new HashMap<String, Object>(peekVariables()) });
 			environment.getGenerationResult().addDiagnostic(diagnostic);
 		}
-		final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
-		final String name = forStatement.getBinding().getName();
-		pushVariables(variables);
-		try {
-			for (Object val : iteration) {
-				variables.put(name, val);
+		if (!iteration.isEmpty()) {
+			final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
+			final String name = forStatement.getBinding().getName();
+			pushVariables(variables);
+			try {
+				// the first value is generated on its own
+				// to insert separators
+				final Object firstValue = iteration.remove(0);
+				variables.put(name, firstValue);
 				builder.append(doSwitch(forStatement.getBody()));
+				for (Object val : iteration) {
+					variables.put(name, val);
+					if (forStatement.getSeparator() != null) {
+						builder.append(toString(doSwitch(forStatement.getSeparator())));
+					}
+					builder.append(doSwitch(forStatement.getBody()));
+				}
+			} finally {
+				popVariables();
 			}
-		} finally {
-			popVariables();
 		}
 
 		return builder.toString();

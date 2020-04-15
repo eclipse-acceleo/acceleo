@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getEndPosition <em>End Position</em>}</li>
@@ -44,7 +45,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbole <em>Missing Affectation Symbole</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbolePosition <em>Missing Affectation Symbole Position</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -263,6 +263,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AstResult getType() {
 		return type;
 	}
@@ -272,12 +273,13 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setType(AstResult newType) {
 		AstResult oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__TYPE,
-					oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__TYPE, oldType,
+					type));
 	}
 
 	/**
@@ -285,6 +287,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -294,12 +297,13 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__NAME,
-					oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__NAME, oldName,
+					name));
 	}
 
 	/**
@@ -307,6 +311,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -316,6 +321,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -329,6 +335,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -338,6 +345,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -351,6 +359,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getInitExpression() {
 		return initExpression;
 	}
@@ -379,6 +388,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setInitExpression(Expression newInitExpression) {
 		if (newInitExpression != initExpression) {
 			NotificationChain msgs = null;
@@ -401,6 +411,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingName() {
 		return missingName;
 	}
@@ -410,6 +421,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingName(int newMissingName) {
 		int oldMissingName = missingName;
 		missingName = newMissingName;
@@ -423,6 +435,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingColon() {
 		return missingColon;
 	}
@@ -432,12 +445,13 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingColon(int newMissingColon) {
 		int oldMissingColon = missingColon;
 		missingColon = newMissingColon;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_BINDING__MISSING_COLON, oldMissingColon, missingColon));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__MISSING_COLON,
+					oldMissingColon, missingColon));
 	}
 
 	/**
@@ -445,6 +459,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingType() {
 		return missingType;
 	}
@@ -454,6 +469,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingType(int newMissingType) {
 		int oldMissingType = missingType;
 		missingType = newMissingType;
@@ -467,6 +483,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getMissingAffectationSymbole() {
 		return missingAffectationSymbole;
 	}
@@ -476,6 +493,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingAffectationSymbole(String newMissingAffectationSymbole) {
 		String oldMissingAffectationSymbole = missingAffectationSymbole;
 		missingAffectationSymbole = newMissingAffectationSymbole;
@@ -490,6 +508,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingAffectationSymbolePosition() {
 		return missingAffectationSymbolePosition;
 	}
@@ -499,6 +518,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingAffectationSymbolePosition(int newMissingAffectationSymbolePosition) {
 		int oldMissingAffectationSymbolePosition = missingAffectationSymbolePosition;
 		missingAffectationSymbolePosition = newMissingAffectationSymbolePosition;
@@ -761,7 +781,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

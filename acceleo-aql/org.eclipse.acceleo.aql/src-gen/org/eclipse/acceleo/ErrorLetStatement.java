@@ -18,12 +18,12 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorLetStatement#getMissingBindings <em>Missing Bindings</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorLetStatement#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorLetStatement#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorLetStatement()
  * @model

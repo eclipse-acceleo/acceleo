@@ -45,7 +45,6 @@ import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
@@ -123,7 +122,7 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 */
 	protected AcceleoSwitch<Adapter> modelSwitch = new AcceleoSwitch<Adapter>() {
 		@Override
-		public Adapter caseModule(Module object) {
+		public Adapter caseModule(org.eclipse.acceleo.Module object) {
 			return createModuleAdapter();
 		}
 

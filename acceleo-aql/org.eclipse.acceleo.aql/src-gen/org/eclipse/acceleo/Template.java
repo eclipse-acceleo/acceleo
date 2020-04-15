@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.Template#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Template#getGuard <em>Guard</em>}</li>
@@ -28,7 +29,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.acceleo.Template#getVisibility <em>Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Template#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getTemplate()
  * @model

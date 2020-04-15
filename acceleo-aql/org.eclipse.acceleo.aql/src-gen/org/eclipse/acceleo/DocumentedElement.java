@@ -18,11 +18,11 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.DocumentedElement#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.DocumentedElement#isDeprecated <em>Deprecated</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getDocumentedElement()
  * @model interface="true" abstract="true"

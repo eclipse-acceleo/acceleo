@@ -18,12 +18,12 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.IfStatement#getCondition <em>Condition</em>}</li>
  *   <li>{@link org.eclipse.acceleo.IfStatement#getThen <em>Then</em>}</li>
  *   <li>{@link org.eclipse.acceleo.IfStatement#getElse <em>Else</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getIfStatement()
  * @model

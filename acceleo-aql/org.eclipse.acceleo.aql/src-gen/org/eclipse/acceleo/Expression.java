@@ -20,10 +20,10 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.Expression#getAst <em>Ast</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getExpression()
  * @model

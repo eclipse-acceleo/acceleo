@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#isDeprecated <em>Deprecated</em>}</li>
@@ -53,7 +54,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getVisibility <em>Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -212,6 +212,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Documentation getDocumentation() {
 		return documentation;
 	}
@@ -240,6 +241,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentation(Documentation newDocumentation) {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
@@ -262,6 +264,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDeprecated() {
 		return deprecated;
 	}
@@ -271,6 +274,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDeprecated(boolean newDeprecated) {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
@@ -284,6 +288,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -293,6 +298,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -306,6 +312,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
@@ -319,6 +326,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getGuard() {
 		return guard;
 	}
@@ -347,6 +355,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setGuard(Expression newGuard) {
 		if (newGuard != guard) {
 			NotificationChain msgs = null;
@@ -369,6 +378,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getPost() {
 		return post;
 	}
@@ -397,6 +407,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setPost(Expression newPost) {
 		if (newPost != post) {
 			NotificationChain msgs = null;
@@ -419,6 +430,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isMain() {
 		return main;
 	}
@@ -428,6 +440,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMain(boolean newMain) {
 		boolean oldMain = main;
 		main = newMain;
@@ -441,6 +454,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public VisibilityKind getVisibility() {
 		return visibility;
 	}
@@ -450,6 +464,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
@@ -463,6 +478,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getBody() {
 		return body;
 	}
@@ -491,6 +507,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Block newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -753,7 +770,7 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (deprecated: "); //$NON-NLS-1$
 		result.append(deprecated);
 		result.append(", name: "); //$NON-NLS-1$

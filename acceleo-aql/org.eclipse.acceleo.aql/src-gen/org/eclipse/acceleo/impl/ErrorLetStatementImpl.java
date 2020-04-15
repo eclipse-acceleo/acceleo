@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getEndPosition <em>End Position</em>}</li>
@@ -48,7 +49,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -197,6 +197,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -206,6 +207,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -219,6 +221,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -228,6 +231,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -241,6 +245,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Binding> getVariables() {
 		if (variables == null) {
 			variables = new EObjectContainmentEList<Binding>(Binding.class, this,
@@ -254,6 +259,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getBody() {
 		return body;
 	}
@@ -282,6 +288,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Block newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -304,6 +311,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingBindings() {
 		return missingBindings;
 	}
@@ -313,12 +321,14 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingBindings(int newMissingBindings) {
 		int oldMissingBindings = missingBindings;
 		missingBindings = newMissingBindings;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS, oldMissingBindings, missingBindings));
+					AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS, oldMissingBindings,
+					missingBindings));
 	}
 
 	/**
@@ -326,6 +336,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -335,6 +346,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndHeader(int newMissingEndHeader) {
 		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
@@ -349,6 +361,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEnd() {
 		return missingEnd;
 	}
@@ -358,6 +371,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEnd(int newMissingEnd) {
 		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
@@ -564,7 +578,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

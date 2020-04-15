@@ -19,7 +19,6 @@ import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
 
@@ -43,6 +42,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getEndPosition <em>End Position</em>}</li>
@@ -55,11 +55,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getStartHeaderPosition <em>Start Header Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class ModuleImpl extends NamedElementImpl implements Module {
+public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.Module {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -234,6 +233,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Documentation getDocumentation() {
 		return documentation;
 	}
@@ -262,6 +262,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentation(Documentation newDocumentation) {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
@@ -284,6 +285,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDeprecated() {
 		return deprecated;
 	}
@@ -293,6 +295,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDeprecated(boolean newDeprecated) {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
@@ -306,6 +309,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -315,6 +319,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -328,6 +333,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -337,6 +343,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -350,6 +357,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Metamodel> getMetamodels() {
 		if (metamodels == null) {
 			metamodels = new EObjectResolvingEList<Metamodel>(Metamodel.class, this,
@@ -363,6 +371,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ModuleReference getExtends() {
 		return extends_;
 	}
@@ -391,6 +400,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setExtends(ModuleReference newExtends) {
 		if (newExtends != extends_) {
 			NotificationChain msgs = null;
@@ -413,6 +423,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Import> getImports() {
 		if (imports == null) {
 			imports = new EObjectContainmentEList<Import>(Import.class, this, AcceleoPackage.MODULE__IMPORTS);
@@ -425,6 +436,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ModuleElement> getModuleElements() {
 		if (moduleElements == null) {
 			moduleElements = new EObjectContainmentEList<ModuleElement>(ModuleElement.class, this,
@@ -438,6 +450,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartHeaderPosition() {
 		return startHeaderPosition;
 	}
@@ -447,12 +460,14 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartHeaderPosition(int newStartHeaderPosition) {
 		int oldStartHeaderPosition = startHeaderPosition;
 		startHeaderPosition = newStartHeaderPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE__START_HEADER_POSITION, oldStartHeaderPosition, startHeaderPosition));
+					AcceleoPackage.MODULE__START_HEADER_POSITION, oldStartHeaderPosition,
+					startHeaderPosition));
 	}
 
 	/**
@@ -460,6 +475,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndHeaderPosition() {
 		return endHeaderPosition;
 	}
@@ -469,6 +485,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndHeaderPosition(int newEndHeaderPosition) {
 		int oldEndHeaderPosition = endHeaderPosition;
 		endHeaderPosition = newEndHeaderPosition;
@@ -736,7 +753,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

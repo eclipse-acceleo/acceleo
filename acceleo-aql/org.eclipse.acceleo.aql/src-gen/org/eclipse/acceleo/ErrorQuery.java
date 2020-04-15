@@ -18,6 +18,7 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingVisibility <em>Missing Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingName <em>Missing Name</em>}</li>
@@ -29,7 +30,6 @@ package org.eclipse.acceleo;
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingEqual <em>Missing Equal</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery()
  * @model

@@ -256,6 +256,11 @@ public class AcceleoParser {
 	public static final String FOR_HEADER_START = "[for ";
 
 	/**
+	 * Start of {@link ForStatement} header.
+	 */
+	public static final String FOR_SEPARATOR = "separator(";
+
+	/**
 	 * End of {@link ForStatement} header.
 	 */
 	public static final String FOR_HEADER_END = NO_SLASH_END;
@@ -1356,16 +1361,30 @@ public class AcceleoParser {
 			skipSpaces();
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
+			final Expression separator;
+			final int missingSeparatorCloseParenthesis;
+			if (readString(FOR_SEPARATOR)) {
+				skipSpaces();
+				final int separatorEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, FOR_HEADER_END);
+				separator = parseExpression(separatorEndLimit);
+				skipSpaces();
+				missingSeparatorCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
+			} else {
+				separator = null;
+				missingSeparatorCloseParenthesis = -1;
+			}
 			final int missingEndHeader = readMissingString(FOR_HEADER_END);
 			final Block body = parseBlock(FOR_END);
 			final int missingEnd = readMissingString(FOR_END);
 			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingBinding != -1
-					|| missingCloseParenthesis != -1;
+					|| missingCloseParenthesis != -1 || missingSeparatorCloseParenthesis != -1;
 			if (missingParenthesis || missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorForStatement();
 				((ErrorForStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorForStatement)res).setMissingBinding(missingBinding);
 				((ErrorForStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorForStatement)res).setMissingSeparatorCloseParenthesis(
+						missingSeparatorCloseParenthesis);
 				((ErrorForStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorForStatement)res).setMissingEnd(missingEnd);
 				errors.add((ErrorForStatement)res);
@@ -1374,6 +1393,7 @@ public class AcceleoParser {
 			}
 			res.setStartPosition(startPostion);
 			res.setBinding(binding);
+			res.setSeparator(separator);
 			res.setBody(body);
 			res.setEndPosition(currentPosition);
 		} else {

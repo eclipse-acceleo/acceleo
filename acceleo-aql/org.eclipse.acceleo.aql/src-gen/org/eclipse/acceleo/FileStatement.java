@@ -18,13 +18,13 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.FileStatement#getMode <em>Mode</em>}</li>
  *   <li>{@link org.eclipse.acceleo.FileStatement#getUrl <em>Url</em>}</li>
  *   <li>{@link org.eclipse.acceleo.FileStatement#getCharset <em>Charset</em>}</li>
  *   <li>{@link org.eclipse.acceleo.FileStatement#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getFileStatement()
  * @model

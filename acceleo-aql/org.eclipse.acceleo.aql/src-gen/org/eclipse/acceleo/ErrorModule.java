@@ -18,19 +18,19 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingEPackage <em>Missing EPackage</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorModule()
  * @model
  * @generated
  */
-public interface ErrorModule extends org.eclipse.acceleo.Error, Module {
+public interface ErrorModule extends org.eclipse.acceleo.Error, org.eclipse.acceleo.Module {
 	/**
 	 * Returns the value of the '<em><b>Missing Open Parenthesis</b></em>' attribute.
 	 * The default value is <code>"-1"</code>.

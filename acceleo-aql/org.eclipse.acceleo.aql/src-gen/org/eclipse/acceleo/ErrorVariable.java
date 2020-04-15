@@ -18,12 +18,12 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorVariable#getMissingName <em>Missing Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorVariable#getMissingColon <em>Missing Colon</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorVariable#getMissingType <em>Missing Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorVariable()
  * @model

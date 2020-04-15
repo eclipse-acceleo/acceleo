@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getEndPosition <em>End Position</em>}</li>
@@ -60,7 +61,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingEqual <em>Missing Equal</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -419,6 +419,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -428,6 +429,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -441,6 +443,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -450,6 +453,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
@@ -463,6 +467,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Documentation getDocumentation() {
 		return documentation;
 	}
@@ -491,6 +496,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentation(Documentation newDocumentation) {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
@@ -513,6 +519,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDeprecated() {
 		return deprecated;
 	}
@@ -522,6 +529,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDeprecated(boolean newDeprecated) {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
@@ -535,6 +543,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -544,6 +553,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -557,6 +567,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AstResult getType() {
 		return type;
 	}
@@ -566,6 +577,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setType(AstResult newType) {
 		AstResult oldType = type;
 		type = newType;
@@ -579,6 +591,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
@@ -592,6 +605,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public VisibilityKind getVisibility() {
 		return visibility;
 	}
@@ -601,6 +615,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
@@ -614,6 +629,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getBody() {
 		if (body != null && body.eIsProxy()) {
 			InternalEObject oldBody = (InternalEObject)body;
@@ -641,6 +657,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Expression newBody) {
 		Expression oldBody = body;
 		body = newBody;
@@ -654,6 +671,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingVisibility() {
 		return missingVisibility;
 	}
@@ -663,6 +681,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingVisibility(int newMissingVisibility) {
 		int oldMissingVisibility = missingVisibility;
 		missingVisibility = newMissingVisibility;
@@ -676,6 +695,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingName() {
 		return missingName;
 	}
@@ -685,6 +705,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingName(int newMissingName) {
 		int oldMissingName = missingName;
 		missingName = newMissingName;
@@ -698,6 +719,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -707,6 +729,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
 		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
@@ -721,6 +744,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingParameters() {
 		return missingParameters;
 	}
@@ -730,6 +754,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingParameters(int newMissingParameters) {
 		int oldMissingParameters = missingParameters;
 		missingParameters = newMissingParameters;
@@ -743,6 +768,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
@@ -752,6 +778,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
 		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
@@ -766,6 +793,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingColon() {
 		return missingColon;
 	}
@@ -775,6 +803,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingColon(int newMissingColon) {
 		int oldMissingColon = missingColon;
 		missingColon = newMissingColon;
@@ -788,6 +817,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingType() {
 		return missingType;
 	}
@@ -797,6 +827,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingType(int newMissingType) {
 		int oldMissingType = missingType;
 		missingType = newMissingType;
@@ -810,6 +841,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEqual() {
 		return missingEqual;
 	}
@@ -819,6 +851,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEqual(int newMissingEqual) {
 		int oldMissingEqual = missingEqual;
 		missingEqual = newMissingEqual;
@@ -832,6 +865,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEnd() {
 		return missingEnd;
 	}
@@ -841,6 +875,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEnd(int newMissingEnd) {
 		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
@@ -1232,7 +1267,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

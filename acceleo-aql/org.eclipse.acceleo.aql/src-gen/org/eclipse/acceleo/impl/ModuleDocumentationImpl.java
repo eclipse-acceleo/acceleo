@@ -31,13 +31,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getDocumentedElement <em>Documented Element</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getAuthor <em>Author</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getVersion <em>Version</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getSince <em>Since</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -126,6 +126,7 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public DocumentedElement getDocumentedElement() {
 		if (eContainerFeatureID() != AcceleoPackage.MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT)
 			return null;
@@ -149,9 +150,11 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentedElement(DocumentedElement newDocumentedElement) {
 		if (newDocumentedElement != eInternalContainer()
-				|| (eContainerFeatureID() != AcceleoPackage.MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT && newDocumentedElement != null)) {
+				|| (eContainerFeatureID() != AcceleoPackage.MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT
+						&& newDocumentedElement != null)) {
 			if (EcoreUtil.isAncestor(this, newDocumentedElement))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
 			NotificationChain msgs = null;
@@ -174,6 +177,7 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getAuthor() {
 		return author;
 	}
@@ -183,12 +187,13 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setAuthor(String newAuthor) {
 		String oldAuthor = author;
 		author = newAuthor;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR, oldAuthor, author));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR,
+					oldAuthor, author));
 	}
 
 	/**
@@ -196,6 +201,7 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getVersion() {
 		return version;
 	}
@@ -205,6 +211,7 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setVersion(String newVersion) {
 		String oldVersion = version;
 		version = newVersion;
@@ -218,6 +225,7 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getSince() {
 		return since;
 	}
@@ -227,6 +235,7 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setSince(String newSince) {
 		String oldSince = since;
 		since = newSince;
@@ -378,7 +387,7 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (author: "); //$NON-NLS-1$
 		result.append(author);
 		result.append(", version: "); //$NON-NLS-1$

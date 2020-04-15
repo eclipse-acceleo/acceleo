@@ -18,6 +18,7 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingVisibility <em>Missing Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingName <em>Missing Name</em>}</li>
@@ -30,7 +31,6 @@ package org.eclipse.acceleo;
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate()
  * @model

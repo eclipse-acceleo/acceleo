@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getEndPosition <em>End Position</em>}</li>
@@ -37,7 +38,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getMissingColon <em>Missing Colon</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getMissingType <em>Missing Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -206,6 +206,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AstResult getType() {
 		return type;
 	}
@@ -215,6 +216,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setType(AstResult newType) {
 		AstResult oldType = type;
 		type = newType;
@@ -228,6 +230,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -237,6 +240,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -250,6 +254,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -259,6 +264,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -272,6 +278,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -281,12 +288,13 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_VARIABLE__END_POSITION, oldEndPosition, endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_VARIABLE__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -294,6 +302,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingName() {
 		return missingName;
 	}
@@ -303,12 +312,13 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingName(int newMissingName) {
 		int oldMissingName = missingName;
 		missingName = newMissingName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_VARIABLE__MISSING_NAME, oldMissingName, missingName));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_VARIABLE__MISSING_NAME,
+					oldMissingName, missingName));
 	}
 
 	/**
@@ -316,6 +326,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingColon() {
 		return missingColon;
 	}
@@ -325,6 +336,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingColon(int newMissingColon) {
 		int oldMissingColon = missingColon;
 		missingColon = newMissingColon;
@@ -338,6 +350,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingType() {
 		return missingType;
 	}
@@ -347,12 +360,13 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingType(int newMissingType) {
 		int oldMissingType = missingType;
 		missingType = newMissingType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_VARIABLE__MISSING_TYPE, oldMissingType, missingType));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_VARIABLE__MISSING_TYPE,
+					oldMissingType, missingType));
 	}
 
 	/**
@@ -547,7 +561,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

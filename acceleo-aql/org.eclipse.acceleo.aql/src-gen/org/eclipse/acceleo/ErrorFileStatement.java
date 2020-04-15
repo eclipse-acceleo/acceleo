@@ -18,6 +18,7 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorFileStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorFileStatement#getMissingComma <em>Missing Comma</em>}</li>
@@ -26,7 +27,6 @@ package org.eclipse.acceleo;
  *   <li>{@link org.eclipse.acceleo.ErrorFileStatement#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorFileStatement#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorFileStatement()
  * @model

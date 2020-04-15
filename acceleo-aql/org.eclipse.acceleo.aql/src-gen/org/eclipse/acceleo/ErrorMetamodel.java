@@ -18,11 +18,11 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorMetamodel#getFragment <em>Fragment</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorMetamodel#getMissingEndQuote <em>Missing End Quote</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorMetamodel()
  * @model

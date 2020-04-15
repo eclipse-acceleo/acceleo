@@ -264,18 +264,18 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 			res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS, 0));
 		} else if (errorTemplate.getMissingGuardOpenParenthesis() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.OPEN_PARENTHESIS, 0));
-		} else if (errorTemplate.getGuard() != null
-				&& errorTemplate.getGuard().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		} else if (errorTemplate.getGuard() != null && errorTemplate.getGuard().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(aqlCompletor.getProposals(getVariableNames(errorTemplate), validationResult
 					.getValidationResult(errorTemplate.getGuard().getAst())));
 		} else if (errorTemplate.getMissingGuardCloseParenthesis() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS, 0));
-		} else if (errorTemplate.getPost() != null
-				&& errorTemplate.getPost().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		} else if (errorTemplate.getPost() != null && errorTemplate.getPost().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			final Set<String> variableNames = new LinkedHashSet<String>();
 			variableNames.add("self");
-			res.addAll(aqlCompletor.getProposals(variableNames, validationResult
-					.getValidationResult(errorTemplate.getPost().getAst())));
+			res.addAll(aqlCompletor.getProposals(variableNames, validationResult.getValidationResult(
+					errorTemplate.getPost().getAst())));
 		} else if (errorTemplate.getMissingPostCloseParenthesis() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS
 					+ AcceleoParser.TEMPLATE_HEADER_END, 0));
@@ -410,7 +410,8 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 			res.addAll(aqlCompletor.getProposals(Collections.<String> emptySet(), typeValidationResult));
 		} else if (errorBinding.getMissingAffectationSymbolePosition() != -1) {
 			res.add(new TextCompletionProposal(errorBinding.getMissingAffectationSymbole() + SPACE, 0));
-		} else if (errorBinding.getInitExpression().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		} else if (errorBinding.getInitExpression().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(aqlCompletor.getProposals(getVariableNames(errorBinding), validationResult
 					.getValidationResult(errorBinding.getInitExpression().getAst())));
 		}
@@ -423,7 +424,8 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 			ErrorExpressionStatement errorExpressionStatement) {
 		final List<ICompletionProposal> res = new ArrayList<ICompletionProposal>();
 
-		if (errorExpressionStatement.getExpression().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		if (errorExpressionStatement.getExpression().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(aqlCompletor.getProposals(getVariableNames(errorExpressionStatement), validationResult
 					.getValidationResult(errorExpressionStatement.getExpression().getAst())));
 		} else if (errorExpressionStatement.getMissingEndHeader() != -1) {
@@ -439,7 +441,8 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 
 		if (errorProtectedArea.getMissingOpenParenthesis() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.OPEN_PARENTHESIS, 0));
-		} else if (errorProtectedArea.getId().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		} else if (errorProtectedArea.getId().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(aqlCompletor.getProposals(getVariableNames(errorProtectedArea), validationResult
 					.getValidationResult(errorProtectedArea.getId().getAst())));
 		} else if (errorProtectedArea.getMissingCloseParenthesis() != -1) {
@@ -464,10 +467,26 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 		} else if (errorForStatement.getMissingBinding() != -1) {
 			// nothing to do here
 		} else if (errorForStatement.getMissingCloseParenthesis() != -1) {
-			res.add(new TextCompletionProposal(
-					AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END, 0));
+			res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END,
+					0));
+			if (errorForStatement.getSeparator() == null) {
+				res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS + " "
+						+ AcceleoParser.FOR_SEPARATOR + AcceleoParser.CLOSE_PARENTHESIS
+						+ AcceleoParser.FOR_HEADER_END, 2));
+			}
+		} else if (errorForStatement.getSeparator() != null && errorForStatement.getSeparator().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+			res.addAll(aqlCompletor.getProposals(getVariableNames(errorForStatement), validationResult
+					.getValidationResult(errorForStatement.getSeparator().getAst())));
+		} else if (errorForStatement.getMissingSeparatorCloseParenthesis() != -1) {
+			res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END,
+					0));
 		} else if (errorForStatement.getMissingEndHeader() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.FOR_HEADER_END, 0));
+			if (errorForStatement.getSeparator() == null) {
+				res.add(new TextCompletionProposal(AcceleoParser.FOR_SEPARATOR
+						+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END, 2));
+			}
 		} else if (errorForStatement.getMissingEnd() != -1) {
 			res.addAll(getStatementProposals());
 			res.add(new TextCompletionProposal(AcceleoParser.FOR_END, 0));
@@ -482,7 +501,8 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 
 		if (errorIfStatement.getMissingOpenParenthesis() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.OPEN_PARENTHESIS, 0));
-		} else if (errorIfStatement.getCondition().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		} else if (errorIfStatement.getCondition().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(aqlCompletor.getProposals(getVariableNames(errorIfStatement), validationResult
 					.getValidationResult(errorIfStatement.getCondition().getAst())));
 		} else if (errorIfStatement.getMissingCloseParenthesis() != -1) {
@@ -495,8 +515,8 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 			if (errorIfStatement.getElse() == null) {
 				res.add(new TextCompletionProposal(AcceleoParser.IF_ELSE, 0));
 				if (errorIfStatement.eContainer().eContainingFeature() == AcceleoPackage.eINSTANCE
-						.getIfStatement_Else()
-						|| !(errorIfStatement.eContainer().eContainer() instanceof IfStatement)) {
+						.getIfStatement_Else() || !(errorIfStatement.eContainer()
+								.eContainer() instanceof IfStatement)) {
 					res.add(new TextCompletionProposal(AcceleoParser.IF_ELSEIF
 							+ AcceleoParser.OPEN_PARENTHESIS + AcceleoParser.CLOSE_PARENTHESIS
 							+ AcceleoParser.IF_HEADER_END, 2));
@@ -529,7 +549,8 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 
 		if (errorFileStatement.getMissingOpenParenthesis() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.OPEN_PARENTHESIS, 0));
-		} else if (errorFileStatement.getUrl().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		} else if (errorFileStatement.getUrl().getAst()
+				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(aqlCompletor.getProposals(getVariableNames(errorFileStatement), validationResult
 					.getValidationResult(errorFileStatement.getUrl().getAst())));
 		} else if (errorFileStatement.getMissingComma() != -1) {

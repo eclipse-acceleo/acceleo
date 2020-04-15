@@ -3150,13 +3150,22 @@ public interface AcceleoPackage extends EPackage {
 	int FOR_STATEMENT__BINDING = STATEMENT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Separator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOR_STATEMENT__SEPARATOR = STATEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOR_STATEMENT__BODY = STATEMENT_FEATURE_COUNT + 1;
+	int FOR_STATEMENT__BODY = STATEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>For Statement</em>' class.
@@ -3165,7 +3174,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FOR_STATEMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
+	int FOR_STATEMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>For Statement</em>' class.
@@ -3214,13 +3223,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_FOR_STATEMENT__BINDING = ERROR_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Separator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_FOR_STATEMENT__SEPARATOR = ERROR_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__BODY = ERROR_FEATURE_COUNT + 1;
+	int ERROR_FOR_STATEMENT__BODY = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -3229,7 +3247,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 2;
+	int ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Binding</b></em>' attribute.
@@ -3238,7 +3256,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_BINDING = ERROR_FEATURE_COUNT + 3;
+	int ERROR_FOR_STATEMENT__MISSING_BINDING = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -3247,7 +3265,16 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Missing Separator Close Parenthesis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -3256,7 +3283,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 5;
+	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -3265,7 +3292,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 6;
+	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Error For Statement</em>' class.
@@ -3274,7 +3301,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 7;
+	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Error For Statement</em>' class.
@@ -5216,6 +5243,17 @@ public interface AcceleoPackage extends EPackage {
 	EReference getForStatement_Binding();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getSeparator <em>Separator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Separator</em>'.
+	 * @see org.eclipse.acceleo.ForStatement#getSeparator()
+	 * @see #getForStatement()
+	 * @generated
+	 */
+	EReference getForStatement_Separator();
+
+	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getBody <em>Body</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5268,6 +5306,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getErrorForStatement_MissingCloseParenthesis();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingSeparatorCloseParenthesis <em>Missing Separator Close Parenthesis</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Separator Close Parenthesis</em>'.
+	 * @see org.eclipse.acceleo.ErrorForStatement#getMissingSeparatorCloseParenthesis()
+	 * @see #getErrorForStatement()
+	 * @generated
+	 */
+	EAttribute getErrorForStatement_MissingSeparatorCloseParenthesis();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingEndHeader <em>Missing End Header</em>}'.
@@ -6735,6 +6784,14 @@ public interface AcceleoPackage extends EPackage {
 		EReference FOR_STATEMENT__BINDING = eINSTANCE.getForStatement_Binding();
 
 		/**
+		 * The meta object literal for the '<em><b>Separator</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference FOR_STATEMENT__SEPARATOR = eINSTANCE.getForStatement_Separator();
+
+		/**
 		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6777,6 +6834,15 @@ public interface AcceleoPackage extends EPackage {
 		 */
 		EAttribute ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = eINSTANCE
 				.getErrorForStatement_MissingCloseParenthesis();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Separator Close Parenthesis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS = eINSTANCE
+				.getErrorForStatement_MissingSeparatorCloseParenthesis();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing End Header</b></em>' attribute feature.

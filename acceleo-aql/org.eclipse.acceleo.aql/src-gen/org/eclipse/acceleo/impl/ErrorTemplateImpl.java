@@ -44,6 +44,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getEndPosition <em>End Position</em>}</li>
@@ -67,7 +68,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -466,6 +466,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getStartPosition() {
 		return startPosition;
 	}
@@ -475,6 +476,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
@@ -488,6 +490,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getEndPosition() {
 		return endPosition;
 	}
@@ -497,12 +500,13 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_TEMPLATE__END_POSITION, oldEndPosition, endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -510,6 +514,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Documentation getDocumentation() {
 		return documentation;
 	}
@@ -538,6 +543,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDocumentation(Documentation newDocumentation) {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
@@ -560,6 +566,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDeprecated() {
 		return deprecated;
 	}
@@ -569,6 +576,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDeprecated(boolean newDeprecated) {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
@@ -582,6 +590,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -591,6 +600,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -604,6 +614,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
@@ -617,6 +628,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getGuard() {
 		return guard;
 	}
@@ -645,6 +657,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setGuard(Expression newGuard) {
 		if (newGuard != guard) {
 			NotificationChain msgs = null;
@@ -667,6 +680,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Expression getPost() {
 		return post;
 	}
@@ -695,6 +709,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setPost(Expression newPost) {
 		if (newPost != post) {
 			NotificationChain msgs = null;
@@ -717,6 +732,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isMain() {
 		return main;
 	}
@@ -726,6 +742,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMain(boolean newMain) {
 		boolean oldMain = main;
 		main = newMain;
@@ -739,6 +756,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public VisibilityKind getVisibility() {
 		return visibility;
 	}
@@ -748,6 +766,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
@@ -761,6 +780,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Block getBody() {
 		return body;
 	}
@@ -789,6 +809,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setBody(Block newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;
@@ -811,6 +832,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingVisibility() {
 		return missingVisibility;
 	}
@@ -820,6 +842,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingVisibility(int newMissingVisibility) {
 		int oldMissingVisibility = missingVisibility;
 		missingVisibility = newMissingVisibility;
@@ -834,6 +857,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingName() {
 		return missingName;
 	}
@@ -843,12 +867,13 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingName(int newMissingName) {
 		int oldMissingName = missingName;
 		missingName = newMissingName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_TEMPLATE__MISSING_NAME, oldMissingName, missingName));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__MISSING_NAME,
+					oldMissingName, missingName));
 	}
 
 	/**
@@ -856,6 +881,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -865,6 +891,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
 		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
@@ -879,6 +906,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingParameters() {
 		return missingParameters;
 	}
@@ -888,6 +916,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingParameters(int newMissingParameters) {
 		int oldMissingParameters = missingParameters;
 		missingParameters = newMissingParameters;
@@ -902,6 +931,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
@@ -911,6 +941,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
 		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
@@ -925,6 +956,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingGuardOpenParenthesis() {
 		return missingGuardOpenParenthesis;
 	}
@@ -934,6 +966,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingGuardOpenParenthesis(int newMissingGuardOpenParenthesis) {
 		int oldMissingGuardOpenParenthesis = missingGuardOpenParenthesis;
 		missingGuardOpenParenthesis = newMissingGuardOpenParenthesis;
@@ -948,6 +981,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingGuardCloseParenthesis() {
 		return missingGuardCloseParenthesis;
 	}
@@ -957,6 +991,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingGuardCloseParenthesis(int newMissingGuardCloseParenthesis) {
 		int oldMissingGuardCloseParenthesis = missingGuardCloseParenthesis;
 		missingGuardCloseParenthesis = newMissingGuardCloseParenthesis;
@@ -971,6 +1006,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingPostCloseParenthesis() {
 		return missingPostCloseParenthesis;
 	}
@@ -980,6 +1016,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingPostCloseParenthesis(int newMissingPostCloseParenthesis) {
 		int oldMissingPostCloseParenthesis = missingPostCloseParenthesis;
 		missingPostCloseParenthesis = newMissingPostCloseParenthesis;
@@ -994,6 +1031,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -1003,12 +1041,14 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndHeader(int newMissingEndHeader) {
 		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_TEMPLATE__MISSING_END_HEADER, oldMissingEndHeader, missingEndHeader));
+					AcceleoPackage.ERROR_TEMPLATE__MISSING_END_HEADER, oldMissingEndHeader,
+					missingEndHeader));
 	}
 
 	/**
@@ -1016,6 +1056,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMissingEnd() {
 		return missingEnd;
 	}
@@ -1025,6 +1066,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMissingEnd(int newMissingEnd) {
 		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
@@ -1446,7 +1488,7 @@ public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements E
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$

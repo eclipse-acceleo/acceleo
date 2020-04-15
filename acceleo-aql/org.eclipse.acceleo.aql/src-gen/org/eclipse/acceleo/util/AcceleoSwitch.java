@@ -45,7 +45,6 @@ import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
@@ -103,7 +102,7 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @parameter ePackage the package in question.
+	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -123,7 +122,7 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case AcceleoPackage.MODULE: {
-				Module module = (Module)theEObject;
+				org.eclipse.acceleo.Module module = (org.eclipse.acceleo.Module)theEObject;
 				T result = caseModule(module);
 				if (result == null)
 					result = caseNamedElement(module);
@@ -770,7 +769,7 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModule(Module object) {
+	public T caseModule(org.eclipse.acceleo.Module object) {
 		return null;
 	}
 

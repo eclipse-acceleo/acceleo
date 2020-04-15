@@ -18,14 +18,15 @@ package org.eclipse.acceleo;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingBinding <em>Missing Binding</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingSeparatorCloseParenthesis <em>Missing Separator Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getErrorForStatement()
  * @model
@@ -112,6 +113,29 @@ public interface ErrorForStatement extends org.eclipse.acceleo.Error, ForStateme
 	 * @generated
 	 */
 	void setMissingCloseParenthesis(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Separator Close Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Separator Close Parenthesis</em>' attribute.
+	 * @see #setMissingSeparatorCloseParenthesis(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorForStatement_MissingSeparatorCloseParenthesis()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingSeparatorCloseParenthesis();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorForStatement#getMissingSeparatorCloseParenthesis <em>Missing Separator Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Separator Close Parenthesis</em>' attribute.
+	 * @see #getMissingSeparatorCloseParenthesis()
+	 * @generated
+	 */
+	void setMissingSeparatorCloseParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing End Header</b></em>' attribute.
