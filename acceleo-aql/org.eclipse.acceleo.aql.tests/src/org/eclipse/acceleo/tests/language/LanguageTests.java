@@ -8,22 +8,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.tests;
+package org.eclipse.acceleo.tests.language;
 
-import org.eclipse.acceleo.tests.completion.CompletionTests;
-import org.eclipse.acceleo.tests.evaluation.EvaluationTests;
-import org.eclipse.acceleo.tests.language.LanguageTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * This class aggregates tests for the org.eclipse.acceleo.aql.tests plug-in.
+ * This class aggregates tests for the org.eclipse.acceleo.aql.tests.language package.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {LanguageTests.class, CompletionTests.class, EvaluationTests.class })
-public class AllTests {
+@SuiteClasses(value = {ModuleTests.class, FileStatementTests.class, TemplateTests.class, QueryTests.class,
+		TextStatementTests.class, ForStatementTests.class, IfStatementTests.class,
+		ExpressionStatementTests.class, ProtectedAreaTests.class, LetStatementTests.class,
+		ModuleDocumentationTests.class, ModuleElementDocumentationTests.class, CommentTests.class, })
+public class LanguageTests {
 
 }

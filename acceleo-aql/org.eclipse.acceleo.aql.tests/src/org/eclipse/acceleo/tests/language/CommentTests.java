@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2020 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -9,20 +9,20 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.eclipse.acceleo.tests;
+package org.eclipse.acceleo.tests.language;
 
 import java.io.IOException;
 import java.util.Collection;
 
-import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
+import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Tests {@link org.eclipse.acceleo.ForStatement ForStatement}.
+ * Tests {@link org.eclipse.acceleo.Comment Comment}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ForStatementTests extends AbstractTemplatesTestSuite {
+public class CommentTests extends AbstractLanguageTestSuite {
 
 	/**
 	 * Constructor.
@@ -34,7 +34,7 @@ public class ForStatementTests extends AbstractTemplatesTestSuite {
 	 * @throws DocumentParserException
 	 *             if the tested template can't be parsed
 	 */
-	public ForStatementTests(String testFolder) throws IOException {
+	public CommentTests(String testFolder) throws IOException {
 		super(testFolder);
 	}
 
@@ -45,7 +45,7 @@ public class ForStatementTests extends AbstractTemplatesTestSuite {
 	 */
 	@Parameters(name = "{0}")
 	public static Collection<Object[]> retrieveTestFolders() {
-		return retrieveTestFolders("resources/forStatement");
+		return retrieveTestFolders("resources/language/comment");
 	}
 
 }

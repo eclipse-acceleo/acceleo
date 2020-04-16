@@ -394,7 +394,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	 * Creates a new line with the right indentation.
 	 */
 	protected void newLine() {
-		builder.append(AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation);
+		builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation);
 	}
 
 	@Override
@@ -832,8 +832,8 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	@Override
 	public Void caseTextStatement(TextStatement text) {
 		builder.append(text.getValue().replaceAll("\r\n",
-				AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation).replaceAll("\r",
-						AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation));
+				AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation).replaceAll("\r",
+						AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation));
 
 		return null;
 	}

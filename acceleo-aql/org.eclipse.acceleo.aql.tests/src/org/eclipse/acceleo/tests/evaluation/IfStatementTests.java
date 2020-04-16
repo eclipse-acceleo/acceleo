@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2020 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -9,20 +9,20 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.eclipse.acceleo.tests;
+package org.eclipse.acceleo.tests.evaluation;
 
 import java.io.IOException;
 import java.util.Collection;
 
-import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
+import org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Tests {@link org.eclipse.acceleo.ModuleDocumentation ModuleDocumentation}.
+ * Tests {@link org.eclipse.acceleo.IfStatement IfStatement}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ModuleDocumentationTests extends AbstractTemplatesTestSuite {
+public class IfStatementTests extends AbstractEvaluationTestSuite {
 
 	/**
 	 * Constructor.
@@ -34,7 +34,7 @@ public class ModuleDocumentationTests extends AbstractTemplatesTestSuite {
 	 * @throws DocumentParserException
 	 *             if the tested template can't be parsed
 	 */
-	public ModuleDocumentationTests(String testFolder) throws IOException {
+	public IfStatementTests(String testFolder) throws IOException {
 		super(testFolder);
 	}
 
@@ -45,7 +45,7 @@ public class ModuleDocumentationTests extends AbstractTemplatesTestSuite {
 	 */
 	@Parameters(name = "{0}")
 	public static Collection<Object[]> retrieveTestFolders() {
-		return retrieveTestFolders("resources/moduleDocumentation");
+		return retrieveTestFolders("resources/evaluation/ifStatement");
 	}
 
 }

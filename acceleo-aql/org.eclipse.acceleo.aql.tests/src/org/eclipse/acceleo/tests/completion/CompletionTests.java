@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.tests;
+package org.eclipse.acceleo.tests.completion;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -38,7 +38,7 @@ import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
-import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
+import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,15 +128,15 @@ public class CompletionTests {
 				actualCompletionFile.createNewFile();
 			}
 			try (final OutputStream stream = new FileOutputStream(actualCompletionFile)) {
-				AbstractTemplatesTestSuite.setContent(stream, AbstractTemplatesTestSuite.UTF_8,
+				AbstractLanguageTestSuite.setContent(stream, AbstractLanguageTestSuite.UTF_8,
 						actualCompletion);
 			}
 			fail("file doesn't exist.");
 		}
 
 		try (final InputStream stream = new FileInputStream(expectedCompletionFile)) {
-			String expectedCompletion = AbstractTemplatesTestSuite.getContent(stream,
-					AbstractTemplatesTestSuite.UTF_8);
+			String expectedCompletion = AbstractLanguageTestSuite.getContent(stream,
+					AbstractLanguageTestSuite.UTF_8);
 			assertEquals(expectedCompletion, actualCompletion);
 		}
 	}
@@ -164,14 +164,14 @@ public class CompletionTests {
 			builder.append(proposal.getProposal());
 			builder.append(' ');
 			builder.append(proposal.getCursorOffset());
-			builder.append(AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 			builder.append(proposal.getDescription());
-			builder.append(AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
-			builder.append(AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 		}
 
 		return builder.toString().replaceAll("\\r\\n|\\r|\\n", Character.toString(
-				AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER));
+				AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER));
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class CompletionTests {
 		final Map<String, Integer> testToPosition = new LinkedHashMap<String, Integer>();
 		final StringBuilder builder = new StringBuilder();
 		try (final InputStream stream = new FileInputStream(MODULE)) {
-			String content = AbstractTemplatesTestSuite.getContent(stream, AbstractTemplatesTestSuite.UTF_8);
+			String content = AbstractLanguageTestSuite.getContent(stream, AbstractLanguageTestSuite.UTF_8);
 			final Matcher matcher = TEST_PATTERN.matcher(content);
 			int lastMatchEnd = 0;
 			while (matcher.find()) {

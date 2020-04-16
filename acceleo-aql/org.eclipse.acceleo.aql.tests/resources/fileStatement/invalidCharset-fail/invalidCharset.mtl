@@ -1,7 +1,0 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
-
-[template public myTemplate(myParam : ecore::EPackage)]
-  [file (myParam.name + '.txt', overwrite, notExisting.name)]
-    some static text.
-  [/file]
-[/template]

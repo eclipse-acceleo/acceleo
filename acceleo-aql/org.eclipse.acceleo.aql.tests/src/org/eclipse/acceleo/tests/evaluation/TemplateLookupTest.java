@@ -18,7 +18,7 @@ import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
-import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
+import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -90,9 +90,9 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ "generated from m1.t11(EPackage)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
+		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m1.t11(EPackage)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER,
+				result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
@@ -111,15 +111,15 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m1.overrideMe(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m1.privateInBoth(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
@@ -143,18 +143,18 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ "generated from m2.t21(EPackage)" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m2.t21(EPackage)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m2.overrideMe(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m1.privateInBoth(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**
@@ -176,9 +176,9 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m2.overrideMe(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**
@@ -205,21 +205,21 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m4.t41(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m4.t41(EClass)"
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m4.overrideMe(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m2.overrideMe(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**
@@ -243,14 +243,14 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m4.overrideMe(EClass)"
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class TemplateLookupTest {
 		AcceleoParser parser = new AcceleoParser(env);
 		InputStream content = getClass().getResourceAsStream(name);
 		try (InputStream stream = (InputStream)content) {
-			String moduleSource = AbstractTemplatesTestSuite.getContent(stream, "UTF-8");
+			String moduleSource = AbstractLanguageTestSuite.getContent(stream, "UTF-8");
 			return parser.parse(moduleSource).getModule();
 		}
 	}
