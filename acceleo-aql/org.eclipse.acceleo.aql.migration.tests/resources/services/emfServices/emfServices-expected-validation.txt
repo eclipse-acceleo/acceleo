@@ -1,0 +1,10 @@
+WARNING EClassifier=EAttribute is incompatible with EClassifier=EStructuralFeature - 215 282
+WARNING EClassifier=EReference is incompatible with EClassifier=EStructuralFeature - 295 368
+INFO Always true:
+Nothing inferred when c (EClassifier=EClass) is not type of EClassifierLiteral=EClass - 576 604
+INFO Always false:
+Nothing inferred when c (EClassifier=EClass) is type of EClassifierLiteral=EPackage - 651 681
+INFO Always true:
+Nothing inferred when c (EClassifier=EClass) is not kind of EClassifierLiteral=EClass - 726 754
+INFO Always false:
+Nothing inferred when c (EClassifier=EClass) is kind of EClassifierLiteral=EPackage - 801 831

@@ -1,0 +1,4 @@
+[module templatePostImplicitSelf(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[template public test(anEClass : EClass) post (trim())]
+[/template]

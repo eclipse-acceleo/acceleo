@@ -1,0 +1,13 @@
+Build the migration tool
+========================
+* right click on the org.eclipse.acceleo.aql.migration project
+* Export > Java > Runnable Jar file
+* Launch config: Migration Launcher
+* choose an export destination & a jar name, e.g. "migrator.jar"
+* check the "Copy required libraries..." option
+
+Launch the migration tool
+=========================
+ java -jar <myproject>/<sourcefolder> <output_folder>
+e.g. from the folder containing the Acceleo project myProject:
+ java -jar migrator.jar myProject/src output

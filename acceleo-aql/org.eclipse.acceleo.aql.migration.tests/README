@@ -1,0 +1,20 @@
+Tests resources folders:
+========================
+* acceleoAqlTests: tests forked from actual acceleo-aql tests/ those are already tested for generation elsewhere, we only check that the migration is correct
+* evaluation: main tests, tested for migration & evaluation
+* language: migration oddities, only tested for migration
+* services: all services unit testing, tested for migration & generation
+
+Tests resources for a given tests:
+==================================
+* migration-related
+	* <test_name>-origin.mtl: the A3 template [synchronized from org.eclipse.acceleo.aql.migration.tests.acceleo3]
+	* <test_name>.emtl: the A3 compiled template [synchronized from org.eclipse.acceleo.aql.migration.tests.acceleo3]
+	* <test_name>-expected-format.mtl: the A4 formatted expected template 
+	* <test_name>-expected.mtl: the A4 unformatted expected template (only when generation is tested)
+* generation-related (only when generation is tested)
+	* <test_name>.mtl: the A4 migrated template, produced by the migration test, unformatted to keep whitespaces as in A3, used by the generation tests
+	* <test_name>.xmi: the model used to launch the generation [synchronized from org.eclipse.acceleo.aql.migration.tests.acceleo3]
+	* generated [synchronized from org.eclipse.acceleo.aql.migration.tests.acceleo3]
+	* <test_name>-expected-runtimeMessages.txt the A4 generation expected messages
+	* <test_name>-expected-validation.txt: the A4 generation expected validation

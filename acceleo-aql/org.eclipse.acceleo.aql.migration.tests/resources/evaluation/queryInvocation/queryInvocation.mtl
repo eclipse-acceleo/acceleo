@@ -1,0 +1,13 @@
+[module queryInvocation('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public test(e : ecore::EClass)]
+  [file ('query_invocation_wrapping', overwrite)]
+    [e.report1('Attributes ' + e.AttributesOfEClass()->asSequence()->collect(temp1 | temp1.name)->sep(', ') + ' end')/]
+    [e.report1('Attributes '.concat(e.AttributesOfEClass()->asSequence()->collect(temp2 | temp2.name)->sep(', ')->toString()) + ' end')/]
+  [/file]
+[/template]
+
+[query public AttributesOfEClass(anEClass : ecore::EClass) : OrderedSet(ecore::EAttribute) = anEClass.eAllAttributes/]
+
+[query public report1(anEClass : ecore::EClass, message : String) : String = message/]

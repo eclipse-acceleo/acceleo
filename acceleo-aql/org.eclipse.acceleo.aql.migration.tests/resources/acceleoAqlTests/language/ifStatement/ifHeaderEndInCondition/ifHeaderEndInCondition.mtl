@@ -1,0 +1,6 @@
+[module ifHeaderEndInCondition('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [if (myParam.eClassifiers->size() + '' = ']')]    some static text.
+  [/if]
+[/template]

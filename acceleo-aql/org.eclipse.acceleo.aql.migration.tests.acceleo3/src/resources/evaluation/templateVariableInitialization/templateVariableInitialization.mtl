@@ -1,0 +1,10 @@
+[module templateVariableInitialization(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[template public test(anEClass : EClass) { var : String; var1: Integer = 2; var2: Boolean = true;}]
+[comment @main /]
+[file ('test', false, 'UTF-8')]
+[var/]
+[var1/]
+[var2/]
+[/file]
+[/template]

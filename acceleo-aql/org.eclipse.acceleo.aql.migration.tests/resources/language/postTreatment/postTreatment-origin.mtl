@@ -1,0 +1,32 @@
+[module postTreatment(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[template public test(anEClass : EClass)]
+before: [aTemplate() before ('[')/]
+after : [aTemplate() after (']')/]
+separator : [aTemplate() separator (',')/]
+
+before:
+[for (number : Integer | Sequence{1, 2, 3}) before ('[')]
+[number/]
+[/for]
+
+separator:
+[for (number : Integer | Sequence{1, 2, 3}) separator (',')]
+[number/]
+[/for]
+
+after:
+[for (number : Integer | Sequence{1, 2, 3}) after (']')]
+[number/]
+[/for]
+
+all:
+[for (number : Integer | Sequence{1, 2, 3}) before ('[') separator (',') after (']')]
+[number/]
+[/for]
+[/template]
+
+[template public aTemplate(anEClass : EClass) ]
+[anEClass.name/]
+[/template]
+

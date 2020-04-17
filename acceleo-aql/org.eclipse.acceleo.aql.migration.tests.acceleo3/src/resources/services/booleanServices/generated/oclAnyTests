@@ -1,0 +1,15 @@
+@Test true.oclAsType(Boolean) => true
+@Test true.oclIsUndefined() => false
+@Test true.oclIsTypeOf(Boolean) => true
+@Test true.oclIsTypeOf(EPackage) => false
+@Test true.oclIsKindOf(Boolean) => true
+@Test true.oclIsKindOf(EPackage) => false
+@Test true = false => false
+@Test true = true => true
+@Test false = true => false
+@Test false = false => true
+@Test true <> false => true
+@Test true <> true => false
+@Test false <> true => true
+@Test false <> false => false
+@Test true.toString() => true

@@ -1,0 +1,4 @@
+[module withThreeImport('http://www.eclipse.org/emf/2002/Ecore')/]
+[import misc::MyModule/]
+[import misc::MyModule1/]
+[import misc::MyModule2/]

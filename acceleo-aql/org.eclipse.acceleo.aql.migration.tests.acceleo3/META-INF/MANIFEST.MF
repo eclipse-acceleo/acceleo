@@ -1,0 +1,44 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Acceleo Acceleo3 Module Runtime Plug-in
+Bundle-SymbolicName: org.eclipse.acceleo.aql.migration.tests.acceleo3
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.acceleo.aql.migration.tests.acceleo3.Activator
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.core.runtime, 
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.ocl,
+ org.eclipse.ocl.ecore,
+ org.eclipse.acceleo.common;bundle-version="3.3.0",
+ org.eclipse.acceleo.model;bundle-version="3.3.0",
+ org.eclipse.acceleo.profiler;bundle-version="3.3.0",
+ org.eclipse.acceleo.engine;bundle-version="3.3.0",
+ com.google.guava
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: resources.evaluation.dualTemplateCall,
+ resources.evaluation.elseletBlock,
+ resources.evaluation.emptyBlocks,
+ resources.evaluation.fileStatement,
+ resources.evaluation.forBlock,
+ resources.evaluation.ifBlock,
+ resources.evaluation.ifBlockIndent,
+ resources.evaluation.implicitForIterator,
+ resources.evaluation.letBlock,
+ resources.evaluation.protectedAreaBlock,
+ resources.evaluation.queryInvocation,
+ resources.evaluation.range,
+ resources.evaluation.recursiveTemplateInvocation,
+ resources.evaluation.templateVariableInitialization,
+ resources.evaluation.variables,
+ resources.services.acceleoServices,
+ resources.services.booleanServices,
+ resources.services.collectionsServices,
+ resources.services.emfServices,
+ resources.services.numericServices,
+ resources.services.orderedSetsServices,
+ resources.services.sequencesServices,
+ resources.services.stringServices
+

@@ -1,0 +1,10 @@
+[module letBlock('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public testLetBlock(anEClass : ecore::EClass)]
+  [file ('testLetBlock', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      block_[str/]
+    [/let]
+  [/file]
+[/template]

@@ -1,0 +1,10 @@
+[module range('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public test(c : EPackage)]
+[comment @main /]
+	[file ('testIntRange', false)]
+		[for (item : Integer | Sequence{1..5})]
+item:[item/]
+		[/for]
+	[/file]
+[/template]

@@ -93,6 +93,8 @@
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide.ui</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.migration</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.migration.tests</module>
     
     <module>acceleo-aql/org.eclipse.acceleo.aql.feature</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.jdt.feature</module>

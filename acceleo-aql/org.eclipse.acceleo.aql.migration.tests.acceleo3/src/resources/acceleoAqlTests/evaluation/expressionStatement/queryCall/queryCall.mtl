@@ -1,0 +1,9 @@
+[module queryCall('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', false)]
+    [myParam.myQuery().name/]
+  [/file]
+[/template]
+
+[query public myQuery(myParam : ecore::EPackage) : ecore::EClassifier = myParam.eClassifiers->first()/]

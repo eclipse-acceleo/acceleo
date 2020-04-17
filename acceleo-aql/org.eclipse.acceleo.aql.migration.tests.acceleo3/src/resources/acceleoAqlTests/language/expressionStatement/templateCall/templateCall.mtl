@@ -1,0 +1,11 @@
+[module templateCall('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [myParam.calledTemplate().size()/]
+[/template]
+
+
+[template public calledTemplate(myParam : ecore::EPackage)]
+  [myParam.name + '.txt'/]
+[/template]
+

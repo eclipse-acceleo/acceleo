@@ -1,0 +1,4 @@
+[module TODO_templateOverriding(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[comment]TODO	check template overriding restrictions[/comment]
+[comment]TODO 	Acceleo 4 templates will automatically override their super-module templates if the signature matches. This was not the case in Acceleo 3 and matching templates thus need to be marked for manual varification.[/comment]

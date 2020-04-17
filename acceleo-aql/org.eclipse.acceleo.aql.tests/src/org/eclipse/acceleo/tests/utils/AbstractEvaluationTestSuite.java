@@ -111,6 +111,8 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		AcceleoUtil.generate(evaluator, environment, module, model);
 
+		assertGenerationMessages(environment.getGenerationResult());
+
 		// assert generated content
 		final GenerationResult result = environment.getGenerationResult();
 		for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
@@ -134,8 +136,6 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 				unexpectedGeneratedFiles.add(actualURI);
 			}
 		}
-
-		assertGenerationMessages(environment.getGenerationResult());
 
 		if (!unexpectedGeneratedFiles.isEmpty()) {
 			fail("unexpected generated file: " + Arrays.deepToString(unexpectedGeneratedFiles.toArray()));

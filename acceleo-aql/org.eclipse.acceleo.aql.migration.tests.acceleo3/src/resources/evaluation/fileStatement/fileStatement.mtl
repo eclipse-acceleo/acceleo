@@ -1,0 +1,18 @@
+[module fileStatement('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public testingIf(p : EPackage)]
+[comment @main/]
+
+[file ('testOneLine', false)]testOneLine[/file]
+
+[file ('testNewLineBefore', false)]
+testNewLineBefore[/file]
+
+[file ('testNewLineAfter', false)]testNewLineAfter
+[/file]
+
+[file ('testNewLineBeforeAndAfter', false)]
+testNewLineBeforeAndAfter
+[/file]
+
+[/template]

@@ -1,0 +1,46 @@
+[module ifBlock('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public testingIf(p : ecore::EPackage)]
+  [file ('testIf', overwrite)]
+    [for (c : ecore::EClass | p.eClassifiers)]
+      			[if (c.name = 'ClasseA')]Class name [c.name/] = ClasseA.[/if]
+      
+    [/for]
+  [/file]
+  [file ('testElse', overwrite)]
+    [for (c : ecore::EClass | p.eClassifiers)]
+      			[if (c.name = 'NotMatched')]Must not be displayed.[else]Class name is [c.name/].[/if]
+      
+    [/for]
+  [/file]
+  [file ('testElseif', overwrite)]
+    [for (c : ecore::EClass | p.eClassifiers)]
+      [if (c.name = 'ClasseA')]Class name is ClasseA.
+      [elseif (c.name = 'ClasseB')]Class name is ClasseB.
+      [/if]
+    [/for]
+  [/file]
+  [file ('testCompleteIf', overwrite)]
+    [for (c : ecore::EClass | p.eClassifiers)]
+      [if (c.name = 'ClasseA')]Class name is ClasseA.
+      [elseif (c.name = 'ClasseB')]Class name is ClasseB.
+      [else]Class name is different from ClasseA and ClasseB.
+      [/if]
+    [/for]
+  [/file]
+  [file ('testNestedIf', overwrite)]
+    [for (c : ecore::EClass | p.eClassifiers)]
+      [if (c.name = 'ClasseA')]Class name is A.
+        				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
+        
+      [elseif (c.name = 'ClasseB')]Class name is B.
+        				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
+        
+      [else]Class name is different.
+        				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
+        
+      [/if]
+    [/for]
+  [/file]
+[/template]
