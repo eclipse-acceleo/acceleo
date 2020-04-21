@@ -168,6 +168,9 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 	protected List<ICompletionProposal> getModuleElementProposals() {
 		final List<ICompletionProposal> res = new ArrayList<ICompletionProposal>();
 
+		res.add(new TextCompletionProposal(AcceleoCodeTemplates.CODE_TEMPLATE_NEW_ACCELEO_QUERY, 0));
+		res.add(new TextCompletionProposal(AcceleoCodeTemplates.CODE_TEMPLATE_NEW_ACCELEO_TEMPLATE, 0));
+
 		res.add(new TextCompletionProposal(AcceleoParser.DOCUMENTATION_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.COMMENT_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.TEMPLATE_HEADER_START, 0));

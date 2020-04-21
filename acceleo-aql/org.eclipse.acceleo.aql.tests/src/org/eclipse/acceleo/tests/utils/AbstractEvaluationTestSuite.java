@@ -73,7 +73,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 	 * @throws IOException
 	 *             if the tested template can't be read
 	 */
-	public AbstractEvaluationTestSuite(String testFolder) throws IOException {
+	protected AbstractEvaluationTestSuite(String testFolder) throws IOException {
 		super(testFolder);
 		final File modelFile = getModelFile(new File(getTestFolderPath()));
 		final ResourceSet rs = getResourceSet();

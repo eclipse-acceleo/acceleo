@@ -32,6 +32,7 @@ import org.junit.Test;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class TemplateLookupTest {
+
 	/** Name of the first parameter on all of our templates. */
 	private static final String PARAM1 = "param1";
 

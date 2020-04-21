@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.lsp4j.CompletionItem;
+import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.DocumentSymbol;
@@ -54,7 +55,14 @@ public final class AcceleoLanguageServerServicesUtils {
 		String text = acceleoCompletionProposal.getProposal();
 
 		if (text != null) {
-			return new CompletionItem(text);
+			CompletionItem completionItem = new CompletionItem();
+			completionItem.setDocumentation(acceleoCompletionProposal.getDescription());
+			completionItem.setData(acceleoCompletionProposal.getObject());
+			completionItem.setKind(CompletionItemKind.Text);
+			completionItem.setInsertText(text);
+			// FIXME: Acceleo should provide us with more information about the proposal.
+			completionItem.setLabel(text);
+			return completionItem;
 		} else {
 			throw new IllegalArgumentException("The text proposed by an " + acceleoCompletionProposal
 					.getClass().getCanonicalName() + " should not be null.");

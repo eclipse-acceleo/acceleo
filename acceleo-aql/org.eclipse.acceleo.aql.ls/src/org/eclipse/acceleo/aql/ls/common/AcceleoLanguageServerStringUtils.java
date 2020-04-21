@@ -66,18 +66,15 @@ public final class AcceleoLanguageServerStringUtils {
 		int positionOffset = position.getCharacter();
 
 		int currentLine = 0;
-		int currentIndex = -1;
-		char previousCharacter = Character.MIN_VALUE;
-		char currentCharacter = Character.MIN_VALUE;
-		do {
-			previousCharacter = currentCharacter;
-			if (previousCharacter == '\n') {
+		int currentIndex = 0;
+		char currentCharacter;
+		while (currentLine != positionLine && currentIndex < text.length()) {
+			currentCharacter = text.charAt(currentIndex);
+			if (currentCharacter == '\n') {
 				currentLine++;
 			}
 			currentIndex++;
-			currentCharacter = text.charAt(currentIndex);
-		} while (currentLine != positionLine && currentIndex < text.length());
-
+		}
 		if (currentLine == positionLine) {
 			return currentIndex + positionOffset;
 		} else {

@@ -43,10 +43,10 @@ public class AcceleoTextDocument {
 	 */
 	private final IAcceleoEnvironment acceleoEnvironment;
 
-	/**
-	 * The {@link AcceleoParser} used to parse the text document.
-	 */
-	private final AcceleoParser acceleoParser;
+	// /**
+	// * The {@link AcceleoParser} used to parse the text document.
+	// */
+	// private final AcceleoParser acceleoParser;
 
 	/**
 	 * The {@link AcceleoValidator} used to validate the text document's contents.
@@ -78,10 +78,13 @@ public class AcceleoTextDocument {
 
 		this.textDocumentUri = textDocumentUri;
 		this.acceleoEnvironment = new AcceleoEnvironment(new DefaultGenerationStrategy(), URI.createURI(""));
-		this.acceleoParser = new AcceleoParser(this.getAcceleoEnvironment().getQueryEnvironment());
 		this.acceleoValidator = new AcceleoValidator(this.getAcceleoEnvironment());
 
 		this.setContents(textDocumentContents);
+	}
+
+	private AcceleoParser getParser() {
+		return new AcceleoParser(this.getAcceleoEnvironment().getQueryEnvironment());
 	}
 
 	/**
@@ -138,7 +141,7 @@ public class AcceleoTextDocument {
 	 */
 	private void setContents(String newTextDocumentContents) {
 		this.textDocumentContents = newTextDocumentContents;
-		this.parsedAcceleoAstResult = this.acceleoParser.parse(this.textDocumentContents);
+		this.parsedAcceleoAstResult = this.getParser().parse(this.textDocumentContents);
 	}
 
 	/**

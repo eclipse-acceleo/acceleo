@@ -7,6 +7,16 @@
 [query  7
 [query 
 
+[query public myQuery(myParameter : MyParameterType) : MyQueryReturnType = null/] 81
+[query public myQuery(myParameter : MyParameterType) : MyQueryReturnType = null/]
+
+[template  public myTemplate(myParameter : MyParameterType)]
+	My template with a static text.
+[/template] 105
+[template  public myTemplate(myParameter : MyParameterType)]
+	My template with a static text.
+[/template]
+
 [template  10
 [template 
 

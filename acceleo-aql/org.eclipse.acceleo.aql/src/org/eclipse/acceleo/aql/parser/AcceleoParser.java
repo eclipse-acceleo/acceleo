@@ -396,6 +396,7 @@ public class AcceleoParser {
 	 * @return the created {@link Module} if any is recognized, <code>null</code> otherwise
 	 */
 	public AcceleoAstResult parse(String source) {
+		this.currentPosition = 0;
 		this.text = source;
 
 		errors = new ArrayList<Error>();
