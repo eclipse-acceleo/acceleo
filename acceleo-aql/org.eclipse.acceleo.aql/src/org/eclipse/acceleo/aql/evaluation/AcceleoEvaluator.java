@@ -393,8 +393,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		if (condition instanceof Boolean) {
 			if (Boolean.TRUE.equals(condition)) {
 				res = (String)doSwitch(ifStatement.getThen());
-			} else {
+			} else if (ifStatement.getElse() != null) {
 				res = (String)doSwitch(ifStatement.getElse());
+			} else {
+				res = EMPTY_RESULT;
 			}
 		} else {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
