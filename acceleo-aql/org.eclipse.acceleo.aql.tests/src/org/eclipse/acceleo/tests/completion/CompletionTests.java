@@ -50,6 +50,7 @@ import org.junit.runners.Parameterized.Parameters;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 @RunWith(Parameterized.class)
 public class CompletionTests {
 
@@ -127,14 +128,14 @@ public class CompletionTests {
 			if (!actualCompletionFile.exists()) {
 				actualCompletionFile.createNewFile();
 			}
-			try (final OutputStream stream = new FileOutputStream(actualCompletionFile)) {
+			try (OutputStream stream = new FileOutputStream(actualCompletionFile)) {
 				AbstractLanguageTestSuite.setContent(stream, AbstractLanguageTestSuite.UTF_8,
 						actualCompletion);
 			}
 			fail("file doesn't exist.");
 		}
 
-		try (final InputStream stream = new FileInputStream(expectedCompletionFile)) {
+		try (InputStream stream = new FileInputStream(expectedCompletionFile)) {
 			String expectedCompletion = AbstractLanguageTestSuite.getContent(stream,
 					AbstractLanguageTestSuite.UTF_8);
 			assertEquals(expectedCompletion, actualCompletion);
@@ -207,7 +208,7 @@ public class CompletionTests {
 
 		final Map<String, Integer> testToPosition = new LinkedHashMap<String, Integer>();
 		final StringBuilder builder = new StringBuilder();
-		try (final InputStream stream = new FileInputStream(MODULE)) {
+		try (InputStream stream = new FileInputStream(MODULE)) {
 			String content = AbstractLanguageTestSuite.getContent(stream, AbstractLanguageTestSuite.UTF_8);
 			final Matcher matcher = TEST_PATTERN.matcher(content);
 			int lastMatchEnd = 0;

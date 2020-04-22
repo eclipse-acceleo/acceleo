@@ -74,16 +74,6 @@ public abstract class AbstractLanguageTestSuite {
 	private static MemoryURIHandler uriHandler = new MemoryURIHandler();
 
 	/**
-	 * The {@link ModuleAstSerializer}.
-	 */
-	private final ModuleAstSerializer moduleAstSerializer = new ModuleAstSerializer();
-
-	/**
-	 * The test folder path.
-	 */
-	private final String testFolderPath;
-
-	/**
 	 * The {@link AcceleoAstResult}.
 	 */
 	protected final AcceleoAstResult astResult;
@@ -94,11 +84,6 @@ public abstract class AbstractLanguageTestSuite {
 	protected final IAcceleoEnvironment environment;
 
 	/**
-	 * The module qualified name.
-	 */
-	private final String qualifiedName;
-
-	/**
 	 * The memory destination {@link String}.
 	 */
 	protected final String memoryDestinationString;
@@ -107,6 +92,21 @@ public abstract class AbstractLanguageTestSuite {
 	 * The memoty destination {@link URI}.
 	 */
 	protected final URI memoryDestination;
+
+	/**
+	 * The {@link ModuleAstSerializer}.
+	 */
+	private final ModuleAstSerializer moduleAstSerializer = new ModuleAstSerializer();
+
+	/**
+	 * The test folder path.
+	 */
+	private final String testFolderPath;
+
+	/**
+	 * The module qualified name.
+	 */
+	private final String qualifiedName;
 
 	/**
 	 * Constructor.
@@ -220,13 +220,13 @@ public abstract class AbstractLanguageTestSuite {
 			if (!actualFile.exists() && !expectedFile.exists()) {
 				actualFile.createNewFile();
 			}
-			try (final FileOutputStream stream = new FileOutputStream(actualFile);) {
+			try (FileOutputStream stream = new FileOutputStream(actualFile);) {
 				setContent(stream, UTF_8, actualContent);
 			}
 			fail("file doesn't exist.");
 		} else {
 			String expectedContent = "";
-			try (final FileInputStream stream = new FileInputStream(expectedFile);) {
+			try (FileInputStream stream = new FileInputStream(expectedFile);) {
 				expectedContent = getContent(stream, UTF_8);
 			}
 			assertEquals(expectedContent, actualContent);

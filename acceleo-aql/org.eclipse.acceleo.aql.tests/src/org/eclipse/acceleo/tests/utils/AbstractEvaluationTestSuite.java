@@ -43,7 +43,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.Test;
 
-public class AbstractEvaluationTestSuite extends AbstractLanguageTestSuite {
+/**
+ * Tests the evalation of a {@link Module} using {@link AcceleoEvaluator}.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
+public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSuite {
 
 	/**
 	 * Copy buffer size.
@@ -220,13 +225,13 @@ public class AbstractEvaluationTestSuite extends AbstractLanguageTestSuite {
 			if (!actualFile.exists() && !expectedFile.exists()) {
 				actualFile.createNewFile();
 			}
-			try (final FileOutputStream stream = new FileOutputStream(actualFile);) {
+			try (FileOutputStream stream = new FileOutputStream(actualFile);) {
 				setContent(stream, UTF_8, actualContent);
 			}
 			fail("file doesn't exist.");
 		} else {
 			String expectedContent = "";
-			try (final FileInputStream stream = new FileInputStream(expectedFile);) {
+			try (FileInputStream stream = new FileInputStream(expectedFile);) {
 				expectedContent = getContent(stream, UTF_8);
 			}
 			assertEquals(expectedContent, actualContent);
@@ -302,7 +307,7 @@ public class AbstractEvaluationTestSuite extends AbstractLanguageTestSuite {
 		res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace
 																									// localized
 																									// message
-		res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");// strip lost user doc
+		res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost"); // strip lost user doc
 																						// date
 		res = res.replaceAll("@[a-f0-9]{5,8}[, )]", "@00000000 "); // object address in toString()
 		res = res.replaceAll(

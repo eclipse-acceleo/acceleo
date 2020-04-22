@@ -147,7 +147,9 @@ public class TemplateLookupTest {
 				+ "generated from m2.t21(EPackage)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				// CHECKSTYLE:OFF don't share values across tests
 				+ "generated from m2.overrideMe(EClass)"
+				// CHECKSTYLE:ON don't share values across tests
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
