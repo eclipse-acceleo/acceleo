@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2017 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
@@ -87,7 +88,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 				// fall through: same behavior as "OVERWRITE" if the file doesn't exist
 			case OVERWRITE:
 				if (exists) {
-					try (final InputStream input = uriConverter.createInputStream(uri);) {
+					try (InputStream input = uriConverter.createInputStream(uri);) {
 						Map<String, String> protectedAreas = readProtectedAreaContent(new InputStreamReader(
 								input), lineDelimiter);
 						if (protectedAreas != null && !protectedAreas.isEmpty()) {
@@ -117,12 +118,23 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 
 	}
 
-	protected Map<String, String> readProtectedAreaContent(Reader fileReader, String lineDelimiter)
+	/**
+	 * Gets the mapping from {@link ProtectedArea}'s {@link ProtectedArea#getId() ID} to its content.
+	 * 
+	 * @param reader
+	 *            the {@link Reader}
+	 * @param lineDelimiter
+	 *            the line delimiter to use to create content
+	 * @return the mapping from {@link ProtectedArea}'s {@link ProtectedArea#getId() ID} to its content
+	 * @throws IOException
+	 *             if the {@link Reader} can't be read
+	 */
+	protected Map<String, String> readProtectedAreaContent(Reader reader, String lineDelimiter)
 			throws IOException {
-		Map<String, String> protectedAreas = new LinkedHashMap<>();
-		BufferedReader reader = new BufferedReader(fileReader);
+		final Map<String, String> protectedAreas = new LinkedHashMap<>();
+		final BufferedReader localReader = new BufferedReader(reader);
 
-		String line = reader.readLine();
+		String line = localReader.readLine();
 		while (line != null) {
 			final int start = line.indexOf(USER_CODE_START);
 			if (start >= 0) {
@@ -130,7 +142,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 				final StringBuffer areaContent = new StringBuffer(1024);
 				areaContent.append(line.substring(start));
 
-				line = reader.readLine();
+				line = localReader.readLine();
 				while (line != null) {
 					final int end = line.indexOf(USER_CODE_END);
 					if (end >= 0) {
@@ -144,7 +156,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 				}
 				protectedAreas.put(marker, areaContent.toString());
 			}
-			line = reader.readLine();
+			line = localReader.readLine();
 		}
 		return protectedAreas;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -132,8 +132,7 @@ public interface IAcceleoEnvironment {
 	 * @throws IOException
 	 *             if the writed can't be opened
 	 */
-	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
-			throws IOException;
+	void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter) throws IOException;
 
 	/**
 	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
@@ -141,7 +140,7 @@ public interface IAcceleoEnvironment {
 	 * @throws IOException
 	 *             if the writer can't be closed
 	 */
-	public void closeWriter() throws IOException;
+	void closeWriter() throws IOException;
 
 	/**
 	 * Writes the given {@link String} to the last {@link #openWriter(String, OpenModeKind, String, String)
@@ -152,7 +151,7 @@ public interface IAcceleoEnvironment {
 	 * @throws IOException
 	 *             if the writer can't be written
 	 */
-	public void write(String text) throws IOException;
+	void write(String text) throws IOException;
 
 	/**
 	 * Gets the {@link GenerationResult}.

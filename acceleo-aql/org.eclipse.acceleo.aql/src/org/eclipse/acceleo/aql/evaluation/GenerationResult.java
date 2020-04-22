@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,11 +58,11 @@ public class GenerationResult {
 	/**
 	 * Adds the given {@link Diagnostic}.
 	 * 
-	 * @param diagnostic
+	 * @param diag
 	 *            the {@link Diagnostic}
 	 */
-	public void addDiagnostic(Diagnostic diagnostic) {
-		this.diagnostic.add(diagnostic);
+	public void addDiagnostic(Diagnostic diag) {
+		this.diagnostic.add(diag);
 	}
 
 }
