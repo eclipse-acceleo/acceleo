@@ -30,7 +30,6 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
@@ -94,11 +93,12 @@ public class AcceleoAstNodeToSymbolKind extends AcceleoSwitch<SymbolKind> {
 
 	@Override
 	public SymbolKind caseVariable(Variable variable) {
-		AstResult variableType = variable.getType();
-		IValidationResult variableTypeValidationResult = this.acceleoValidationResult.getValidationResult(
-				variableType);
-		Set<IType> possibleTypes = variableTypeValidationResult.getPossibleTypes(variableType.getAst());
-		return getSymbolKindFor(possibleTypes);
+		// AstResult variableType = variable.getType();
+		// IValidationResult variableTypeValidationResult = this.acceleoValidationResult.getValidationResult(
+		// variableType);
+		// Set<IType> possibleTypes = variableTypeValidationResult.getPossibleTypes(variableType.getAst());
+		// return getSymbolKindFor(possibleTypes);
+		return SymbolKind.Property;
 	}
 
 	private SymbolKind getSymbolKindFor(Set<IType> possibleTypes) {
@@ -178,19 +178,19 @@ public class AcceleoAstNodeToSymbolKind extends AcceleoSwitch<SymbolKind> {
 
 	@Override
 	public SymbolKind caseMetamodel(Metamodel object) {
-		return SymbolKind.TypeParameter;
+		return SymbolKind.Method;
 	}
 	////
 
 	// Main stuff
 	@Override
 	public SymbolKind caseQuery(Query object) {
-		return SymbolKind.Method;
+		return SymbolKind.Function;
 	}
 
 	@Override
 	public SymbolKind caseTemplate(Template object) {
-		return SymbolKind.Class;
+		return SymbolKind.String;
 	}
 
 	@Override
