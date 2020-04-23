@@ -34,6 +34,31 @@ import org.eclipse.emf.ecore.EClass;
 public abstract class AbstractService implements IService {
 
 	/**
+	 * The {@link Object origin} of this service.
+	 */
+	private final Object origin;
+
+	/**
+	 * Constructor with an {@link Object origin}.
+	 * 
+	 * @param serviceOrigin
+	 *            the (maybe {@code null}) {@link Object origin} of this service.
+	 */
+	protected AbstractService(Object serviceOrigin) {
+		this.origin = serviceOrigin;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IService#getOrigin()
+	 */
+	@Override
+	public Object getOrigin() {
+		return this.origin;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IService#isEqualParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
@@ -64,7 +89,8 @@ public abstract class AbstractService implements IService {
 	 * @see org.eclipse.acceleo.query.runtime.IService#isLowerOrEqualParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
 	 *      org.eclipse.acceleo.query.runtime.IService)
 	 */
-	public boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service) {
+	public boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment,
+			IService service) {
 		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
 		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
 		boolean result = paramTypes1.size() == paramTypes2.size();
@@ -95,8 +121,8 @@ public abstract class AbstractService implements IService {
 
 		final List<IType> parameterTypes = getParameterTypes(queryEnvironment);
 		for (int i = 0; i < parameterTypes.size() && result; i++) {
-			if (argumentTypes[i].getType() != null
-					&& !parameterTypes.get(i).isAssignableFrom(argumentTypes[i])) {
+			if (argumentTypes[i].getType() != null && !parameterTypes.get(i).isAssignableFrom(
+					argumentTypes[i])) {
 				result = false;
 			}
 		}
@@ -110,8 +136,8 @@ public abstract class AbstractService implements IService {
 	 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
 	 */
 	@Override
-	public Set<IType> validateAllType(ValidationServices services,
-			IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
+	public Set<IType> validateAllType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+			Map<List<IType>, Set<IType>> allTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
@@ -144,8 +170,8 @@ public abstract class AbstractService implements IService {
 				cause = e;
 			}
 			message = cause.getMessage();
-			throw new AcceleoQueryEvaluationException(getShortSignature() + " with arguments "
-					+ Arrays.deepToString(arguments) + " failed:\n\t" + message, cause);
+			throw new AcceleoQueryEvaluationException(getShortSignature() + " with arguments " + Arrays
+					.deepToString(arguments) + " failed:\n\t" + message, cause);
 		}
 
 		return result;

@@ -393,6 +393,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	@Override
+	public IQualifiedNameResolver getModuleResolver() {
+		return this.resolver;
+	}
+
+	@Override
 	public void setModuleResolver(IQualifiedNameResolver nameResolver) {
 		this.resolver = nameResolver;
 	}

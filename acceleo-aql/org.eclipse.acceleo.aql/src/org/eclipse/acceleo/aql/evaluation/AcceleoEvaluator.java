@@ -43,6 +43,7 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -325,7 +326,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final String templateText = (String)doSwitch(template.getBody());
 			if (template.getPost() != null) {
 				final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
-				variables.put("self", templateText);
+				variables.put(AcceleoUtil.getTemplateImplicitVariableName(), templateText);
 				pushVariables(variables);
 				try {
 					res = toString(doSwitch(template.getPost()));

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +18,8 @@ import java.util.Set;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * Interface that a service usable in query evaluation engine must implement.
@@ -178,5 +181,13 @@ public interface IService {
 	 */
 	List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
 			Set<IType> receiverTypes);
+
+	/**
+	 * Provides the semantic element that is at the origin of this service, like a Java {@link Method}, an EMF
+	 * {@link EOperation} or {@link EStructuralFeature}.
+	 * 
+	 * @return the {@link Object origin} of this {@link IService}.
+	 */
+	Object getOrigin();
 
 }

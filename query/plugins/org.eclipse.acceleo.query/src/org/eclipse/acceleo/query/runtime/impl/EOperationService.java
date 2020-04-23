@@ -78,6 +78,7 @@ public class EOperationService extends AbstractService {
 	 *            the {@link EOperation} that realizes the service
 	 */
 	public EOperationService(EOperation eOperation) {
+		super(eOperation);
 		this.eOperation = eOperation;
 		this.method = lookupMethod(this.eOperation);
 	}
@@ -305,8 +306,8 @@ public class EOperationService extends AbstractService {
 					eClassifiers = new LinkedHashSet<EClassifier>();
 					eClassifiers.add(EcorePackage.eINSTANCE.getEEList());
 				} else {
-					eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
-							((IJavaType)iType).getType());
+					eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(((IJavaType)iType)
+							.getType());
 					if (eClassifiers == null) {
 						canMatch = false;
 						break;
@@ -331,7 +332,8 @@ public class EOperationService extends AbstractService {
 			boolean matched = false;
 			while (it.hasNext()) {
 				final List<IType> parameterTypes = it.next();
-				if (super.matches(queryEnvironment, parameterTypes.toArray(new IType[parameterTypes.size()]))) {
+				if (super.matches(queryEnvironment, parameterTypes.toArray(new IType[parameterTypes
+						.size()]))) {
 					matched = true;
 					break;
 				}
@@ -398,8 +400,8 @@ public class EOperationService extends AbstractService {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof EOperationService
-				&& ((EOperationService)obj).getEOperation().equals(getEOperation());
+		return obj instanceof EOperationService && ((EOperationService)obj).getEOperation().equals(
+				getEOperation());
 	}
 
 	/**

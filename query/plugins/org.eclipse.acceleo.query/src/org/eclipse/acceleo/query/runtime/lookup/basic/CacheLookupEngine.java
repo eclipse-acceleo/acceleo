@@ -26,7 +26,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class CacheLookupEngine extends BasicLookupEngine {
-
 	/**
 	 * No service marker.
 	 */

@@ -39,10 +39,25 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 public final class AcceleoUtil {
 
 	/**
+	 * "self".
+	 */
+	private static final String SELF = "self";
+
+	/**
 	 * Constructor.
 	 */
 	private AcceleoUtil() {
 		// utility class can't be instantiated
+	}
+
+	/**
+	 * Provides the name of the implicit variable in an Acceleo {@link Template} that represents the
+	 * {@link Template} itself.
+	 * 
+	 * @return the name of the implicit variable of an Acceleo {@link Template}.
+	 */
+	public static String getTemplateImplicitVariableName() {
+		return SELF;
 	}
 
 	/**

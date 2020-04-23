@@ -33,6 +33,11 @@ public class AcceleoSocketServer {
 	private static final int BACKLOG = 50;
 
 	/**
+	 * The {@link AcceleoLanguageServerContext} of this server.
+	 */
+	private final AcceleoLanguageServerContext acceleoLanguageServerContext;
+
+	/**
 	 * The {@link ServerSocket}.
 	 */
 	private ServerSocket serverSocket;
@@ -43,22 +48,33 @@ public class AcceleoSocketServer {
 	private Thread serverThread;
 
 	/**
+	 * Constructor.
+	 * 
+	 * @param acceleoLanguageServerContext
+	 *            the (non-{@code null}) root {@link AcceleoLanguageServerContext} of this server.
+	 */
+	public AcceleoSocketServer(AcceleoLanguageServerContext acceleoLanguageServerContext) {
+		this.acceleoLanguageServerContext = acceleoLanguageServerContext;
+
+	}
+
+	/**
 	 * Starts this server.
 	 * 
 	 * @param host
-	 * @param port
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	public synchronized void start(String host, int port) throws UnknownHostException, IOException {
-		serverSocket = new ServerSocket(port, BACKLOG, InetAddress.getByName(host));
-		serverThread = new Thread(new Runnable() {
+	public synchronized void start(String host) throws UnknownHostException, IOException {
+		this.serverSocket = new ServerSocket(0, BACKLOG, InetAddress.getByName(host));
+		this.serverThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
 					final Socket client = serverSocket.accept();
-					final AcceleoLanguageServer acceleoLanguageServer = new AcceleoLanguageServer();
+					final AcceleoLanguageServer acceleoLanguageServer = new AcceleoLanguageServer(
+							AcceleoSocketServer.this.acceleoLanguageServerContext);
 					final Launcher<LanguageClient> launcher = LSPLauncher.createServerLauncher(
 							acceleoLanguageServer, client.getInputStream(), client.getOutputStream());
 					launcher.startListening(); // the thread is created inside this method
@@ -69,7 +85,16 @@ public class AcceleoSocketServer {
 				}
 			}
 		}, "Acceleo LS: " + serverSocket.getInetAddress().getHostName() + ":" + serverSocket.getLocalPort());
-		serverThread.start();
+		this.serverThread.start();
+	}
+
+	/**
+	 * Provides the port currently in use by this socket server.
+	 * 
+	 * @return the port currently in use.
+	 */
+	public int getPort() {
+		return this.serverSocket.getLocalPort();
 	}
 
 	/**

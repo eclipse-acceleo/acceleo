@@ -10,8 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls;
 
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocumentService;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspaceService;
 import org.eclipse.lsp4j.CompletionOptions;
@@ -39,17 +46,32 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	/**
 	 * The text-document-related service.
 	 */
-	private final AcceleoTextDocumentService textDocumentService = new AcceleoTextDocumentService();
+	private final AcceleoTextDocumentService textDocumentService = new AcceleoTextDocumentService(this);
 
 	/**
 	 * The workspace-related service.
 	 */
-	private final AcceleoWorkspaceService workspaceService = new AcceleoWorkspaceService();
+	private final AcceleoWorkspaceService workspaceService = new AcceleoWorkspaceService(this);
+
+	/**
+	 * The root {@link AcceleoLanguageServerContext} of this server.
+	 */
+	private final AcceleoLanguageServerContext acceleoLanguageServerContext;
 
 	/**
 	 * The current language client.
 	 */
 	private LanguageClient languageClient;
+
+	/**
+	 * Creates a new {@link AcceleoLanguageServer}.
+	 * 
+	 * @param acceleoLanguageServerContext
+	 *            the (non-{@code null}) root {@link AcceleoLanguageServerContext} for this server.
+	 */
+	public AcceleoLanguageServer(AcceleoLanguageServerContext acceleoLanguageServerContext) {
+		this.acceleoLanguageServerContext = Objects.requireNonNull(acceleoLanguageServerContext);
+	}
 
 	@Override
 	public void connect(LanguageClient newLanguageClient) {
@@ -124,6 +146,33 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	@Override
 	public WorkspaceService getWorkspaceService() {
 		return workspaceService;
+	}
+
+	/**
+	 * Creates the {@link IAcceleoEnvironment} for an Acceleo document.
+	 * 
+	 * @param acceleoDocumentUri
+	 *            the {@link URI} corresponding to an Acceleo document handled by this server.
+	 * @return the {@link IAcceleoEnvironment} for the given Acceleo document.
+	 */
+	public IAcceleoEnvironment createAcceleoEnvironmentFor(URI acceleoDocumentUri) {
+		return this.acceleoLanguageServerContext.createAcceleoEnvironmentFor(acceleoDocumentUri);
+	}
+
+	/**
+	 * Recursively finds all Acceleo documents in the given folder, and loads them.
+	 * 
+	 * @param folderUri
+	 *            the (non-{@code null}) {@link String URI} of a folder from the client workspace.
+	 * @return the {@link List} of all loaded {@link AcceleoTextDocument}.
+	 */
+	public List<AcceleoTextDocument> loadAllAcceleoDocumentsIn(String folderUri) {
+		Map<URI, String> acceleoDocumentsMap = this.acceleoLanguageServerContext.getAllAcceleoDocumentsIn(
+				folderUri);
+		List<AcceleoTextDocument> acceleoTextDocuments = acceleoDocumentsMap.entrySet().stream().map(
+				entry -> this.textDocumentService.getOrLoadTextDocument(entry.getKey(), entry.getValue()))
+				.collect(Collectors.toList());
+		return acceleoTextDocuments;
 	}
 
 }

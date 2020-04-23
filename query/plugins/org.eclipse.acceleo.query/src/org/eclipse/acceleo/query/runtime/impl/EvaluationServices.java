@@ -165,7 +165,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 			IType[] argumentTypes = getArgumentTypes(arguments);
 			IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 			if (service == null) {
-				Nothing placeHolder = nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName, argumentTypes));
+				Nothing placeHolder = nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName,
+						argumentTypes));
 				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
 				result = placeHolder;
 			} else {

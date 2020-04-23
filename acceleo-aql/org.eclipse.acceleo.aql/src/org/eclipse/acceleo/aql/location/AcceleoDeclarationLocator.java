@@ -11,12 +11,11 @@
 package org.eclipse.acceleo.aql.location;
 
 /**
- * Represents a physical location in an Acceleo file.
+ * TODO: do something similar as in {@link AcceleoDefinitionLocator} but locate the *declaration* instead of
+ * the *definition* of the ast nodes.
  * 
  * @author Florent Latombe
  */
-public class AcceleoLocationLink {
-
-	// TODO: implement this. Not sure how yet.
+public class AcceleoDeclarationLocator {
 
 }

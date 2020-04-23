@@ -36,7 +36,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 public class QueryService extends AbstractModuleElementService {
 
 	/** The underlying query. */
-	private final Query query;
+	protected final Query query;
 
 	/**
 	 * Wraps the given query as an IService.
@@ -47,7 +47,7 @@ public class QueryService extends AbstractModuleElementService {
 	 *            The wrapped query.
 	 */
 	public QueryService(AcceleoEnvironment env, Query query) {
-		super(env);
+		super(query, env);
 		this.query = query;
 	}
 

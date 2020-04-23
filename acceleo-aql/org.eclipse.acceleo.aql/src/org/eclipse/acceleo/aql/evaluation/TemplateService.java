@@ -49,7 +49,7 @@ public class TemplateService extends AbstractModuleElementService {
 	 *            The wrapped template.
 	 */
 	public TemplateService(AcceleoEnvironment env, Template template) {
-		super(env);
+		super(template, env);
 		this.template = template;
 	}
 

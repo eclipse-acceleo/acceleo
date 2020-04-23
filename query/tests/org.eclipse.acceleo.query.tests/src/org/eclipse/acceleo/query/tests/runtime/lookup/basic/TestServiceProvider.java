@@ -36,6 +36,13 @@ public class TestServiceProvider implements IServiceProvider {
 	public class Service1 extends AbstractService {
 
 		/**
+		 * @param serviceOrigin
+		 */
+		protected Service1(Object serviceOrigin) {
+			super(serviceOrigin);
+		}
+
+		/**
 		 * {@inheritDoc}
 		 *
 		 * @see org.eclipse.acceleo.query.runtime.IService#getName()
@@ -126,6 +133,13 @@ public class TestServiceProvider implements IServiceProvider {
 	}
 
 	public class Service2 extends AbstractService {
+
+		/**
+		 * @param serviceOrigin
+		 */
+		protected Service2(Object serviceOrigin) {
+			super(serviceOrigin);
+		}
 
 		/**
 		 * {@inheritDoc}
@@ -236,8 +250,8 @@ public class TestServiceProvider implements IServiceProvider {
 	public List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IService> result = new ArrayList<IService>();
 
-		result.add(new Service1());
-		result.add(new Service2());
+		result.add(new Service1(this));
+		result.add(new Service2(this));
 
 		return result;
 	}

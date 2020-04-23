@@ -89,6 +89,13 @@ public interface IAcceleoEnvironment {
 	Collection<String> getImports(String qualifiedName);
 
 	/**
+	 * Gets the resolver for Acceleo modules.
+	 * 
+	 * @return the {@link IQualifiedNameResolver} of this environment.
+	 */
+	IQualifiedNameResolver getModuleResolver();
+
+	/**
 	 * Sets the resolver for Acceleo modules.
 	 * 
 	 * @param moduleResolver
@@ -213,5 +220,4 @@ public interface IAcceleoEnvironment {
 	 * @return the {@link AcceleoEvaluator}
 	 */
 	AcceleoEvaluator getEvaluator();
-
 }

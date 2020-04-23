@@ -321,9 +321,15 @@ public class Positions {
 			throw new IllegalArgumentException("the root node can't contain the given position.");
 		}
 		for (EObject child : node.eContents()) {
-			if (isInRange(child, position, line, column)) {
-				res = getNodeAt(child, position, line, column);
-				break;
+			if (getStartPositions(child) != null && getEndPositions(child) != null) {
+				// When parsing an [elseif clause of an IfStatement, the AST constructed is instead a
+				// "virtual" [else] clause with an IfStatement inside.
+				// This "virtual" clause has no actual positions in the source text, so we want to ignore
+				// these candidates.
+				if (isInRange(child, position, line, column)) {
+					res = getNodeAt(child, position, line, column);
+					break;
+				}
 			}
 		}
 		if (res == null) {

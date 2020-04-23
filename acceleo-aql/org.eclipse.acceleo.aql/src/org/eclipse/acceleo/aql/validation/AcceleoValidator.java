@@ -58,6 +58,7 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -405,7 +406,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 				Set<IType> possibleTypes = new LinkedHashSet<IType>();
 				possibleTypes.add(new ClassType(environment.getQueryEnvironment(), String.class));
-				peekVariableTypes().put("self", possibleTypes);
+				peekVariableTypes().put(AcceleoUtil.getTemplateImplicitVariableName(), possibleTypes);
 				try {
 					doSwitch(template.getPost());
 				} finally {
@@ -487,9 +488,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 					.getAst());
 			if (query.getType() != null) {
-				final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(),
-						query.getType());
-				result.getAqlValidationResutls().put(query.getType(), typeValidationResult);
+				final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), query.getType());
+				result.getAqlValidationResults().put(query.getType(), typeValidationResult);
 				final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 						typeValidationResult.getPossibleTypes(query.getType().getAst()));
 				checkTypesCompatibility(query, possibleTypes, iTypes);
@@ -545,9 +545,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					+ " already exists.", acceleoAstResult.getStartPosition(variable), acceleoAstResult
 							.getEndPosition(variable));
 		}
-		final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), variable
-				.getType());
-		result.getAqlValidationResutls().put(variable.getType(), typeValidationResult);
+		final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), variable.getType());
+		result.getAqlValidationResults().put(variable.getType(), typeValidationResult);
 		final Set<IType> types = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 				typeValidationResult.getPossibleTypes(variable.getType().getAst()));
 		peekVariableTypes().put(variable.getName(), types);
@@ -584,9 +583,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 				.getAst());
 		if (binding.getType() != null) {
-			final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), binding
-					.getType());
-			result.getAqlValidationResutls().put(binding.getType(), typeValidationResult);
+			final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), binding.getType());
+			result.getAqlValidationResults().put(binding.getType(), typeValidationResult);
 			final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 					typeValidationResult.getPossibleTypes(binding.getType().getAst()));
 			checkTypesCompatibility(binding, possibleTypes, iTypes);
@@ -751,7 +749,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	public Object caseExpression(Expression expression) {
 		final IValidationResult res = validator.validate(peekVariableTypes(), expression.getAst());
 
-		result.getAqlValidationResutls().put(expression.getAst(), res);
+		result.getAqlValidationResults().put(expression.getAst(), res);
 		final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 		result.addMessages(expression, shiftMessages(res.getMessages(), acceleoAstResult.getStartPosition(
 				expression)));

@@ -12,11 +12,8 @@ Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.acceleo.query;bundle-version="[7.0.0,8.0.0)",
  org.antlr.runtime;bundle-version="[4.7.2,4.7.3)",
  org.eclipse.lsp4j;bundle-version="0.8.1",
- org.eclipse.lsp4j.debug;bundle-version="0.8.1",
  org.eclipse.lsp4j.jsonrpc;bundle-version="0.8.1",
- org.eclipse.lsp4j.jsonrpc.debug;bundle-version="0.8.1",
- org.eclipse.acceleo.aql,
- org.eclipse.lsp4e
+ org.eclipse.acceleo.aql
 Export-Package: org.eclipse.acceleo.aql.ls,
  org.eclipse.acceleo.aql.ls.common,
  org.eclipse.acceleo.aql.ls.services.exceptions,

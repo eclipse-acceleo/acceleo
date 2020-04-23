@@ -15,8 +15,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.eclipse.acceleo.aql.ls.AcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.AcceleoSocketServer;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.lsp4e.server.StreamConnectionProvider;
 
 /**
@@ -32,15 +36,10 @@ public class AcceleoConnectionProvider implements StreamConnectionProvider {
 	private static final String HOST = "127.0.0.1";
 
 	/**
-	 * The port.
-	 */
-	private static final int PORT = 30000;
-
-	/**
 	 * The {@link AcceleoSocketServer}.
 	 */
 	// TODO we probably want to start this once for all...
-	private AcceleoSocketServer socketServer = new AcceleoSocketServer();
+	private final AcceleoSocketServer acceleoSocketServer;
 
 	/**
 	 * The client {@link Socket}.
@@ -51,20 +50,25 @@ public class AcceleoConnectionProvider implements StreamConnectionProvider {
 	 * Constructor.
 	 */
 	public AcceleoConnectionProvider() {
+		Path pathToWorkspace = Paths.get(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
+		AcceleoLanguageServerContext acceleoContext = new EclipseAcceleoLanguageServerContext(
+				pathToWorkspace);
+		this.acceleoSocketServer = new AcceleoSocketServer(acceleoContext);
 	}
 
 	@Override
 	public synchronized void start() throws IOException {
 		// TODO Might need to be made a constant and made available from other classes?
-		socketServer.start(HOST, PORT);
-		socketClient = new Socket(InetAddress.getByName(HOST), PORT);
+		acceleoSocketServer.start(HOST);
+		int serverPort = acceleoSocketServer.getPort();
+		socketClient = new Socket(InetAddress.getByName(HOST), serverPort);
 	}
 
 	@Override
 	public synchronized void stop() {
 		try {
 			socketClient.close();
-			socketServer.stop();
+			acceleoSocketServer.stop();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

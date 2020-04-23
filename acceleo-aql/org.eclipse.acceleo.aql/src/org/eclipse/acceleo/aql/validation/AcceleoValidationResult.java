@@ -45,7 +45,7 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	/**
 	 * Mapping of AQL AST to AQL validation result.
 	 */
-	private Map<AstResult, IValidationResult> aqlValidationResutls = new HashMap<AstResult, IValidationResult>();
+	private Map<AstResult, IValidationResult> aqlValidationResults = new HashMap<AstResult, IValidationResult>();
 
 	/**
 	 * Constructor.
@@ -74,7 +74,7 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 
 	@Override
 	public IValidationResult getValidationResult(AstResult aqlAst) {
-		return aqlValidationResutls.get(aqlAst);
+		return aqlValidationResults.get(aqlAst);
 	}
 
 	/* visible to the validator only */void addMessage(ASTNode node, IValidationMessage newMessage) {
@@ -91,8 +91,8 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	 * 
 	 * @return the mapping of AQL AST to AQL validation result
 	 */
-	public Map<AstResult, IValidationResult> getAqlValidationResutls() {
-		return aqlValidationResutls;
+	public Map<AstResult, IValidationResult> getAqlValidationResults() {
+		return aqlValidationResults;
 	}
 
 }

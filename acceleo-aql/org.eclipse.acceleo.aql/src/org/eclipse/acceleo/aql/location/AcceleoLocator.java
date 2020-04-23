@@ -10,9 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.location;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.location.aql.AqlLocator;
+import org.eclipse.acceleo.aql.location.aql.AqlVariablesLocalContext;
+import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
+import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
+import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * Locator service, to find the various usages (declaration, definition, references, etc.) of AST elements in
@@ -23,52 +32,121 @@ import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 public class AcceleoLocator {
 
 	/**
-	 * Provides the list of {@link AcceleoLocationLink} corresponding to the declaring location(s) of the
-	 * Acceleo element found at the given position in the given source.
+	 * The {@link IAcceleoEnvironment} of the Acceleo contents.
+	 */
+	private final IAcceleoEnvironment acceleoEnvironment;
+
+	/**
+	 * The {@link AqlLocator} we delegate to in case we are inside an AQL expression.
+	 */
+	private final AqlLocator aqlLocator;
+
+	/**
+	 * Creates a new {@link AcceleoLocator}.
 	 * 
 	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) {@link IAcceleoEnvironment}.
-	 * @param source
-	 *            the (non-{@code null}) source module.
-	 * @param position
-	 *            the (non-{@code null}) caret position in the source.
-	 * @return the {@link List} of {@link AcceleoLocationLink} corresponding to the declaration location(s) of
-	 *         the element at the given position of the source.
+	 *            the (non-{@code null}) {@link IAcceleoEnvironment} of the Acceleo contents.
 	 */
-	public List<AcceleoLocationLink> getDeclarationLocations(IAcceleoEnvironment acceleoEnvironment,
-			String source, int position) {
-		// TODO: implement
-		// What we probably want to do is something like this:
-		// 1) Using the source and the position, find which element from the AST we are interested in.
-		// 2) Find in the AST where that element is declared.
-		// 3) If the AST/Parser has some form of trace between the AST and the parsed text, then return the
-		// corresponding location.
-		// Not sure yet how cross-file etc. is done in Acceleo.
-		throw new UnsupportedOperationException("TODO: implement goto declaration");
+	public AcceleoLocator(IAcceleoEnvironment acceleoEnvironment) {
+		this.acceleoEnvironment = acceleoEnvironment;
+
+		this.aqlLocator = new AqlLocator(this.acceleoEnvironment.getQueryEnvironment());
 	}
 
 	/**
-	 * Provides the list of {@link AcceleoLocationLink} corresponding to the definition location(s) of the
-	 * Acceleo element found at the given position in the given source.
+	 * Provides the list of {@link AbstractAcceleoLocationLink} corresponding to the declaring location(s) of
+	 * the Acceleo element found at the given position in the given source.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) {@link IAcceleoEnvironment}.
-	 * @param source
-	 *            the (non-{@code null}) source module.
+	 * @param acceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @param position
 	 *            the (non-{@code null}) caret position in the source.
-	 * @return the {@link List} of {@link AcceleoLocationLink} corresponding to the definition location(s) of
-	 *         the element at the given position of the source.
+	 * @return the {@link List} of {@link AbstractAcceleoLocationLink} corresponding to the declaration
+	 *         location(s) of the element at the given position of the source.
 	 */
-	public List<AcceleoLocationLink> getDefinitionLocations(IAcceleoEnvironment acceleoEnvironment,
-			String source, int position) {
-		// TODO: implement
-		// What we probably want to do is something like this:
-		// 1) Using the source and the position, find which element from the AST we are interested in.
-		// 2) Find in the AST where that element is defined.
-		// 3) If the AST/Parser has some form of trace between the AST and the parsed text, then return the
-		// corresponding location.
-		// Not sure yet how cross-file etc. is done in Acceleo.
-		throw new UnsupportedOperationException("TODO: implement goto definition");
+	public List<AbstractLocationLink<?, ?>> getDeclarationLocations(AcceleoAstResult acceleoAstResult,
+			int position) {
+		// FIXME: LSP4E does not support "go-to declaration" so we simply dispatch to "go-to definition".
+		// Also, not sure we have a clear difference in Acceleo between declaration and definition.
+		return this.getDefinitionLocations(acceleoAstResult, position);
 	}
+
+	/**
+	 * Provides the list of {@link AbstractAcceleoLocationLink} corresponding to the definition location(s) of
+	 * the Acceleo element found at the given position in the given source.
+	 * 
+	 * @param acceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @param position
+	 *            the (non-{@code null}) caret position in the source.
+	 * @return the {@link List} of {@link AbstractAcceleoLocationLink} corresponding to the definition
+	 *         location(s) of the element at the given position of the source.
+	 */
+	public List<AbstractLocationLink<?, ?>> getDefinitionLocations(AcceleoAstResult acceleoAstResult,
+			int position) {
+		final List<AbstractLocationLink<?, ?>> definitionLocations = new ArrayList<>();
+
+		// Determine whether under the cursor location there is an element for which we are able to provide
+		// definition location(s).
+		EObject acceleoOrAqlNodeUnderCursor = acceleoAstResult.getAstNode(position);
+		if (acceleoOrAqlNodeUnderCursor != null) {
+			if (acceleoOrAqlNodeUnderCursor instanceof ASTNode) {
+				ASTNode astNodeUnderCursor = (ASTNode)acceleoOrAqlNodeUnderCursor;
+				// The element under the cursor may actually be linked to another element: "bigger", for
+				// instance if on an expression we actually want to designate the variable being defined, or
+				// "smaller" for instance if we are on part of an AQL expression, we actually want to
+				// designate one of the terms of the expression.
+				ASTNode elementWhoseDefinitionToLocate = new AcceleoDefinedElementAssociator().doSwitch(
+						astNodeUnderCursor);
+				definitionLocations.addAll(getDefinitionLocations(position, elementWhoseDefinitionToLocate));
+			} else if (acceleoOrAqlNodeUnderCursor instanceof org.eclipse.acceleo.query.ast.Expression
+					|| acceleoOrAqlNodeUnderCursor instanceof org.eclipse.acceleo.query.ast.VariableDeclaration) {
+				// The cursor was on an AQL expression term.
+				// We will delegate to an AQL locator, but we also need to determine where in the Acceleo AST
+				// the AQL expression is so we can provide the right context variables.
+				AqlVariablesLocalContext acceleoLocalVariablesContext = getVariablesContext(
+						acceleoOrAqlNodeUnderCursor);
+				AstResult astResultOfAqlNode = AcceleoAstUtils.getAqlAstResultOfAqlAstElement(
+						acceleoOrAqlNodeUnderCursor);
+				definitionLocations.addAll(this.aqlLocator.getDefinitionLocations(acceleoOrAqlNodeUnderCursor,
+						astResultOfAqlNode, acceleoLocalVariablesContext));
+			}
+		}
+		return definitionLocations;
+	}
+
+	/**
+	 * Provides the {@link AqlVariablesLocalContext} of variables used to partially evaluate an AQL AST
+	 * element, depending on where in the Acceleo AST it is located.
+	 * 
+	 * @param aqlAstElement
+	 *            the (non-{@code null}) AQL AST element.
+	 * @return the {@link AqlVariablesLocalContext}.
+	 */
+	private AqlVariablesLocalContext getVariablesContext(EObject aqlAstElement) {
+		ASTNode acceleoContainerOfAqlElement = AcceleoAstUtils.getContainerOfAqlAstElement(aqlAstElement);
+		AqlVariablesLocalContext context = new AcceleoExpressionVariablesContextProvider(
+				this.acceleoEnvironment).doSwitch(acceleoContainerOfAqlElement);
+		return context;
+	}
+
+	private List<AbstractLocationLink<?, ?>> getDefinitionLocations(int position,
+			ASTNode elementWhoseDefinitionToLocate) {
+		final List<AbstractLocationLink<?, ?>> definitionLocations = new ArrayList<>();
+
+		// The definition locator needs the environment for resolving references to out-of-file elements, and
+		// the position so it can delegate to the AQL locator if we are inside an expression.
+		AcceleoDefinitionLocator definitionLocator = new AcceleoDefinitionLocator(this.acceleoEnvironment);
+
+		// Retrieve the links from our element to its definition location(s).
+		List<AbstractLocationLink<?, ?>> linksToDefinitionLocations = definitionLocator.doSwitch(
+				(ASTNode)elementWhoseDefinitionToLocate);
+
+		if (linksToDefinitionLocations != null) {
+			definitionLocations.addAll(linksToDefinitionLocations);
+		}
+
+		return definitionLocations;
+	}
+
 }

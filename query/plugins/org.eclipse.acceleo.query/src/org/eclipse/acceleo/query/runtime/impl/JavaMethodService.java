@@ -77,6 +77,7 @@ public class JavaMethodService extends AbstractService {
 	 *            the instance on which the service must be called
 	 */
 	public JavaMethodService(Method method, Object serviceInstance) {
+		super(method);
 		this.instance = serviceInstance;
 		this.method = method;
 	}
@@ -202,13 +203,13 @@ public class JavaMethodService extends AbstractService {
 		if (type instanceof ParameterizedType) {
 			final Class<?> cls = (Class<?>)((ParameterizedType)type).getRawType();
 			if (List.class.isAssignableFrom(cls)) {
-				for (IType t : getIType(queryEnvironment,
-						((ParameterizedType)type).getActualTypeArguments()[0])) {
+				for (IType t : getIType(queryEnvironment, ((ParameterizedType)type)
+						.getActualTypeArguments()[0])) {
 					result.add(new SequenceType(queryEnvironment, t));
 				}
 			} else if (Set.class.isAssignableFrom(cls)) {
-				for (IType t : getIType(queryEnvironment,
-						((ParameterizedType)type).getActualTypeArguments()[0])) {
+				for (IType t : getIType(queryEnvironment, ((ParameterizedType)type)
+						.getActualTypeArguments()[0])) {
 					result.add(new SetType(queryEnvironment, t));
 				}
 			} else {

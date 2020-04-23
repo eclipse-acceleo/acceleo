@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposal;
-import org.eclipse.acceleo.aql.location.AcceleoLocationLink;
 import org.eclipse.acceleo.aql.outline.AcceleoSymbol;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -28,7 +27,6 @@ import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.DocumentSymbol;
-import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
@@ -107,21 +105,6 @@ public final class AcceleoLanguageServerServicesUtils {
 	}
 
 	/**
-	 * Transforms an {@link AcceleoLocationLink} from Acceleo into a corresponding {@link LocationLink} for
-	 * LSP4J.
-	 * 
-	 * @param acceleoLocationLink
-	 *            the (non-{@code null}) {@link AcceleoLocationLink} to transform.
-	 * @return the {@link LocationLink} corresponding to {@code acceleoLocationLink}.
-	 */
-	public static LocationLink transform(AcceleoLocationLink acceleoLocationLink) {
-		Objects.requireNonNull(acceleoLocationLink);
-
-		// TODO: implement transformation once we know what the AcceleoLocationLink API looks like.
-		throw new UnsupportedOperationException("TODO: implement");
-	}
-
-	/**
 	 * Transforms an {@link AcceleoSymbol} from Acceleo into a corresponding {@link DocumentSymbol} for LSP4J.
 	 * 
 	 * @param acceleoSymbol
@@ -138,7 +121,7 @@ public final class AcceleoLanguageServerServicesUtils {
 				.getStartPosition(acceleoSymbol.getSemanticElement());
 		final int endPosition = acceleoSymbol.getAcceleoValidationResult().getAcceleoAstResult()
 				.getEndPosition(acceleoSymbol.getSemanticElement());
-		Range range = AcceleoLanguageServerStringUtils.getCorrespondingRange(startPosition, endPosition,
+		Range range = AcceleoLanguageServerPositionUtils.getCorrespondingRange(startPosition, endPosition,
 				acceleoSourceContents);
 		String symbolName = acceleoSymbol.getName();
 
@@ -147,7 +130,7 @@ public final class AcceleoLanguageServerServicesUtils {
 			symbolName += " : " + acceleoSymbol.getDetails();
 		}
 
-		// FIXME: is there any way to distinguish range and selectionRange with the Acceleo parser ?
+		// FIXME: for now we don't make a difference between range and selectionRange.
 		DocumentSymbol documentSymbol = new DocumentSymbol(symbolName, getKind(acceleoSymbol), range, range,
 				acceleoSymbol.getDetails(), acceleoSymbol.getChildren().stream().map(
 						childAcceleoSymbol -> transform(childAcceleoSymbol, acceleoSourceContents)).collect(
@@ -207,7 +190,7 @@ public final class AcceleoLanguageServerServicesUtils {
 		int startPosition = acceleoValidationMessage.getStartPosition();
 		int endPosition = acceleoValidationMessage.getEndPosition();
 
-		Range range = AcceleoLanguageServerStringUtils.getCorrespondingRange(startPosition, endPosition,
+		Range range = AcceleoLanguageServerPositionUtils.getCorrespondingRange(startPosition, endPosition,
 				acceleoSourceContents);
 		String message = acceleoValidationMessage.getMessage();
 		DiagnosticSeverity severity = transform(acceleoValidationMessage.getLevel());

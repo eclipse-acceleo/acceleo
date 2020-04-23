@@ -36,10 +36,13 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	/**
 	 * Constructor.
 	 * 
+	 * @param moduleElement
+	 *            the (non-{@code null}) {@link ModuleElement} wrapped by this service.
 	 * @param env
 	 *            The current evaluation environment.
 	 */
-	public AbstractModuleElementService(AcceleoEnvironment env) {
+	public AbstractModuleElementService(ModuleElement moduleElement, AcceleoEnvironment env) {
+		super(moduleElement);
 		this.env = env;
 	}
 

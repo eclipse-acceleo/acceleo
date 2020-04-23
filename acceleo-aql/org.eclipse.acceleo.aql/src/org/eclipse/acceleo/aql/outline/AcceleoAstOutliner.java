@@ -15,6 +15,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.aql.validation.AcceleoValidationUtils;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
@@ -80,13 +81,13 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 		String symbolName = query.getName();
 		if (!query.getParameters().isEmpty()) {
 			symbolName += "(";
-			symbolName += AcceleoTypedElementUtils.getVariablesListRepresentation(query.getParameters(),
+			symbolName += AcceleoValidationUtils.getVariablesListRepresentation(query.getParameters(),
 					this.acceleoValidationResult);
 			symbolName += ")";
 		}
 
 		// Symbol details: return type.
-		String symbolDetails = AcceleoTypedElementUtils.getPossibleTypesRepresentation(query,
+		String symbolDetails = AcceleoValidationUtils.getPossibleTypesRepresentation(query,
 				this.acceleoValidationResult);
 
 		AcceleoSymbol symbolForQuery = this.createSymbol(query, symbolName, symbolDetails);
@@ -107,7 +108,7 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 	@Override
 	public AcceleoSymbol caseVariable(Variable variable) {
 		String symbolName = variable.getName();
-		String symbolDetails = AcceleoTypedElementUtils.getPossibleTypesRepresentation(variable,
+		String symbolDetails = AcceleoValidationUtils.getPossibleTypesRepresentation(variable,
 				this.acceleoValidationResult);
 
 		AcceleoSymbol symbolForVariable = this.createSymbol(variable, symbolName, symbolDetails);
@@ -126,7 +127,7 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 		String symbolName = template.getName();
 		if (!template.getParameters().isEmpty()) {
 			symbolName += "(";
-			symbolName += AcceleoTypedElementUtils.getVariablesListRepresentation(template.getParameters(),
+			symbolName += AcceleoValidationUtils.getVariablesListRepresentation(template.getParameters(),
 					this.acceleoValidationResult);
 			symbolName += ")";
 		}
