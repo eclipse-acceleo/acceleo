@@ -20,4 +20,38 @@
             path="configuration/acceleo-configuration.json">
       </languageConfiguration>
    </extension>
+   <extension
+         point="org.eclipse.ui.genericeditor.presentationReconcilers">
+      <presentationReconciler
+            class="org.eclipse.tm4e.ui.text.TMPresentationReconciler"
+            contentType="org.eclipse.acceleo.aql.ide.ui">
+      </presentationReconciler>
+   </extension>
+   <extension
+         point="org.eclipse.tm4e.ui.themes">
+      <theme
+            dark="false"
+            default="true"
+            id="org.eclipse.acceleo.aql.tm.theme.eclipse.light"
+            name="Acceleo Eclipse Light Theme"
+            path="themes/Acceleo-Theme-Eclipse-Light.css">
+      </theme>
+      <theme
+            dark="true"
+            default="true"
+            id="org.eclipse.acceleo.aql.tm.theme.eclipse.dark"
+            name="Acceleo Eclipse Dark Theme"
+            path="themes/Acceleo-Theme-Eclipse-Dark.css">
+      </theme>
+      <themeAssociation
+            scopeName="text.acceleo"
+            themeId="org.eclipse.acceleo.aql.tm.theme.eclipse.dark"
+            whenDark="true">
+      </themeAssociation>
+      <themeAssociation
+            scopeName="text.acceleo"
+            themeId="org.eclipse.acceleo.aql.tm.theme.eclipse.light"
+            whenDark="false">
+      </themeAssociation>
+   </extension>
 </plugin>
