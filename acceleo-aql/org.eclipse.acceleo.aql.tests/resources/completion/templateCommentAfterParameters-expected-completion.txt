@@ -1,12 +1,3 @@
-[** 3
-[**
-
-[comment  9
-[comment 
-
-[query  7
-[query 
-
-[template  10
-[template 
+/] 2
+/]
 

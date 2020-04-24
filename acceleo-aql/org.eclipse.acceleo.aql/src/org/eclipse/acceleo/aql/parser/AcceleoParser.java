@@ -30,6 +30,7 @@ import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
 import org.eclipse.acceleo.ErrorForStatement;
@@ -38,6 +39,8 @@ import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorModuleDocumentation;
+import org.eclipse.acceleo.ErrorModuleElementDocumentation;
 import org.eclipse.acceleo.ErrorModuleReference;
 import org.eclipse.acceleo.ErrorProtectedArea;
 import org.eclipse.acceleo.ErrorQuery;
@@ -113,7 +116,7 @@ public class AcceleoParser {
 	/**
 	 * End of {@link Comment}.
 	 */
-	public static final String COMMENT_END = NO_SLASH_END;
+	public static final String COMMENT_END = SLASH_END;
 
 	/**
 	 * Start of {@link Module} header.
@@ -504,21 +507,27 @@ public class AcceleoParser {
 	protected Comment parseComment() {
 		final Comment res;
 		if (text.startsWith(COMMENT_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createComment();
-			int endOfComment = text.indexOf(COMMENT_END, currentPosition + COMMENT_START.length());
-			if (endOfComment < 0) {
-				endOfComment = text.length();
+			final int startOfCommentBody = currentPosition + COMMENT_START.length();
+			int endOfCommentBody = text.indexOf(COMMENT_END, startOfCommentBody);
+			if (endOfCommentBody < 0) {
+				endOfCommentBody = text.length();
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorComment();
+				((ErrorComment)res).setMissingEndHeader(endOfCommentBody);
+				res.setEndPosition(endOfCommentBody);
+				errors.add((Error)res);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createComment();
+				res.setEndPosition(endOfCommentBody + COMMENT_END.length());
 			}
 			res.setStartPosition(currentPosition);
-			res.setEndPosition(endOfComment);
 
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
-			commentBody.setValue(text.substring(currentPosition, endOfComment));
-			commentBody.setStartPosition(currentPosition + COMMENT_START.length());
-			commentBody.setEndPosition(endOfComment);
+			commentBody.setValue(text.substring(startOfCommentBody, endOfCommentBody));
+			commentBody.setStartPosition(startOfCommentBody);
+			commentBody.setEndPosition(endOfCommentBody);
 
 			res.setBody(commentBody);
-			currentPosition = endOfComment + COMMENT_END.length();
+			currentPosition = endOfCommentBody + COMMENT_END.length();
 		} else {
 			res = null;
 		}
@@ -535,17 +544,21 @@ public class AcceleoParser {
 		final ModuleDocumentation res;
 
 		if (text.startsWith(DOCUMENTATION_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleDocumentation();
-			res.setStartPosition(currentPosition);
+			final int commentStartPositon = currentPosition;
 			currentPosition += DOCUMENTATION_START.length();
 			final int startPosition = currentPosition;
 			int endPosition = text.indexOf(DOCUMENTATION_END, currentPosition);
 			if (endPosition < 0) {
 				endPosition = text.length();
 				currentPosition = endPosition;
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModuleDocumentation();
+				((ErrorModuleDocumentation)res).setMissingEndHeader(endPosition);
+				errors.add((Error)res);
 			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleDocumentation();
 				currentPosition = endPosition + DOCUMENTATION_END.length();
 			}
+			res.setStartPosition(commentStartPositon);
 			final String docString = text.substring(startPosition, endPosition);
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
 			commentBody.setStartPosition(startPosition);
@@ -591,17 +604,21 @@ public class AcceleoParser {
 		final ModuleElementDocumentation res;
 
 		if (text.startsWith(DOCUMENTATION_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleElementDocumentation();
-			res.setStartPosition(currentPosition);
+			final int commentStartPositon = currentPosition;
 			currentPosition += DOCUMENTATION_START.length();
 			final int startPosition = currentPosition;
 			int endPosition = text.indexOf(DOCUMENTATION_END, currentPosition);
 			if (endPosition < 0) {
 				endPosition = text.length();
 				currentPosition = endPosition;
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModuleElementDocumentation();
+				((ErrorModuleElementDocumentation)res).setMissingEndHeader(endPosition);
+				errors.add((Error)res);
 			} else {
 				currentPosition = endPosition + DOCUMENTATION_END.length();
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleElementDocumentation();
 			}
+			res.setStartPosition(commentStartPositon);
 			final String docString = text.substring(startPosition, endPosition);
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
 			commentBody.setStartPosition(currentPosition);

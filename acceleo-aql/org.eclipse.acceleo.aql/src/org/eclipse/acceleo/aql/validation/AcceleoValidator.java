@@ -24,6 +24,7 @@ import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
 import org.eclipse.acceleo.ErrorForStatement;
@@ -241,6 +242,17 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	public Object caseComment(Comment comment) {
 		// TODO Auto-generated method stub
 		return RETURN_VALUE;
+	}
+
+	@Override
+	public Object caseErrorComment(ErrorComment errorComment) {
+		if (errorComment.getMissingEndHeader() != -1) {
+			addMessage(errorComment, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.COMMENT_END), errorComment.getMissingEndHeader(), errorComment
+							.getMissingEndHeader());
+		}
+
+		return null;
 	}
 
 	@Override

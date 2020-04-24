@@ -5,7 +5,7 @@
  * <<moduleCommentAfterAuthorAndVersion>>@since 0.0.1<<moduleCommentAfterAuthorAndVersionAndSince>>
 */]
 [module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
-
+[comment a simple comment<<commentBeforeEnd>>/]
 [**
  * My query has a nice comment.
  * <<queryComment>>@param myParam the input EPackage<<queryCommentAfterParameters>>

@@ -20,6 +20,7 @@ import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
@@ -29,6 +30,8 @@ import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorModuleDocumentation;
+import org.eclipse.acceleo.ErrorModuleElementDocumentation;
 import org.eclipse.acceleo.ErrorProtectedArea;
 import org.eclipse.acceleo.ErrorQuery;
 import org.eclipse.acceleo.ErrorTemplate;
@@ -197,6 +200,41 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<ICompletionProposal> caseErrorComment(ErrorComment errorComment) {
+		final List<ICompletionProposal> res = new ArrayList<ICompletionProposal>();
+
+		if (errorComment.getMissingEndHeader() != -1) {
+			res.add(new TextCompletionProposal(AcceleoParser.COMMENT_END, 0));
+		}
+
+		return res;
+	}
+
+	@Override
+	public List<ICompletionProposal> caseErrorModuleDocumentation(
+			ErrorModuleDocumentation errorModuleDocumentation) {
+		final List<ICompletionProposal> res = new ArrayList<ICompletionProposal>();
+
+		if (errorModuleDocumentation.getMissingEndHeader() != -1) {
+			res.add(new TextCompletionProposal(AcceleoParser.DOCUMENTATION_END, 0));
+		}
+
+		return res;
+	}
+
+	@Override
+	public List<ICompletionProposal> caseErrorModuleElementDocumentation(
+			ErrorModuleElementDocumentation errorModuleElementDocumentation) {
+		final List<ICompletionProposal> res = new ArrayList<ICompletionProposal>();
+
+		if (errorModuleElementDocumentation.getMissingEndHeader() != -1) {
+			res.add(new TextCompletionProposal(AcceleoParser.DOCUMENTATION_END, 0));
+		}
+
+		return res;
 	}
 
 	@Override

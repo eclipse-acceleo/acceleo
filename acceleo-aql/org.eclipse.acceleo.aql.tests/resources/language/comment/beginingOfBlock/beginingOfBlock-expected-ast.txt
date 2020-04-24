@@ -4,7 +4,7 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    [comment [comment a basic comment/ (125..141) /] (116..141)
+    [comment a basic comment (125..140) /] (116..142)
     
  some static text.
  (142..162) (116..162)[/template] (61..173) (0..173)

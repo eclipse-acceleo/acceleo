@@ -20,6 +20,7 @@ import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
 import org.eclipse.acceleo.ErrorForStatement;
@@ -611,6 +612,15 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		doSwitch(comment.getBody());
 		builder.append(" /]");
 
+		return null;
+	}
+
+	@Override
+	public Void caseErrorComment(ErrorComment errorComment) {
+		builder.append("*** error comment ***");
+		newLine();
+		builder.append("missing end header: " + errorComment.getMissingEndHeader());
+		newLine();
 		return null;
 	}
 
