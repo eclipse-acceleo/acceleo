@@ -631,15 +631,15 @@ public class AcceleoParser {
 				final ParameterDocumentation paramDoc = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 						.createParameterDocumentation();
 				final int paramStart = paramPosition + PARAM_TAG.length();
-				int paramEnd = docString.indexOf(PARAM_TAG, paramStart);
+				int paramEnd = docString.indexOf(NEW_LINE, paramStart);
 				if (paramEnd < 0) {
 					paramPosition = -1;
 					paramEnd = docString.length();
 				} else {
-					paramPosition = paramEnd;
+					paramPosition = docString.indexOf(PARAM_TAG, paramEnd);
 				}
 				paramDoc.setStartPosition(paramStart + startPosition);
-				paramDoc.setEndPosition(endPosition + startPosition);
+				paramDoc.setEndPosition(paramEnd + startPosition);
 				final CommentBody paramBody = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 						.createCommentBody();
 				paramBody.setValue(docString.substring(paramStart, paramEnd));

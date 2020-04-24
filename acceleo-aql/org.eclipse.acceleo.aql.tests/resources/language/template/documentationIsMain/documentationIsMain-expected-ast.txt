@@ -7,11 +7,7 @@ module myModule
  * @param myParam the input EPackage
  * @main
 * (149..147)
-  myParam the input EPackage
- * @main
-* (110..147)[comment myParam the input EPackage
- * @main
-* (110..147) /] (110..211)[comment 
+  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)[comment 
  * My template has a nice comment.
  * @param myParam the input EPackage
  * @main
