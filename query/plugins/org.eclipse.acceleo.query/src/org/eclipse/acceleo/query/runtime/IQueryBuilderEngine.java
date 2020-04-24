@@ -11,11 +11,11 @@
 package org.eclipse.acceleo.query.runtime;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.emf.common.util.Diagnostic;
 
 /**
@@ -44,16 +44,9 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		private final List<Error> errors;
 
 		/**
-		 * Mapping from an {@link Expression} or a {@link VariableDeclaration} to its start position in the
-		 * parsed text.
+		 * The positions of parsed elements.
 		 */
-		private final Map<Object, Integer> startPositions;
-
-		/**
-		 * Mapping from an {@link Expression} or a {@link VariableDeclaration} to its end position in the
-		 * parsed text.
-		 */
-		private final Map<Object, Integer> endPositions;
+		private final Positions positions;
 
 		/**
 		 * The {@link Diagnostic} of the parsing.
@@ -65,22 +58,16 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		 * 
 		 * @param ast
 		 *            the built {@link Expression}
-		 * @param startPositions
-		 *            the mapping from an {@link Expression} or a {@link VariableDeclaration} to its start
-		 *            position in the parsed text
-		 * @param endPositions
-		 *            the mapping from an {@link Expression} or a {@link VariableDeclaration} to its end
-		 *            position in the parsed text
+		 * @param positions
+		 *            the {@link Positions} of parsed elements
 		 * @param errors
 		 *            the {@link List} of {@link Error}
 		 * @param diagnostic
 		 *            the {@link Diagnostic} of the parsing
 		 */
-		public AstResult(Expression ast, Map<Object, Integer> startPositions,
-				Map<Object, Integer> endPositions, List<Error> errors, Diagnostic diagnostic) {
+		public AstResult(Expression ast, Positions positions, List<Error> errors, Diagnostic diagnostic) {
 			this.ast = ast;
-			this.startPositions = startPositions;
-			this.endPositions = endPositions;
+			this.positions = positions;
 			this.errors = errors;
 			this.diagnostic = diagnostic;
 		}
@@ -139,9 +126,101 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		public int getInternalStartPosition(Object object) {
 			final int res;
 
-			final Integer position = startPositions.get(object);
+			final Integer position = positions.getStartPositions(object);
 			if (position != null) {
 				res = position.intValue();
+			} else {
+				res = -1;
+			}
+
+			return res;
+		}
+
+		/**
+		 * Gets the start line of the given {@link Expression} in the parsed text.
+		 * 
+		 * @param expression
+		 *            the {@link Expression}
+		 * @return the start line of the given {@link Expression} in the parsed text if any, <code>-1</code>
+		 *         otherwise
+		 */
+		public int getStartLine(Expression expression) {
+			return getInternalStartLine(expression);
+		}
+
+		/**
+		 * Gets the start line of the given {@link VariableDeclaration} in the parsed text.
+		 * 
+		 * @param declaration
+		 *            the {@link VariableDeclaration}
+		 * @return the start line of the given {@link VariableDeclaration} in the parsed text if any,
+		 *         <code>-1</code> otherwise
+		 */
+		public int getStartLine(VariableDeclaration declaration) {
+			return getInternalStartLine(declaration);
+		}
+
+		/**
+		 * Gets the start line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+		 * text.
+		 * 
+		 * @param object
+		 *            the {@link Expression} or a {@link VariableDeclaration}
+		 * @return the start line of the given {@link Expression} or a {@link VariableDeclaration} in the
+		 *         parsed text if any, <code>-1</code> otherwise
+		 */
+		public int getInternalStartLine(Object object) {
+			final int res;
+
+			final Integer line = positions.getStartLines(object);
+			if (line != null) {
+				res = line.intValue();
+			} else {
+				res = -1;
+			}
+
+			return res;
+		}
+
+		/**
+		 * Gets the start column of the given {@link Expression} in the parsed text.
+		 * 
+		 * @param expression
+		 *            the {@link Expression}
+		 * @return the start column of the given {@link Expression} in the parsed text if any, <code>-1</code>
+		 *         otherwise
+		 */
+		public int getStartColumn(Expression expression) {
+			return getInternalStartColumn(expression);
+		}
+
+		/**
+		 * Gets the start column of the given {@link VariableDeclaration} in the parsed text.
+		 * 
+		 * @param declaration
+		 *            the {@link VariableDeclaration}
+		 * @return the start column of the given {@link VariableDeclaration} in the parsed text if any,
+		 *         <code>-1</code> otherwise
+		 */
+		public int getStartColumn(VariableDeclaration declaration) {
+			return getInternalStartColumn(declaration);
+		}
+
+		/**
+		 * Gets the start column of the given {@link Expression} or a {@link VariableDeclaration} in the
+		 * parsed text.
+		 * 
+		 * @param object
+		 *            the {@link Expression} or a {@link VariableDeclaration}
+		 * @return the start column of the given {@link Expression} or a {@link VariableDeclaration} in the
+		 *         parsed text if any, <code>-1</code> otherwise
+		 */
+		public int getInternalStartColumn(Object object) {
+			final int res;
+
+			final Integer column = positions.getStartColumns(object);
+			if (column != null) {
+				res = column.intValue();
 			} else {
 				res = -1;
 			}
@@ -182,12 +261,104 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		 * @return the end position of the given {@link Expression} or a {@link VariableDeclaration} in the
 		 *         parsed text if any, <code>-1</code> otherwise
 		 */
-		private int getInternalEndPosition(Object object) {
+		public int getInternalEndPosition(Object object) {
 			final int res;
 
-			final Integer position = endPositions.get(object);
+			final Integer position = positions.getEndPositions(object);
 			if (position != null) {
 				res = position.intValue();
+			} else {
+				res = -1;
+			}
+
+			return res;
+		}
+
+		/**
+		 * Gets the end line of the given {@link Expression} in the parsed text.
+		 * 
+		 * @param expression
+		 *            the {@link Expression}
+		 * @return the end line of the given {@link Expression} in the parsed text if any, <code>-1</code>
+		 *         otherwise
+		 */
+		public int getEndLine(Expression expression) {
+			return getInternalEndLine(expression);
+		}
+
+		/**
+		 * Gets the end line of the given {@link VariableDeclaration} in the parsed text.
+		 * 
+		 * @param declaration
+		 *            the {@link VariableDeclaration}
+		 * @return the end line of the given {@link VariableDeclaration} in the parsed text if any,
+		 *         <code>-1</code> otherwise
+		 */
+		public int getEndLine(VariableDeclaration declaration) {
+			return getInternalEndLine(declaration);
+		}
+
+		/**
+		 * Gets the end line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+		 * text.
+		 * 
+		 * @param object
+		 *            the {@link Expression} or a {@link VariableDeclaration}
+		 * @return the end line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+		 *         text if any, <code>-1</code> otherwise
+		 */
+		public int getInternalEndLine(Object object) {
+			final int res;
+
+			final Integer line = positions.getEndLines(object);
+			if (line != null) {
+				res = line.intValue();
+			} else {
+				res = -1;
+			}
+
+			return res;
+		}
+
+		/**
+		 * Gets the end column of the given {@link Expression} in the parsed text.
+		 * 
+		 * @param expression
+		 *            the {@link Expression}
+		 * @return the end column of the given {@link Expression} in the parsed text if any, <code>-1</code>
+		 *         otherwise
+		 */
+		public int getEndColumn(Expression expression) {
+			return getInternalEndColumn(expression);
+		}
+
+		/**
+		 * Gets the end column of the given {@link VariableDeclaration} in the parsed text.
+		 * 
+		 * @param declaration
+		 *            the {@link VariableDeclaration}
+		 * @return the end column of the given {@link VariableDeclaration} in the parsed text if any,
+		 *         <code>-1</code> otherwise
+		 */
+		public int getEndColumn(VariableDeclaration declaration) {
+			return getInternalEndColumn(declaration);
+		}
+
+		/**
+		 * Gets the end column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+		 * text.
+		 * 
+		 * @param object
+		 *            the {@link Expression} or a {@link VariableDeclaration}
+		 * @return the end column of the given {@link Expression} or a {@link VariableDeclaration} in the
+		 *         parsed text if any, <code>-1</code> otherwise
+		 */
+		public int getInternalEndColumn(Object object) {
+			final int res;
+
+			final Integer column = positions.getEndColumns(object);
+			if (column != null) {
+				res = column.intValue();
 			} else {
 				res = -1;
 			}
@@ -213,9 +384,7 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		 * @since 4.1
 		 */
 		public AstResult subResult(Expression subAst) {
-			assert startPositions.containsKey(subAst) && endPositions.containsKey(subAst);
-
-			return new AstResult(subAst, startPositions, endPositions, errors, diagnostic);
+			return new AstResult(subAst, positions, errors, diagnostic);
 		}
 	}
 

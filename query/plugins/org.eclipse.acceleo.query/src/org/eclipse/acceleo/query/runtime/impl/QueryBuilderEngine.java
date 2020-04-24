@@ -12,9 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -29,6 +27,7 @@ import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
@@ -97,14 +96,19 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 					.getErrorExpression());
 			List<Error> errors = new ArrayList<Error>(1);
 			errors.add(errorExpression);
-			final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+			final Positions positions = new Positions();
 			if (expression != null) {
-				positions.put(errorExpression, Integer.valueOf(0));
+				positions.setStartPositions(errorExpression, Integer.valueOf(0));
+				positions.setStartLines(errorExpression, Integer.valueOf(0));
+				positions.setStartColumns(errorExpression, Integer.valueOf(0));
+				positions.setEndPositions(errorExpression, Integer.valueOf(0));
+				positions.setEndLines(errorExpression, Integer.valueOf(0));
+				positions.setEndColumns(errorExpression, Integer.valueOf(0));
 			}
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
 					"null or empty string.", new Object[] {errorExpression }));
-			result = new AstResult(errorExpression, positions, positions, errors, diagnostic);
+			result = new AstResult(errorExpression, positions, errors, diagnostic);
 		}
 
 		return result;

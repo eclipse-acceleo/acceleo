@@ -12,9 +12,7 @@ package org.eclipse.acceleo.aql.parser;
 
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -71,11 +69,12 @@ import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EPackage;
@@ -87,6 +86,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AcceleoParser {
+
+	/**
+	 * The module file extension.
+	 */
+	public static final String MODULE_FILE_EXTENSION = "mtl";
 
 	/**
 	 * New line.
@@ -359,9 +363,9 @@ public class AcceleoParser {
 	public static final String EXTENDS = "extends ";
 
 	/**
-	 * The {@link IQueryEnvironment}.
+	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
-	private final IQueryEnvironment queryEnvironment;
+	private final IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
 	 * The parser currentPosition.
@@ -382,9 +386,9 @@ public class AcceleoParser {
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
-	 *            the {@link IQueryEnvironment}
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 */
-	public AcceleoParser(IQueryEnvironment queryEnvironment) {
+	public AcceleoParser(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
 	}
 
@@ -1927,14 +1931,19 @@ public class AcceleoParser {
 			List<org.eclipse.acceleo.query.ast.Error> aqlErrors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
 			aqlErrors.add(errorExpression);
-			final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+			final Positions positions = new Positions();
 			if (expression != null) {
-				positions.put(errorExpression, Integer.valueOf(0));
+				positions.setStartPositions(errorExpression, Integer.valueOf(0));
+				positions.setStartLines(errorExpression, Integer.valueOf(0));
+				positions.setStartColumns(errorExpression, Integer.valueOf(0));
+				positions.setEndPositions(errorExpression, Integer.valueOf(0));
+				positions.setEndLines(errorExpression, Integer.valueOf(0));
+				positions.setEndColumns(errorExpression, Integer.valueOf(0));
 			}
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
 					"missing expression", new Object[] {errorExpression }));
-			result = new AstResult(errorExpression, positions, positions, aqlErrors, diagnostic);
+			result = new AstResult(errorExpression, positions, aqlErrors, diagnostic);
 		}
 
 		return result;
@@ -1971,14 +1980,19 @@ public class AcceleoParser {
 			List<org.eclipse.acceleo.query.ast.Error> errs = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
 			errs.add(errorTypeLiteral);
-			final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+			final Positions positions = new Positions();
 			if (expression != null) {
-				positions.put(errorTypeLiteral, Integer.valueOf(0));
+				positions.setStartPositions(errorTypeLiteral, Integer.valueOf(0));
+				positions.setStartLines(errorTypeLiteral, Integer.valueOf(0));
+				positions.setStartColumns(errorTypeLiteral, Integer.valueOf(0));
+				positions.setEndPositions(errorTypeLiteral, Integer.valueOf(0));
+				positions.setEndLines(errorTypeLiteral, Integer.valueOf(0));
+				positions.setEndColumns(errorTypeLiteral, Integer.valueOf(0));
 			}
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
 					"missing type literal", new Object[] {errorTypeLiteral }));
-			result = new AstResult(errorTypeLiteral, positions, positions, errs, diagnostic);
+			result = new AstResult(errorTypeLiteral, positions, errs, diagnostic);
 		}
 
 		return result;
