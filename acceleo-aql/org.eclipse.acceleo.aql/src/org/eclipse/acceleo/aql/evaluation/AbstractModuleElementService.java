@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.AbstractService;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
@@ -26,17 +27,32 @@ import org.eclipse.emf.ecore.resource.Resource;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public abstract class AbstractModuleElementService extends AbstractService {
+
+	/** The current evaluation environment. */
+	private final AcceleoEnvironment env;
+
+	/**
+	 * The {@link AcceleoEvaluator}.
+	 */
+	private final AcceleoEvaluator acceleoEvaluator;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param env
+	 *            The current evaluation environment.
+	 */
+	public AbstractModuleElementService(AcceleoEnvironment env) {
+		this.env = env;
+		this.acceleoEvaluator = new AcceleoEvaluator(env);
+	}
+
 	/**
 	 * Returns the wrapped module element.
 	 * 
 	 * @return The wrapped module element.
 	 */
 	public abstract ModuleElement getModuleElement();
-
-	/**Gets the module qualified name.
-	 * @return the module qualified name
-	 */
-	public abstract String getModuleQualifiedName();
 
 	/**
 	 * Returns the underlying element's visibility if any.
@@ -46,13 +62,40 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	public abstract VisibilityKind getVisibility();
 
 	/**
+	 * Gets the {@link AcceleoEnvironment}.
+	 * 
+	 * @return the {@link AcceleoEnvironment}
+	 */
+	protected AcceleoEnvironment getEnv() {
+		return env;
+	}
+
+	/**
+	 * Gets the {@link AcceleoEvaluator}.
+	 * 
+	 * @return the {@link AcceleoEvaluator}
+	 */
+	protected AcceleoEvaluator getAcceleoEvaluator() {
+		return acceleoEvaluator;
+	}
+
+	/**
+	 * Gets the module qualified name.
+	 * 
+	 * @return the module qualified name
+	 */
+	public String getModuleQualifiedName() {
+		return env.getModuleQualifiedName((Module)getModuleElement().eContainer());
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IService#getShortSignature()
 	 */
 	@Override
 	public String getShortSignature() {
-		final List<IType> parameterTypes = getParameterTypes(null);
+		final List<IType> parameterTypes = getParameterTypes(getEnv().getQueryEnvironment());
 		final IType[] argumentTypes = parameterTypes.toArray(new IType[parameterTypes.size()]);
 
 		return serviceShortSignature(argumentTypes);

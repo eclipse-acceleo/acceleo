@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
@@ -37,14 +36,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
  */
 public class TemplateService extends AbstractModuleElementService {
 
-	/** The current evaluation environment. */
-	private final AcceleoEnvironment env;
-
-	/**
-	 * The {@link AcceleoEvaluator}.
-	 */
-	private final AcceleoEvaluator acceleoEvaluator;
-
 	/** The underlying template. */
 	private final Template template;
 
@@ -57,19 +48,13 @@ public class TemplateService extends AbstractModuleElementService {
 	 *            The wrapped template.
 	 */
 	public TemplateService(AcceleoEnvironment env, Template template) {
-		this.env = env;
-		this.acceleoEvaluator = new AcceleoEvaluator();
+		super(env);
 		this.template = template;
 	}
 
 	@Override
 	public Template getModuleElement() {
 		return template;
-	}
-
-	@Override
-	public String getModuleQualifiedName() {
-		return env.getModuleQualifiedName((Module)template.eContainer());
 	}
 
 	@Override
@@ -116,6 +101,6 @@ public class TemplateService extends AbstractModuleElementService {
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return acceleoEvaluator.generate(env, template, variables);
+		return getAcceleoEvaluator().generate(template, variables);
 	}
 }

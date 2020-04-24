@@ -74,38 +74,42 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private static final String EMPTY_RESULT = "";
 
 	/** The current evaluation environment. */
-	private IAcceleoEnvironment environment;
+	private final IAcceleoEnvironment environment;
 
 	/**
 	 * The {@link IQueryEvaluationEngine} used to evaluate AQL expressions.
 	 */
-	private IQueryEvaluationEngine aqlEngine;
+	private final IQueryEvaluationEngine aqlEngine;
 
 	/**
 	 * The variables stack.
 	 */
-	private Deque<Map<String, Object>> variablesStack;
+	private final Deque<Map<String, Object>> variablesStack = new ArrayDeque<Map<String, Object>>();
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param environment
+	 *            the {@link IAcceleoEnvironment}
+	 */
+	public AcceleoEvaluator(IAcceleoEnvironment environment) {
+		this.environment = environment;
+		final IQueryEnvironment queryEnvironment = environment.getQueryEnvironment();
+		this.aqlEngine = QueryEvaluation.newEngine(queryEnvironment);
+	}
 
 	/**
 	 * Generates the given {@link ASTNode} with the given variables.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the {@link IAcceleoEnvironment}
 	 * @param node
 	 *            the {@link ASTNode} to generate
 	 * @param variables
 	 *            the variables
 	 * @return the generated {@link Object}, can be <code>null</code>
 	 */
-	public Object generate(IAcceleoEnvironment acceleoEnvironment, ASTNode node,
-			Map<String, Object> variables) {
+	public Object generate(ASTNode node, Map<String, Object> variables) {
 
 		final Object res;
-
-		this.environment = acceleoEnvironment;
-		final IQueryEnvironment queryEnvironment = acceleoEnvironment.getQueryEnvironment();
-		this.aqlEngine = QueryEvaluation.newEngine(queryEnvironment);
-		this.variablesStack = new ArrayDeque<>();
 
 		pushVariables(variables);
 		try {

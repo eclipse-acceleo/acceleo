@@ -78,7 +78,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final File modelFile = getModelFile(new File(getTestFolderPath()));
 		final ResourceSet rs = getResourceSet();
 		model = getModel(modelFile, rs);
-		evaluator = new AcceleoEvaluator();
+		evaluator = new AcceleoEvaluator(environment);
 	}
 
 	/**
@@ -145,7 +145,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 			for (EObject eObj : eObjects) {
 				final Map<String, Object> variables = new HashMap<String, Object>();
 				variables.put(parameterName, eObj);
-				evaluator.generate(environment, module, variables);
+				evaluator.generate(module, variables);
 			}
 
 			// assert generated content

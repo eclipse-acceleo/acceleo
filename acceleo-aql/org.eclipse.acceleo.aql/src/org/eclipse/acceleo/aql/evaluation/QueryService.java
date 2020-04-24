@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
@@ -35,14 +34,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
  */
 public class QueryService extends AbstractModuleElementService {
 
-	/** The current evaluation environment. */
-	private final AcceleoEnvironment env;
-
-	/**
-	 * The {@link AcceleoEvaluator}.
-	 */
-	private final AcceleoEvaluator acceleoEvaluator;
-
 	/** The underlying query. */
 	private final Query query;
 
@@ -55,19 +46,13 @@ public class QueryService extends AbstractModuleElementService {
 	 *            The wrapped query.
 	 */
 	public QueryService(AcceleoEnvironment env, Query query) {
-		this.env = env;
-		this.acceleoEvaluator = new AcceleoEvaluator();
+		super(env);
 		this.query = query;
 	}
 
 	@Override
 	public Query getModuleElement() {
 		return query;
-	}
-
-	@Override
-	public String getModuleQualifiedName() {
-		return env.getModuleQualifiedName((Module)query.eContainer());
 	}
 
 	@Override
@@ -117,6 +102,6 @@ public class QueryService extends AbstractModuleElementService {
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return acceleoEvaluator.generate(env, query, variables);
+		return getAcceleoEvaluator().generate(query, variables);
 	}
 }

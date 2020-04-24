@@ -32,7 +32,7 @@ public class AcceleoDebugEvaluator extends AcceleoEvaluator {
 
 	private class Debugger extends AbstractDSLDebugger {
 
-		public Debugger(IDSLDebugEventProcessor target) {
+		Debugger(IDSLDebugEventProcessor target) {
 			super(target);
 		}
 
@@ -112,10 +112,13 @@ public class AcceleoDebugEvaluator extends AcceleoEvaluator {
 	/**
 	 * Constructor.
 	 * 
+	 * @param environment
+	 *            the {@link IllegalAccessError}
 	 * @param target
 	 *            the {@link IDSLDebugEventProcessor}
 	 */
-	public AcceleoDebugEvaluator(IDSLDebugEventProcessor target) {
+	public AcceleoDebugEvaluator(IAcceleoEnvironment environment, IDSLDebugEventProcessor target) {
+		super(environment);
 		this.debugger = new Debugger(target);
 	}
 
