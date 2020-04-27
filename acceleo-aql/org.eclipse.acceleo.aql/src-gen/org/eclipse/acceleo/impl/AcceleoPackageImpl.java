@@ -61,8 +61,7 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -1004,26 +1003,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	@Override
 	public EClass getASTNode() {
 		return astNodeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getASTNode_StartPosition() {
-		return (EAttribute)astNodeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getASTNode_EndPosition() {
-		return (EAttribute)astNodeEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2238,8 +2217,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(namedElementEClass, NAMED_ELEMENT__NAME);
 
 		astNodeEClass = createEClass(AST_NODE);
-		createEAttribute(astNodeEClass, AST_NODE__START_POSITION);
-		createEAttribute(astNodeEClass, AST_NODE__END_POSITION);
 
 		errorEClass = createEClass(ERROR);
 
@@ -2640,12 +2617,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(astNodeEClass, ASTNode.class, "ASTNode", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getASTNode_StartPosition(), ecorePackage.getEInt(), "startPosition", null, 0, 1, //$NON-NLS-1$
-				ASTNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-				!IS_DERIVED, IS_ORDERED);
-		initEAttribute(getASTNode_EndPosition(), ecorePackage.getEInt(), "endPosition", null, 0, 1, //$NON-NLS-1$
-				ASTNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorEClass, org.eclipse.acceleo.Error.class, "Error", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
@@ -2725,7 +2696,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 		initEReference(getQuery_Body(), this.getExpression(), null, "body", null, 1, 1, Query.class, //$NON-NLS-1$
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorQueryEClass, ErrorQuery.class, "ErrorQuery", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
@@ -2812,8 +2783,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEClass(expressionStatementEClass, ExpressionStatement.class, "ExpressionStatement", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getExpressionStatement_Expression(), this.getExpression(), null, "expression", null, 1, //$NON-NLS-1$
-				1, ExpressionStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				1, ExpressionStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorExpressionStatementEClass, ErrorExpressionStatement.class, "ErrorExpressionStatement", //$NON-NLS-1$
 				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

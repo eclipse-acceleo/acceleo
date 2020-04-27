@@ -93,10 +93,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ASTNode" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startPosition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endPosition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ASTNode" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"
       eSuperTypes="#//ASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//ASTNode">
@@ -157,7 +154,8 @@
         upperBound="-1" eType="#//Variable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" lowerBound="1"
         eType="#//VisibilityKind"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Expression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Expression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorQuery" eSuperTypes="#//Error #//Query">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingVisibility" lowerBound="1"
@@ -214,7 +212,7 @@
       eSuperTypes="#//ASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="ExpressionStatement" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
-        eType="#//Expression"/>
+        eType="#//Expression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorExpressionStatement" eSuperTypes="#//Error #//ExpressionStatement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEndHeader" lowerBound="1"
@@ -330,6 +328,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="TextStatement" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="ASTResult" instanceClassName="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="ASTResult" instanceClassName="org.eclipse.acceleo.query.parser.AstResult"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ModuleQualifiedName" instanceClassName="java.lang.String"/>
 </ecore:EPackage>

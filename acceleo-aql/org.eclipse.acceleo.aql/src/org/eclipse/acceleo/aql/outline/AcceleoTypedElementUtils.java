@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;

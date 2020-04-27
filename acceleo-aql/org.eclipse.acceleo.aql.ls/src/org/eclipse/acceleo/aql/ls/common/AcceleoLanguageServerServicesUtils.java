@@ -97,8 +97,11 @@ public final class AcceleoLanguageServerServicesUtils {
 	public static DocumentSymbol transform(AcceleoSymbol acceleoSymbol, String acceleoSourceContents) {
 		Objects.requireNonNull(acceleoSymbol);
 
-		Range range = AcceleoLanguageServerStringUtils.getCorrespondingRange(acceleoSymbol
-				.getSemanticElement().getStartPosition(), acceleoSymbol.getSemanticElement().getEndPosition(),
+		final int startPosition = acceleoSymbol.getAcceleoValidationResult().getAcceleoAstResult()
+				.getStartPosition(acceleoSymbol.getSemanticElement());
+		final int endPosition = acceleoSymbol.getAcceleoValidationResult().getAcceleoAstResult()
+				.getEndPosition(acceleoSymbol.getSemanticElement());
+		Range range = AcceleoLanguageServerStringUtils.getCorrespondingRange(startPosition, endPosition,
 				acceleoSourceContents);
 		String symbolName = acceleoSymbol.getName();
 

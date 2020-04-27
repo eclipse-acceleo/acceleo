@@ -183,7 +183,7 @@ public abstract class AbstractLanguageTestSuite {
 	@Test
 	public void parsing() throws FileNotFoundException, IOException {
 		final File expectedASTFile = getExpectedASTFile(new File(testFolderPath));
-		final String actualAst = moduleAstSerializer.serialize(astResult.getModule());
+		final String actualAst = moduleAstSerializer.serialize(astResult);
 		if (!expectedASTFile.exists()) {
 			final File actualASTFile = getActualASTFile(new File(testFolderPath));
 			if (!actualASTFile.exists()) {

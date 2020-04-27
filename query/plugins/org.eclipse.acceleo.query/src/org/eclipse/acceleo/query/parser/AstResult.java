@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,34 +8,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.parser;
+package org.eclipse.acceleo.query.parser;
 
 import java.util.List;
 
-import org.eclipse.acceleo.ASTNode;
-import org.eclipse.acceleo.Error;
-import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.parser.AcceleoParser.AcceleoPositions;
+import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * AcceleoAST result.
+ * Representation of an ast built.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AcceleoAstResult {
+public class AstResult {
 
 	/**
-	 * The {@link AcceleoParser#parse(String) parsed} {@link Module}.
+	 * The built {@link Expression}.
 	 */
-	private final Module module;
-
-	/**
-	 * {@link AcceleoPositions}.
-	 */
-	private AcceleoPositions positions;
+	private final Expression ast;
 
 	/**
 	 * The {@link List} of {@link Error}.
@@ -43,31 +36,50 @@ public class AcceleoAstResult {
 	private final List<Error> errors;
 
 	/**
+	 * The positions of parsed elements.
+	 */
+	private final Positions positions;
+
+	/**
+	 * The {@link Diagnostic} of the parsing.
+	 */
+	private Diagnostic diagnostic;
+
+	/**
 	 * Constructor.
 	 * 
-	 * @param module
-	 *            the {@link AcceleoParser#parse(String) parsed} {@link Module}
+	 * @param ast
+	 *            the built {@link Expression}
 	 * @param positions
-	 *            the {@link AcceleoPositions}
+	 *            the {@link Positions} of parsed elements
 	 * @param errors
 	 *            the {@link List} of {@link Error}
+	 * @param diagnostic
+	 *            the {@link Diagnostic} of the parsing
 	 */
-	public AcceleoAstResult(Module module, AcceleoPositions positions, List<Error> errors) {
-		this.module = module;
+	public AstResult(Expression ast, Positions positions, List<Error> errors, Diagnostic diagnostic) {
+		this.ast = ast;
 		this.positions = positions;
 		this.errors = errors;
+		this.diagnostic = diagnostic;
 	}
 
 	/**
-	 * Gets the start position of the given {@link ASTNode} in the parsed text.
+	 * Gets the built {@link Expression}.
 	 * 
-	 * @param node
-	 *            the {@link ASTNode}
-	 * @return the start position of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
-	 *         otherwise
+	 * @return the built {@link Expression}
 	 */
-	public int getStartPosition(ASTNode node) {
-		return getInternalStartPosition(node);
+	public Expression getAst() {
+		return ast;
+	}
+
+	/**
+	 * Gets the {@link List} of {@link Error}.
+	 * 
+	 * @return the {@link List} of {@link Error}
+	 */
+	public List<Error> getErrors() {
+		return errors;
 	}
 
 	/**
@@ -95,12 +107,13 @@ public class AcceleoAstResult {
 	}
 
 	/**
-	 * Gets the start position of the given {@link EObject} in the parsed text.
+	 * Gets the start position of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 * text.
 	 * 
 	 * @param object
-	 *            the {@link EObject}
-	 * @return the start position of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
+	 *            the {@link Expression} or a {@link VariableDeclaration}
+	 * @return the start position of the given {@link Expression} or a {@link VariableDeclaration} in the
+	 *         parsed text if any, <code>-1</code> otherwise
 	 */
 	private int getInternalStartPosition(EObject object) {
 		final int res;
@@ -113,18 +126,6 @@ public class AcceleoAstResult {
 		}
 
 		return res;
-	}
-
-	/**
-	 * Gets the start line of the given {@link ASTNode} in the parsed text.
-	 * 
-	 * @param node
-	 *            the {@link ASTNode}
-	 * @return the start line of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartLine(ASTNode node) {
-		return getInternalStartLine(node);
 	}
 
 	/**
@@ -152,12 +153,13 @@ public class AcceleoAstResult {
 	}
 
 	/**
-	 * Gets the start line of the given {@link EObject} in the parsed text.
+	 * Gets the start line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 * text.
 	 * 
 	 * @param object
-	 *            the {@link EObject}
-	 * @return the start line of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
+	 *            the {@link Expression} or a {@link VariableDeclaration}
+	 * @return the start line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 *         text if any, <code>-1</code> otherwise
 	 */
 	private int getInternalStartLine(EObject object) {
 		final int res;
@@ -170,18 +172,6 @@ public class AcceleoAstResult {
 		}
 
 		return res;
-	}
-
-	/**
-	 * Gets the start column of the given {@link ASTNode} in the parsed text.
-	 * 
-	 * @param node
-	 *            the {@link ASTNode}
-	 * @return the start column of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartColumn(ASTNode node) {
-		return getInternalStartColumn(node);
 	}
 
 	/**
@@ -209,12 +199,13 @@ public class AcceleoAstResult {
 	}
 
 	/**
-	 * Gets the start column of the given {@link EObject} in the parsed text.
+	 * Gets the start column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 * text.
 	 * 
 	 * @param object
-	 *            the {@link EObject}
-	 * @return the start column of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
+	 *            the {@link Expression} or a {@link VariableDeclaration}
+	 * @return the start column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 *         text if any, <code>-1</code> otherwise
 	 */
 	private int getInternalStartColumn(EObject object) {
 		final int res;
@@ -227,18 +218,6 @@ public class AcceleoAstResult {
 		}
 
 		return res;
-	}
-
-	/**
-	 * Gets the end position of the given {@link ASTNode} in the parsed text.
-	 * 
-	 * @param node
-	 *            the {@link ASTNode}
-	 * @return the end position of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getEndPosition(ASTNode node) {
-		return getInternalEndPosition(node);
 	}
 
 	/**
@@ -266,12 +245,13 @@ public class AcceleoAstResult {
 	}
 
 	/**
-	 * Gets the end position of the given {@link EObject} in the parsed text.
+	 * Gets the end position of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 * text.
 	 * 
 	 * @param object
-	 *            the {@link EObject}
-	 * @return the end position of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
+	 *            the {@link Expression} or a {@link VariableDeclaration}
+	 * @return the end position of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 *         text if any, <code>-1</code> otherwise
 	 */
 	private int getInternalEndPosition(EObject object) {
 		final int res;
@@ -284,17 +264,6 @@ public class AcceleoAstResult {
 		}
 
 		return res;
-	}
-
-	/**
-	 * Gets the end line of the given {@link ASTNode} in the parsed text.
-	 * 
-	 * @param node
-	 *            the {@link ASTNode}
-	 * @return the end line of the given {@link ASTNode} in the parsed text if any, <code>-1</code> otherwise
-	 */
-	public int getEndLine(ASTNode node) {
-		return getInternalEndLine(node);
 	}
 
 	/**
@@ -322,11 +291,12 @@ public class AcceleoAstResult {
 	}
 
 	/**
-	 * Gets the end line of the given {@link EObject} in the parsed text.
+	 * Gets the end line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed text.
 	 * 
 	 * @param object
-	 *            the {@link EObject}
-	 * @return the end line of the given {@link EObject} in the parsed text if any, <code>-1</code> otherwise
+	 *            the {@link Expression} or a {@link VariableDeclaration}
+	 * @return the end line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 *         text if any, <code>-1</code> otherwise
 	 */
 	private int getInternalEndLine(EObject object) {
 		final int res;
@@ -339,18 +309,6 @@ public class AcceleoAstResult {
 		}
 
 		return res;
-	}
-
-	/**
-	 * Gets the end column of the given {@link ASTNode} in the parsed text.
-	 * 
-	 * @param node
-	 *            the {@link ASTNode}
-	 * @return the end column of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getEndColumn(ASTNode node) {
-		return getInternalEndColumn(node);
 	}
 
 	/**
@@ -378,12 +336,13 @@ public class AcceleoAstResult {
 	}
 
 	/**
-	 * Gets the end column of the given {@link EObject} in the parsed text.
+	 * Gets the end column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 * text.
 	 * 
 	 * @param object
-	 *            the {@link EObject}
-	 * @return the end column of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
+	 *            the {@link Expression} or a {@link VariableDeclaration}
+	 * @return the end column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
+	 *         text if any, <code>-1</code> otherwise
 	 */
 	private int getInternalEndColumn(EObject object) {
 		final int res;
@@ -399,6 +358,43 @@ public class AcceleoAstResult {
 	}
 
 	/**
+	 * Add all the ast positions to the given {@link Positions} shifted by the given offset.
+	 * 
+	 * @param pos
+	 *            the {@link Positions}
+	 * @param offsetPosition
+	 *            the offset position
+	 * @param offsetLine
+	 *            the offset line
+	 * @param offsetColumn
+	 *            the offset column
+	 */
+	public void addAllPositonsTo(Positions pos, int offsetPosition, int offsetLine, int offsetColumn) {
+		pos.addAll(this.positions, offsetPosition, offsetLine, offsetColumn);
+	}
+
+	/**
+	 * Gets the {@link Diagnostic} of the parsing.
+	 * 
+	 * @return the {@link Diagnostic} of the parsing
+	 */
+	public Diagnostic getDiagnostic() {
+		return diagnostic;
+	}
+
+	/**
+	 * Creates an {@link AstResult} for the given {@link Expression sub AST}.
+	 * 
+	 * @param subAst
+	 *            the sub part of {@link Expression AST}
+	 * @return a new {@link AstResult} for the given {@link Expression sub AST}
+	 * @since 4.1
+	 */
+	public AstResult subResult(Expression subAst) {
+		return new AstResult(subAst, positions, errors, diagnostic);
+	}
+
+	/**
 	 * Gets the ast node at the given position.
 	 * 
 	 * @param position
@@ -406,7 +402,7 @@ public class AcceleoAstResult {
 	 * @return the ast node at the given position if any, <code>null</code> otherwise
 	 */
 	public EObject getAstNode(int position) {
-		return positions.getNodeAt(module, position);
+		return positions.getNodeAt(ast, position);
 	}
 
 	/**
@@ -419,25 +415,7 @@ public class AcceleoAstResult {
 	 * @return the ast node at the given line and column if nay, <code>null</code> otherwise
 	 */
 	public EObject getAstNode(int line, int column) {
-		return positions.getNodeAt(module, line, column);
-	}
-
-	/**
-	 * Gets the {@link AcceleoParser#parse(String) parsed} {@link Module}.
-	 * 
-	 * @return the {@link AcceleoParser#parse(String) parsed} {@link Module}
-	 */
-	public Module getModule() {
-		return module;
-	}
-
-	/**
-	 * Gets the {@link List} of {@link Error}.
-	 * 
-	 * @return the {@link List} of {@link Error}
-	 */
-	public List<Error> getErrors() {
-		return errors;
+		return positions.getNodeAt(ast, line, column);
 	}
 
 }

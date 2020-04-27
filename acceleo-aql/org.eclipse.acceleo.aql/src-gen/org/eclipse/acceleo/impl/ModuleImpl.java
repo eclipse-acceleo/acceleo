@@ -44,8 +44,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getStartPosition <em>Start Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#isDeprecated <em>Deprecated</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getMetamodels <em>Metamodels</em>}</li>
@@ -59,46 +57,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.Module {
-	/**
-	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int START_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startPosition = START_POSITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int END_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int endPosition = END_POSITION_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -310,54 +268,6 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 * @generated
 	 */
 	@Override
-	public int getStartPosition() {
-		return startPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setStartPosition(int newStartPosition) {
-		int oldStartPosition = startPosition;
-		startPosition = newStartPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__START_POSITION,
-					oldStartPosition, startPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int getEndPosition() {
-		return endPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setEndPosition(int newEndPosition) {
-		int oldEndPosition = endPosition;
-		endPosition = newEndPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__END_POSITION,
-					oldEndPosition, endPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EList<Metamodel> getMetamodels() {
 		if (metamodels == null) {
 			metamodels = new EObjectResolvingEList<Metamodel>(Metamodel.class, this,
@@ -539,10 +449,6 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AcceleoPackage.MODULE__START_POSITION:
-				return getStartPosition();
-			case AcceleoPackage.MODULE__END_POSITION:
-				return getEndPosition();
 			case AcceleoPackage.MODULE__DOCUMENTATION:
 				return getDocumentation();
 			case AcceleoPackage.MODULE__DEPRECATED:
@@ -572,12 +478,6 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AcceleoPackage.MODULE__START_POSITION:
-				setStartPosition((Integer)newValue);
-				return;
-			case AcceleoPackage.MODULE__END_POSITION:
-				setEndPosition((Integer)newValue);
-				return;
 			case AcceleoPackage.MODULE__DOCUMENTATION:
 				setDocumentation((Documentation)newValue);
 				return;
@@ -617,12 +517,6 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.MODULE__START_POSITION:
-				setStartPosition(START_POSITION_EDEFAULT);
-				return;
-			case AcceleoPackage.MODULE__END_POSITION:
-				setEndPosition(END_POSITION_EDEFAULT);
-				return;
 			case AcceleoPackage.MODULE__DOCUMENTATION:
 				setDocumentation((Documentation)null);
 				return;
@@ -659,10 +553,6 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.MODULE__START_POSITION:
-				return startPosition != START_POSITION_EDEFAULT;
-			case AcceleoPackage.MODULE__END_POSITION:
-				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.MODULE__DOCUMENTATION:
 				return documentation != null;
 			case AcceleoPackage.MODULE__DEPRECATED:
@@ -692,10 +582,6 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == ASTNode.class) {
 			switch (derivedFeatureID) {
-				case AcceleoPackage.MODULE__START_POSITION:
-					return AcceleoPackage.AST_NODE__START_POSITION;
-				case AcceleoPackage.MODULE__END_POSITION:
-					return AcceleoPackage.AST_NODE__END_POSITION;
 				default:
 					return -1;
 			}
@@ -722,10 +608,6 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == ASTNode.class) {
 			switch (baseFeatureID) {
-				case AcceleoPackage.AST_NODE__START_POSITION:
-					return AcceleoPackage.MODULE__START_POSITION;
-				case AcceleoPackage.AST_NODE__END_POSITION:
-					return AcceleoPackage.MODULE__END_POSITION;
 				default:
 					return -1;
 			}
@@ -754,11 +636,7 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (startPosition: "); //$NON-NLS-1$
-		result.append(startPosition);
-		result.append(", endPosition: "); //$NON-NLS-1$
-		result.append(endPosition);
-		result.append(", deprecated: "); //$NON-NLS-1$
+		result.append(" (deprecated: "); //$NON-NLS-1$
 		result.append(deprecated);
 		result.append(", startHeaderPosition: "); //$NON-NLS-1$
 		result.append(startHeaderPosition);

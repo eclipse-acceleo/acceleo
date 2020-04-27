@@ -19,7 +19,7 @@ module myModule
         
     yet some different static text again.
    (267..312) (267..312)
-      [/if] (183..317) (0..0)
+      [/if] (183..317) (-1..-1)
     [/if] (119..317)
     
  (317..318) (116..318)[/template] (61..329) (0..329)

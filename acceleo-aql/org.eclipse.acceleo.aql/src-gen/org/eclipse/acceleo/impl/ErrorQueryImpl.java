@@ -23,7 +23,7 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -42,8 +42,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getStartPosition <em>Start Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isDeprecated <em>Deprecated</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getName <em>Name</em>}</li>
@@ -65,46 +63,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements ErrorQuery {
-	/**
-	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int START_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startPosition = START_POSITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int END_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int endPosition = END_POSITION_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -206,7 +164,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' reference.
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getBody()
@@ -420,54 +378,6 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * @generated
 	 */
 	@Override
-	public int getStartPosition() {
-		return startPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setStartPosition(int newStartPosition) {
-		int oldStartPosition = startPosition;
-		startPosition = newStartPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__START_POSITION,
-					oldStartPosition, startPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int getEndPosition() {
-		return endPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setEndPosition(int newEndPosition) {
-		int oldEndPosition = endPosition;
-		endPosition = newEndPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__END_POSITION,
-					oldEndPosition, endPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public Documentation getDocumentation() {
 		return documentation;
 	}
@@ -631,15 +541,6 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 */
 	@Override
 	public Expression getBody() {
-		if (body != null && body.eIsProxy()) {
-			InternalEObject oldBody = (InternalEObject)body;
-			body = (Expression)eResolveProxy(oldBody);
-			if (body != oldBody) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.ERROR_QUERY__BODY, oldBody, body));
-			}
-		}
 		return body;
 	}
 
@@ -648,8 +549,18 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Expression basicGetBody() {
-		return body;
+	public NotificationChain basicSetBody(Expression newBody, NotificationChain msgs) {
+		Expression oldBody = body;
+		body = newBody;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_QUERY__BODY, oldBody, newBody);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -659,11 +570,20 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 */
 	@Override
 	public void setBody(Expression newBody) {
-		Expression oldBody = body;
-		body = newBody;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__BODY, oldBody,
-					body));
+		if (newBody != body) {
+			NotificationChain msgs = null;
+			if (body != null)
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_QUERY__BODY, null, msgs);
+			if (newBody != null)
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_QUERY__BODY, null, msgs);
+			msgs = basicSetBody(newBody, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__BODY, newBody,
+					newBody));
 	}
 
 	/**
@@ -913,6 +833,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return basicSetDocumentation(null, msgs);
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
+			case AcceleoPackage.ERROR_QUERY__BODY:
+				return basicSetBody(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -925,10 +847,6 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_QUERY__START_POSITION:
-				return getStartPosition();
-			case AcceleoPackage.ERROR_QUERY__END_POSITION:
-				return getEndPosition();
 			case AcceleoPackage.ERROR_QUERY__DOCUMENTATION:
 				return getDocumentation();
 			case AcceleoPackage.ERROR_QUERY__DEPRECATED:
@@ -942,9 +860,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			case AcceleoPackage.ERROR_QUERY__VISIBILITY:
 				return getVisibility();
 			case AcceleoPackage.ERROR_QUERY__BODY:
-				if (resolve)
-					return getBody();
-				return basicGetBody();
+				return getBody();
 			case AcceleoPackage.ERROR_QUERY__MISSING_VISIBILITY:
 				return getMissingVisibility();
 			case AcceleoPackage.ERROR_QUERY__MISSING_NAME:
@@ -976,12 +892,6 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_QUERY__START_POSITION:
-				setStartPosition((Integer)newValue);
-				return;
-			case AcceleoPackage.ERROR_QUERY__END_POSITION:
-				setEndPosition((Integer)newValue);
-				return;
 			case AcceleoPackage.ERROR_QUERY__DOCUMENTATION:
 				setDocumentation((Documentation)newValue);
 				return;
@@ -1043,12 +953,6 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_QUERY__START_POSITION:
-				setStartPosition(START_POSITION_EDEFAULT);
-				return;
-			case AcceleoPackage.ERROR_QUERY__END_POSITION:
-				setEndPosition(END_POSITION_EDEFAULT);
-				return;
 			case AcceleoPackage.ERROR_QUERY__DOCUMENTATION:
 				setDocumentation((Documentation)null);
 				return;
@@ -1109,10 +1013,6 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_QUERY__START_POSITION:
-				return startPosition != START_POSITION_EDEFAULT;
-			case AcceleoPackage.ERROR_QUERY__END_POSITION:
-				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__DOCUMENTATION:
 				return documentation != null;
 			case AcceleoPackage.ERROR_QUERY__DEPRECATED:
@@ -1268,11 +1168,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (startPosition: "); //$NON-NLS-1$
-		result.append(startPosition);
-		result.append(", endPosition: "); //$NON-NLS-1$
-		result.append(endPosition);
-		result.append(", deprecated: "); //$NON-NLS-1$
+		result.append(" (deprecated: "); //$NON-NLS-1$
 		result.append(deprecated);
 		result.append(", name: "); //$NON-NLS-1$
 		result.append(name);

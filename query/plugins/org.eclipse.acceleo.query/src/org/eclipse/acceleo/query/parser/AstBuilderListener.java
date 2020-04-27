@@ -109,12 +109,12 @@ import org.eclipse.acceleo.query.parser.QueryParser.VarRefContext;
 import org.eclipse.acceleo.query.parser.QueryParser.VariableDefinitionContext;
 import org.eclipse.acceleo.query.parser.QueryParser.XorContext;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * The {@link AstBuilderListener} builds an AST when plugged into the parser.
@@ -845,7 +845,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param column
 	 *            the column
 	 */
-	private void setPositions(Object node, int position, int line, int column) {
+	private void setPositions(EObject node, int position, int line, int column) {
 		positions.setStartPositions(node, position);
 		positions.setStartLines(node, line);
 		positions.setStartColumns(node, column);
@@ -864,7 +864,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param end
 	 *            the end {@link Token}
 	 */
-	private void setPositions(Object node, Token start, Token end) {
+	private void setPositions(EObject node, Token start, Token end) {
 		positions.setStartPositions(node, Integer.valueOf(start.getStartIndex()));
 		positions.setStartLines(node, Integer.valueOf(start.getLine() - 1));
 		positions.setStartColumns(node, Integer.valueOf(start.getCharPositionInLine()));
@@ -883,7 +883,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param expressionEnd
 	 *            the end {@link Expression}
 	 */
-	private void setPositions(Object node, Expression expressionStart, Expression expressionEnd) {
+	private void setPositions(EObject node, Expression expressionStart, Expression expressionEnd) {
 		positions.setStartPositions(node, positions.getStartPositions(expressionStart));
 		positions.setStartLines(node, positions.getStartLines(expressionStart));
 		positions.setStartColumns(node, positions.getStartColumns(expressionStart));
@@ -902,7 +902,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param end
 	 *            the end {@link Token}
 	 */
-	private void setPositions(Object node, Expression expressionStart, Token end) {
+	private void setPositions(EObject node, Expression expressionStart, Token end) {
 		positions.setStartPositions(node, positions.getStartPositions(expressionStart));
 		positions.setStartLines(node, positions.getStartLines(expressionStart));
 		positions.setStartColumns(node, positions.getStartColumns(expressionStart));

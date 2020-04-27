@@ -192,10 +192,10 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 	private Error getErrorToComplete(AcceleoAstResult astResult, List<Error> errors) {
 		Error result = errors.get(0);
 
-		int currentEnd = result.getEndPosition();
+		int currentEnd = astResult.getEndPosition(result);
 		for (int i = 1; i < errors.size(); i++) {
 			final Error error = errors.get(i);
-			int end = error.getEndPosition();
+			int end = astResult.getEndPosition(result);
 			if (end > currentEnd) {
 				currentEnd = end;
 				result = error;

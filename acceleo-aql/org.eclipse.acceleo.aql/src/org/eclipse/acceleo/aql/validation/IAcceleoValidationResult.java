@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 

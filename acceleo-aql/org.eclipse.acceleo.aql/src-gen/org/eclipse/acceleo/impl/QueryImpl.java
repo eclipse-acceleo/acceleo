@@ -21,7 +21,7 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -152,7 +152,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' reference.
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getBody()
@@ -347,15 +347,6 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 */
 	@Override
 	public Expression getBody() {
-		if (body != null && body.eIsProxy()) {
-			InternalEObject oldBody = (InternalEObject)body;
-			body = (Expression)eResolveProxy(oldBody);
-			if (body != oldBody) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, AcceleoPackage.QUERY__BODY,
-							oldBody, body));
-			}
-		}
 		return body;
 	}
 
@@ -364,8 +355,18 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Expression basicGetBody() {
-		return body;
+	public NotificationChain basicSetBody(Expression newBody, NotificationChain msgs) {
+		Expression oldBody = body;
+		body = newBody;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__BODY, oldBody, newBody);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -375,10 +376,20 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 */
 	@Override
 	public void setBody(Expression newBody) {
-		Expression oldBody = body;
-		body = newBody;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__BODY, oldBody, body));
+		if (newBody != body) {
+			NotificationChain msgs = null;
+			if (body != null)
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.QUERY__BODY, null, msgs);
+			if (newBody != null)
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.QUERY__BODY, null, msgs);
+			msgs = basicSetBody(newBody, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__BODY, newBody,
+					newBody));
 	}
 
 	/**
@@ -410,6 +421,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 				return basicSetDocumentation(null, msgs);
 			case AcceleoPackage.QUERY__PARAMETERS:
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
+			case AcceleoPackage.QUERY__BODY:
+				return basicSetBody(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -435,9 +448,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 			case AcceleoPackage.QUERY__VISIBILITY:
 				return getVisibility();
 			case AcceleoPackage.QUERY__BODY:
-				if (resolve)
-					return getBody();
-				return basicGetBody();
+				return getBody();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

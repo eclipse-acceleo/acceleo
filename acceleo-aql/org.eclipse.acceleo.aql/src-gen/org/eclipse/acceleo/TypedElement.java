@@ -11,7 +11,7 @@
  */
 package org.eclipse.acceleo;
 
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EObject;
 
 /**

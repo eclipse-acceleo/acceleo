@@ -55,9 +55,7 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
-
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;

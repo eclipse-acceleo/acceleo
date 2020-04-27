@@ -45,8 +45,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getStartPosition <em>Start Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#isDeprecated <em>Deprecated</em>}</li>
@@ -65,46 +63,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements ErrorModule {
-	/**
-	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int START_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startPosition = START_POSITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int END_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int endPosition = END_POSITION_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -440,54 +398,6 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * @generated
 	 */
 	@Override
-	public int getStartPosition() {
-		return startPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setStartPosition(int newStartPosition) {
-		int oldStartPosition = startPosition;
-		startPosition = newStartPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_MODULE__START_POSITION,
-					oldStartPosition, startPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int getEndPosition() {
-		return endPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setEndPosition(int newEndPosition) {
-		int oldEndPosition = endPosition;
-		endPosition = newEndPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_MODULE__END_POSITION,
-					oldEndPosition, endPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EList<Metamodel> getMetamodels() {
 		if (metamodels == null) {
 			metamodels = new EObjectResolvingEList<Metamodel>(Metamodel.class, this,
@@ -769,10 +679,6 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_MODULE__START_POSITION:
-				return getStartPosition();
-			case AcceleoPackage.ERROR_MODULE__END_POSITION:
-				return getEndPosition();
 			case AcceleoPackage.ERROR_MODULE__NAME:
 				return getName();
 			case AcceleoPackage.ERROR_MODULE__DOCUMENTATION:
@@ -812,12 +718,6 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_MODULE__START_POSITION:
-				setStartPosition((Integer)newValue);
-				return;
-			case AcceleoPackage.ERROR_MODULE__END_POSITION:
-				setEndPosition((Integer)newValue);
-				return;
 			case AcceleoPackage.ERROR_MODULE__NAME:
 				setName((String)newValue);
 				return;
@@ -872,12 +772,6 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_MODULE__START_POSITION:
-				setStartPosition(START_POSITION_EDEFAULT);
-				return;
-			case AcceleoPackage.ERROR_MODULE__END_POSITION:
-				setEndPosition(END_POSITION_EDEFAULT);
-				return;
 			case AcceleoPackage.ERROR_MODULE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -929,10 +823,6 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_MODULE__START_POSITION:
-				return startPosition != START_POSITION_EDEFAULT;
-			case AcceleoPackage.ERROR_MODULE__END_POSITION:
-				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleoPackage.ERROR_MODULE__DOCUMENTATION:
@@ -1066,11 +956,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (startPosition: "); //$NON-NLS-1$
-		result.append(startPosition);
-		result.append(", endPosition: "); //$NON-NLS-1$
-		result.append(endPosition);
-		result.append(", name: "); //$NON-NLS-1$
+		result.append(" (name: "); //$NON-NLS-1$
 		result.append(name);
 		result.append(", deprecated: "); //$NON-NLS-1$
 		result.append(deprecated);

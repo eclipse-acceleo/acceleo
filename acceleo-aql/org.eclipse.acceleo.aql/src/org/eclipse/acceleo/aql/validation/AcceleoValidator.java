@@ -202,9 +202,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			doSwitch(metamodel);
 			if (metamodel.getReferencedPackage() != null) {
 				if (!ePackages.add(metamodel.getReferencedPackage())) {
+					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 					addMessage(module, ValidationMessageLevel.WARNING, metamodel.getReferencedPackage()
-							.getNsURI() + " already referenced", metamodel.getStartPosition(), metamodel
-									.getEndPosition());
+							.getNsURI() + " already referenced", acceleoAstResult.getStartPosition(metamodel),
+							acceleoAstResult.getEndPosition(metamodel));
 				}
 			}
 		}
@@ -217,9 +218,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		for (Import imp : module.getImports()) {
 			doSwitch(imp);
 			if (imp.getModule().getQualifiedName() != null) {
+				final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 				if (!imports.add(imp.getModule().getQualifiedName())) {
 					addMessage(module, ValidationMessageLevel.WARNING, imp.getModule().getQualifiedName()
-							+ " already imported", imp.getStartPosition(), imp.getEndPosition());
+							+ " already imported", acceleoAstResult.getStartPosition(imp), acceleoAstResult
+									.getEndPosition(imp));
 				}
 			}
 		}
@@ -285,8 +288,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
 		if (errorMetamodel.getFragment() != null) {
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, "Invalid metamodel " + errorMetamodel
-					.getFragment(), errorMetamodel.getStartPosition(), errorMetamodel.getEndPosition());
+					.getFragment(), acceleoAstResult.getStartPosition(errorMetamodel), acceleoAstResult
+							.getEndPosition(errorMetamodel));
 		} else if (errorMetamodel.getMissingEndQuote() != -1) {
 			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, getMissingTokenMessage(
 					AcceleoParser.QUOTE), errorMetamodel.getMissingEndQuote(), errorMetamodel
@@ -317,9 +322,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseModuleReference(ModuleReference moduleReference) {
 		if (!environment.hasModule(moduleReference.getQualifiedName())) {
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not find module "
-					+ moduleReference.getQualifiedName(), moduleReference.getStartPosition(), moduleReference
-							.getEndPosition());
+					+ moduleReference.getQualifiedName(), acceleoAstResult.getStartPosition(moduleReference),
+					acceleoAstResult.getEndPosition(moduleReference));
 		}
 
 		return RETURN_VALUE;
@@ -349,9 +355,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				doSwitch(parameter);
 				if (parameter.getName() != null) {
 					if (!parameterNames.add(parameter.getName())) {
+						final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 						addMessage(template, ValidationMessageLevel.ERROR, parameter.getName()
-								+ " duplicated parameter", parameter.getStartPosition(), parameter
-										.getEndPosition());
+								+ " duplicated parameter", acceleoAstResult.getStartPosition(parameter),
+								acceleoAstResult.getEndPosition(parameter));
 					}
 				}
 			}
@@ -432,9 +439,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				doSwitch(parameter);
 				if (parameter.getName() != null) {
 					if (!parameterNames.add(parameter.getName())) {
+						final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 						addMessage(query, ValidationMessageLevel.ERROR, parameter.getName()
-								+ " duplicated parameter", parameter.getStartPosition(), parameter
-										.getEndPosition());
+								+ " duplicated parameter", acceleoAstResult.getStartPosition(parameter),
+								acceleoAstResult.getEndPosition(parameter));
 
 					}
 				}
@@ -497,8 +505,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseVariable(Variable variable) {
 		if (stack.peek().containsKey(variable.getName())) {
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(variable, ValidationMessageLevel.WARNING, "Variable " + variable.getName()
-					+ " already exists.", variable.getStartPosition(), variable.getEndPosition());
+					+ " already exists.", acceleoAstResult.getStartPosition(variable), acceleoAstResult
+							.getEndPosition(variable));
 		}
 		final IValidationResult typeValidationResult = validator.validate(null, variable.getType());
 		result.getAqlValidationResutls().put(variable.getType(), typeValidationResult);
@@ -528,8 +538,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseBinding(Binding binding) {
 		if (stack.peek().containsKey(binding.getName())) {
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(binding, ValidationMessageLevel.WARNING, "Variable " + binding.getName()
-					+ " already exists.", binding.getStartPosition(), binding.getEndPosition());
+					+ " already exists.", acceleoAstResult.getStartPosition(binding), acceleoAstResult
+							.getEndPosition(binding));
 		}
 
 		final IValidationResult validationResult = (IValidationResult)doSwitch(binding.getInitExpression());
@@ -581,9 +593,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					if (forceCollectionBinding) {
 						messages.addAll(validateBindingTypeForceCollection(binding, iType, possibleType));
 					} else {
+						final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 						messages.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
-								+ IS_INCOMPATIBLE_WITH + possibleType, binding.getStartPosition(), binding
-										.getEndPosition()));
+								+ IS_INCOMPATIBLE_WITH + possibleType, acceleoAstResult.getStartPosition(
+										binding), acceleoAstResult.getEndPosition(binding)));
 					}
 				} else {
 					hasCompatibleType = true;
@@ -613,12 +626,16 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 		if (possibleType instanceof ICollectionType) {
 			if (!iType.isAssignableFrom(((ICollectionType)possibleType).getCollectionType())) {
+				final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + IS_INCOMPATIBLE_WITH
-						+ possibleType, node.getStartPosition(), node.getEndPosition()));
+						+ possibleType, acceleoAstResult.getStartPosition(node), acceleoAstResult
+								.getEndPosition(node)));
 			}
 		} else if (!iType.isAssignableFrom(possibleType)) {
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + IS_INCOMPATIBLE_WITH
-					+ possibleType, node.getStartPosition(), node.getEndPosition()));
+					+ possibleType, acceleoAstResult.getStartPosition(node), acceleoAstResult.getEndPosition(
+							node)));
 		}
 
 		return res;
@@ -698,7 +715,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final IValidationResult res = validator.validate(stack.peek(), expression.getAst());
 
 		result.getAqlValidationResutls().put(expression.getAst(), res);
-		result.addMessages(expression, shiftMessages(res.getMessages(), expression.getStartPosition()));
+		final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+		result.addMessages(expression, shiftMessages(res.getMessages(), acceleoAstResult.getStartPosition(
+				expression)));
 
 		return res;
 	}
@@ -807,20 +826,23 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			} else if (onlyNotBoolean) {
 				final String message = String.format("The predicate never evaluates to a boolean type (%s).",
 						possibleTypes);
-				addMessage(node, ValidationMessageLevel.ERROR, message, node.getStartPosition(), node
-						.getEndPosition());
+				final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+				addMessage(node, ValidationMessageLevel.ERROR, message, acceleoAstResult.getStartPosition(
+						node), acceleoAstResult.getEndPosition(node));
 			} else {
 				final String message = String.format(
 						"The predicate may evaluate to a value that is not a boolean type (%s).",
 						possibleTypes);
-				addMessage(node, ValidationMessageLevel.WARNING, message, node.getStartPosition(), node
-						.getEndPosition());
+				final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+				addMessage(node, ValidationMessageLevel.WARNING, message, acceleoAstResult.getStartPosition(
+						node), acceleoAstResult.getEndPosition(node));
 			}
 		} else {
 			final String message = String.format("The predicate never evaluates to a boolean type (%s).",
 					possibleTypes);
-			addMessage(node, ValidationMessageLevel.ERROR, message, node.getStartPosition(), node
-					.getEndPosition());
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+			addMessage(node, ValidationMessageLevel.ERROR, message, acceleoAstResult.getStartPosition(node),
+					acceleoAstResult.getEndPosition(node));
 		}
 	}
 
@@ -922,14 +944,16 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				if (onlyNotString) {
 					final String message = String.format(
 							"The expression never evaluates to a String type (%s).", possibleTypes);
-					addMessage(node, ValidationMessageLevel.WARNING, message, node.getStartPosition(), node
-							.getEndPosition());
+					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+					addMessage(node, ValidationMessageLevel.WARNING, message, acceleoAstResult
+							.getStartPosition(node), acceleoAstResult.getEndPosition(node));
 				} else {
 					final String message = String.format(
 							"The expression may evaluate to a value that is not a String type (%s).\"",
 							possibleTypes);
-					addMessage(node, ValidationMessageLevel.WARNING, message, node.getStartPosition(), node
-							.getEndPosition());
+					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+					addMessage(node, ValidationMessageLevel.WARNING, message, acceleoAstResult
+							.getStartPosition(node), acceleoAstResult.getEndPosition(node));
 				}
 			} else {
 				// everything is fine
@@ -937,8 +961,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		} else {
 			final String message = String.format("The expression never evaluates to a String type (%s).",
 					possibleTypes);
-			addMessage(node, ValidationMessageLevel.ERROR, message, node.getStartPosition(), node
-					.getEndPosition());
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+			addMessage(node, ValidationMessageLevel.ERROR, message, acceleoAstResult.getStartPosition(node),
+					acceleoAstResult.getEndPosition(node));
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.antlr.v4.runtime.CommonTokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
+import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
@@ -69,14 +70,14 @@ import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -86,6 +87,28 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AcceleoParser {
+
+	/**
+	 * Positions for Acceleo with delegation for {@link Expression}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	public static class AcceleoPositions extends Positions {
+
+		@Override
+		protected EObject getNodeAt(EObject node, int position, int line, int column) {
+			final EObject res;
+
+			if (node instanceof Expression) {
+				res = super.getNodeAt(((Expression)node).getAst().getAst(), position, line, column);
+			} else {
+				res = super.getNodeAt(node, position, line, column);
+			}
+
+			return res;
+		}
+
+	}
 
 	/**
 	 * The module file extension.
@@ -368,9 +391,24 @@ public class AcceleoParser {
 	private final IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
+	 * The {@link Positions}.
+	 */
+	private AcceleoPositions positions;
+
+	/**
 	 * The parser currentPosition.
 	 */
 	private int currentPosition;
+
+	/**
+	 * The line number at a given position.
+	 */
+	private int[] lines;
+
+	/**
+	 * The column number at a given position.
+	 */
+	private int[] columns;
 
 	/**
 	 * The source text.
@@ -401,13 +439,50 @@ public class AcceleoParser {
 	 */
 	public AcceleoAstResult parse(String source) {
 		this.currentPosition = 0;
+		this.lines = new int[source.length() + 1];
+		this.columns = new int[source.length() + 1];
+		this.positions = new AcceleoPositions();
 		this.text = source;
+		computeLinesAndColumns(text);
 
 		errors = new ArrayList<Error>();
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
 		final Module module = parseModule(comments);
 
-		return new AcceleoAstResult(module, errors);
+		return new AcceleoAstResult(module, positions, errors);
+	}
+
+	/**
+	 * Computes the lines and columns at given position.
+	 * 
+	 * @param str
+	 *            the source
+	 */
+	// TODO do it on the fly to prevent reading the input twice
+	private void computeLinesAndColumns(String str) {
+		int currentLine = 0;
+		int currentColumn = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == '\n') {
+				currentLine++;
+				currentColumn = 0;
+			} else {
+				currentColumn++;
+			}
+			lines[i] = currentLine;
+			columns[i] = currentColumn;
+		}
+		lines[str.length()] = currentLine;
+		columns[str.length()] = currentColumn;
+	}
+
+	private void setPositions(ASTNode node, int start, int end) {
+		positions.setStartPositions(node, start);
+		positions.setStartLines(node, lines[start]);
+		positions.setStartColumns(node, columns[start]);
+		positions.setEndPositions(node, end);
+		positions.setEndLines(node, lines[end]);
+		positions.setEndColumns(node, columns[end]);
 	}
 
 	/**
@@ -511,28 +586,28 @@ public class AcceleoParser {
 	 */
 	protected Comment parseComment() {
 		final Comment res;
+		final int startPosition = currentPosition;
 		if (text.startsWith(COMMENT_START, currentPosition)) {
 			final int startOfCommentBody = currentPosition + COMMENT_START.length();
 			int endOfCommentBody = text.indexOf(COMMENT_END, startOfCommentBody);
 			if (endOfCommentBody < 0) {
 				endOfCommentBody = text.length();
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorComment();
+				setPositions(res, startPosition, endOfCommentBody);
 				((ErrorComment)res).setMissingEndHeader(endOfCommentBody);
-				res.setEndPosition(endOfCommentBody);
 				errors.add((Error)res);
+				currentPosition = endOfCommentBody;
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createComment();
-				res.setEndPosition(endOfCommentBody + COMMENT_END.length());
+				setPositions(res, startPosition, endOfCommentBody + COMMENT_END.length());
+				currentPosition = endOfCommentBody + COMMENT_END.length();
 			}
-			res.setStartPosition(currentPosition);
 
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
 			commentBody.setValue(text.substring(startOfCommentBody, endOfCommentBody));
-			commentBody.setStartPosition(startOfCommentBody);
-			commentBody.setEndPosition(endOfCommentBody);
+			setPositions(commentBody, startOfCommentBody, endOfCommentBody);
 
 			res.setBody(commentBody);
-			currentPosition = endOfCommentBody + COMMENT_END.length();
 		} else {
 			res = null;
 		}
@@ -563,11 +638,9 @@ public class AcceleoParser {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleDocumentation();
 				currentPosition = endPosition + DOCUMENTATION_END.length();
 			}
-			res.setStartPosition(commentStartPositon);
 			final String docString = text.substring(startPosition, endPosition);
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
-			commentBody.setStartPosition(startPosition);
-			commentBody.setEndPosition(endPosition);
+			setPositions(commentBody, startPosition, endPosition);
 			commentBody.setValue(docString);
 			res.setBody(commentBody);
 			final int authorPosition = docString.indexOf(AUTHOR_TAG);
@@ -592,7 +665,7 @@ public class AcceleoParser {
 					res.setSince(docString.substring(sinceStart, docString.length()));
 				}
 			}
-			res.setEndPosition(currentPosition);
+			setPositions(res, commentStartPositon, currentPosition);
 		} else {
 			res = null;
 		}
@@ -623,11 +696,9 @@ public class AcceleoParser {
 				currentPosition = endPosition + DOCUMENTATION_END.length();
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleElementDocumentation();
 			}
-			res.setStartPosition(commentStartPositon);
 			final String docString = text.substring(startPosition, endPosition);
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
-			commentBody.setStartPosition(currentPosition);
-			commentBody.setEndPosition(endPosition);
+			setPositions(commentBody, currentPosition, endPosition);
 			commentBody.setValue(docString);
 			res.setBody(commentBody);
 			int paramPosition = docString.indexOf(PARAM_TAG);
@@ -642,17 +713,15 @@ public class AcceleoParser {
 				} else {
 					paramPosition = docString.indexOf(PARAM_TAG, paramEnd);
 				}
-				paramDoc.setStartPosition(paramStart + startPosition);
-				paramDoc.setEndPosition(paramEnd + startPosition);
+				setPositions(paramDoc, paramStart + startPosition, paramEnd + startPosition);
 				final CommentBody paramBody = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 						.createCommentBody();
 				paramBody.setValue(docString.substring(paramStart, paramEnd));
-				paramBody.setStartPosition(paramStart + startPosition);
-				paramBody.setEndPosition(paramEnd + startPosition);
+				setPositions(paramBody, paramStart + startPosition, paramEnd + startPosition);
 				paramDoc.setBody(paramBody);
 				res.getParameterDocumentation().add(paramDoc);
 			}
-			res.setEndPosition(currentPosition);
+			setPositions(res, commentStartPositon, currentPosition);
 		} else {
 			res = null;
 		}
@@ -732,8 +801,7 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModule();
 			}
-			res.setStartPosition(startPosition);
-			res.setEndPosition(endPosition);
+			setPositions(res, startPosition, endPosition);
 			res.setStartHeaderPosition(startHeaderPosition);
 			res.setEndHeaderPosition(endHeaderPosition);
 			res.getModuleElements().addAll(comments);
@@ -773,9 +841,8 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createImport();
 			}
-			res.setStartPosition(startPosition);
 			res.setModule(moduleReference);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -799,9 +866,8 @@ public class AcceleoParser {
 		} else {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleReference();
 		}
-		res.setStartPosition(startPosition);
 		res.setQualifiedName(moduleQualifiedName);
-		res.setEndPosition(currentPosition);
+		setPositions(res, startPosition, currentPosition);
 
 		return res;
 	}
@@ -967,6 +1033,8 @@ public class AcceleoParser {
 			skipSpaces();
 			final int typeEndLimit = getAqlExpressionEndLimit(EQUAL, QUERY_END);
 			final AstResult type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			type.addAllPositonsTo(positions, currentPosition, lines[currentPosition],
+					columns[currentPosition]);
 			currentPosition += type.getEndPosition(type.getAst());
 			final int missingType;
 			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
@@ -1001,14 +1069,13 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createQuery();
 			}
-			res.setStartPosition(startPosition);
 			res.setDocumentation(documentation);
 			res.setVisibility(visibility);
 			res.setName(name);
 			res.getParameters().addAll(parameters);
 			res.setType(type);
 			res.setBody(body);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1061,6 +1128,7 @@ public class AcceleoParser {
 		skipSpaces();
 		final int typeEndLimit = getAqlExpressionEndLimit(COMMA, CLOSE_PARENTHESIS);
 		final AstResult type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+		type.addAllPositonsTo(positions, currentPosition, lines[currentPosition], columns[currentPosition]);
 		currentPosition += type.getEndPosition(type.getAst());
 		final int missingType;
 		if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
@@ -1079,10 +1147,9 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
 			}
-			res.setStartPosition(startPosition);
 			res.setName(name);
 			res.setType(type);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1196,7 +1263,6 @@ public class AcceleoParser {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTemplate();
 			}
 			res.setMain(isMain);
-			res.setStartPosition(startPosition);
 			res.setDocumentation(documentation);
 			res.setVisibility(visibility);
 			res.setName(name);
@@ -1204,7 +1270,7 @@ public class AcceleoParser {
 			res.setGuard(guardExpression);
 			res.setPost(postExpression);
 			res.setBody(body);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1224,7 +1290,7 @@ public class AcceleoParser {
 	protected Block parseBlock(String... endBlocks) {
 		final Block res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBlock();
 
-		res.setStartPosition(currentPosition);
+		final int startPosition = currentPosition;
 		Statement statement = parseStatement();
 		endOfBlock: while (statement != null) {
 			res.getStatements().add(statement);
@@ -1235,7 +1301,7 @@ public class AcceleoParser {
 			}
 			statement = parseStatement();
 		}
-		res.setEndPosition(currentPosition);
+		setPositions(res, startPosition, currentPosition);
 
 		return res;
 	}
@@ -1346,11 +1412,10 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createIfStatement();
 			}
-			res.setStartPosition(startPosition);
 			res.setCondition(condition);
 			res.setThen(thenblock);
 			res.setElse(elseBlock);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1367,7 +1432,7 @@ public class AcceleoParser {
 		final ForStatement res;
 
 		if (text.startsWith(FOR_HEADER_START, currentPosition)) {
-			final int startPostion = currentPosition;
+			final int startPosition = currentPosition;
 			currentPosition += FOR_HEADER_START.length();
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
@@ -1413,11 +1478,10 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createForStatement();
 			}
-			res.setStartPosition(startPostion);
 			res.setBinding(binding);
 			res.setSeparator(separator);
 			res.setBody(body);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1434,7 +1498,7 @@ public class AcceleoParser {
 		final FileStatement res;
 
 		if (text.startsWith(FILE_HEADER_START, currentPosition)) {
-			final int startPostion = currentPosition;
+			final int startPosition = currentPosition;
 			currentPosition += FILE_HEADER_START.length();
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
@@ -1480,12 +1544,11 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createFileStatement();
 			}
-			res.setStartPosition(startPostion);
 			res.setUrl(url);
 			res.setCharset(charset);
 			res.setMode(openMode);
 			res.setBody(body);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1544,10 +1607,9 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createLetStatement();
 			}
-			res.setStartPosition(startPosition);
 			res.getVariables().addAll(bindings);
 			res.setBody(body);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1583,6 +1645,8 @@ public class AcceleoParser {
 			skipSpaces();
 			final int typeEndLimit = Math.min(getAqlExpressionEndLimit(affectationSymbol, COMMA), endLimit);
 			type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			type.addAllPositonsTo(positions, currentPosition, lines[currentPosition],
+					columns[currentPosition]);
 			currentPosition += type.getEndPosition(type.getAst());
 			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 				missingType = currentPosition;
@@ -1594,6 +1658,8 @@ public class AcceleoParser {
 			skipSpaces();
 			final int typeEndLimit = Math.min(getAqlExpressionEndLimit(affectationSymbol, COMMA), endLimit);
 			type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			type.addAllPositonsTo(positions, currentPosition, lines[currentPosition],
+					columns[currentPosition]);
 			currentPosition += type.getEndPosition(type.getAst());
 			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 				missingColon = -1;
@@ -1606,6 +1672,8 @@ public class AcceleoParser {
 		if (missingColon != -1 && missingAffectationSymbol != -1) {
 			final int typeEndLimit = Math.min(getAqlExpressionEndLimit(affectationSymbol, COMMA), endLimit);
 			type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			type.addAllPositonsTo(positions, currentPosition, lines[currentPosition],
+					columns[currentPosition]);
 			currentPosition += type.getEndPosition(type.getAst());
 			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 				missingType = currentPosition;
@@ -1634,11 +1702,10 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
 			}
-			res.setStartPosition(startPosition);
 			res.setName(name);
 			res.setType(type);
 			res.setInitExpression(expression);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1739,10 +1806,9 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createProtectedArea();
 			}
-			res.setStartPosition(startPosition);
 			res.setId(id);
 			res.setBody(body);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1775,9 +1841,8 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpressionStatement();
 			}
-			res.setStartPosition(startPosition);
 			res.setExpression(expression);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1796,11 +1861,12 @@ public class AcceleoParser {
 		final Expression res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpression();
 
 		final AstResult astResult = parseWhileAqlExpression(text.substring(currentPosition, endLimit));
-		res.setStartPosition(currentPosition);
+		final int startPosition = currentPosition;
 		res.setAst(astResult);
 		final int endPosition = currentPosition + astResult.getEndPosition(astResult.getAst());
-		res.setEndPosition(endPosition);
+		setPositions(res, startPosition, endPosition);
 		currentPosition = endPosition;
+		astResult.addAllPositonsTo(positions, startPosition, lines[startPosition], columns[startPosition]);
 
 		return res;
 	}
@@ -1846,9 +1912,8 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
 			}
-			res.setStartPosition(startPosition);
 			res.setReferencedPackage(ePackage);
-			res.setEndPosition(currentPosition);
+			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
 		}
@@ -1878,10 +1943,13 @@ public class AcceleoParser {
 	/**
 	 * Parses {@link TextStatement}.
 	 * 
-	 * @return the created {@link TextStatement} if ant, <code>null</code> otherwise
+	 * @return the created {@link TextStatement} if any, <code>null</code> otherwise
 	 */
 	protected TextStatement parseTextStatement() {
 		final TextStatement res;
+
+		// TODO check inlined
+		// TODO only add significant chars to the value based on column
 
 		int endOfText = text.indexOf(TEXT_END, currentPosition);
 		if (endOfText < 0) {
@@ -1889,8 +1957,7 @@ public class AcceleoParser {
 		}
 		if (currentPosition != endOfText) {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
-			res.setStartPosition(currentPosition);
-			res.setEndPosition(endOfText);
+			setPositions(res, currentPosition, endOfText);
 			res.setValue(text.substring(currentPosition, endOfText));
 			currentPosition = endOfText;
 		} else {
@@ -1908,7 +1975,7 @@ public class AcceleoParser {
 	 * @return the corresponding {@link AstResult}
 	 */
 	protected AstResult parseWhileAqlExpression(String expression) {
-		final IQueryBuilderEngine.AstResult result;
+		final AstResult result;
 
 		if (expression != null && expression.length() > 0) {
 			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
@@ -1931,19 +1998,19 @@ public class AcceleoParser {
 			List<org.eclipse.acceleo.query.ast.Error> aqlErrors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
 			aqlErrors.add(errorExpression);
-			final Positions positions = new Positions();
+			final Positions aqlPositions = new Positions();
 			if (expression != null) {
-				positions.setStartPositions(errorExpression, Integer.valueOf(0));
-				positions.setStartLines(errorExpression, Integer.valueOf(0));
-				positions.setStartColumns(errorExpression, Integer.valueOf(0));
-				positions.setEndPositions(errorExpression, Integer.valueOf(0));
-				positions.setEndLines(errorExpression, Integer.valueOf(0));
-				positions.setEndColumns(errorExpression, Integer.valueOf(0));
+				aqlPositions.setStartPositions(errorExpression, Integer.valueOf(0));
+				aqlPositions.setStartLines(errorExpression, Integer.valueOf(0));
+				aqlPositions.setStartColumns(errorExpression, Integer.valueOf(0));
+				aqlPositions.setEndPositions(errorExpression, Integer.valueOf(0));
+				aqlPositions.setEndLines(errorExpression, Integer.valueOf(0));
+				aqlPositions.setEndColumns(errorExpression, Integer.valueOf(0));
 			}
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
 					"missing expression", new Object[] {errorExpression }));
-			result = new AstResult(errorExpression, positions, aqlErrors, diagnostic);
+			result = new AstResult(errorExpression, aqlPositions, aqlErrors, diagnostic);
 		}
 
 		return result;
@@ -1957,7 +2024,7 @@ public class AcceleoParser {
 	 * @return the corresponding {@link AstResult}
 	 */
 	protected AstResult parseWhileAqlTypeLiteral(String expression) {
-		final IQueryBuilderEngine.AstResult result;
+		final AstResult result;
 
 		if (expression != null && expression.length() > 0) {
 			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
@@ -1980,19 +2047,19 @@ public class AcceleoParser {
 			List<org.eclipse.acceleo.query.ast.Error> errs = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
 			errs.add(errorTypeLiteral);
-			final Positions positions = new Positions();
+			final Positions aqlPositions = new Positions();
 			if (expression != null) {
-				positions.setStartPositions(errorTypeLiteral, Integer.valueOf(0));
-				positions.setStartLines(errorTypeLiteral, Integer.valueOf(0));
-				positions.setStartColumns(errorTypeLiteral, Integer.valueOf(0));
-				positions.setEndPositions(errorTypeLiteral, Integer.valueOf(0));
-				positions.setEndLines(errorTypeLiteral, Integer.valueOf(0));
-				positions.setEndColumns(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setStartPositions(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setStartLines(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setStartColumns(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setEndPositions(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setEndLines(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setEndColumns(errorTypeLiteral, Integer.valueOf(0));
 			}
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
 					"missing type literal", new Object[] {errorTypeLiteral }));
-			result = new AstResult(errorTypeLiteral, positions, errs, diagnostic);
+			result = new AstResult(errorTypeLiteral, aqlPositions, errs, diagnostic);
 		}
 
 		return result;

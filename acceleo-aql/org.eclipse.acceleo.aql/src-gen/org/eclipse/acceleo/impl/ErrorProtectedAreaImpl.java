@@ -35,8 +35,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getStartPosition <em>Start Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getBody <em>Body</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
@@ -48,46 +46,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container implements ErrorProtectedArea {
-	/**
-	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int START_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startPosition = START_POSITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int END_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int endPosition = END_POSITION_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getId() <em>Id</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -205,54 +163,6 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.ERROR_PROTECTED_AREA;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int getStartPosition() {
-		return startPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setStartPosition(int newStartPosition) {
-		int oldStartPosition = startPosition;
-		startPosition = newStartPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_PROTECTED_AREA__START_POSITION, oldStartPosition, startPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int getEndPosition() {
-		return endPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setEndPosition(int newEndPosition) {
-		int oldEndPosition = endPosition;
-		endPosition = newEndPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.ERROR_PROTECTED_AREA__END_POSITION, oldEndPosition, endPosition));
 	}
 
 	/**
@@ -482,10 +392,6 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_PROTECTED_AREA__START_POSITION:
-				return getStartPosition();
-			case AcceleoPackage.ERROR_PROTECTED_AREA__END_POSITION:
-				return getEndPosition();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				return getId();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
@@ -510,12 +416,6 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_PROTECTED_AREA__START_POSITION:
-				setStartPosition((Integer)newValue);
-				return;
-			case AcceleoPackage.ERROR_PROTECTED_AREA__END_POSITION:
-				setEndPosition((Integer)newValue);
-				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				setId((Expression)newValue);
 				return;
@@ -546,12 +446,6 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_PROTECTED_AREA__START_POSITION:
-				setStartPosition(START_POSITION_EDEFAULT);
-				return;
-			case AcceleoPackage.ERROR_PROTECTED_AREA__END_POSITION:
-				setEndPosition(END_POSITION_EDEFAULT);
-				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				setId((Expression)null);
 				return;
@@ -582,10 +476,6 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.ERROR_PROTECTED_AREA__START_POSITION:
-				return startPosition != START_POSITION_EDEFAULT;
-			case AcceleoPackage.ERROR_PROTECTED_AREA__END_POSITION:
-				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				return id != null;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
@@ -665,11 +555,7 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (startPosition: "); //$NON-NLS-1$
-		result.append(startPosition);
-		result.append(", endPosition: "); //$NON-NLS-1$
-		result.append(endPosition);
-		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
+		result.append(" (missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
 		result.append(missingCloseParenthesis);

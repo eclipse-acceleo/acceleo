@@ -51,6 +51,7 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
@@ -362,6 +363,11 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	private String indentation;
 
 	/**
+	 * The {@link AcceleoAstResult}.
+	 */
+	private AcceleoAstResult ast;
+
+	/**
 	 * Increases indentation.
 	 */
 	protected void indent() {
@@ -376,17 +382,18 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	}
 
 	/**
-	 * Serializes the given {@link Module}.
+	 * Serializes the given {@link AcceleoAstResult}.
 	 * 
-	 * @param module
-	 *            the {@link Module}
-	 * @return the serialized {@link Module}
+	 * @param astResult
+	 *            the {@link AcceleoAstResult}
+	 * @return the serialized {@link AcceleoAstResult}
 	 */
-	public String serialize(Module module) {
+	public String serialize(AcceleoAstResult astResult) {
+		this.ast = astResult;
 		builder = new StringBuilder();
 		indentation = "";
 
-		doSwitch(module);
+		doSwitch(astResult.getModule());
 
 		return builder.toString();
 	}
@@ -959,9 +966,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	@Override
 	public Void caseASTNode(ASTNode node) {
-		builder.append(" (" + node.getStartPosition());
+		builder.append(" (" + ast.getStartPosition(node));
 		builder.append("..");
-		builder.append(node.getEndPosition() + ")");
+		builder.append(ast.getEndPosition(node) + ")");
 		return null;
 	}
 

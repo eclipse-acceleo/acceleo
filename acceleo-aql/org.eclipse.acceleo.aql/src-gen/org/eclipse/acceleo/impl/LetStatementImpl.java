@@ -40,8 +40,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getStartPosition <em>Start Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getVariables <em>Variables</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getBody <em>Body</em>}</li>
  * </ul>
@@ -49,46 +47,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class LetStatementImpl extends MinimalEObjectImpl.Container implements LetStatement {
-	/**
-	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int START_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStartPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int startPosition = START_POSITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int END_POSITION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEndPosition()
-	 * @generated
-	 * @ordered
-	 */
-	protected int endPosition = END_POSITION_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -126,54 +84,6 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.LET_STATEMENT;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int getStartPosition() {
-		return startPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setStartPosition(int newStartPosition) {
-		int oldStartPosition = startPosition;
-		startPosition = newStartPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.LET_STATEMENT__START_POSITION, oldStartPosition, startPosition));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int getEndPosition() {
-		return endPosition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setEndPosition(int newEndPosition) {
-		int oldEndPosition = endPosition;
-		endPosition = newEndPosition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.LET_STATEMENT__END_POSITION,
-					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -266,10 +176,6 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AcceleoPackage.LET_STATEMENT__START_POSITION:
-				return getStartPosition();
-			case AcceleoPackage.LET_STATEMENT__END_POSITION:
-				return getEndPosition();
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				return getVariables();
 			case AcceleoPackage.LET_STATEMENT__BODY:
@@ -287,12 +193,6 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AcceleoPackage.LET_STATEMENT__START_POSITION:
-				setStartPosition((Integer)newValue);
-				return;
-			case AcceleoPackage.LET_STATEMENT__END_POSITION:
-				setEndPosition((Integer)newValue);
-				return;
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				getVariables().clear();
 				getVariables().addAll((Collection<? extends Binding>)newValue);
@@ -312,12 +212,6 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.LET_STATEMENT__START_POSITION:
-				setStartPosition(START_POSITION_EDEFAULT);
-				return;
-			case AcceleoPackage.LET_STATEMENT__END_POSITION:
-				setEndPosition(END_POSITION_EDEFAULT);
-				return;
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				getVariables().clear();
 				return;
@@ -336,35 +230,12 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AcceleoPackage.LET_STATEMENT__START_POSITION:
-				return startPosition != START_POSITION_EDEFAULT;
-			case AcceleoPackage.LET_STATEMENT__END_POSITION:
-				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				return variables != null && !variables.isEmpty();
 			case AcceleoPackage.LET_STATEMENT__BODY:
 				return body != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy())
-			return super.toString();
-
-		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (startPosition: "); //$NON-NLS-1$
-		result.append(startPosition);
-		result.append(", endPosition: "); //$NON-NLS-1$
-		result.append(endPosition);
-		result.append(')');
-		return result.toString();
 	}
 
 } //LetStatementImpl

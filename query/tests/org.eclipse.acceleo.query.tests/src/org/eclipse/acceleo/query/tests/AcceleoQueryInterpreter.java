@@ -18,9 +18,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.parser.AstEvaluator;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;

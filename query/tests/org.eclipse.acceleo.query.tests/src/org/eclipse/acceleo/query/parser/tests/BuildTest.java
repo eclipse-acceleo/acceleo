@@ -44,8 +44,7 @@ import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
@@ -61,9 +60,9 @@ import static org.junit.Assert.assertTrue;
 
 public class BuildTest {
 
-	QueryBuilderEngine engine;
+	private QueryBuilderEngine engine;
 
-	IQueryEnvironment queryEnvironment;
+	private IQueryEnvironment queryEnvironment;
 
 	@Before
 	public void setup() {
@@ -71,7 +70,6 @@ public class BuildTest {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		engine = new QueryBuilderEngine(queryEnvironment);
-
 	}
 
 	/**
@@ -96,9 +94,9 @@ public class BuildTest {
 	 * @param actualExpression
 	 *            the actual {@link Expression}
 	 */
-	private void assertExpression(IQueryBuilderEngine.AstResult astResult,
-			Class<? extends Expression> expectedClass, int expectedStartPosition, int expectedStartLine,
-			int expectedStartColumn, int expectedEndPosition, int expectedEndLine, int expectedEndColumn,
+	private void assertExpression(AstResult astResult, Class<? extends Expression> expectedClass,
+			int expectedStartPosition, int expectedStartLine, int expectedStartColumn,
+			int expectedEndPosition, int expectedEndLine, int expectedEndColumn,
 			Expression actualExpression) {
 		assertTrue(expectedClass.isAssignableFrom(actualExpression.getClass()));
 		if (!Error.class.isAssignableFrom(expectedClass)) {
@@ -124,15 +122,15 @@ public class BuildTest {
 	 * @param actualVariableDeclaration
 	 *            the actual {@link VariableDeclaration}
 	 */
-	private void assertVariableDeclaration(IQueryBuilderEngine.AstResult astResult, int expectedStart,
-			int expectedEnd, VariableDeclaration actualVariableDeclaration) {
+	private void assertVariableDeclaration(AstResult astResult, int expectedStart, int expectedEnd,
+			VariableDeclaration actualVariableDeclaration) {
 		assertEquals(expectedStart, astResult.getStartPosition(actualVariableDeclaration));
 		assertEquals(expectedEnd, astResult.getEndPosition(actualVariableDeclaration));
 	}
 
 	@Test
 	public void variableTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("x");
+		AstResult build = engine.build("x");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -144,7 +142,7 @@ public class BuildTest {
 
 	@Test
 	public void featureAccessTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.name");
+		AstResult build = engine.build("self.name");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -161,7 +159,7 @@ public class BuildTest {
 
 	@Test
 	public void intliteralTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("2");
+		AstResult build = engine.build("2");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -173,7 +171,7 @@ public class BuildTest {
 
 	@Test
 	public void intliteralCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("2.toString()");
+		AstResult build = engine.build("2.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -187,7 +185,7 @@ public class BuildTest {
 
 	@Test
 	public void realliteralTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("1.0");
+		AstResult build = engine.build("1.0");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -199,7 +197,7 @@ public class BuildTest {
 
 	@Test
 	public void realliteralCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("1.0.toString()");
+		AstResult build = engine.build("1.0.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -214,7 +212,7 @@ public class BuildTest {
 
 	@Test
 	public void trueliteralTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("true");
+		AstResult build = engine.build("true");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -226,7 +224,7 @@ public class BuildTest {
 
 	@Test
 	public void trueliteralCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("true.toString()");
+		AstResult build = engine.build("true.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -241,7 +239,7 @@ public class BuildTest {
 
 	@Test
 	public void falseliteralTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("false");
+		AstResult build = engine.build("false");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -253,7 +251,7 @@ public class BuildTest {
 
 	@Test
 	public void falseliteralCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("false.toString()");
+		AstResult build = engine.build("false.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -268,7 +266,7 @@ public class BuildTest {
 
 	@Test
 	public void stringliteralTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("'acceleo query is great'");
+		AstResult build = engine.build("'acceleo query is great'");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -280,7 +278,7 @@ public class BuildTest {
 
 	@Test
 	public void stringliteralEscapeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("'\\b'");
+		AstResult build = engine.build("'\\b'");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -439,7 +437,7 @@ public class BuildTest {
 
 	@Test
 	public void stringliteralCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("'acceleo query is great'.toString()");
+		AstResult build = engine.build("'acceleo query is great'.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -454,7 +452,7 @@ public class BuildTest {
 
 	@Test
 	public void nullliteralTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("null");
+		AstResult build = engine.build("null");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -465,7 +463,7 @@ public class BuildTest {
 
 	@Test
 	public void nullliteralTestCall() {
-		IQueryBuilderEngine.AstResult build = engine.build("null.toString()");
+		AstResult build = engine.build("null.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -479,7 +477,7 @@ public class BuildTest {
 
 	@Test
 	public void lowerEqualTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("1<=2");
+		AstResult build = engine.build("1<=2");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -497,7 +495,7 @@ public class BuildTest {
 
 	@Test
 	public void lowerTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("1<2");
+		AstResult build = engine.build("1<2");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -515,7 +513,7 @@ public class BuildTest {
 
 	@Test
 	public void greaterEqualTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("1>=2");
+		AstResult build = engine.build("1>=2");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -533,7 +531,7 @@ public class BuildTest {
 
 	@Test
 	public void greaterTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("1>2");
+		AstResult build = engine.build("1>2");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -551,7 +549,7 @@ public class BuildTest {
 
 	@Test
 	public void addTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("'a' + 'b'");
+		AstResult build = engine.build("'a' + 'b'");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -569,7 +567,7 @@ public class BuildTest {
 
 	@Test
 	public void orTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("true or false");
+		AstResult build = engine.build("true or false");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -587,7 +585,7 @@ public class BuildTest {
 
 	@Test
 	public void xorTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("true xor false");
+		AstResult build = engine.build("true xor false");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -605,7 +603,7 @@ public class BuildTest {
 
 	@Test
 	public void impliesTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("true implies false");
+		AstResult build = engine.build("true implies false");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -624,7 +622,7 @@ public class BuildTest {
 
 	@Test
 	public void andTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("true and false");
+		AstResult build = engine.build("true and false");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -642,7 +640,7 @@ public class BuildTest {
 
 	@Test
 	public void notTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("not true");
+		AstResult build = engine.build("not true");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -658,7 +656,7 @@ public class BuildTest {
 
 	@Test
 	public void multTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("1*2");
+		AstResult build = engine.build("1*2");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -676,7 +674,7 @@ public class BuildTest {
 
 	@Test
 	public void sizeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->size()");
+		AstResult build = engine.build("self->size()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -692,7 +690,7 @@ public class BuildTest {
 
 	@Test
 	public void selectTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select(e | true)");
+		AstResult build = engine.build("self->select(e | true)");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -717,7 +715,7 @@ public class BuildTest {
 
 	@Test
 	public void selectWithVariableNameTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select(var | true)");
+		AstResult build = engine.build("self->select(var | true)");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -740,7 +738,7 @@ public class BuildTest {
 
 	@Test
 	public void selectWithVariableNameAndTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select(var : ecore::EClass | true)");
+		AstResult build = engine.build("self->select(var : ecore::EClass | true)");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -768,7 +766,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSeqLitEmptyTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("Sequence{}");
+		AstResult build = engine.build("Sequence{}");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -780,7 +778,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSeqLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("Sequence{ self }");
+		AstResult build = engine.build("Sequence{ self }");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -794,7 +792,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSeqLitWithValuesTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("Sequence{ self, true }");
+		AstResult build = engine.build("Sequence{ self, true }");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -810,7 +808,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSeqLitWithValuesCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("Sequence{ self, true }.toString()");
+		AstResult build = engine.build("Sequence{ self, true }.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -825,7 +823,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSetLitEmptyTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{}");
+		AstResult build = engine.build("OrderedSet{}");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -837,7 +835,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSetLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{ self }");
+		AstResult build = engine.build("OrderedSet{ self }");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -851,7 +849,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSetLitWithValuesTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{ self, true }");
+		AstResult build = engine.build("OrderedSet{ self, true }");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -867,7 +865,7 @@ public class BuildTest {
 
 	@Test
 	public void explicitSetLitWithValuesCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{ self, true }.toString()");
+		AstResult build = engine.build("OrderedSet{ self, true }.toString()");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -882,7 +880,7 @@ public class BuildTest {
 
 	@Test
 	public void seqTypeWithTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.filter(Sequence(String))");
+		AstResult build = engine.build("self.filter(Sequence(String))");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 29, 0, 29, ast);
@@ -905,7 +903,7 @@ public class BuildTest {
 
 	@Test
 	public void setTypeWithTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.filter(OrderedSet(String))");
+		AstResult build = engine.build("self.filter(OrderedSet(String))");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
@@ -928,7 +926,7 @@ public class BuildTest {
 
 	@Test
 	public void typeLiteral() {
-		IQueryBuilderEngine.AstResult build = engine.build("ecore::EClass");
+		AstResult build = engine.build("ecore::EClass");
 		Expression ast = build.getAst();
 
 		assertExpression(build, TypeLiteral.class, 0, 0, 0, 13, 0, 13, ast);
@@ -940,7 +938,7 @@ public class BuildTest {
 
 	@Test
 	public void integerTypeLiteral() {
-		IQueryBuilderEngine.AstResult build = engine.build("Integer");
+		AstResult build = engine.build("Integer");
 		Expression ast = build.getAst();
 
 		assertExpression(build, TypeLiteral.class, 0, 0, 0, 7, 0, 7, ast);
@@ -952,7 +950,7 @@ public class BuildTest {
 
 	@Test
 	public void realTypeLiteral() {
-		IQueryBuilderEngine.AstResult build = engine.build("Real");
+		AstResult build = engine.build("Real");
 		Expression ast = build.getAst();
 
 		assertExpression(build, TypeLiteral.class, 0, 0, 0, 4, 0, 4, ast);
@@ -964,7 +962,7 @@ public class BuildTest {
 
 	@Test
 	public void classifierError() {
-		IQueryBuilderEngine.AstResult build = engine.build("anydsl::EClass");
+		AstResult build = engine.build("anydsl::EClass");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorTypeLiteral.class, 0, 0, 0, 14, 0, 14, ast);
@@ -982,7 +980,7 @@ public class BuildTest {
 
 	@Test
 	public void enumLiteral() {
-		IQueryBuilderEngine.AstResult build = engine.build("anydsl::Part::Other");
+		AstResult build = engine.build("anydsl::Part::Other");
 		Expression ast = build.getAst();
 
 		assertExpression(build, EnumLiteral.class, 0, 0, 0, 19, 0, 19, ast);
@@ -995,7 +993,7 @@ public class BuildTest {
 
 	@Test
 	public void enumLiteralError() {
-		IQueryBuilderEngine.AstResult build = engine.build("anydsl::Part::NotExisting");
+		AstResult build = engine.build("anydsl::Part::NotExisting");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorEnumLiteral.class, 0, 0, 0, 25, 0, 25, ast);
@@ -1014,7 +1012,7 @@ public class BuildTest {
 
 	@Test
 	public void precedingSiblings() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.precedingSiblings()");
+		AstResult build = engine.build("self.precedingSiblings()");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 24, 0, 24, ast);
@@ -1028,7 +1026,7 @@ public class BuildTest {
 
 	@Test
 	public void precedingSiblingsType() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.precedingSiblings(ecore::EClass)");
+		AstResult build = engine.build("self.precedingSiblings(ecore::EClass)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 37, 0, 37, ast);
@@ -1045,7 +1043,7 @@ public class BuildTest {
 
 	@Test
 	public void followingSiblingsType() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.followingSiblings(ecore::EClass)");
+		AstResult build = engine.build("self.followingSiblings(ecore::EClass)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 37, 0, 37, ast);
@@ -1062,7 +1060,7 @@ public class BuildTest {
 
 	@Test
 	public void followingSiblings() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.followingSiblings()");
+		AstResult build = engine.build("self.followingSiblings()");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 24, 0, 24, ast);
@@ -1076,7 +1074,7 @@ public class BuildTest {
 
 	@Test
 	public void eInverse() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.eInverse()");
+		AstResult build = engine.build("self.eInverse()");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 15, 0, 15, ast);
@@ -1090,7 +1088,7 @@ public class BuildTest {
 
 	@Test
 	public void eInverseType() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.eInverse(ecore::EClass)");
+		AstResult build = engine.build("self.eInverse(ecore::EClass)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 28, 0, 28, ast);
@@ -1107,7 +1105,7 @@ public class BuildTest {
 
 	@Test
 	public void eInverseString() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.eInverse('name')");
+		AstResult build = engine.build("self.eInverse('name')");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 21, 0, 21, ast);
@@ -1124,7 +1122,7 @@ public class BuildTest {
 
 	@Test
 	public void letOneBinding() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a = 'a' in a");
+		AstResult build = engine.build("let a = 'a' in a");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 16, 0, 16, ast);
@@ -1138,7 +1136,7 @@ public class BuildTest {
 
 	@Test
 	public void letTwoBindings() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a = 'a', b = 'b' in a + b");
+		AstResult build = engine.build("let a = 'a', b = 'b' in a + b");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 29, 0, 29, ast);
@@ -1156,7 +1154,7 @@ public class BuildTest {
 
 	@Test
 	public void letOneBindingWithType() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a : ecore::EString = 'a' in a");
+		AstResult build = engine.build("let a : ecore::EString = 'a' in a");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 33, 0, 33, ast);
@@ -1170,8 +1168,7 @@ public class BuildTest {
 
 	@Test
 	public void letTwoBindingsWithType() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"let a : ecore::EString = 'a', b : ecore::EString = 'b' in a + b");
+		AstResult build = engine.build("let a : ecore::EString = 'a', b : ecore::EString = 'b' in a + b");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 63, 0, 63, ast);
@@ -1189,7 +1186,7 @@ public class BuildTest {
 
 	@Test
 	public void letTwoBindingsWithTypeMultiLines() {
-		IQueryBuilderEngine.AstResult build = engine.build(
+		AstResult build = engine.build(
 				"let\na\n:\necore::EString\n=\n'a',\nb\n:\necore::EString\n=\n'b'\nin\na\n+\nb");
 		final Expression ast = build.getAst();
 
@@ -1208,7 +1205,7 @@ public class BuildTest {
 
 	@Test
 	public void LetNoIn() {
-		IQueryBuilderEngine.AstResult build = engine.build("let v = self.name");
+		AstResult build = engine.build("let v = self.name");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 17, 0, 17, ast);
@@ -1219,7 +1216,7 @@ public class BuildTest {
 
 	@Test
 	public void nullTest() {
-		IQueryBuilderEngine.AstResult build = engine.build(null);
+		AstResult build = engine.build(null);
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorExpression.class, -1, -1, -1, -1, -1, -1, ast);
@@ -1232,7 +1229,7 @@ public class BuildTest {
 
 	@Test
 	public void emtpyTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("");
+		AstResult build = engine.build("");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorExpression.class, 0, 0, 0, 0, 0, 0, ast);
@@ -1245,7 +1242,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletNotTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("not");
+		AstResult build = engine.build("not");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 3, 0, 3, ast);
@@ -1263,7 +1260,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletMinTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("-");
+		AstResult build = engine.build("-");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 1, 0, 1, ast);
@@ -1281,7 +1278,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletMultTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self *");
+		AstResult build = engine.build("self *");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1300,7 +1297,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteDivTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self /");
+		AstResult build = engine.build("self /");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1319,7 +1316,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletAddTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self +");
+		AstResult build = engine.build("self +");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1338,7 +1335,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletSubTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self -");
+		AstResult build = engine.build("self -");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1373,7 +1370,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletLessTanTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self <");
+		AstResult build = engine.build("self <");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1392,7 +1389,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletLessThanEqualTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self <=");
+		AstResult build = engine.build("self <=");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
@@ -1411,7 +1408,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletGreaterThanTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self >");
+		AstResult build = engine.build("self >");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1430,7 +1427,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletGreaterThanEqualTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self >=");
+		AstResult build = engine.build("self >=");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
@@ -1449,7 +1446,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletEqualsTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self =");
+		AstResult build = engine.build("self =");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1468,7 +1465,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletEqualsJavaStyleTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self ==");
+		AstResult build = engine.build("self ==");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
@@ -1487,7 +1484,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletDiffersTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self <>");
+		AstResult build = engine.build("self <>");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
@@ -1506,7 +1503,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletDiffersJavaStyleTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self !=");
+		AstResult build = engine.build("self !=");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
@@ -1525,7 +1522,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletAndTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self and");
+		AstResult build = engine.build("self and");
 		Expression ast = build.getAst();
 
 		assertExpression(build, And.class, 0, 0, 0, 8, 0, 8, ast);
@@ -1544,7 +1541,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletOrTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self or");
+		AstResult build = engine.build("self or");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Or.class, 0, 0, 0, 7, 0, 7, ast);
@@ -1563,7 +1560,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletXorTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self xor");
+		AstResult build = engine.build("self xor");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 8, 0, 8, ast);
@@ -1582,7 +1579,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletImpliesTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self implies");
+		AstResult build = engine.build("self implies");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Implies.class, 0, 0, 0, 12, 0, 12, ast);
@@ -1602,7 +1599,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletNavigationSegmentDotTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.");
+		AstResult build = engine.build("self.");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 5, 0, 5, ast);
@@ -1619,7 +1616,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletNavigationSegmentArrowTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->");
+		AstResult build = engine.build("self->");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorCall.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1636,7 +1633,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletStringLitTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("'str");
+		AstResult build = engine.build("'str");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorStringLiteral.class, 0, 0, 0, 4, 0, 4, ast);
@@ -1651,7 +1648,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletStringLitTestInExpression() {
-		IQueryBuilderEngine.AstResult build = engine.build("self = 'str");
+		AstResult build = engine.build("self = 'str");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 11, 0, 11, ast);
@@ -1673,7 +1670,7 @@ public class BuildTest {
 	@Test
 	public void incompletRealLitTest() {
 		// TODO remove incomplete navigationSegment on integer ?
-		IQueryBuilderEngine.AstResult build = engine.build("3.");
+		AstResult build = engine.build("3.");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 2, 0, 2, ast);
@@ -1689,7 +1686,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletExplicitSeqLitTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("Sequence{");
+		AstResult build = engine.build("Sequence{");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -1704,7 +1701,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletExplicitSeqLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("Sequence{ self");
+		AstResult build = engine.build("Sequence{ self");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -1721,7 +1718,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletExplicitSeqLitWithValueAndCommaTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("Sequence{ self,");
+		AstResult build = engine.build("Sequence{ self,");
 		Expression ast = build.getAst();
 
 		assertEquals(1, build.getErrors().size());
@@ -1741,7 +1738,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletExplicitSetLitTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{");
+		AstResult build = engine.build("OrderedSet{");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -1756,7 +1753,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletExplicitSetLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{ self");
+		AstResult build = engine.build("OrderedSet{ self");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -1773,7 +1770,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletExplicitSetLitWithValueAndCommaTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{ self,");
+		AstResult build = engine.build("OrderedSet{ self,");
 		Expression ast = build.getAst();
 
 		assertEquals(1, build.getErrors().size());
@@ -1793,7 +1790,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletClassifierTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("toto::");
+		AstResult build = engine.build("toto::");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorTypeLiteral.class, 0, 0, 0, 6, 0, 6, ast);
@@ -1811,7 +1808,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletEnumLitWithPackageTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("toto::tata::");
+		AstResult build = engine.build("toto::tata::");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorEnumLiteral.class, 0, 0, 0, 12, 0, 12, ast);
@@ -1833,7 +1830,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select(");
+		AstResult build = engine.build("self->select(");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 13, 0, 13, ast);
@@ -1863,7 +1860,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithExpressionTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select(e | true");
+		AstResult build = engine.build("self->select(e | true");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 21, 0, 21, ast);
@@ -1884,7 +1881,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableNameTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a |");
+		AstResult build = engine.build("self->select( a |");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 17, 0, 17, ast);
@@ -1908,7 +1905,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableNameAndExpressionTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a | true");
+		AstResult build = engine.build("self->select( a | true");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 22, 0, 22, ast);
@@ -1929,7 +1926,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithMissingTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a :");
+		AstResult build = engine.build("self->select( a :");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 17, 0, 17, ast);
@@ -1966,7 +1963,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithErrorTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore:: |");
+		AstResult build = engine.build("self->select( a : ecore:: |");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 27, 0, 27, ast);
@@ -2004,7 +2001,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableDeclarationNoPipeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore::EClass");
+		AstResult build = engine.build("self->select( a : ecore::EClass");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
@@ -2039,7 +2036,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableDeclarationWithPipeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore::EClass |");
+		AstResult build = engine.build("self->select( a : ecore::EClass |");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 33, 0, 33, ast);
@@ -2063,7 +2060,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableDeclarationAndExpressionTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore::EClass | true");
+		AstResult build = engine.build("self->select( a : ecore::EClass | true");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 38, 0, 38, ast);
@@ -2084,7 +2081,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletServiceCallNoParameterTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.service(");
+		AstResult build = engine.build("self.service(");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 13, 0, 13, ast);
@@ -2102,7 +2099,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletServiceCallOneParameterTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.service( true");
+		AstResult build = engine.build("self.service( true");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 18, 0, 18, ast);
@@ -2122,7 +2119,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletServiceCallOneParameterAndComaTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.service( true,");
+		AstResult build = engine.build("self.service( true,");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 19, 0, 19, ast);
@@ -2147,7 +2144,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletSeqTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.filter(Sequence(");
+		AstResult build = engine.build("self.filter(Sequence(");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 21, 0, 21, ast);
@@ -2177,7 +2174,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletSeqTypeWithTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.filter(Sequence(String");
+		AstResult build = engine.build("self.filter(Sequence(String");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 27, 0, 27, ast);
@@ -2208,7 +2205,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletSetTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.filter(OrderedSet(");
+		AstResult build = engine.build("self.filter(OrderedSet(");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 23, 0, 23, ast);
@@ -2238,7 +2235,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletSetTypeWithTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self.filter(OrderedSet(String");
+		AstResult build = engine.build("self.filter(OrderedSet(String");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 29, 0, 29, ast);
@@ -2269,7 +2266,7 @@ public class BuildTest {
 
 	@Test
 	public void errorStringLiteralInSelectInCall() {
-		final IQueryBuilderEngine.AstResult build = engine.build("self->select(a | a.startsWith('");
+		final AstResult build = engine.build("self->select(a | a.startsWith('");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
@@ -2296,7 +2293,7 @@ public class BuildTest {
 
 	@Test
 	public void errorStringLiteralAndCommaInSelectInCall() {
-		final IQueryBuilderEngine.AstResult build = engine.build("self->select(a | a.startsWith(a, '");
+		final AstResult build = engine.build("self->select(a | a.startsWith(a, '");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 34, 0, 34, ast);
@@ -2324,7 +2321,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteLetNoExpression() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a=2 in");
+		AstResult build = engine.build("let a=2 in");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 10, 0, 10, ast);
@@ -2338,7 +2335,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteLetNoBindingNoExpression() {
-		IQueryBuilderEngine.AstResult build = engine.build("let");
+		AstResult build = engine.build("let");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 3, 0, 3, ast);
@@ -2348,7 +2345,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteLetNoBinding() {
-		IQueryBuilderEngine.AstResult build = engine.build("let in a");
+		AstResult build = engine.build("let in a");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 8, 0, 8, ast);
@@ -2361,7 +2358,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteLetIncompleteFirstBinding() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a= in a + b");
+		AstResult build = engine.build("let a= in a + b");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 15, 0, 15, ast);
@@ -2375,7 +2372,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteLetIncompleteFirstBindingErrorType() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a : ecore:: = in a");
+		AstResult build = engine.build("let a : ecore:: = in a");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 22, 0, 22, ast);
@@ -2391,7 +2388,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteLetIncompleteSecondBinding() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a=2 ,b= in a + b");
+		AstResult build = engine.build("let a=2 ,b= in a + b");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 20, 0, 20, ast);
@@ -2409,7 +2406,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteLetIncompleteSecondBindingErrorType() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a=2 ,b : ecore:: = in a + b");
+		AstResult build = engine.build("let a=2 ,b : ecore:: = in a + b");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 0, 0, 31, 0, 31, ast);
@@ -2430,7 +2427,7 @@ public class BuildTest {
 	 */
 	@Test
 	public void testConditional() {
-		final IQueryBuilderEngine.AstResult build = engine.build("if true then 5 else 'string' endif");
+		final AstResult build = engine.build("if true then 5 else 'string' endif");
 		Expression ast = build.getAst();
 
 		assertFalse(ast instanceof ErrorConditional);
@@ -2446,7 +2443,7 @@ public class BuildTest {
 
 	@Test
 	public void testIncompleteConditionIf() {
-		final IQueryBuilderEngine.AstResult build = engine.build("if");
+		final AstResult build = engine.build("if");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorConditional.class, 0, 0, 0, 2, 0, 2, ast);
@@ -2465,7 +2462,7 @@ public class BuildTest {
 
 	@Test
 	public void testIncompleteConditionIfThen() {
-		final IQueryBuilderEngine.AstResult build = engine.build("if then");
+		final AstResult build = engine.build("if then");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorConditional.class, 0, 0, 0, 7, 0, 7, ast);
@@ -2488,7 +2485,7 @@ public class BuildTest {
 
 	@Test
 	public void testIncompleteConditionIfThenElse() {
-		final IQueryBuilderEngine.AstResult build = engine.build("if then else");
+		final AstResult build = engine.build("if then else");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorConditional.class, 0, 0, 0, 12, 0, 12, ast);
@@ -2515,7 +2512,7 @@ public class BuildTest {
 
 	@Test
 	public void testIncompleteConditionNoExpressions() {
-		final IQueryBuilderEngine.AstResult build = engine.build("if then else endif");
+		final AstResult build = engine.build("if then else endif");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorConditional.class, 0, 0, 0, 18, 0, 18, ast);
@@ -2542,7 +2539,7 @@ public class BuildTest {
 
 	@Test
 	public void testNotPrecedenceEqual() {
-		IQueryBuilderEngine.AstResult build = engine.build("not self.name = 'self'");
+		AstResult build = engine.build("not self.name = 'self'");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 22, 0, 22, ast);
@@ -2558,7 +2555,7 @@ public class BuildTest {
 
 	@Test
 	public void testBooleanOperatorsPrecedence1() {
-		IQueryBuilderEngine.AstResult build = engine.build("not a.abstract and b.abstract or c.abstract");
+		AstResult build = engine.build("not a.abstract and b.abstract or c.abstract");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Or.class, 0, 0, 0, 43, 0, 43, ast);
@@ -2577,7 +2574,7 @@ public class BuildTest {
 
 	@Test
 	public void testBooleanOperatorsPrecedence2() {
-		IQueryBuilderEngine.AstResult build = engine.build("a.abstract or not b.abstract and c.abstract");
+		AstResult build = engine.build("a.abstract or not b.abstract and c.abstract");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Or.class, 0, 0, 0, 43, 0, 43, ast);
@@ -2596,8 +2593,7 @@ public class BuildTest {
 
 	@Test
 	public void testClassifierSetType() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"{ecore::EClass | ecore::EPackage | ecore::EAttribute}");
+		AstResult build = engine.build("{ecore::EClass | ecore::EPackage | ecore::EAttribute}");
 		Expression ast = build.getAst();
 
 		assertExpression(build, TypeSetLiteral.class, 0, 0, 0, 53, 0, 53, ast);
@@ -2614,7 +2610,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletClassifierSetType() {
-		IQueryBuilderEngine.AstResult build = engine.build("{");
+		AstResult build = engine.build("{");
 		Expression ast = build.getAst();
 
 		assertExpression(build, TypeSetLiteral.class, 0, 0, 0, 1, 0, 1, ast);
@@ -2631,7 +2627,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletClassifierSetTypeEmpty() {
-		IQueryBuilderEngine.AstResult build = engine.build("{}");
+		AstResult build = engine.build("{}");
 		Expression ast = build.getAst();
 
 		assertExpression(build, TypeSetLiteral.class, 0, 0, 0, 2, 0, 2, ast);
@@ -2647,7 +2643,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletClassifierSetTypeWithValue() {
-		IQueryBuilderEngine.AstResult build = engine.build("{ecore::EClass");
+		AstResult build = engine.build("{ecore::EClass");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -2664,7 +2660,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletClassifierSetTypeWithValueAndPipe() {
-		IQueryBuilderEngine.AstResult build = engine.build("{ecore::EClass |");
+		AstResult build = engine.build("{ecore::EClass |");
 		Expression ast = build.getAst();
 
 		assertEquals(1, build.getErrors().size());
@@ -2685,8 +2681,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletTypeSeparatorInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.packagedElement->select(e | e.oclIsTypeOf(uml:");
+		AstResult build = engine.build("self.packagedElement->select(e | e.oclIsTypeOf(uml:");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 51, 0, 51, ast);
@@ -2725,8 +2720,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletEnumLiteralSeparatorInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.packagedElement->select(e | e.oclIsTypeOf(anydsl::Color:");
+		AstResult build = engine.build("self.packagedElement->select(e | e.oclIsTypeOf(anydsl::Color:");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 61, 0, 61, ast);
@@ -2766,8 +2760,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletTypeLiteralInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.eAllContents(ecore::EClass)->select(a: ecore::");
+		AstResult build = engine.build("self.eAllContents(ecore::EClass)->select(a: ecore::");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 51, 0, 51, ast);
@@ -2795,8 +2788,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletTypeLiteralInSelectWithExpression() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.eAllContents(ecore::EClass)->select(a: ecore:: | a)");
+		AstResult build = engine.build("self.eAllContents(ecore::EClass)->select(a: ecore:: | a)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 56, 0, 56, ast);
@@ -2826,8 +2818,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletTypeLiteralInSelectWithExpression_500204() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"aPackage->reject(aPackage: Package | aPackage.eContainer() != null)");
+		AstResult build = engine.build("aPackage->reject(aPackage: Package | aPackage.eContainer() != null)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 67, 0, 67, ast);
@@ -2853,8 +2844,7 @@ public class BuildTest {
 
 	@Test
 	public void incompletParentExpressionInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.value->select(value | not (value.owner.oclAsType(uml::Slot)");
+		AstResult build = engine.build("self.value->select(value | not (value.owner.oclAsType(uml::Slot)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 64, 0, 64, ast);
@@ -2887,7 +2877,7 @@ public class BuildTest {
 
 	@Test
 	public void invalidLambda_484323() {
-		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{'hello'}->any(1)");
+		AstResult build = engine.build("OrderedSet{'hello'}->any(1)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 27, 0, 27, ast);
@@ -2912,7 +2902,7 @@ public class BuildTest {
 
 	@Test
 	public void invalidToken() {
-		IQueryBuilderEngine.AstResult build = engine.build("self µ= null");
+		AstResult build = engine.build("self µ= null");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 12, 0, 12, ast);
@@ -2928,8 +2918,7 @@ public class BuildTest {
 
 	@Test
 	public void emoji() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"Sequence{'\u1F61C','\u1F62D','\u1F63D','\u1F1EB\u1F1F7'}");
+		AstResult build = engine.build("Sequence{'\u1F61C','\u1F62D','\u1F63D','\u1F1EB\u1F1F7'}");
 		Expression ast = build.getAst();
 
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 0, 0, 31, 0, 31, ast);
@@ -2953,8 +2942,7 @@ public class BuildTest {
 
 	@Test
 	public void incompleteSelect_494432() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"var->select(oclIsKindOf(String) or oclIsKindOf(Integer))");
+		AstResult build = engine.build("var->select(oclIsKindOf(String) or oclIsKindOf(Integer))");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorCall.class, 0, 0, 0, 56, 0, 56, ast);
@@ -2965,7 +2953,7 @@ public class BuildTest {
 
 	@Test
 	public void emptySelect() {
-		IQueryBuilderEngine.AstResult build = engine.build("var->select()");
+		AstResult build = engine.build("var->select()");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorCall.class, 0, 0, 0, 13, 0, 13, ast);
@@ -2984,7 +2972,7 @@ public class BuildTest {
 
 	@Test
 	public void doubleDot() {
-		IQueryBuilderEngine.AstResult build = engine.build("fke.primaryKeyColumn()..name");
+		AstResult build = engine.build("fke.primaryKeyColumn()..name");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 28, 0, 28, ast);

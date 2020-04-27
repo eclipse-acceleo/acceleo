@@ -91,10 +91,7 @@
     <genClasses image="false" ecoreClass="acceleo.ecore#//NamedElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//NamedElement/name"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="acceleo.ecore#//ASTNode">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ASTNode/startPosition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ASTNode/endPosition"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="acceleo.ecore#//ASTNode"/>
     <genClasses image="false" ecoreClass="acceleo.ecore#//Error"/>
     <genClasses ecoreClass="acceleo.ecore#//Block">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Block/statements"/>

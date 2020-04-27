@@ -13,8 +13,8 @@ package org.eclipse.acceleo.query.services.tests;
 import java.util.Collections;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.validation.type.IType;

@@ -124,31 +124,13 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__NAME = NAMED_ELEMENT__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE__START_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE__END_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__DOCUMENTATION = NAMED_ELEMENT_FEATURE_COUNT + 2;
+	int MODULE__DOCUMENTATION = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Deprecated</b></em>' attribute.
@@ -157,7 +139,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__DEPRECATED = NAMED_ELEMENT_FEATURE_COUNT + 3;
+	int MODULE__DEPRECATED = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Metamodels</b></em>' reference list.
@@ -166,7 +148,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__METAMODELS = NAMED_ELEMENT_FEATURE_COUNT + 4;
+	int MODULE__METAMODELS = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Extends</b></em>' containment reference.
@@ -175,7 +157,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__EXTENDS = NAMED_ELEMENT_FEATURE_COUNT + 5;
+	int MODULE__EXTENDS = NAMED_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Imports</b></em>' containment reference list.
@@ -184,7 +166,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__IMPORTS = NAMED_ELEMENT_FEATURE_COUNT + 6;
+	int MODULE__IMPORTS = NAMED_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Module Elements</b></em>' containment reference list.
@@ -193,7 +175,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__MODULE_ELEMENTS = NAMED_ELEMENT_FEATURE_COUNT + 7;
+	int MODULE__MODULE_ELEMENTS = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Start Header Position</b></em>' attribute.
@@ -202,7 +184,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__START_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 8;
+	int MODULE__START_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>End Header Position</b></em>' attribute.
@@ -211,7 +193,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__END_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 9;
+	int MODULE__END_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Module</em>' class.
@@ -220,7 +202,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 10;
+	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Module</em>' class.
@@ -262,31 +244,13 @@ public interface AcceleoPackage extends EPackage {
 	int AST_NODE = 20;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE__START_POSITION = 0;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE__END_POSITION = 1;
-
-	/**
 	 * The number of structural features of the '<em>AST Node</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AST_NODE_FEATURE_COUNT = 2;
+	int AST_NODE_FEATURE_COUNT = 0;
 
 	/**
 	 * The number of operations of the '<em>AST Node</em>' class.
@@ -296,24 +260,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @ordered
 	 */
 	int AST_NODE_OPERATION_COUNT = 0;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR__END_POSITION = AST_NODE__END_POSITION;
 
 	/**
 	 * The number of structural features of the '<em>Error</em>' class.
@@ -332,24 +278,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @ordered
 	 */
 	int ERROR_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -497,24 +425,6 @@ public interface AcceleoPackage extends EPackage {
 	int METAMODEL = 2;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int METAMODEL__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int METAMODEL__END_POSITION = AST_NODE__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Referenced Package</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -550,24 +460,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_METAMODEL = 3;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_METAMODEL__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_METAMODEL__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Referenced Package</b></em>' reference.
@@ -635,24 +527,6 @@ public interface AcceleoPackage extends EPackage {
 	int IMPORT = 4;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int IMPORT__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int IMPORT__END_POSITION = AST_NODE__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Module</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -690,24 +564,6 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_IMPORT = 5;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_IMPORT__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_IMPORT__END_POSITION = ERROR__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Module</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -742,24 +598,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @ordered
 	 */
 	int ERROR_IMPORT_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_REFERENCE__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_REFERENCE__END_POSITION = AST_NODE__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
@@ -799,24 +637,6 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE_REFERENCE = 7;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE_REFERENCE__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE_REFERENCE__END_POSITION = ERROR__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -854,24 +674,6 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE_ELEMENT = 8;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_ELEMENT__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_ELEMENT__END_POSITION = AST_NODE__END_POSITION;
-
-	/**
 	 * The number of structural features of the '<em>Module Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -898,24 +700,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int COMMENT = 9;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMMENT__START_POSITION = MODULE_ELEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMMENT__END_POSITION = MODULE_ELEMENT__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -953,24 +737,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_COMMENT = 10;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_COMMENT__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_COMMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1019,24 +785,6 @@ public interface AcceleoPackage extends EPackage {
 	int COMMENT_BODY = 11;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMMENT_BODY__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMMENT_BODY__END_POSITION = AST_NODE__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1072,24 +820,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int DOCUMENTATION = 12;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1136,24 +866,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int MODULE_DOCUMENTATION = 13;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_DOCUMENTATION__START_POSITION = DOCUMENTATION__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_DOCUMENTATION__END_POSITION = DOCUMENTATION__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1227,24 +939,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_MODULE_DOCUMENTATION = 14;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE_DOCUMENTATION__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE_DOCUMENTATION__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1329,24 +1023,6 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE_ELEMENT_DOCUMENTATION = 15;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_ELEMENT_DOCUMENTATION__START_POSITION = DOCUMENTATION__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODULE_ELEMENT_DOCUMENTATION__END_POSITION = DOCUMENTATION__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1400,24 +1076,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_MODULE_ELEMENT_DOCUMENTATION = 16;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1484,24 +1142,6 @@ public interface AcceleoPackage extends EPackage {
 	int PARAMETER_DOCUMENTATION = 17;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARAMETER_DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARAMETER_DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1537,24 +1177,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int DOCUMENTED_ELEMENT = 18;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DOCUMENTED_ELEMENT__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DOCUMENTED_ELEMENT__END_POSITION = AST_NODE__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -1601,24 +1223,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int BLOCK = 22;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BLOCK__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BLOCK__END_POSITION = AST_NODE__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Statements</b></em>' containment reference list.
@@ -1693,24 +1297,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int TEMPLATE = 24;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TEMPLATE__START_POSITION = MODULE_ELEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TEMPLATE__END_POSITION = MODULE_ELEMENT__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -1820,24 +1406,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_TEMPLATE = 25;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_TEMPLATE__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_TEMPLATE__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -2039,24 +1607,6 @@ public interface AcceleoPackage extends EPackage {
 	int QUERY = 26;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int QUERY__START_POSITION = MODULE_ELEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int QUERY__END_POSITION = MODULE_ELEMENT__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2111,7 +1661,7 @@ public interface AcceleoPackage extends EPackage {
 	int QUERY__VISIBILITY = MODULE_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Body</b></em>' reference.
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2146,24 +1696,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_QUERY = 27;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_QUERY__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_QUERY__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -2220,7 +1752,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_QUERY__VISIBILITY = ERROR_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Body</b></em>' reference.
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2338,24 +1870,6 @@ public interface AcceleoPackage extends EPackage {
 	int EXPRESSION = 28;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPRESSION__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPRESSION__END_POSITION = AST_NODE__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Ast</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2391,24 +1905,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_EXPRESSION = 29;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_EXPRESSION__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_EXPRESSION__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Ast</b></em>' attribute.
@@ -2466,31 +1962,13 @@ public interface AcceleoPackage extends EPackage {
 	int VARIABLE__NAME = TYPED_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VARIABLE__START_POSITION = TYPED_ELEMENT_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VARIABLE__END_POSITION = TYPED_ELEMENT_FEATURE_COUNT + 2;
-
-	/**
 	 * The number of structural features of the '<em>Variable</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_FEATURE_COUNT = TYPED_ELEMENT_FEATURE_COUNT + 3;
+	int VARIABLE_FEATURE_COUNT = TYPED_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Variable</em>' class.
@@ -2510,24 +1988,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_VARIABLE = 31;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_VARIABLE__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_VARIABLE__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2621,24 +2081,6 @@ public interface AcceleoPackage extends EPackage {
 	int BINDING__NAME = VARIABLE__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BINDING__START_POSITION = VARIABLE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BINDING__END_POSITION = VARIABLE__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Init Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2674,24 +2116,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_BINDING = 33;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_BINDING__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_BINDING__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2794,24 +2218,6 @@ public interface AcceleoPackage extends EPackage {
 	int STATEMENT = 34;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STATEMENT__START_POSITION = AST_NODE__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STATEMENT__END_POSITION = AST_NODE__END_POSITION;
-
-	/**
 	 * The number of structural features of the '<em>Statement</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2840,25 +2246,7 @@ public interface AcceleoPackage extends EPackage {
 	int EXPRESSION_STATEMENT = 35;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPRESSION_STATEMENT__START_POSITION = STATEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPRESSION_STATEMENT__END_POSITION = STATEMENT__END_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>Expression</b></em>' reference.
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2895,25 +2283,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_EXPRESSION_STATEMENT = 36;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_EXPRESSION_STATEMENT__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_EXPRESSION_STATEMENT__END_POSITION = ERROR__END_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>Expression</b></em>' reference.
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2957,24 +2327,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int PROTECTED_AREA = 37;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROTECTED_AREA__START_POSITION = STATEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROTECTED_AREA__END_POSITION = STATEMENT__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference.
@@ -3021,24 +2373,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_PROTECTED_AREA = 38;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_PROTECTED_AREA__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_PROTECTED_AREA__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference.
@@ -3123,24 +2457,6 @@ public interface AcceleoPackage extends EPackage {
 	int FOR_STATEMENT = 39;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOR_STATEMENT__START_POSITION = STATEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOR_STATEMENT__END_POSITION = STATEMENT__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3194,24 +2510,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_FOR_STATEMENT = 40;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FOR_STATEMENT__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FOR_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
@@ -3323,24 +2621,6 @@ public interface AcceleoPackage extends EPackage {
 	int IF_STATEMENT = 41;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int IF_STATEMENT__START_POSITION = STATEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int IF_STATEMENT__END_POSITION = STATEMENT__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3394,24 +2674,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_IF_STATEMENT = 42;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_IF_STATEMENT__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_IF_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -3505,24 +2767,6 @@ public interface AcceleoPackage extends EPackage {
 	int LET_STATEMENT = 43;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LET_STATEMENT__START_POSITION = STATEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LET_STATEMENT__END_POSITION = STATEMENT__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3567,24 +2811,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_LET_STATEMENT = 44;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_LET_STATEMENT__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_LET_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
@@ -3660,24 +2886,6 @@ public interface AcceleoPackage extends EPackage {
 	int FILE_STATEMENT = 45;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FILE_STATEMENT__START_POSITION = STATEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FILE_STATEMENT__END_POSITION = STATEMENT__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3740,24 +2948,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_FILE_STATEMENT = 46;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FILE_STATEMENT__START_POSITION = ERROR__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FILE_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute.
@@ -3878,24 +3068,6 @@ public interface AcceleoPackage extends EPackage {
 	int TEXT_STATEMENT = 47;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TEXT_STATEMENT__START_POSITION = STATEMENT__START_POSITION;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TEXT_STATEMENT__END_POSITION = STATEMENT__END_POSITION;
-
-	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3946,7 +3118,7 @@ public interface AcceleoPackage extends EPackage {
 	 * The meta object id for the '<em>AST Result</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
+	 * @see org.eclipse.acceleo.query.parser.AstResult
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
@@ -4492,28 +3664,6 @@ public interface AcceleoPackage extends EPackage {
 	EClass getASTNode();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ASTNode#getStartPosition <em>Start Position</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Start Position</em>'.
-	 * @see org.eclipse.acceleo.ASTNode#getStartPosition()
-	 * @see #getASTNode()
-	 * @generated
-	 */
-	EAttribute getASTNode_StartPosition();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ASTNode#getEndPosition <em>End Position</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>End Position</em>'.
-	 * @see org.eclipse.acceleo.ASTNode#getEndPosition()
-	 * @see #getASTNode()
-	 * @generated
-	 */
-	EAttribute getASTNode_EndPosition();
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Error <em>Error</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4794,10 +3944,10 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getQuery_Visibility();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.Query#getBody <em>Body</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.Query#getBody <em>Body</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Body</em>'.
+	 * @return the meta object for the containment reference '<em>Body</em>'.
 	 * @see org.eclipse.acceleo.Query#getBody()
 	 * @see #getQuery()
 	 * @generated
@@ -5104,10 +4254,10 @@ public interface AcceleoPackage extends EPackage {
 	EClass getExpressionStatement();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.ExpressionStatement#getExpression <em>Expression</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ExpressionStatement#getExpression <em>Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Expression</em>'.
+	 * @return the meta object for the containment reference '<em>Expression</em>'.
 	 * @see org.eclipse.acceleo.ExpressionStatement#getExpression()
 	 * @see #getExpressionStatement()
 	 * @generated
@@ -5684,12 +4834,12 @@ public interface AcceleoPackage extends EPackage {
 	EEnum getOpenModeKind();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult <em>AST Result</em>}'.
+	 * Returns the meta object for data type '{@link org.eclipse.acceleo.query.parser.AstResult <em>AST Result</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>AST Result</em>'.
-	 * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
-	 * @model instanceClass="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"
+	 * @see org.eclipse.acceleo.query.parser.AstResult
+	 * @model instanceClass="org.eclipse.acceleo.query.parser.AstResult"
 	 * @generated
 	 */
 	EDataType getASTResult();
@@ -6175,22 +5325,6 @@ public interface AcceleoPackage extends EPackage {
 		EClass AST_NODE = eINSTANCE.getASTNode();
 
 		/**
-		 * The meta object literal for the '<em><b>Start Position</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute AST_NODE__START_POSITION = eINSTANCE.getASTNode_StartPosition();
-
-		/**
-		 * The meta object literal for the '<em><b>End Position</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute AST_NODE__END_POSITION = eINSTANCE.getASTNode_EndPosition();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.Error <em>Error</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6416,7 +5550,7 @@ public interface AcceleoPackage extends EPackage {
 		EAttribute QUERY__VISIBILITY = eINSTANCE.getQuery_Visibility();
 
 		/**
-		 * The meta object literal for the '<em><b>Body</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -6668,7 +5802,7 @@ public interface AcceleoPackage extends EPackage {
 		EClass EXPRESSION_STATEMENT = eINSTANCE.getExpressionStatement();
 
 		/**
-		 * The meta object literal for the '<em><b>Expression</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -7146,7 +6280,7 @@ public interface AcceleoPackage extends EPackage {
 		 * The meta object literal for the '<em>AST Result</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
+		 * @see org.eclipse.acceleo.query.parser.AstResult
 		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 		 * @generated
 		 */
