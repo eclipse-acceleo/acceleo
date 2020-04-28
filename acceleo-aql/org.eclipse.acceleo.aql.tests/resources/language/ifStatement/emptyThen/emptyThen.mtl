@@ -1,0 +1,7 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public test(anEClass : ecore::EClass)]
+[if (false)][else]
+some text
+[/if]
+[/template]

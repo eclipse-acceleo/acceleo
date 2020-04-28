@@ -1,0 +1,10 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template test(anEClass : EClass (83..107))
+    [if false (115..120) (122..122)
+    [else] (128..139)
+    [/if] (110..144) (109..145)
+  [/template] (61..156) (0..156)

@@ -1939,8 +1939,8 @@ public class AcceleoParser {
 	protected ExpressionStatement parseExpressionStatement(boolean inlined) {
 		final ExpressionStatement res;
 
-		if (!text.startsWith(END_BLOCK_PREFIX, currentPosition) && text.startsWith(EXPRESSION_STATEMENT_START,
-				currentPosition)) {
+		if (!text.startsWith(END_BLOCK_PREFIX, currentPosition) && !text.startsWith(IF_ELSE, currentPosition)
+				&& text.startsWith(EXPRESSION_STATEMENT_START, currentPosition)) {
 			final int startPosition = currentPosition;
 			currentPosition += EXPRESSION_STATEMENT_START.length();
 			skipSpaces();
