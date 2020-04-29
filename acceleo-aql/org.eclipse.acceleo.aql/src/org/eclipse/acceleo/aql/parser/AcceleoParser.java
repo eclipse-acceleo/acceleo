@@ -449,15 +449,18 @@ public class AcceleoParser {
 		int currentLine = 0;
 		int currentColumn = 0;
 		for (int i = 0; i < str.length(); i++) {
-			if (str.charAt(i) == '\n') {
+			lines[i] = currentLine;
+			columns[i] = currentColumn;
+
+			char currentCharacter = str.charAt(i);
+			if (currentCharacter == '\n') {
 				currentLine++;
 				currentColumn = 0;
 			} else {
 				currentColumn++;
 			}
-			lines[i] = currentLine;
-			columns[i] = currentColumn;
 		}
+		// User cursor may be at the position right after the last character of the String.
 		lines[str.length()] = currentLine;
 		columns[str.length()] = currentColumn;
 	}
