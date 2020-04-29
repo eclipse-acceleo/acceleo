@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getTypeAql <em>Type Aql</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getInitExpression <em>Init Expression</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingName <em>Missing Name</em>}</li>
@@ -66,6 +67,16 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * @ordered
 	 */
 	protected AstResult type = TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeAql()
+	 * @generated
+	 * @ordered
+	 */
+	protected org.eclipse.acceleo.query.ast.Expression typeAql;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -238,6 +249,59 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__TYPE, oldType,
 					type));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public org.eclipse.acceleo.query.ast.Expression getTypeAql() {
+		return typeAql;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql,
+			NotificationChain msgs) {
+		org.eclipse.acceleo.query.ast.Expression oldTypeAql = typeAql;
+		typeAql = newTypeAql;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_BINDING__TYPE_AQL, oldTypeAql, newTypeAql);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql) {
+		if (newTypeAql != typeAql) {
+			NotificationChain msgs = null;
+			if (typeAql != null)
+				msgs = ((InternalEObject)typeAql).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_BINDING__TYPE_AQL, null, msgs);
+			if (newTypeAql != null)
+				msgs = ((InternalEObject)newTypeAql).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_BINDING__TYPE_AQL, null, msgs);
+			msgs = basicSetTypeAql(newTypeAql, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__TYPE_AQL,
+					newTypeAql, newTypeAql));
 	}
 
 	/**
@@ -446,6 +510,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_BINDING__TYPE_AQL:
+				return basicSetTypeAql(null, msgs);
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
 				return basicSetInitExpression(null, msgs);
 		}
@@ -462,6 +528,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		switch (featureID) {
 			case AcceleoPackage.ERROR_BINDING__TYPE:
 				return getType();
+			case AcceleoPackage.ERROR_BINDING__TYPE_AQL:
+				return getTypeAql();
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				return getName();
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
@@ -490,6 +558,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		switch (featureID) {
 			case AcceleoPackage.ERROR_BINDING__TYPE:
 				setType((AstResult)newValue);
+				return;
+			case AcceleoPackage.ERROR_BINDING__TYPE_AQL:
+				setTypeAql((org.eclipse.acceleo.query.ast.Expression)newValue);
 				return;
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				setName((String)newValue);
@@ -527,6 +598,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			case AcceleoPackage.ERROR_BINDING__TYPE:
 				setType(TYPE_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_BINDING__TYPE_AQL:
+				setTypeAql((org.eclipse.acceleo.query.ast.Expression)null);
+				return;
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -562,6 +636,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		switch (featureID) {
 			case AcceleoPackage.ERROR_BINDING__TYPE:
 				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+			case AcceleoPackage.ERROR_BINDING__TYPE_AQL:
+				return typeAql != null;
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
@@ -592,6 +668,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			switch (derivedFeatureID) {
 				case AcceleoPackage.ERROR_BINDING__TYPE:
 					return AcceleoPackage.TYPED_ELEMENT__TYPE;
+				case AcceleoPackage.ERROR_BINDING__TYPE_AQL:
+					return AcceleoPackage.TYPED_ELEMENT__TYPE_AQL;
 				default:
 					return -1;
 			}
@@ -632,6 +710,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			switch (baseFeatureID) {
 				case AcceleoPackage.TYPED_ELEMENT__TYPE:
 					return AcceleoPackage.ERROR_BINDING__TYPE;
+				case AcceleoPackage.TYPED_ELEMENT__TYPE_AQL:
+					return AcceleoPackage.ERROR_BINDING__TYPE_AQL;
 				default:
 					return -1;
 			}

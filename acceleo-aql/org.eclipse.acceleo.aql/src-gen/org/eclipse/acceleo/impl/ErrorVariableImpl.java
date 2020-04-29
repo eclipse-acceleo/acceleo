@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,9 +16,12 @@ import org.eclipse.acceleo.ErrorVariable;
 import org.eclipse.acceleo.NamedElement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -31,6 +34,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getTypeAql <em>Type Aql</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getMissingName <em>Missing Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getMissingColon <em>Missing Colon</em>}</li>
@@ -59,6 +63,16 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * @ordered
 	 */
 	protected AstResult type = TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeAql()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression typeAql;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -189,6 +203,58 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * @generated
 	 */
 	@Override
+	public Expression getTypeAql() {
+		return typeAql;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTypeAql(Expression newTypeAql, NotificationChain msgs) {
+		Expression oldTypeAql = typeAql;
+		typeAql = newTypeAql;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_VARIABLE__TYPE_AQL, oldTypeAql, newTypeAql);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setTypeAql(Expression newTypeAql) {
+		if (newTypeAql != typeAql) {
+			NotificationChain msgs = null;
+			if (typeAql != null)
+				msgs = ((InternalEObject)typeAql).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_VARIABLE__TYPE_AQL, null, msgs);
+			if (newTypeAql != null)
+				msgs = ((InternalEObject)newTypeAql).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_VARIABLE__TYPE_AQL, null, msgs);
+			msgs = basicSetTypeAql(newTypeAql, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_VARIABLE__TYPE_AQL,
+					newTypeAql, newTypeAql));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -285,10 +351,26 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * @generated
 	 */
 	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_VARIABLE__TYPE_AQL:
+				return basicSetTypeAql(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_VARIABLE__TYPE:
 				return getType();
+			case AcceleoPackage.ERROR_VARIABLE__TYPE_AQL:
+				return getTypeAql();
 			case AcceleoPackage.ERROR_VARIABLE__NAME:
 				return getName();
 			case AcceleoPackage.ERROR_VARIABLE__MISSING_NAME:
@@ -311,6 +393,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 		switch (featureID) {
 			case AcceleoPackage.ERROR_VARIABLE__TYPE:
 				setType((AstResult)newValue);
+				return;
+			case AcceleoPackage.ERROR_VARIABLE__TYPE_AQL:
+				setTypeAql((Expression)newValue);
 				return;
 			case AcceleoPackage.ERROR_VARIABLE__NAME:
 				setName((String)newValue);
@@ -339,6 +424,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 			case AcceleoPackage.ERROR_VARIABLE__TYPE:
 				setType(TYPE_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_VARIABLE__TYPE_AQL:
+				setTypeAql((Expression)null);
+				return;
 			case AcceleoPackage.ERROR_VARIABLE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -365,6 +453,8 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 		switch (featureID) {
 			case AcceleoPackage.ERROR_VARIABLE__TYPE:
 				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+			case AcceleoPackage.ERROR_VARIABLE__TYPE_AQL:
+				return typeAql != null;
 			case AcceleoPackage.ERROR_VARIABLE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleoPackage.ERROR_VARIABLE__MISSING_NAME:
@@ -388,6 +478,8 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 			switch (derivedFeatureID) {
 				case AcceleoPackage.ERROR_VARIABLE__TYPE:
 					return AcceleoPackage.TYPED_ELEMENT__TYPE;
+				case AcceleoPackage.ERROR_VARIABLE__TYPE_AQL:
+					return AcceleoPackage.TYPED_ELEMENT__TYPE_AQL;
 				default:
 					return -1;
 			}
@@ -420,6 +512,8 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 			switch (baseFeatureID) {
 				case AcceleoPackage.TYPED_ELEMENT__TYPE:
 					return AcceleoPackage.ERROR_VARIABLE__TYPE;
+				case AcceleoPackage.TYPED_ELEMENT__TYPE_AQL:
+					return AcceleoPackage.ERROR_VARIABLE__TYPE_AQL;
 				default:
 					return -1;
 			}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2008, 2016 Obeo.&#xD;&#xA;&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;     Obeo - initial API and implementation"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2008, 2020 Obeo.&#xD;&#xA;&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;     Obeo - initial API and implementation"
     modelDirectory="/org.eclipse.acceleo.aql/src-gen" editDirectory="/org.eclipse.acceleo.aql.edit/src-gen"
     editorDirectory="/org.eclipse.acceleo.aql.editor/src-gen" modelPluginID="org.eclipse.acceleo.aql"
     modelName="Acceleo" editPluginClass="org.eclipse.acceleo.provider.AcceleoEditPlugin"
@@ -98,6 +98,7 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//TypedElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute acceleo.ecore#//TypedElement/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//TypedElement/typeAql"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Template">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Template/parameters"/>
@@ -137,6 +138,7 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Expression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Expression/ast"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Expression/aql"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorExpression"/>
     <genClasses ecoreClass="acceleo.ecore#//Variable"/>
@@ -222,5 +224,98 @@
     <genClasses ecoreClass="acceleo.ecore#//TextStatement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//TextStatement/value"/>
     </genClasses>
+  </genPackages>
+  <genPackages prefix="Ast" ecorePackage="http://www.eclipse.org/acceleo/query/1.0#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://www.eclipse.org/acceleo/query/1.0#//CallType">
+      <genEnumLiterals ecoreEnumLiteral="http://www.eclipse.org/acceleo/query/1.0#//CallType/CALLSERVICE"/>
+      <genEnumLiterals ecoreEnumLiteral="http://www.eclipse.org/acceleo/query/1.0#//CallType/CALLORAPPLY"/>
+      <genEnumLiterals ecoreEnumLiteral="http://www.eclipse.org/acceleo/query/1.0#//CallType/COLLECTIONCALL"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="http://www.eclipse.org/acceleo/query/1.0#//ObjectType"/>
+    <genClasses image="false" ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Expression"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//VarRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//VarRef/variableName"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Call">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//Call/serviceName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//Call/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Call/arguments"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Literal"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//IntegerLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//IntegerLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//RealLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//RealLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//StringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//BooleanLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//BooleanLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//EnumLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//EnumLiteral/literal"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//TypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//TypeLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//TypeSetLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//TypeSetLiteral/types"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//CollectionTypeLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//CollectionTypeLiteral/elementType"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Lambda">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Lambda/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Lambda/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//NullLiteral"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//SetInExtensionLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//SetInExtensionLiteral/values"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//SequenceInExtensionLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//SequenceInExtensionLiteral/values"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//VariableDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//VariableDeclaration/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//VariableDeclaration/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//VariableDeclaration/expression"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Error"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorExpression"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorTypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//ErrorTypeLiteral/segments"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//ErrorTypeLiteral/missingColon"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorEClassifierTypeLiteral"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorEnumLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//ErrorEnumLiteral/segments"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//ErrorEnumLiteral/missingColon"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorCall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//ErrorCall/missingEndParenthesis"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorVariableDeclaration"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorStringLiteral"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorConditional"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Binding">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://www.eclipse.org/acceleo/query/1.0#//Binding/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Binding/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Binding/value"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//ErrorBinding"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Let">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Let/bindings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Let/body"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Conditional">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Conditional/predicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Conditional/trueBranch"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://www.eclipse.org/acceleo/query/1.0#//Conditional/falseBranch"/>
+    </genClasses>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Or"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//And"/>
+    <genClasses ecoreClass="http://www.eclipse.org/acceleo/query/1.0#//Implies"/>
   </genPackages>
 </genmodel:GenModel>

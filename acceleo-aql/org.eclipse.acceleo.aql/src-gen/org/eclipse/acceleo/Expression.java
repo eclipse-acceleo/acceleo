@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.parser.AstResult;
  * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.Expression#getAst <em>Ast</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.Expression#getAql <em>Aql</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getExpression()
@@ -54,5 +55,27 @@ public interface Expression extends ASTNode {
 	 * @generated
 	 */
 	void setAst(AstResult value);
+
+	/**
+	 * Returns the value of the '<em><b>Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Aql</em>' containment reference.
+	 * @see #setAql(org.eclipse.acceleo.query.ast.Expression)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getExpression_Aql()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	org.eclipse.acceleo.query.ast.Expression getAql();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.Expression#getAql <em>Aql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Aql</em>' containment reference.
+	 * @see #getAql()
+	 * @generated
+	 */
+	void setAql(org.eclipse.acceleo.query.ast.Expression value);
 
 } // Expression

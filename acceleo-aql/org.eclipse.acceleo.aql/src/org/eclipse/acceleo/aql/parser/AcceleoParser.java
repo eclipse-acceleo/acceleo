@@ -1073,7 +1073,10 @@ public class AcceleoParser {
 			res.setVisibility(visibility);
 			res.setName(name);
 			res.getParameters().addAll(parameters);
-			res.setType(type);
+			if (type != null) {
+				res.setType(type);
+				res.setTypeAql(type.getAst());
+			}
 			res.setBody(body);
 			setPositions(res, startPosition, currentPosition);
 		} else {
@@ -1148,7 +1151,10 @@ public class AcceleoParser {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
 			}
 			res.setName(name);
-			res.setType(type);
+			if (type != null) {
+				res.setType(type);
+				res.setTypeAql(type.getAst());
+			}
 			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
@@ -1703,7 +1709,10 @@ public class AcceleoParser {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
 			}
 			res.setName(name);
-			res.setType(type);
+			if (type != null) {
+				res.setType(type);
+				res.setTypeAql(type.getAst());
+			}
 			res.setInitExpression(expression);
 			setPositions(res, startPosition, currentPosition);
 		} else {
@@ -1863,6 +1872,7 @@ public class AcceleoParser {
 		final AstResult astResult = parseWhileAqlExpression(text.substring(currentPosition, endLimit));
 		final int startPosition = currentPosition;
 		res.setAst(astResult);
+		res.setAql(astResult.getAst());
 		final int endPosition = currentPosition + astResult.getEndPosition(astResult.getAst());
 		setPositions(res, startPosition, endPosition);
 		currentPosition = endPosition;

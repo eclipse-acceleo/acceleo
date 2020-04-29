@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo;
 
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EObject;
 
@@ -24,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.TypedElement#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.TypedElement#getTypeAql <em>Type Aql</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getTypedElement()
@@ -56,5 +58,27 @@ public interface TypedElement extends EObject {
 	 * @generated
 	 */
 	void setType(AstResult value);
+
+	/**
+	 * Returns the value of the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type Aql</em>' containment reference.
+	 * @see #setTypeAql(Expression)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getTypedElement_TypeAql()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	Expression getTypeAql();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.TypedElement#getTypeAql <em>Type Aql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Type Aql</em>' containment reference.
+	 * @see #getTypeAql()
+	 * @generated
+	 */
+	void setTypeAql(Expression value);
 
 } // TypedElement

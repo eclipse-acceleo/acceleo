@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#isDeprecated <em>Deprecated</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getTypeAql <em>Type Aql</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getVisibility <em>Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getBody <em>Body</em>}</li>
@@ -120,6 +121,16 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * @ordered
 	 */
 	protected AstResult type = TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeAql()
+	 * @generated
+	 * @ordered
+	 */
+	protected org.eclipse.acceleo.query.ast.Expression typeAql;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
@@ -308,6 +319,59 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * @generated
 	 */
 	@Override
+	public org.eclipse.acceleo.query.ast.Expression getTypeAql() {
+		return typeAql;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql,
+			NotificationChain msgs) {
+		org.eclipse.acceleo.query.ast.Expression oldTypeAql = typeAql;
+		typeAql = newTypeAql;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__TYPE_AQL, oldTypeAql, newTypeAql);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql) {
+		if (newTypeAql != typeAql) {
+			NotificationChain msgs = null;
+			if (typeAql != null)
+				msgs = ((InternalEObject)typeAql).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.QUERY__TYPE_AQL, null, msgs);
+			if (newTypeAql != null)
+				msgs = ((InternalEObject)newTypeAql).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.QUERY__TYPE_AQL, null, msgs);
+			msgs = basicSetTypeAql(newTypeAql, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__TYPE_AQL, newTypeAql,
+					newTypeAql));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
@@ -419,6 +483,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		switch (featureID) {
 			case AcceleoPackage.QUERY__DOCUMENTATION:
 				return basicSetDocumentation(null, msgs);
+			case AcceleoPackage.QUERY__TYPE_AQL:
+				return basicSetTypeAql(null, msgs);
 			case AcceleoPackage.QUERY__PARAMETERS:
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 			case AcceleoPackage.QUERY__BODY:
@@ -443,6 +509,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 				return getName();
 			case AcceleoPackage.QUERY__TYPE:
 				return getType();
+			case AcceleoPackage.QUERY__TYPE_AQL:
+				return getTypeAql();
 			case AcceleoPackage.QUERY__PARAMETERS:
 				return getParameters();
 			case AcceleoPackage.QUERY__VISIBILITY:
@@ -473,6 +541,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 				return;
 			case AcceleoPackage.QUERY__TYPE:
 				setType((AstResult)newValue);
+				return;
+			case AcceleoPackage.QUERY__TYPE_AQL:
+				setTypeAql((org.eclipse.acceleo.query.ast.Expression)newValue);
 				return;
 			case AcceleoPackage.QUERY__PARAMETERS:
 				getParameters().clear();
@@ -508,6 +579,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 			case AcceleoPackage.QUERY__TYPE:
 				setType(TYPE_EDEFAULT);
 				return;
+			case AcceleoPackage.QUERY__TYPE_AQL:
+				setTypeAql((org.eclipse.acceleo.query.ast.Expression)null);
+				return;
 			case AcceleoPackage.QUERY__PARAMETERS:
 				getParameters().clear();
 				return;
@@ -537,6 +611,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleoPackage.QUERY__TYPE:
 				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+			case AcceleoPackage.QUERY__TYPE_AQL:
+				return typeAql != null;
 			case AcceleoPackage.QUERY__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
 			case AcceleoPackage.QUERY__VISIBILITY:
@@ -576,6 +652,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 			switch (derivedFeatureID) {
 				case AcceleoPackage.QUERY__TYPE:
 					return AcceleoPackage.TYPED_ELEMENT__TYPE;
+				case AcceleoPackage.QUERY__TYPE_AQL:
+					return AcceleoPackage.TYPED_ELEMENT__TYPE_AQL;
 				default:
 					return -1;
 			}
@@ -612,6 +690,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 			switch (baseFeatureID) {
 				case AcceleoPackage.TYPED_ELEMENT__TYPE:
 					return AcceleoPackage.QUERY__TYPE;
+				case AcceleoPackage.TYPED_ELEMENT__TYPE_AQL:
+					return AcceleoPackage.QUERY__TYPE_AQL;
 				default:
 					return -1;
 			}

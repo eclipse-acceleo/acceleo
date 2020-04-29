@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -1271,13 +1271,22 @@ public interface AcceleoPackage extends EPackage {
 	int TYPED_ELEMENT__TYPE = 0;
 
 	/**
+	 * The feature id for the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPED_ELEMENT__TYPE_AQL = 1;
+
+	/**
 	 * The number of structural features of the '<em>Typed Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPED_ELEMENT_FEATURE_COUNT = 1;
+	int TYPED_ELEMENT_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Typed Element</em>' class.
@@ -1643,13 +1652,22 @@ public interface AcceleoPackage extends EPackage {
 	int QUERY__TYPE = MODULE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUERY__TYPE_AQL = MODULE_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY__PARAMETERS = MODULE_ELEMENT_FEATURE_COUNT + 4;
+	int QUERY__PARAMETERS = MODULE_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
@@ -1658,7 +1676,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY__VISIBILITY = MODULE_ELEMENT_FEATURE_COUNT + 5;
+	int QUERY__VISIBILITY = MODULE_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1667,7 +1685,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY__BODY = MODULE_ELEMENT_FEATURE_COUNT + 6;
+	int QUERY__BODY = MODULE_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Query</em>' class.
@@ -1676,7 +1694,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 7;
+	int QUERY_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Query</em>' class.
@@ -1734,13 +1752,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_QUERY__TYPE = ERROR_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_QUERY__TYPE_AQL = ERROR_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__PARAMETERS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_QUERY__PARAMETERS = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
@@ -1749,7 +1776,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__VISIBILITY = ERROR_FEATURE_COUNT + 5;
+	int ERROR_QUERY__VISIBILITY = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1758,7 +1785,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__BODY = ERROR_FEATURE_COUNT + 6;
+	int ERROR_QUERY__BODY = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing Visibility</b></em>' attribute.
@@ -1767,7 +1794,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 7;
+	int ERROR_QUERY__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
@@ -1776,7 +1803,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_NAME = ERROR_FEATURE_COUNT + 8;
+	int ERROR_QUERY__MISSING_NAME = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -1785,7 +1812,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 9;
+	int ERROR_QUERY__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Missing Parameters</b></em>' attribute.
@@ -1794,7 +1821,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_PARAMETERS = ERROR_FEATURE_COUNT + 10;
+	int ERROR_QUERY__MISSING_PARAMETERS = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -1803,7 +1830,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
+	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -1812,7 +1839,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 12;
+	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -1821,7 +1848,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_TYPE = ERROR_FEATURE_COUNT + 13;
+	int ERROR_QUERY__MISSING_TYPE = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Missing Equal</b></em>' attribute.
@@ -1830,7 +1857,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 14;
+	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -1839,7 +1866,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 15;
+	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 16;
 
 	/**
 	 * The number of structural features of the '<em>Error Query</em>' class.
@@ -1848,7 +1875,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 16;
+	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 17;
 
 	/**
 	 * The number of operations of the '<em>Error Query</em>' class.
@@ -1879,13 +1906,22 @@ public interface AcceleoPackage extends EPackage {
 	int EXPRESSION__AST = AST_NODE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPRESSION__AQL = AST_NODE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Expression</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 1;
+	int EXPRESSION_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Expression</em>' class.
@@ -1916,13 +1952,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_EXPRESSION__AST = ERROR_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION__AQL = ERROR_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Error Expression</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 1;
+	int ERROR_EXPRESSION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Error Expression</em>' class.
@@ -1951,6 +1996,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @ordered
 	 */
 	int VARIABLE__TYPE = TYPED_ELEMENT__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE__TYPE_AQL = TYPED_ELEMENT__TYPE_AQL;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1999,13 +2053,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_VARIABLE__TYPE = ERROR_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE__TYPE_AQL = ERROR_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__NAME = ERROR_FEATURE_COUNT + 1;
+	int ERROR_VARIABLE__NAME = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
@@ -2014,7 +2077,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__MISSING_NAME = ERROR_FEATURE_COUNT + 2;
+	int ERROR_VARIABLE__MISSING_NAME = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -2023,7 +2086,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__MISSING_COLON = ERROR_FEATURE_COUNT + 3;
+	int ERROR_VARIABLE__MISSING_COLON = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -2032,7 +2095,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__MISSING_TYPE = ERROR_FEATURE_COUNT + 4;
+	int ERROR_VARIABLE__MISSING_TYPE = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Error Variable</em>' class.
@@ -2041,7 +2104,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
+	int ERROR_VARIABLE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Error Variable</em>' class.
@@ -2070,6 +2133,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @ordered
 	 */
 	int BINDING__TYPE = VARIABLE__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BINDING__TYPE_AQL = VARIABLE__TYPE_AQL;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2127,13 +2199,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_BINDING__TYPE = ERROR_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Type Aql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__TYPE_AQL = ERROR_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__NAME = ERROR_FEATURE_COUNT + 1;
+	int ERROR_BINDING__NAME = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Init Expression</b></em>' containment reference.
@@ -2142,7 +2223,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__INIT_EXPRESSION = ERROR_FEATURE_COUNT + 2;
+	int ERROR_BINDING__INIT_EXPRESSION = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
@@ -2151,7 +2232,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_NAME = ERROR_FEATURE_COUNT + 3;
+	int ERROR_BINDING__MISSING_NAME = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -2160,7 +2241,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_COLON = ERROR_FEATURE_COUNT + 4;
+	int ERROR_BINDING__MISSING_COLON = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -2169,7 +2250,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_TYPE = ERROR_FEATURE_COUNT + 5;
+	int ERROR_BINDING__MISSING_TYPE = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Affectation Symbole</b></em>' attribute.
@@ -2178,7 +2259,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE = ERROR_FEATURE_COUNT + 6;
+	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing Affectation Symbole Position</b></em>' attribute.
@@ -2187,7 +2268,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION = ERROR_FEATURE_COUNT + 7;
+	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Error Binding</em>' class.
@@ -2196,7 +2277,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
+	int ERROR_BINDING_FEATURE_COUNT = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Error Binding</em>' class.
@@ -3716,6 +3797,17 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getTypedElement_Type();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.TypedElement#getTypeAql <em>Type Aql</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Type Aql</em>'.
+	 * @see org.eclipse.acceleo.TypedElement#getTypeAql()
+	 * @see #getTypedElement()
+	 * @generated
+	 */
+	EReference getTypedElement_TypeAql();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Template <em>Template</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4083,6 +4175,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getExpression_Ast();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.Expression#getAql <em>Aql</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Aql</em>'.
+	 * @see org.eclipse.acceleo.Expression#getAql()
+	 * @see #getExpression()
+	 * @generated
+	 */
+	EReference getExpression_Aql();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorExpression <em>Error Expression</em>}'.
@@ -5371,6 +5474,14 @@ public interface AcceleoPackage extends EPackage {
 		EAttribute TYPED_ELEMENT__TYPE = eINSTANCE.getTypedElement_Type();
 
 		/**
+		 * The meta object literal for the '<em><b>Type Aql</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TYPED_ELEMENT__TYPE_AQL = eINSTANCE.getTypedElement_TypeAql();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.TemplateImpl <em>Template</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5656,6 +5767,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute EXPRESSION__AST = eINSTANCE.getExpression_Ast();
+
+		/**
+		 * The meta object literal for the '<em><b>Aql</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EXPRESSION__AQL = eINSTANCE.getExpression_Aql();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorExpressionImpl <em>Error Expression</em>}' class.

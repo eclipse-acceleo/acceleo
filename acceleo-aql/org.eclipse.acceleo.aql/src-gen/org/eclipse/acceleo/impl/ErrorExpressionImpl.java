@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,8 +17,10 @@ import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -31,6 +33,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionImpl#getAst <em>Ast</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionImpl#getAql <em>Aql</em>}</li>
  * </ul>
  *
  * @generated
@@ -55,6 +58,16 @@ public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected AstResult ast = AST_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAql() <em>Aql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAql()
+	 * @generated
+	 * @ordered
+	 */
+	protected org.eclipse.acceleo.query.ast.Expression aql;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -105,10 +118,79 @@ public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
+	public org.eclipse.acceleo.query.ast.Expression getAql() {
+		return aql;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetAql(org.eclipse.acceleo.query.ast.Expression newAql,
+			NotificationChain msgs) {
+		org.eclipse.acceleo.query.ast.Expression oldAql = aql;
+		aql = newAql;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_EXPRESSION__AQL, oldAql, newAql);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setAql(org.eclipse.acceleo.query.ast.Expression newAql) {
+		if (newAql != aql) {
+			NotificationChain msgs = null;
+			if (aql != null)
+				msgs = ((InternalEObject)aql).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_EXPRESSION__AQL, null, msgs);
+			if (newAql != null)
+				msgs = ((InternalEObject)newAql).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_EXPRESSION__AQL, null, msgs);
+			msgs = basicSetAql(newAql, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_EXPRESSION__AQL,
+					newAql, newAql));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION__AQL:
+				return basicSetAql(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_EXPRESSION__AST:
 				return getAst();
+			case AcceleoPackage.ERROR_EXPRESSION__AQL:
+				return getAql();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -123,6 +205,9 @@ public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case AcceleoPackage.ERROR_EXPRESSION__AST:
 				setAst((AstResult)newValue);
+				return;
+			case AcceleoPackage.ERROR_EXPRESSION__AQL:
+				setAql((org.eclipse.acceleo.query.ast.Expression)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -139,6 +224,9 @@ public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements
 			case AcceleoPackage.ERROR_EXPRESSION__AST:
 				setAst(AST_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_EXPRESSION__AQL:
+				setAql((org.eclipse.acceleo.query.ast.Expression)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -153,6 +241,8 @@ public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case AcceleoPackage.ERROR_EXPRESSION__AST:
 				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
+			case AcceleoPackage.ERROR_EXPRESSION__AQL:
+				return aql != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -168,6 +258,8 @@ public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements
 			switch (derivedFeatureID) {
 				case AcceleoPackage.ERROR_EXPRESSION__AST:
 					return AcceleoPackage.EXPRESSION__AST;
+				case AcceleoPackage.ERROR_EXPRESSION__AQL:
+					return AcceleoPackage.EXPRESSION__AQL;
 				default:
 					return -1;
 			}
@@ -186,6 +278,8 @@ public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements
 			switch (baseFeatureID) {
 				case AcceleoPackage.EXPRESSION__AST:
 					return AcceleoPackage.ERROR_EXPRESSION__AST;
+				case AcceleoPackage.EXPRESSION__AQL:
+					return AcceleoPackage.ERROR_EXPRESSION__AQL;
 				default:
 					return -1;
 			}

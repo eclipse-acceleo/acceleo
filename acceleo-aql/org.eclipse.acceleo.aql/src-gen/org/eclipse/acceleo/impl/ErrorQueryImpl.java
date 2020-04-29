@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2016 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isDeprecated <em>Deprecated</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getTypeAql <em>Type Aql</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getVisibility <em>Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getBody <em>Body</em>}</li>
@@ -132,6 +133,16 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * @ordered
 	 */
 	protected AstResult type = TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeAql()
+	 * @generated
+	 * @ordered
+	 */
+	protected org.eclipse.acceleo.query.ast.Expression typeAql;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
@@ -502,6 +513,59 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * @generated
 	 */
 	@Override
+	public org.eclipse.acceleo.query.ast.Expression getTypeAql() {
+		return typeAql;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql,
+			NotificationChain msgs) {
+		org.eclipse.acceleo.query.ast.Expression oldTypeAql = typeAql;
+		typeAql = newTypeAql;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_QUERY__TYPE_AQL, oldTypeAql, newTypeAql);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql) {
+		if (newTypeAql != typeAql) {
+			NotificationChain msgs = null;
+			if (typeAql != null)
+				msgs = ((InternalEObject)typeAql).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_QUERY__TYPE_AQL, null, msgs);
+			if (newTypeAql != null)
+				msgs = ((InternalEObject)newTypeAql).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_QUERY__TYPE_AQL, null, msgs);
+			msgs = basicSetTypeAql(newTypeAql, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__TYPE_AQL,
+					newTypeAql, newTypeAql));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
@@ -831,6 +895,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 		switch (featureID) {
 			case AcceleoPackage.ERROR_QUERY__DOCUMENTATION:
 				return basicSetDocumentation(null, msgs);
+			case AcceleoPackage.ERROR_QUERY__TYPE_AQL:
+				return basicSetTypeAql(null, msgs);
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 			case AcceleoPackage.ERROR_QUERY__BODY:
@@ -855,6 +921,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return getName();
 			case AcceleoPackage.ERROR_QUERY__TYPE:
 				return getType();
+			case AcceleoPackage.ERROR_QUERY__TYPE_AQL:
+				return getTypeAql();
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				return getParameters();
 			case AcceleoPackage.ERROR_QUERY__VISIBILITY:
@@ -903,6 +971,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return;
 			case AcceleoPackage.ERROR_QUERY__TYPE:
 				setType((AstResult)newValue);
+				return;
+			case AcceleoPackage.ERROR_QUERY__TYPE_AQL:
+				setTypeAql((org.eclipse.acceleo.query.ast.Expression)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				getParameters().clear();
@@ -965,6 +1036,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			case AcceleoPackage.ERROR_QUERY__TYPE:
 				setType(TYPE_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_QUERY__TYPE_AQL:
+				setTypeAql((org.eclipse.acceleo.query.ast.Expression)null);
+				return;
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				getParameters().clear();
 				return;
@@ -1021,6 +1095,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleoPackage.ERROR_QUERY__TYPE:
 				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+			case AcceleoPackage.ERROR_QUERY__TYPE_AQL:
+				return typeAql != null;
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
 			case AcceleoPackage.ERROR_QUERY__VISIBILITY:
@@ -1084,6 +1160,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			switch (derivedFeatureID) {
 				case AcceleoPackage.ERROR_QUERY__TYPE:
 					return AcceleoPackage.TYPED_ELEMENT__TYPE;
+				case AcceleoPackage.ERROR_QUERY__TYPE_AQL:
+					return AcceleoPackage.TYPED_ELEMENT__TYPE_AQL;
 				default:
 					return -1;
 			}
@@ -1138,6 +1216,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			switch (baseFeatureID) {
 				case AcceleoPackage.TYPED_ELEMENT__TYPE:
 					return AcceleoPackage.ERROR_QUERY__TYPE;
+				case AcceleoPackage.TYPED_ELEMENT__TYPE_AQL:
+					return AcceleoPackage.ERROR_QUERY__TYPE_AQL;
 				default:
 					return -1;
 			}
