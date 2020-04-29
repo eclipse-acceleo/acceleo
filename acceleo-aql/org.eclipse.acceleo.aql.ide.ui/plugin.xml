@@ -53,4 +53,19 @@
             id="org.eclipse.acceleo.aql.ide.ui.server">
       </contentTypeMapping>
    </extension>
+   
+      <extension
+         point="org.eclipse.compare.contentViewers">
+      <contentTypeBinding
+            contentTypeId="org.eclipse.acceleo.aql.ide.ui"
+            contentViewerId="org.eclipse.ui.genericeditor.compareViewer">
+      </contentTypeBinding>
+   </extension>
+   <extension
+         point="org.eclipse.compare.contentMergeViewers">
+      <contentTypeBinding
+            contentMergeViewerId="org.eclipse.ui.genericeditor.compareViewer"
+            contentTypeId="org.eclipse.acceleo.aql.ide.ui">
+      </contentTypeBinding>
+   </extension>
 </plugin>
