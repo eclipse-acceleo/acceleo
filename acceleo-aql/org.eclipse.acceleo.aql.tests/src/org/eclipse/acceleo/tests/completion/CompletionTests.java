@@ -116,7 +116,7 @@ public class CompletionTests {
 		final AcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(new DefaultGenerationStrategy(),
 				URI.createURI(""));
 		final AcceleoParser parser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
-		final AcceleoAstResult parsingResult = parser.parse(source);
+		final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
 		final Module module = parsingResult.getModule();
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::tests::" + module.getName(), module);
 		final List<ICompletionProposal> proposals = completor.getProposals(acceleoEnvironment, source,

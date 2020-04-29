@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug.ide;
 
-import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugEvaluator;
+import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.debug.IDSLDebugger;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.ls.IDSLDebuggerFactory;
@@ -19,7 +19,7 @@ public class AcceleoDebugFactory implements IDSLDebuggerFactory {
 
 	@Override
 	public IDSLDebugger createDebugger(IDSLDebugEventProcessor processor) {
-		return new AcceleoDebugEvaluator(processor).getDebugger();
+		return new AcceleoDebugger(processor);
 	}
 
 }

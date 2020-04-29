@@ -38,12 +38,10 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -125,9 +123,7 @@ public abstract class AbstractLanguageTestSuite {
 		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
 
 		try (FileInputStream stream = new FileInputStream(moduleFile)) {
-			astResult = parser.parse(getContent(stream, UTF_8));
-			final Resource r = new XMIResourceImpl(URI.createFileURI(moduleFile.getAbsolutePath()));
-			r.getContents().add(astResult.getModule());
+			astResult = parser.parse(getContent(stream, UTF_8), "org::eclipse::acceleo::tests::");
 			qualifiedName = "org::eclipse::acceleo::tests::" + astResult.getModule().getName();
 			environment.registerModule(qualifiedName, astResult.getModule());
 		}

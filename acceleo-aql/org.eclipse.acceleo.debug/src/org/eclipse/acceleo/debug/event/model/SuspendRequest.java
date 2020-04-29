@@ -27,8 +27,6 @@ public class SuspendRequest extends AbstractThreadRequest {
 	/**
 	 * Constructor for thread.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
 	 * @param threadID
 	 *            the {@link Thread#getId() ID}
 	 */

@@ -29,6 +29,11 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
 public class DSLDebugSocketServer {
 
 	/**
+	 * The size of the listening socket backlog.
+	 */
+	private static final int BACKLOG_SIZE = 50;
+
+	/**
 	 * The {@link ServerSocket}.
 	 */
 	private ServerSocket serverSocket;
@@ -38,9 +43,25 @@ public class DSLDebugSocketServer {
 	 */
 	private Thread serverThread;
 
+	/**
+	 * Starts the server.
+	 * 
+	 * @param dslDebugFactory
+	 *            the {@link IDSLDebuggerFactory}
+	 * @param language
+	 *            the language name
+	 * @param host
+	 *            the host to listen to
+	 * @param port
+	 *            the port to listen to
+	 * @throws UnknownHostException
+	 *             if the host is unknown
+	 * @throws IOException
+	 *             if the listening socket can't be created
+	 */
 	public synchronized void start(final IDSLDebuggerFactory dslDebugFactory, final String language,
 			String host, int port) throws UnknownHostException, IOException {
-		serverSocket = new ServerSocket(port, 50, InetAddress.getByName(host));
+		serverSocket = new ServerSocket(port, BACKLOG_SIZE, InetAddress.getByName(host));
 		serverThread = new Thread(new Runnable() {
 
 			public void run() {
@@ -65,6 +86,12 @@ public class DSLDebugSocketServer {
 		serverThread.start();
 	}
 
+	/**
+	 * Stops the server.
+	 * 
+	 * @throws IOException
+	 *             if the listening socket can't be closed
+	 */
 	public synchronized void stop() throws IOException {
 		serverThread.interrupt();
 		serverSocket.close();

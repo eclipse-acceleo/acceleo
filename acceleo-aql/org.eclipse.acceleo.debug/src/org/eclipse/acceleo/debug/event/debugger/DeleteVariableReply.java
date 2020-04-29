@@ -30,8 +30,8 @@ public class DeleteVariableReply extends AbstractThreadReply {
 	 * @param name
 	 *            the variable name
 	 */
-	public DeleteVariableReply(Long id, String name) {
-		super(id);
+	public DeleteVariableReply(Long threadID, String name) {
+		super(threadID);
 		this.name = name;
 	}
 

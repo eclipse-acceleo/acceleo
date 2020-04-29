@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.debug.tests;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.debug.AbstractDSLDebugger;
+import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.DebugPackage;
-import org.eclipse.acceleo.debug.DebugTarget;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.emf.ecore.EObject;
 
@@ -88,6 +89,11 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	private boolean disconnectCall;
 
 	/**
+	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#initialize(boolean, Map)} call has been made.
+	 */
+	private boolean initializeCall;
+
+	/**
 	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#start()} call has been made.
 	 */
 	private boolean startCall;
@@ -138,17 +144,6 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	private boolean terminateThreadCall;
 
 	/**
-	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#updateState(String, EObject)} call has been
-	 * made.
-	 */
-	private boolean updateStateCall;
-
-	/**
-	 * A Call to {@link org.eclipse.acceleo.debug.IDSLDebugger#getState()} call has been made.
-	 */
-	private boolean getStateCall;
-
-	/**
 	 * A call to
 	 * {@link org.eclipse.acceleo.debug.IDSLDebugger#getNextInstruction(String, EObject, org.eclipse.acceleo.debug.IDSLDebugger.Stepping)}
 	 * call has been made.
@@ -187,10 +182,14 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 		super(target);
 	}
 
-	public void start(boolean noDebug, Map<String, Object> arguments) {
-		startCall = true;
+	public void initialize(boolean noDebug, Map<String, Object> arguments) {
+		initializeCall = true;
 		new Thread(new Interpreter(), THREAD_NAME_1).start();
 		new Thread(new Interpreter(), THREAD_NAME_2).start();
+	}
+
+	public void start() {
+		startCall = true;
 	}
 
 	public void disconnect() {
@@ -261,12 +260,13 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 		return false;
 	}
 
-	public void updateState(Long threadID, EObject instruction) {
-		updateStateCall = true;
-	}
-
-	public DebugTarget getState() {
-		getStateCall = true;
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#getStackFrame(java.lang.Long)
+	 */
+	public List<EObject> getStackFrame(Long threadID) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -298,6 +298,16 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	 */
 	public boolean hasDisconnectCall() {
 		return disconnectCall;
+	}
+
+	/**
+	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#initialize(boolean, Map)} call has been made.
+	 * 
+	 * @return <code>true</code> if a call to
+	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#initialize(boolean, Map)} has been made.
+	 */
+	public boolean hasInitializeCall() {
+		return initializeCall;
 	}
 
 	/**
@@ -401,27 +411,6 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	}
 
 	/**
-	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#updateState(String, EObject)} call has been
-	 * made.
-	 * 
-	 * @return <code>true</code> if a call to
-	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#updateState(String, EObject)} has been made
-	 */
-	public boolean hasUpdateStateCall() {
-		return updateStateCall;
-	}
-
-	/**
-	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#getState()} call has been made.
-	 * 
-	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#getState()} has
-	 *         been made
-	 */
-	public boolean hasGetStateCall() {
-		return getStateCall;
-	}
-
-	/**
 	 * A call to
 	 * {@link org.eclipse.acceleo.debug.IDSLDebugger#getNextInstruction(String, EObject, org.eclipse.acceleo.debug.IDSLDebugger.Stepping)}
 	 * call has been made.
@@ -462,6 +451,26 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	 */
 	public boolean hasSetVariableValueCall() {
 		return setVariableValueCall;
+	}
+
+	public EObject getInstruction(String path, long line, long column) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public EObject getCurrentInstruction(Long threadID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public DSLSource getSource(EObject instruction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Map<String, Object>> getStackVariables(Long threadID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

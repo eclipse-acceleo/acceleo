@@ -77,9 +77,11 @@ import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 /**
  * Acceleo parser.
@@ -87,28 +89,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AcceleoParser {
-
-	/**
-	 * Positions for Acceleo with delegation for {@link Expression}.
-	 * 
-	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-	 */
-	public static class AcceleoPositions extends Positions {
-
-		@Override
-		protected EObject getNodeAt(EObject node, int position, int line, int column) {
-			final EObject res;
-
-			if (node instanceof Expression) {
-				res = super.getNodeAt(((Expression)node).getAst().getAst(), position, line, column);
-			} else {
-				res = super.getNodeAt(node, position, line, column);
-			}
-
-			return res;
-		}
-
-	}
 
 	/**
 	 * The module file extension.
@@ -393,7 +373,7 @@ public class AcceleoParser {
 	/**
 	 * The {@link Positions}.
 	 */
-	private AcceleoPositions positions;
+	private Positions positions;
 
 	/**
 	 * The parser currentPosition.
@@ -435,19 +415,25 @@ public class AcceleoParser {
 	 * 
 	 * @param source
 	 *            the source text
+	 * @param namespace
+	 *            the name space of the {@link Module} (org::eclipse::...)
 	 * @return the created {@link Module} if any is recognized, <code>null</code> otherwise
 	 */
-	public AcceleoAstResult parse(String source) {
+	public AcceleoAstResult parse(String source, String namespace) {
 		this.currentPosition = 0;
 		this.lines = new int[source.length() + 1];
 		this.columns = new int[source.length() + 1];
-		this.positions = new AcceleoPositions();
+		this.positions = new Positions();
 		this.text = source;
 		computeLinesAndColumns(text);
 
 		errors = new ArrayList<Error>();
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
 		final Module module = parseModule(comments);
+
+		final Resource r = new XMIResourceImpl(URI.createFileURI(namespace + QUALIFIER_SEPARATOR + module
+				.getName()));
+		r.getContents().add(module);
 
 		return new AcceleoAstResult(module, positions, errors);
 	}

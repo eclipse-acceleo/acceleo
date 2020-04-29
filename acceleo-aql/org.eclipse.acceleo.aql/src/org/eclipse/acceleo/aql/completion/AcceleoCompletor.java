@@ -71,6 +71,11 @@ import org.eclipse.emf.ecore.EPackage;
 public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 
 	/**
+	 * The name space for completion.
+	 */
+	private static final String TO_COMPLET_NAMESPACE = "to::complet";
+
+	/**
 	 * A space.
 	 */
 	private static final String SPACE = " ";
@@ -100,12 +105,12 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 			int position) {
 
 		final AcceleoParser parser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
-		final AcceleoAstResult astResult = parser.parse(source.substring(0, position));
-		acceleoEnvironment.registerModule("to::complet", astResult.getModule());
+		final AcceleoAstResult astResult = parser.parse(source.substring(0, position), TO_COMPLET_NAMESPACE);
+		acceleoEnvironment.registerModule(TO_COMPLET_NAMESPACE, astResult.getModule());
 		final AcceleoValidator validator = new AcceleoValidator(acceleoEnvironment);
 
 		return getProposals(acceleoEnvironment.getQueryEnvironment(), validator.validate(astResult,
-				"to::complet"));
+				TO_COMPLET_NAMESPACE));
 	}
 
 	/**

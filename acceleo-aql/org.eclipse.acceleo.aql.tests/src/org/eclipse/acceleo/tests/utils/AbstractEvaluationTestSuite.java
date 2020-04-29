@@ -22,22 +22,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.ModuleElement;
-import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
-import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -112,66 +106,32 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 	@Test
 	public void evaluation() throws IOException {
 		final Module module = astResult.getModule();
-
-		Template main = null;
-		for (ModuleElement element : module.getModuleElements()) {
-			if (element instanceof Template && ((Template)element).isMain()) {
-				main = (Template)element;
-				break;
-			}
-		}
-
-		final URI generatedFolderURI = URI.createURI("generated/").resolve(module.eResource().getURI());
+		final URI generatedFolderURI = URI.createURI("generated/").resolve(model.getURI());
 		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
-		final List<EObject> eObjects = new ArrayList<EObject>();
-		if (main != null && model != null) {
-			final String parameterName = main.getParameters().get(0).getName();
-			final EClassifier parameterType = (EClassifier)((TypeLiteral)main.getParameters().get(0).getType()
-					.getAst()).getValue();
-			for (EObject root : model.getContents()) {
-				if (parameterType.isInstance(root)) {
-					eObjects.add(root);
-				}
-				final Iterator<EObject> it = root.eAllContents();
-				while (it.hasNext()) {
-					final EObject eObj = it.next();
-					if (parameterType.isInstance(eObj)) {
-						eObjects.add(eObj);
-					}
-				}
-			}
+		AcceleoUtil.generate(evaluator, environment, module, model);
 
-			for (EObject eObj : eObjects) {
-				final Map<String, Object> variables = new HashMap<String, Object>();
-				variables.put(parameterName, eObj);
-				evaluator.generate(module, variables);
-			}
-
-			// assert generated content
-
-			final GenerationResult result = environment.getGenerationResult();
-			for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
-				final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(
-						memoryDestinationString.length())).resolve(generatedFolderURI);
-				final URI expectedURI = URI.createURI(generatedURI.toString() + "-expected.txt");
-				expectedGeneratedFiles.remove(expectedURI);
-				final URI actualURI = URI.createURI(generatedURI.toString() + "-actual.txt");
-				if (URIConverter.INSTANCE.exists(expectedURI, null)) {
-					final String expectedContent;
-					try (InputStream expectedStream = URIConverter.INSTANCE.createInputStream(expectedURI)) {
-						expectedContent = getContent(expectedStream, UTF_8); // TODO test other encoding
-					}
-					final String actualContent;
-					try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(
-							memoryGeneratedURI)) {
-						actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
-					}
-					assertEquals(expectedContent, actualContent);
-				} else {
-					copy(memoryGeneratedURI, actualURI);
-					unexpectedGeneratedFiles.add(actualURI);
+		// assert generated content
+		final GenerationResult result = environment.getGenerationResult();
+		for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
+			final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(
+					memoryDestinationString.length())).resolve(generatedFolderURI);
+			final URI expectedURI = URI.createURI(generatedURI.toString() + "-expected.txt");
+			expectedGeneratedFiles.remove(expectedURI);
+			final URI actualURI = URI.createURI(generatedURI.toString() + "-actual.txt");
+			if (URIConverter.INSTANCE.exists(expectedURI, null)) {
+				final String expectedContent;
+				try (InputStream expectedStream = URIConverter.INSTANCE.createInputStream(expectedURI)) {
+					expectedContent = getContent(expectedStream, UTF_8); // TODO test other encoding
 				}
+				final String actualContent;
+				try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(memoryGeneratedURI)) {
+					actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
+				}
+				assertEquals(expectedContent, actualContent);
+			} else {
+				copy(memoryGeneratedURI, actualURI);
+				unexpectedGeneratedFiles.add(actualURI);
 			}
 		}
 

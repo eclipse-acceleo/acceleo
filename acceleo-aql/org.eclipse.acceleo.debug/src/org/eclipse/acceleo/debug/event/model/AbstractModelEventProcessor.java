@@ -79,7 +79,7 @@ public abstract class AbstractModelEventProcessor implements IDSLDebugEventProce
 	protected abstract void notifyClientSetVariableValueReply(SetVariableValueReply variableValueReply);
 
 	/**
-	 * Notifies the client of a {@link SetCurrentInstructionReply}
+	 * Notifies the client of a {@link SetCurrentInstructionReply}.
 	 * 
 	 * @param setCurrentInstructionReply
 	 *            the {@link SetCurrentInstructionReply}
@@ -88,7 +88,7 @@ public abstract class AbstractModelEventProcessor implements IDSLDebugEventProce
 			SetCurrentInstructionReply setCurrentInstructionReply);
 
 	/**
-	 * Notifies the client of a {@link DeleteVariableReply}
+	 * Notifies the client of a {@link DeleteVariableReply}.
 	 * 
 	 * @param deleteVariableReply
 	 *            the {@link DeleteVariableReply}
@@ -96,7 +96,7 @@ public abstract class AbstractModelEventProcessor implements IDSLDebugEventProce
 	protected abstract void notifyClientDeleteVariableReply(DeleteVariableReply deleteVariableReply);
 
 	/**
-	 * Notifies the client of a {@link VariableReply}
+	 * Notifies the client of a {@link VariableReply}.
 	 * 
 	 * @param variableReply
 	 *            the {@link VariableReply}
@@ -172,7 +172,7 @@ public abstract class AbstractModelEventProcessor implements IDSLDebugEventProce
 	}
 
 	/**
-	 * Notifies the client of a {@link TerminatedReply}
+	 * Notifies the client of a {@link TerminatedReply}.
 	 * 
 	 * @param terminatedReply
 	 *            the {@link TerminatedReply}

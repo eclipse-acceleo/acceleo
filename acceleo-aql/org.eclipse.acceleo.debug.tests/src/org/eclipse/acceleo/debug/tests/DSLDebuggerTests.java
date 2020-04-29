@@ -17,6 +17,7 @@ import org.eclipse.acceleo.debug.Variable;
 import org.eclipse.acceleo.debug.event.IDSLDebugEvent;
 import org.eclipse.acceleo.debug.event.debugger.TerminatedReply;
 import org.eclipse.acceleo.debug.event.model.DisconnectRequest;
+import org.eclipse.acceleo.debug.event.model.InitializeRequest;
 import org.eclipse.acceleo.debug.event.model.ResumeRequest;
 import org.eclipse.acceleo.debug.event.model.SetVariableValueRequest;
 import org.eclipse.acceleo.debug.event.model.StartRequest;
@@ -44,11 +45,25 @@ public class DSLDebuggerTests {
 	 * {@link org.eclipse.acceleo.debug.IDSLDebugger#handleEvent(org.eclipse.acceleo.debug.event.IDSLDebugEvent)}.
 	 */
 	@Test
+	public void handleEventInitializeRequest() {
+		final TestEventProcessor target = new TestEventProcessor();
+		final TestDSLDebugger debugger = new TestDSLDebugger(target);
+
+		debugger.handleEvent(new InitializeRequest(false, Collections.<String, Object> emptyMap()));
+
+		assertTrue(debugger.hasInitializeCall());
+	}
+
+	/**
+	 * Tests
+	 * {@link org.eclipse.acceleo.debug.IDSLDebugger#handleEvent(org.eclipse.acceleo.debug.event.IDSLDebugEvent)}.
+	 */
+	@Test
 	public void handleEventStartRequest() {
 		final TestEventProcessor target = new TestEventProcessor();
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
-		debugger.handleEvent(new StartRequest(false, Collections.<String, Object> emptyMap()));
+		debugger.handleEvent(new StartRequest());
 
 		assertTrue(debugger.hasStartCall());
 	}

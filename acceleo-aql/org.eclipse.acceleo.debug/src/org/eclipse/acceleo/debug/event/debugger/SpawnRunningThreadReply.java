@@ -34,8 +34,8 @@ public class SpawnRunningThreadReply extends AbstractThreadReply {
 	 * 
 	 * @param threadID
 	 *            the {@link Thread#getId() ID}
-	 * @param the
-	 *            {@link Thread#getName() thread name}
+	 * @param threadName
+	 *            the {@link Thread#getName() thread name}
 	 * @param context
 	 *            the {@link EObject} representing the current context of the thread
 	 */

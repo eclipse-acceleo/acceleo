@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.core.resources.IResource"
+            class="org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.LaunchableAdapterFactory">
+         <adapter
+               type="org.eclipse.debug.ui.actions.ILaunchable">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.AcceleoTabGroup"
+            description="Run and Debug Acceleo 4 generation"
+            id="org.eclipse.acceleo.aql.ls.debug.ide.ui.launchConfigurationTabGroup"
+            type="org.eclipse.acceleo.aql.ls.debug.ide.launchConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.acceleo.aql.ls.debug.ide.launchConfigurationType"
+            icon="icons/AcceleoLaunch.gif"
+            id="org.eclipse.acceleo.aql.ls.debug.ide.ui.launchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.AcceleoLaunchShortcut"
+            description="Run and Debug Acceleo 4 generation"
+            icon="icons/AcceleoLaunch.gif"
+            id="org.eclipse.acceleo.aql.ls.debug.ide.ui.shortcut"
+            label="Acceleo 4"
+            modes="run, debug">
+      </shortcut>
+   </extension>
+
+</plugin>

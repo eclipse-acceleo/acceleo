@@ -15,9 +15,9 @@ import java.util.List;
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.parser.AcceleoParser.AcceleoPositions;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -33,9 +33,9 @@ public class AcceleoAstResult {
 	private final Module module;
 
 	/**
-	 * {@link AcceleoPositions}.
+	 * {@link Positions}.
 	 */
-	private AcceleoPositions positions;
+	private Positions positions;
 
 	/**
 	 * The {@link List} of {@link Error}.
@@ -48,11 +48,11 @@ public class AcceleoAstResult {
 	 * @param module
 	 *            the {@link AcceleoParser#parse(String) parsed} {@link Module}
 	 * @param positions
-	 *            the {@link AcceleoPositions}
+	 *            the {@link Positions}
 	 * @param errors
 	 *            the {@link List} of {@link Error}
 	 */
-	public AcceleoAstResult(Module module, AcceleoPositions positions, List<Error> errors) {
+	public AcceleoAstResult(Module module, Positions positions, List<Error> errors) {
 		this.module = module;
 		this.positions = positions;
 		this.errors = errors;

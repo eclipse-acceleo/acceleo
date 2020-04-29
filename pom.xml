@@ -89,6 +89,9 @@
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.ui</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.tests</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide.ui</module>
   </modules>
 
   <distributionManagement>

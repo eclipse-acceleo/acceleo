@@ -141,7 +141,8 @@ public class AcceleoTextDocument {
 	 */
 	private void setContents(String newTextDocumentContents) {
 		this.textDocumentContents = newTextDocumentContents;
-		this.parsedAcceleoAstResult = this.getParser().parse(this.textDocumentContents);
+		// TODO namespace
+		this.parsedAcceleoAstResult = this.getParser().parse(this.textDocumentContents, "org::todo");
 	}
 
 	/**

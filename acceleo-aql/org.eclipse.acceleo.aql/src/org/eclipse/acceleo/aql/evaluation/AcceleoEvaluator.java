@@ -150,6 +150,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
+	 * Gets the variables stack.
+	 * 
+	 * @return the variables stack
+	 */
+	protected Deque<Map<String, Object>> getVariablesStack() {
+		return variablesStack;
+	}
+
+	/**
 	 * Gets the {@link IQueryEvaluationEngine}.
 	 * 
 	 * @return the {@link IQueryEvaluationEngine}

@@ -12,6 +12,7 @@ package org.eclipse.acceleo.debug;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,6 +35,7 @@ import org.eclipse.acceleo.debug.event.model.AbstractStepRequest;
 import org.eclipse.acceleo.debug.event.model.AddBreakpointRequest;
 import org.eclipse.acceleo.debug.event.model.ChangeBreakPointRequest;
 import org.eclipse.acceleo.debug.event.model.DisconnectRequest;
+import org.eclipse.acceleo.debug.event.model.InitializeRequest;
 import org.eclipse.acceleo.debug.event.model.RemoveBreakpointRequest;
 import org.eclipse.acceleo.debug.event.model.ResumeRequest;
 import org.eclipse.acceleo.debug.event.model.SetVariableValueRequest;
@@ -74,6 +76,11 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	private final Map<Long, ThreadController> controllers = new ConcurrentHashMap<Long, ThreadController>();
 
 	/**
+	 * Mapping from the thread id to its name.
+	 */
+	private final Map<Long, String> threads = new LinkedHashMap<Long, String>();
+
+	/**
 	 * Instructions marked as breakpoints with their attributes.
 	 */
 	private final Map<URI, Map<String, Serializable>> breakpoints = new HashMap<URI, Map<String, Serializable>>();
@@ -104,6 +111,11 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		return breakpoints;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor#handleEvent(org.eclipse.acceleo.debug.event.IDSLDebugEvent)
+	 */
 	public Object handleEvent(IDSLDebugEvent event) {
 		Object res = null;
 
@@ -123,8 +135,10 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 			res = handleValidateVariableValueRequest((ValidateVariableValueRequest)event);
 		} else if (event instanceof SetVariableValueRequest) {
 			handleSetVariableValueRequest((SetVariableValueRequest)event);
+		} else if (event instanceof InitializeRequest) {
+			initialize(((InitializeRequest)event).isNoDebug(), ((InitializeRequest)event).getArguments());
 		} else if (event instanceof StartRequest) {
-			start(((StartRequest)event).isNoDebug(), ((StartRequest)event).getArguments());
+			start();
 		}
 
 		return res;
@@ -237,41 +251,97 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#stepped(java.lang.Long)
+	 */
 	public void stepped(final Long threadID) {
 		target.handleEvent(new SteppedReply(threadID));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#suspended(java.lang.Long)
+	 */
 	public void suspended(Long threadID) {
 		target.handleEvent(new SuspendedReply(threadID));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#breaked(java.lang.Long)
+	 */
 	public void breaked(Long threadID) {
 		target.handleEvent(new BreakpointReply(threadID));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#resuming(java.lang.Long)
+	 */
 	public void resuming(Long threadID) {
 		target.handleEvent(new ResumingReply(threadID));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#steppingInto(java.lang.Long)
+	 */
 	public void steppingInto(Long threadID) {
 		target.handleEvent(new StepIntoResumingReply(threadID));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#steppingOver(java.lang.Long)
+	 */
 	public void steppingOver(Long threadID) {
 		target.handleEvent(new StepOverResumingReply(threadID));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#steppingReturn(java.lang.Long)
+	 */
 	public void steppingReturn(Long threadID) {
 		target.handleEvent(new StepReturnResumingReply(threadID));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#terminated()
+	 */
 	public void terminated() {
 		target.handleEvent(new TerminatedReply());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#spawnRunningThread(java.lang.Long, java.lang.String,
+	 *      org.eclipse.emf.ecore.EObject)
+	 */
 	public void spawnRunningThread(Long threadID, String threadName, EObject context) {
 		target.handleEvent(new SpawnRunningThreadReply(threadID, threadName, context));
-		controllers.put(threadID, createThreadHandler(threadID));
+		controllers.put(threadID, createThreadController(threadID));
+		threads.put(threadID, threadName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#getThreads()
+	 */
+	public Map<Long, String> getThreads() {
+		return new LinkedHashMap<Long, String>(threads);
 	}
 
 	/**
@@ -281,7 +351,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 *            the thread id
 	 * @return if the thread is a new Java {@link Thread} a new instance should be created
 	 */
-	protected ThreadController createThreadHandler(Long threadID) {
+	protected ThreadController createThreadController(Long threadID) {
 		return new ThreadController(this, threadID);
 	}
 
@@ -293,6 +363,12 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		return terminated;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#getNextInstruction(java.lang.Long,
+	 *      org.eclipse.emf.ecore.EObject, org.eclipse.acceleo.debug.IDSLDebugger.Stepping)
+	 */
 	public abstract EObject getNextInstruction(Long threadID, EObject currentInstruction, Stepping stepping);
 
 	/**
@@ -326,19 +402,40 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		return res;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#addBreakPoint(org.eclipse.emf.common.util.URI)
+	 */
 	public void addBreakPoint(URI instruction) {
 		breakpoints.put(instruction, new HashMap<String, Serializable>());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#removeBreakPoint(org.eclipse.emf.common.util.URI)
+	 */
 	public void removeBreakPoint(URI instruction) {
 		breakpoints.remove(instruction);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#changeBreakPoint(org.eclipse.emf.common.util.URI,
+	 *      java.lang.String, java.io.Serializable)
+	 */
 	public void changeBreakPoint(URI instruction, String attribute, Serializable value) {
 		final Map<String, Serializable> attributes = breakpoints.get(instruction);
 		attributes.put(attribute, value);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#control(java.lang.Long, org.eclipse.emf.ecore.EObject)
+	 */
 	public boolean control(Long threadID, EObject instruction) {
 		final boolean res;
 
@@ -355,26 +452,56 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		return res;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#resume(java.lang.Long)
+	 */
 	public void resume(Long threadID) {
 		controllers.get(threadID).resume();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#stepInto(java.lang.Long)
+	 */
 	public void stepInto(Long threadID) {
 		controllers.get(threadID).stepInto();
 	};
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#stepOver(java.lang.Long)
+	 */
 	public void stepOver(Long threadID) {
 		controllers.get(threadID).stepOver();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#stepReturn(java.lang.Long)
+	 */
 	public void stepReturn(Long threadID) {
 		controllers.get(threadID).stepReturn();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#suspend(java.lang.Long)
+	 */
 	public void suspend(Long threadID) {
 		controllers.get(threadID).suspend();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#terminate()
+	 */
 	public void terminate() {
 		setTerminated(true);
 		for (ThreadController controler : controllers.values()) {
@@ -383,43 +510,81 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 			}
 		}
 		controllers.clear();
+		threads.clear();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#terminate(java.lang.Long)
+	 */
 	public void terminate(Long threadID) {
 		controllers.get(threadID).terminate();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#suspend()
+	 */
 	public void suspend() {
 		for (ThreadController controler : controllers.values()) {
 			controler.suspend();
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#resume()
+	 */
 	public void resume() {
 		for (ThreadController controler : controllers.values()) {
 			controler.resume();
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#variable(java.lang.Long, java.lang.String,
+	 *      java.lang.String, java.lang.String, java.lang.Object, boolean)
+	 */
 	public void variable(Long threadID, String stackName, String declarationTypeName, String variableName,
 			Object value, boolean supportModifications) {
 		target.handleEvent(new VariableReply(threadID, stackName, declarationTypeName, variableName, value,
 				supportModifications));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#deleteVariable(java.lang.Long, java.lang.String)
+	 */
 	public void deleteVariable(Long threadID, String name) {
 		target.handleEvent(new DeleteVariableReply(threadID, name));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#terminated(java.lang.Long)
+	 */
 	public void terminated(Long threadID) {
 		target.handleEvent(new TerminatedReply(threadID));
 		controllers.remove(threadID);
+		threads.remove(threadID);
 		if (controllers.size() == 0) {
 			setTerminated(true);
 			terminated();
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#isTerminated(java.lang.Long)
+	 */
 	public boolean isTerminated(Long threadID) {
 		return !controllers.containsKey(threadID);
 	}
@@ -432,6 +597,15 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 */
 	protected void setNoDebug(boolean noDebug) {
 		this.noDebug = noDebug;
+	}
+
+	/**
+	 * Tells if no debug is needed.
+	 * 
+	 * @return <code>true</code> if no debug is needed, <code>false</code> otherwise
+	 */
+	public boolean isNoDebug() {
+		return noDebug;
 	}
 
 }

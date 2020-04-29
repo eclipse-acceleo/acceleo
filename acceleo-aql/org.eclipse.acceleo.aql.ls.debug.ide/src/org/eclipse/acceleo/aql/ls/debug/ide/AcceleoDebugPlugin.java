@@ -17,15 +17,23 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The Acceleo debugger activator.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class AcceleoDebugPlugin extends EMFPlugin {
+
 	/**
 	 * The instance.
 	 */
 	public static final AcceleoDebugPlugin INSTANCE = new AcceleoDebugPlugin();
 
 	/**
-	 * The implamentation.
+	 * The server port. TODO should be a property.
+	 */
+	public static final int PORT = 4711;
+
+	/**
+	 * The implementation.
 	 */
 	private static Implementation plugin;
 
@@ -89,12 +97,11 @@ public final class AcceleoDebugPlugin extends EMFPlugin {
 			super.start(context);
 
 			server = new DSLDebugSocketServer();
-			server.start(new AcceleoDebugFactory(), "Acceleo", "0.0.0.0", 4711);
+			server.start(new AcceleoDebugFactory(), "Acceleo", "0.0.0.0", PORT);
 		}
 
 		@Override
 		public void stop(BundleContext context) throws Exception {
-			// TODO Auto-generated method stub
 			super.stop(context);
 			server.stop();
 		}

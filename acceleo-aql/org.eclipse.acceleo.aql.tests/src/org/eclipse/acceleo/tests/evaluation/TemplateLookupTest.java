@@ -272,7 +272,7 @@ public class TemplateLookupTest {
 		InputStream content = getClass().getResourceAsStream(name);
 		try (InputStream stream = (InputStream)content) {
 			String moduleSource = AbstractLanguageTestSuite.getContent(stream, "UTF-8");
-			return parser.parse(moduleSource).getModule();
+			return parser.parse(moduleSource, "org::eclipse::acceleo::tests::").getModule();
 		}
 	}
 }

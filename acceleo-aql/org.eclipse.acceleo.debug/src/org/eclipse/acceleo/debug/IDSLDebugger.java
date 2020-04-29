@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.debug;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
@@ -49,14 +50,19 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	}
 
 	/**
-	 * Starts the debugger.
+	 * Initializes the debugger.
 	 * 
 	 * @param noDebug
 	 *            <code>true</code> if no debug is needed
 	 * @param arguments
 	 *            the {@link Map} of arguments
 	 */
-	void start(boolean noDebug, Map<String, Object> arguments);
+	void initialize(boolean noDebug, Map<String, Object> arguments);
+
+	/**
+	 * Starts the debugger.
+	 */
+	void start();
 
 	/**
 	 * Terminates the debugger.
@@ -203,6 +209,37 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	void removeBreakPoint(URI instruction);
 
 	/**
+	 * Gets the {@link EObject instruction} for the given position.
+	 * 
+	 * @param path
+	 *            the source path
+	 * @param line
+	 *            the start line
+	 * @param column
+	 *            the start column
+	 * @return the {@link EObject instruction} for the given position
+	 */
+	EObject getInstruction(String path, long line, long column);
+
+	/**
+	 * Gets the current instruction for the given {@link Thread#getThreadID() ID}.
+	 * 
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
+	 * @return the current instruction for the given {@link Thread#getThreadID() ID}
+	 */
+	EObject getCurrentInstruction(Long threadID);
+
+	/**
+	 * Gets the {@link DSLSource} for a given {@link EObject instruction}.
+	 * 
+	 * @param instruction
+	 *            the {@link EObject instruction}
+	 * @return the {@link DSLSource} for a given {@link EObject instruction}
+	 */
+	DSLSource getSource(EObject instruction);
+
+	/**
 	 * Changes the given attribute value for the given break point.
 	 * 
 	 * @param instruction
@@ -250,6 +287,15 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 *            the {@link EObject} representing the current context of the thread
 	 */
 	void spawnRunningThread(Long threadID, String threadName, EObject context);
+
+	/**
+	 * Gets the mapping from thread {@link Thread#getThreadID() ID} to
+	 * {@link org.eclipse.acceleo.debug.Thread#getName() thread name}.
+	 * 
+	 * @return the mapping from thread {@link Thread#getThreadID() ID} to
+	 *         {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 */
+	Map<Long, String> getThreads();
 
 	/**
 	 * Gets the next instruction to step on after the given {@link EObject current instruction} with the given
@@ -320,21 +366,22 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	void deleteVariable(Long threadID, String name);
 
 	/**
-	 * Updates data (stack frames, variables, ...) for the given thread and instruction.
+	 * Gets the {@link List} of stack contexts for the given {@link Thread#getThreadID() ID}.
 	 * 
 	 * @param threadID
 	 *            the {@link Thread#getThreadID() ID}
-	 * @param instruction
-	 *            the current instruction
+	 * @return the {@link List} of stack contexts for the given {@link Thread#getThreadID() ID}
 	 */
-	void updateState(Long threadID, EObject instruction);
+	List<EObject> getStackFrame(Long threadID);
 
 	/**
-	 * Gets the {@link DebugTarget} representing the current state of the debugger.
+	 * Gets the {@link List} of stack variable for the given {@link Thread#getThreadID() ID}.
 	 * 
-	 * @return the {@link DebugTarget} representing the current state of the debugger
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
+	 * @return the {@link List} of stack variable for the given {@link Thread#getThreadID() ID}
 	 */
-	DebugTarget getState();
+	List<Map<String, Object>> getStackVariables(Long threadID);
 
 	/**
 	 * The given thread is terminated.
