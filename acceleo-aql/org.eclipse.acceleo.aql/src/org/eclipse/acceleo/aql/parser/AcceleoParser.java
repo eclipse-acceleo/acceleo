@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.parser;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -729,7 +730,11 @@ public class AcceleoParser {
 		final Module res;
 
 		if (text.startsWith(MODULE_HEADER_START, currentPosition)) {
-			final int startPosition = currentPosition;
+			// Start of the whole module, including comments and documentation that may be before the
+			// '[module' declaration.
+			final int startPosition = Stream.concat(Stream.of(currentPosition), comments.stream().map(
+					positions::getStartPositions)).min(Integer::compareTo).get();
+			// Start of the header of the module, i.e. where the '[module' declaration is located.
 			final int startHeaderPosition = currentPosition;
 			currentPosition += MODULE_HEADER_START.length();
 			skipSpaces();

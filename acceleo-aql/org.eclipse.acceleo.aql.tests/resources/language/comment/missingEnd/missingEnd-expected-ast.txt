@@ -18,4 +18,4 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (118..156)
   *** error comment ***
   missing end header: 184
-  [comment a basic comment (169..184) /] (160..184) (100..184)
+  [comment a basic comment (169..184) /] (160..184) (0..184)

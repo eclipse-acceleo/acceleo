@@ -8,4 +8,4 @@ module myModule
  * @author Yvan Lussaud
  * @version 0.1.0
  * @since 0.0.1
-* (9..122) /] (0..124) (125..184)
+* (9..122) /] (0..124) (0..184)
