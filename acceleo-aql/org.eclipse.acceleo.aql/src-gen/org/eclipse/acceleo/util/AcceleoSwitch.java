@@ -43,6 +43,7 @@ import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LeafStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleDocumentation;
@@ -586,9 +587,22 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.LEAF_STATEMENT: {
+				LeafStatement leafStatement = (LeafStatement)theEObject;
+				T result = caseLeafStatement(leafStatement);
+				if (result == null)
+					result = caseStatement(leafStatement);
+				if (result == null)
+					result = caseASTNode(leafStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.EXPRESSION_STATEMENT: {
 				ExpressionStatement expressionStatement = (ExpressionStatement)theEObject;
 				T result = caseExpressionStatement(expressionStatement);
+				if (result == null)
+					result = caseLeafStatement(expressionStatement);
 				if (result == null)
 					result = caseStatement(expressionStatement);
 				if (result == null)
@@ -604,6 +618,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseError(errorExpressionStatement);
 				if (result == null)
 					result = caseExpressionStatement(errorExpressionStatement);
+				if (result == null)
+					result = caseLeafStatement(errorExpressionStatement);
 				if (result == null)
 					result = caseStatement(errorExpressionStatement);
 				if (result == null)
@@ -745,6 +761,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.TEXT_STATEMENT: {
 				TextStatement textStatement = (TextStatement)theEObject;
 				T result = caseTextStatement(textStatement);
+				if (result == null)
+					result = caseLeafStatement(textStatement);
 				if (result == null)
 					result = caseStatement(textStatement);
 				if (result == null)
@@ -1280,6 +1298,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseStatement(Statement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Leaf Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Leaf Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseLeafStatement(LeafStatement object) {
 		return null;
 	}
 

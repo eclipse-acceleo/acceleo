@@ -15,6 +15,5 @@ module myModule
   missing post end: -1
   
   public template myTemplate()
-    
- some static text.
- (109..129) (109..129)[/template] (61..140) (0..140)
+    some static text. true (112..129) (109..130)
+  [/template] (61..141) (0..141)

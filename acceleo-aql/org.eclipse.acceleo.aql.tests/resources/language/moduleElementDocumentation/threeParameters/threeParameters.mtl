@@ -7,5 +7,5 @@
  * @param myParam2 the input2 EPackage
 */]
 [template public myTemplate(myParam : ecore::EPackage,myParam1 : ecore::EPackage,myParam2 : ecore::EPackage)]
- some static text.
+  some static text.
 [/template]

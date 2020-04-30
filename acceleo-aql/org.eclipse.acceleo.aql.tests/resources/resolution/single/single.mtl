@@ -2,7 +2,7 @@
 
 [comment @main /]
 [template public t11(param1 : ecore::EPackage)]
-[file (param1.name + '.txt', overwrite)]
-generated from single.t11(EPackage)
-[/file]
+  [file (param1.name + '.txt', overwrite)]
+    generated from single.t11(EPackage)
+  [/file]
 [/template]

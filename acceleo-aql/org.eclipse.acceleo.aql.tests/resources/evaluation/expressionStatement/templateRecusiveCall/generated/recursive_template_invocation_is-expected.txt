@@ -1,13 +1,3 @@
-
-        
     start
-    
-        continue 
-    start
-    
-        stop
-    
-
-    
-
-    
+    continue   start
+    stop

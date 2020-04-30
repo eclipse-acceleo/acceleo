@@ -6,14 +6,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (107..132))
   @main
-    
-   (134..137)
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      
-     (178..183)
-      [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (184..205)/] (183..207)
-      
-   (207..210) (178..210)
-    [/file] (137..217)
-    
- (217..218) (134..218)[/template] (79..229) (0..229)
+      [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (184..205)/] true (183..207) (178..210)
+    [/file] (137..217) (134..218)
+  [/template] (79..229) (0..229)

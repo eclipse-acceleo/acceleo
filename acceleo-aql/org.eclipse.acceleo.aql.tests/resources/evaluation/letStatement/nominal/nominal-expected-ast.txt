@@ -6,20 +6,10 @@ module myModule
   
   public template myTemplate(myParam : EPackage (107..132))
   @main
-    
-   (134..137)
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      
-     (178..183)
       [let 
       myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (222..251) (188..251)
-        
-       (252..259)
-        [.aqlFeatureAccess(myVariable, 'name') (260..275)/] (259..277)
-        
-     (277..282) (252..282)[/let] (183..288)
-      
-   (288..291) (178..291)
-    [/file] (137..298)
-    
- (298..299) (134..299)[/template] (79..310) (0..310)
+        [.aqlFeatureAccess(myVariable, 'name') (260..275)/] true (259..277) (252..282)
+      [/let] (183..288) (178..291)
+    [/file] (137..298) (134..299)
+  [/template] (79..310) (0..310)

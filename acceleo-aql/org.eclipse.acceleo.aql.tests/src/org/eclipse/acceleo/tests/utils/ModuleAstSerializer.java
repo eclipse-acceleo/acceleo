@@ -531,6 +531,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			doSwitch(template.getPost());
 		}
 		doSwitch(template.getBody());
+		newLine();
 		builder.append("[/template]");
 
 		return null;
@@ -766,6 +767,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		}
 
 		doSwitch(let.getBody());
+		newLine();
 		builder.append("[/let]");
 
 		return null;
@@ -848,7 +850,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append(text.getValue().replaceAll("\r\n",
 				AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation).replaceAll("\r",
 						AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation));
-
+		builder.append(" " + text.isNewLineNeeded());
 		return null;
 	}
 
@@ -857,6 +859,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append('[');
 		doSwitch(expressionStatement.getExpression());
 		builder.append("/]");
+		builder.append(" " + expressionStatement.isNewLineNeeded());
 
 		return null;
 	}

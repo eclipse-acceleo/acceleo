@@ -16,6 +16,5 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
   post .trim(self) (121..132)
-    
- some static text.
- (133..153) (133..153)[/template] (61..164) (0..164)
+    some static text. true (136..153) (133..154)
+  [/template] (61..165) (0..165)

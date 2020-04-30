@@ -6,20 +6,9 @@ module myModule
   
   public template myTemplate(myParam : EPackage (107..132))
   @main
-    
-   (134..137)
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      
-     (178..183)
       [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (223..243) (189..243) separator .add(.add(',', .aqlFeatureAccess(myVariable, 'name')), ',') (255..282)
-        
-       (284..291)
-        [.aqlFeatureAccess(myVariable, 'name') (292..307)/] (291..309)
-        
-     (309..314) (284..314)
-      [/for] (183..320)
-      
-   (320..323) (178..323)
-    [/file] (137..330)
-    
- (330..331) (134..331)[/template] (79..342) (0..342)
+        [.aqlFeatureAccess(myVariable, 'name') (292..307)/] true (291..309) (284..314)
+      [/for] (183..320) (178..323)
+    [/file] (137..330) (134..331)
+  [/template] (79..342) (0..342)

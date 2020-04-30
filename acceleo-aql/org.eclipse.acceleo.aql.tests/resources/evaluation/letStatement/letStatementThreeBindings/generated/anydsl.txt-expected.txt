@@ -1,7 +1,3 @@
-
-    
-      World
-      MultiNamedElement
-      NamedElement
-    
-  
+World
+MultiNamedElement
+NamedElement

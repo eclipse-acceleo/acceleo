@@ -4,12 +4,8 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     [let 
     myVariable : EString = .add(->first(.aqlFeatureAccess(myParam, 'eClassifiers')), ''') (154..190) (124..190)
-      
-    some static text.
-   (191..216) (191..216)[/let] (119..222)
-    
- (222..223) (116..223)[/template] (61..234) (0..234)
+      some static text. true (196..213) (191..216)
+    [/let] (119..222) (116..223)
+  [/template] (61..234) (0..234)

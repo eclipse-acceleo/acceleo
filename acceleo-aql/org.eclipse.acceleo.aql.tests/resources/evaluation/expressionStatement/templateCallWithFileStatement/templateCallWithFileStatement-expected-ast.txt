@@ -6,27 +6,13 @@ module myModule
   
   public template myTemplate(myParam : EPackage (107..132))
   @main
-    
-   (134..137)
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      
-     (178..183)
-      [.myOtherTemplate(myParam) (184..209)/] (183..211)
-      
-   (211..214) (178..214)
-    [/file] (137..221)
-    
- (221..222) (134..222)[/template] (79..233)
+      [.myOtherTemplate(myParam) (184..209)/] true (183..211) (178..214)
+    [/file] (137..221) (134..222)
+  [/template] (79..233)
   
   public template myOtherTemplate(myParam : EPackage (268..293))
-    
-   (295..298)
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '-myOtherTemplate.txt') (305..342) mode overwrite
-      
-     (355..360)
-      [.aqlFeatureAccess(myParam, 'name') (361..373)/] (360..375)
-      
-   (375..378) (355..378)
-    [/file] (298..385)
-    
- (385..386) (295..386)[/template] (235..397) (0..397)
+      [.aqlFeatureAccess(myParam, 'name') (361..373)/] true (360..375) (355..378)
+    [/file] (298..385) (295..386)
+  [/template] (235..397) (0..397)

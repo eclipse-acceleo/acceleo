@@ -73,6 +73,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	private static final String EMPTY_RESULT = "";
 
+	/**
+	 * A new line.
+	 */
+	private static final String NEW_LINE = "\n";
+
 	/** The current evaluation environment. */
 	private final IAcceleoEnvironment environment;
 
@@ -210,7 +215,17 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	@Override
 	public String caseExpressionStatement(ExpressionStatement expressionStatement) {
-		return toString(doSwitch(expressionStatement.getExpression()));
+		final String res;
+
+		// TODO replace all possible new lines with the right one
+		final String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
+		if (expressionStatement.isNewLineNeeded() && !expressionValue.endsWith(NEW_LINE)) {
+			res = expressionValue + NEW_LINE;
+		} else {
+			res = expressionValue;
+		}
+
+		return res;
 	}
 
 	/**
@@ -267,7 +282,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	@Override
 	public String caseTextStatement(TextStatement textStatement) {
-		return textStatement.getValue();
+		if (textStatement.isNewLineNeeded()) {
+			return textStatement.getValue() + NEW_LINE;
+		} else {
+			return textStatement.getValue();
+		}
 	}
 
 	@Override
@@ -330,7 +349,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final URI uri = URI.createURI(toString(uriObject), true).resolve(environment.getDestination());
 			try {
 				// FIXME line delimiter
-				environment.openWriter(uri, mode, charset, "\n");
+				environment.openWriter(uri, mode, charset, NEW_LINE);
 				try {
 					final String content = (String)doSwitch(fileStatement.getBody());
 					environment.write(content);

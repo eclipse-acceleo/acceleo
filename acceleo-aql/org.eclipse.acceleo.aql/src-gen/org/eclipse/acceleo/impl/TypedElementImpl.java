@@ -23,9 +23,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Typed Element</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Typed Element</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -39,8 +38,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class TypedElementImpl extends MinimalEObjectImpl.Container implements TypedElement {
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -49,8 +48,8 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -58,9 +57,9 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTypeAql()
 	 * @generated
 	 * @ordered
@@ -68,8 +67,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	protected Expression typeAql;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected TypedElementImpl() {
@@ -77,8 +75,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -87,8 +84,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -97,8 +93,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -111,8 +106,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -121,8 +115,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetTypeAql(Expression newTypeAql, NotificationChain msgs) {
@@ -140,8 +133,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -163,8 +155,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -177,8 +168,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -193,8 +183,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -211,8 +200,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -229,8 +217,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -245,8 +232,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -261,4 +247,4 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 		return result.toString();
 	}
 
-} //TypedElementImpl
+} // TypedElementImpl

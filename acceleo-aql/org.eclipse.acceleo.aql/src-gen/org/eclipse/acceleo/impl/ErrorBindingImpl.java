@@ -27,9 +27,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error Binding</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Binding</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -50,8 +49,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements ErrorBinding {
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -60,8 +59,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -69,9 +68,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTypeAql()
 	 * @generated
 	 * @ordered
@@ -80,8 +79,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -90,8 +89,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -100,8 +99,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The cached value of the '{@link #getInitExpression() <em>Init Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getInitExpression()
 	 * @generated
 	 * @ordered
@@ -109,9 +107,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected Expression initExpression;
 
 	/**
-	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
@@ -119,9 +117,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected static final int MISSING_NAME_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
@@ -129,9 +127,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected int missingName = MISSING_NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
@@ -139,9 +137,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected static final int MISSING_COLON_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
@@ -149,9 +147,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected int missingColon = MISSING_COLON_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
@@ -159,9 +157,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected static final int MISSING_TYPE_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
@@ -170,8 +168,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The default value of the '{@link #getMissingAffectationSymbole() <em>Missing Affectation Symbole</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingAffectationSymbole()
 	 * @generated
 	 * @ordered
@@ -180,8 +177,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The cached value of the '{@link #getMissingAffectationSymbole() <em>Missing Affectation Symbole</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingAffectationSymbole()
 	 * @generated
 	 * @ordered
@@ -190,8 +186,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The default value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation Symbole Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingAffectationSymbolePosition()
 	 * @generated
 	 * @ordered
@@ -200,8 +195,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * The cached value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation Symbole Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingAffectationSymbolePosition()
 	 * @generated
 	 * @ordered
@@ -209,8 +203,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected int missingAffectationSymbolePosition = MISSING_AFFECTATION_SYMBOLE_POSITION_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ErrorBindingImpl() {
@@ -218,8 +211,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -228,8 +220,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -238,8 +229,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -252,8 +242,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -262,8 +251,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql,
@@ -282,8 +270,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -305,8 +292,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -315,8 +301,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -329,8 +314,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -339,8 +323,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetInitExpression(Expression newInitExpression, NotificationChain msgs) {
@@ -358,8 +341,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -381,8 +363,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -391,8 +372,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -405,8 +385,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -415,8 +394,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -429,8 +407,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -439,8 +416,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -453,8 +429,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -463,8 +438,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -478,8 +452,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -488,8 +461,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -503,8 +475,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -519,8 +490,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -549,8 +519,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -588,8 +557,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -627,8 +595,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -658,8 +625,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -700,8 +666,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -742,8 +707,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -770,4 +734,4 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		return result.toString();
 	}
 
-} //ErrorBindingImpl
+} // ErrorBindingImpl

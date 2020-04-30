@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,8 +71,8 @@ public class QueryService extends AbstractModuleElementService {
 		List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		for (Variable var : query.getParameters()) {
-			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(null, var
-					.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
+			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
+					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
 			result.add(rawType);
 		}
@@ -88,8 +89,8 @@ public class QueryService extends AbstractModuleElementService {
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final AstValidator validator = new AstValidator(services);
 
-		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(null,
-				query.getType()).getPossibleTypes(query.getType().getAst()));
+		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(
+				Collections.emptyMap(), query.getType()).getPossibleTypes(query.getType().getAst()));
 
 		return result;
 	}

@@ -26,9 +26,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error Variable</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Variable</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -46,8 +45,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements ErrorVariable {
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -56,8 +55,8 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -65,9 +64,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTypeAql()
 	 * @generated
 	 * @ordered
@@ -76,8 +75,8 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -86,8 +85,8 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -95,9 +94,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
@@ -105,9 +104,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected static final int MISSING_NAME_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
@@ -115,9 +114,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected int missingName = MISSING_NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
@@ -125,9 +124,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected static final int MISSING_COLON_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
@@ -135,9 +134,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected int missingColon = MISSING_COLON_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
@@ -145,9 +144,9 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected static final int MISSING_TYPE_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
@@ -155,8 +154,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected int missingType = MISSING_TYPE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ErrorVariableImpl() {
@@ -164,8 +162,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -174,8 +171,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -184,8 +180,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -198,8 +193,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -208,8 +202,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetTypeAql(Expression newTypeAql, NotificationChain msgs) {
@@ -227,8 +220,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -250,8 +242,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -260,8 +251,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -274,8 +264,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -284,8 +273,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -298,8 +286,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -308,8 +295,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -322,8 +308,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -332,8 +317,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -346,8 +330,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -360,8 +343,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -384,8 +366,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -414,8 +395,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -444,8 +424,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -468,8 +447,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -502,8 +480,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -536,8 +513,7 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -560,4 +536,4 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 		return result.toString();
 	}
 
-} //ErrorVariableImpl
+} // ErrorVariableImpl

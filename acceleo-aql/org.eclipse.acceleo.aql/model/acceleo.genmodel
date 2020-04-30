@@ -160,6 +160,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorBinding/missingAffectationSymbolePosition"/>
     </genClasses>
     <genClasses image="false" ecoreClass="acceleo.ecore#//Statement"/>
+    <genClasses ecoreClass="acceleo.ecore#//LeafStatement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//LeafStatement/newLineNeeded"/>
+    </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ExpressionStatement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference acceleo.ecore#//ExpressionStatement/expression"/>
     </genClasses>

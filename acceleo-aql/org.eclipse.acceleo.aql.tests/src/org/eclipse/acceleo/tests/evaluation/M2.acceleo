@@ -2,16 +2,16 @@
 [import org::eclipse::acceleo::aql::tests::evaluation::m4/]
 
 [template public t21(param1 : ecore::EPackage)]
-generated from m2.t21(EPackage)
+  generated from m2.t21(EPackage)
 [param1.eClassifiers->first().t11()/]
 [/template]
 
 [template public overrideMe(param1 : ecore::EClass)]
-generated from m2.overrideMe(EClass)
+  generated from m2.overrideMe(EClass)
 [/template]
 
 [template private privateInBoth(param1 : ecore::EClass)]
-generated from m2.privateInBoth(EClass)
+  generated from m2.privateInBoth(EClass)
 [/template]
 
 [template public toImportsAndBack(param1 : ecore::EClass)]

@@ -2335,6 +2335,43 @@ public interface AcceleoPackage extends EPackage {
 	int STATEMENT_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.impl.LeafStatementImpl <em>Leaf Statement</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.impl.LeafStatementImpl
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getLeafStatement()
+	 * @generated
+	 */
+	int LEAF_STATEMENT = 35;
+
+	/**
+	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEAF_STATEMENT__NEW_LINE_NEEDED = STATEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Leaf Statement</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEAF_STATEMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Leaf Statement</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEAF_STATEMENT_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ExpressionStatementImpl <em>Expression Statement</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2342,7 +2379,16 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getExpressionStatement()
 	 * @generated
 	 */
-	int EXPRESSION_STATEMENT = 35;
+	int EXPRESSION_STATEMENT = 36;
+
+	/**
+	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPRESSION_STATEMENT__NEW_LINE_NEEDED = LEAF_STATEMENT__NEW_LINE_NEEDED;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -2351,7 +2397,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION_STATEMENT__EXPRESSION = STATEMENT_FEATURE_COUNT + 0;
+	int EXPRESSION_STATEMENT__EXPRESSION = LEAF_STATEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Expression Statement</em>' class.
@@ -2360,7 +2406,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION_STATEMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 1;
+	int EXPRESSION_STATEMENT_FEATURE_COUNT = LEAF_STATEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Expression Statement</em>' class.
@@ -2369,7 +2415,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION_STATEMENT_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
+	int EXPRESSION_STATEMENT_OPERATION_COUNT = LEAF_STATEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl <em>Error Expression Statement</em>}' class.
@@ -2379,7 +2425,16 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorExpressionStatement()
 	 * @generated
 	 */
-	int ERROR_EXPRESSION_STATEMENT = 36;
+	int ERROR_EXPRESSION_STATEMENT = 37;
+
+	/**
+	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -2388,7 +2443,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__EXPRESSION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_EXPRESSION_STATEMENT__EXPRESSION = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -2397,7 +2452,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 1;
+	int ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Error Expression Statement</em>' class.
@@ -2406,7 +2461,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
+	int ERROR_EXPRESSION_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Error Expression Statement</em>' class.
@@ -2425,7 +2480,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getProtectedArea()
 	 * @generated
 	 */
-	int PROTECTED_AREA = 37;
+	int PROTECTED_AREA = 38;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference.
@@ -2471,7 +2526,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorProtectedArea()
 	 * @generated
 	 */
-	int ERROR_PROTECTED_AREA = 38;
+	int ERROR_PROTECTED_AREA = 39;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference.
@@ -2553,7 +2608,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getForStatement()
 	 * @generated
 	 */
-	int FOR_STATEMENT = 39;
+	int FOR_STATEMENT = 40;
 
 	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
@@ -2608,7 +2663,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorForStatement()
 	 * @generated
 	 */
-	int ERROR_FOR_STATEMENT = 40;
+	int ERROR_FOR_STATEMENT = 41;
 
 	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
@@ -2717,7 +2772,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getIfStatement()
 	 * @generated
 	 */
-	int IF_STATEMENT = 41;
+	int IF_STATEMENT = 42;
 
 	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -2772,7 +2827,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorIfStatement()
 	 * @generated
 	 */
-	int ERROR_IF_STATEMENT = 42;
+	int ERROR_IF_STATEMENT = 43;
 
 	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -2863,7 +2918,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getLetStatement()
 	 * @generated
 	 */
-	int LET_STATEMENT = 43;
+	int LET_STATEMENT = 44;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
@@ -2909,7 +2964,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorLetStatement()
 	 * @generated
 	 */
-	int ERROR_LET_STATEMENT = 44;
+	int ERROR_LET_STATEMENT = 45;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
@@ -2982,7 +3037,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getFileStatement()
 	 * @generated
 	 */
-	int FILE_STATEMENT = 45;
+	int FILE_STATEMENT = 46;
 
 	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute.
@@ -3046,7 +3101,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorFileStatement()
 	 * @generated
 	 */
-	int ERROR_FILE_STATEMENT = 46;
+	int ERROR_FILE_STATEMENT = 47;
 
 	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute.
@@ -3164,7 +3219,16 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTextStatement()
 	 * @generated
 	 */
-	int TEXT_STATEMENT = 47;
+	int TEXT_STATEMENT = 48;
+
+	/**
+	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEXT_STATEMENT__NEW_LINE_NEEDED = LEAF_STATEMENT__NEW_LINE_NEEDED;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3173,7 +3237,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEXT_STATEMENT__VALUE = STATEMENT_FEATURE_COUNT + 0;
+	int TEXT_STATEMENT__VALUE = LEAF_STATEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Text Statement</em>' class.
@@ -3182,7 +3246,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEXT_STATEMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 1;
+	int TEXT_STATEMENT_FEATURE_COUNT = LEAF_STATEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Text Statement</em>' class.
@@ -3191,7 +3255,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEXT_STATEMENT_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
+	int TEXT_STATEMENT_OPERATION_COUNT = LEAF_STATEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.VisibilityKind <em>Visibility Kind</em>}' enum.
@@ -3201,7 +3265,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 48;
+	int VISIBILITY_KIND = 49;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.OpenModeKind <em>Open Mode Kind</em>}' enum.
@@ -3211,7 +3275,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 49;
+	int OPEN_MODE_KIND = 50;
 
 	/**
 	 * The meta object id for the '<em>AST Result</em>' data type.
@@ -3221,7 +3285,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
-	int AST_RESULT = 50;
+	int AST_RESULT = 51;
 
 	/**
 	 * The meta object id for the '<em>Module Qualified Name</em>' data type.
@@ -3231,7 +3295,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleQualifiedName()
 	 * @generated
 	 */
-	int MODULE_QUALIFIED_NAME = 51;
+	int MODULE_QUALIFIED_NAME = 52;
 
 	/**
 	 * The meta object id for the '<em>Ast Result</em>' data type.
@@ -3241,7 +3305,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoAstResult()
 	 * @generated
 	 */
-	int ACCELEO_AST_RESULT = 52;
+	int ACCELEO_AST_RESULT = 53;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Module <em>Module</em>}'.
@@ -4384,6 +4448,27 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getStatement();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.LeafStatement <em>Leaf Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Leaf Statement</em>'.
+	 * @see org.eclipse.acceleo.LeafStatement
+	 * @generated
+	 */
+	EClass getLeafStatement();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.LeafStatement#isNewLineNeeded <em>New Line Needed</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>New Line Needed</em>'.
+	 * @see org.eclipse.acceleo.LeafStatement#isNewLineNeeded()
+	 * @see #getLeafStatement()
+	 * @generated
+	 */
+	EAttribute getLeafStatement_NewLineNeeded();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ExpressionStatement <em>Expression Statement</em>}'.
@@ -5967,6 +6052,24 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EClass STATEMENT = eINSTANCE.getStatement();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.LeafStatementImpl <em>Leaf Statement</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.impl.LeafStatementImpl
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getLeafStatement()
+		 * @generated
+		 */
+		EClass LEAF_STATEMENT = eINSTANCE.getLeafStatement();
+
+		/**
+		 * The meta object literal for the '<em><b>New Line Needed</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LEAF_STATEMENT__NEW_LINE_NEEDED = eINSTANCE.getLeafStatement_NewLineNeeded();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ExpressionStatementImpl <em>Expression Statement</em>}' class.

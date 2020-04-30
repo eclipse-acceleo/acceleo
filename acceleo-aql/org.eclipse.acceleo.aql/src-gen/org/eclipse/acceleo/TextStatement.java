@@ -27,7 +27,7 @@ package org.eclipse.acceleo;
  * @model
  * @generated
  */
-public interface TextStatement extends Statement {
+public interface TextStatement extends LeafStatement {
 	/**
 	 * Returns the value of the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->

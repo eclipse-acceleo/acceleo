@@ -5,9 +5,9 @@
 
 [comment @main /]
 [template public t11(param1 : ecore::EClass)]
-[file (param1.name + '.txt', overwrite)]
-generated from import.t11(EClass)
-[param1.t41()/]
-[param1.eContainer().oclAsType(ecore::EPackage).t41()/]
-[/file]
+  [file (param1.name + '.txt', overwrite)]
+    generated from import.t11(EClass)
+    [param1.t41()/]
+    [param1.eContainer().oclAsType(ecore::EPackage).t41()/]
+  [/file]
 [/template]

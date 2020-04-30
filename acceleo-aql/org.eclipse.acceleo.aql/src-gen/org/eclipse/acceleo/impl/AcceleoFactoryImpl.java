@@ -41,6 +41,7 @@ import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LeafStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleDocumentation;
@@ -166,6 +167,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createBinding();
 			case AcceleoPackage.ERROR_BINDING:
 				return createErrorBinding();
+			case AcceleoPackage.LEAF_STATEMENT:
+				return createLeafStatement();
 			case AcceleoPackage.EXPRESSION_STATEMENT:
 				return createExpressionStatement();
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT:
@@ -552,6 +555,17 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public ErrorBinding createErrorBinding() {
 		ErrorBindingImpl errorBinding = new ErrorBindingImpl();
 		return errorBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public LeafStatement createLeafStatement() {
+		LeafStatementImpl leafStatement = new LeafStatementImpl();
+		return leafStatement;
 	}
 
 	/**

@@ -3,6 +3,6 @@
 [comment @main /]
 [template public myTemplate(myParam : ecore::EPackage)]
   [file (myParam.name + '.txt', overwrite)]
-     [comment a basic comment/]
+    [comment a basic comment/]
   [/file]
 [/template]

@@ -4,15 +4,12 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     *** error let statement ***
     missing bindings: -1
     missing end header: 192
     missing end: -1
     [let 
     myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (158..187) (124..187)
-      some static text.
-   (192..212) (192..212)[/let] (119..218)
-    
- (218..219) (116..219)[/template] (61..230) (0..230)
+      some static text. true (192..209) (192..212)
+    [/let] (119..218) (116..219)
+  [/template] (61..230) (0..230)

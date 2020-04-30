@@ -15,6 +15,5 @@ module myModule
   missing post end: -1
   
   public template myTemplate(myParam : EPackage (89..114))
-    
- some static text.
- (116..136) (116..136)[/template] (61..147) (0..147)
+    some static text. true (119..136) (116..137)
+  [/template] (61..148) (0..148)

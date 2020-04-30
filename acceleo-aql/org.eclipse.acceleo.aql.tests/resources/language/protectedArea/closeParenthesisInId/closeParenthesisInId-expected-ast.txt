@@ -4,12 +4,7 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     [protected .add(.aqlFeatureAccess(myParam, 'name'), ')') (131..149)
-      
-    some static text.
-   (151..176) (151..176)
-    [/protected] (119..188)
-    
- (188..189) (116..189)[/template] (61..200) (0..200)
+      some static text. true (156..173) (151..176)
+    [/protected] (119..188) (116..189)
+  [/template] (61..200) (0..200)

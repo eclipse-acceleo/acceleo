@@ -4,15 +4,9 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
-    [.size(.calledTemplate(myParam)) (120..151)/] (119..153)
-    
- (153..154) (116..154)[/template] (61..165)
+    [.size(.calledTemplate(myParam)) (120..151)/] true (119..153) (116..154)
+  [/template] (61..165)
   
   public template calledTemplate(myParam : EPackage (200..225))
-    
-   (227..230)
-    [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (231..252)/] (230..254)
-    
- (254..255) (227..255)[/template] (168..266) (0..268)
+    [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (231..252)/] true (230..254) (227..255)
+  [/template] (168..266) (0..268)

@@ -15,6 +15,7 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.LeafStatement;
 import org.eclipse.acceleo.Statement;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -34,6 +35,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#isNewLineNeeded <em>New Line Needed</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#getExpression <em>Expression</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
@@ -41,6 +43,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container implements ErrorExpressionStatement {
+	/**
+	 * The default value of the '{@link #isNewLineNeeded() <em>New Line Needed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isNewLineNeeded()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean NEW_LINE_NEEDED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isNewLineNeeded() <em>New Line Needed</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isNewLineNeeded()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean newLineNeeded = NEW_LINE_NEEDED_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -88,6 +110,31 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.ERROR_EXPRESSION_STATEMENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isNewLineNeeded() {
+		return newLineNeeded;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setNewLineNeeded(boolean newNewLineNeeded) {
+		boolean oldNewLineNeeded = newLineNeeded;
+		newLineNeeded = newNewLineNeeded;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED, oldNewLineNeeded,
+					newLineNeeded));
 	}
 
 	/**
@@ -189,6 +236,8 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
+				return isNewLineNeeded();
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION:
 				return getExpression();
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER:
@@ -205,6 +254,9 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
+				setNewLineNeeded((Boolean)newValue);
+				return;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION:
 				setExpression((Expression)newValue);
 				return;
@@ -223,6 +275,9 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
+				setNewLineNeeded(NEW_LINE_NEEDED_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION:
 				setExpression((Expression)null);
 				return;
@@ -241,6 +296,8 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
+				return newLineNeeded != NEW_LINE_NEEDED_EDEFAULT;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION:
 				return expression != null;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER:
@@ -258,6 +315,14 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Statement.class) {
 			switch (derivedFeatureID) {
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == LeafStatement.class) {
+			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
+					return AcceleoPackage.LEAF_STATEMENT__NEW_LINE_NEEDED;
 				default:
 					return -1;
 			}
@@ -286,6 +351,14 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 					return -1;
 			}
 		}
+		if (baseClass == LeafStatement.class) {
+			switch (baseFeatureID) {
+				case AcceleoPackage.LEAF_STATEMENT__NEW_LINE_NEEDED:
+					return AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED;
+				default:
+					return -1;
+			}
+		}
 		if (baseClass == ExpressionStatement.class) {
 			switch (baseFeatureID) {
 				case AcceleoPackage.EXPRESSION_STATEMENT__EXPRESSION:
@@ -308,7 +381,9 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (missingEndHeader: "); //$NON-NLS-1$
+		result.append(" (newLineNeeded: "); //$NON-NLS-1$
+		result.append(newLineNeeded);
+		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);
 		result.append(')');
 		return result.toString();

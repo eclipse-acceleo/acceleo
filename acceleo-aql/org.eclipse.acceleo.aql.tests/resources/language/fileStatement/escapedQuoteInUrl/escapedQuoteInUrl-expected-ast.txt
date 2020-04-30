@@ -4,12 +4,7 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     [file url .add(.aqlFeatureAccess(myParam, 'name'), ''.txt') (126..149) mode overwrite
-      
-    some static text.
-   (162..187) (162..187)
-    [/file] (119..194)
-    
- (194..195) (116..195)[/template] (61..206) (0..206)
+      some static text. true (167..184) (162..187)
+    [/file] (119..194) (116..195)
+  [/template] (61..206) (0..206)

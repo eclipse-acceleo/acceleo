@@ -4,15 +4,11 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     *** error let statement ***
     missing bindings: 177
     missing end header: -1
     missing end: -1
     [let 
-      
-    some static text.
-   (178..203) (178..203)[/let] (119..209)
-    
- (209..210) (116..210)[/template] (61..221) (0..221)
+      some static text. true (183..200) (178..203)
+    [/let] (119..209) (116..210)
+  [/template] (61..221) (0..221)

@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Stack;
 
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
@@ -107,7 +108,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * Local variable types usable during validation.
 	 */
-	private final Stack<Map<String, Set<IType>>> variableTypesStack;
+	private final Deque<Map<String, Set<IType>>> variableTypesStack = new ArrayDeque<Map<String, Set<IType>>>();
 
 	/**
 	 * Set of {@link IValidationMessage}.
@@ -133,7 +134,34 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	public AstValidator(ValidationServices services) {
 		this.services = services;
-		this.variableTypesStack = new Stack<Map<String, Set<IType>>>();
+	}
+
+	/**
+	 * Pushes the given variable types into the stack.
+	 * 
+	 * @param variableTypes
+	 *            the variable types to push
+	 */
+	protected void pushVariableTypes(Map<String, Set<IType>> variableTypes) {
+		variableTypesStack.addLast(variableTypes);
+	}
+
+	/**
+	 * Peeks the last {@link #pushVariableTypes(Map) pushed} variable types from the stack.
+	 * 
+	 * @return the last {@link #pushVariableTypes(Map) pushed} variable types from the stack
+	 */
+	protected Map<String, Set<IType>> peekVariableTypes() {
+		return variableTypesStack.peekLast();
+	}
+
+	/**
+	 * Pops the last {@link #pushVariableTypes(Map) pushed} variable types from the stack.
+	 * 
+	 * @return the last {@link #pushVariableTypes(Map) pushed} variable types from the stack
+	 */
+	protected Map<String, Set<IType>> popVariableTypes() {
+		return variableTypesStack.removeLast();
 	}
 
 	/**
@@ -328,15 +356,15 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 				// compute and inferred types before propagating the right operand inferred types
 				final Map<String, Set<IType>> rightOperandInferredTypes = new HashMap<String, Set<IType>>(
-						variableTypesStack.peek());
+						peekVariableTypes());
 				rightOperandInferredTypes.putAll(validationResult.getInferredVariableTypes(leftOperand,
 						Boolean.TRUE));
 				final AstValidator rightValidator = new AstValidator(services);
-				final IValidationResult rightValidatorResult = rightValidator.validate(variableTypesStack
-						.peek(), validationResult.getAstResult().subResult(rightOperand));
+				final IValidationResult rightValidatorResult = rightValidator.validate(peekVariableTypes(),
+						validationResult.getAstResult().subResult(rightOperand));
 
 				// propagate the right operand inferred types
-				variableTypesStack.push(rightOperandInferredTypes);
+				pushVariableTypes(rightOperandInferredTypes);
 				final Set<IType> rightOperandTypes = new LinkedHashSet<IType>();
 				try {
 					// compute right operand types with left operand inferred types
@@ -344,7 +372,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 					result.add(leftOperandTypes);
 					result.add(rightOperandTypes);
 				} finally {
-					variableTypesStack.pop();
+					popVariableTypes();
 					inferAndTypes(call, validationResult, rightValidatorResult);
 				}
 			} else if (AstBuilderListener.OR_SERVICE_NAME.equals(call.getServiceName())) {
@@ -354,15 +382,15 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 				// compute or inferred types before propagating the right operand inferred types
 				final Map<String, Set<IType>> rightOperandInferredTypes = new HashMap<String, Set<IType>>(
-						variableTypesStack.peek());
+						peekVariableTypes());
 				rightOperandInferredTypes.putAll(validationResult.getInferredVariableTypes(leftOperand,
 						Boolean.FALSE));
 				final AstValidator rightValidator = new AstValidator(services);
-				final IValidationResult rightValidatorResult = rightValidator.validate(variableTypesStack
-						.peek(), validationResult.getAstResult().subResult(rightOperand));
+				final IValidationResult rightValidatorResult = rightValidator.validate(peekVariableTypes(),
+						validationResult.getAstResult().subResult(rightOperand));
 
 				// propagate the right operand inferred types
-				variableTypesStack.push(rightOperandInferredTypes);
+				pushVariableTypes(rightOperandInferredTypes);
 				final Set<IType> rightOperandTypes = new LinkedHashSet<IType>();
 				try {
 					// compute right operand types with left operand inferred types
@@ -370,7 +398,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 					result.add(leftOperandTypes);
 					result.add(rightOperandTypes);
 				} finally {
-					variableTypesStack.pop();
+					popVariableTypes();
 					inferOrTypes(call, validationResult, rightValidatorResult);
 				}
 			} else {
@@ -417,7 +445,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 *            {@link Call}
 	 */
 	private void inferOclIsKindOfTypes(Call call, VarRef varRef, Set<IType> argTypes) {
-		final Set<IType> originalTypes = variableTypesStack.peek().get(varRef.getVariableName());
+		final Set<IType> originalTypes = peekVariableTypes().get(varRef.getVariableName());
 		if (originalTypes != null) {
 			final Set<IType> inferredTrueTypes = new LinkedHashSet<IType>();
 			final Set<IType> inferredFalseTypes = new LinkedHashSet<IType>();
@@ -471,7 +499,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 *            {@link Call}
 	 */
 	private void inferOclIsTypeOfTypes(Call call, VarRef varRef, Set<IType> argTypes) {
-		final Set<IType> originalTypes = variableTypesStack.peek().get(varRef.getVariableName());
+		final Set<IType> originalTypes = peekVariableTypes().get(varRef.getVariableName());
 		if (originalTypes != null) {
 			final Set<IType> inferredTrueTypes = new LinkedHashSet<IType>();
 			final Set<IType> inferredFalseTypes = new LinkedHashSet<IType>();
@@ -774,8 +802,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseLambda(Lambda object) {
 		final Set<IType> lambdaExpressionTypes = new LinkedHashSet<IType>();
 
-		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
-				.peek());
+		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(peekVariableTypes());
 		for (VariableDeclaration variableDeclaration : object.getParameters()) {
 			final Set<IType> types = doSwitch(variableDeclaration);
 			if (newVariableTypes.containsKey(variableDeclaration.getName())) {
@@ -785,7 +812,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			newVariableTypes.put(variableDeclaration.getName(), types);
 		}
 
-		variableTypesStack.push(newVariableTypes);
+		pushVariableTypes(newVariableTypes);
 		final Set<IType> lambdaExpressionPossibleTypes = doSwitch(object.getExpression());
 		final String evaluatorName = object.getParameters().get(0).getName();
 		final Set<IType> lambdaEvaluatorPossibleTypes = newVariableTypes.get(evaluatorName);
@@ -795,7 +822,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 						lambdaEvaluatorPossibleType, lambdaExpressionType));
 			}
 		}
-		variableTypesStack.pop();
+		popVariableTypes();
 
 		return lambdaExpressionTypes;
 	}
@@ -835,7 +862,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseVarRef(VarRef object) {
-		final Set<IType> variableTypes = services.getVariableTypes(variableTypesStack.peek(), object
+		final Set<IType> variableTypes = services.getVariableTypes(peekVariableTypes(), object
 				.getVariableName());
 		return checkWarningsAndErrors(object, variableTypes);
 	}
@@ -852,9 +879,9 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public IValidationResult validate(Map<String, Set<IType>> variableTypes, AstResult astResult) {
 		validationResult = new ValidationResult(astResult);
 
-		this.variableTypesStack.push(variableTypes);
+		pushVariableTypes(variableTypes);
 		doSwitch(astResult.getAst());
-		this.variableTypesStack.pop();
+		popVariableTypes();
 		validationResult.getMessages().addAll(messages);
 		messages = new LinkedHashSet<IValidationMessage>();
 
@@ -1095,30 +1122,30 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			selectorTypes = Collections.emptySet();
 		}
 		final Map<String, Set<IType>> trueBranchInferredTypes = new HashMap<String, Set<IType>>(
-				variableTypesStack.peek());
+				peekVariableTypes());
 		trueBranchInferredTypes.putAll(validationResult.getInferredVariableTypes(object.getPredicate(),
 				Boolean.TRUE));
-		variableTypesStack.push(trueBranchInferredTypes);
+		pushVariableTypes(trueBranchInferredTypes);
 		final Set<IType> trueTypes = new LinkedHashSet<IType>();
 		try {
 			if (object.getTrueBranch() != null) {
 				trueTypes.addAll(doSwitch(object.getTrueBranch()));
 			}
 		} finally {
-			variableTypesStack.pop();
+			popVariableTypes();
 		}
 		final Map<String, Set<IType>> falseBranchInferredTypes = new HashMap<String, Set<IType>>(
-				variableTypesStack.peek());
+				peekVariableTypes());
 		falseBranchInferredTypes.putAll(validationResult.getInferredVariableTypes(object.getPredicate(),
 				Boolean.FALSE));
-		variableTypesStack.push(falseBranchInferredTypes);
+		pushVariableTypes(falseBranchInferredTypes);
 		final Set<IType> falseTypes = new LinkedHashSet<IType>();
 		try {
 			if (object.getFalseBranch() != null) {
 				falseTypes.addAll(doSwitch(object.getFalseBranch()));
 			}
 		} finally {
-			variableTypesStack.pop();
+			popVariableTypes();
 		}
 		if (!selectorTypes.isEmpty()) {
 			boolean onlyBoolean = true;
@@ -1164,8 +1191,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseLet(Let object) {
 		Set<IType> result = new LinkedHashSet<IType>();
 
-		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
-				.peek());
+		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(peekVariableTypes());
 		for (Binding binding : object.getBindings()) {
 			final Set<IType> bindingTypes = doSwitch(binding);
 			if (binding.getName() != null) {
@@ -1176,12 +1202,12 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			}
 		}
 
-		variableTypesStack.push(newVariableTypes);
+		pushVariableTypes(newVariableTypes);
 		try {
 			final Set<IType> bodyTypes = doSwitch(object.getBody());
 			result.addAll(bodyTypes);
 		} finally {
-			variableTypesStack.pop();
+			popVariableTypes();
 		}
 
 		return checkWarningsAndErrors(object, result);

@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -72,8 +73,8 @@ public class TemplateService extends AbstractModuleElementService {
 		final List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		for (Variable var : template.getParameters()) {
-			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(null, var
-					.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
+			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
+					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
 			result.add(rawType);
 		}

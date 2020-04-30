@@ -4,8 +4,6 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     *** error for statement ***
     missing open parenthesis: 124
     missing binding: -1
@@ -14,9 +12,6 @@ module myModule
     missing end header: -1
     missing end: -1
     [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (158..178) (124..178)
-      
-    some static text.
-   (180..205) (180..205)
-    [/for] (119..211)
-    
- (211..212) (116..212)[/template] (61..223) (0..223)
+      some static text. true (185..202) (180..205)
+    [/for] (119..211) (116..212)
+  [/template] (61..223) (0..223)

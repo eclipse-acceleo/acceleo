@@ -5,6 +5,5 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [comment a basic comment (125..140) /] (116..142)
-    
- some static text.
- (142..162) (116..162)[/template] (61..173) (0..173)
+    some static text. true (145..162) (116..163)
+  [/template] (61..174) (0..174)

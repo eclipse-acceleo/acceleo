@@ -1,3 +1,1 @@
-
-    La génération de code source est une opération permettant de générer automatiquement du code source.
-  
+La gï¿½nï¿½ration de code source est une opï¿½ration permettant de gï¿½nï¿½rer automatiquement du code source.

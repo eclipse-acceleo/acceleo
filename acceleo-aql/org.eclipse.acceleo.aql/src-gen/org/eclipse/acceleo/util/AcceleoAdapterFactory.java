@@ -43,6 +43,7 @@ import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LeafStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleDocumentation;
@@ -294,6 +295,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseStatement(Statement object) {
 			return createStatementAdapter();
+		}
+
+		@Override
+		public Adapter caseLeafStatement(LeafStatement object) {
+			return createLeafStatementAdapter();
 		}
 
 		@Override
@@ -867,6 +873,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createStatementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.LeafStatement <em>Leaf Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.LeafStatement
+	 * @generated
+	 */
+	public Adapter createLeafStatementAdapter() {
 		return null;
 	}
 

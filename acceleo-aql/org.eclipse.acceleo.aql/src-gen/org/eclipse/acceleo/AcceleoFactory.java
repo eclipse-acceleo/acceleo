@@ -283,6 +283,15 @@ public interface AcceleoFactory extends EFactory {
 	ErrorBinding createErrorBinding();
 
 	/**
+	 * Returns a new object of class '<em>Leaf Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Leaf Statement</em>'.
+	 * @generated
+	 */
+	LeafStatement createLeafStatement();
+
+	/**
 	 * Returns a new object of class '<em>Expression Statement</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

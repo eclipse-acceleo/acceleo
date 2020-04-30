@@ -4,14 +4,7 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EClassifier (89..117))
-    
-   (119..122)
     [if .oclIsKindOf(myParam, EClass) (127..161)
-      
-     (163..168)
-      [.aqlFeatureAccess(myParam, 'eSuperTypes') (169..188)/] (168..190)
-      
-   (190..193) (163..193)
-    [/if] (122..198)
-    
- (198..199) (119..199)[/template] (61..210) (0..210)
+      [.aqlFeatureAccess(myParam, 'eSuperTypes') (169..188)/] true (168..190) (163..193)
+    [/if] (122..198) (119..199)
+  [/template] (61..210) (0..210)

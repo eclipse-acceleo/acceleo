@@ -27,7 +27,7 @@ package org.eclipse.acceleo;
  * @model
  * @generated
  */
-public interface ExpressionStatement extends Statement {
+public interface ExpressionStatement extends LeafStatement {
 	/**
 	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

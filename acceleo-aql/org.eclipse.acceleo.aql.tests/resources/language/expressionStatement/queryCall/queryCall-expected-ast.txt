@@ -4,10 +4,7 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
-    [.aqlFeatureAccess(.calledQuery(myParam), 'name') (120..146)/] (119..148)
-    
- (148..149) (116..149)[/template] (61..160)
+    [.aqlFeatureAccess(.calledQuery(myParam), 'name') (120..146)/] true (119..148) (116..149)
+  [/template] (61..160)
   public query calledQuery(myParam : EPackage (189..214)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (239..268)
   /] (163..270) (0..271)

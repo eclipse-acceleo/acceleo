@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.validation;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Binding;
@@ -105,9 +107,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final AstValidator validator;
 
 	/**
-	 * The {@link Stack} of variables {@link IType}.
+	 * Local variable types usable during validation.
 	 */
-	private final Stack<Map<String, Set<IType>>> stack = new Stack<Map<String, Set<IType>>>();
+	private Deque<Map<String, Set<IType>>> variableTypesStack = new ArrayDeque<Map<String, Set<IType>>>();
 
 	/**
 	 * Tells if we should force a collection in the {@link Binding} validation.
@@ -154,6 +156,34 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	}
 
 	/**
+	 * Pushes the given variable types into the stack.
+	 * 
+	 * @param variableTypes
+	 *            the variable types to push
+	 */
+	protected void pushVariableTypes(Map<String, Set<IType>> variableTypes) {
+		variableTypesStack.addLast(variableTypes);
+	}
+
+	/**
+	 * Peeks the last {@link #pushVariableTypes(Map) pushed} variable types from the stack.
+	 * 
+	 * @return the last {@link #pushVariableTypes(Map) pushed} variable types from the stack
+	 */
+	protected Map<String, Set<IType>> peekVariableTypes() {
+		return variableTypesStack.peekLast();
+	}
+
+	/**
+	 * Pops the last {@link #pushVariableTypes(Map) pushed} variable types from the stack.
+	 * 
+	 * @return the last {@link #pushVariableTypes(Map) pushed} variable types from the stack
+	 */
+	protected Map<String, Set<IType>> popVariableTypes() {
+		return variableTypesStack.removeLast();
+	}
+
+	/**
 	 * Validates the given {@link Module}.
 	 * 
 	 * @param astResult
@@ -163,8 +193,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * @return the {@link IAcceleoValidationResult}
 	 */
 	public IAcceleoValidationResult validate(AcceleoAstResult astResult, String moduleQualifiedName) {
-		stack.clear();
-		stack.push(new HashMap<String, Set<IType>>());
+		variableTypesStack = new ArrayDeque<Map<String, Set<IType>>>();
+		pushVariableTypes(new HashMap<String, Set<IType>>());
 		forceCollectionBinding = false;
 		qualifiedName = moduleQualifiedName;
 		result = new AcceleoValidationResult(astResult);
@@ -348,7 +378,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseTemplate(Template template) {
 		environment.pushImport(qualifiedName, template);
-		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
+		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
 			for (Variable parameter : template.getParameters()) {
@@ -366,19 +396,19 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				doSwitch(template.getGuard());
 			}
 			if (template.getPost() != null) {
-				stack.push(new HashMap<String, Set<IType>>(stack.peek()));
+				pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 				Set<IType> possibleTypes = new LinkedHashSet<IType>();
 				possibleTypes.add(new ClassType(environment.getQueryEnvironment(), String.class));
-				stack.peek().put("self", possibleTypes);
+				peekVariableTypes().put("self", possibleTypes);
 				try {
 					doSwitch(template.getPost());
 				} finally {
-					stack.pop();
+					popVariableTypes();
 				}
 			}
 			doSwitch(template.getBody());
 		} finally {
-			stack.pop();
+			popVariableTypes();
 		}
 
 		return RETURN_VALUE;
@@ -431,7 +461,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseQuery(Query query) {
 		environment.pushImport(qualifiedName, query);
-		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
+		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
 			for (Variable parameter : query.getParameters()) {
@@ -451,14 +481,15 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 					.getAst());
 			if (query.getType() != null) {
-				final IValidationResult typeValidationResult = validator.validate(null, query.getType());
+				final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(),
+						query.getType());
 				result.getAqlValidationResutls().put(query.getType(), typeValidationResult);
 				final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 						typeValidationResult.getPossibleTypes(query.getType().getAst()));
 				checkTypesCompatibility(query, possibleTypes, iTypes);
 			}
 		} finally {
-			stack.pop();
+			popVariableTypes();
 		}
 
 		return RETURN_VALUE;
@@ -502,17 +533,18 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseVariable(Variable variable) {
-		if (stack.peek().containsKey(variable.getName())) {
+		if (peekVariableTypes().containsKey(variable.getName())) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(variable, ValidationMessageLevel.WARNING, "Variable " + variable.getName()
 					+ " already exists.", acceleoAstResult.getStartPosition(variable), acceleoAstResult
 							.getEndPosition(variable));
 		}
-		final IValidationResult typeValidationResult = validator.validate(null, variable.getType());
+		final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), variable
+				.getType());
 		result.getAqlValidationResutls().put(variable.getType(), typeValidationResult);
 		final Set<IType> types = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 				typeValidationResult.getPossibleTypes(variable.getType().getAst()));
-		stack.peek().put(variable.getName(), types);
+		peekVariableTypes().put(variable.getName(), types);
 
 		return RETURN_VALUE;
 	}
@@ -535,7 +567,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseBinding(Binding binding) {
-		if (stack.peek().containsKey(binding.getName())) {
+		if (peekVariableTypes().containsKey(binding.getName())) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(binding, ValidationMessageLevel.WARNING, "Variable " + binding.getName()
 					+ " already exists.", acceleoAstResult.getStartPosition(binding), acceleoAstResult
@@ -546,7 +578,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 				.getAst());
 		if (binding.getType() != null) {
-			final IValidationResult typeValidationResult = validator.validate(null, binding.getType());
+			final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), binding
+					.getType());
 			result.getAqlValidationResutls().put(binding.getType(), typeValidationResult);
 			final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 					typeValidationResult.getPossibleTypes(binding.getType().getAst()));
@@ -565,7 +598,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		} else {
 			variableTypes.addAll(possibleTypes);
 		}
-		stack.peek().put(binding.getName(), variableTypes);
+		peekVariableTypes().put(binding.getName(), variableTypes);
 
 		return RETURN_VALUE;
 	}
@@ -710,7 +743,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseExpression(Expression expression) {
-		final IValidationResult res = validator.validate(stack.peek(), expression.getAst());
+		final IValidationResult res = validator.validate(peekVariableTypes(), expression.getAst());
 
 		result.getAqlValidationResutls().put(expression.getAst(), res);
 		final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
@@ -722,7 +755,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseForStatement(ForStatement forStatement) {
-		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
+		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			if (forStatement.getBinding() != null) {
 				forceCollectionBinding = true;
@@ -737,7 +770,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 			doSwitch(forStatement.getBody());
 		} finally {
-			stack.pop();
+			popVariableTypes();
 		}
 
 		return RETURN_VALUE;
@@ -782,24 +815,24 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 		checkBooleanType(ifStatement.getCondition(), conditionPossibleTypes);
 
-		final Map<String, Set<IType>> thenTypes = new HashMap<String, Set<IType>>(stack.peek());
+		final Map<String, Set<IType>> thenTypes = new HashMap<String, Set<IType>>(peekVariableTypes());
 		thenTypes.putAll(conditionValidationResult.getInferredVariableTypes(ifStatement.getCondition()
 				.getAst().getAst(), Boolean.TRUE));
-		stack.push(thenTypes);
+		pushVariableTypes(thenTypes);
 		try {
 			doSwitch(ifStatement.getThen());
 		} finally {
-			stack.pop();
+			popVariableTypes();
 		}
 		if (ifStatement.getElse() != null) {
-			final Map<String, Set<IType>> elseTypes = new HashMap<String, Set<IType>>(stack.peek());
+			final Map<String, Set<IType>> elseTypes = new HashMap<String, Set<IType>>(peekVariableTypes());
 			elseTypes.putAll(conditionValidationResult.getInferredVariableTypes(ifStatement.getCondition()
 					.getAst().getAst(), Boolean.FALSE));
-			stack.push(elseTypes);
+			pushVariableTypes(elseTypes);
 			try {
 				doSwitch(ifStatement.getElse());
 			} finally {
-				stack.pop();
+				popVariableTypes();
 			}
 		}
 
@@ -869,14 +902,14 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseLetStatement(LetStatement letStatement) {
-		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
+		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			for (Binding binding : letStatement.getVariables()) {
 				doSwitch(binding);
 			}
 			doSwitch(letStatement.getBody());
 		} finally {
-			stack.pop();
+			popVariableTypes();
 		}
 
 		return RETURN_VALUE;

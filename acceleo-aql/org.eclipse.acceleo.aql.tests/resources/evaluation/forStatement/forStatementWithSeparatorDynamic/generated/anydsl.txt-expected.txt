@@ -1,49 +1,23 @@
-
-    
-      World
-    ,MultiNamedElement,
-      MultiNamedElement
-    ,NamedElement,
-      NamedElement
-    ,Producer,
-      Producer
-    ,Adress,
-      Adress
-    ,Company,
-      Company
-    ,ProductionCompany,
-      ProductionCompany
-    ,Restaurant,
-      Restaurant
-    ,Chef,
-      Chef
-    ,Recipe,
-      Recipe
-    ,Food,
-      Food
-    ,Source,
-      Source
-    ,Plant,
-      Plant
-    ,Animal,
-      Animal
-    ,Color,
-      Color
-    ,Caliber,
-      Caliber
-    ,Group,
-      Group
-    ,Continent,
-      Continent
-    ,Kind,
-      Kind
-    ,Part,
-      Part
-    ,CountryData,
-      CountryData
-    ,SingleString,
-      SingleString
-    ,EStringToRecipeMap,
-      EStringToRecipeMap
-    
-  
+World
+,MultiNamedElement,MultiNamedElement
+,NamedElement,NamedElement
+,Producer,Producer
+,Adress,Adress
+,Company,Company
+,ProductionCompany,ProductionCompany
+,Restaurant,Restaurant
+,Chef,Chef
+,Recipe,Recipe
+,Food,Food
+,Source,Source
+,Plant,Plant
+,Animal,Animal
+,Color,Color
+,Caliber,Caliber
+,Group,Group
+,Continent,Continent
+,Kind,Kind
+,Part,Part
+,CountryData,CountryData
+,SingleString,SingleString
+,EStringToRecipeMap,EStringToRecipeMap

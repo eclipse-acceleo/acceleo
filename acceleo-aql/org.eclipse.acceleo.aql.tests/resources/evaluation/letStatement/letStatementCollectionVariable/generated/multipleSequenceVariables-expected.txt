@@ -1,7 +1,3 @@
-
-    
-      a,b,c
-      abc,def,ghi
-      abcdefghi,abcdefghi,abcdefghi
-    
-  
+a,b,c
+abc,def,ghi
+abcdefghi,abcdefghi,abcdefghi

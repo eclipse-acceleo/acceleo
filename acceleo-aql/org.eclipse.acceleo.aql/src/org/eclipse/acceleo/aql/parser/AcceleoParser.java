@@ -52,6 +52,7 @@ import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LeafStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
@@ -367,6 +368,11 @@ public class AcceleoParser {
 	public static final String EXTENDS = "extends ";
 
 	/**
+	 * The mandatory indentation for not inlined {@link Block}.
+	 */
+	public static final int INDENTATION = 2;
+
+	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
 	private final IReadOnlyQueryEnvironment queryEnvironment;
@@ -579,7 +585,7 @@ public class AcceleoParser {
 		final int startPosition = currentPosition;
 		if (text.startsWith(COMMENT_START, currentPosition)) {
 			final int startOfCommentBody = currentPosition + COMMENT_START.length();
-			int endOfCommentBody = text.indexOf(COMMENT_END, startOfCommentBody);
+			int endOfCommentBody = getNext(COMMENT_END);
 			if (endOfCommentBody < 0) {
 				endOfCommentBody = text.length();
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorComment();
@@ -617,7 +623,7 @@ public class AcceleoParser {
 			final int commentStartPositon = currentPosition;
 			currentPosition += DOCUMENTATION_START.length();
 			final int startPosition = currentPosition;
-			int endPosition = text.indexOf(DOCUMENTATION_END, currentPosition);
+			int endPosition = getNext(DOCUMENTATION_END);
 			if (endPosition < 0) {
 				endPosition = text.length();
 				currentPosition = endPosition;
@@ -675,7 +681,7 @@ public class AcceleoParser {
 			final int commentStartPositon = currentPosition;
 			currentPosition += DOCUMENTATION_START.length();
 			final int startPosition = currentPosition;
-			int endPosition = text.indexOf(DOCUMENTATION_END, currentPosition);
+			int endPosition = getNext(DOCUMENTATION_END);
 			if (endPosition < 0) {
 				endPosition = text.length();
 				currentPosition = endPosition;
@@ -1173,6 +1179,8 @@ public class AcceleoParser {
 
 		if (text.startsWith(TEMPLATE_HEADER_START, currentPosition)) {
 			final int startPosition = currentPosition;
+			final int significantTextColumn = columns[startPosition] + INDENTATION;
+			final int headerStartLine = lines[startPosition];
 			currentPosition += TEMPLATE_HEADER_START.length();
 			skipSpaces();
 			final VisibilityKind visibility = parseVisibility();
@@ -1238,7 +1246,7 @@ public class AcceleoParser {
 				postExpression = null;
 			}
 			final int missingEndHeader = readMissingString(TEMPLATE_HEADER_END);
-			final Block body = parseBlock(TEMPLATE_END);
+			final Block body = parseBlock(headerStartLine, significantTextColumn, TEMPLATE_END);
 			final int missingEnd = readMissingString(TEMPLATE_END);
 			final boolean missingValue = missingVisibility != -1 || missingName != -1 || parameters.isEmpty();
 			final boolean missingGuardParenthesis = missingGuardOpenParenthesis != -1
@@ -1281,25 +1289,55 @@ public class AcceleoParser {
 	// CHECKSTYLE:ON
 
 	/**
-	 * Parses a {@link Block} .
+	 * Parses a {@link Block}.
 	 * 
+	 * @param headerStartLine
+	 *            the header start line
+	 * @param significantTextColumn
+	 *            the column where the text starts to be significant for {@link TextStatement}
 	 * @param endBlocks
 	 *            the end of block strings
 	 * @return the created {@link Block}
 	 */
-	protected Block parseBlock(String... endBlocks) {
+	protected Block parseBlock(int headerStartLine, int significantTextColumn, String... endBlocks) {
 		final Block res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBlock();
 
 		final int startPosition = currentPosition;
-		Statement statement = parseStatement();
-		endOfBlock: while (statement != null) {
-			res.getStatements().add(statement);
+		boolean inlined = !text.startsWith(NEW_LINE, currentPosition)
+				&& headerStartLine == lines[currentPosition];
+		int beforeStatementPosition = currentPosition;
+		Statement statement = parseStatement(inlined, significantTextColumn);
+		int afterStatementPosition = currentPosition;
+		boolean onlyCommentsFromStart = true;
+		LeafStatement lastLeafStatement = null;
+		endOfBlock: while (beforeStatementPosition != afterStatementPosition) {
+			if (statement != null) {
+				if (statement instanceof Comment) {
+					if (onlyCommentsFromStart) {
+						inlined = !text.startsWith(NEW_LINE, currentPosition)
+								&& headerStartLine == lines[currentPosition];
+					}
+					if (lastLeafStatement != null) {
+						lastLeafStatement.setNewLineNeeded(lastLeafStatement.isNewLineNeeded() || (!inlined
+								&& text.startsWith(NEW_LINE, currentPosition)));
+					}
+				} else if (statement instanceof LeafStatement) {
+					lastLeafStatement = (LeafStatement)statement;
+					onlyCommentsFromStart = false;
+				} else {
+					lastLeafStatement = null;
+					onlyCommentsFromStart = false;
+				}
+				res.getStatements().add(statement);
+			}
 			for (String endOfBlock : endBlocks) {
 				if (text.startsWith(endOfBlock, currentPosition)) {
 					break endOfBlock;
 				}
 			}
-			statement = parseStatement();
+			beforeStatementPosition = currentPosition;
+			statement = parseStatement(inlined, significantTextColumn);
+			afterStatementPosition = currentPosition;
 		}
 		setPositions(res, startPosition, currentPosition);
 
@@ -1309,9 +1347,13 @@ public class AcceleoParser {
 	/**
 	 * Parses a {@link Statement}.
 	 * 
+	 * @param inlined
+	 *            <code>true</code> if the current {@link Block} is inlined, <code>false</code> otherwise
+	 * @param significantTextColumn
+	 *            the column where the text starts to be significant for {@link TextStatement}
 	 * @return the created {@link Statement} if any is recognize, <code>null</code> otherwise
 	 */
-	protected Statement parseStatement() {
+	protected Statement parseStatement(boolean inlined, int significantTextColumn) {
 		Statement res = null;
 
 		// CHECKSTYLE:OFF
@@ -1339,11 +1381,13 @@ public class AcceleoParser {
 							if (comment != null) {
 								res = comment;
 							} else {
-								final ExpressionStatement expressionStatement = parseExpressionStatement();
+								final ExpressionStatement expressionStatement = parseExpressionStatement(
+										inlined);
 								if (expressionStatement != null) {
 									res = expressionStatement;
 								} else {
-									final TextStatement text = parseTextStatement();
+									final TextStatement text = parseTextStatement(inlined,
+											significantTextColumn);
 									if (text != null) {
 										res = text;
 									} else {
@@ -1373,6 +1417,8 @@ public class AcceleoParser {
 
 		if (text.startsWith(startTag, currentPosition)) {
 			final int startPosition = currentPosition;
+			final int thenSignificantTextColumn = columns[startPosition] + INDENTATION;
+			final int thenHeaderStartLine = lines[startPosition];
 			currentPosition += startTag.length();
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
@@ -1383,7 +1429,8 @@ public class AcceleoParser {
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
 			final int missingEndHeader = readMissingString(IF_HEADER_END);
-			final Block thenblock = parseBlock(IF_END, IF_ELSEIF, IF_ELSE);
+			final Block thenblock = parseBlock(thenHeaderStartLine, thenSignificantTextColumn, IF_END,
+					IF_ELSEIF, IF_ELSE);
 			final IfStatement elseIf = parseIfStatement(IF_ELSEIF);
 			final boolean parseEndIf = elseIf == null;
 			final Block elseBlock;
@@ -1391,7 +1438,10 @@ public class AcceleoParser {
 				elseBlock = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBlock();
 				elseBlock.getStatements().add(elseIf);
 			} else if (readString(IF_ELSE)) {
-				elseBlock = parseBlock(IF_END);
+				final int elseStartPosition = currentPosition - IF_ELSE.length();
+				final int elseSignificantTextColumn = columns[elseStartPosition] + INDENTATION;
+				final int headerStartLine = lines[elseStartPosition];
+				elseBlock = parseBlock(headerStartLine, elseSignificantTextColumn, IF_END);
 			} else {
 				elseBlock = null;
 			}
@@ -1433,6 +1483,8 @@ public class AcceleoParser {
 
 		if (text.startsWith(FOR_HEADER_START, currentPosition)) {
 			final int startPosition = currentPosition;
+			final int significantTextColumn = columns[startPosition] + INDENTATION;
+			final int headerStartLine = lines[startPosition];
 			currentPosition += FOR_HEADER_START.length();
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
@@ -1461,7 +1513,7 @@ public class AcceleoParser {
 				missingSeparatorCloseParenthesis = -1;
 			}
 			final int missingEndHeader = readMissingString(FOR_HEADER_END);
-			final Block body = parseBlock(FOR_END);
+			final Block body = parseBlock(headerStartLine, significantTextColumn, FOR_END);
 			final int missingEnd = readMissingString(FOR_END);
 			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingBinding != -1
 					|| missingCloseParenthesis != -1 || missingSeparatorCloseParenthesis != -1;
@@ -1499,6 +1551,8 @@ public class AcceleoParser {
 
 		if (text.startsWith(FILE_HEADER_START, currentPosition)) {
 			final int startPosition = currentPosition;
+			final int significantTextColumn = columns[startPosition] + INDENTATION;
+			final int headerStartLine = lines[startPosition];
 			currentPosition += FILE_HEADER_START.length();
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
@@ -1512,6 +1566,10 @@ public class AcceleoParser {
 			final int missingOpenMode;
 			if (openMode == null) {
 				missingOpenMode = currentPosition;
+				final int position = getNext(COMMA, CLOSE_PARENTHESIS);
+				if (position >= 0) {
+					currentPosition = position;
+				}
 			} else {
 				missingOpenMode = -1;
 			}
@@ -1528,7 +1586,7 @@ public class AcceleoParser {
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
 			final int missingEndHeader = readMissingString(FILE_HEADER_END);
-			final Block body = parseBlock(FILE_END);
+			final Block body = parseBlock(headerStartLine, significantTextColumn, FILE_END);
 			final int missingEnd = readMissingString(FILE_END);
 			final boolean missingSymbole = missingOpenParenthesis != -1 || missingCloseParenthesis != -1
 					|| missingComma != -1;
@@ -1585,6 +1643,8 @@ public class AcceleoParser {
 
 		if (text.startsWith(LET_HEADER_START, currentPosition)) {
 			final int startPosition = currentPosition;
+			final int significantTextColumn = columns[startPosition] + INDENTATION;
+			final int headerStartLine = lines[startPosition];
 			currentPosition += LET_HEADER_START.length();
 			skipSpaces();
 			final List<Binding> bindings = parseBindings(EQUAL, LET_HEADER_END);
@@ -1596,7 +1656,7 @@ public class AcceleoParser {
 			}
 			skipSpaces();
 			final int missingEndHeader = readMissingString(LET_HEADER_END);
-			final Block body = parseBlock(LET_END);
+			final Block body = parseBlock(headerStartLine, significantTextColumn, LET_END);
 			final int missingEnd = readMissingString(LET_END);
 			if (missingBindings != -1 || missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorLetStatement();
@@ -1785,6 +1845,8 @@ public class AcceleoParser {
 
 		if (text.startsWith(PROTECTED_AREA_HEADER_START, currentPosition)) {
 			final int startPosition = currentPosition;
+			final int significantTextColumn = columns[startPosition] + INDENTATION;
+			final int headerStartLine = lines[startPosition];
 			currentPosition += PROTECTED_AREA_HEADER_START.length();
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
@@ -1796,7 +1858,7 @@ public class AcceleoParser {
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
 			final int missingEndHeader = readMissingString(PROTECTED_AREA_HEADER_END);
-			final Block body = parseBlock(PROTECTED_AREA_END);
+			final Block body = parseBlock(headerStartLine, significantTextColumn, PROTECTED_AREA_END);
 			final int missingEnd = readMissingString(PROTECTED_AREA_END);
 			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1 || missingEndHeader != -1
 					|| missingEnd != -1) {
@@ -1822,9 +1884,11 @@ public class AcceleoParser {
 	/**
 	 * Parses an {@link ExpressionStatement}.
 	 * 
+	 * @param inlined
+	 *            <code>true</code> if the current {@link Block} is inlined, <code>false</code> otherwise
 	 * @return the created {@link ExpressionStatement} if any is recognized, <code>null</code> otherwise
 	 */
-	protected ExpressionStatement parseExpressionStatement() {
+	protected ExpressionStatement parseExpressionStatement(boolean inlined) {
 		final ExpressionStatement res;
 
 		if (!text.startsWith(END_BLOCK_PREFIX, currentPosition) && text.startsWith(EXPRESSION_STATEMENT_START,
@@ -1843,6 +1907,7 @@ public class AcceleoParser {
 				errors.add((ErrorExpressionStatement)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpressionStatement();
+				res.setNewLineNeeded(!inlined && text.startsWith(NEW_LINE, currentPosition));
 			}
 			res.setExpression(expression);
 			setPositions(res, startPosition, currentPosition);
@@ -1904,7 +1969,10 @@ public class AcceleoParser {
 
 		if (readString(QUOTE)) {
 			final int startPosition = currentPosition;
-			final int nextQuote = getMetamodelEndQuotePosition();
+			int nextQuote = getNext(QUOTE, CLOSE_PARENTHESIS, MODULE_HEADER_END);
+			if (nextQuote < 0) {
+				nextQuote = text.length();
+			}
 			final String nsURI = text.substring(currentPosition, nextQuote);
 			currentPosition = nextQuote;
 			final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
@@ -1926,48 +1994,108 @@ public class AcceleoParser {
 	}
 
 	/**
-	 * Gets the {@link Metamodel} end quote position.
+	 * Gets the position of the next token.
 	 * 
-	 * @return the {@link Metamodel} end quote position
+	 * @param tokens
+	 *            tokens
+	 * @return the position of the next token if any found, <code>-1</code> otherwise
 	 */
-	protected int getMetamodelEndQuotePosition() {
-		int nextQuote = text.indexOf(QUOTE, currentPosition);
-		if (nextQuote < 0) {
-			nextQuote = text.indexOf(CLOSE_PARENTHESIS, currentPosition);
-			if (nextQuote < 0) {
-				nextQuote = text.indexOf(MODULE_HEADER_END, currentPosition);
-				if (nextQuote < 0) {
-					nextQuote = text.length();
-				}
+	protected int getNext(String... tokens) {
+		int res = -1;
+
+		for (String token : tokens) {
+			final int position = text.indexOf(token, currentPosition);
+			if (position >= 0) {
+				res = position;
+				break;
 			}
 		}
-		return nextQuote;
+
+		return res;
 	}
 
 	/**
 	 * Parses {@link TextStatement}.
 	 * 
+	 * @param inlined
+	 *            <code>true</code> if the current {@link Block} is inlined, <code>false</code> otherwise
+	 * @param significantTextColumn
+	 *            the column where the text starts to be significant for {@link TextStatement}
 	 * @return the created {@link TextStatement} if any, <code>null</code> otherwise
 	 */
-	protected TextStatement parseTextStatement() {
+	protected TextStatement parseTextStatement(boolean inlined, int significantTextColumn) {
 		final TextStatement res;
 
-		// TODO check inlined
-		// TODO only add significant chars to the value based on column
-
-		int endOfText = text.indexOf(TEXT_END, currentPosition);
+		int endOfText = getNext(TEXT_END);
 		if (endOfText < 0) {
 			endOfText = text.length();
 		}
 		if (currentPosition != endOfText) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
-			setPositions(res, currentPosition, endOfText);
-			res.setValue(text.substring(currentPosition, endOfText));
-			currentPosition = endOfText;
+			if (inlined) {
+				// raw copy of the text
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
+				setPositions(res, currentPosition, endOfText);
+				res.setValue(text.substring(currentPosition, endOfText));
+				res.setNewLineNeeded(false);
+				currentPosition = endOfText;
+			} else {
+				res = getSignificantTextStatement(significantTextColumn, endOfText);
+			}
 		} else {
 			res = null;
 		}
 
+		return res;
+	}
+
+	/**
+	 * Gets the significant {@link TextStatement} at the given column and until the end of text.
+	 * 
+	 * @param significantTextColumn
+	 *            the significant text column
+	 * @param endOfText
+	 *            the end of text
+	 * @return the significant {@link TextStatement} at the given column and until the end of text.
+	 */
+	private TextStatement getSignificantTextStatement(int significantTextColumn, int endOfText) {
+		final TextStatement res;
+		// use the indentation
+		int localStartOfText = currentPosition;
+		if (text.startsWith(NEW_LINE, localStartOfText)) {
+			localStartOfText = localStartOfText + NEW_LINE.length(); // skip the new line
+		}
+		while (localStartOfText < endOfText && columns[localStartOfText] < significantTextColumn) {
+			localStartOfText++;
+		}
+		if (localStartOfText < endOfText) {
+			int localEndOfText = localStartOfText;
+			while (localEndOfText < endOfText && columns[localEndOfText] >= significantTextColumn) {
+				localEndOfText++;
+			}
+			final boolean needNewLine;
+			if (columns[localEndOfText] == 0) {
+				localEndOfText = localEndOfText - NEW_LINE.length(); // remove the new line
+				needNewLine = true;
+			} else {
+				needNewLine = false;
+			}
+			if (localStartOfText < localEndOfText) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
+				res.setValue(text.substring(localStartOfText, localEndOfText));
+				res.setNewLineNeeded(needNewLine);
+				setPositions(res, localStartOfText, localEndOfText);
+				currentPosition = localEndOfText;
+				if (needNewLine) {
+					currentPosition++;
+				}
+			} else {
+				res = null;
+				currentPosition = localEndOfText;
+			}
+		} else {
+			res = null;
+			currentPosition = endOfText;
+		}
 		return res;
 	}
 
@@ -2085,8 +2213,8 @@ public class AcceleoParser {
 		int parenthesisDepth = 0;
 		int curlyBracketDepth = 0;
 		while (res < text.length()) {
-			if (text.startsWith(endTag, res) || (parenthesisDepth == 0 && curlyBracketDepth == 0) && (text
-					.startsWith(endDelimiter, res) || text.startsWith(TEXT_END, res))) {
+			if (text.startsWith(endTag, res) || isProperlyParenthesed(parenthesisDepth, curlyBracketDepth)
+					&& endLimitReached(endDelimiter, res)) {
 				break;
 			}
 			switch (text.charAt(res)) {
@@ -2138,5 +2266,33 @@ public class AcceleoParser {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Tells if the end limit for the search has been reached.
+	 * 
+	 * @param endDelimiter
+	 *            the end delimiter
+	 * @param position
+	 *            the current position
+	 * @return <code>true</code> if the end limit for the search has been reached, <code>false</code>
+	 *         otherwise
+	 */
+	private boolean endLimitReached(String endDelimiter, int position) {
+		return text.startsWith(endDelimiter, position) || text.startsWith(TEXT_END, position);
+	}
+
+	/**
+	 * Tells if the expression is properly parenthesed so far.
+	 * 
+	 * @param parenthesisDepth
+	 *            the parenthesis depth
+	 * @param curlyBracketDepth
+	 *            the curly bracket depth
+	 * @return <code>true</code> if the expression is properly parenthesed so far, <code>false</code>
+	 *         otherwise
+	 */
+	private boolean isProperlyParenthesed(int parenthesisDepth, int curlyBracketDepth) {
+		return parenthesisDepth == 0 && curlyBracketDepth == 0;
 	}
 }

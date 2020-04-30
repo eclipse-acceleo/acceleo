@@ -12,9 +12,8 @@ module myModule
   missing guard close parenthesis: -1
   missing post close parenthesis: -1
   missing post end header: -1
-  missing post end: 136
+  missing post end: 137
   
   public template myTemplate(myParam : EPackage (89..114))
-    
- some static text.
- (116..136) (116..136)[/template] (61..136) (0..136)
+    some static text. true (119..136) (116..137)
+  [/template] (61..137) (0..137)

@@ -4,12 +4,7 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     [if .equals(.add(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), ''), ')') (124..163)
-      
-    some static text.
-   (165..190) (165..190)
-    [/if] (119..195)
-    
- (195..196) (116..196)[/template] (61..207) (0..207)
+      some static text. true (170..187) (165..190)
+    [/if] (119..195) (116..196)
+  [/template] (61..207) (0..207)

@@ -44,6 +44,7 @@ import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LeafStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleDocumentation;
@@ -63,7 +64,6 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.AstPackage;
-import org.eclipse.acceleo.query.ast.impl.AstPackageImpl;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -323,6 +323,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EClass statementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass leafStatementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1579,6 +1586,26 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
+	public EClass getLeafStatement() {
+		return leafStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getLeafStatement_NewLineNeeded() {
+		return (EAttribute)leafStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public EClass getExpressionStatement() {
 		return expressionStatementEClass;
 	}
@@ -2316,6 +2343,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		statementEClass = createEClass(STATEMENT);
 
+		leafStatementEClass = createEClass(LEAF_STATEMENT);
+		createEAttribute(leafStatementEClass, LEAF_STATEMENT__NEW_LINE_NEEDED);
+
 		expressionStatementEClass = createEClass(EXPRESSION_STATEMENT);
 		createEReference(expressionStatementEClass, EXPRESSION_STATEMENT__EXPRESSION);
 
@@ -2474,7 +2504,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		errorBindingEClass.getESuperTypes().add(this.getError());
 		errorBindingEClass.getESuperTypes().add(this.getBinding());
 		statementEClass.getESuperTypes().add(this.getASTNode());
-		expressionStatementEClass.getESuperTypes().add(this.getStatement());
+		leafStatementEClass.getESuperTypes().add(this.getStatement());
+		expressionStatementEClass.getESuperTypes().add(this.getLeafStatement());
 		errorExpressionStatementEClass.getESuperTypes().add(this.getError());
 		errorExpressionStatementEClass.getESuperTypes().add(this.getExpressionStatement());
 		protectedAreaEClass.getESuperTypes().add(this.getStatement());
@@ -2492,7 +2523,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		fileStatementEClass.getESuperTypes().add(this.getStatement());
 		errorFileStatementEClass.getESuperTypes().add(this.getError());
 		errorFileStatementEClass.getESuperTypes().add(this.getFileStatement());
-		textStatementEClass.getESuperTypes().add(this.getStatement());
+		textStatementEClass.getESuperTypes().add(this.getLeafStatement());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(moduleEClass, org.eclipse.acceleo.Module.class, "Module", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
@@ -2665,8 +2696,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEAttribute(getTypedElement_Type(), this.getASTResult(), "type", null, 1, 1, TypedElement.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
-		initEReference(getTypedElement_TypeAql(), AstPackage.eINSTANCE.getExpression(), null, "typeAql", null, 1, 1, //$NON-NLS-1$
-				TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getTypedElement_TypeAql(), AstPackage.eINSTANCE.getExpression(), null, "typeAql", null, //$NON-NLS-1$
+				1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
@@ -2818,6 +2849,12 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(statementEClass, Statement.class, "Statement", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(leafStatementEClass, LeafStatement.class, "LeafStatement", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getLeafStatement_NewLineNeeded(), ecorePackage.getEBoolean(), "newLineNeeded", null, 1, //$NON-NLS-1$
+				1, LeafStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(expressionStatementEClass, ExpressionStatement.class, "ExpressionStatement", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

@@ -92,9 +92,8 @@ public class TemplateLookupTest {
 		final String result = (String)evaluationEngine.generate(start, variables);
 		acceleoEnvironment.popStack(start);
 
-		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ "generated from m1.t11(EPackage)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER,
-				result);
+		assertEquals("generated from m1.t11(EPackage)"
+				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
@@ -114,14 +113,9 @@ public class TemplateLookupTest {
 		final String result = (String)evaluationEngine.generate(start, variables);
 		acceleoEnvironment.popStack(start);
 
-		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ "generated from m1.overrideMe(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("generated from m1.overrideMe(EClass)"
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m1.privateInBoth(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
@@ -147,19 +141,13 @@ public class TemplateLookupTest {
 		final String result = (String)evaluationEngine.generate(start, variables);
 		acceleoEnvironment.popStack(start);
 
-		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ "generated from m2.t21(EPackage)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("generated from m2.t21(EPackage)"
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				// CHECKSTYLE:OFF don't share values across tests
 				+ "generated from m2.overrideMe(EClass)"
 				// CHECKSTYLE:ON don't share values across tests
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m1.privateInBoth(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
@@ -183,8 +171,7 @@ public class TemplateLookupTest {
 		final String result = (String)evaluationEngine.generate(start, variables);
 		acceleoEnvironment.popStack(start);
 
-		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ "generated from m2.overrideMe(EClass)"
+		assertEquals("generated from m2.overrideMe(EClass)"
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
@@ -213,20 +200,11 @@ public class TemplateLookupTest {
 		final String result = (String)evaluationEngine.generate(start, variables);
 		acceleoEnvironment.popStack(start);
 
-		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m4.t41(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("generated from m4.t41(EClass)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m3.t31(EClass)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m4.overrideMe(EClass)"
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m2.overrideMe(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
@@ -252,13 +230,8 @@ public class TemplateLookupTest {
 		final String result = (String)evaluationEngine.generate(start, variables);
 		acceleoEnvironment.popStack(start);
 
-		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+		assertEquals("generated from m3.t31(EClass)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m4.overrideMe(EClass)"
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
-				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 

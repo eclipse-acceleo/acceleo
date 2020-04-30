@@ -6,28 +6,14 @@ module myModule
   
   public template myTemplate(myParam : EPackage (107..132))
   @main
-    
-   (134..137)
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      
-     (178..183)
       [let 
       myVariable : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 1) (222..249) (188..249)
       myVariable1 : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 2) (285..312) (250..312)
       myVariable2 : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 3) (348..375) (313..375)
-        
-       (376..383)
-        [.aqlFeatureAccess(myVariable, 'name') (384..399)/] (383..401)
-        
-       (401..408)
-        [.aqlFeatureAccess(myVariable1, 'name') (409..425)/] (408..427)
-        
-       (427..434)
-        [.aqlFeatureAccess(myVariable2, 'name') (435..451)/] (434..453)
-        
-     (453..458) (376..458)[/let] (183..464)
-      
-   (464..467) (178..467)
-    [/file] (137..474)
-    
- (474..475) (134..475)[/template] (79..486) (0..486)
+        [.aqlFeatureAccess(myVariable, 'name') (384..399)/] true (383..401)
+        [.aqlFeatureAccess(myVariable1, 'name') (409..425)/] true (408..427)
+        [.aqlFeatureAccess(myVariable2, 'name') (435..451)/] true (434..453) (376..458)
+      [/let] (183..464) (178..467)
+    [/file] (137..474) (134..475)
+  [/template] (79..486) (0..486)

@@ -24,6 +24,5 @@ module myModule
 * (149..147) /] (61..149)
   public template myTemplate(myParam : EPackage (178..203))
   @main
-    
- some static text.
- (205..225) (205..225)[/template] (150..236) (0..236)
+    some static text. true (208..225) (205..226)
+  [/template] (150..237) (0..237)

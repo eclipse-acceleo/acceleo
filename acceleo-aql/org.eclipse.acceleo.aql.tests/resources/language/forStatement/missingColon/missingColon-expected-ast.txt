@@ -4,8 +4,6 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-    
-   (116..119)
     [for *** error binding ***
     missing name: -1
     missing colon: 137
@@ -13,9 +11,6 @@ module myModule
     missing affectation symbol: null
     missing affectation symbol position: -1
     myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (158..178) (125..178)
-      
-    some static text.
-   (180..205) (180..205)
-    [/for] (119..211)
-    
- (211..212) (116..212)[/template] (61..223) (0..223)
+      some static text. true (185..202) (180..205)
+    [/for] (119..211) (116..212)
+  [/template] (61..223) (0..223)

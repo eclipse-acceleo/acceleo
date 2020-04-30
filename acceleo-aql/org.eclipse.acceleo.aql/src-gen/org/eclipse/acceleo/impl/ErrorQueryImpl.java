@@ -12,6 +12,7 @@
 package org.eclipse.acceleo.impl;
 
 import java.util.Collection;
+
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
@@ -35,9 +36,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error Query</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Query</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -76,8 +76,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -86,8 +86,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -96,8 +96,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -106,8 +106,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -116,8 +116,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -126,8 +126,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -135,9 +135,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTypeAql()
 	 * @generated
 	 * @ordered
@@ -145,9 +145,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected org.eclipse.acceleo.query.ast.Expression typeAql;
 
 	/**
-	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getParameters()
 	 * @generated
 	 * @ordered
@@ -156,8 +156,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @see #getVisibility()
 	 * @generated
 	 * @ordered
@@ -166,8 +166,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @see #getVisibility()
 	 * @generated
 	 * @ordered
@@ -176,8 +176,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -185,9 +185,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected Expression body;
 
 	/**
-	 * The default value of the '{@link #getMissingVisibility() <em>Missing Visibility</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingVisibility() <em>Missing Visibility</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingVisibility()
 	 * @generated
 	 * @ordered
@@ -195,9 +195,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected static final int MISSING_VISIBILITY_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingVisibility() <em>Missing Visibility</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingVisibility() <em>Missing Visibility</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingVisibility()
 	 * @generated
 	 * @ordered
@@ -205,9 +205,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected int missingVisibility = MISSING_VISIBILITY_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
@@ -215,9 +215,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected static final int MISSING_NAME_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
@@ -226,8 +226,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -236,8 +235,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -245,9 +243,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingParameters() <em>Missing Parameters</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingParameters() <em>Missing Parameters</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingParameters()
 	 * @generated
 	 * @ordered
@@ -255,9 +253,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected static final int MISSING_PARAMETERS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingParameters() <em>Missing Parameters</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingParameters() <em>Missing Parameters</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingParameters()
 	 * @generated
 	 * @ordered
@@ -266,8 +264,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -276,8 +273,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -285,9 +281,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
@@ -295,9 +291,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected static final int MISSING_COLON_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
@@ -305,9 +301,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected int missingColon = MISSING_COLON_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
@@ -315,9 +311,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected static final int MISSING_TYPE_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
@@ -325,9 +321,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected int missingType = MISSING_TYPE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEqual() <em>Missing Equal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEqual() <em>Missing Equal</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEqual()
 	 * @generated
 	 * @ordered
@@ -335,9 +331,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected static final int MISSING_EQUAL_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEqual() <em>Missing Equal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEqual() <em>Missing Equal</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEqual()
 	 * @generated
 	 * @ordered
@@ -346,8 +342,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -356,8 +352,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 
 	/**
 	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -365,8 +361,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ErrorQueryImpl() {
@@ -374,8 +369,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -384,8 +378,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -412,8 +405,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
@@ -431,8 +423,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -454,8 +445,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -464,8 +454,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -478,8 +467,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -488,8 +476,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -502,8 +489,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -512,8 +498,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -526,8 +511,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -536,8 +520,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql,
@@ -556,8 +539,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -579,8 +561,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -593,8 +574,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -603,8 +583,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -617,8 +596,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -627,8 +605,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Expression newBody, NotificationChain msgs) {
@@ -646,8 +623,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -669,8 +645,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -679,8 +654,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -693,8 +667,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -703,8 +676,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -717,8 +689,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -727,8 +698,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -742,8 +712,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -752,8 +721,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -766,8 +734,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -776,8 +743,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -791,8 +757,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -801,8 +766,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -815,8 +779,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -825,8 +788,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -839,8 +801,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -849,8 +810,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -863,8 +823,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -873,8 +832,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -887,8 +845,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -904,8 +861,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -924,8 +880,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -972,8 +927,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -1037,8 +991,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -1100,8 +1053,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -1146,8 +1098,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -1202,8 +1153,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -1258,8 +1208,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -1298,4 +1247,4 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 		return result.toString();
 	}
 
-} //ErrorQueryImpl
+} // ErrorQueryImpl

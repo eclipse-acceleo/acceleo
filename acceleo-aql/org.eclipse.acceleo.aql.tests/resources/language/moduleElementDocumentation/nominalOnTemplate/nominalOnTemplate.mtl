@@ -5,5 +5,5 @@
  * @param myParam the input EPackage
 */]
 [template public myTemplate(myParam : ecore::EPackage)]
- some static text.
+  some static text.
 [/template]
