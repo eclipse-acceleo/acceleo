@@ -60,7 +60,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.Module {
 	/**
-	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getDocumentation()
@@ -215,6 +215,24 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 */
 	@Override
 	public Documentation getDocumentation() {
+		if (documentation != null && documentation.eIsProxy()) {
+			InternalEObject oldDocumentation = (InternalEObject)documentation;
+			documentation = (Documentation)eResolveProxy(oldDocumentation);
+			if (documentation != oldDocumentation) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							AcceleoPackage.MODULE__DOCUMENTATION, oldDocumentation, documentation));
+			}
+		}
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Documentation basicGetDocumentation() {
 		return documentation;
 	}
 
@@ -459,8 +477,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 		switch (featureID) {
 			case AcceleoPackage.MODULE__DOCUMENTATION:
 				if (documentation != null)
-					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-							- AcceleoPackage.MODULE__DOCUMENTATION, null, msgs);
+					msgs = ((InternalEObject)documentation).eInverseRemove(this,
+							AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 				return basicSetDocumentation((Documentation)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -495,7 +513,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.MODULE__DOCUMENTATION:
-				return getDocumentation();
+				if (resolve)
+					return getDocumentation();
+				return basicGetDocumentation();
 			case AcceleoPackage.MODULE__DEPRECATED:
 				return isDeprecated();
 			case AcceleoPackage.MODULE__METAMODELS:

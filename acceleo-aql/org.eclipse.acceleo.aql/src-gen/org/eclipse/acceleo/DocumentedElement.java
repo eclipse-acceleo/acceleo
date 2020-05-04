@@ -30,7 +30,7 @@ package org.eclipse.acceleo;
  */
 public interface DocumentedElement extends ASTNode {
 	/**
-	 * Returns the value of the '<em><b>Documentation</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Documentation</b></em>' reference.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.acceleo.Documentation#getDocumentedElement <em>Documented Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -38,20 +38,20 @@ public interface DocumentedElement extends ASTNode {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Documentation</em>' containment reference.
+	 * @return the value of the '<em>Documentation</em>' reference.
 	 * @see #setDocumentation(Documentation)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getDocumentedElement_Documentation()
 	 * @see org.eclipse.acceleo.Documentation#getDocumentedElement
-	 * @model opposite="documentedElement" containment="true"
+	 * @model opposite="documentedElement"
 	 * @generated
 	 */
 	Documentation getDocumentation();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.DocumentedElement#getDocumentation <em>Documentation</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.acceleo.DocumentedElement#getDocumentation <em>Documentation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Documentation</em>' containment reference.
+	 * @param value the new value of the '<em>Documentation</em>' reference.
 	 * @see #getDocumentation()
 	 * @generated
 	 */

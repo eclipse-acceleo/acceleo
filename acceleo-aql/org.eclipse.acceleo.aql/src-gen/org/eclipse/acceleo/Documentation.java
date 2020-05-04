@@ -29,7 +29,7 @@ package org.eclipse.acceleo;
  */
 public interface Documentation extends Comment {
 	/**
-	 * Returns the value of the '<em><b>Documented Element</b></em>' container reference.
+	 * Returns the value of the '<em><b>Documented Element</b></em>' reference.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.acceleo.DocumentedElement#getDocumentation <em>Documentation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -37,20 +37,20 @@ public interface Documentation extends Comment {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Documented Element</em>' container reference.
+	 * @return the value of the '<em>Documented Element</em>' reference.
 	 * @see #setDocumentedElement(DocumentedElement)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getDocumentation_DocumentedElement()
 	 * @see org.eclipse.acceleo.DocumentedElement#getDocumentation
-	 * @model opposite="documentation" transient="false"
+	 * @model opposite="documentation"
 	 * @generated
 	 */
 	DocumentedElement getDocumentedElement();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.Documentation#getDocumentedElement <em>Documented Element</em>}' container reference.
+	 * Sets the value of the '{@link org.eclipse.acceleo.Documentation#getDocumentedElement <em>Documented Element</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Documented Element</em>' container reference.
+	 * @param value the new value of the '<em>Documented Element</em>' reference.
 	 * @see #getDocumentedElement()
 	 * @generated
 	 */

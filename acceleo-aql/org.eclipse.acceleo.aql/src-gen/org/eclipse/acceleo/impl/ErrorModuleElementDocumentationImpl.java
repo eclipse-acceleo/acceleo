@@ -35,7 +35,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -64,6 +63,16 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * @ordered
 	 */
 	protected CommentBody body;
+
+	/**
+	 * The cached value of the '{@link #getDocumentedElement() <em>Documented Element</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocumentedElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected DocumentedElement documentedElement;
 
 	/**
 	 * The cached value of the '{@link #getParameterDocumentation() <em>Parameter Documentation</em>}' containment reference list.
@@ -173,9 +182,26 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 */
 	@Override
 	public DocumentedElement getDocumentedElement() {
-		if (eContainerFeatureID() != AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT)
-			return null;
-		return (DocumentedElement)eInternalContainer();
+		if (documentedElement != null && documentedElement.eIsProxy()) {
+			InternalEObject oldDocumentedElement = (InternalEObject)documentedElement;
+			documentedElement = (DocumentedElement)eResolveProxy(oldDocumentedElement);
+			if (documentedElement != oldDocumentedElement) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT,
+							oldDocumentedElement, documentedElement));
+			}
+		}
+		return documentedElement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DocumentedElement basicGetDocumentedElement() {
+		return documentedElement;
 	}
 
 	/**
@@ -185,8 +211,17 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 */
 	public NotificationChain basicSetDocumentedElement(DocumentedElement newDocumentedElement,
 			NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newDocumentedElement,
-				AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT, msgs);
+		DocumentedElement oldDocumentedElement = documentedElement;
+		documentedElement = newDocumentedElement;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT,
+					oldDocumentedElement, newDocumentedElement);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
 		return msgs;
 	}
 
@@ -197,14 +232,11 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 */
 	@Override
 	public void setDocumentedElement(DocumentedElement newDocumentedElement) {
-		if (newDocumentedElement != eInternalContainer()
-				|| (eContainerFeatureID() != AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT
-						&& newDocumentedElement != null)) {
-			if (EcoreUtil.isAncestor(this, newDocumentedElement))
-				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
+		if (newDocumentedElement != documentedElement) {
 			NotificationChain msgs = null;
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
+			if (documentedElement != null)
+				msgs = ((InternalEObject)documentedElement).eInverseRemove(this,
+						AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION, DocumentedElement.class, msgs);
 			if (newDocumentedElement != null)
 				msgs = ((InternalEObject)newDocumentedElement).eInverseAdd(this,
 						AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION, DocumentedElement.class, msgs);
@@ -266,8 +298,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
+				if (documentedElement != null)
+					msgs = ((InternalEObject)documentedElement).eInverseRemove(this,
+							AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION, DocumentedElement.class, msgs);
 				return basicSetDocumentedElement((DocumentedElement)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -297,27 +330,14 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-		switch (eContainerFeatureID()) {
-			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT:
-				return eInternalContainer().eInverseRemove(this,
-						AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION, DocumentedElement.class, msgs);
-		}
-		return super.eBasicRemoveFromContainerFeature(msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY:
 				return getBody();
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT:
-				return getDocumentedElement();
+				if (resolve)
+					return getDocumentedElement();
+				return basicGetDocumentedElement();
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
 				return getParameterDocumentation();
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER:
@@ -387,7 +407,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY:
 				return body != null;
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT:
-				return getDocumentedElement() != null;
+				return documentedElement != null;
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
 				return parameterDocumentation != null && !parameterDocumentation.isEmpty();
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER:

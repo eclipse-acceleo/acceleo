@@ -63,6 +63,7 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.impl.AstPackageImpl;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -2594,8 +2595,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDocumentation_DocumentedElement(), this.getDocumentedElement(), this
 				.getDocumentedElement_Documentation(), "documentedElement", null, 0, 1, Documentation.class, //$NON-NLS-1$
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(moduleDocumentationEClass, ModuleDocumentation.class, "ModuleDocumentation", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2635,7 +2636,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDocumentedElement_Documentation(), this.getDocumentation(), this
 				.getDocumentation_DocumentedElement(), "documentation", null, 0, 1, DocumentedElement.class, //$NON-NLS-1$
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocumentedElement_Deprecated(), ecorePackage.getEBoolean(), "deprecated", "false", //$NON-NLS-1$//$NON-NLS-2$
 				1, 1, DocumentedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
@@ -2664,8 +2665,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEAttribute(getTypedElement_Type(), this.getASTResult(), "type", null, 1, 1, TypedElement.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
-		initEReference(getTypedElement_TypeAql(), AstPackage.eINSTANCE.getExpression(), null, "typeAql", null, //$NON-NLS-1$
-				1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getTypedElement_TypeAql(), AstPackage.eINSTANCE.getExpression(), null, "typeAql", null, 1, 1, //$NON-NLS-1$
+				TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$

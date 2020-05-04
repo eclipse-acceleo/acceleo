@@ -65,7 +65,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements ErrorQuery {
 	/**
-	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getDocumentation()
@@ -390,6 +390,24 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 */
 	@Override
 	public Documentation getDocumentation() {
+		if (documentation != null && documentation.eIsProxy()) {
+			InternalEObject oldDocumentation = (InternalEObject)documentation;
+			documentation = (Documentation)eResolveProxy(oldDocumentation);
+			if (documentation != oldDocumentation) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							AcceleoPackage.ERROR_QUERY__DOCUMENTATION, oldDocumentation, documentation));
+			}
+		}
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Documentation basicGetDocumentation() {
 		return documentation;
 	}
 
@@ -878,8 +896,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 		switch (featureID) {
 			case AcceleoPackage.ERROR_QUERY__DOCUMENTATION:
 				if (documentation != null)
-					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-							- AcceleoPackage.ERROR_QUERY__DOCUMENTATION, null, msgs);
+					msgs = ((InternalEObject)documentation).eInverseRemove(this,
+							AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 				return basicSetDocumentation((Documentation)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -914,7 +932,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_QUERY__DOCUMENTATION:
-				return getDocumentation();
+				if (resolve)
+					return getDocumentation();
+				return basicGetDocumentation();
 			case AcceleoPackage.ERROR_QUERY__DEPRECATED:
 				return isDeprecated();
 			case AcceleoPackage.ERROR_QUERY__NAME:

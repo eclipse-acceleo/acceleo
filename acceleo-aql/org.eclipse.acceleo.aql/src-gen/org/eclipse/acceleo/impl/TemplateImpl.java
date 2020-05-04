@@ -59,7 +59,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class TemplateImpl extends ModuleElementImpl implements Template {
 	/**
-	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getDocumentation()
@@ -214,6 +214,24 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 */
 	@Override
 	public Documentation getDocumentation() {
+		if (documentation != null && documentation.eIsProxy()) {
+			InternalEObject oldDocumentation = (InternalEObject)documentation;
+			documentation = (Documentation)eResolveProxy(oldDocumentation);
+			if (documentation != oldDocumentation) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							AcceleoPackage.TEMPLATE__DOCUMENTATION, oldDocumentation, documentation));
+			}
+		}
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Documentation basicGetDocumentation() {
 		return documentation;
 	}
 
@@ -535,8 +553,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		switch (featureID) {
 			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
 				if (documentation != null)
-					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-							- AcceleoPackage.TEMPLATE__DOCUMENTATION, null, msgs);
+					msgs = ((InternalEObject)documentation).eInverseRemove(this,
+							AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 				return basicSetDocumentation((Documentation)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -573,7 +591,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-				return getDocumentation();
+				if (resolve)
+					return getDocumentation();
+				return basicGetDocumentation();
 			case AcceleoPackage.TEMPLATE__DEPRECATED:
 				return isDeprecated();
 			case AcceleoPackage.TEMPLATE__NAME:

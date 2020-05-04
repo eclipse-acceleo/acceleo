@@ -124,7 +124,7 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__NAME = NAMED_ELEMENT__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * The feature id for the '<em><b>Documentation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -298,7 +298,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE__NAME = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * The feature id for the '<em><b>Documentation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -849,7 +849,7 @@ public interface AcceleoPackage extends EPackage {
 	int DOCUMENTATION__BODY = COMMENT__BODY;
 
 	/**
-	 * The feature id for the '<em><b>Documented Element</b></em>' container reference.
+	 * The feature id for the '<em><b>Documented Element</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -895,7 +895,7 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE_DOCUMENTATION__BODY = DOCUMENTATION__BODY;
 
 	/**
-	 * The feature id for the '<em><b>Documented Element</b></em>' container reference.
+	 * The feature id for the '<em><b>Documented Element</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -968,7 +968,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Documented Element</b></em>' container reference.
+	 * The feature id for the '<em><b>Documented Element</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1050,7 +1050,7 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE_ELEMENT_DOCUMENTATION__BODY = DOCUMENTATION__BODY;
 
 	/**
-	 * The feature id for the '<em><b>Documented Element</b></em>' container reference.
+	 * The feature id for the '<em><b>Documented Element</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1105,7 +1105,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Documented Element</b></em>' container reference.
+	 * The feature id for the '<em><b>Documented Element</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1197,7 +1197,7 @@ public interface AcceleoPackage extends EPackage {
 	int DOCUMENTED_ELEMENT = 18;
 
 	/**
-	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * The feature id for the '<em><b>Documentation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1326,7 +1326,7 @@ public interface AcceleoPackage extends EPackage {
 	int TEMPLATE = 24;
 
 	/**
-	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * The feature id for the '<em><b>Documentation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1435,7 +1435,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_TEMPLATE = 25;
 
 	/**
-	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * The feature id for the '<em><b>Documentation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1634,7 +1634,7 @@ public interface AcceleoPackage extends EPackage {
 	int QUERY = 26;
 
 	/**
-	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * The feature id for the '<em><b>Documentation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1734,7 +1734,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_QUERY = 27;
 
 	/**
-	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * The feature id for the '<em><b>Documentation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3594,10 +3594,10 @@ public interface AcceleoPackage extends EPackage {
 	EClass getDocumentation();
 
 	/**
-	 * Returns the meta object for the container reference '{@link org.eclipse.acceleo.Documentation#getDocumentedElement <em>Documented Element</em>}'.
+	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.Documentation#getDocumentedElement <em>Documented Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Documented Element</em>'.
+	 * @return the meta object for the reference '<em>Documented Element</em>'.
 	 * @see org.eclipse.acceleo.Documentation#getDocumentedElement()
 	 * @see #getDocumentation()
 	 * @generated
@@ -3731,10 +3731,10 @@ public interface AcceleoPackage extends EPackage {
 	EClass getDocumentedElement();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.DocumentedElement#getDocumentation <em>Documentation</em>}'.
+	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.DocumentedElement#getDocumentation <em>Documentation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Documentation</em>'.
+	 * @return the meta object for the reference '<em>Documentation</em>'.
 	 * @see org.eclipse.acceleo.DocumentedElement#getDocumentation()
 	 * @see #getDocumentedElement()
 	 * @generated
@@ -5323,7 +5323,7 @@ public interface AcceleoPackage extends EPackage {
 		EClass DOCUMENTATION = eINSTANCE.getDocumentation();
 
 		/**
-		 * The meta object literal for the '<em><b>Documented Element</b></em>' container reference feature.
+		 * The meta object literal for the '<em><b>Documented Element</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -5442,7 +5442,7 @@ public interface AcceleoPackage extends EPackage {
 		EClass DOCUMENTED_ELEMENT = eINSTANCE.getDocumentedElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Documentation</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Documentation</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

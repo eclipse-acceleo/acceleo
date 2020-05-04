@@ -87,7 +87,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="DocumentedElement" abstract="true" interface="true"
       eSuperTypes="#//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="documentation" eType="#//Documentation"
-        containment="true" eOpposite="#//Documentation/documentedElement"/>
+        eOpposite="#//Documentation/documentedElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deprecated" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>

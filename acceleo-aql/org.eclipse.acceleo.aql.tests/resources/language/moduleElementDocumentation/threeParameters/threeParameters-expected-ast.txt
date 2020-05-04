@@ -17,6 +17,19 @@ module myModule
  * @param myParam2 the input2 EPackage
 * (218..216) /] (61..218)
   
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @param myParam1 the input1 EPackage
+ * @param myParam2 the input2 EPackage
+* (218..216)
+  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)
+  myParam1 the input1 EPackage (147..175)[comment myParam1 the input1 EPackage (147..175) /] (147..175)
+  myParam2 the input2 EPackage (186..214)[comment myParam2 the input2 EPackage (186..214) /] (186..214)[comment 
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @param myParam1 the input1 EPackage
+ * @param myParam2 the input2 EPackage
+* (218..216) /] (61..218)
   public template myTemplate(myParam : EPackage (247..272), myParam1 : EPackage (273..299), myParam2 : EPackage (300..326))
     
  some static text.

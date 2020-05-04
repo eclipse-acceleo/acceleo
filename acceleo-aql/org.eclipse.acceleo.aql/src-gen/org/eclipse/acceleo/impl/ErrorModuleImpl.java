@@ -86,7 +86,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getDocumentation()
@@ -345,6 +345,24 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 */
 	@Override
 	public Documentation getDocumentation() {
+		if (documentation != null && documentation.eIsProxy()) {
+			InternalEObject oldDocumentation = (InternalEObject)documentation;
+			documentation = (Documentation)eResolveProxy(oldDocumentation);
+			if (documentation != oldDocumentation) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							AcceleoPackage.ERROR_MODULE__DOCUMENTATION, oldDocumentation, documentation));
+			}
+		}
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Documentation basicGetDocumentation() {
 		return documentation;
 	}
 
@@ -690,8 +708,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 		switch (featureID) {
 			case AcceleoPackage.ERROR_MODULE__DOCUMENTATION:
 				if (documentation != null)
-					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-							- AcceleoPackage.ERROR_MODULE__DOCUMENTATION, null, msgs);
+					msgs = ((InternalEObject)documentation).eInverseRemove(this,
+							AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 				return basicSetDocumentation((Documentation)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -728,7 +746,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_MODULE__NAME:
 				return getName();
 			case AcceleoPackage.ERROR_MODULE__DOCUMENTATION:
-				return getDocumentation();
+				if (resolve)
+					return getDocumentation();
+				return basicGetDocumentation();
 			case AcceleoPackage.ERROR_MODULE__DEPRECATED:
 				return isDeprecated();
 			case AcceleoPackage.ERROR_MODULE__METAMODELS:

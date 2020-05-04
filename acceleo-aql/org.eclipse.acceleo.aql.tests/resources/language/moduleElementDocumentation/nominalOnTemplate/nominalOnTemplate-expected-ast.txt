@@ -11,6 +11,13 @@ module myModule
  * @param myParam the input EPackage
 * (140..138) /] (61..140)
   
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+* (140..138)
+  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)[comment 
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+* (140..138) /] (61..140)
   public template myTemplate(myParam : EPackage (169..194))
     
  some static text.
