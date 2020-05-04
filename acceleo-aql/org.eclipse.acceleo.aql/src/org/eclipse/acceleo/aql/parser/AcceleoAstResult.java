@@ -54,6 +54,7 @@ public class AcceleoAstResult {
 	 */
 	public AcceleoAstResult(Module module, Positions positions, List<Error> errors) {
 		this.module = module;
+		this.module.setAst(this);
 		this.positions = positions;
 		this.errors = errors;
 	}

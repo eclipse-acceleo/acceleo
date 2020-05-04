@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo;
 
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -28,6 +29,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.acceleo.Module#getModuleElements <em>Module Elements</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Module#getStartHeaderPosition <em>Start Header Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Module#getEndHeaderPosition <em>End Header Position</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.Module#getAst <em>Ast</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getModule()
@@ -160,5 +162,27 @@ public interface Module extends NamedElement, DocumentedElement, ASTNode {
 	 * @generated
 	 */
 	void setEndHeaderPosition(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Ast</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Ast</em>' attribute.
+	 * @see #setAst(AcceleoAstResult)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getModule_Ast()
+	 * @model dataType="org.eclipse.acceleo.AcceleoAstResult" required="true"
+	 * @generated
+	 */
+	AcceleoAstResult getAst();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.Module#getAst <em>Ast</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Ast</em>' attribute.
+	 * @see #getAst()
+	 * @generated
+	 */
+	void setAst(AcceleoAstResult value);
 
 } // Module

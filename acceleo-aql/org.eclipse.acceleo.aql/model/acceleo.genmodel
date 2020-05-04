@@ -25,6 +25,7 @@
     </genEnums>
     <genDataTypes ecoreDataType="acceleo.ecore#//ASTResult"/>
     <genDataTypes ecoreDataType="acceleo.ecore#//ModuleQualifiedName"/>
+    <genDataTypes ecoreDataType="acceleo.ecore#//AcceleoAstResult"/>
     <genClasses ecoreClass="acceleo.ecore#//Module">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference acceleo.ecore#//Module/metamodels"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference acceleo.ecore#//Module/extends"/>
@@ -32,6 +33,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Module/moduleElements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/startHeaderPosition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/endHeaderPosition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/ast"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorModule">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorModule/missingOpenParenthesis"/>

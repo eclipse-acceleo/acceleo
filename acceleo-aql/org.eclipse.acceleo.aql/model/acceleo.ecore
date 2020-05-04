@@ -14,6 +14,7 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endHeaderPosition" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ast" lowerBound="1" eType="#//AcceleoAstResult"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorModule" eSuperTypes="#//Error #//Module">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingOpenParenthesis"
@@ -335,4 +336,5 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="ASTResult" instanceClassName="org.eclipse.acceleo.query.parser.AstResult"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ModuleQualifiedName" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="AcceleoAstResult" instanceClassName="org.eclipse.acceleo.aql.parser.AcceleoAstResult"/>
 </ecore:EPackage>

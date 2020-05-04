@@ -196,13 +196,22 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__END_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
+	 * The feature id for the '<em><b>Ast</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE__AST = NAMED_ELEMENT_FEATURE_COUNT + 8;
+
+	/**
 	 * The number of structural features of the '<em>Module</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 8;
+	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Module</em>' class.
@@ -361,13 +370,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE__END_HEADER_POSITION = ERROR_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Ast</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_MODULE__AST = ERROR_FEATURE_COUNT + 9;
+
+	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 9;
+	int ERROR_MODULE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Missing EPackage</b></em>' attribute.
@@ -376,7 +394,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_EPACKAGE = ERROR_FEATURE_COUNT + 10;
+	int ERROR_MODULE__MISSING_EPACKAGE = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -385,7 +403,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
+	int ERROR_MODULE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -394,7 +412,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 12;
+	int ERROR_MODULE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The number of structural features of the '<em>Error Module</em>' class.
@@ -403,7 +421,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 13;
+	int ERROR_MODULE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The number of operations of the '<em>Error Module</em>' class.
@@ -3216,6 +3234,16 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE_QUALIFIED_NAME = 51;
 
 	/**
+	 * The meta object id for the '<em>Ast Result</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.aql.parser.AcceleoAstResult
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoAstResult()
+	 * @generated
+	 */
+	int ACCELEO_AST_RESULT = 52;
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Module <em>Module</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3290,6 +3318,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getModule_EndHeaderPosition();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.Module#getAst <em>Ast</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Ast</em>'.
+	 * @see org.eclipse.acceleo.Module#getAst()
+	 * @see #getModule()
+	 * @generated
+	 */
+	EAttribute getModule_Ast();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorModule <em>Error Module</em>}'.
@@ -4959,6 +4998,17 @@ public interface AcceleoPackage extends EPackage {
 	EDataType getModuleQualifiedName();
 
 	/**
+	 * Returns the meta object for data type '{@link org.eclipse.acceleo.aql.parser.AcceleoAstResult <em>Ast Result</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Ast Result</em>'.
+	 * @see org.eclipse.acceleo.aql.parser.AcceleoAstResult
+	 * @model instanceClass="org.eclipse.acceleo.aql.parser.AcceleoAstResult"
+	 * @generated
+	 */
+	EDataType getAcceleoAstResult();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5038,6 +5088,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute MODULE__END_HEADER_POSITION = eINSTANCE.getModule_EndHeaderPosition();
+
+		/**
+		 * The meta object literal for the '<em><b>Ast</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODULE__AST = eINSTANCE.getModule_Ast();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorModuleImpl <em>Error Module</em>}' class.
@@ -6414,6 +6472,16 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType MODULE_QUALIFIED_NAME = eINSTANCE.getModuleQualifiedName();
+
+		/**
+		 * The meta object literal for the '<em>Ast Result</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.aql.parser.AcceleoAstResult
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoAstResult()
+		 * @generated
+		 */
+		EDataType ACCELEO_AST_RESULT = eINSTANCE.getAcceleoAstResult();
 
 	}
 

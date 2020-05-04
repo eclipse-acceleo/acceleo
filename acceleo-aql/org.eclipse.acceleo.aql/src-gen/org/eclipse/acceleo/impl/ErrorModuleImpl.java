@@ -22,6 +22,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.NamedElement;
 
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -54,6 +55,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getModuleElements <em>Module Elements</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getStartHeaderPosition <em>Start Header Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getAst <em>Ast</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingEPackage <em>Missing EPackage</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
@@ -192,6 +194,26 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * @ordered
 	 */
 	protected int endHeaderPosition = END_HEADER_POSITION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getAst() <em>Ast</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAst()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final AcceleoAstResult AST_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAst() <em>Ast</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAst()
+	 * @generated
+	 * @ordered
+	 */
+	protected AcceleoAstResult ast = AST_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
@@ -542,6 +564,30 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * @generated
 	 */
 	@Override
+	public AcceleoAstResult getAst() {
+		return ast;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setAst(AcceleoAstResult newAst) {
+		AcceleoAstResult oldAst = ast;
+		ast = newAst;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_MODULE__AST, oldAst,
+					ast));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -697,6 +743,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return getStartHeaderPosition();
 			case AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION:
 				return getEndHeaderPosition();
+			case AcceleoPackage.ERROR_MODULE__AST:
+				return getAst();
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
@@ -747,6 +795,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return;
 			case AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION:
 				setEndHeaderPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_MODULE__AST:
+				setAst((AcceleoAstResult)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis((Integer)newValue);
@@ -799,6 +850,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION:
 				setEndHeaderPosition(END_HEADER_POSITION_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_MODULE__AST:
+				setAst(AST_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
@@ -841,6 +895,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return startHeaderPosition != START_HEADER_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION:
 				return endHeaderPosition != END_HEADER_POSITION_EDEFAULT;
+			case AcceleoPackage.ERROR_MODULE__AST:
+				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
@@ -892,6 +948,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 					return AcceleoPackage.MODULE__START_HEADER_POSITION;
 				case AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION:
 					return AcceleoPackage.MODULE__END_HEADER_POSITION;
+				case AcceleoPackage.ERROR_MODULE__AST:
+					return AcceleoPackage.MODULE__AST;
 				default:
 					return -1;
 			}
@@ -938,6 +996,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 					return AcceleoPackage.ERROR_MODULE__START_HEADER_POSITION;
 				case AcceleoPackage.MODULE__END_HEADER_POSITION:
 					return AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION;
+				case AcceleoPackage.MODULE__AST:
+					return AcceleoPackage.ERROR_MODULE__AST;
 				default:
 					return -1;
 			}
@@ -964,6 +1024,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 		result.append(startHeaderPosition);
 		result.append(", endHeaderPosition: "); //$NON-NLS-1$
 		result.append(endHeaderPosition);
+		result.append(", ast: "); //$NON-NLS-1$
+		result.append(ast);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
 		result.append(", missingEPackage: "); //$NON-NLS-1$

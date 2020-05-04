@@ -55,6 +55,7 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -213,6 +214,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createASTResultFromString(eDataType, initialValue);
 			case AcceleoPackage.MODULE_QUALIFIED_NAME:
 				return createModuleQualifiedNameFromString(eDataType, initialValue);
+			case AcceleoPackage.ACCELEO_AST_RESULT:
+				return createAcceleoAstResultFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() //$NON-NLS-1$
 						+ "' is not a valid classifier"); //$NON-NLS-1$
@@ -235,6 +238,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return convertASTResultToString(eDataType, instanceValue);
 			case AcceleoPackage.MODULE_QUALIFIED_NAME:
 				return convertModuleQualifiedNameToString(eDataType, instanceValue);
+			case AcceleoPackage.ACCELEO_AST_RESULT:
+				return convertAcceleoAstResultToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() //$NON-NLS-1$
 						+ "' is not a valid classifier"); //$NON-NLS-1$
@@ -769,6 +774,24 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * @generated
 	 */
 	public String convertModuleQualifiedNameToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AcceleoAstResult createAcceleoAstResultFromString(EDataType eDataType, String initialValue) {
+		return (AcceleoAstResult)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertAcceleoAstResultToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

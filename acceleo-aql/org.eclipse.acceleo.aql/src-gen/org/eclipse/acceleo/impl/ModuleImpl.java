@@ -22,6 +22,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
 
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -52,6 +53,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getModuleElements <em>Module Elements</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getStartHeaderPosition <em>Start Header Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getAst <em>Ast</em>}</li>
  * </ul>
  *
  * @generated
@@ -166,6 +168,26 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 * @ordered
 	 */
 	protected int endHeaderPosition = END_HEADER_POSITION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getAst() <em>Ast</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAst()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final AcceleoAstResult AST_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAst() <em>Ast</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAst()
+	 * @generated
+	 * @ordered
+	 */
+	protected AcceleoAstResult ast = AST_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -410,6 +432,29 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 * @generated
 	 */
 	@Override
+	public AcceleoAstResult getAst() {
+		return ast;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setAst(AcceleoAstResult newAst) {
+		AcceleoAstResult oldAst = ast;
+		ast = newAst;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__AST, oldAst, ast));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AcceleoPackage.MODULE__DOCUMENTATION:
@@ -465,6 +510,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 				return getStartHeaderPosition();
 			case AcceleoPackage.MODULE__END_HEADER_POSITION:
 				return getEndHeaderPosition();
+			case AcceleoPackage.MODULE__AST:
+				return getAst();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -505,6 +552,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 			case AcceleoPackage.MODULE__END_HEADER_POSITION:
 				setEndHeaderPosition((Integer)newValue);
 				return;
+			case AcceleoPackage.MODULE__AST:
+				setAst((AcceleoAstResult)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -541,6 +591,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 			case AcceleoPackage.MODULE__END_HEADER_POSITION:
 				setEndHeaderPosition(END_HEADER_POSITION_EDEFAULT);
 				return;
+			case AcceleoPackage.MODULE__AST:
+				setAst(AST_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -569,6 +622,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 				return startHeaderPosition != START_HEADER_POSITION_EDEFAULT;
 			case AcceleoPackage.MODULE__END_HEADER_POSITION:
 				return endHeaderPosition != END_HEADER_POSITION_EDEFAULT;
+			case AcceleoPackage.MODULE__AST:
+				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -642,6 +697,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 		result.append(startHeaderPosition);
 		result.append(", endHeaderPosition: "); //$NON-NLS-1$
 		result.append(endHeaderPosition);
+		result.append(", ast: "); //$NON-NLS-1$
+		result.append(ast);
 		result.append(')');
 		return result.toString();
 	}

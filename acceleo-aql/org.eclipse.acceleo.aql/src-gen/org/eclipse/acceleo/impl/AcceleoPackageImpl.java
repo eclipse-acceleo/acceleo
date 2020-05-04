@@ -61,6 +61,7 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EAttribute;
@@ -440,6 +441,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EDataType moduleQualifiedNameEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EDataType acceleoAstResultEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -2170,6 +2178,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEReference(moduleEClass, MODULE__MODULE_ELEMENTS);
 		createEAttribute(moduleEClass, MODULE__START_HEADER_POSITION);
 		createEAttribute(moduleEClass, MODULE__END_HEADER_POSITION);
+		createEAttribute(moduleEClass, MODULE__AST);
 
 		errorModuleEClass = createEClass(ERROR_MODULE);
 		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_OPEN_PARENTHESIS);
@@ -2379,6 +2388,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		// Create data types
 		astResultEDataType = createEDataType(AST_RESULT);
 		moduleQualifiedNameEDataType = createEDataType(MODULE_QUALIFIED_NAME);
+		acceleoAstResultEDataType = createEDataType(ACCELEO_AST_RESULT);
 	}
 
 	/**
@@ -2502,6 +2512,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				1, 1, org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getModule_EndHeaderPosition(), ecorePackage.getEInt(), "endHeaderPosition", null, 1, 1, //$NON-NLS-1$
+				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModule_Ast(), this.getAcceleoAstResult(), "ast", null, 1, 1, //$NON-NLS-1$
 				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2980,9 +2993,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				!IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(moduleQualifiedNameEDataType, String.class, "ModuleQualifiedName", IS_SERIALIZABLE, //$NON-NLS-1$
 				!IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(acceleoAstResultEDataType, AcceleoAstResult.class, "AcceleoAstResult", IS_SERIALIZABLE, //$NON-NLS-1$
+				!IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
+	}
+
+	@Override
+	public EAttribute getModule_Ast() {
+		return (EAttribute)moduleEClass.getEStructuralFeatures().get(6);
+	}
+
+	@Override
+	public EDataType getAcceleoAstResult() {
+		return acceleoAstResultEDataType;
 	}
 
 } // AcceleoPackageImpl
