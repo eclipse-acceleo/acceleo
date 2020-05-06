@@ -2261,8 +2261,8 @@ public class AcceleoParser {
 		int parenthesisDepth = 0;
 		int curlyBracketDepth = 0;
 		while (res < text.length()) {
-			if (text.startsWith(endTag, res) || isProperlyParenthesed(parenthesisDepth, curlyBracketDepth)
-					&& endLimitReached(endDelimiter, res)) {
+			if ((text.startsWith(endTag, res) || endLimitReached(endDelimiter, res)) && isProperlyParenthesed(
+					parenthesisDepth, curlyBracketDepth)) {
 				break;
 			}
 			switch (text.charAt(res)) {
