@@ -287,6 +287,52 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.eclipse.acceleo.BlockComment} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected BlockCommentItemProvider blockCommentItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.eclipse.acceleo.BlockComment}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createBlockCommentAdapter() {
+		if (blockCommentItemProvider == null) {
+			blockCommentItemProvider = new BlockCommentItemProvider(this);
+		}
+
+		return blockCommentItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.eclipse.acceleo.ErrorBlockComment} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ErrorBlockCommentItemProvider errorBlockCommentItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.eclipse.acceleo.ErrorBlockComment}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createErrorBlockCommentAdapter() {
+		if (errorBlockCommentItemProvider == null) {
+			errorBlockCommentItemProvider = new ErrorBlockCommentItemProvider(this);
+		}
+
+		return errorBlockCommentItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link org.eclipse.acceleo.ErrorComment} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1054,7 +1100,7 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 	public ComposeableAdapterFactory getRootAdapterFactory() {
 		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
 	}
-	
+
 	/**
 	 * This sets the composed adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
@@ -1160,6 +1206,10 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 			moduleReferenceItemProvider.dispose();
 		if (errorModuleReferenceItemProvider != null)
 			errorModuleReferenceItemProvider.dispose();
+		if (blockCommentItemProvider != null)
+			blockCommentItemProvider.dispose();
+		if (errorBlockCommentItemProvider != null)
+			errorBlockCommentItemProvider.dispose();
 		if (commentItemProvider != null)
 			commentItemProvider.dispose();
 		if (errorCommentItemProvider != null)

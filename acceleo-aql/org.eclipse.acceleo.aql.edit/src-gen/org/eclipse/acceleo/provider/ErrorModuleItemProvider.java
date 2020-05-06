@@ -384,7 +384,13 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 				AcceleoFactory.eINSTANCE.createComment()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.MODULE__MODULE_ELEMENTS,
+				AcceleoFactory.eINSTANCE.createBlockComment()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.MODULE__MODULE_ELEMENTS,
 				AcceleoFactory.eINSTANCE.createErrorComment()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.MODULE__MODULE_ELEMENTS,
+				AcceleoFactory.eINSTANCE.createErrorBlockComment()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.MODULE__MODULE_ELEMENTS,
 				AcceleoFactory.eINSTANCE.createModuleDocumentation()));

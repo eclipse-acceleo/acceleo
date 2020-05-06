@@ -153,7 +153,13 @@ public class BlockItemProvider extends ItemProviderAdapter implements IEditingDo
 				AcceleoFactory.eINSTANCE.createComment()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
+				AcceleoFactory.eINSTANCE.createBlockComment()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
 				AcceleoFactory.eINSTANCE.createErrorComment()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
+				AcceleoFactory.eINSTANCE.createErrorBlockComment()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
 				AcceleoFactory.eINSTANCE.createModuleDocumentation()));

@@ -15,11 +15,13 @@ import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorBlockComment;
 import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
@@ -165,6 +167,16 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseModuleElement(ModuleElement object) {
 			return createModuleElementAdapter();
+		}
+
+		@Override
+		public Adapter caseBlockComment(BlockComment object) {
+			return createBlockCommentAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorBlockComment(ErrorBlockComment object) {
+			return createErrorBlockCommentAdapter();
 		}
 
 		@Override
@@ -523,6 +535,34 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createCommentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.BlockComment <em>Block Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.BlockComment
+	 * @generated
+	 */
+	public Adapter createBlockCommentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorBlockComment <em>Error Block Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorBlockComment
+	 * @generated
+	 */
+	public Adapter createErrorBlockCommentAdapter() {
 		return null;
 	}
 

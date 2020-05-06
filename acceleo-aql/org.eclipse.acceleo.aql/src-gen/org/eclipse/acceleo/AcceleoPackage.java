@@ -75,7 +75,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getNamedElement()
 	 * @generated
 	 */
-	int NAMED_ELEMENT = 19;
+	int NAMED_ELEMENT = 21;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -230,7 +230,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getError()
 	 * @generated
 	 */
-	int ERROR = 21;
+	int ERROR = 23;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorModuleImpl <em>Error Module</em>}' class.
@@ -250,7 +250,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTNode()
 	 * @generated
 	 */
-	int AST_NODE = 20;
+	int AST_NODE = 22;
 
 	/**
 	 * The number of structural features of the '<em>AST Node</em>' class.
@@ -717,7 +717,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getComment()
 	 * @generated
 	 */
-	int COMMENT = 9;
+	int COMMENT = 11;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -747,6 +747,43 @@ public interface AcceleoPackage extends EPackage {
 	int COMMENT_OPERATION_COUNT = MODULE_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.impl.BlockCommentImpl <em>Block Comment</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.impl.BlockCommentImpl
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getBlockComment()
+	 * @generated
+	 */
+	int BLOCK_COMMENT = 9;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK_COMMENT__BODY = COMMENT__BODY;
+
+	/**
+	 * The number of structural features of the '<em>Block Comment</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK_COMMENT_FEATURE_COUNT = COMMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Block Comment</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK_COMMENT_OPERATION_COUNT = COMMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorCommentImpl <em>Error Comment</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -754,7 +791,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorComment()
 	 * @generated
 	 */
-	int ERROR_COMMENT = 10;
+	int ERROR_COMMENT = 12;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -793,6 +830,52 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_COMMENT_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorBlockCommentImpl <em>Error Block Comment</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.impl.ErrorBlockCommentImpl
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorBlockComment()
+	 * @generated
+	 */
+	int ERROR_BLOCK_COMMENT = 10;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BLOCK_COMMENT__BODY = ERROR_COMMENT__BODY;
+
+	/**
+	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BLOCK_COMMENT__MISSING_END_HEADER = ERROR_COMMENT__MISSING_END_HEADER;
+
+	/**
+	 * The number of structural features of the '<em>Error Block Comment</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BLOCK_COMMENT_FEATURE_COUNT = ERROR_COMMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Error Block Comment</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BLOCK_COMMENT_OPERATION_COUNT = ERROR_COMMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.CommentBodyImpl <em>Comment Body</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -800,7 +883,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getCommentBody()
 	 * @generated
 	 */
-	int COMMENT_BODY = 11;
+	int COMMENT_BODY = 13;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -837,7 +920,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getDocumentation()
 	 * @generated
 	 */
-	int DOCUMENTATION = 12;
+	int DOCUMENTATION = 14;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -883,7 +966,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleDocumentation()
 	 * @generated
 	 */
-	int MODULE_DOCUMENTATION = 13;
+	int MODULE_DOCUMENTATION = 15;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -956,7 +1039,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorModuleDocumentation()
 	 * @generated
 	 */
-	int ERROR_MODULE_DOCUMENTATION = 14;
+	int ERROR_MODULE_DOCUMENTATION = 16;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1038,7 +1121,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleElementDocumentation()
 	 * @generated
 	 */
-	int MODULE_ELEMENT_DOCUMENTATION = 15;
+	int MODULE_ELEMENT_DOCUMENTATION = 17;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1093,7 +1176,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorModuleElementDocumentation()
 	 * @generated
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION = 16;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION = 18;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1157,7 +1240,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getParameterDocumentation()
 	 * @generated
 	 */
-	int PARAMETER_DOCUMENTATION = 17;
+	int PARAMETER_DOCUMENTATION = 19;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1194,7 +1277,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getDocumentedElement()
 	 * @generated
 	 */
-	int DOCUMENTED_ELEMENT = 18;
+	int DOCUMENTED_ELEMENT = 20;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' reference.
@@ -1240,7 +1323,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getBlock()
 	 * @generated
 	 */
-	int BLOCK = 22;
+	int BLOCK = 24;
 
 	/**
 	 * The feature id for the '<em><b>Statements</b></em>' containment reference list.
@@ -1277,7 +1360,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTypedElement()
 	 * @generated
 	 */
-	int TYPED_ELEMENT = 23;
+	int TYPED_ELEMENT = 25;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -1323,7 +1406,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTemplate()
 	 * @generated
 	 */
-	int TEMPLATE = 24;
+	int TEMPLATE = 26;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' reference.
@@ -1432,7 +1515,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorTemplate()
 	 * @generated
 	 */
-	int ERROR_TEMPLATE = 25;
+	int ERROR_TEMPLATE = 27;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' reference.
@@ -1631,7 +1714,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getQuery()
 	 * @generated
 	 */
-	int QUERY = 26;
+	int QUERY = 28;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' reference.
@@ -1731,7 +1814,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorQuery()
 	 * @generated
 	 */
-	int ERROR_QUERY = 27;
+	int ERROR_QUERY = 29;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' reference.
@@ -1912,7 +1995,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getExpression()
 	 * @generated
 	 */
-	int EXPRESSION = 28;
+	int EXPRESSION = 30;
 
 	/**
 	 * The feature id for the '<em><b>Ast</b></em>' attribute.
@@ -1958,7 +2041,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorExpression()
 	 * @generated
 	 */
-	int ERROR_EXPRESSION = 29;
+	int ERROR_EXPRESSION = 31;
 
 	/**
 	 * The feature id for the '<em><b>Ast</b></em>' attribute.
@@ -2004,7 +2087,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVariable()
 	 * @generated
 	 */
-	int VARIABLE = 30;
+	int VARIABLE = 32;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2059,7 +2142,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorVariable()
 	 * @generated
 	 */
-	int ERROR_VARIABLE = 31;
+	int ERROR_VARIABLE = 33;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2141,7 +2224,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 32;
+	int BINDING = 34;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2205,7 +2288,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorBinding()
 	 * @generated
 	 */
-	int ERROR_BINDING = 33;
+	int ERROR_BINDING = 35;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2314,7 +2397,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getStatement()
 	 * @generated
 	 */
-	int STATEMENT = 34;
+	int STATEMENT = 36;
 
 	/**
 	 * The number of structural features of the '<em>Statement</em>' class.
@@ -2342,7 +2425,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getLeafStatement()
 	 * @generated
 	 */
-	int LEAF_STATEMENT = 35;
+	int LEAF_STATEMENT = 37;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
@@ -2379,7 +2462,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getExpressionStatement()
 	 * @generated
 	 */
-	int EXPRESSION_STATEMENT = 36;
+	int EXPRESSION_STATEMENT = 38;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
@@ -2425,7 +2508,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorExpressionStatement()
 	 * @generated
 	 */
-	int ERROR_EXPRESSION_STATEMENT = 37;
+	int ERROR_EXPRESSION_STATEMENT = 39;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
@@ -2480,7 +2563,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getProtectedArea()
 	 * @generated
 	 */
-	int PROTECTED_AREA = 38;
+	int PROTECTED_AREA = 40;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference.
@@ -2526,7 +2609,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorProtectedArea()
 	 * @generated
 	 */
-	int ERROR_PROTECTED_AREA = 39;
+	int ERROR_PROTECTED_AREA = 41;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference.
@@ -2608,7 +2691,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getForStatement()
 	 * @generated
 	 */
-	int FOR_STATEMENT = 40;
+	int FOR_STATEMENT = 42;
 
 	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
@@ -2663,7 +2746,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorForStatement()
 	 * @generated
 	 */
-	int ERROR_FOR_STATEMENT = 41;
+	int ERROR_FOR_STATEMENT = 43;
 
 	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
@@ -2772,7 +2855,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getIfStatement()
 	 * @generated
 	 */
-	int IF_STATEMENT = 42;
+	int IF_STATEMENT = 44;
 
 	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -2827,7 +2910,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorIfStatement()
 	 * @generated
 	 */
-	int ERROR_IF_STATEMENT = 43;
+	int ERROR_IF_STATEMENT = 45;
 
 	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -2918,7 +3001,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getLetStatement()
 	 * @generated
 	 */
-	int LET_STATEMENT = 44;
+	int LET_STATEMENT = 46;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
@@ -2964,7 +3047,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorLetStatement()
 	 * @generated
 	 */
-	int ERROR_LET_STATEMENT = 45;
+	int ERROR_LET_STATEMENT = 47;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
@@ -3037,7 +3120,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getFileStatement()
 	 * @generated
 	 */
-	int FILE_STATEMENT = 46;
+	int FILE_STATEMENT = 48;
 
 	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute.
@@ -3101,7 +3184,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorFileStatement()
 	 * @generated
 	 */
-	int ERROR_FILE_STATEMENT = 47;
+	int ERROR_FILE_STATEMENT = 49;
 
 	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute.
@@ -3219,7 +3302,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTextStatement()
 	 * @generated
 	 */
-	int TEXT_STATEMENT = 48;
+	int TEXT_STATEMENT = 50;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
@@ -3265,7 +3348,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 49;
+	int VISIBILITY_KIND = 51;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.OpenModeKind <em>Open Mode Kind</em>}' enum.
@@ -3275,7 +3358,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 50;
+	int OPEN_MODE_KIND = 52;
 
 	/**
 	 * The meta object id for the '<em>AST Result</em>' data type.
@@ -3285,7 +3368,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
-	int AST_RESULT = 51;
+	int AST_RESULT = 53;
 
 	/**
 	 * The meta object id for the '<em>Module Qualified Name</em>' data type.
@@ -3295,7 +3378,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleQualifiedName()
 	 * @generated
 	 */
-	int MODULE_QUALIFIED_NAME = 52;
+	int MODULE_QUALIFIED_NAME = 54;
 
 	/**
 	 * The meta object id for the '<em>Ast Result</em>' data type.
@@ -3305,7 +3388,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoAstResult()
 	 * @generated
 	 */
-	int ACCELEO_AST_RESULT = 53;
+	int ACCELEO_AST_RESULT = 55;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Module <em>Module</em>}'.
@@ -3604,6 +3687,26 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getComment_Body();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.BlockComment <em>Block Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Block Comment</em>'.
+	 * @see org.eclipse.acceleo.BlockComment
+	 * @generated
+	 */
+	EClass getBlockComment();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorBlockComment <em>Error Block Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Error Block Comment</em>'.
+	 * @see org.eclipse.acceleo.ErrorBlockComment
+	 * @generated
+	 */
+	EClass getErrorBlockComment();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorComment <em>Error Comment</em>}'.
@@ -5360,6 +5463,26 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMMENT__BODY = eINSTANCE.getComment_Body();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.BlockCommentImpl <em>Block Comment</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.impl.BlockCommentImpl
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getBlockComment()
+		 * @generated
+		 */
+		EClass BLOCK_COMMENT = eINSTANCE.getBlockComment();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorBlockCommentImpl <em>Error Block Comment</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.impl.ErrorBlockCommentImpl
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorBlockComment()
+		 * @generated
+		 */
+		EClass ERROR_BLOCK_COMMENT = eINSTANCE.getErrorBlockComment();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorCommentImpl <em>Error Comment</em>}' class.

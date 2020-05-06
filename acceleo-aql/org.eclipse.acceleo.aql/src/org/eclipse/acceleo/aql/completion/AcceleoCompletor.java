@@ -20,6 +20,7 @@ import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorBlockComment;
 import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
@@ -177,6 +178,7 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 		res.add(new TextCompletionProposal(AcceleoCodeTemplates.CODE_TEMPLATE_NEW_ACCELEO_TEMPLATE, 0));
 
 		res.add(new TextCompletionProposal(AcceleoParser.DOCUMENTATION_START, 0));
+		res.add(new TextCompletionProposal(AcceleoParser.BLOCK_COMMENT_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.COMMENT_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.TEMPLATE_HEADER_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.QUERY_START, 0));
@@ -215,7 +217,11 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 		final List<ICompletionProposal> res = new ArrayList<ICompletionProposal>();
 
 		if (errorComment.getMissingEndHeader() != -1) {
-			res.add(new TextCompletionProposal(AcceleoParser.COMMENT_END, 0));
+			if (errorComment instanceof ErrorBlockComment) {
+				res.add(new TextCompletionProposal(AcceleoParser.BLOCK_COMMENT_END, 0));
+			} else {
+				res.add(new TextCompletionProposal(AcceleoParser.COMMENT_END, 0));
+			}
 		}
 
 		return res;
@@ -640,6 +646,7 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 		res.add(new TextCompletionProposal(AcceleoParser.IF_HEADER_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.LET_HEADER_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.PROTECTED_AREA_HEADER_START, 0));
+		res.add(new TextCompletionProposal(AcceleoParser.BLOCK_COMMENT_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.COMMENT_START, 0));
 		res.add(new TextCompletionProposal(AcceleoParser.EXPRESSION_STATEMENT_START, 0));
 

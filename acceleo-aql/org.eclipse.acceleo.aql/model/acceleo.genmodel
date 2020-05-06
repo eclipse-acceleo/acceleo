@@ -59,6 +59,8 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorModuleReference"/>
     <genClasses image="false" ecoreClass="acceleo.ecore#//ModuleElement"/>
+    <genClasses ecoreClass="acceleo.ecore#//BlockComment"/>
+    <genClasses ecoreClass="acceleo.ecore#//ErrorBlockComment"/>
     <genClasses ecoreClass="acceleo.ecore#//Comment">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Comment/body"/>
     </genClasses>

@@ -17,6 +17,7 @@ import java.util.Set;
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.ErrorBinding;
@@ -607,6 +608,13 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append("missing affectation symbol position: " + errorBinding
 				.getMissingAffectationSymbolePosition());
 		newLine();
+
+		return null;
+	}
+
+	@Override
+	public Void caseBlockComment(BlockComment blockComment) {
+		builder.append("[blockComment]");
 
 		return null;
 	}

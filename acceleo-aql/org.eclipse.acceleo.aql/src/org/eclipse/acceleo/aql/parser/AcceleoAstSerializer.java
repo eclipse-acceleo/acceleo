@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.parser;
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
@@ -105,6 +106,16 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		for (Statement statement : block.getStatements()) {
 			doSwitch(statement);
 		}
+
+		return DUMMY;
+	}
+
+	@Override
+	public Object caseBlockComment(BlockComment blockComment) {
+
+		builder.append(AcceleoParser.BLOCK_COMMENT_START);
+		doSwitch(blockComment.getBody());
+		builder.append(AcceleoParser.BLOCK_COMMENT_END);
 
 		return DUMMY;
 	}

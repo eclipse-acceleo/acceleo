@@ -112,6 +112,24 @@ public interface AcceleoFactory extends EFactory {
 	Comment createComment();
 
 	/**
+	 * Returns a new object of class '<em>Block Comment</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Block Comment</em>'.
+	 * @generated
+	 */
+	BlockComment createBlockComment();
+
+	/**
+	 * Returns a new object of class '<em>Error Block Comment</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Block Comment</em>'.
+	 * @generated
+	 */
+	ErrorBlockComment createErrorBlockComment();
+
+	/**
 	 * Returns a new object of class '<em>Error Comment</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

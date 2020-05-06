@@ -16,11 +16,13 @@ import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorBlockComment;
 import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
@@ -148,6 +150,20 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EClass commentEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass blockCommentEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass errorBlockCommentEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -788,6 +804,26 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	@Override
 	public EReference getComment_Body() {
 		return (EReference)commentEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EClass getBlockComment() {
+		return blockCommentEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EClass getErrorBlockComment() {
+		return errorBlockCommentEClass;
 	}
 
 	/**
@@ -2234,6 +2270,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		moduleElementEClass = createEClass(MODULE_ELEMENT);
 
+		blockCommentEClass = createEClass(BLOCK_COMMENT);
+
+		errorBlockCommentEClass = createEClass(ERROR_BLOCK_COMMENT);
+
 		commentEClass = createEClass(COMMENT);
 		createEReference(commentEClass, COMMENT__BODY);
 
@@ -2465,6 +2505,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		errorModuleReferenceEClass.getESuperTypes().add(this.getError());
 		errorModuleReferenceEClass.getESuperTypes().add(this.getModuleReference());
 		moduleElementEClass.getESuperTypes().add(this.getASTNode());
+		blockCommentEClass.getESuperTypes().add(this.getComment());
+		errorBlockCommentEClass.getESuperTypes().add(this.getErrorComment());
+		errorBlockCommentEClass.getESuperTypes().add(this.getBlockComment());
 		commentEClass.getESuperTypes().add(this.getModuleElement());
 		commentEClass.getESuperTypes().add(this.getStatement());
 		errorCommentEClass.getESuperTypes().add(this.getError());
@@ -2603,6 +2646,12 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(moduleElementEClass, ModuleElement.class, "ModuleElement", IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(blockCommentEClass, BlockComment.class, "BlockComment", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(errorBlockCommentEClass, ErrorBlockComment.class, "ErrorBlockComment", !IS_ABSTRACT, //$NON-NLS-1$
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(commentEClass, Comment.class, "Comment", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);

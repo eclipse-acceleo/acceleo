@@ -15,9 +15,11 @@ import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorBlockComment;
 import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
@@ -127,6 +129,10 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createModuleReference();
 			case AcceleoPackage.ERROR_MODULE_REFERENCE:
 				return createErrorModuleReference();
+			case AcceleoPackage.BLOCK_COMMENT:
+				return createBlockComment();
+			case AcceleoPackage.ERROR_BLOCK_COMMENT:
+				return createErrorBlockComment();
 			case AcceleoPackage.COMMENT:
 				return createComment();
 			case AcceleoPackage.ERROR_COMMENT:
@@ -346,6 +352,28 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public Comment createComment() {
 		CommentImpl comment = new CommentImpl();
 		return comment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public BlockComment createBlockComment() {
+		BlockCommentImpl blockComment = new BlockCommentImpl();
+		return blockComment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ErrorBlockComment createErrorBlockComment() {
+		ErrorBlockCommentImpl errorBlockComment = new ErrorBlockCommentImpl();
+		return errorBlockComment;
 	}
 
 	/**

@@ -1,0 +1,11 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (89..114))
+    [blockComment][comment a block comment (125..140) /] (116..150)
+    [blockComment][comment an other block comment (159..181) /] (150..191)
+    [blockComment][comment a last block comment (200..220) /] (191..230)
+    some static text. true (233..250) (116..251)
+  [/template] (61..262) (0..262)

@@ -7,6 +7,9 @@
 [comment  9
 [comment 
 
+[comment] 9
+[comment]
+
 [else] 6
 [else]
 

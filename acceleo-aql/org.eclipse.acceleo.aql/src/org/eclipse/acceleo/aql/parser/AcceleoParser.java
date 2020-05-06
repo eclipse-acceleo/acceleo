@@ -30,6 +30,7 @@ import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
@@ -85,6 +86,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -121,6 +123,16 @@ public class AcceleoParser {
 	 * End of {@link TextStatement}.
 	 */
 	public static final String TEXT_END = "[";
+
+	/**
+	 * Start of {@link BlockComment}.
+	 */
+	public static final String BLOCK_COMMENT_START = "[comment]";
+
+	/**
+	 * End of {@link BlockComment}.
+	 */
+	public static final String BLOCK_COMMENT_END = "[/comment]";
 
 	/**
 	 * Start of {@link Comment}.
@@ -624,38 +636,63 @@ public class AcceleoParser {
 	}
 
 	/**
-	 * Parses a {@link Comment}.
+	 * Parses a {@link Comment} or a {@link BlockComment}.
 	 * 
-	 * @return the created {@link Comment} if any recognized, <code>null</code> otherwise
+	 * @return the created {@link Comment} or {@link BlockComment} if any recognized, <code>null</code>
+	 *         otherwise
 	 */
 	protected Comment parseComment() {
 		final Comment res;
-		final int startPosition = currentPosition;
-		if (text.startsWith(COMMENT_START, currentPosition)) {
-			final int startOfCommentBody = currentPosition + COMMENT_START.length();
-			int endOfCommentBody = getNext(COMMENT_END);
-			if (endOfCommentBody < 0) {
-				endOfCommentBody = text.length();
-				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorComment();
-				setPositions(res, startPosition, endOfCommentBody);
-				((ErrorComment)res).setMissingEndHeader(endOfCommentBody);
-				errors.add((Error)res);
-				currentPosition = endOfCommentBody;
-			} else {
-				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createComment();
-				setPositions(res, startPosition, endOfCommentBody + COMMENT_END.length());
-				currentPosition = endOfCommentBody + COMMENT_END.length();
-			}
-
-			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
-			commentBody.setValue(text.substring(startOfCommentBody, endOfCommentBody));
-			setPositions(commentBody, startOfCommentBody, endOfCommentBody);
-
-			res.setBody(commentBody);
+		if (text.startsWith(BLOCK_COMMENT_START, currentPosition)) {
+			res = createComment(BLOCK_COMMENT_START, BLOCK_COMMENT_END, AcceleoPackage.eINSTANCE
+					.getBlockComment(), AcceleoPackage.eINSTANCE.getErrorBlockComment());
+		} else if (text.startsWith(COMMENT_START, currentPosition)) {
+			res = createComment(COMMENT_START, COMMENT_END, AcceleoPackage.eINSTANCE.getComment(),
+					AcceleoPackage.eINSTANCE.getErrorComment());
 		} else {
 			res = null;
 		}
 
+		return res;
+	}
+
+	/**
+	 * Creates the {@link Comment} or {@link ErrorComment}.
+	 * 
+	 * @param startTag
+	 *            the start tag
+	 * @param endTag
+	 *            the end tag
+	 * @param commentClass
+	 *            the {@link Comment} {@link EClass}
+	 * @param errorCommentClass
+	 *            the {@link ErrorComment} {@link EClass}
+	 * @return the {@link Comment} or {@link ErrorComment}
+	 */
+	private Comment createComment(String startTag, String endTag, EClass commentClass,
+			EClass errorCommentClass) {
+		final Comment res;
+		final int startPosition = currentPosition;
+		final int startOfCommentBody = currentPosition + startTag.length();
+		int endOfCommentBody = getNext(endTag);
+		if (endOfCommentBody < 0) {
+			endOfCommentBody = text.length();
+			res = (Comment)EcoreUtil.create(errorCommentClass);
+			setPositions(res, startPosition, endOfCommentBody);
+			((ErrorComment)res).setMissingEndHeader(endOfCommentBody);
+			errors.add((Error)res);
+			currentPosition = endOfCommentBody;
+		} else {
+			res = (Comment)EcoreUtil.create(commentClass);
+			setPositions(res, startPosition, endOfCommentBody + endTag.length());
+			currentPosition = endOfCommentBody + endTag.length();
+		}
+
+		final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
+		commentBody.setValue(text.substring(startOfCommentBody, endOfCommentBody));
+		setPositions(commentBody, startOfCommentBody, endOfCommentBody);
+
+		res.setBody(commentBody);
 		return res;
 	}
 

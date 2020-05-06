@@ -50,6 +50,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorModuleReference" eSuperTypes="#//Error #//ModuleReference"/>
   <eClassifiers xsi:type="ecore:EClass" name="ModuleElement" abstract="true" eSuperTypes="#//ASTNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BlockComment" eSuperTypes="#//Comment"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorBlockComment" eSuperTypes="#//ErrorComment #//BlockComment"/>
   <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//ModuleElement #//Statement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//CommentBody"
         containment="true"/>

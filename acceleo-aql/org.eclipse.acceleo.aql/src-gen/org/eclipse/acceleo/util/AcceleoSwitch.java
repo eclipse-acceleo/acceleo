@@ -15,11 +15,13 @@ import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorBlockComment;
 import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
@@ -223,6 +225,42 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseModuleElement(moduleElement);
 				if (result == null)
 					result = caseASTNode(moduleElement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.BLOCK_COMMENT: {
+				BlockComment blockComment = (BlockComment)theEObject;
+				T result = caseBlockComment(blockComment);
+				if (result == null)
+					result = caseComment(blockComment);
+				if (result == null)
+					result = caseModuleElement(blockComment);
+				if (result == null)
+					result = caseStatement(blockComment);
+				if (result == null)
+					result = caseASTNode(blockComment);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_BLOCK_COMMENT: {
+				ErrorBlockComment errorBlockComment = (ErrorBlockComment)theEObject;
+				T result = caseErrorBlockComment(errorBlockComment);
+				if (result == null)
+					result = caseErrorComment(errorBlockComment);
+				if (result == null)
+					result = caseBlockComment(errorBlockComment);
+				if (result == null)
+					result = caseError(errorBlockComment);
+				if (result == null)
+					result = caseComment(errorBlockComment);
+				if (result == null)
+					result = caseModuleElement(errorBlockComment);
+				if (result == null)
+					result = caseStatement(errorBlockComment);
+				if (result == null)
+					result = caseASTNode(errorBlockComment);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -923,6 +961,36 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseComment(Comment object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Block Comment</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Block Comment</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBlockComment(BlockComment object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Block Comment</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Block Comment</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorBlockComment(ErrorBlockComment object) {
 		return null;
 	}
 
