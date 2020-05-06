@@ -6,7 +6,7 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
-    [for myVariable : EString = ''', '', '', } (155..177) (125..177)
+    [for myVariable : EString = Sequence{''', '', '', } (155..177) (125..177)
       
     some static text.
    (179..204) (179..204)

@@ -2083,9 +2083,10 @@ public class AcceleoParser {
 		int res = currentPosition;
 
 		int parenthesisDepth = 0;
+		int curlyBracketDepth = 0;
 		while (res < text.length()) {
-			if (text.startsWith(endTag, res) || parenthesisDepth == 0 && (text.startsWith(endDelimiter, res)
-					|| text.startsWith(TEXT_END, res))) {
+			if (text.startsWith(endTag, res) || (parenthesisDepth == 0 && curlyBracketDepth == 0) && (text
+					.startsWith(endDelimiter, res) || text.startsWith(TEXT_END, res))) {
 				break;
 			}
 			switch (text.charAt(res)) {
@@ -2113,6 +2114,14 @@ public class AcceleoParser {
 								break;
 						}
 					}
+					break;
+				case '{':
+					curlyBracketDepth++;
+					res++;
+					break;
+				case '}':
+					curlyBracketDepth--;
+					res++;
 					break;
 				case '(':
 					parenthesisDepth++;

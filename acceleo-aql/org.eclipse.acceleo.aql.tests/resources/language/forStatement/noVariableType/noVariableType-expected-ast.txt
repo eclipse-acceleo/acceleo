@@ -6,7 +6,7 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
-    [for myVariable : null = 'a', 'b', 'c', } (138..161) (125..161)
+    [for myVariable : null = Sequence{'a', 'b', 'c', } (138..161) (125..161)
       
     some static text.
    (163..188) (163..188)

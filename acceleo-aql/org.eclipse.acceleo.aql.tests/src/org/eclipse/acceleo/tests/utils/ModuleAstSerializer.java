@@ -188,7 +188,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 				builder.append("***invalid type of collection ***(");
 			}
 			doSwitch(collectionTypeLiteral.getElementType());
-			builder.append("");
+			builder.append(")");
 			return null;
 		}
 
@@ -259,13 +259,10 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		public Void caseSequenceInExtensionLiteral(SequenceInExtensionLiteral sequenceInExtensionLiteral) {
 			builder.append("Sequence{");
 			if (!sequenceInExtensionLiteral.getValues().isEmpty()) {
-				final StringBuilder previousBuilder = builder;
-				builder = new StringBuilder();
 				for (Expression value : sequenceInExtensionLiteral.getValues()) {
 					doSwitch(value);
 					builder.append(',').append(' ');
 				}
-				previousBuilder.append(builder.substring(0, builder.length() - 2));
 			}
 			builder.append('}');
 			return null;
