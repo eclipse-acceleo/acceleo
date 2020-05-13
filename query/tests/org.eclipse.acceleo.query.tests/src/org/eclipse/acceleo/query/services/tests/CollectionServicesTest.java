@@ -4649,6 +4649,81 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
+	public void testAppendNullList() {
+		collectionServices.append((List<?>)null, null);
+	}
+
+	@Test
+	public void testAppendList() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		final List<Object> result = collectionServices.append(list, null);
+		assertTrue(list != result);
+		assertEquals(4, result.size());
+		assertEquals(Integer.valueOf(1), result.get(0));
+		assertEquals(Integer.valueOf(2), result.get(1));
+		assertEquals(Integer.valueOf(3), result.get(2));
+		assertEquals(null, result.get(3));
+	}
+
+	@Test
+	public void testAppendListDuplicate() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		final List<Object> result = collectionServices.append(list, Integer.valueOf(2));
+		assertTrue(list != result);
+		assertEquals(4, result.size());
+		assertEquals(Integer.valueOf(1), result.get(0));
+		assertEquals(Integer.valueOf(2), result.get(1));
+		assertEquals(Integer.valueOf(3), result.get(2));
+		assertEquals(Integer.valueOf(2), result.get(3));
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAppendNullSet() {
+		collectionServices.append((Set<?>)null, null);
+	}
+
+	@Test
+	public void testAppendSet() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		final Set<Object> result = collectionServices.append(set, null);
+		assertTrue(set != result);
+		assertEquals(4, result.size());
+		Iterator<Object> itr = result.iterator();
+		assertEquals(Integer.valueOf(1), itr.next());
+		assertEquals(Integer.valueOf(2), itr.next());
+		assertEquals(Integer.valueOf(3), itr.next());
+		assertEquals(null, itr.next());
+	}
+
+	@Test
+	public void testAppendSetDuplicate() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		final Set<Object> result = collectionServices.append(set, Integer.valueOf(2));
+		assertTrue(set != result);
+		assertEquals(3, result.size());
+		Iterator<Object> itr = result.iterator();
+		assertEquals(Integer.valueOf(1), itr.next());
+		assertEquals(Integer.valueOf(3), itr.next());
+		assertEquals(Integer.valueOf(2), itr.next());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
 	public void testPrependNullList() {
 		collectionServices.prepend((List<?>)null, null);
 	}

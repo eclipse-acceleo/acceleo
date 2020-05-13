@@ -823,6 +823,16 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
+	public void testAppend() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
+
+		assertValidation(expectedReturnTypes, "append", parameterTypes);
+	}
+
+	@Test
 	public void testPrepend() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
 				Integer.class) };

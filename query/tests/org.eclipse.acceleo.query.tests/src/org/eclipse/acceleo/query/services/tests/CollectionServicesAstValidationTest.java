@@ -5567,6 +5567,91 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testAppendList() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->append(' ')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testAppendListDifferentTypes() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->append(1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class))),
+				types);
+	}
+
+	@Test
+	public void testAppendListNull() {
+		final IValidationResult validationResult = validate("Sequence{1, 2}->append(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testAppendOnNull() {
+		final IValidationResult validationResult = validate("null->append('hello')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testAppendSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->append(' ')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testAppendSetDifferentTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->append(1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testAppendSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2}->append(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(null))), types);
+	}
+
+	@Test
 	public void testPrependList() {
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->prepend(' ')");
 

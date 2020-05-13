@@ -899,7 +899,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = new CollectService(publicMethod, this);
 		} else if ("closure".equals(publicMethod.getName())) {
 			result = new ClosureService(publicMethod, this);
-		} else if ("including".equals(publicMethod.getName()) || "prepend".equals(publicMethod.getName())) {
+		} else if ("including".equals(publicMethod.getName()) || "prepend".equals(publicMethod.getName())
+				|| "append".equals(publicMethod.getName())) {
 			result = new IncludingService(publicMethod, this);
 		} else if ("sep".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2) {
@@ -935,6 +936,7 @@ public class CollectionServices extends AbstractServiceProvider {
 
 						return result;
 					}
+
 				};
 			} else {
 				result = new JavaMethodService(publicMethod, this);
@@ -2602,6 +2604,51 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (current <= position.intValue()) {
 			result.add(object);
 		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Inserts the given object in a copy of the given sequence at the last position.",
+		params = {
+			@Param(name = "sequence", value = "The sequence"),
+			@Param(name = "object", value = "The object")
+		},
+		result = "A copy of the given sequence including the object at the last position",
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c'}->append('f')", result = "Sequence{'a', 'b', 'c', 'f'}")
+		}
+	)
+	// @formatter:on
+	public <T> List<T> append(List<T> sequence, T object) {
+		final List<T> result = new ArrayList<T>(sequence);
+
+		result.add(object);
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Inserts the given object in a copy of the given set at the last position. "
+				+ "If the set already contained the given object, it is moved to the last position.",
+		params = {
+			@Param(name = "set", value = "The sequence"),
+			@Param(name = "object", value = "The object")
+		},
+		result = "A copy of the given set including the object at the last position",
+		examples = {
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->append('f')", result = "OrderedSet{'a', 'b', 'c', 'f'}"),
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->append('b')", result = "OrderedSet{'a', 'c', 'b'}")
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> append(Set<T> set, T object) {
+		final Set<T> result = new LinkedHashSet<T>(set);
+
+		result.remove(object);
+		result.add(object);
 
 		return result;
 	}
