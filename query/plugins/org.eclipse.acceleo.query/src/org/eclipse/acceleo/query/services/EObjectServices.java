@@ -1557,6 +1557,81 @@ public class EObjectServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
+		value = "Handles calls to the operation \"eGet\". This will fetch the value of the given feature on \"source\"",
+		params = {
+			@Param(name = "eObject", value = "The eObject we seek to retrieve a feature value of."),
+			@Param(name = "feature", value = "The feature which value we need to retrieve."),
+		},
+		result = "The value of the given feature on the given EObject",
+		examples = {
+				@Example(
+					expression = "anEObject.eGet(aFeature)",
+					result = "aValue"
+				)
+			}
+	)
+	// @formatter:on
+	public Object eGet(EObject eObject, final EStructuralFeature feature) {
+		if (eObject == null || feature == null) {
+			throw new NullPointerException();
+		}
+		final Object result;
+
+		final Object value = eObject.eGet(feature);
+		if (value instanceof Set<?>) {
+			result = new LinkedHashSet<Object>((Set<?>)value);
+		} else if (value instanceof EMap<?, ?>) {
+			result = new BasicEMap<Object, Object>(((EMap<?, ?>)value).map());
+		} else if (value instanceof Collection<?>) {
+			result = new ArrayList<Object>((Collection<?>)value);
+		} else {
+			result = value;
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Handles calls to the operation \"eGet\". This will fetch the value of the given feature on \"source\"; " +
+				"the value is optionally resolved before it is returned.",
+		params = {
+			@Param(name = "eObject", value = "The eObject we seek to retrieve a feature value of."),
+			@Param(name = "feature", value = "The feature which value we need to retrieve."),
+			@Param(name = "resolve", value = "whether to resolve the value or not."),
+		},
+		result = "The value of the given feature on the given EObject",
+		examples = {
+				@Example(
+					expression = "anEObject.eGet(aFeature, true)",
+					result = "aValue"
+				)
+			}
+	)
+	// @formatter:on
+	public Object eGet(EObject eObject, final EStructuralFeature feature, final boolean resolve) {
+		if (eObject == null || feature == null) {
+			throw new NullPointerException();
+		}
+
+		final Object result;
+
+		final Object value = eObject.eGet(feature, resolve);
+		if (value instanceof Set<?>) {
+			result = new LinkedHashSet<Object>((Set<?>)value);
+		} else if (value instanceof EMap<?, ?>) {
+			result = new BasicEMap<Object, Object>(((EMap<?, ?>)value).map());
+		} else if (value instanceof Collection<?>) {
+			result = new ArrayList<Object>((Collection<?>)value);
+		} else {
+			result = value;
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Returns all instances of the EClass",
 		params = {
 			@Param(name = "type", value = "The EClass"),

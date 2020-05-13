@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -815,6 +816,54 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		assertEquals(null, eObjectServices.eGet(eObjectListResult, "query"));
 	}
 
+	/**
+	 * * Tests {@link EObjectServices#eGet(EObject, EStructuralFeature)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model. </br>
+	 * It ensures that the {@link EObjectServices#eGet(EObject, EStructuralFeature)} returns the expected
+	 * feature value.
+	 * <ul>
+	 * We expect to get:
+	 * <li>for an instance of "Queries" with "name" feature filter: the eGet must return null because the
+	 * concerned feature is not specified in the model.</li>
+	 * </ul>
+	 */
+	@Test
+	public void testEGetFeature() {
+		EObject queries = reverseModel.getContents().get(0);
+		queries.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		final EStructuralFeature nameFeature = queries.eClass().getEStructuralFeature("name");
+
+		// The queries "name" feature exists but in the current model it is not
+		// specified
+		assertEquals(null, eObjectServices.eGet(queries, nameFeature));
+	}
+
+	/**
+	 * * Tests {@link EObjectServices#eGet(EObject, EStructuralFeature, boolean)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model. </br>
+	 * It ensures that the {@link EObjectServices#eGet(EObject, EStructuralFeature, boolean)} returns the
+	 * expected feature value.
+	 * <ul>
+	 * We expect to get:
+	 * <li>for an instance of "Queries" with "name" feature filter: the eGet must return null because the
+	 * concerned feature is not specified in the model.</li>
+	 * </ul>
+	 */
+	@Test
+	public void testEGetFeatureResolve() {
+		EObject queries = reverseModel.getContents().get(0);
+		queries.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		final EStructuralFeature nameFeature = queries.eClass().getEStructuralFeature("name");
+
+		// The queries "name" feature exists but in the current model it is not
+		// specified
+		assertEquals(null, eObjectServices.eGet(queries, nameFeature, true));
+	}
+
 	@Test
 	public void testEGetEList() {
 		Queries fullSiriusCodePackage = (Queries)reverseModel.getContents().get(0);
@@ -869,7 +918,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject queries = reverseModel.getContents().get(0);
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
-		eObjectServices.eGet(queries, null);
+		eObjectServices.eGet(queries, (String)null);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -883,7 +932,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEGetNullEObjectNullFeature() {
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
-		eObjectServices.eGet(null, null);
+		eObjectServices.eGet(null, (String)null);
 	}
 
 	@Test

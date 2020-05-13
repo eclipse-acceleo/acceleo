@@ -224,6 +224,24 @@ eGet()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+eGet()
+* Description:
+eGet(eObject: org.eclipse.emf.ecore.EObject, feature: org.eclipse.emf.ecore.EStructuralFeature) = Object<br><br>Handles calls to the operation "eGet". This will fetch the value of the given feature on "source"<br><br>  @param eObject<br>        The eObject we seek to retrieve a feature value of.<br>  @param feature<br>        The feature which value we need to retrieve.<br><br>  @return<br>        The value of the given feature on the given EObject<br><br>
+* Text:
+eGet()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eGet()
+* Description:
+eGet(eObject: org.eclipse.emf.ecore.EObject, feature: org.eclipse.emf.ecore.EStructuralFeature, resolve: boolean) = Object<br><br>Handles calls to the operation "eGet". This will fetch the value of the given feature on "source"; the value is optionally resolved before it is returned.<br><br>  @param eObject<br>        The eObject we seek to retrieve a feature value of.<br>  @param feature<br>        The feature which value we need to retrieve.<br>  @param resolve<br>        whether to resolve the value or not.<br><br>  @return<br>        The value of the given feature on the given EObject<br><br>
+* Text:
+eGet()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 eInverse()
 * Description:
 eInverse(eObject: org.eclipse.emf.ecore.EObject) = Set<br><br>Returns the set containing the inverse references.<br><br>  @param eObject<br>        The eObject which inverse references are requested.<br><br>  @return<br>        The set of the inverse references<br><br>
