@@ -266,7 +266,7 @@ public class CompletionTest {
 	public void selfArrowTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, variableTypes);
 
-		assertCompletion(completionResult, 44, "", "", 6, 0, "size()", "including()");
+		assertCompletion(completionResult, 45, "", "", 6, 0, "size()", "including()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -351,7 +351,8 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->service(self, ", 20,
 				variableTypes);
 
-		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 20, 0, "self", "ecore::EBoolean");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 20, 0, "self",
+				"ecore::EBoolean");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -560,7 +561,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self->)", 36, variableTypes);
 
-		assertCompletion(completionResult, 44, "", "", 36, 0, "size()", "first()");
+		assertCompletion(completionResult, 45, "", "", 36, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -587,7 +588,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self->))", 66, variableTypes);
 
-		assertCompletion(completionResult, 44, "", "", 66, 0, "size()", "first()");
+		assertCompletion(completionResult, 45, "", "", 66, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -626,8 +627,8 @@ public class CompletionTest {
 
 	@Test
 	public void test471583TypeLiteralCompletion() {
-		final ICompletionResult completionResult = engine.getCompletion(
-				"self->eClassifiers->filter(ecore::)", 34, variableTypes);
+		final ICompletionResult completionResult = engine.getCompletion("self->eClassifiers->filter(ecore::)",
+				34, variableTypes);
 
 		assertCompletion(completionResult, 53, "ecore::", "", 27, 7, "ecore::EPackage", "ecore::EClass");
 		assertNoVariableCompletionProposal(completionResult);
@@ -888,8 +889,8 @@ public class CompletionTest {
 		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
 		types.put("self", selfType);
 
-		final ICompletionResult completionResult = engine.getCompletion("self->select(e : ecore::EClass ",
-				31, types);
+		final ICompletionResult completionResult = engine.getCompletion("self->select(e : ecore::EClass ", 31,
+				types);
 
 		assertCompletion(completionResult, 1, "", "", 31, 0, "| ");
 	}
@@ -912,7 +913,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{}->", 14, types);
 
-		assertCompletion(completionResult, 44, "", "", 14, 0, "size()", "first()");
+		assertCompletion(completionResult, 45, "", "", 14, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -971,8 +972,8 @@ public class CompletionTest {
 
 	@Test
 	public void testTypeSetLiteralDot() {
-		final ICompletionResult completionResult = engine
-				.getCompletion("{ecore::EClass}.", 16, variableTypes);
+		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}.", 16,
+				variableTypes);
 
 		assertCompletion(completionResult, 46, "", "", 16, 0, "name", "eClass()");
 		assertNoVariableCompletionProposal(completionResult);
@@ -984,7 +985,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}->", 17,
 				variableTypes);
 
-		assertCompletion(completionResult, 44, "", "", 17, 0, "size()", "first()");
+		assertCompletion(completionResult, 45, "", "", 17, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
@@ -1010,8 +1011,8 @@ public class CompletionTest {
 		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
 		types.put("self", selfType);
 
-		final ICompletionResult completionResult = engine.getCompletion("self->select(a | a.startsWith('",
-				31, types);
+		final ICompletionResult completionResult = engine.getCompletion("self->select(a | a.startsWith('", 31,
+				types);
 
 		assertCompletion(completionResult, 0, "", "", 31, 0);
 	}
@@ -1137,7 +1138,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertCompletion(completionResult, 44, "", "", 6, 0, "size()", "first()");
+		assertCompletion(completionResult, 45, "", "", 6, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
@@ -1153,7 +1154,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertCompletion(completionResult, 44, "", "", 6, 0, "size()", "first()");
+		assertCompletion(completionResult, 45, "", "", 6, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1187,7 +1188,8 @@ public class CompletionTest {
 		try {
 			engine.getCompletion("self", -1, types);
 		} catch (IllegalArgumentException e) {
-			assertEquals("offset (-1) must be in the range of the given expression: \"self\"", e.getMessage());
+			assertEquals("offset (-1) must be in the range of the given expression: \"self\"", e
+					.getMessage());
 			exception = true;
 		}
 		assertTrue(exception);
@@ -1329,12 +1331,12 @@ public class CompletionTest {
 			for (Object type : types) {
 				if (prop instanceof EFeatureCompletionProposal) {
 					if (type instanceof EClass) {
-						assertEquals(type + " is not compatible with "
-								+ ((EFeatureCompletionProposal)prop).getObject().getEContainingClass(), true,
-								((EFeatureCompletionProposal)prop).getObject().getEContainingClass() == type
-										|| ((EClass)type).getEAllSuperTypes().contains(
-												((EFeatureCompletionProposal)prop).getObject()
-														.getEContainingClass()));
+						assertEquals(type + " is not compatible with " + ((EFeatureCompletionProposal)prop)
+								.getObject().getEContainingClass(), true, ((EFeatureCompletionProposal)prop)
+										.getObject().getEContainingClass() == type || ((EClass)type)
+												.getEAllSuperTypes().contains(
+														((EFeatureCompletionProposal)prop).getObject()
+																.getEContainingClass()));
 					} else {
 						fail("the receiver type must be an EClass for FeatureCompletionProposal");
 					}

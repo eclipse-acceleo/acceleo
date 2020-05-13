@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.services;
 
 import java.lang.reflect.Method;
+import java.security.Provider.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1850,6 +1851,24 @@ public class CollectionServices extends AbstractServiceProvider {
 	// @formatter:on
 	public <T> T at(List<T> sequence, Integer position) {
 		return sequence.get(position - 1);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the element at the specified position in the set.",
+		params = {
+			@Param(name = "set", value = "The input set"),
+			@Param(name = "position", value = "The position of the element to return ([1..size])")
+		},
+		result = "The element at the specified position in the set",
+		examples = {
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->at(1)", result = "'a'"),
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->at(2)", result = "'b'")
+		}
+	)
+	// @formatter:on
+	public <T> T at(Set<T> set, Integer position) {
+		return new ArrayList<T>(set).get(position - 1);
 	}
 
 	// @formatter:off

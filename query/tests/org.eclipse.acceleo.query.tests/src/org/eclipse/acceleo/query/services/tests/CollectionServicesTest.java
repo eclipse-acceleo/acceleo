@@ -1367,7 +1367,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testAt() {
+	public void testAtList() {
 		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		Object elt2 = new Object();
@@ -1387,22 +1387,60 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testAtOutOfBounds() {
+	public void testAtListOutOfBounds() {
 		List<Object> list = new ArrayList<>();
 		list.add(new Object());
 		collectionServices.at(list, 2);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testAtZero() {
+	public void testAtListZero() {
 		List<Object> list = new ArrayList<>();
 		list.add(new Object());
 		collectionServices.at(list, 0);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public void testAtNullList() {
-		collectionServices.at(null, 1);
+	public void testAtListNull() {
+		collectionServices.at((List<?>)null, 1);
+	}
+
+	@Test
+	public void testAtSet() {
+		Set<Object> set = new LinkedHashSet<>();
+		Object elt = 0;
+		Object elt1 = 1;
+		Object elt2 = 2;
+		Object elt3 = 3;
+		Object elt4 = 4;
+		set.add(elt);
+		set.add(elt1);
+		set.add(elt2);
+		set.add(elt3);
+		set.add(elt3);
+		set.add(elt4);
+		assertEquals(elt, collectionServices.at(set, 1));
+		assertEquals(elt2, collectionServices.at(set, 3));
+		assertEquals(elt4, collectionServices.at(set, 5));
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testAtSetOutOfBounds() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(new Object());
+		collectionServices.at(set, 2);
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testAtSetZero() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(new Object());
+		collectionServices.at(set, 0);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testAtSetNull() {
+		collectionServices.at((Set<?>)null, 1);
 	}
 
 	@Test

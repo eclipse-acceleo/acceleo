@@ -1448,7 +1448,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testAtOnNull() {
+	public void testAtListOnNull() {
 		final IValidationResult validationResult = validate("null->asSequence()->at(0)");
 
 		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
@@ -1459,6 +1459,88 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				4, 18);
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, message, 18, 25);
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testAtSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->at(1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(String.class)), types);
+	}
+
+	@Test
+	public void testAtSetDifferentTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 1}->at(1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(String.class), classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testAtSetOutOfBounds() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->at(3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(String.class)), types);
+	}
+
+	@Test
+	public void testAtSetZero() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->at(0)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(String.class)), types);
+	}
+
+	@Test
+	public void testAtSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{1}->at(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testAtSetOnNull() {
+		final IValidationResult validationResult = validate("null->asOrderedSet()->at(0)");
+
+		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 20);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.ERROR, message, 20, 27);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
