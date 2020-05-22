@@ -92,6 +92,16 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private final Deque<Map<String, Object>> variablesStack = new ArrayDeque<Map<String, Object>>();
 
 	/**
+	 * The indentation stack.
+	 */
+	private final Deque<String> indentationStack = new ArrayDeque<String>();
+
+	/**
+	 * The last generated line of the last {@link Statement}.
+	 */
+	private String lastLineOfLastStatement;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param environment
@@ -116,6 +126,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		final Object res;
 
+		lastLineOfLastStatement = "";
 		pushVariables(variables);
 		try {
 			res = doSwitch(node);
@@ -161,6 +172,34 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	protected Deque<Map<String, Object>> getVariablesStack() {
 		return variablesStack;
+	}
+
+	/**
+	 * Pushes the given indentation into the stack.
+	 * 
+	 * @param indentation
+	 *            the indentation to push
+	 */
+	protected void pushIndentation(String indentation) {
+		indentationStack.addLast(indentation);
+	}
+
+	/**
+	 * Peeks the last {@link #pushIndentation(Map) pushed} indentation from the stack.
+	 * 
+	 * @return the last {@link #pushIndentation(Map) pushed} indentation from the stack
+	 */
+	protected String peekIndentation() {
+		return indentationStack.peekLast();
+	}
+
+	/**
+	 * Pops the last {@link #pushIndentation(Map) pushed} indentation from the stack.
+	 * 
+	 * @return the last {@link #pushIndentation(Map) pushed} indentation from the stack
+	 */
+	protected String popIndentation() {
+		return indentationStack.removeLast();
 	}
 
 	/**
@@ -218,11 +257,31 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		// TODO replace all possible new lines with the right one
-		final String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
-		if (expressionStatement.isNewLineNeeded() && !expressionValue.endsWith(NEW_LINE)) {
-			res = expressionValue + NEW_LINE;
+		String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
+		final boolean endsWithNewLine = expressionValue.endsWith(NEW_LINE);
+		final String indentation = peekIndentation();
+		if (!indentation.isEmpty()) {
+			expressionValue = expressionValue.replace(NEW_LINE, NEW_LINE + indentation);
+			if (endsWithNewLine) {
+				expressionValue = expressionValue.substring(0, expressionValue.length() - indentation
+						.length());
+			}
+		}
+		if (expressionStatement.isNewLineNeeded() && !endsWithNewLine) {
+			if (lastLineOfLastStatement.isEmpty()) {
+				res = indentation + expressionValue + NEW_LINE;
+			} else {
+				res = expressionValue + NEW_LINE;
+			}
+			lastLineOfLastStatement = "";
 		} else {
-			res = expressionValue;
+			if (lastLineOfLastStatement.isEmpty()) {
+				res = indentation + expressionValue;
+			} else {
+				res = expressionValue;
+			}
+			lastLineOfLastStatement = res.substring(res.lastIndexOf(NEW_LINE) + NEW_LINE.length(), res
+					.length());
 		}
 
 		return res;
@@ -255,12 +314,18 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public String caseTemplate(Template template) {
 		final String res;
 
-		final String templateText = (String)doSwitch(template.getBody());
-		if (template.getPost() != null) {
-			variablesStack.peek().put("self", templateText);
-			res = toString(doSwitch(template.getPost()));
-		} else {
-			res = templateText;
+		pushIndentation(lastLineOfLastStatement);
+		try {
+			final String templateText = (String)doSwitch(template.getBody());
+			if (template.getPost() != null) {
+				variablesStack.peek().put("self", templateText);
+				res = toString(doSwitch(template.getPost()));
+
+			} else {
+				res = templateText;
+			}
+		} finally {
+			popIndentation();
 		}
 
 		return res;
@@ -282,19 +347,33 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	@Override
 	public String caseTextStatement(TextStatement textStatement) {
+		final String res;
 		if (textStatement.isNewLineNeeded()) {
-			return textStatement.getValue() + NEW_LINE;
+			if (lastLineOfLastStatement.isEmpty()) {
+				res = peekIndentation() + textStatement.getValue() + NEW_LINE;
+			} else {
+				res = textStatement.getValue() + NEW_LINE;
+			}
+			lastLineOfLastStatement = "";
 		} else {
-			return textStatement.getValue();
+			if (lastLineOfLastStatement.isEmpty()) {
+				res = peekIndentation() + textStatement.getValue();
+				lastLineOfLastStatement = res;
+			} else {
+				res = textStatement.getValue();
+				lastLineOfLastStatement = peekIndentation() + res;
+			}
 		}
+
+		return res;
 	}
 
 	@Override
 	public String caseBlock(Block block) {
 		final StringBuilder builder = new StringBuilder();
 
-		for (Statement stmt : block.getStatements()) {
-			builder.append((String)doSwitch(stmt));
+		for (Statement statement : block.getStatements()) {
+			builder.append((String)doSwitch(statement));
 		}
 
 		return builder.toString();
@@ -317,9 +396,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		pushVariables(variables);
+		pushIndentation(lastLineOfLastStatement);
 		try {
 			res = (String)doSwitch(letStatement.getBody());
 		} finally {
+			popIndentation();
 			popVariables();
 		}
 
@@ -350,10 +431,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			try {
 				// FIXME line delimiter
 				environment.openWriter(uri, mode, charset, NEW_LINE);
+				lastLineOfLastStatement = "";
+				pushIndentation(lastLineOfLastStatement);
 				try {
 					final String content = (String)doSwitch(fileStatement.getBody());
 					environment.write(content);
 				} finally {
+					popIndentation();
 					environment.closeWriter();
 				}
 			} catch (IOException e) {
@@ -411,12 +495,17 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		final Object condition = doSwitch(ifStatement.getCondition());
 		if (condition instanceof Boolean) {
-			if (Boolean.TRUE.equals(condition)) {
-				res = (String)doSwitch(ifStatement.getThen());
-			} else if (ifStatement.getElse() != null) {
-				res = (String)doSwitch(ifStatement.getElse());
-			} else {
-				res = EMPTY_RESULT;
+			pushIndentation(lastLineOfLastStatement);
+			try {
+				if (Boolean.TRUE.equals(condition)) {
+					res = (String)doSwitch(ifStatement.getThen());
+				} else if (ifStatement.getElse() != null) {
+					res = (String)doSwitch(ifStatement.getElse());
+				} else {
+					res = EMPTY_RESULT;
+				}
+			} finally {
+				popIndentation();
 			}
 		} else {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
@@ -449,6 +538,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
 			final String name = forStatement.getBinding().getName();
 			pushVariables(variables);
+			pushIndentation(lastLineOfLastStatement);
 			try {
 				// the first value is generated on its own
 				// to insert separators
@@ -463,6 +553,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					builder.append(doSwitch(forStatement.getBody()));
 				}
 			} finally {
+				popIndentation();
 				popVariables();
 			}
 		}
