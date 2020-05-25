@@ -32,6 +32,7 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService;
 import org.eclipse.acceleo.aql.evaluation.AcceleoCallStack;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.AcceleoQueryEnvironment;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.QueryService;
@@ -119,6 +120,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * </p>
 	 */
 	private IModuleResolver moduleResolver;
+
+	/**
+	 * The {@link AcceleoEvaluator}.
+	 */
+	private AcceleoEvaluator evaluator;
 
 	/**
 	 * Constructor.
@@ -319,6 +325,16 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	@Override
 	public void setModuleResolver(IModuleResolver moduleResolver) {
 		this.moduleResolver = moduleResolver;
+	}
+
+	@Override
+	public void setEvaluator(AcceleoEvaluator evaluator) {
+		this.evaluator = evaluator;
+	}
+
+	@Override
+	public AcceleoEvaluator getEvaluator() {
+		return evaluator;
 	}
 
 }

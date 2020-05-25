@@ -87,6 +87,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		public Object doSwitch(EObject eObject) {
 			currentInstruction = eObject;
 			if (!AcceleoDebugger.this.control(Thread.currentThread().getId(), eObject)) {
+				terminated();
 				Thread.currentThread().interrupt();
 			}
 			return super.doSwitch(eObject);
@@ -191,6 +192,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		try (InputStream is = resourceSetForModels.getURIConverter().createInputStream(moduleURI)) {
 			// TODO namespace
 			astResult = parser.parse(getContent(is, "UTF-8"), "org::todo");
+			environment.registerModule("org::todo::" + astResult.getModule().getName(), astResult
+					.getModule());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

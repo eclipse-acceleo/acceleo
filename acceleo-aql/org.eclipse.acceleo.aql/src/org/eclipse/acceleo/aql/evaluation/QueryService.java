@@ -103,6 +103,6 @@ public class QueryService extends AbstractModuleElementService {
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getAcceleoEvaluator().generate(query, variables);
+		return getEnv().getEvaluator().generate(query, variables);
 	}
 }

@@ -34,11 +34,6 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	private final AcceleoEnvironment env;
 
 	/**
-	 * The {@link AcceleoEvaluator}.
-	 */
-	private final AcceleoEvaluator acceleoEvaluator;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param env
@@ -46,7 +41,6 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	 */
 	public AbstractModuleElementService(AcceleoEnvironment env) {
 		this.env = env;
-		this.acceleoEvaluator = new AcceleoEvaluator(env);
 	}
 
 	/**
@@ -70,15 +64,6 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	 */
 	protected AcceleoEnvironment getEnv() {
 		return env;
-	}
-
-	/**
-	 * Gets the {@link AcceleoEvaluator}.
-	 * 
-	 * @return the {@link AcceleoEvaluator}
-	 */
-	protected AcceleoEvaluator getAcceleoEvaluator() {
-		return acceleoEvaluator;
 	}
 
 	/**

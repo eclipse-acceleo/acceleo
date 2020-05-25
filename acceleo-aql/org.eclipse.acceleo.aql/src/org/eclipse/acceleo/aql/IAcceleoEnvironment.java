@@ -17,6 +17,7 @@ import java.util.Collection;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.resolver.IModuleResolver;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -179,4 +180,18 @@ public interface IAcceleoEnvironment {
 	 */
 	GenerationResult getGenerationResult();
 
+	/**
+	 * Sets the {@link AcceleoEvaluator}.
+	 * 
+	 * @param evaluator
+	 *            the {@link AcceleoEvaluator}
+	 */
+	void setEvaluator(AcceleoEvaluator evaluator);
+
+	/**
+	 * Gets the {@link AcceleoEvaluator}.
+	 * 
+	 * @return the {@link AcceleoEvaluator}
+	 */
+	AcceleoEvaluator getEvaluator();
 }

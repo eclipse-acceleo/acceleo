@@ -36,7 +36,6 @@ import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.resolver.FileSystemModuleResolver;
 import org.eclipse.acceleo.aql.resolver.IModuleResolver;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
@@ -125,7 +124,6 @@ public abstract class AbstractLanguageTestSuite {
 		this.testFolderPath = testFolder;
 		final File testFolderFile = new File(testFolderPath);
 		final File moduleFile = getModuleFile(testFolderFile);
-		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
 
 		Path rootPath = testFolderFile.toPath().getName(0);
 		IModuleResolver moduleResolver = new FileSystemModuleResolver(rootPath.toAbsolutePath(), environment

@@ -109,6 +109,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public AcceleoEvaluator(IAcceleoEnvironment environment) {
 		this.environment = environment;
+		environment.setEvaluator(this);
 		final IQueryEnvironment queryEnvironment = environment.getQueryEnvironment();
 		this.aqlEngine = QueryEvaluation.newEngine(queryEnvironment);
 	}
@@ -323,9 +324,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		try {
 			final String templateText = (String)doSwitch(template.getBody());
 			if (template.getPost() != null) {
-				variablesStack.peek().put("self", templateText);
-				res = toString(doSwitch(template.getPost()));
-
+				final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
+				variables.put("self", templateText);
+				pushVariables(variables);
+				try {
+					res = toString(doSwitch(template.getPost()));
+				} finally {
+					popVariables();
+				}
 			} else {
 				res = templateText;
 			}

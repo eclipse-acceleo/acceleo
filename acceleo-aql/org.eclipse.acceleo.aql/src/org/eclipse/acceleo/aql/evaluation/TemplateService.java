@@ -102,6 +102,6 @@ public class TemplateService extends AbstractModuleElementService {
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getAcceleoEvaluator().generate(template, variables);
+		return getEnv().getEvaluator().generate(template, variables);
 	}
 }
