@@ -280,8 +280,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			} else {
 				res = expressionValue;
 			}
-			lastLineOfLastStatement = res.substring(res.lastIndexOf(NEW_LINE) + NEW_LINE.length(), res
-					.length());
+			final int lastIndexOfNewLine = res.lastIndexOf(NEW_LINE);
+			if (lastIndexOfNewLine != -1) {
+				lastLineOfLastStatement = res.substring(res.lastIndexOf(NEW_LINE) + NEW_LINE.length(), res
+						.length());
+			} else {
+				lastLineOfLastStatement = res;
+			}
 		}
 
 		return res;
