@@ -423,6 +423,15 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#clearBreakPoints()
+	 */
+	public void clearBreakPoints() {
+		breakpoints.clear();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.acceleo.debug.IDSLDebugger#changeBreakPoint(org.eclipse.emf.common.util.URI,
 	 *      java.lang.String, java.io.Serializable)
 	 */

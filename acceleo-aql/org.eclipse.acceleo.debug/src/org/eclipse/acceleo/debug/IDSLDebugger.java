@@ -209,6 +209,11 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	void removeBreakPoint(URI instruction);
 
 	/**
+	 * Clears all breakpoints.
+	 */
+	void clearBreakPoints();
+
+	/**
 	 * Gets the {@link EObject instruction} for the given position.
 	 * 
 	 * @param path

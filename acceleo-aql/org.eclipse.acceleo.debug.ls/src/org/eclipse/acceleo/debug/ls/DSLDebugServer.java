@@ -239,6 +239,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	private SetBreakpointsResponse getSetBreakpointResponse(final SetBreakpointsArguments args) {
 		final SetBreakpointsResponse res = new SetBreakpointsResponse();
 		List<Breakpoint> responseBreakpoints = new ArrayList<Breakpoint>();
+		debugger.clearBreakPoints();
 		for (SourceBreakpoint requestedBreakpoint : args.getBreakpoints()) {
 			final long column;
 			if (requestedBreakpoint.getColumn() != null) {
