@@ -24,7 +24,9 @@ import java.util.Map;
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Statement;
+import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
@@ -57,9 +59,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		private final Deque<EObject> contextStack = new ArrayDeque<EObject>();
 
 		/**
-		 * The variables stack (duplicated reference to super.variablesStack).
+		 * The variables stack.
 		 */
-		private final Deque<Map<String, Object>> variablesStack;
+		private final Deque<Map<String, Object>> variablesStack = new ArrayDeque<Map<String, Object>>();
 
 		/**
 		 * The current instruction.
@@ -74,7 +76,6 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		 */
 		AcceleoDebugEvaluator(IAcceleoEnvironment environment) {
 			super(environment);
-			variablesStack = getVariablesStack();
 		}
 
 		@Override
@@ -85,50 +86,51 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		@Override
 		public Object doSwitch(EObject eObject) {
-			currentInstruction = eObject;
-			if (!AcceleoDebugger.this.control(Thread.currentThread().getId(), eObject)) {
-				terminated();
-				Thread.currentThread().interrupt();
+			if (isAcceleoInstruction(eObject)) {
+				currentInstruction = eObject;
+				if (!AcceleoDebugger.this.control(Thread.currentThread().getId(), eObject)) {
+					Thread.currentThread().interrupt();
+				}
 			}
 			return super.doSwitch(eObject);
 		}
 
 		@Override
 		protected void pushVariables(Map<String, Object> variables) {
-			super.pushVariables(variables);
-			if (currentInstruction instanceof Expression) {
-				contextStack.addLast(getContainingStatement((Expression)currentInstruction));
-			} else {
-				contextStack.addLast(currentInstruction);
-			}
-		}
-
-		/**
-		 * Gets the containing {@link Statement}.
-		 * 
-		 * @param expression
-		 *            the {@link Expression}
-		 * @return the containing {@link Statement} if any, <code>null</code> otherwise
-		 */
-		private EObject getContainingStatement(Expression expression) {
-			Statement res = null;
-
-			EObject current = expression.eContainer();
-			while (current != null) {
-				if (current instanceof Statement) {
-					res = (Statement)current;
-					break;
+			if (currentInstruction instanceof Module || currentInstruction instanceof ModuleElement) {
+				variablesStack.addLast(variables);
+				if (currentInstruction instanceof Module) {
+					for (ModuleElement element : ((Module)currentInstruction).getModuleElements()) {
+						if (element instanceof Template && ((Template)element).isMain()) {
+							// we push the main template instead of the module
+							contextStack.addLast(element);
+						}
+					}
+					if (contextStack.isEmpty()) {
+						// if no main template we push the module
+						contextStack.addLast(currentInstruction);
+					}
+				} else {
+					contextStack.addLast(currentInstruction);
 				}
-				current = current.eContainer();
 			}
-
-			return res;
+			super.pushVariables(variables);
 		}
 
 		@Override
 		protected Map<String, Object> popVariables() {
-			contextStack.removeLast();
-			return super.popVariables();
+			final Map<String, Object> removedVariables = super.popVariables();
+			if (removedVariables == variablesStack.getLast()) {
+				contextStack.removeLast();
+				variablesStack.removeLast();
+			}
+			return removedVariables;
+		}
+
+		@Override
+		protected Map<String, Object> peekVariables() {
+			// TODO Auto-generated method stub
+			return super.peekVariables();
 		}
 	}
 
@@ -285,9 +287,13 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		// TODO multi threading by peeking the write evaluator ?
 		final Iterator<Map<String, Object>> variablesIterator = evaluator.variablesStack.iterator();
+		if (variablesIterator.hasNext()) {
+			variablesIterator.next();
+		}
 		while (variablesIterator.hasNext()) {
 			res.add(variablesIterator.next());
 		}
+		res.add(evaluator.peekVariables());
 
 		return res;
 	}
@@ -311,17 +317,38 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	}
 
 	@Override
-	public EObject getNextInstruction(Long threadID, EObject currentInstruction, Stepping stepping) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public EObject getInstruction(String path, long line, long column) {
 		// TODO get the astResult from the right module
 		final AcceleoAstResult moduleAstResult = astResult;
 
-		return moduleAstResult.getAstNode((int)line - 1, (int)column - 1);
+		final EObject res;
+		EObject instruction = moduleAstResult.getAstNode((int)line - 1, (int)column - 1);
+		if (column == 0) {
+			// The breakpoint has been set on the line so we select the containing Expression statement if
+			// needed
+			while (instruction != null) {
+				if (isAcceleoInstruction(instruction)) {
+					break;
+				}
+				instruction = instruction.eContainer();
+			}
+			res = instruction;
+		} else {
+			res = instruction;
+		}
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link EObject} is an Acceleo instruction.
+	 * 
+	 * @param eObject
+	 *            the {@link EObject}
+	 * @return <code>true</code> if the given {@link EObject} is an Acceleo instruction, <code>false</code>
+	 *         otherwise
+	 */
+	private boolean isAcceleoInstruction(EObject eObject) {
+		return eObject instanceof Statement || eObject instanceof ModuleElement;
 	}
 
 	@Override

@@ -365,14 +365,6 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.debug.IDSLDebugger#getNextInstruction(java.lang.Long,
-	 *      org.eclipse.emf.ecore.EObject, org.eclipse.acceleo.debug.IDSLDebugger.Stepping)
-	 */
-	public abstract EObject getNextInstruction(Long threadID, EObject currentInstruction, Stepping stepping);
-
-	/**
-	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.debug.IDSLDebugger#shouldBreak(org.eclipse.emf.ecore.EObject)
 	 */

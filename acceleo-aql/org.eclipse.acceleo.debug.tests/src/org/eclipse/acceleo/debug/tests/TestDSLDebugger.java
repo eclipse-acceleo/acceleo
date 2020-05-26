@@ -270,10 +270,10 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 		return null;
 	}
 
-	@Override
-	public EObject getNextInstruction(Long threadID, EObject currentInstruction, Stepping stepping) {
-		getNextInstructionCall = true;
-		return null;
+	public boolean shouldStep(EObject lastSuspendedInstruction, EObject currentInstruction,
+			Stepping stepping) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public boolean validateVariableValue(Long threadID, String variableName, String value) {

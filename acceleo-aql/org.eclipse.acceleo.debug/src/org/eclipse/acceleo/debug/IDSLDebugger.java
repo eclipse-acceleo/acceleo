@@ -303,21 +303,6 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	Map<Long, String> getThreads();
 
 	/**
-	 * Gets the next instruction to step on after the given {@link EObject current instruction} with the given
-	 * {@link Stepping stepping mode}.
-	 * 
-	 * @param threadID
-	 *            the {@link Thread#getThreadID() ID}
-	 * @param currentInstruction
-	 *            the {@link EObject current instruction}
-	 * @param stepping
-	 *            the {@link Stepping stepping mode}
-	 * @return the {@link EObject next instruction} to suspend, if <code>null</code> is returned, the very
-	 *         next instruction will be used as the next instruction to suspend.
-	 */
-	EObject getNextInstruction(Long threadID, EObject currentInstruction, Stepping stepping);
-
-	/**
 	 * Tells is the debugger is terminated.
 	 * 
 	 * @return <code>true</code> if the debugger is terminated, <code>false</code> otherwise

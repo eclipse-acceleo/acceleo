@@ -32,9 +32,9 @@ public class ThreadController {
 	private final Long threadID;
 
 	/**
-	 * The next instruction to suspend after a step if any, <code>null</code> otherwise.
+	 * The last suspended instruction depth.
 	 */
-	private EObject nextIntructionToSuspend;
+	private int lastSuspendedInstructionDepth;
 
 	/**
 	 * Determines if execution is suspended.
@@ -164,14 +164,37 @@ public class ThreadController {
 				debugger.breaked(threadID);
 				putAsleep();
 				resuming(instruction);
-			} else if (stepping != Stepping.NONE) { // stepping
-				if (nextIntructionToSuspend == null || nextIntructionToSuspend == instruction) {
-					debugger.stepped(threadID);
-					putAsleep();
-					resuming(instruction);
-				}
+			} else if (stepping != Stepping.NONE && shouldStep()) { // stepping
+				debugger.stepped(threadID);
+				putAsleep();
+				resuming(instruction);
 			}
 		}
+		return res;
+	}
+
+	private boolean shouldStep() {
+		final boolean res;
+
+		final int currentInstructionDepth = debugger.getStackFrame(threadID).size();
+		switch (stepping) {
+			case STEP_INTO:
+				res = true;
+				break;
+
+			case STEP_OVER:
+				res = currentInstructionDepth <= lastSuspendedInstructionDepth;
+				break;
+
+			case STEP_RETURN:
+				res = currentInstructionDepth < lastSuspendedInstructionDepth;
+				break;
+
+			default:
+				res = false;
+				break;
+		}
+
 		return res;
 	}
 
@@ -183,20 +206,18 @@ public class ThreadController {
 	 */
 	private void resuming(EObject instruction) {
 
+		lastSuspendedInstructionDepth = debugger.getStackFrame(threadID).size();
 		switch (stepping) {
 			case STEP_INTO:
 				debugger.steppingInto(threadID);
-				nextIntructionToSuspend = debugger.getNextInstruction(threadID, instruction, stepping);
 				break;
 
 			case STEP_OVER:
 				debugger.steppingOver(threadID);
-				nextIntructionToSuspend = debugger.getNextInstruction(threadID, instruction, stepping);
 				break;
 
 			case STEP_RETURN:
 				debugger.steppingReturn(threadID);
-				nextIntructionToSuspend = debugger.getNextInstruction(threadID, instruction, stepping);
 				break;
 
 			default:

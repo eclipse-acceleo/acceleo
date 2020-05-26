@@ -65,7 +65,7 @@ public class DSLDebugSocketServer {
 		serverThread = new Thread(new Runnable() {
 
 			public void run() {
-				while (true) {
+				while (!serverSocket.isClosed() && serverSocket.isBound()) {
 					try {
 						final Socket client = serverSocket.accept();
 						final DSLDebugServer dslDebugServer = new DSLDebugServer();

@@ -857,10 +857,14 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 *
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#stepOut(org.eclipse.lsp4j.debug.StepOutArguments)
 	 */
-	public CompletableFuture<Void> stepOut(StepOutArguments args) {
+	public CompletableFuture<Void> stepOut(final StepOutArguments args) {
 		System.out.println("stepOut");
-		// TODO Auto-generated method stub
-		return null;
+		return CompletableFuture.runAsync(new Runnable() {
+
+			public void run() {
+				debugger.stepReturn(args.getThreadId());
+			}
+		});
 	}
 
 	/**
