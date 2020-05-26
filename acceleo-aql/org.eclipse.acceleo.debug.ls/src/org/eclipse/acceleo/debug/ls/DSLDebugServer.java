@@ -39,6 +39,9 @@ import org.eclipse.acceleo.debug.event.debugger.VariableReply;
 import org.eclipse.acceleo.debug.event.model.AbstractModelEventProcessor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.lsp4j.debug.Breakpoint;
 import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.CompletionsArguments;
@@ -146,6 +149,20 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * Mapping from a frame ID to its variables.
 	 */
 	private final Map<Long, Map<String, Object>> frameIDToVariables = new HashMap<Long, Map<String, Object>>();
+
+	/**
+	 * The EMF {@link ILabelProvider}.
+	 */
+	private final ILabelProvider eLabelProvider;
+
+	/**
+	 * Constructor.
+	 */
+	public DSLDebugServer() {
+		final ComposedAdapterFactory factory = new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+		eLabelProvider = new AdapterFactoryLabelProvider(factory);
+	}
 
 	/**
 	 * Sets the {@link IDSLDebugger}.
@@ -498,6 +515,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 */
 	public CompletableFuture<Void> disconnect(final DisconnectArguments args) {
 		System.out.println("disconnect");
+		eLabelProvider.dispose();
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -765,7 +783,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 			final StackFrame resFrame = new StackFrame();
 			frameIDToVariables.put(id, variables.get((int)id));
 			resFrame.setId(id);
-			resFrame.setName(context.eClass().getName()); // TODO use label provider
+			resFrame.setName(eLabelProvider.getText(context));
 			// TODO ? resFrame.setPresentationHint(presentationHint);
 			// resFrame.setInstructionPointerReference(instructionPointerReference);
 			// TODO ? resFrame.setModuleId(moduleId);

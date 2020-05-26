@@ -82,6 +82,7 @@
     <module>acceleo-aql/org.eclipse.acceleo.debug.tests</module>
     <module>acceleo-aql/org.eclipse.acceleo.debug.ls</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.edit</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.tests</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.tm</module>
