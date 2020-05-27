@@ -11,10 +11,11 @@
 package org.eclipse.acceleo.debug;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Deque;
 import java.util.Map;
 
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
+import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 
@@ -227,15 +228,6 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	EObject getInstruction(String path, long line, long column);
 
 	/**
-	 * Gets the current instruction for the given {@link Thread#getThreadID() ID}.
-	 * 
-	 * @param threadID
-	 *            the {@link Thread#getThreadID() ID}
-	 * @return the current instruction for the given {@link Thread#getThreadID() ID}
-	 */
-	EObject getCurrentInstruction(Long threadID);
-
-	/**
 	 * Gets the {@link DSLSource} for a given {@link EObject instruction}.
 	 * 
 	 * @param instruction
@@ -356,22 +348,13 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	void deleteVariable(Long threadID, String name);
 
 	/**
-	 * Gets the {@link List} of stack contexts for the given {@link Thread#getThreadID() ID}.
+	 * Gets the stack of {@link StackFrame} for the given {@link Thread#getThreadID() ID}.
 	 * 
 	 * @param threadID
 	 *            the {@link Thread#getThreadID() ID}
-	 * @return the {@link List} of stack contexts for the given {@link Thread#getThreadID() ID}
+	 * @return the stack of {@link StackFrame} for the given {@link Thread#getThreadID() ID}
 	 */
-	List<EObject> getStackFrame(Long threadID);
-
-	/**
-	 * Gets the {@link List} of stack variable for the given {@link Thread#getThreadID() ID}.
-	 * 
-	 * @param threadID
-	 *            the {@link Thread#getThreadID() ID}
-	 * @return the {@link List} of stack variable for the given {@link Thread#getThreadID() ID}
-	 */
-	List<Map<String, Object>> getStackVariables(Long threadID);
+	Deque<StackFrame> getStackFrame(Long threadID);
 
 	/**
 	 * The given thread is terminated.

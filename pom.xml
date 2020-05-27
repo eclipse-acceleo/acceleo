@@ -79,7 +79,6 @@
     <module>query/tests/org.eclipse.acceleo.query.ide.ui.tests</module>
 
     <module>acceleo-aql/org.eclipse.acceleo.debug</module>
-    <module>acceleo-aql/org.eclipse.acceleo.debug.tests</module>
     <module>acceleo-aql/org.eclipse.acceleo.debug.ls</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.edit</module>

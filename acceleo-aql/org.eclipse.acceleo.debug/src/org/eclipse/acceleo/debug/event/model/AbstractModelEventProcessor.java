@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.debug.event.model;
 
-import org.eclipse.acceleo.debug.DebugTarget;
 import org.eclipse.acceleo.debug.event.IDSLDebugEvent;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.event.debugger.BreakpointReply;
@@ -28,18 +27,11 @@ import org.eclipse.acceleo.debug.event.debugger.TerminatedReply;
 import org.eclipse.acceleo.debug.event.debugger.VariableReply;
 
 /**
- * The {@link DebugTarget} DSL debug model.
+ * The DSL debug model.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractModelEventProcessor implements IDSLDebugEventProcessor {
-
-	/**
-	 * Gets the {@link DebugTarget}.
-	 * 
-	 * @return the {@link DebugTarget}
-	 */
-	protected abstract DebugTarget getHost();
 
 	/**
 	 * {@inheritDoc}

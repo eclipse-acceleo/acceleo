@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.debug;singleton:=true
+Bundle-SymbolicName: org.eclipse.acceleo.debug
 Bundle-Version: 4.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
@@ -11,9 +11,7 @@ Export-Package: org.eclipse.acceleo.debug,
  org.eclipse.acceleo.debug.event,
  org.eclipse.acceleo.debug.event.debugger,
  org.eclipse.acceleo.debug.event.model,
- org.eclipse.acceleo.debug.impl,
  org.eclipse.acceleo.debug.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport
-Bundle-ActivationPolicy: lazy
+ org.eclipse.emf.ecore
 Automatic-Module-Name: org.eclipse.acceleo.debug

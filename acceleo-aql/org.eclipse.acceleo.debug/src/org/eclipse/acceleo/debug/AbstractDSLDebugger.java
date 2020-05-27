@@ -11,6 +11,8 @@
 package org.eclipse.acceleo.debug;
 
 import java.io.Serializable;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -46,6 +48,7 @@ import org.eclipse.acceleo.debug.event.model.StepReturnRequest;
 import org.eclipse.acceleo.debug.event.model.SuspendRequest;
 import org.eclipse.acceleo.debug.event.model.TerminateRequest;
 import org.eclipse.acceleo.debug.event.model.ValidateVariableValueRequest;
+import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.debug.util.ThreadController;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -84,6 +87,11 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 * Instructions marked as breakpoints with their attributes.
 	 */
 	private final Map<URI, Map<String, Serializable>> breakpoints = new HashMap<URI, Map<String, Serializable>>();
+
+	/**
+	 * Mapping from the thread id to is {@link StackFrame}.
+	 */
+	private final Map<Long, Deque<StackFrame>> stackFrames = new HashMap<Long, Deque<StackFrame>>();
 
 	/**
 	 * Tells if no debug is needed.
@@ -333,6 +341,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		target.handleEvent(new SpawnRunningThreadReply(threadID, threadName, context));
 		controllers.put(threadID, createThreadController(threadID));
 		threads.put(threadID, threadName);
+		stackFrames.put(threadID, new ArrayDeque<StackFrame>());
 	}
 
 	/**
@@ -512,6 +521,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		}
 		controllers.clear();
 		threads.clear();
+		stackFrames.clear();
 	}
 
 	/**
@@ -575,6 +585,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		target.handleEvent(new TerminatedReply(threadID));
 		controllers.remove(threadID);
 		threads.remove(threadID);
+		stackFrames.remove(threadID);
 		if (controllers.size() == 0) {
 			setTerminated(true);
 			terminated();
@@ -607,6 +618,49 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 */
 	public boolean isNoDebug() {
 		return noDebug;
+	}
+
+	/**
+	 * Push a new {@link StackFrame} with the given context.
+	 * 
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
+	 * @param context
+	 *            the context of the frame
+	 */
+	protected void pushStackFrame(Long threadID, EObject context) {
+		stackFrames.get(threadID).addLast(new StackFrame(context));
+	}
+
+	/**
+	 * Peeks the current {@link StackFrame} of the given {@link Thread}.
+	 * 
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
+	 * @return the current {@link StackFrame} of the given {@link Thread}
+	 */
+	protected StackFrame peekStackFrame(Long threadID) {
+		return stackFrames.get(threadID).getLast();
+	}
+
+	/**
+	 * Pops the current {@link StackFrame} of the given {@link Thread}.
+	 * 
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
+	 * @return the current {@link StackFrame} of the given {@link Thread}
+	 */
+	protected StackFrame popStackFrame(Long threadID) {
+		return stackFrames.get(threadID).removeLast();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.debug.IDSLDebugger#getStackFrame(java.lang.Long)
+	 */
+	public Deque<StackFrame> getStackFrame(Long threadID) {
+		return stackFrames.get(threadID);
 	}
 
 }

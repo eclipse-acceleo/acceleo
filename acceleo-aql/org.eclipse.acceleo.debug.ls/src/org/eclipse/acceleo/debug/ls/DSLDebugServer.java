@@ -11,8 +11,9 @@
 package org.eclipse.acceleo.debug.ls;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,8 +21,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import org.eclipse.acceleo.debug.DSLSource;
-import org.eclipse.acceleo.debug.DebugPackage;
-import org.eclipse.acceleo.debug.DebugTarget;
 import org.eclipse.acceleo.debug.IDSLDebugger;
 import org.eclipse.acceleo.debug.event.debugger.BreakpointReply;
 import org.eclipse.acceleo.debug.event.debugger.DeleteVariableReply;
@@ -129,11 +128,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * The {@link IDSLDebugger}.
 	 */
 	private IDSLDebugger debugger;
-
-	/**
-	 * The host {@link DebugTarget}.
-	 */
-	private final DebugTarget host = DebugPackage.eINSTANCE.getDebugFactory().createDebugTarget();
 
 	/**
 	 * Tells if the was {@link #launch(Map) launched}.
@@ -775,47 +769,32 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		final StackTraceResponse res = new StackTraceResponse();
 
 		final List<StackFrame> resFrames = new ArrayList<StackFrame>();
-		List<EObject> contexts = debugger.getStackFrame(args.getThreadId());
-		List<Map<String, Object>> variables = debugger.getStackVariables(args.getThreadId());
+		Deque<org.eclipse.acceleo.debug.util.StackFrame> stackFrames = debugger.getStackFrame(args
+				.getThreadId());
+		final Iterator<org.eclipse.acceleo.debug.util.StackFrame> it = stackFrames.descendingIterator();
 		long id = 0;
-		StackFrame previousFrame = null;
-		for (EObject context : contexts) {
+		while (it.hasNext()) {
+			final org.eclipse.acceleo.debug.util.StackFrame currentFrame = it.next();
 			final StackFrame resFrame = new StackFrame();
-			frameIDToVariables.put(id, variables.get((int)id));
+			frameIDToVariables.put(id, currentFrame.getVariables());
 			resFrame.setId(id);
-			resFrame.setName(eLabelProvider.getText(context));
+			resFrame.setName(eLabelProvider.getText(currentFrame.getContext()));
 			// TODO ? resFrame.setPresentationHint(presentationHint);
 			// resFrame.setInstructionPointerReference(instructionPointerReference);
 			// TODO ? resFrame.setModuleId(moduleId);
-			if (previousFrame != null) {
-				final DSLSource dslSource = debugger.getSource(context);
-				previousFrame.setLine(dslSource.getStartLine());
-				previousFrame.setColumn(dslSource.getStartColumn());
-				previousFrame.setEndLine(dslSource.getEndLine());
-				previousFrame.setEndColumn(dslSource.getEndColumn());
-				final Source source = new Source();
-				source.setName(dslSource.getPath());
-				source.setPath(dslSource.getPath());
-				previousFrame.setSource(source);
-			}
-			resFrames.add(resFrame);
-			previousFrame = resFrame;
-			id++; // TODO id
-		}
-		if (previousFrame != null) {
-			final DSLSource dslSource = debugger.getSource(debugger.getCurrentInstruction(args
-					.getThreadId()));
-			previousFrame.setLine(dslSource.getStartLine());
-			previousFrame.setColumn(dslSource.getStartColumn());
-			previousFrame.setEndLine(dslSource.getEndLine());
-			previousFrame.setEndColumn(dslSource.getEndColumn());
+			final DSLSource dslSource = debugger.getSource(currentFrame.getInstruction());
+			resFrame.setLine(dslSource.getStartLine());
+			resFrame.setColumn(dslSource.getStartColumn());
+			resFrame.setEndLine(dslSource.getEndLine());
+			resFrame.setEndColumn(dslSource.getEndColumn());
 			final Source source = new Source();
 			source.setName(dslSource.getPath());
 			source.setPath(dslSource.getPath());
-			previousFrame.setSource(source);
+			resFrame.setSource(source);
+			resFrames.add(resFrame);
+			id++; // TODO id
 		}
 		res.setTotalFrames((long)resFrames.size());
-		Collections.reverse(resFrames);
 		res.setStackFrames(resFrames.toArray(new StackFrame[resFrames.size()]));
 
 		return res;
@@ -928,11 +907,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 */
 	public void connect(IDebugProtocolClient debugProtocolClient) {
 		this.client = debugProtocolClient;
-	}
-
-	@Override
-	protected DebugTarget getHost() {
-		return host;
 	}
 
 	@Override
