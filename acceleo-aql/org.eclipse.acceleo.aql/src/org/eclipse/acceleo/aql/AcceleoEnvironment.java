@@ -190,7 +190,15 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		if (moduleResolver == null) {
 			return qualifiedNameToModule.get(qualifiedName);
 		}
-		Module module = moduleResolver.resolveModule(qualifiedName);
+
+		Module module;
+		try {
+			module = moduleResolver.resolveModule(qualifiedName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			module = null;
+		}
 		if (module != null) {
 			registerModule(qualifiedName, module);
 		}
@@ -289,6 +297,20 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 			return true;
 		}
 		return resolveModule(qualifiedName) != null;
+	}
+
+	@Override
+	public Module getModule(String qualifiedName) {
+		final Module res;
+
+		final Module cachedModule = qualifiedNameToModule.get(qualifiedName);
+		if (cachedModule != null) {
+			res = cachedModule;
+		} else {
+			res = resolveModule(qualifiedName);
+		}
+
+		return res;
 	}
 
 	@Override

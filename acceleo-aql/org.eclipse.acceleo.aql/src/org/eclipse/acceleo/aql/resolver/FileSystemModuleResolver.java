@@ -37,19 +37,14 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  */
 public class FileSystemModuleResolver implements IModuleResolver {
 
-	// TODO extract as a constant, this is used in multiple places in the code
-	/** The separator for qualified names in Acceleo. */
-	private static final String QUALIFIED_NAME_SEPARATOR = "::";
-
-	// TODO extract as a constant, this is used in multiple places in the code
 	/** The file extension for acceleo modules. */
-	private static final String MODULE_EXTENSION = ".mtl";
+	private static final String MODULE_EXTENSION = "." + AcceleoParser.MODULE_FILE_EXTENSION;
 
 	/** Root of our qualified paths. */
 	private final Path rootPath;
 
-	/** The AQL environment to use when parsing resolved modules. */
-	private final IReadOnlyQueryEnvironment queryEnvironment;
+	/** The {@link AcceleoParser}. */
+	private final AcceleoParser parser;
 
 	/**
 	 * Instantiate a resolved given its root path and the AQL environment.
@@ -65,27 +60,22 @@ public class FileSystemModuleResolver implements IModuleResolver {
 			throw new IllegalArgumentException(rootPath + " doesn't exist or isn't a directory.");
 		}
 		this.rootPath = rootPath;
-		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
+		Objects.requireNonNull(queryEnvironment);
+		this.parser = new AcceleoParser(queryEnvironment);
 	}
 
 	@Override
-	public Module resolveModule(String qualifiedName) {
-		String fsRelativePath = qualifiedName.replace(QUALIFIED_NAME_SEPARATOR, File.separator).concat(
-				MODULE_EXTENSION);
+	public Module resolveModule(String qualifiedName) throws IOException {
+		String fsRelativePath = qualifiedName.replace(AcceleoParser.QUALIFIER_SEPARATOR, File.separator)
+				.concat(MODULE_EXTENSION);
 		Path sought = rootPath.resolve(fsRelativePath);
 		if (Files.exists(sought)) {
-			AcceleoParser parser = new AcceleoParser(queryEnvironment);
-			try {
-				String namespace = qualifiedName.substring(0, qualifiedName.lastIndexOf("::"));
-				AcceleoAstResult astResult = parser.parse(new String(Files.readAllBytes(sought),
-						StandardCharsets.UTF_8), namespace);
-				// TODO log astResult.getErrors()
-				if (astResult.getModule() != null) {
-					return astResult.getModule();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			String namespace = qualifiedName.substring(0, qualifiedName.lastIndexOf("::"));
+			AcceleoAstResult astResult = parser.parse(new String(Files.readAllBytes(sought),
+					StandardCharsets.UTF_8), namespace);
+			// TODO log astResult.getErrors()
+			if (astResult.getModule() != null) {
+				return astResult.getModule();
 			}
 		}
 		return null;

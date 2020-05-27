@@ -125,15 +125,15 @@ public abstract class AbstractLanguageTestSuite {
 		final File testFolderFile = new File(testFolderPath);
 		final File moduleFile = getModuleFile(testFolderFile);
 
-		Path rootPath = testFolderFile.toPath().getName(0);
-		IModuleResolver moduleResolver = new FileSystemModuleResolver(rootPath.toAbsolutePath(), environment
-				.getQueryEnvironment());
+		final Path rootPath = testFolderFile.toPath().getName(0);
+		final IModuleResolver moduleResolver = new FileSystemModuleResolver(rootPath.toAbsolutePath(),
+				environment.getQueryEnvironment());
 		environment.setModuleResolver(moduleResolver);
 
 		String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
 				"::") + "::";
 		qualifiedName = namespace + moduleFile.getName().substring(0, moduleFile.getName().lastIndexOf('.'));
-		Module module = environment.resolveModule(qualifiedName);
+		Module module = environment.getModule(qualifiedName);
 		astResult = module.getAst();
 	}
 

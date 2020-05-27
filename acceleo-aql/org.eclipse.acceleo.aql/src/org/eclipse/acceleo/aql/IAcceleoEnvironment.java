@@ -105,6 +105,15 @@ public interface IAcceleoEnvironment {
 	boolean hasModule(String qualifiedName);
 
 	/**
+	 * Gets the {@link Module} with the given qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
+	 */
+	Module getModule(String qualifiedName);
+
+	/**
 	 * Gets the {@link IQueryEnvironment}.
 	 * 
 	 * @return the {@link IQueryEnvironment}

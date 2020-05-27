@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.resolver;
 
+import java.io.IOException;
+
 import org.eclipse.acceleo.Module;
 
 /**
@@ -20,6 +22,14 @@ import org.eclipse.acceleo.Module;
  */
 public interface IModuleResolver {
 
-	Module resolveModule(String qualifiedName);
+	/**
+	 * Resolves the {@link Module} with the given qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
+	 * @throws IOException
+	 */
+	Module resolveModule(String qualifiedName) throws IOException;
 
 }

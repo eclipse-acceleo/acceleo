@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.parser;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -418,13 +423,56 @@ public class AcceleoParser {
 	}
 
 	/**
+	 * Parses the given {@link InputStream}.
+	 * 
+	 * @param source
+	 *            the {@link InputStream}
+	 * @param charset
+	 *            the {@link Charset}
+	 * @param namespace
+	 *            the name space of the {@link Module} (org::eclipse::...)
+	 * @return the parsed {@link AstResult}
+	 * @throws IOException
+	 *             if the {@link InputStream} can't be read
+	 */
+	public AcceleoAstResult parse(InputStream source, Charset charset, String namespace) throws IOException {
+		return parse(getContent(source, charset), namespace);
+	}
+
+	/**
+	 * Gets the content of the given {@link InputStream}.
+	 * 
+	 * @param stream
+	 *            the {@link InputStream}
+	 * @param charset
+	 *            the {@link Charset}
+	 * @return a {@link CharSequence} of the content of the given {@link InputStream}
+	 * @throws IOException
+	 *             if the {@link InputStream} can't be read
+	 */
+	private String getContent(InputStream stream, Charset charset) throws IOException {
+		final int len = 8192;
+		StringBuilder res = new StringBuilder(len);
+		try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream), charset)) {
+			char[] buffer = new char[len];
+			int length = input.read(buffer);
+			while (length != -1) {
+				res.append(buffer, 0, length);
+				length = input.read(buffer);
+			}
+			input.close();
+		}
+		return res.toString();
+	}
+
+	/**
 	 * Parses the given source text.
 	 * 
 	 * @param source
 	 *            the source text
 	 * @param namespace
 	 *            the name space of the {@link Module} (org::eclipse::...)
-	 * @return the created {@link Module} if any is recognized, <code>null</code> otherwise
+	 * @return the parsed {@link AstResult}
 	 */
 	public AcceleoAstResult parse(String source, String namespace) {
 		this.currentPosition = 0;
