@@ -12,22 +12,20 @@ package org.eclipse.acceleo.tests.resolver;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.resolver.ClassloaderModuleResolver;
-import org.eclipse.acceleo.aql.resolver.FileSystemModuleResolver;
-import org.eclipse.acceleo.aql.resolver.IModuleResolver;
+import org.eclipse.acceleo.aql.resolver.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.junit.Test;
 
-public class FileSystemModuleResolverTests {
+public class ClassLoaderQualifiedNameResolverTests {
 
 	/**
-	 * The {@link ClassloaderModuleResolver} to test.
+	 * The {@link ClassLoaderQualifiedNameResolver} to test.
 	 */
-	private final IModuleResolver resolver = new FileSystemModuleResolver(new File(".").toPath(), Query
+	private final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), Query
 			.newEnvironmentWithDefaultServices(null));
 
 	@Test
@@ -38,7 +36,7 @@ public class FileSystemModuleResolverTests {
 
 	@Test
 	public void resolveModule() throws IOException {
-		final Module module = resolver.resolveModule("src::org::eclipse::acceleo::tests::resolver::nominal");
+		final Module module = resolver.resolveModule("org::eclipse::acceleo::tests::resolver::nominal");
 		assertEquals("myModule", module.getName());
 	}
 

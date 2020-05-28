@@ -19,7 +19,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
-import org.eclipse.acceleo.aql.resolver.IModuleResolver;
+import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 
@@ -82,27 +82,16 @@ public interface IAcceleoEnvironment {
 	 * @param moduleResolver
 	 *            The module resolver for this environment.
 	 */
-	void setModuleResolver(IModuleResolver moduleResolver);
+	void setModuleResolver(IQualifiedNameResolver moduleResolver);
 
 	/**
-	 * Use the registered {@link #moduleResolver} to try and parse the module with the specified
-	 * qualifiedName.
+	 * Tells if the given qualified name exists.
 	 * 
 	 * @param qualifiedName
-	 *            The qualified name of the module we seek.
-	 * @return The parsed module if {@link #moduleResolver} could resolve it, <code>null</code> otherwise.
+	 *            the qualified name
+	 * @return <code>true</code> if the given qualified name exists, <code>false</code> otherwise
 	 */
-	Module resolveModule(String qualifiedName);
-
-	/**
-	 * Tells if the given {@link org.eclipse.acceleo.Module} qualified name exists.
-	 * 
-	 * @param qualifiedName
-	 *            the {@link org.eclipse.acceleo.Module} qualified name
-	 * @return <code>true</code> if the given {@link org.eclipse.acceleo.Module} qualified name exists,
-	 *         <code>false</code> otherwise
-	 */
-	boolean hasModule(String qualifiedName);
+	boolean hasQualifiedName(String qualifiedName);
 
 	/**
 	 * Gets the {@link Module} with the given qualified name.

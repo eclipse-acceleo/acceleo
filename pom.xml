@@ -87,6 +87,7 @@
     <module>acceleo-aql/org.eclipse.acceleo.aql.tm</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.doc</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.ide.jdt</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.ui</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.tests</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug</module>

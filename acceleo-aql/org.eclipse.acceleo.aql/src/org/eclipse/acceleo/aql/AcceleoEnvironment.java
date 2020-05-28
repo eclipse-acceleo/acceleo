@@ -30,7 +30,6 @@ import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
-import org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService;
 import org.eclipse.acceleo.aql.evaluation.AcceleoCallStack;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.AcceleoQueryEnvironment;
@@ -39,8 +38,9 @@ import org.eclipse.acceleo.aql.evaluation.QueryService;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
-import org.eclipse.acceleo.aql.resolver.IModuleResolver;
+import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.emf.common.util.URI;
@@ -71,8 +71,8 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 */
 	private final Map<String, LinkedList<String>> moduleImports;
 
-	/** Keeps track of the services each module qualified name provides, mapped to their names. */
-	private Map<String, Map<String, Set<AbstractModuleElementService>>> moduleServices;
+	/** Keeps track of the services each qualified name provides, mapped to their names. */
+	private Map<String, Map<String, Set<IService>>> qualifiedNameServices;
 
 	/** The AQL environment that will be used to evaluate aql expressions from this Acceleo context. */
 	private IQueryEnvironment aqlEnvironment;
@@ -113,13 +113,13 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	// TODO without a default value, the environment will not be able to resolve imported or extended modules.
 	// Can we set a default with the information we have at creation time?
 	/**
-	 * The module resolver for this environment.
+	 * The resolver for this environment.
 	 * <p>
-	 * This will be used whenever a module tries to access another module referenced by its qualified name,
+	 * This will be used whenever a module tries to access a qualified name,
 	 * such as import or extends.
 	 * </p>
 	 */
-	private IModuleResolver moduleResolver;
+	private IQualifiedNameResolver resolver;
 
 	/**
 	 * The {@link AcceleoEvaluator}.
@@ -141,7 +141,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		this.moduleToQualifiedName = new LinkedHashMap<>();
 		this.moduleExtends = new LinkedHashMap<>();
 		this.moduleImports = new LinkedHashMap<>();
-		this.moduleServices = new LinkedHashMap<>();
+		this.qualifiedNameServices = new LinkedHashMap<>();
 		this.callStacks = new ArrayDeque<>();
 
 		this.aqlEnvironment = new AcceleoQueryEnvironment(new EPackageProvider(), this);
@@ -185,15 +185,14 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		return callStacks.peekLast();
 	}
 
-	@Override
-	public Module resolveModule(String qualifiedName) {
-		if (moduleResolver == null) {
+	private Module resolveModule(String qualifiedName) {
+		if (resolver == null) {
 			return qualifiedNameToModule.get(qualifiedName);
 		}
 
 		Module module;
 		try {
-			module = moduleResolver.resolveModule(qualifiedName);
+			module = resolver.resolveModule(qualifiedName);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -213,7 +212,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	@Override
 	public String getExtend(String qualifiedName) {
 		String extended = moduleExtends.get(qualifiedName);
-		if (extended != null && !hasModule(extended)) {
+		if (extended != null && !hasQualifiedName(extended)) {
 			// TODO log runtime error? This should happen at evaluation time if the extended module cannot be
 			// resolved
 		}
@@ -224,7 +223,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	public Collection<String> getImports(String qualifiedName) {
 		Collection<String> imported = moduleImports.getOrDefault(qualifiedName, new LinkedList<>());
 		for (String importedName : imported) {
-			if (!hasModule(importedName)) {
+			if (!hasQualifiedName(importedName)) {
 				// TODO log runtime error? would happen at evaluation time if an import cannot be resolved
 			}
 		}
@@ -232,20 +231,50 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	/**
-	 * Returns all IServices with the given {@code name} provided by the given module.
+	 * Returns all IServices with the given {@code name} provided by the given qualified name.
 	 * 
-	 * @param moduleQualifiedName
-	 *            The module qualified name which services we're looking up.
+	 * @param qualifiedName
+	 *            The qualified name which services we're looking up.
 	 * @param moduleElementName
 	 *            Name of the service(s) we're searching for.
 	 * @return All IServices with the given {@code name} provided by the given module, <code>null</code> if
 	 *         none.
 	 */
-	public Set<AbstractModuleElementService> getServicesWithName(String moduleQualifiedName,
-			String moduleElementName) {
-		// FIXME null or empty set if either of the two gets is null?
-		return moduleServices.getOrDefault(moduleQualifiedName, new LinkedHashMap<>()).getOrDefault(
-				moduleElementName, new LinkedHashSet<AbstractModuleElementService>());
+	public Set<IService> getServicesWithName(String qualifiedName, String moduleElementName) {
+		final Module module = getModule(qualifiedName);
+		if (module == null) {
+			resolveClass(qualifiedName);
+		}
+
+		return qualifiedNameServices.getOrDefault(qualifiedName, new LinkedHashMap<>()).getOrDefault(
+				moduleElementName, new LinkedHashSet<IService>());
+	}
+
+	/**
+	 * Resolves the {@link Class} with the given qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @return the resolved {@link Class}
+	 */
+	private Class<?> resolveClass(String qualifiedName) {
+		Class<?> res;
+
+		try {
+			res = resolver.resolveClass(qualifiedName);
+			final Map<String, Set<IService>> servicesMap = qualifiedNameServices.computeIfAbsent(
+					qualifiedName, key -> new LinkedHashMap<String, Set<IService>>());
+			for (IService service : ServiceUtils.getServices(aqlEnvironment, res)) {
+				final Set<IService> services = servicesMap.computeIfAbsent(service.getName(),
+						key -> new LinkedHashSet<IService>());
+				services.add(service);
+			}
+		} catch (ClassNotFoundException e) {
+			// the class doesn't exist
+			res = null;
+		}
+
+		return res;
 	}
 
 	@Override
@@ -271,8 +300,8 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 			}
 		}
 
-		Map<String, Set<AbstractModuleElementService>> services = moduleServices.computeIfAbsent(
-				qualifiedName, key -> new LinkedHashMap<>());
+		Map<String, Set<IService>> services = qualifiedNameServices.computeIfAbsent(qualifiedName,
+				key -> new LinkedHashMap<>());
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template) {
 				String name = ((Template)element).getName();
@@ -292,11 +321,9 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	@Override
-	public boolean hasModule(String qualifiedName) {
-		if (qualifiedNameToModule.containsKey(qualifiedName)) {
-			return true;
-		}
-		return resolveModule(qualifiedName) != null;
+	public boolean hasQualifiedName(String qualifiedName) {
+		return qualifiedNameServices.containsKey(qualifiedName) || resolveModule(qualifiedName) != null
+				|| resolveClass(qualifiedName) != null;
 	}
 
 	@Override
@@ -345,8 +372,8 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	@Override
-	public void setModuleResolver(IModuleResolver moduleResolver) {
-		this.moduleResolver = moduleResolver;
+	public void setModuleResolver(IQualifiedNameResolver resolver) {
+		this.resolver = resolver;
 	}
 
 	@Override

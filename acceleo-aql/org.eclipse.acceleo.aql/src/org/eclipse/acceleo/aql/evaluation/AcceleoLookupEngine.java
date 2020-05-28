@@ -74,7 +74,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 
 		/* PRIVATE query or template in the same module as our current (last of the stack) */
 		String last = acceleoEnvironment.getModuleQualifiedName((Module)currentStack.peek().eContainer());
-		Set<AbstractModuleElementService> lastServices = acceleoEnvironment.getServicesWithName(last, name);
+		Set<IService> lastServices = acceleoEnvironment.getServicesWithName(last, name);
 		IService result = lookup(lastServices, argumentTypes, VisibilityKind.PRIVATE);
 
 		/*
@@ -119,8 +119,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 */
 	private IService lookupExtendedService(String startQualifiedName, String name, IType[] argumentTypes,
 			VisibilityKind... candidateVisibilities) {
-		Set<AbstractModuleElementService> services = acceleoEnvironment.getServicesWithName(
-				startQualifiedName, name);
+		Set<IService> services = acceleoEnvironment.getServicesWithName(startQualifiedName, name);
 		IService result = lookup(services, argumentTypes, candidateVisibilities);
 		if (result == null) {
 			final String extendedModuleQualifiedName = acceleoEnvironment.getExtend(startQualifiedName);
@@ -167,17 +166,39 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 *            The visibilities we're expecting this service to have.
 	 * @return The matching service if any, <code>null</code> if none.
 	 */
-	private IService lookup(Set<AbstractModuleElementService> services, IType[] argumentTypes,
+	private IService lookup(Set<IService> services, IType[] argumentTypes,
 			VisibilityKind... candidateVisibilities) {
 		List<VisibilityKind> visibilityList = Arrays.asList(candidateVisibilities);
 		// @formatter:off
-		Optional<AbstractModuleElementService> result = services.stream()
+		Optional<IService> result = services.stream()
 				.filter(service -> service.getNumberOfParameters() == argumentTypes.length)
-				.filter(service -> visibilityList.contains(service.getVisibility()))
+				.filter(service -> isVisible(service, visibilityList))
 				.filter(service -> service.matches(queryEnvironment, argumentTypes))
 				.findAny();
 		// @formatter:on
 		return result.orElse(null);
+	}
+
+	/**
+	 * Tells if the given {@link IService} is visible according to given {@link VisibilityKind}.
+	 * 
+	 * @param service
+	 *            the {@link IService}
+	 * @param visibilityList
+	 *            the {@link List} of {@link VisibilityKind}
+	 * @return <code>true</code> if the given {@link IService} is visible according to given
+	 *         {@link VisibilityKind}, <code>false</code> otherwise
+	 */
+	private boolean isVisible(IService service, List<VisibilityKind> visibilityList) {
+		final boolean res;
+
+		if (service instanceof AbstractModuleElementService) {
+			res = visibilityList.contains(((AbstractModuleElementService)service).getVisibility());
+		} else {
+			res = true;
+		}
+
+		return res;
 	}
 
 }

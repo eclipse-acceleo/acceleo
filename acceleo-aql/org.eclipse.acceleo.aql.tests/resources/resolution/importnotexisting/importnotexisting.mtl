@@ -1,11 +1,10 @@
 [module m1('http://www.eclipse.org/emf/2002/Ecore')/]
 
-[import resolution::import::imported/]
+[import not::existing/]
 
 [comment @main /]
 [template public t11(param1 : ecore::EClass)]
   [file (param1.name + '.txt', overwrite)]
-    generated from import.t11(EClass)
-    [param1.t41()/]
+    [param1.name/]
   [/file]
 [/template]

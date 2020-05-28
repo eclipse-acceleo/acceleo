@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,8 +38,8 @@ import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.aql.resolver.FileSystemModuleResolver;
-import org.eclipse.acceleo.aql.resolver.IModuleResolver;
+import org.eclipse.acceleo.aql.resolver.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.emf.common.util.URI;
@@ -126,7 +128,9 @@ public abstract class AbstractLanguageTestSuite {
 		final File moduleFile = getModuleFile(testFolderFile);
 
 		final Path rootPath = testFolderFile.toPath().getName(0);
-		final IModuleResolver moduleResolver = new FileSystemModuleResolver(rootPath.toAbsolutePath(),
+		final URL[] urls = new URL[] {testFolderFile.toPath().getName(0).toUri().toURL() };
+		final ClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
+		final IQualifiedNameResolver moduleResolver = new ClassLoaderQualifiedNameResolver(classLoader,
 				environment.getQueryEnvironment());
 		environment.setModuleResolver(moduleResolver);
 

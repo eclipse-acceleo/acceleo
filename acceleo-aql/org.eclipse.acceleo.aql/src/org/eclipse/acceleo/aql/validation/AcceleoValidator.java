@@ -351,11 +351,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModuleReference(ModuleReference moduleReference) {
-		if (!environment.hasModule(moduleReference.getQualifiedName())) {
+		if (!environment.hasQualifiedName(moduleReference.getQualifiedName())) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
-			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not find module "
-					+ moduleReference.getQualifiedName(), acceleoAstResult.getStartPosition(moduleReference),
-					acceleoAstResult.getEndPosition(moduleReference));
+			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not resolve " + moduleReference
+					.getQualifiedName(), acceleoAstResult.getStartPosition(moduleReference), acceleoAstResult
+							.getEndPosition(moduleReference));
 		}
 
 		return RETURN_VALUE;

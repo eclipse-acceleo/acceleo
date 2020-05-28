@@ -20,16 +20,28 @@ import org.eclipse.acceleo.Module;
  * 
  * @author lgoubet
  */
-public interface IModuleResolver {
+public interface IQualifiedNameResolver {
 
 	/**
 	 * Resolves the {@link Module} with the given qualified name.
 	 * 
 	 * @param qualifiedName
-	 *            the qualified name
+	 *            the qualified name (e.g. <code>qualified::path::to::module</code>)
 	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
 	 * @throws IOException
+	 *             if the module can't be loaded
 	 */
 	Module resolveModule(String qualifiedName) throws IOException;
+
+	/**
+	 * Resolves the {@link Class} with the given qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name (e.g. <code>qualified::path::to::module</code>)
+	 * @return the {@link Class} with the given qualified name if any, <code>null</code> otherwise
+	 * @throws ClassNotFoundException
+	 *             if the class can't be found
+	 */
+	Class<?> resolveClass(String qualifiedName) throws ClassNotFoundException;
 
 }

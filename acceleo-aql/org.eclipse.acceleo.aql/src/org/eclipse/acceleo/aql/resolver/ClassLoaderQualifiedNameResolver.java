@@ -24,7 +24,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ClassloaderModuleResolver implements IModuleResolver {
+public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver {
 
 	/**
 	 * The {@link ClassLoader}.
@@ -42,9 +42,11 @@ public class ClassloaderModuleResolver implements IModuleResolver {
 	 * @param queryEnvironment
 	 *            The AQL environment to use when parsing resolved modules.
 	 */
-	public ClassloaderModuleResolver(ClassLoader classLoader, IReadOnlyQueryEnvironment queryEnvironment) {
-		this.classLoader = classLoader;
+	public ClassLoaderQualifiedNameResolver(ClassLoader classLoader,
+			IReadOnlyQueryEnvironment queryEnvironment) {
+		Objects.requireNonNull(classLoader);
 		Objects.requireNonNull(queryEnvironment);
+		this.classLoader = classLoader;
 		this.parser = new AcceleoParser(queryEnvironment);
 	}
 
@@ -63,6 +65,11 @@ public class ClassloaderModuleResolver implements IModuleResolver {
 			}
 		}
 		return res;
+	}
+
+	@Override
+	public Class<?> resolveClass(String qualifiedName) throws ClassNotFoundException {
+		return classLoader.loadClass(qualifiedName.replace(AcceleoParser.QUALIFIER_SEPARATOR, "."));
 	}
 
 }
