@@ -12,7 +12,18 @@
 
 package org.eclipse.acceleo.aql.ide;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.acceleo.aql.ide.resolver.EclipseQualifiedNameResolver;
+import org.eclipse.acceleo.aql.ide.resolver.IResolverFactoryDescriptor;
+import org.eclipse.acceleo.aql.ide.resolver.ResolverFactoryRegistryListener;
+import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -41,6 +52,12 @@ public class Activator extends EMFPlugin {
 	private static Implementation plugin;
 
 	/**
+	 * The {@link List} of {@link #registerResolverFactory(IResolverFactoryDescriptor) registered}
+	 * {@link IResolverFactoryDescriptor}.
+	 */
+	private static final List<IResolverFactoryDescriptor> RESOLVER_FACTORY_DESCRIPTORS = new ArrayList<>();
+
+	/**
 	 * The constructor.
 	 */
 	public Activator() {
@@ -62,6 +79,10 @@ public class Activator extends EMFPlugin {
 	 * @author cedric
 	 */
 	public static class Implementation extends EclipsePlugin {
+
+		/** The registry listener that will be used to listen to extension changes. */
+		private final ResolverFactoryRegistryListener resolverFactoryListener = new ResolverFactoryRegistryListener();
+
 		/**
 		 * Create the Eclipse Implementation.
 		 */
@@ -80,6 +101,11 @@ public class Activator extends EMFPlugin {
 		@Override
 		public void start(BundleContext context) throws Exception {
 			super.start(context);
+
+			final IExtensionRegistry registry = Platform.getExtensionRegistry();
+			registry.addListener(resolverFactoryListener,
+					ResolverFactoryRegistryListener.CLASS_PROVIDER_EXTENSION_POINT);
+			resolverFactoryListener.parseInitialContributions();
 		}
 
 		/*
@@ -89,7 +115,39 @@ public class Activator extends EMFPlugin {
 		@Override
 		public void stop(BundleContext context) throws Exception {
 			super.stop(context);
+
+			final IExtensionRegistry registry = Platform.getExtensionRegistry();
+			registry.removeListener(resolverFactoryListener);
 		}
+
+		/**
+		 * Creates a {@link IQualifiedNameResolver} for the given {@link IProject}.
+		 * 
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param project
+		 *            the {@link IProject}
+		 * @return the {@link IQualifiedNameResolver} for the given {@link IProject}
+		 */
+		public IQualifiedNameResolver createQualifiedNameResolver(IReadOnlyQueryEnvironment queryEnvironment,
+				IProject project) {
+			final IQualifiedNameResolver res;
+
+			final List<IResolverFactoryDescriptor> factoryDescriptors;
+			synchronized(RESOLVER_FACTORY_DESCRIPTORS) {
+				factoryDescriptors = new ArrayList<IResolverFactoryDescriptor>(RESOLVER_FACTORY_DESCRIPTORS);
+			}
+
+			if (factoryDescriptors.isEmpty()) {
+				res = new EclipseQualifiedNameResolver(getClass().getClassLoader(), queryEnvironment,
+						project);
+			} else {
+				res = factoryDescriptors.get(0).getFactory().createResolver(queryEnvironment, project);
+			}
+
+			return res;
+		}
+
 	}
 
 	/**
@@ -138,4 +196,33 @@ public class Activator extends EMFPlugin {
 		}
 		Activator.INSTANCE.log(new Status(severity, PLUGIN_ID, errorMessage));
 	}
+
+	/**
+	 * Registers the given {@link IResolverFactoryDescriptor}.
+	 * 
+	 * @param descriptor
+	 *            the {@link IResolverFactoryDescriptor}
+	 */
+	public static void registerResolverFactory(IResolverFactoryDescriptor descriptor) {
+		if (descriptor != null) {
+			synchronized(RESOLVER_FACTORY_DESCRIPTORS) {
+				RESOLVER_FACTORY_DESCRIPTORS.add(descriptor);
+			}
+		}
+	}
+
+	/**
+	 * Unregisters the given {@link IResolverFactoryDescriptor}.
+	 * 
+	 * @param descriptor
+	 *            the {@link IResolverFactoryDescriptor}
+	 */
+	public static void unregisterResolverFactory(IResolverFactoryDescriptor descriptor) {
+		if (descriptor != null) {
+			synchronized(RESOLVER_FACTORY_DESCRIPTORS) {
+				RESOLVER_FACTORY_DESCRIPTORS.remove(descriptor);
+			}
+		}
+	}
+
 }

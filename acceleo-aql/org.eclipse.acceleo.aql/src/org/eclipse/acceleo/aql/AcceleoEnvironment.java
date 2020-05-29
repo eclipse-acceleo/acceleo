@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -115,8 +116,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	/**
 	 * The resolver for this environment.
 	 * <p>
-	 * This will be used whenever a module tries to access a qualified name,
-	 * such as import or extends.
+	 * This will be used whenever a module tries to access a qualified name, such as import or extends.
 	 * </p>
 	 */
 	private IQualifiedNameResolver resolver;
@@ -207,6 +207,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	@Override
 	public String getModuleQualifiedName(Module module) {
 		return moduleToQualifiedName.get(module);
+	}
+
+	@Override
+	public URL getModuleURL(Module module) {
+		return resolver.getModuleURL(getModuleQualifiedName(module));
 	}
 
 	@Override
@@ -341,6 +346,20 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	@Override
+	public Module getModule(URL url) {
+		final Module res;
+
+		final String qualifiedName = resolver.getQualifierName(url);
+		if (qualifiedName != null) {
+			res = getModule(qualifiedName);
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	@Override
 	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
 			throws IOException {
 		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
@@ -372,8 +391,8 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	@Override
-	public void setModuleResolver(IQualifiedNameResolver resolver) {
-		this.resolver = resolver;
+	public void setModuleResolver(IQualifiedNameResolver nameResolver) {
+		this.resolver = nameResolver;
 	}
 
 	@Override

@@ -8,12 +8,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ide;
+package org.eclipse.acceleo.aql.ide.resolver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.eclipse.acceleo.aql.ide.Activator;
 import org.eclipse.acceleo.aql.resolver.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.resources.IProject;

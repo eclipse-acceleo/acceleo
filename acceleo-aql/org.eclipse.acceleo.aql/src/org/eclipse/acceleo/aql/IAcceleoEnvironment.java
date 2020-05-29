@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Collection;
 
@@ -59,6 +60,17 @@ public interface IAcceleoEnvironment {
 	String getModuleQualifiedName(Module module);
 
 	/**
+	 * Gets the {@link Module} {@link URL}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return the {@link Module} {@link URL} if the {@link Module} is
+	 *         {@link IAcceleoEnvironment#registerModule(String, Module) registered}, <code>null</code>
+	 *         otherwise
+	 */
+	URL getModuleURL(Module module);
+
+	/**
 	 * Gets the extend for the given module qualified name.
 	 * 
 	 * @param qualifiedName
@@ -101,6 +113,15 @@ public interface IAcceleoEnvironment {
 	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
 	 */
 	Module getModule(String qualifiedName);
+
+	/**
+	 * Gets the {@link Module} with the given {@link URL}.
+	 * 
+	 * @param url
+	 *            the {@link URL}
+	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
+	 */
+	Module getModule(URL url);
 
 	/**
 	 * Gets the {@link IQueryEnvironment}.
@@ -192,4 +213,5 @@ public interface IAcceleoEnvironment {
 	 * @return the {@link AcceleoEvaluator}
 	 */
 	AcceleoEvaluator getEvaluator();
+
 }

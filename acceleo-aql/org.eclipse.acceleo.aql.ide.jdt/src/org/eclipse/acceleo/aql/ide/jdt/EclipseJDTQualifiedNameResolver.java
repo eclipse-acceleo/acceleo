@@ -16,7 +16,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.aql.ide.EclipseQualifiedNameResolver;
+import org.eclipse.acceleo.aql.ide.resolver.EclipseQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;

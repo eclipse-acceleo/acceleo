@@ -14,6 +14,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 import org.eclipse.acceleo.ASTNode;
@@ -27,18 +29,20 @@ import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.ide.Activator;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.debug.AbstractDSLDebugger;
 import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.lsp4e.LSPEclipseUtils;
 
 public class AcceleoDebugger extends AbstractDSLDebugger {
 
@@ -142,18 +146,17 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final URI modelURI = URI.createURI((String)arguments.get(MODEL));
 		final URI destination = URI.createURI((String)arguments.get(DESTINATION));
 		environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), destination);
-		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
-		// TODO should directly ask the module from the environment
-		final ResourceSet resourceSetForModels = new ResourceSetImpl();
-		try (InputStream is = resourceSetForModels.getURIConverter().createInputStream(moduleURI)) {
-			// TODO namespace
-			astResult = parser.parse(getContent(is, "UTF-8"), "org::todo");
-			environment.registerModule("org::todo::" + astResult.getModule().getName(), astResult
-					.getModule());
-		} catch (IOException e) {
+		final IProject project = LSPEclipseUtils.findResourceFor((String)arguments.get(MODULE)).getProject();
+		environment.setModuleResolver(Activator.getPlugin().createQualifiedNameResolver(environment
+				.getQueryEnvironment(), project));
+		try {
+			astResult = environment.getModule(java.net.URI.create(moduleURI.toString()).toURL()).getAst();
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		final ResourceSet resourceSetForModels = new ResourceSetImpl();
 		model = resourceSetForModels.getResource(modelURI, true);
 	}
 
@@ -213,7 +216,6 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	@Override
 	public void disconnect() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -242,8 +244,13 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 	@Override
 	public EObject getInstruction(String path, long line, long column) {
-		// TODO get the astResult from the right module
-		final AcceleoAstResult moduleAstResult = astResult;
+		AcceleoAstResult moduleAstResult = null;
+		try {
+			moduleAstResult = environment.getModule(new URL("file://" + path)).getAst();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		final EObject res;
 		EObject instruction = moduleAstResult.getAstNode((int)line - 1, (int)column - 1);
@@ -272,15 +279,13 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	 *         otherwise
 	 */
 	private boolean isAcceleoInstruction(EObject eObject) {
-		return eObject instanceof Statement /* || eObject instanceof ModuleElement */;
+		return eObject instanceof Statement;
 	}
 
 	@Override
 	public DSLSource getSource(EObject instruction) {
-		// TODO get the astResult from the right module
-		final AcceleoAstResult moduleAstResult = astResult;
-		// TODO get the path from the right module
-		final String path = "/home/development/bin/eclipse-2019-12-Acceleo-query/runtime-New_configuration/test/src/test/test.mtl";
+		final AcceleoAstResult moduleAstResult = getModule(instruction).getAst();
+		final String path = environment.getModuleURL(moduleAstResult.getModule()).getFile();
 
 		final DSLSource res;
 		if (instruction instanceof ASTNode) {
@@ -308,4 +313,25 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		return res;
 	}
 
+	/**
+	 * Gets the {@link Module} of the given {@link EObject instruction}.
+	 * 
+	 * @param instruction
+	 *            the {@link EObject instruction}
+	 * @return the {@link Module} of the given {@link EObject instruction} if nay, <code>null</code> otherwise
+	 */
+	private Module getModule(EObject instruction) {
+		Module res = null;
+
+		EObject current = instruction;
+		while (current != null) {
+			if (current instanceof Module) {
+				res = (Module)current;
+				break;
+			}
+			current = current.eContainer();
+		}
+
+		return res;
+	}
 }

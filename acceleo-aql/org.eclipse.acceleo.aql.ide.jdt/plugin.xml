@@ -14,7 +14,10 @@
 -->
 
 <plugin>
-
-
-
+   <extension
+         point="org.eclipse.acceleo.aql.ide.resolverfactory">
+      <resolverfactory
+            class="org.eclipse.acceleo.aql.ide.jdt.EclipseJDTQualifiedNameResolverFactory">
+      </resolverfactory>
+   </extension>
 </plugin>

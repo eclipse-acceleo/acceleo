@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.resolver;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.eclipse.acceleo.Module;
 
@@ -43,5 +44,26 @@ public interface IQualifiedNameResolver {
 	 *             if the class can't be found
 	 */
 	Class<?> resolveClass(String qualifiedName) throws ClassNotFoundException;
+
+	/**
+	 * Gets the {@link URL} corresponding to the given {@link Module} qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name (e.g. <code>qualified::path::to::module</code>)
+	 * @return the {@link URL} corresponding to the given {@link Module} qualified name if any,
+	 *         <code>null</code> otherwise
+	 */
+	URL getModuleURL(String qualifiedName);
+
+	/**
+	 * Gets the qualified name (e.g. <code>qualified::path::to::module</code>) from the given {@link Module}
+	 * {@link URL}. {@link URL}.
+	 * 
+	 * @param resource
+	 *            the resource {@link URL}
+	 * @return the qualified name (e.g. <code>qualified::path::to::module</code>) from the given
+	 *         {@link Module} {@link URL} if any, <code>null</code> otherwise
+	 */
+	String getQualifierName(URL resource);
 
 }
