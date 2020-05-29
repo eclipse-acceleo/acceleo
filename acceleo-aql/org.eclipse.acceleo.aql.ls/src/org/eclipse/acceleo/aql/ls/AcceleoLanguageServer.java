@@ -19,7 +19,10 @@ import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.MessageType;
+import org.eclipse.lsp4j.SaveOptions;
 import org.eclipse.lsp4j.ServerCapabilities;
+import org.eclipse.lsp4j.TextDocumentSyncKind;
+import org.eclipse.lsp4j.TextDocumentSyncOptions;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageClientAware;
 import org.eclipse.lsp4j.services.LanguageServer;
@@ -62,6 +65,8 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
 		final ServerCapabilities capabilities = new ServerCapabilities();
 
+		capabilities.setTextDocumentSync(createTextDocumentSyncOptions());
+
 		final CompletionOptions completionProvider = new CompletionOptions();
 		completionProvider.setResolveProvider(true);
 		capabilities.setCompletionProvider(completionProvider);
@@ -76,6 +81,22 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 
 		final InitializeResult res = new InitializeResult(capabilities);
 		return CompletableFuture.completedFuture(res);
+	}
+
+	/**
+	 * Creates the {@link TextDocumentSyncOptions} capability for this server.
+	 * 
+	 * @return the {@link TextDocumentSyncOptions} for this server.
+	 */
+	private TextDocumentSyncOptions createTextDocumentSyncOptions() {
+		TextDocumentSyncOptions textDocumentSyncOptions = new TextDocumentSyncOptions();
+		textDocumentSyncOptions.setChange(TextDocumentSyncKind.Full);
+		textDocumentSyncOptions.setOpenClose(true);
+		textDocumentSyncOptions.setSave(new SaveOptions(true));
+		textDocumentSyncOptions.setWillSave(true);
+		textDocumentSyncOptions.setWillSaveWaitUntil(true);
+
+		return textDocumentSyncOptions;
 	}
 
 	@Override
