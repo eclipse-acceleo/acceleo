@@ -1,0 +1,9 @@
+* Label:
+myParameter
+* Description:
+Inserts the following text: <pre>myParameter</pre>
+* Text:
+myParameter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Template
+

@@ -10,16 +10,19 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.common;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
+import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposal;
 import org.eclipse.acceleo.aql.location.AcceleoLocationLink;
 import org.eclipse.acceleo.aql.outline.AcceleoSymbol;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
-import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.Diagnostic;
@@ -41,32 +44,66 @@ public final class AcceleoLanguageServerServicesUtils {
 	}
 
 	/**
-	 * Transforms an {@link ICompletionProposal} from Acceleo into a corresponding {@link CompletionItem} for
-	 * LSP4J.
+	 * Transforms a {@link List} of {@link AcceleoCompletionProposal} from Acceleo into a corresponding
+	 * {@link List} of {@link CompletionItem} for LSP4J.
+	 * 
+	 * @param acceleoCompletionProposals
+	 *            the (non-{@code null}) {@link List} of {@link AcceleoCompletionProposal}, with a
+	 *            non-{@code null} proposed text, to transform.
+	 * @return the {@link List} of {@link CompletionItem} corresponding to {@code acceleoCompletionProposals}.
+	 */
+	public static List<CompletionItem> transform(List<AcceleoCompletionProposal> acceleoCompletionProposals) {
+		Objects.requireNonNull(acceleoCompletionProposals);
+
+		return acceleoCompletionProposals.stream().map(acceleoCompletionProposal -> {
+			String text = acceleoCompletionProposal.getText();
+
+			if (text != null) {
+				CompletionItem completionItem = new CompletionItem();
+				String proposalDescription = acceleoCompletionProposal.getDescription();
+				if (proposalDescription != null) {
+					completionItem.setDocumentation(proposalDescription);
+				} else {
+					// If there is no description then the documentation is simply the text.
+					completionItem.setDocumentation(text);
+				}
+				completionItem.setInsertText(text);
+				completionItem.setLabel(acceleoCompletionProposal.getLabel());
+				completionItem.setKind(getKind(acceleoCompletionProposal));
+
+				// Keep the same List order.
+				String sortText = String.join("", Collections.nCopies(acceleoCompletionProposals.indexOf(
+						acceleoCompletionProposal), "a"));
+				completionItem.setSortText(sortText);
+				return completionItem;
+			} else {
+				throw new IllegalArgumentException("The text proposed by an " + acceleoCompletionProposal
+						.getClass().getCanonicalName() + " should not be null.");
+			}
+		}).collect(Collectors.toList());
+	}
+
+	/**
+	 * Provides the {@link CompletionItemKind} corresponding to an {@link AcceleoCompletionProposal}.
 	 * 
 	 * @param acceleoCompletionProposal
-	 *            the (non-{@code null}) {@link ICompletionProposal}, with a non-{@code null} proposed text,
-	 *            to transform.
-	 * @return the {@link CompletionItem} corresponding to {@code acceleoCompletionProposal}.
+	 *            the (non-{@code null}) {@link AcceleoCompletionProposal}.
+	 * @return the {@link CompletionItemKind} corresponding to {@code acceleoCompletionProposal}.
 	 */
-	public static CompletionItem transform(ICompletionProposal acceleoCompletionProposal) {
-		Objects.requireNonNull(acceleoCompletionProposal);
-
-		String text = acceleoCompletionProposal.getProposal();
-
-		if (text != null) {
-			CompletionItem completionItem = new CompletionItem();
-			completionItem.setDocumentation(acceleoCompletionProposal.getDescription());
-			completionItem.setData(acceleoCompletionProposal.getObject());
-			completionItem.setKind(CompletionItemKind.Text);
-			completionItem.setInsertText(text);
-			// FIXME: Acceleo should provide us with more information about the proposal.
-			completionItem.setLabel(text);
-			return completionItem;
+	private static CompletionItemKind getKind(AcceleoCompletionProposal acceleoCompletionProposal) {
+		CompletionItemKind completionItemKind;
+		if (acceleoCompletionProposal instanceof AcceleoCodeTemplateCompletionProposal) {
+			completionItemKind = CompletionItemKind.Snippet;
 		} else {
-			throw new IllegalArgumentException("The text proposed by an " + acceleoCompletionProposal
-					.getClass().getCanonicalName() + " should not be null.");
+			EClass acceleoType = acceleoCompletionProposal.getAcceleoType();
+			if (acceleoType == null) {
+				completionItemKind = CompletionItemKind.Text;
+			} else {
+				completionItemKind = new AcceleoAstNodeToCompletionItemKind().doSwitchOnType(
+						acceleoCompletionProposal.getAcceleoType());
+			}
 		}
+		return completionItemKind;
 	}
 
 	/**

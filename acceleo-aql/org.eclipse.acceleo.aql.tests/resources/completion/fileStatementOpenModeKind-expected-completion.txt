@@ -1,9 +1,27 @@
-append 6
-append
-
-create 6
-create
-
-overwrite 9
+* Label:
 overwrite
+* Description:
+The open mode for a File Statement determines the strategy to use <i>if there already exists a file with the desired name</i> at the generation destination.<br/><ul><li><b>overwrite</b>: overwrites the contents of the existing file.</li><li>append: appends the generated contents to the end of the existing file.</li><li>create: no content is generated.</li></ul>
+* Text:
+overwrite
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//FileStatement
+
+* Label:
+append
+* Description:
+The open mode for a File Statement determines the strategy to use <i>if there already exists a file with the desired name</i> at the generation destination.<br/><ul><li>overwrite: overwrites the contents of the existing file.</li><li><b>append</b>: appends the generated contents to the end of the existing file.</li><li>create: no content is generated.</li></ul>
+* Text:
+append
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//FileStatement
+
+* Label:
+create
+* Description:
+The open mode for a File Statement determines the strategy to use <i>if there already exists a file with the desired name</i> at the generation destination.<br/><ul><li>overwrite: overwrites the contents of the existing file.</li><li>append: appends the generated contents to the end of the existing file.</li><li><b>create</b>: no content is generated.</li></ul>
+* Text:
+create
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//FileStatement
 

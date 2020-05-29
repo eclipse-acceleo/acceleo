@@ -1,3 +1,18 @@
-|  2
+* Label:
+:
+* Description:
+Inserts the following text: <pre>: </pre>
+* Text:
+: 
+* Type (optional):
+null
+
+* Label:
+|
+* Description:
+Inserts the following text: <pre>| </pre>
+* Text:
 | 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Binding
 

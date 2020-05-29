@@ -1,195 +1,650 @@
-() 1
+* Label:
 ()
+* Description:
+AQL Expression completion:
+()
+* Text:
+()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
--  2
+* Label:
 - 
+* Description:
+AQL Expression completion:
+- 
+* Text:
+- 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-OrderedSet{} 11
+* Label:
 OrderedSet{}
+* Description:
+AQL Expression completion:
+OrderedSet{}
+* Text:
+OrderedSet{}
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-Sequence{} 9
+* Label:
 Sequence{}
+* Description:
+AQL Expression completion:
+Sequence{}
+* Text:
+Sequence{}
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EAnnotation 18
-EClass named EAnnotation in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EAnnotation
+* Description:
+AQL Expression completion:
+ecore::EAnnotation
+* Text:
+ecore::EAnnotation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EAttribute 17
-EClass named EAttribute in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EAttribute
+* Description:
+AQL Expression completion:
+ecore::EAttribute
+* Text:
+ecore::EAttribute
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EBigDecimal 18
-EDataType named EBigDecimal in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EBigDecimal
+* Description:
+AQL Expression completion:
+ecore::EBigDecimal
+* Text:
+ecore::EBigDecimal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EBigInteger 18
-EDataType named EBigInteger in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EBigInteger
+* Description:
+AQL Expression completion:
+ecore::EBigInteger
+* Text:
+ecore::EBigInteger
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EBoolean 15
-EDataType named EBoolean in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EBoolean
+* Description:
+AQL Expression completion:
+ecore::EBoolean
+* Text:
+ecore::EBoolean
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EBooleanObject 21
-EDataType named EBooleanObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EBooleanObject
+* Description:
+AQL Expression completion:
+ecore::EBooleanObject
+* Text:
+ecore::EBooleanObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EByteArray 17
-EDataType named EByteArray in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EByte
+* Description:
+AQL Expression completion:
+ecore::EByte
+* Text:
+ecore::EByte
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EByte 12
-EDataType named EByte in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EByteArray
+* Description:
+AQL Expression completion:
+ecore::EByteArray
+* Text:
+ecore::EByteArray
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EByteObject 18
-EDataType named EByteObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EByteObject
+* Description:
+AQL Expression completion:
+ecore::EByteObject
+* Text:
+ecore::EByteObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EChar 12
-EDataType named EChar in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EChar
+* Description:
+AQL Expression completion:
+ecore::EChar
+* Text:
+ecore::EChar
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::ECharacterObject 23
-EDataType named ECharacterObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::ECharacterObject
+* Description:
+AQL Expression completion:
+ecore::ECharacterObject
+* Text:
+ecore::ECharacterObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EClass 13
-EClass named EClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EClass
+* Description:
+AQL Expression completion:
+ecore::EClass
+* Text:
+ecore::EClass
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EClassifier 18
-EClass named EClassifier in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EClassifier
+* Description:
+AQL Expression completion:
+ecore::EClassifier
+* Text:
+ecore::EClassifier
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EDataType 16
-EClass named EDataType in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EDataType
+* Description:
+AQL Expression completion:
+ecore::EDataType
+* Text:
+ecore::EDataType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EDate 12
-EDataType named EDate in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EDate
+* Description:
+AQL Expression completion:
+ecore::EDate
+* Text:
+ecore::EDate
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EDiagnosticChain 23
-EDataType named EDiagnosticChain in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EDiagnosticChain
+* Description:
+AQL Expression completion:
+ecore::EDiagnosticChain
+* Text:
+ecore::EDiagnosticChain
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EDouble 14
-EDataType named EDouble in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EDouble
+* Description:
+AQL Expression completion:
+ecore::EDouble
+* Text:
+ecore::EDouble
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EDoubleObject 20
-EDataType named EDoubleObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EDoubleObject
+* Description:
+AQL Expression completion:
+ecore::EDoubleObject
+* Text:
+ecore::EDoubleObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EEList 13
-EDataType named EEList in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EEList
+* Description:
+AQL Expression completion:
+ecore::EEList
+* Text:
+ecore::EEList
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EEnum 12
-EClass named EEnum in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EEnum
+* Description:
+AQL Expression completion:
+ecore::EEnum
+* Text:
+ecore::EEnum
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EEnumLiteral 19
-EClass named EEnumLiteral in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EEnumLiteral
+* Description:
+AQL Expression completion:
+ecore::EEnumLiteral
+* Text:
+ecore::EEnumLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EEnumerator 18
-EDataType named EEnumerator in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EEnumerator
+* Description:
+AQL Expression completion:
+ecore::EEnumerator
+* Text:
+ecore::EEnumerator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EFactory 15
-EClass named EFactory in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EFactory
+* Description:
+AQL Expression completion:
+ecore::EFactory
+* Text:
+ecore::EFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EFeatureMap 18
-EDataType named EFeatureMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EFeatureMap
+* Description:
+AQL Expression completion:
+ecore::EFeatureMap
+* Text:
+ecore::EFeatureMap
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EFeatureMapEntry 23
-EDataType named EFeatureMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EFeatureMapEntry
+* Description:
+AQL Expression completion:
+ecore::EFeatureMapEntry
+* Text:
+ecore::EFeatureMapEntry
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EFloat 13
-EDataType named EFloat in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EFloat
+* Description:
+AQL Expression completion:
+ecore::EFloat
+* Text:
+ecore::EFloat
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EFloatObject 19
-EDataType named EFloatObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EFloatObject
+* Description:
+AQL Expression completion:
+ecore::EFloatObject
+* Text:
+ecore::EFloatObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EGenericType 19
-EClass named EGenericType in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EGenericType
+* Description:
+AQL Expression completion:
+ecore::EGenericType
+* Text:
+ecore::EGenericType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EInt 11
-EDataType named EInt in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EInt
+* Description:
+AQL Expression completion:
+ecore::EInt
+* Text:
+ecore::EInt
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EIntegerObject 21
-EDataType named EIntegerObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EIntegerObject
+* Description:
+AQL Expression completion:
+ecore::EIntegerObject
+* Text:
+ecore::EIntegerObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EInvocationTargetException 33
-EDataType named EInvocationTargetException in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EInvocationTargetException
+* Description:
+AQL Expression completion:
+ecore::EInvocationTargetException
+* Text:
+ecore::EInvocationTargetException
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EJavaClass 17
-EDataType named EJavaClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EJavaClass
+* Description:
+AQL Expression completion:
+ecore::EJavaClass
+* Text:
+ecore::EJavaClass
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EJavaObject 18
-EDataType named EJavaObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EJavaObject
+* Description:
+AQL Expression completion:
+ecore::EJavaObject
+* Text:
+ecore::EJavaObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::ELong 12
-EDataType named ELong in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::ELong
+* Description:
+AQL Expression completion:
+ecore::ELong
+* Text:
+ecore::ELong
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::ELongObject 18
-EDataType named ELongObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::ELongObject
+* Description:
+AQL Expression completion:
+ecore::ELongObject
+* Text:
+ecore::ELongObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EMap 11
-EDataType named EMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EMap
+* Description:
+AQL Expression completion:
+ecore::EMap
+* Text:
+ecore::EMap
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EModelElement 20
-EClass named EModelElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EModelElement
+* Description:
+AQL Expression completion:
+ecore::EModelElement
+* Text:
+ecore::EModelElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::ENamedElement 20
-EClass named ENamedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::ENamedElement
+* Description:
+AQL Expression completion:
+ecore::ENamedElement
+* Text:
+ecore::ENamedElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EObject 14
-EClass named EObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EObject
+* Description:
+AQL Expression completion:
+ecore::EObject
+* Text:
+ecore::EObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EOperation 17
-EClass named EOperation in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EOperation
+* Description:
+AQL Expression completion:
+ecore::EOperation
+* Text:
+ecore::EOperation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EPackage 15
-EClass named EPackage in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EPackage
+* Description:
+AQL Expression completion:
+ecore::EPackage
+* Text:
+ecore::EPackage
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EParameter 17
-EClass named EParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EParameter
+* Description:
+AQL Expression completion:
+ecore::EParameter
+* Text:
+ecore::EParameter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EReference 17
-EClass named EReference in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EReference
+* Description:
+AQL Expression completion:
+ecore::EReference
+* Text:
+ecore::EReference
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EResource 16
-EDataType named EResource in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EResource
+* Description:
+AQL Expression completion:
+ecore::EResource
+* Text:
+ecore::EResource
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EResourceSet 19
-EDataType named EResourceSet in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EResourceSet
+* Description:
+AQL Expression completion:
+ecore::EResourceSet
+* Text:
+ecore::EResourceSet
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EShort 13
-EDataType named EShort in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EShort
+* Description:
+AQL Expression completion:
+ecore::EShort
+* Text:
+ecore::EShort
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EShortObject 19
-EDataType named EShortObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EShortObject
+* Description:
+AQL Expression completion:
+ecore::EShortObject
+* Text:
+ecore::EShortObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EString 14
-EDataType named EString in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EString
+* Description:
+AQL Expression completion:
+ecore::EString
+* Text:
+ecore::EString
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EStringToStringMapEntry 30
-EClass named EStringToStringMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EStringToStringMapEntry
+* Description:
+AQL Expression completion:
+ecore::EStringToStringMapEntry
+* Text:
+ecore::EStringToStringMapEntry
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::EStructuralFeature 25
-EClass named EStructuralFeature in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::EStructuralFeature
+* Description:
+AQL Expression completion:
+ecore::EStructuralFeature
+* Text:
+ecore::EStructuralFeature
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::ETreeIterator 20
-EDataType named ETreeIterator in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::ETreeIterator
+* Description:
+AQL Expression completion:
+ecore::ETreeIterator
+* Text:
+ecore::ETreeIterator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::ETypeParameter 21
-EClass named ETypeParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::ETypeParameter
+* Description:
+AQL Expression completion:
+ecore::ETypeParameter
+* Text:
+ecore::ETypeParameter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-ecore::ETypedElement 20
-EClass named ETypedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Label:
+ecore::ETypedElement
+* Description:
+AQL Expression completion:
+ecore::ETypedElement
+* Text:
+ecore::ETypedElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-false 5
+* Label:
 false
+* Description:
+AQL Expression completion:
+false
+* Text:
+false
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-if  3
+* Label:
 if 
+* Description:
+AQL Expression completion:
+if 
+* Text:
+if 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-let  4
+* Label:
 let 
+* Description:
+AQL Expression completion:
+let 
+* Text:
+let 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-myParam 7
-Variable myParam
+* Label:
+myParam
+* Description:
+AQL Expression completion:
+myParam
+* Text:
+myParam
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-not  4
+* Label:
 not 
+* Description:
+AQL Expression completion:
+not 
+* Text:
+not 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-null 4
+* Label:
 null
+* Description:
+AQL Expression completion:
+null
+* Text:
+null
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-true 4
+* Label:
 true
+* Description:
+AQL Expression completion:
+true
+* Text:
+true
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
-{} 1
+* Label:
 {}
+* Description:
+AQL Expression completion:
+{}
+* Text:
+{}
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 

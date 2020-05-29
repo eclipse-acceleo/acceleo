@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Template;
@@ -22,6 +24,7 @@ import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.services.EObjectServices;
+import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -99,6 +102,35 @@ public final class AcceleoUtil {
 			variables.put(parameterName, value);
 			evaluator.generate(module, variables);
 		}
+	}
+
+	/**
+	 * Provides the concrete Acceleo {@link EClass EClasses} that are, inherit or extend the given Acceleo
+	 * {@link EClass}. This is useful to use an {@link AcceleoSwitch} on non-instantiable EClasses.
+	 * 
+	 * @param superType
+	 *            the (non-{@code null}) {@link AcceleoPackage Acceleo} {@link EClass}.
+	 * @return the {@link List} of concrete (i.e. both {@link EClass#isInterface()} and
+	 *         {@link EClass#isAbstract()} return {@code false}) {@link EClass EClasses} from
+	 *         {@link AcceleoPackage} that are, inherit, or extend, the given Acceleo {@link EClass}.
+	 */
+	public static List<EClass> getConcreteAcceleoTypesInheriting(EClass superType) {
+		if (!superType.getEPackage().equals(AcceleoPackage.eINSTANCE)) {
+			throw new IllegalArgumentException(
+					"This can only be used for EClasses from the Acceleo EPackage. " + superType
+							+ " is from EPackage " + superType.getEPackage() + ".");
+		}
+		List<EClass> eClasses = new ArrayList<>();
+		if (!superType.isAbstract() && !superType.isInterface()) {
+			eClasses.add(superType);
+		}
+		List<EClass> allAcceleoConcreteEClasses = AcceleoPackage.eINSTANCE.getEClassifiers().stream().filter(
+				EClass.class::isInstance).map(EClass.class::cast).filter(eClass -> !eClass.isInterface()
+						&& !eClass.isAbstract()).collect(Collectors.toList());
+		List<EClass> acceleoConcreteSubTypes = allAcceleoConcreteEClasses.stream().filter(eClass -> eClass
+				.getESuperTypes().contains(superType)).collect(Collectors.toList());
+		eClasses.addAll(acceleoConcreteSubTypes);
+		return eClasses;
 	}
 
 }

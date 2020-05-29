@@ -1,3 +1,39 @@
-] 1
+* Label:
 ]
+* Description:
+Inserts the end of a Let Statement header:<br/><pre>]</pre>
+* Text:
+]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//LetStatement
+
+* Label:
++ 
+* Description:
+AQL Expression completion:
++ 
+* Text:
++ 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+<> 
+* Description:
+AQL Expression completion:
+<> 
+* Text:
+<> 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+= 
+* Description:
+AQL Expression completion:
+= 
+* Text:
+= 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 

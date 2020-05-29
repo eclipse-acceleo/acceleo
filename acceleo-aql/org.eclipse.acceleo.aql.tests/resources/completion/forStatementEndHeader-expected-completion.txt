@@ -1,6 +1,18 @@
-] 1
+* Label:
 ]
+* Description:
+Inserts the end of a For Statement header:<br/><pre>]</pre>
+* Text:
+]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ForStatement
 
-separator()] 10
-separator()]
+* Label:
+separator(
+* Description:
+Inserts the For Statement separator expression:<br/><pre>separator(</pre>
+* Text:
+separator(
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ForStatement
 

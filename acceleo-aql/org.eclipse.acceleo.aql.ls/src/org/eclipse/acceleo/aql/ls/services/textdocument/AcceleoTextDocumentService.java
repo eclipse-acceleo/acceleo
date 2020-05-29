@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
+import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.location.AcceleoLocationLink;
 import org.eclipse.acceleo.aql.location.AcceleoLocator;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerServicesUtils;
@@ -26,7 +27,6 @@ import org.eclipse.acceleo.aql.ls.services.exceptions.LanguageServerProtocolExce
 import org.eclipse.acceleo.aql.outline.AcceleoOutliner;
 import org.eclipse.acceleo.aql.outline.AcceleoSymbol;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
-import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.CompletionParams;
@@ -168,15 +168,24 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			IAcceleoEnvironment acceleoEnvironment = acceleoTextDocument.getAcceleoEnvironment();
 			String source = acceleoTextDocument.getContents();
 			int atIndex = AcceleoLanguageServerStringUtils.getCorrespondingCharacterIndex(position, source);
-			List<ICompletionProposal> completionProposals = acceleoCompletor.getProposals(acceleoEnvironment,
-					source, atIndex);
+			List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(
+					acceleoEnvironment, source, atIndex);
 
 			canceler.checkCanceled();
-			List<CompletionItem> completionItems = completionProposals.stream().map(
-					AcceleoLanguageServerServicesUtils::transform).collect(Collectors.toList());
+			List<CompletionItem> completionItems = AcceleoLanguageServerServicesUtils.transform(
+					completionProposals);
 
 			canceler.checkCanceled();
 			return Either.forLeft(completionItems);
+		});
+	}
+
+	@Override
+	public CompletableFuture<CompletionItem> resolveCompletionItem(CompletionItem unresolved) {
+		return CompletableFutures.computeAsync(canceler -> {
+			canceler.checkCanceled();
+			// For now, the completion already provides fully-resolved items.
+			return unresolved;
 		});
 	}
 

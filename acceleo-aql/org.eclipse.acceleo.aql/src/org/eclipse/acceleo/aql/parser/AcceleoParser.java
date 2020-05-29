@@ -837,6 +837,9 @@ public class AcceleoParser {
 			final List<Metamodel> metamodels = new ArrayList<Metamodel>();
 			Metamodel metamodel = parseMetamodel();
 			int missingEPackage = -1;
+			if (metamodel == null) {
+				missingEPackage = currentPosition;
+			}
 			while (metamodel != null) {
 				metamodels.add(metamodel);
 				skipSpaces();

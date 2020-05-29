@@ -263,20 +263,22 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * @return the resolved {@link Class}
 	 */
 	private Class<?> resolveClass(String qualifiedName) {
-		Class<?> res;
+		Class<?> res = null;
 
-		try {
-			res = resolver.resolveClass(qualifiedName);
-			final Map<String, Set<IService>> servicesMap = qualifiedNameServices.computeIfAbsent(
-					qualifiedName, key -> new LinkedHashMap<String, Set<IService>>());
-			for (IService service : ServiceUtils.getServices(aqlEnvironment, res)) {
-				final Set<IService> services = servicesMap.computeIfAbsent(service.getName(),
-						key -> new LinkedHashSet<IService>());
-				services.add(service);
+		if (this.resolver != null) {
+			try {
+				res = resolver.resolveClass(qualifiedName);
+				final Map<String, Set<IService>> servicesMap = qualifiedNameServices.computeIfAbsent(
+						qualifiedName, key -> new LinkedHashMap<String, Set<IService>>());
+				for (IService service : ServiceUtils.getServices(aqlEnvironment, res)) {
+					final Set<IService> services = servicesMap.computeIfAbsent(service.getName(),
+							key -> new LinkedHashSet<IService>());
+					services.add(service);
+				}
+			} catch (ClassNotFoundException e) {
+				// the class doesn't exist
+				res = null;
 			}
-		} catch (ClassNotFoundException e) {
-			// the class doesn't exist
-			res = null;
 		}
 
 		return res;

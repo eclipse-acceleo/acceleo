@@ -1,0 +1,18 @@
+* Label:
+myVariable
+* Description:
+Inserts the following text: <pre>myVariable</pre>
+* Text:
+myVariable
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Binding
+
+* Label:
+|
+* Description:
+Inserts the For Statement pipe that separates the variable declaration and its value binding:<br/><pre>|</pre>
+* Text:
+|
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ForStatement
+

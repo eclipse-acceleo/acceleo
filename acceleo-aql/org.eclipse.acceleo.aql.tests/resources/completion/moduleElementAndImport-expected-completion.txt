@@ -1,28 +1,134 @@
-[** 3
-[**
-
-[comment  9
-[comment 
-
-[comment] 9
-[comment]
-
-[import  8
+* Label:
 [import 
+* Description:
+Inserts the start of an Import:<br/><pre>[import </pre>
+* Text:
+[import 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Import
 
-[query  7
-[query 
+* Label:
+New Import
+* Description:
+Inserts the following sample Import:<br/><pre>[import imported::qualified::name/]</pre>
+* Text:
+[import imported::qualified::name/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Import
 
-[query public myQuery(myParameter : MyParameterType) : MyQueryReturnType = null/] 81
-[query public myQuery(myParameter : MyParameterType) : MyQueryReturnType = null/]
+* Label:
+[template 
+* Description:
+Inserts the start of an Acceleo Template header:<br/><pre>[template </pre>
+* Text:
+[template 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Template
 
-[template  public myTemplate(myParameter : MyParameterType)]
+* Label:
+New Template
+* Description:
+Inserts the following sample Acceleo Template:<br/><pre>[template public myTemplate(myParameter : MyParameterType)]
 	My template with a static text.
-[/template] 105
-[template  public myTemplate(myParameter : MyParameterType)]
+[/template]</pre>
+* Text:
+[template public myTemplate(myParameter : MyParameterType)]
 	My template with a static text.
 [/template]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Template
 
-[template  10
-[template 
+* Label:
+[query 
+* Description:
+Inserts the start of a query:<br/><pre>[query </pre>
+* Text:
+[query 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Query
+
+* Label:
+New Query
+* Description:
+Inserts the following sample Acceleo Query:<br/><pre>[query public myQuery(myParameter : ecore::EJavaObject) : String = myParameter.toString()/]</pre>
+* Text:
+[query public myQuery(myParameter : ecore::EJavaObject) : String = myParameter.toString()/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Query
+
+* Label:
+[**
+* Description:
+Inserts the start of a Module Documentation or Module Element Documentation:<br/><pre>[**</pre>
+* Text:
+[**
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Documentation
+
+* Label:
+New Module Element Documentation
+* Description:
+Inserts the following sample Module Element Documentation:
+[**
+ * My Query or Template documentation.
+ * 
+ * @param myParameter the parameter.
+*/]
+* Text:
+[**
+ * My Query or Template documentation.
+ * 
+ * @param myParameter the parameter.
+*/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleElementDocumentation
+
+* Label:
+[comment 
+* Description:
+Inserts the start of a Comment:<br/><pre>[comment </pre>
+* Text:
+[comment 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
+
+* Label:
+New Comment
+* Description:
+Inserts the following sample Comment:<br/><pre>[comment My comment./]</pre>
+* Text:
+[comment My comment./]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
+
+* Label:
+[comment]
+* Description:
+Inserts the start of a Block Comment:<br/><pre>[comment]</pre>
+* Text:
+[comment]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//BlockComment
+
+* Label:
+New Block Comment
+* Description:
+Inserts the following sample Block Comment:<br/><pre>[comment]
+My comment.
+[/comment]</pre>
+* Text:
+[comment]
+My comment.
+[/comment]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//BlockComment
+
+* Label:
+@Main Annotation Comment
+* Description:
+Inserts the following Comment:<br/><pre>[comment @main/]</pre>
+* Text:
+[comment @main/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
 

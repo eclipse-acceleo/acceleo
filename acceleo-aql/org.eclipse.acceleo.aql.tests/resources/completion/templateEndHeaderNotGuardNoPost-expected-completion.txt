@@ -1,9 +1,27 @@
-? () 3
-? ()
-
-] 1
+* Label:
 ]
+* Description:
+Inserts the end of an Acceleo Template header:<br/><pre>]</pre>
+* Text:
+]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Template
 
-post()] 5
-post()]
+* Label:
+? (
+* Description:
+Inserts the start of a template guard:<br/><pre>? (</pre>
+* Text:
+? (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Template
+
+* Label:
+post(
+* Description:
+Inserts the start of a template post-treatment:<br/><pre>post(</pre>
+* Text:
+post(
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Template
 

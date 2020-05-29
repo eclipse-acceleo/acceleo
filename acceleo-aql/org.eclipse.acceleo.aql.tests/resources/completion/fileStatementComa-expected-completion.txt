@@ -1,3 +1,79 @@
-,  2
+* Label:
++ 
+* Description:
+AQL Expression completion:
++ 
+* Text:
++ 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+< 
+* Description:
+AQL Expression completion:
+< 
+* Text:
+< 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+<= 
+* Description:
+AQL Expression completion:
+<= 
+* Text:
+<= 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+<> 
+* Description:
+AQL Expression completion:
+<> 
+* Text:
+<> 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+= 
+* Description:
+AQL Expression completion:
+= 
+* Text:
+= 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+> 
+* Description:
+AQL Expression completion:
+> 
+* Text:
+> 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+>= 
+* Description:
+AQL Expression completion:
+>= 
+* Text:
+>= 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+,
+* Description:
+Inserts the following text: <pre>, </pre>
+* Text:
 , 
+* Type (optional):
+null
 

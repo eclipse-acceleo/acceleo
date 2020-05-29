@@ -22,24 +22,24 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
+import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
+import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
-import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -113,15 +113,15 @@ public class CompletionTests {
 	public void completion() throws FileNotFoundException, IOException {
 		final AcceleoCompletor completor = new AcceleoCompletor();
 
-		final AcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(new DefaultGenerationStrategy(),
+		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(new DefaultGenerationStrategy(),
 				URI.createURI(""));
 		final AcceleoParser parser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
 		final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
 		final Module module = parsingResult.getModule();
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::tests::" + module.getName(), module);
-		final List<ICompletionProposal> proposals = completor.getProposals(acceleoEnvironment, source,
-				position);
-		final String actualCompletion = serialize(proposals);
+		final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(acceleoEnvironment,
+				source, position);
+		final String actualCompletion = serialize(completionProposals);
 		final File expectedCompletionFile = getExpectedCompletionFile();
 		if (!expectedCompletionFile.exists()) {
 			final File actualCompletionFile = getActualCompletionFile();
@@ -143,30 +143,31 @@ public class CompletionTests {
 	}
 
 	/**
-	 * Serializes the given {@link List} of {@link ICompletionProposal}.
+	 * Serializes the given {@link List} of {@link AcceleoCompletionProposal}.
 	 * 
 	 * @param proposals
-	 *            the {@link List} of {@link ICompletionProposal}
-	 * @return the serialized {@link List} of {@link ICompletionProposal}
+	 *            the {@link List} of {@link AcceleoCompletionProposal}
+	 * @return the serialized {@link List} of {@link AcceleoCompletionProposal}
 	 */
-	private String serialize(List<ICompletionProposal> proposals) {
+	private String serialize(List<AcceleoCompletionProposal> proposals) {
 		final StringBuilder builder = new StringBuilder();
 
-		Collections.sort(proposals, new Comparator<ICompletionProposal>() {
-
-			public int compare(ICompletionProposal o1, ICompletionProposal o2) {
-				return (o1.getProposal() + o1.getDescription()).compareTo(o2.getProposal() + o2
-						.getDescription());
-			};
-
-		});
-
-		for (ICompletionProposal proposal : proposals) {
-			builder.append(proposal.getProposal());
-			builder.append(' ');
-			builder.append(proposal.getCursorOffset());
+		for (AcceleoCompletionProposal proposal : proposals) {
+			builder.append("* Label:" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append(proposal.getLabel());
 			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append("* Description:" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 			builder.append(proposal.getDescription());
+			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append("* Text:" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append(proposal.getText());
+			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append("* Type (optional):" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			String typeAsString = "null";
+			if (proposal.getAcceleoType() != null) {
+				typeAsString = EcoreUtil.getURI(proposal.getAcceleoType()).toString();
+			}
+			builder.append(typeAsString);
 			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 		}
@@ -206,7 +207,7 @@ public class CompletionTests {
 	public static Collection<Object[]> retrieveTests() throws FileNotFoundException, IOException {
 		final List<Object[]> res = new ArrayList<Object[]>();
 
-		final Map<String, Integer> testToPosition = new LinkedHashMap<String, Integer>();
+		final Map<String, Integer> testToPosition = new TreeMap<String, Integer>();
 		final StringBuilder builder = new StringBuilder();
 		try (InputStream stream = new FileInputStream(MODULE)) {
 			String content = AbstractLanguageTestSuite.getContent(stream, AbstractLanguageTestSuite.UTF_8);

@@ -1,623 +1,380 @@
-concat() 7
-concat(self: java.lang.String, b: java.lang.String) = String
-
-Returns a string that is the result of the concatenation of the current string and the string "b".
-
-  @param self
-        The current String.
-  @param b
-        The String that will be appended at the end of the current String.
-
-  @return
-        The concatenated String.
-
-
-
-contains() 9
-contains(self: java.lang.String, b: java.lang.String) = Boolean
-
-Returns "true" if the current String contains the String "b"
-
-  @param self
-        The current String
-  @param b
-        The String that we will look for in the current String
-
-  @return
-        "true" if the current String contains the String "b", "false" otherwise
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "b" is null.
-
-
-
-endsWith() 9
-endsWith(self: java.lang.String, b: java.lang.String) = Boolean
-
-Returns true if the current String ends with the string "b".
-
-  @param self
-        The current String
-  @param b
-        The String that may be at the end of the current String
-
-  @return
-        "true" if the current String ends with the string "b", "false" otherwise.
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "b" is null.
-
-
-
-equalsIgnoreCase() 17
-equalsIgnoreCase(self: java.lang.String, b: java.lang.String) = Boolean
-
-Returns true if the current String is equals to the String "b" without considering case in the comparison.
-
-  @param self
-        The current String
-  @param b
-        The String to compare with the current String
-
-  @return
-        "true" if the current String is equal to the string "b", without considering case, "false" otherwise.
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "b" is null.
-
-
-
-first() 6
-first(self: java.lang.String, n: java.lang.Integer) = String
-
-Returns the "n" first characters of the current String, or the current String itself if its size is less than "n".
-
-  @param self
-        The current String
-  @param n
-        The number of characters that must be retrieved from the beginning of the current String.
-
-  @return
-        The "n" first characters of the current String
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "n" is null.
-  @throw java.lang.IndexOutOfBoundsException
-        If "n" is not a valid index of self (i.e it is inferior to 0).
-
-
-
-index() 6
-index(self: java.lang.String, subString: java.lang.String) = Integer
-
-Returns the index of the first occurrence "subString" in the current String, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.
-
-  @param self
-        The current String
-  @param subString
-        The substring that we want to find in the current String
-
-  @return
-        The index of the first occurrence of subString in the current String or -1 if not found
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "subString" is null.
-
-
-
-index() 6
-index(self: java.lang.String, subString: java.lang.String, indexString: java.lang.Integer) = Integer
-
-Returns the index of the first occurrence "subString" in the current String from the given index, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.
-
-  @param self
-        The current String
-  @param subString
-        The substring that we want to find in the current String
-  @param indexString
-        The starting index from which the substring will be searched
-
-  @return
-        The index of the first occurrence of subString in the current String or -1 if not found
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String, "subString" or index is null.
-
-
-
-isAlpha() 9
-isAlpha(self: java.lang.String) = Boolean
-
-Returns "true" if self consists only of alphabetical characters, "false" otherwise.
-
-  @param self
-        The string we want to ensure it consists only of alphabetical characters.
-
-  @return
-        "true" if self consists only of alphabetical characters, "false" otherwise.
-
-
-
-isAlphaNum() 12
-isAlphaNum(self: java.lang.String) = Boolean
-
-Returns "true" if self consists only of alphanumeric characters, "false" otherwise.
-
-  @param self
-        The string we want to ensure it consists only of alphanumeric characters.
-
-  @return
-        "true" if self consists only of alphanumeric characters, "false" otherwise.
-
-
-
-last() 5
-last(self: java.lang.String, n: java.lang.Integer) = String
-
-Returns the "n" last characters of the current String, or the current String if its size is less than "n".
-
-  @param self
-        The current String
-  @param n
-        The number of characters that must be retrieved from the end of the current String
-
-  @return
-        The "n" last characters of the current String
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "n" is null.
-  @throw java.lang.IndexOutOfBoundsException
-        If "n" is not a valid index of self (i.e it is greater than the size of the current String).
-
-
-
-lastIndex() 10
-lastIndex(self: java.lang.String, subString: java.lang.String) = Integer
-
-Returns the index of the last occurrence of "subString" in the current String, "-1" if the current String doesn't contain this particular substring. The index referential is 1 as in OCL and not 0.
-
-  @param self
-        The current String
-  @param subString
-        The substring that we want to find in the current String
-
-  @return
-        The index of the last occurrence of subString in the current String or -1 if not found
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "subString" is null.
-
-
-
-lastIndex() 10
-lastIndex(self: java.lang.String, subString: java.lang.String, indexString: java.lang.Integer) = Integer
-
-Returns the index of the last occurrence "subString" in the current String searching backward from the given index, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.
-
-  @param self
-        The current String
-  @param subString
-        The substring that we want to find in the current String
-  @param indexString
-        The starting index from which the substring will be searched
-
-  @return
-        The index of the last occurrence of subString in the current String or -1 if not found
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String, "subString" or index is null.
-
-
-
-matches() 8
-matches(self: java.lang.String, regex: java.lang.String) = Boolean
-
-Returns "true" if the current String matches the given "regex".
-
-  @param self
-        The current String
-  @param regex
-        The regex used for the match
-
-  @return
-        "true" if "self" matches the given regex, "false" otherwise.
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "regex" is null.
-
-
-
-oclAsType() 10
-oclAsType(object: java.lang.Object, type: java.lang.Object) = Object
-
-Casts the current object to the given type.
-
-  @param object
-        The object to cast
-  @param type
-        The type to cast the object to
-
-  @return
-        The current object cast to a "type"
-
-
-
-oclIsKindOf() 12
-oclIsKindOf(object: java.lang.Object, type: java.lang.Object) = Boolean
-
-Evaluates to "true" if the type of the object o1 conforms to the type "classifier". That is, o1 is of type "classifier" or a subtype of "classifier".
-
-  @param object
-        The reference Object we seek to test.
-  @param type
-        The expected supertype classifier.
-
-  @return
-        "true" if the object o1 is a kind of the classifier, "false" otherwise.
-
-
-
-oclIsTypeOf() 12
-oclIsTypeOf(object: java.lang.Object, type: java.lang.Object) = Boolean
-
-Evaluates to "true" if the object o1 if of the type "classifier" but not a subtype of the "classifier".
-
-  @param object
-        The reference Object we seek to test.
-  @param type
-        The expected type classifier.
-
-  @return
-        "true" if the object o1 is a type of the classifier, "false" otherwise.
-
-
-
-prefix() 7
-prefix(self: java.lang.String, prefix: java.lang.String) = String
-
-Returns the current String prefixed with the given "prefix".
-
-  @param self
-        The current String that will be prefixed
-  @param prefix
-        The String that will be prepended before the current String
-
-  @return
-        The current String prefixed with the given "prefix"
-
-
-
-replace() 8
-replace(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String
-
-Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".
-
-  @param self
-        The current String.
-  @param regex
-        The regular expression used to find the substring to replace in the current String.
-  @param replacement
-        The replacement String.
-
-  @return
-        Returns the resulting String of a substitution of the first substring matching the given regex by the given replacement
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "regex" or "replacement" is null.
-  @throw java.util.regex.PatternSyntaxException
-        If the regular expression's syntax is invalid
-
-
-
-replaceAll() 11
-replaceAll(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String
-
-Replaces each substring of the current String that matches the given regular expression "regex" with the String "replacement".
-
-  @param self
-        The current String.
-  @param regex
-        The regular expression used to find all the substrings to replace in the current String.
-  @param replacement
-        The replacement String.
-
-  @return
-        Returns the resulting String of a substitution of all the substrings matching the given regex by the given replacement
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "regex" or "replacement" is null.
-  @throw java.util.regex.PatternSyntaxException
-        If the regular expression's syntax is invalid
-
-
-
-size() 6
-size(self: java.lang.String) = Integer
-
-Return the length of the current String.
-
-  @param self
-        The current String
-
-  @return
-        The length of the specified string
-
-
-
-startsWith() 11
-startsWith(self: java.lang.String, b: java.lang.String) = Boolean
-
-Returns true if the current String starts with the string "b".
-
-  @param self
-        The current String
-  @param b
-        The String that may be at the beginning of the current String
-
-  @return
-        "true" if the current String starts with the string "b", "false" otherwise.
-
-  @throw java.lang.NullPointerException
-        Thrown if the current String or "b" is null.
-
-
-
-strcmp() 7
-strcmp(self: java.lang.String, s1: java.lang.String) = Integer
-
-Returns an integer that is either negative, zero or positive depending on whether s1 is alphabetically less than, equal to or greater than self. Note that upper case letters come before lower case ones, so that 'AA' is closer to 'AC' than it is to 'Ab'.
-
-  @param self
-        The current String
-  @param s1
-        The other String
-
-  @return
-        An integer that is either negative, zero or positive depending on whether s1 is alphabetically less than, equal to or greater than self. Note that upper case letters come before lower case ones, so that 'AA' is closer to 'AC' than it is to 'Ab'
-
-
-
-strstr() 7
-strstr(self: java.lang.String, r: java.lang.String) = Boolean
-
-Searches r in self.
-
-  @param self
-        The current String
-  @param r
-        The String to search
-
-  @return
-        "true" if r is found, "false" otherwise
-
-
-
-substitute() 11
-substitute(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String
-
-Substitutes the first occurrence of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
-
-  @param self
-        The current String
-  @param r
-        The String to replace
-  @param t
-        The replacement String
-
-  @return
-        A new String
-
-
-
-substituteAll() 14
-substituteAll(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String
-
-Substitutes all occurences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
-
-  @param self
-        The current String
-  @param r
-        The String to replace
-  @param t
-        The replacement String
-
-  @return
-        A new String
-
-
-
-substring() 10
-substring(self: java.lang.String, lower: java.lang.Integer) = String
-
-Returns a string containing all characters from self starting from index lower up to the end of the string included. The lower parameter should be contained between 1 and self.size() included. Lower cannot be greater than the size of the String.
-
-  @param self
-        The current String
-  @param lower
-        The lower bound
-
-  @return
-        A string containing all characters from self starting from index lower included.
-
-
-
-substring() 10
-substring(self: java.lang.String, lower: java.lang.Integer, upper: java.lang.Integer) = String
-
-Returns a string containing all characters from self starting from index lower up to index upper included. Both lower and upper parameters should be contained between 1 and self.size() included. Lower cannot be greater than upper.
-
-  @param self
-        The current String
-  @param lower
-        The lower bound
-  @param upper
-        The upper bound
-
-  @return
-        a string containing all characters from self starting from index lower up to index upper included. Both lower and upper parameters should be contained between 1 and self.size() included. lower cannot be greater than upper
-
-
-
-toInteger() 11
-toInteger(self: java.lang.String) = Integer
-
-Returns an integer of value equal to self
-
-  @param self
-        The current String
-
-  @return
-        An integer of value equal to self
-
-  @throw java.lang.NumberFormatException
-        Thrown if self does not represent an integer
-
-
-
-toLower() 9
-toLower(self: java.lang.String) = String
-
-Returns the current String with all characters transformed to lower case.
-
-  @param self
-        The current String from which we want to convert all characters to lower case.
-
-  @return
-        The current String with all upper case characters converted to lower case.
-
-  @throw java.lang.NullPointerException
-        Thrown if "self" is "null".
-
-
-
-toLowerFirst() 14
-toLowerFirst(self: java.lang.String) = String
-
-Returns the self string with the first characters transformed to lower case.
-
-  @param self
-        The current String from which we want to convert the first character to lower case.
-
-  @return
-        The current String with the first character transformed to lower case.
-
-  @throw java.lang.NullPointerException
-        Thrown if "self" is "null".
-
-
-
-toReal() 8
-toReal(self: java.lang.String) = Double
-
-Returns a real of value equal to self
-
-  @param self
-        The current String
-
-  @return
-        A real of value equal to self
-
-  @throw java.lang.NumberFormatException
-        Thrown if self does not represent a real
-
-
-
-toString() 10
-toString(self: java.lang.Object) = String
-
-Returns a string representation of the current object.
-
-  @param self
-        The current object
-
-  @return
-        a String representation of the given Object. For Collections, this will be the concatenation of all contained Objects' toString.
-
-
-
-toUpper() 9
-toUpper(self: java.lang.String) = String
-
-Returns the current String with all characters transformed to upper case.
-
-  @param self
-        The current String from which we want to convert all characters to upper case.
-
-  @return
-        The current String with all lower case characters converted to upper case.
-
-  @throw java.lang.NullPointerException
-        Thrown if "self" is "null".
-
-
-
-toUpperFirst() 14
-toUpperFirst(self: java.lang.String) = String
-
-Returns the current String with the first characters transformed to upper case.
-
-  @param self
-        The current String from which we want to convert the first character to upper case.
-
-  @return
-        The current String with the first character transformed to upper case.
-
-  @throw java.lang.NullPointerException
-        Thrown if "self" is "null".
-
-
-
-tokenize() 10
-tokenize(self: java.lang.String) = List
-
-Splits the current String by whitespace delimiter into a collection of String
-
-  @param self
-        The current String
-
-  @return
-        The collection of substrings of the current String delimited by whitespaces
-
-
-
-tokenize() 9
-tokenize(self: java.lang.String, delimiter: java.lang.String) = List
-
-Splits the current String by using the given "delimiter" into a collection of String
-
-  @param self
-        The current String
-  @param delimiter
-        The current String
-
-  @return
-        The collection of substrings of the current String delimited by the given "delimiter"
-
-
-
-trace() 7
-trace(self: java.lang.Object) = String
-
-Returns a string representation of the current environment.
-
-  @param self
-        The current object
-
-  @return
-        a string representation of the current environment.
-
-
-
-trim() 6
-trim(self: java.lang.String) = String
-
-Trims the given String.
-
-  @param self
-        The String to trim
-
-  @return
-        The trimmed String
-
-
+* Label:
+concat()
+* Description:
+AQL Expression completion:
+concat()
+* Text:
+concat()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+contains()
+* Description:
+AQL Expression completion:
+contains()
+* Text:
+contains()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+endsWith()
+* Description:
+AQL Expression completion:
+endsWith()
+* Text:
+endsWith()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+equalsIgnoreCase()
+* Description:
+AQL Expression completion:
+equalsIgnoreCase()
+* Text:
+equalsIgnoreCase()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+first()
+* Description:
+AQL Expression completion:
+first()
+* Text:
+first()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+index()
+* Description:
+AQL Expression completion:
+index()
+* Text:
+index()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+index()
+* Description:
+AQL Expression completion:
+index()
+* Text:
+index()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+isAlpha()
+* Description:
+AQL Expression completion:
+isAlpha()
+* Text:
+isAlpha()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+isAlphaNum()
+* Description:
+AQL Expression completion:
+isAlphaNum()
+* Text:
+isAlphaNum()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+last()
+* Description:
+AQL Expression completion:
+last()
+* Text:
+last()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+lastIndex()
+* Description:
+AQL Expression completion:
+lastIndex()
+* Text:
+lastIndex()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+lastIndex()
+* Description:
+AQL Expression completion:
+lastIndex()
+* Text:
+lastIndex()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+matches()
+* Description:
+AQL Expression completion:
+matches()
+* Text:
+matches()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+oclAsType()
+* Description:
+AQL Expression completion:
+oclAsType()
+* Text:
+oclAsType()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+oclIsKindOf()
+* Description:
+AQL Expression completion:
+oclIsKindOf()
+* Text:
+oclIsKindOf()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+oclIsTypeOf()
+* Description:
+AQL Expression completion:
+oclIsTypeOf()
+* Text:
+oclIsTypeOf()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+prefix()
+* Description:
+AQL Expression completion:
+prefix()
+* Text:
+prefix()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+replace()
+* Description:
+AQL Expression completion:
+replace()
+* Text:
+replace()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+replaceAll()
+* Description:
+AQL Expression completion:
+replaceAll()
+* Text:
+replaceAll()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+size()
+* Description:
+AQL Expression completion:
+size()
+* Text:
+size()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+startsWith()
+* Description:
+AQL Expression completion:
+startsWith()
+* Text:
+startsWith()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+strcmp()
+* Description:
+AQL Expression completion:
+strcmp()
+* Text:
+strcmp()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+strstr()
+* Description:
+AQL Expression completion:
+strstr()
+* Text:
+strstr()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substitute()
+* Description:
+AQL Expression completion:
+substitute()
+* Text:
+substitute()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substituteAll()
+* Description:
+AQL Expression completion:
+substituteAll()
+* Text:
+substituteAll()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substring()
+* Description:
+AQL Expression completion:
+substring()
+* Text:
+substring()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substring()
+* Description:
+AQL Expression completion:
+substring()
+* Text:
+substring()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toInteger()
+* Description:
+AQL Expression completion:
+toInteger()
+* Text:
+toInteger()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toLower()
+* Description:
+AQL Expression completion:
+toLower()
+* Text:
+toLower()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toLowerFirst()
+* Description:
+AQL Expression completion:
+toLowerFirst()
+* Text:
+toLowerFirst()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toReal()
+* Description:
+AQL Expression completion:
+toReal()
+* Text:
+toReal()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toString()
+* Description:
+AQL Expression completion:
+toString()
+* Text:
+toString()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toUpper()
+* Description:
+AQL Expression completion:
+toUpper()
+* Text:
+toUpper()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toUpperFirst()
+* Description:
+AQL Expression completion:
+toUpperFirst()
+* Text:
+toUpperFirst()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+tokenize()
+* Description:
+AQL Expression completion:
+tokenize()
+* Text:
+tokenize()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+tokenize()
+* Description:
+AQL Expression completion:
+tokenize()
+* Text:
+tokenize()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+trace()
+* Description:
+AQL Expression completion:
+trace()
+* Text:
+trace()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+trim()
+* Description:
+AQL Expression completion:
+trim()
+* Text:
+trim()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
 
