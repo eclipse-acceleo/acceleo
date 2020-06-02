@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * Utility class for Acceleo.
@@ -78,6 +80,28 @@ public final class AcceleoUtil {
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
 			Module module, Resource model) {
+		generate(evaluator, acceleoEnvironment, module, Collections.singletonList(model));
+	}
+
+	/**
+	 * Generates with the given {@link AcceleoEvaluator} and {@link IAcceleoEnvironment}.
+	 * 
+	 * @param evaluator
+	 *            the {@link AcceleoEvaluator}
+	 * @param acceleoEnvironment
+	 *            the {@link IAcceleoEnvironment}
+	 * @param module
+	 *            the {@link Module}
+	 * @param resourceSet
+	 *            the {@link ResourceSet} containing the input model(s)
+	 */
+	public static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
+			Module module, ResourceSet resourceSet) {
+		generate(evaluator, acceleoEnvironment, module, resourceSet.getResources());
+	}
+
+	private static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
+			Module module, List<Resource> resources) {
 		final IQueryEnvironment queryEnvironment = acceleoEnvironment.getQueryEnvironment();
 
 		final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
@@ -90,11 +114,13 @@ public final class AcceleoUtil {
 		final EClass parameterType = (EClass)((TypeLiteral)main.getParameters().get(0).getType().getAst())
 				.getValue();
 		final List<EObject> values = new ArrayList<EObject>();
-		for (EObject root : model.getContents()) {
-			if (parameterType.isInstance(root)) {
-				values.add(root);
+		for (Resource model : resources) {
+			for (EObject root : model.getContents()) {
+				if (parameterType.isInstance(root)) {
+					values.add(root);
+				}
+				values.addAll(services.eAllContents(root, parameterType));
 			}
-			values.addAll(services.eAllContents(root, parameterType));
 		}
 
 		final Map<String, Object> variables = new HashMap<String, Object>();

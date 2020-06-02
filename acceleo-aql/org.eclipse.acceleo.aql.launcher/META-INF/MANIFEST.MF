@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-SymbolicName: org.eclipse.acceleo.aql.launcher;singleton:=true
+Bundle-Version: 4.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.equinox.app,
+ org.eclipse.emf.common,
+ org.eclipse.core.runtime,
+ org.kohsuke.args4j,
+ org.eclipse.emf.ecore,
+ org.eclipse.acceleo.aql,
+ org.eclipse.core.resources,
+ org.eclipse.acceleo.aql.ide,
+ org.eclipse.acceleo.query
