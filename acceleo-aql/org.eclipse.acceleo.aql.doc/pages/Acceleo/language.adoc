@@ -46,12 +46,12 @@ See also the <<syntax#_module,Module syntax documentation>>.
 
 === Imports
 
-An Acceleo module can import any number of other modules. All _public_ visibility templates and queries from the imported module(s) can be called by the importer.
+An Acceleo module can import any number of other modules or Java service class. All _public_ visibility templates and queries from the imported module(s) can be called by the importer, for Java class all public methods can be used a service.
 
 Importing modules can be done right after the module declaration line and requires the following format:
 
 ----
-[import <other module qualified name>/]
+[import <other module or Java class qualified name>/]
 ----
 
 *Note* that modules can only be referenced through their qualified name, even if they are located in the same package.

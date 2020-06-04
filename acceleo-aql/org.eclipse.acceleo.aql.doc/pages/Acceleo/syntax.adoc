@@ -123,6 +123,8 @@ A module element is either a <<Template>> or a <<Query>>.
 
 A template returns a String produced using its contained <<Statement>>, it can be called as a service. It can be preceded by a <<Module Element documentation>>.
 
+Also a <<Module>> can contain a template used as entry point of the generation. This template will be identified with a <<Comment>> preceding the template and containing the tag '@main'.
+
 [source,ebnf,subs=+macros]
 ----
 <<Template>> =

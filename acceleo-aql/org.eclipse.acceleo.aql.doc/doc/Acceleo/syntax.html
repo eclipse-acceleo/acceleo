@@ -613,6 +613,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>A template returns a String produced using its contained <a href="#_statement">Statement</a>, it can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
 </div>
+<div class="paragraph">
+<p>Also a <a href="#_module">Module</a> can contain a template used as entry point of the generation. This template will be identified with a <a href="#_comment">Comment</a> preceding the template and containing the tag '@main'.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_template">Template</a> =
@@ -688,7 +691,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_for_statement">For Statement</a> =
 
-'[for ' '(' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '|' <a href="#_aql_expression">AQL Expression</a> ')' ']'
+'[for ' '(' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '|' <a href="#_aql_expression">AQL Expression</a> ')' ['separator(' <a href="#_aql_expression">AQL Expression</a> ')'] ']'
 
 (<a href="#_statement">Statement</a>)*
 
@@ -830,7 +833,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-22 21:55:47 +0200
+Last updated 2020-06-03 15:32:24 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

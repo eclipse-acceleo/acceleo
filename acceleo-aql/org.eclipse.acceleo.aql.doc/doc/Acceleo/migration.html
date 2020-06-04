@@ -461,7 +461,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_let_statement">2.6. Let Statement</a></li>
 <li><a href="#_invocation">2.7. Invocation</a></li>
 <li><a href="#_module_element_call">2.8. Module Element Call</a></li>
-<li><a href="#_expressions">2.9. Expressions</a></li>
+<li><a href="#_variable">2.9. Variable</a></li>
+<li><a href="#_expressions">2.10. Expressions</a></li>
 </ul>
 </li>
 <li><a href="#_behavior_changes">3. Behavior Changes</a>
@@ -553,7 +554,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>Acceleo 4 templates will automatically override their super-module templates if the signature matches. This was not the case in Acceleo 3 and matching templates thus need to be marked for manual varification.</p>
+<p>Acceleo 4 templates will automatically override their super-module templates if the signature matches. This was not the case in Acceleo 3 and matching templates thus need to be marked for manual verification.</p>
 </div>
 <div class="sect3">
 <h4 id="_overriding">2.2.1. Overriding</h4>
@@ -618,7 +619,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>PENDING choice, remove one of the two:
-Though Acceleo 4 will allow multiple templates with the same signature to exist in a module, only the first one will ever be resolved for a call or override, all subsequent being ignored.
+Though Acceleo 4 will allow multiple templates with the same signature to exist in a module, only the last one will ever be resolved for a call or override, all subsequent being ignored.
 Acceleo 4 does not allow multiple templates with the same signature in a given module.</p>
 </div>
 </div>
@@ -672,7 +673,7 @@ Acceleo 4 does not allow multiple templates with the same signature in a given m
 <p>In the second case, the loop variable was <code>self</code>.</p>
 </div>
 <div class="paragraph">
-<p>Acceleo 4 only allows for the first of these two formats.</p>
+<p>Acceleo 4 only allows for the first of these two formats. Note that typing the iteration variable is optional in Acceleo 4.</p>
 </div>
 </div>
 <div class="sect3">
@@ -698,11 +699,11 @@ iteration number [i/]
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[for (number : Integer | Sequence{1, 2, 3}) before ('int[] array = new int[') separator (', ' after ('];')][number/][/for]</pre>
+<pre>[for (number : Integer | Sequence{1, 2, 3}) before ('int[] array = new int[') separator (', ') after ('];')][number/][/for]</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Acceleo 4 doesn&#8217;t have any similar mechanics. The migration could convert this to a <code>Let</code> holding the content of the iteration expression, then a <code>If</code> only generating before and after if the collection is not empty. Separator could be similarly handled with an <code>If</code> generating for all but the last iteration.</p>
+<p>Acceleo 4 only supports <code>separator</code>. The migration could convert <code>before</code> and <code>after</code> into a <code>Let</code> holding the content of the iteration expression, then a <code>If</code> only generating before and after if the collection is not empty.</p>
 </div>
 </div>
 <div class="sect3">
@@ -854,7 +855,30 @@ iteration number [i/]
 </div>
 </div>
 <div class="sect2">
-<h3 id="_expressions">2.9. Expressions</h3>
+<h3 id="_variable">2.9. Variable</h3>
+<div class="paragraph">
+<p>Acceleo 3 supported unqualified type names for the variables.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only accepts qualified types for the classifiers and the above should become:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : ecore::EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_expressions">2.10. Expressions</h3>
 <div class="paragraph">
 <p>Acceleo 3 was using OCL as the underlying expression language, while Acceleo 4 is using AQL. Please look at the <a href="https://www.eclipse.org/acceleo/documentation/#MigratingfromMTLqueries">AQL Documentation</a> for more information on migrating OCL expressions to AQL.</p>
 </div>
@@ -969,7 +993,7 @@ iteration number [i/]
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-22 21:55:47 +0200
+Last updated 2020-06-02 09:51:07 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -468,6 +468,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_if_conditions">7. If conditions</a></li>
 <li><a href="#_let_block">8. Let block</a></li>
 <li><a href="#_protected_area">9. Protected Area</a></li>
+<li><a href="#_variable">10. Variable</a></li>
 </ul>
 </div>
 </div>
@@ -533,14 +534,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_imports">2.1. Imports</h3>
 <div class="paragraph">
-<p>An Acceleo module can import any number of other modules. All <em>public</em> visibility templates and queries from the imported module(s) can be called by the importer.</p>
+<p>An Acceleo module can import any number of other modules or Java service class. All <em>public</em> visibility templates and queries from the imported module(s) can be called by the importer, for Java class all public methods can be used a service.</p>
 </div>
 <div class="paragraph">
 <p>Importing modules can be done right after the module declaration line and requires the following format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[import &lt;other module qualified name&gt;/]</pre>
+<pre>[import &lt;other module or Java class qualified name&gt;/]</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -602,7 +603,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </dd>
 <dt class="hdlist1">arguments</dt>
 <dd>
-<p>Arguments follow the format <code>&lt;name&gt; : &lt;type&gt;</code>. Only alphanumeric (and underscore <code>_</code>) characters are allowed, and the name cannot start with a number. The type of the argument must be qualified and uses <code>::</code> as the qualified name separator.</p>
+<p>Arguments follow the <a href="#_variable">format for variables</a>.</p>
 </dd>
 <dt class="hdlist1">post</dt>
 <dd>
@@ -692,7 +693,7 @@ Class [class.name/] structural features:
 </dd>
 <dt class="hdlist1">arguments</dt>
 <dd>
-<p>Arguments follow the format <code>&lt;name&gt; : &lt;type&gt;</code>. Only alphanumeric (and underscore <code>_</code>) characters are allowed, and the name cannot start with a number. The type of the argument must be qualified and uses <code>::</code> as the qualified name separator.</p>
+<p>Arguments follow the <a href="#_variable">format for variables</a>.</p>
 </dd>
 <dt class="hdlist1">return type</dt>
 <dd>
@@ -772,18 +773,22 @@ Class [class.name/] structural features:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[for (&lt;variable&gt; | &lt;iteration expression&gt;)]...[/for]</pre>
+<pre>[for (&lt;variable&gt; | &lt;iteration expression&gt;) separator(&lt;separator expression&gt;)]...[/for]</pre>
 </div>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">variable</dt>
 <dd>
-<p>The name of the loop variable allows only alphanumeric (and underscore <code>_</code>) characters, and the name cannot start with a number. The variable type must match the result of the iteration expression. If the expression returns a collection of Strings, then the variable will be of type String. Because of this, typing the variable is optional.</p>
+<p>The variable follows the <a href="#_variable">format for variables</a>. The variable type must match the result of the iteration expression. If the expression returns a collection of Strings, then the variable will be of type String. Because of this, typing the variable is optional.</p>
 </dd>
 <dt class="hdlist1">iteration expression</dt>
 <dd>
-<p>An AQL expression returning a collection of elements on which to iterate.</p>
+<p>An AQL expression returning a collection of elements on which to iterate. If the expression doesn&#8217;t return a collection but a single element, it will be used to iterate only once.</p>
+</dd>
+<dt class="hdlist1">separator</dt>
+<dd>
+<p>The separator expression will be evaluated to insert content in-between the content generated for each iteration of the for body. It will not be generated if the for loop doesn&#8217;t generate text or only generates one iteration worth of content.</p>
 </dd>
 </dl>
 </div>
@@ -833,7 +838,7 @@ Class [class.name/] structural features:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[let var1 = expression, var2 = expression]
+<pre>[let &lt;variable1&gt; = &lt;init expression&gt;, &lt;variable2&gt; = &lt;init expression&gt;]
 [/let]</pre>
 </div>
 </div>
@@ -841,7 +846,10 @@ Class [class.name/] structural features:
 <p><code>Let</code> blocks allow template writers to define temporary variables that will be visible within the scope of the block.</p>
 </div>
 <div class="paragraph">
-<p><strong>Note</strong> that all variables are immutable. Nested <code>Let</code> blocks can override the value of a variable within their own scope, but the variable will go back to its former value once outside of the nested <code>Let</code>.</p>
+<p>The variables follow the <a href="#_variable">format for variables</a>. All of their typing is optional since they must match the return type of their initialization expression.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> that all variables are immutable. Nested <code>Let</code> blocks can override the value of a variable within their own scope, but the variable will go back to its former value once outside of the nested <code>Let</code>. This will produce a warning during validation.</p>
 </div>
 <div class="paragraph">
 <p>See also the <a href="syntax.html#_let_statemnet">Let Statement syntax documentation</a>.</p>
@@ -884,10 +892,51 @@ public class [class.name.toUpperFirst()/] {
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_variable">10. Variable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Acceleo 4 variables use the AQL syntax and inference logic for their typing.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;name&gt; : &lt;type&gt;</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">name</dt>
+<dd>
+<p>Name of the variable. Only alphanumeric (and underscore`_`) characters are allowed, and the name cannot start with a number.</p>
+</dd>
+<dt class="hdlist1">type</dt>
+<dd>
+<p>Type of the variable. Four different kind of types are accepted</p>
+<div class="ulist">
+<ul>
+<li>
+<p>primitive : Integer, Double, String, Boolean</p>
+</li>
+<li>
+<p>collection : Sequence, OrderedSet. Collection types have to be further specified with their content types, such as Sequence(String) for a list of String elements.</p>
+</li>
+<li>
+<p>eclassifier : in the form &lt;epackage_name&gt;::&lt;classifier_name&gt; such as ecore::EClass.</p>
+</li>
+<li>
+<p>union type : in the form {&lt;epackage_name&gt;::&lt;classifier_name&gt; | &lt;epackage_name&gt;::&lt;classifier_name&gt; | &#8230;&#8203;}. This kind of typing describes a variable that can be either one of the <em>n</em> specified classifiers. e.g. {ecore::EAttribute | ecore::EReference }.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-22 21:59:00 +0200
+Last updated 2020-06-03 14:34:06 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
