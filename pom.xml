@@ -93,6 +93,9 @@
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide.ui</module>
+    
+    <module>acceleo-aql/org.eclipse.acceleo.aql.feature</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.ide.jdt.feature</module>
   </modules>
 
   <distributionManagement>
@@ -151,6 +154,10 @@
         <artifactId>tycho-source-feature-plugin</artifactId>
         <version>${tycho-extras-version}</version>
 	<configuration>
+	  <excludes>
+            <plugin id="org.eclipse.acceleo.aql.doc"/>
+            <plugin id="org.eclipse.acceleo.aql.tm"/>
+          </excludes>
 	  <archive>
 	    <addMavenDescriptor>false</addMavenDescriptor>
 	  </archive>
