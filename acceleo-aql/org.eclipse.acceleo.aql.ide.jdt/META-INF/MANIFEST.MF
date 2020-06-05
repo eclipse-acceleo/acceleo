@@ -6,7 +6,7 @@ Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.acceleo.aql;bundle-version="4.0.0",
@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.aql.ide
 Bundle-Activator: org.eclipse.acceleo.aql.ide.jdt.Activator$Implementation
 Export-Package: org.eclipse.acceleo.aql.ide.jdt
+Automatic-Module-Name: org.eclipse.acceleo.aql.ide.jdt

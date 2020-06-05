@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <category-def name="org.eclipse.acceleo.aql" label="Acceleo">
+      <description>
+         [Enter Catergory Description here.]
+      </description>
+   </category-def>
+</site>
