@@ -14,10 +14,10 @@
 		"file-body": {
 			"patterns": [
 				{
-					"include": "#comment"
+					"include": "#comment-block"
 				},
 				{
-					"include": "#import"
+					"include": "#comment"
 				},
 				{
 					"include": "#module-documentation"
@@ -26,6 +26,11 @@
 					"include": "#module"
 				}
 			]
+		},
+		"comment-block": {
+			"name": "comment.block.acceleo",
+			"begin": "\\[\\bcomment\\b\\]",
+			"end": "\\[/\\bcomment\\b\\]"
 		},
 		"comment": {
 			"name": "comment.line.character.acceleo",
@@ -108,7 +113,13 @@
 					"include": "#module-header"
 				},
 				{
+					"include": "#comment-block"
+				},
+				{
 					"include": "#comment"
+				},
+				{
+					"include": "#import"
 				},
 				{
 					"include": "#module-element-documentation"
@@ -388,7 +399,7 @@
 		},
 		"template-pre-condition": {
 			"name": "meta.template.header.precondition.acceleo",
-			"begin": "(?:\\s*)(?=\\?)",
+			"begin": "(?:\\s*)(?=\\?\\s*\\()",
 			"end": "(?=(\\bpost\\b|\\]))",
 			"patterns": [
 				{
@@ -396,17 +407,24 @@
 				},
 				{
 					"include": "#template-pre-condition-expression"
+				},
+				{
+					"include": "#template-pre-condition-ender"
 				}
 			]
 		},
 		"template-pre-condition-starter": {
 			"name": "keyword.other.template.precondition.acceleo",
-			"match": "\\?"
+			"match": "\\?\\s*\\("
 		},
 		"template-pre-condition-expression": {
 			"name": "meta.expression.aql",
-			"begin": "(?<=\\?)",
-			"end": "(?=(\\bpost\\b|\\]))"
+			"begin": "(?<=\\()",
+			"end": "(?=\\)\\s*(\\bpost\\b|\\]))"
+		},		
+		"template-pre-condition-ender": {
+			"name": "keyword.other.template.precondition.acceleo",
+			"match": "\\)(?=((\\s*\\])|(\\s*\\bpost\\b\\s*\\()))"
 		},
 		"template-post-treatment": {
 			"name": "meta.template.header.posttreatment.acceleo",
@@ -439,7 +457,7 @@
 		},
 		"template-header-tag-close": {
 			"name": "keyword.other.template.acceleo",
-			"match": "\\]"
+			"match": "\\s*\\]"
 		},
 		"template-footer": {
 			"name": "keyword.other.template.acceleo",
@@ -499,15 +517,15 @@
 		
 		
 		"statement-for-header": {
-			"name": "meta.statement.for.acceleo",
-			"begin": "(?=\\[\\bfor\\b)",
+			"name": "keyword.other.statement.for.acceleo",
+			"begin": "\\[\\bfor\\b\\s*\\(",
 			"end": "(?<=\\])",
 			"patterns": [
 				{
-					"include": "#statement-for-header-tag-open"
+					"include": "#statement-for-variable-identifier"
 				},
 				{
-					"include": "#statement-for-variable-identifier"
+					"include": "#statement-for-variable-colon"
 				},
 				{
 					"include": "#statement-for-variable-type"
@@ -520,6 +538,12 @@
 				},
 				{
 					"include": "#statement-for-expression"
+				},
+				{
+					"include": "#statement-for-separator"
+				},
+				{
+					"include": "#statement-for-separator-expression"
 				}
 			]
 		},
@@ -535,6 +559,10 @@
 			"name": "variable.parameter.statement.for.acceleo",
 			"match": "(?<=\\()(?:\\s*)\\w+(?=\\s*(:|\\|))"
 		},
+		"statement-for-variable-colon": {
+			"name": "punctuation.colon.acceleo",
+			"match": ":"
+		},
 		"statement-for-variable-type": {
 			"name": "meta.parameter.type.acceleo",
 			"match": "(?<=:)(?:\\s*)(\\w+(::\\w+)*)(\\(\\w+)*(\\))*(?=\\s*\\|)" 
@@ -546,6 +574,15 @@
 		"statement-for-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\|)",
+			"end": "(?=\\))"
+		},
+		"statement-for-separator": {
+			"name": "keyword.other.statement.for.acceleo",
+			"match": "\\s*\\bseparator\\b\\s*\\(" 
+		},
+		"statement-for-separator-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
 			"end": "(?=\\)\\s*\\])"
 		},
 		"statement-for-footer": {
@@ -556,13 +593,10 @@
 		
 		
 		"statement-if-header": {
-			"name": "meta.statement.if.acceleo",
-			"begin": "(?=\\[\\bif\\b)",
+			"name": "keyword.other.statement.if.acceleo",
+			"begin": "\\[\\bif\\b",
 			"end": "(?<=\\])",
 			"patterns": [
-				{
-					"include": "#statement-if-header-tag-open"
-				},
 				{
 					"include": "#statement-if-header-tag-close"
 				},
@@ -570,10 +604,6 @@
 					"include": "#statement-if-expression"
 				}
 			]
-		},
-		"statement-if-header-tag-open": {
-			"name": "keyword.other.statement.if.acceleo",
-			"match": "\\[\\bif\\b\\s*\\("
 		},
 		"statement-if-expression": {
 			"name": "meta.expression.aql",
@@ -590,13 +620,10 @@
 		},
 		
 		"statement-elseif": {
-			"name": "meta.statement.elseif.acceleo",
-			"begin": "(?=\\[\\belseif\\b)",
+			"name": "keyword.other.statement.elseif.acceleo",
+			"begin": "\\[\\belseif\\b\\s*\\(",
 			"end": "(?<=\\])",
 			"patterns": [
-				{
-					"include": "#statement-elseif-tag-open"
-				},
 				{
 					"include": "#statement-elseif-tag-close"
 				},
@@ -604,10 +631,6 @@
 					"include": "#statement-elseif-expression"
 				}
 			]
-		},
-		"statement-elseif-tag-open": {
-			"name": "keyword.other.statement.elseif.acceleo",
-			"match": "\\[\\belseif\\b\\s*\\("
 		},
 		"statement-elseif-expression": {
 			"name": "meta.expression.aql",
@@ -620,37 +643,16 @@
 		},
 		
 		"statement-else": {
-			"name": "meta.statement.else.acceleo",
-			"begin": "(?=\\[\\belse\\b)",
-			"end": "(?<=\\])",
-			"patterns": [
-				{
-					"include": "#statement-else-tag-open"
-				},
-				{
-					"include": "#statement-else-tag-close"
-				}
-			]
-		},
-		"statement-else-tag-open": {
 			"name": "keyword.other.statement.else.acceleo",
-			"match": "\\[\\belse\\b"
+			"match" : "\\[\\belse\\b\\]"
 		},
-		"statement-else-tag-close": {
-			"name": "keyword.other.statement.else.acceleo",
-			"match": "\\]"
-		},
-		
 		
 		
 		"statement-let-header": {
-			"name": "meta.statement.let.acceleo",
-			"begin": "(?=\\[\\blet\\b)",
+			"name": "keyword.other.statement.let.acceleo",
+			"begin": "\\[\\blet\\b",
 			"end": "(?<=\\])",
 			"patterns": [
-				{
-					"include": "#statement-let-header-tag-open"
-				},
 				{
 					"include": "#statement-let-header-tag-close"
 				},
@@ -667,10 +669,6 @@
 					"include": "#statement-let-expression"
 				}
 			]
-		},
-		"statement-let-header-tag-open": {
-			"name": "keyword.other.statement.let.acceleo",
-			"match": "\\[\\blet\\b"
 		},
 		"statement-let-header-tag-close": {
 			"name": "keyword.other.statement.let.acceleo",
@@ -700,13 +698,10 @@
 		
 		
 		"statement-protected-header": {
-			"name": "meta.statement.protected.acceleo",
-			"begin": "(?=\\[\\bprotected\\b)",
+			"name": "keyword.other.statement.protected.acceleo",
+			"begin": "\\[\\bprotected\\b\\s*\\(",
 			"end": "(?<=\\])",
 			"patterns": [
-				{
-					"include": "#statement-protected-header-tag-open"
-				},
 				{
 					"include": "#statement-protected-header-tag-close"
 				},
@@ -714,10 +709,6 @@
 					"include": "#statement-protected-identifier"
 				}
 			]
-		},
-		"statement-protected-header-tag-open": {
-			"name": "keyword.other.statement.protected.acceleo",
-			"match": "\\[\\bprotected\\b\\s*\\("
 		},
 		"statement-protected-identifier": {
 			"name": "meta.expression.aql",
