@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.eclipse.acceleo.aql.feature"/>
+   <feature id="org.eclipse.acceleo.aql.ide.jdt.feature"/>
+   <feature id="org.eclipse.acceleo.query"/>
+</site>

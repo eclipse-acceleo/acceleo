@@ -114,6 +114,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="org.eclipse.pde"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.epp.mpc"/>
+      <feature id="org.eclipse.acceleo.query"/>
    </features>
 
    <configurations>

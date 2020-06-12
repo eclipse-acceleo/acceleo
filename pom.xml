@@ -103,6 +103,8 @@
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.jdt.feature</module>
 
     <module>acceleo-aql/org.eclipse.acceleo.aql.rcpttproduct</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.rcptt</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.update</module>
   </modules>
 
   <distributionManagement>
