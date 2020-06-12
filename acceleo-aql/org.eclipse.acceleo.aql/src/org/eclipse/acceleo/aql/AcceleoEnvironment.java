@@ -247,7 +247,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 */
 	public Set<IService> getServicesWithName(String qualifiedName, String moduleElementName) {
 		final Module module = getModule(qualifiedName);
-		if (module == null) {
+		if (module == null && !qualifiedNameServices.containsKey(qualifiedName)) {
 			resolveClass(qualifiedName);
 		}
 
@@ -268,8 +268,8 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		if (this.resolver != null) {
 			try {
 				res = resolver.resolveClass(qualifiedName);
-				final Map<String, Set<IService>> servicesMap = qualifiedNameServices.computeIfAbsent(
-						qualifiedName, key -> new LinkedHashMap<String, Set<IService>>());
+				final Map<String, Set<IService>> servicesMap = new LinkedHashMap<>();
+				qualifiedNameServices.put(qualifiedName, servicesMap);
 				for (IService service : ServiceUtils.getServices(aqlEnvironment, res)) {
 					final Set<IService> services = servicesMap.computeIfAbsent(service.getName(),
 							key -> new LinkedHashSet<IService>());
@@ -307,16 +307,16 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 			}
 		}
 
-		Map<String, Set<IService>> services = qualifiedNameServices.computeIfAbsent(qualifiedName,
-				key -> new LinkedHashMap<>());
+		final Map<String, Set<IService>> servicesMap = new LinkedHashMap<>();
+		qualifiedNameServices.put(qualifiedName, servicesMap);
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template) {
 				String name = ((Template)element).getName();
-				services.computeIfAbsent(name, key -> new LinkedHashSet<>()).add(new TemplateService(this,
+				servicesMap.computeIfAbsent(name, key -> new LinkedHashSet<>()).add(new TemplateService(this,
 						(Template)element));
 			} else if (element instanceof Query) {
 				String name = ((Query)element).getName();
-				services.computeIfAbsent(name, key -> new LinkedHashSet<>()).add(new QueryService(this,
+				servicesMap.computeIfAbsent(name, key -> new LinkedHashSet<>()).add(new QueryService(this,
 						(Query)element));
 			}
 		}
