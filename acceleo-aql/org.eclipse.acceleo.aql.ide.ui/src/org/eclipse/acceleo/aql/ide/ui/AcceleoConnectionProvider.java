@@ -15,8 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.AcceleoSocketServer;
@@ -50,9 +48,8 @@ public class AcceleoConnectionProvider implements StreamConnectionProvider {
 	 * Constructor.
 	 */
 	public AcceleoConnectionProvider() {
-		Path pathToWorkspace = Paths.get(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
-		AcceleoLanguageServerContext acceleoContext = new EclipseAcceleoLanguageServerContext(
-				pathToWorkspace);
+		AcceleoLanguageServerContext acceleoContext = new EclipseAcceleoLanguageServerContext(ResourcesPlugin
+				.getWorkspace());
 		this.acceleoSocketServer = new AcceleoSocketServer(acceleoContext);
 	}
 

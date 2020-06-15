@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.common;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +42,21 @@ import org.eclipse.lsp4j.SymbolKind;
 public final class AcceleoLanguageServerServicesUtils {
 
 	private AcceleoLanguageServerServicesUtils() {
+	}
+
+	/**
+	 * Creates a normalized {@link URI} from a {@link String}.
+	 * 
+	 * @param stringUri
+	 *            the (non-{@code null}) {@link String} to transform.
+	 * @return the corresponding normalized {@link URI}.
+	 */
+	public static URI toUri(String stringUri) {
+		try {
+			return new URI(stringUri).normalize();
+		} catch (URISyntaxException uriException) {
+			throw new RuntimeException("Unexpected URI syntax: " + stringUri, uriException);
+		}
 	}
 
 	/**
@@ -156,7 +174,7 @@ public final class AcceleoLanguageServerServicesUtils {
 	 * {@link Diagnostic Diagnostics} for LSP4J.
 	 * 
 	 * @param acceleoValidationResults
-	 *            the (non-{@code null}) {@link IAcceleoValidationResult} to transform.
+	 *            the (maybe-{@code null}) {@link IAcceleoValidationResult} to transform.
 	 * @param acceleoSourceContents
 	 *            the (non-{@code null}) {@link String} of the Acceleo source contents, so we can translate
 	 *            characters indices (from Acceleo) to {@link Position Positions} (from LSP4J).
@@ -165,12 +183,14 @@ public final class AcceleoLanguageServerServicesUtils {
 	 */
 	public static List<Diagnostic> transform(IAcceleoValidationResult acceleoValidationResults,
 			String acceleoSourceContents) {
-		Objects.requireNonNull(acceleoValidationResults);
-
-		List<Diagnostic> diagnostics = acceleoValidationResults.getValidationMessages().stream().map(
-				acceleoValidationMessage -> AcceleoLanguageServerServicesUtils.transform(
-						acceleoValidationMessage, acceleoSourceContents)).collect(Collectors.toList());
-
+		List<Diagnostic> diagnostics = new ArrayList<>();
+		if (acceleoValidationResults != null) {
+			diagnostics.addAll(acceleoValidationResults.getValidationMessages().stream().map(
+					acceleoValidationMessage -> AcceleoLanguageServerServicesUtils.transform(
+							acceleoValidationMessage, acceleoSourceContents)).collect(Collectors.toList()));
+		} else {
+			diagnostics.add(getNullValidationDiagnosticFor(acceleoSourceContents));
+		}
 		return diagnostics;
 	}
 
@@ -194,6 +214,27 @@ public final class AcceleoLanguageServerServicesUtils {
 				acceleoSourceContents);
 		String message = acceleoValidationMessage.getMessage();
 		DiagnosticSeverity severity = transform(acceleoValidationMessage.getLevel());
+		String source = "Acceleo Validation";
+		return new Diagnostic(range, message, severity, source);
+	}
+
+	/**
+	 * Creates a {@link Diagnostic} for a {@code null} {@link IAcceleoValidationResult}.
+	 * 
+	 * @param documentContents
+	 *            the (non-{@code null}) {@link String contents} of the document whose validation results were
+	 *            {@code null}.
+	 * @return a (non-{@code null}) {@link Diagnostic} that displays to the user that the validation could not
+	 *         be performed.
+	 */
+	private static Diagnostic getNullValidationDiagnosticFor(String documentContents) {
+		int startPosition = 0;
+		int endPosition = documentContents.length() - 1;
+
+		Range range = AcceleoLanguageServerPositionUtils.getCorrespondingRange(startPosition, endPosition,
+				documentContents);
+		String message = "The Acceleo validation could not be performed on this document.";
+		DiagnosticSeverity severity = DiagnosticSeverity.Warning;
 		String source = "Acceleo Validation";
 		return new Diagnostic(range, message, severity, source);
 	}

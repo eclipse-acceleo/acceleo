@@ -441,14 +441,15 @@ public class AcceleoParser {
 	 *            the {@link InputStream}
 	 * @param charset
 	 *            the {@link Charset}
-	 * @param namespace
-	 *            the name space of the {@link Module} (org::eclipse::...)
+	 * @param moduleQualifiedName
+	 *            the qualified name of the {@link Module} (e.g. "path::to::module").
 	 * @return the parsed {@link AstResult}
 	 * @throws IOException
 	 *             if the {@link InputStream} can't be read
 	 */
-	public AcceleoAstResult parse(InputStream source, Charset charset, String namespace) throws IOException {
-		return parse(getContent(source, charset), namespace);
+	public AcceleoAstResult parse(InputStream source, Charset charset, String moduleQualifiedName)
+			throws IOException {
+		return parse(getContent(source, charset), moduleQualifiedName);
 	}
 
 	/**
@@ -482,25 +483,24 @@ public class AcceleoParser {
 	 * 
 	 * @param source
 	 *            the source text
-	 * @param namespace
-	 *            the name space of the {@link Module} (org::eclipse::...)
+	 * @param qualifiedName
+	 *            the qualified name of the {@link Module} (e.g. "path::to::module").
 	 * @return the parsed {@link AstResult}
 	 */
-	public AcceleoAstResult parse(String source, String namespace) {
+	public AcceleoAstResult parse(String source, String qualifiedName) {
 		this.currentPosition = 0;
 		this.lines = new int[source.length() + 1];
 		this.columns = new int[source.length() + 1];
 		this.positions = new Positions();
 		this.text = source;
 		computeLinesAndColumns(text);
+		this.errors = new ArrayList<Error>();
 
-		errors = new ArrayList<Error>();
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
 		final Module module = parseModule(comments);
 
-		final Resource r = new XMIResourceImpl(URI.createFileURI(namespace + QUALIFIER_SEPARATOR + module
-				.getName()));
-		r.getContents().add(module);
+		final Resource containerEmfResource = new XMIResourceImpl(URI.createFileURI(qualifiedName));
+		containerEmfResource.getContents().add(module);
 
 		return new AcceleoAstResult(module, positions, errors);
 	}

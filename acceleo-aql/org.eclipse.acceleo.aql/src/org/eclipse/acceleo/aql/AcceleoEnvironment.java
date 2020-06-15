@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.acceleo.ErrorMetamodel;
@@ -286,6 +287,9 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 
 	@Override
 	public void registerModule(String qualifiedName, Module module) {
+		if (this.qualifiedNameToModule.containsKey(qualifiedName)) {
+			unregisterModule(qualifiedName);
+		}
 		qualifiedNameToModule.put(qualifiedName, module);
 		moduleToQualifiedName.put(module, qualifiedName);
 		if (module.getExtends() != null && module.getExtends().getQualifiedName() != null) {
@@ -318,6 +322,33 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 				String name = ((Query)element).getName();
 				servicesMap.computeIfAbsent(name, key -> new LinkedHashSet<>()).add(new QueryService(this,
 						(Query)element));
+			}
+		}
+	}
+
+	@Override
+	public void unregisterModule(String qualifiedName) {
+		Objects.requireNonNull(qualifiedName);
+
+		Module moduleToUnregister = this.qualifiedNameToModule.get(qualifiedName);
+
+		this.qualifiedNameToModule.remove(qualifiedName);
+		this.moduleToQualifiedName.remove(moduleToUnregister);
+		this.moduleExtends.remove(qualifiedName);
+		this.moduleImports.remove(qualifiedName);
+		this.qualifiedNameServices.remove(qualifiedName);
+
+		if (moduleToUnregister != null) {
+			for (Metamodel metamodel : moduleToUnregister.getMetamodels()) {
+				EPackage ePackage = metamodel.getReferencedPackage();
+				// Only remove the EPackage if none of the other modules of the environment also registered
+				// it.
+				if (this.moduleToQualifiedName.keySet().stream().noneMatch(otherModule -> !moduleToUnregister
+						.equals(otherModule) && !otherModule.getMetamodels().stream().map(
+								Metamodel::getReferencedPackage).anyMatch(
+										otherEPackage -> otherEPackage == ePackage))) {
+					this.aqlEnvironment.removeEPackage(ePackage);
+				}
 			}
 		}
 	}

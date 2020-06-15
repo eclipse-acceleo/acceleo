@@ -229,6 +229,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModule(Module module) {
+		String qualifiedNameLastSegment = this.qualifiedName.substring(this.qualifiedName.lastIndexOf(
+				AcceleoParser.QUALIFIER_SEPARATOR) + AcceleoParser.QUALIFIER_SEPARATOR.length(),
+				this.qualifiedName.length());
+
 		final Set<EPackage> ePackages = new HashSet<EPackage>();
 		for (Metamodel metamodel : module.getMetamodels()) {
 			doSwitch(metamodel);
@@ -488,7 +492,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 					.getAst());
 			if (query.getType() != null) {
-				final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), query.getType());
+				final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(),
+						query.getType());
 				result.getAqlValidationResults().put(query.getType(), typeValidationResult);
 				final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 						typeValidationResult.getPossibleTypes(query.getType().getAst()));
@@ -545,7 +550,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					+ " already exists.", acceleoAstResult.getStartPosition(variable), acceleoAstResult
 							.getEndPosition(variable));
 		}
-		final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), variable.getType());
+		final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), variable
+				.getType());
 		result.getAqlValidationResults().put(variable.getType(), typeValidationResult);
 		final Set<IType> types = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 				typeValidationResult.getPossibleTypes(variable.getType().getAst()));
@@ -583,7 +589,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 				.getAst());
 		if (binding.getType() != null) {
-			final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), binding.getType());
+			final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), binding
+					.getType());
 			result.getAqlValidationResults().put(binding.getType(), typeValidationResult);
 			final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 					typeValidationResult.getPossibleTypes(binding.getType().getAst()));

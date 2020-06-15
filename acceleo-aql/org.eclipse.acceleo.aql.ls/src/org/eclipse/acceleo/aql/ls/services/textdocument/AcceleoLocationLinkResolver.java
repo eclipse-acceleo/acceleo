@@ -288,7 +288,7 @@ public class AcceleoLocationLinkResolver {
 				acceleoNodeContainingLinkDestination);
 
 		// Link target parameters.
-		String targetDocumentUri = destinationTextDocument.getDocumentUri().toString();
+		String targetDocumentUri = destinationTextDocument.getUri().toString();
 		final Range targetRange = getRangeForAqlAstElement(aqlDestination);
 		// FIXME: we probably only want to select part of the target.
 		Range targetSelectionRange = targetRange;
@@ -321,7 +321,7 @@ public class AcceleoLocationLinkResolver {
 		AcceleoAstResult destinationAcceleoAstResult = destinationTextDocument.getAcceleoAstResult();
 
 		// Link target parameters.
-		String targetDocumentUri = destinationTextDocument.getDocumentUri().toString();
+		String targetDocumentUri = destinationTextDocument.getUri().toString();
 		// Note: the destination ASTNode comes from a parsing that is not necessarily the one known by the
 		// destination text document, therefore we have to be able to locate the equivalent of an ASTNode in
 		// another AcceleoAstResult of the same Acceleo file.

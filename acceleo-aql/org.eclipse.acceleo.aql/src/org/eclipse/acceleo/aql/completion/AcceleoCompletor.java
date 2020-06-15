@@ -34,7 +34,7 @@ public class AcceleoCompletor {
 	/**
 	 * The name space for completion.
 	 */
-	private static final String TO_COMPLETION_NAMESPACE = "to::completion";
+	private static final String TO_COMPLETION_NAMESPACE = "_reserved_::to::completion";
 
 	/**
 	 * Provides the {@link List} of {@link AcceleoCompletionProposal completion proposals} available for the
@@ -42,6 +42,8 @@ public class AcceleoCompletor {
 	 * 
 	 * @param acceleoEnvironment
 	 *            the (non-{@code null}) contextual {@link IAcceleoEnvironment}.
+	 * @param moduleFileName
+	 *            the (non-{@code null}) name of the file containing the module (without extension).
 	 * @param source
 	 *            the (non-{@code null}) Acceleo text source contents.
 	 * @param position
@@ -49,19 +51,23 @@ public class AcceleoCompletor {
 	 * @return the {@link List} of {@link AcceleoCompletionProposal} for the given source at the given
 	 *         position
 	 */
-	public List<AcceleoCompletionProposal> getProposals(IAcceleoEnvironment acceleoEnvironment, String source,
-			int position) {
+	public List<AcceleoCompletionProposal> getProposals(IAcceleoEnvironment acceleoEnvironment,
+			String moduleFileName, String source, int position) {
+		String moduleQualifiedNameForCompletion = TO_COMPLETION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR
+				+ moduleFileName;
+
 		// First, parse the source contents up to the position.
 		final AcceleoParser acceleoParser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
 		final String partialAcceleoSource = source.substring(0, position);
 		final AcceleoAstResult partialAcceleoAstResult = acceleoParser.parse(partialAcceleoSource,
-				TO_COMPLETION_NAMESPACE);
+				moduleQualifiedNameForCompletion);
 
 		// Second, validate the AST - this is required further on for the AQL completion.
-		acceleoEnvironment.registerModule(TO_COMPLETION_NAMESPACE, partialAcceleoAstResult.getModule());
+		acceleoEnvironment.registerModule(moduleQualifiedNameForCompletion, partialAcceleoAstResult
+				.getModule());
 		final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment);
 		IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(partialAcceleoAstResult,
-				TO_COMPLETION_NAMESPACE);
+				moduleQualifiedNameForCompletion);
 
 		// Find which element of the AST we are completing.
 		EObject acceleoElementToComplete = getElementToComplete(partialAcceleoAstResult);

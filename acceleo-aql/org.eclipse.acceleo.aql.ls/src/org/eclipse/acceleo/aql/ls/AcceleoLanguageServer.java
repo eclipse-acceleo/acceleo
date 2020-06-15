@@ -10,16 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocumentService;
+import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspaceService;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.InitializeParams;
@@ -33,8 +30,6 @@ import org.eclipse.lsp4j.TextDocumentSyncOptions;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageClientAware;
 import org.eclipse.lsp4j.services.LanguageServer;
-import org.eclipse.lsp4j.services.TextDocumentService;
-import org.eclipse.lsp4j.services.WorkspaceService;
 
 /**
  * Acceleo <a href="https://microsoft.github.io/language-server-protocol/">LSP</a> server.
@@ -46,17 +41,22 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	/**
 	 * The text-document-related service.
 	 */
-	private final AcceleoTextDocumentService textDocumentService = new AcceleoTextDocumentService(this);
+	private final AcceleoTextDocumentService textDocumentService;
 
 	/**
 	 * The workspace-related service.
 	 */
-	private final AcceleoWorkspaceService workspaceService = new AcceleoWorkspaceService(this);
+	private final AcceleoWorkspaceService workspaceService;
 
 	/**
 	 * The root {@link AcceleoLanguageServerContext} of this server.
 	 */
 	private final AcceleoLanguageServerContext acceleoLanguageServerContext;
+
+	/**
+	 * The {@link Instant} at which this server was created.
+	 */
+	private final Instant creationTimestamp;
 
 	/**
 	 * The current language client.
@@ -70,7 +70,41 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	 *            the (non-{@code null}) root {@link AcceleoLanguageServerContext} for this server.
 	 */
 	public AcceleoLanguageServer(AcceleoLanguageServerContext acceleoLanguageServerContext) {
+		this.creationTimestamp = Instant.now();
 		this.acceleoLanguageServerContext = Objects.requireNonNull(acceleoLanguageServerContext);
+
+		this.workspaceService = new AcceleoWorkspaceService(this);
+		this.textDocumentService = new AcceleoTextDocumentService(this);
+	}
+
+	/**
+	 * Provides a {@link String} label to identify this language server.
+	 * 
+	 * @return the label for this language server.
+	 */
+	public String getLabel() {
+		return this.getClass().getSimpleName() + "@" + this.hashCode() + "_" + this.creationTimestamp;
+	}
+
+	/**
+	 * Creates the {@link AcceleoWorkspace}.
+	 * 
+	 * @return the newly-created {@link AcceleoWorkspace}.
+	 */
+	public AcceleoWorkspace createWorkspace() {
+		AcceleoWorkspace workspace = this.acceleoLanguageServerContext.createWorkspace();
+		workspace.setOwner(this);
+		return workspace;
+	}
+
+	/**
+	 * Valides all {@link AcceleoTextDocument} in the workspace of this server.
+	 */
+	private void validateAll() {
+		if (this.getWorkspace() != null) {
+			this.getWorkspace().getAllTextDocuments().forEach(textDocument -> textDocument
+					.validateAndPublishResults());
+		}
 	}
 
 	@Override
@@ -79,8 +113,13 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 		this.textDocumentService.connect(newLanguageClient);
 		this.workspaceService.connect(newLanguageClient);
 
+		// The client just changed, re-validate all documents so they publish the validation results to the
+		// client.
+		this.validateAll();
+
 		newLanguageClient.logMessage(new MessageParams(MessageType.Info,
-				"Connected to the Acceleo Language Server"));
+				"Connected to the Acceleo Language Server, relying on Acceleo Workspace " + this
+						.getWorkspace().getName()));
 	}
 
 	@Override
@@ -123,6 +162,7 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 
 	@Override
 	public CompletableFuture<Object> shutdown() {
+		this.acceleoLanguageServerContext.deleteWorkspace(this.getWorkspace());
 		if (this.languageClient != null) {
 			this.languageClient.logMessage(new MessageParams(MessageType.Log,
 					"Acceleo Language Server is shutting down"));
@@ -139,40 +179,50 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	}
 
 	@Override
-	public TextDocumentService getTextDocumentService() {
-		return textDocumentService;
+	public AcceleoTextDocumentService getTextDocumentService() {
+		return this.textDocumentService;
 	}
 
 	@Override
-	public WorkspaceService getWorkspaceService() {
-		return workspaceService;
+	public AcceleoWorkspaceService getWorkspaceService() {
+		return this.workspaceService;
 	}
 
-	/**
-	 * Creates the {@link IAcceleoEnvironment} for an Acceleo document.
-	 * 
-	 * @param acceleoDocumentUri
-	 *            the {@link URI} corresponding to an Acceleo document handled by this server.
-	 * @return the {@link IAcceleoEnvironment} for the given Acceleo document.
-	 */
-	public IAcceleoEnvironment createAcceleoEnvironmentFor(URI acceleoDocumentUri) {
-		return this.acceleoLanguageServerContext.createAcceleoEnvironmentFor(acceleoDocumentUri);
-	}
+	// /**
+	// * Creates the {@link IAcceleoEnvironment} for an Acceleo document.
+	// *
+	// * @param workspaceFolder
+	// * the {@link WorkspaceFolder} from the client for which we want to create an
+	// * {@link IAcceleoeEnvironment}.
+	// * @return the {@link IAcceleoEnvironment} for the given Acceleo document.
+	// */
+	// public IAcceleoEnvironment createAcceleoEnvironmentFor(WorkspaceFolder workspaceFolder) {
+	// return this.acceleoLanguageServerContext.createAcceleoEnvironmentFor(workspaceFolder);
+	// }
+
+	// /**
+	// * Recursively finds all Acceleo documents in the given folder, and loads them.
+	// *
+	// * @param folderUri
+	// * the (non-{@code null}) {@link String URI} of a folder from the client workspace.
+	// * @return the {@link List} of all loaded {@link AcceleoTextDocument}.
+	// */
+	// public List<AcceleoTextDocument> loadAllAcceleoDocumentsIn(String folderUri) {
+	// Map<URI, String> acceleoDocumentsMap = this.acceleoLanguageServerContext.getAllAcceleoDocumentsIn(
+	// folderUri);
+	// List<AcceleoTextDocument> acceleoTextDocuments = acceleoDocumentsMap.entrySet().stream().map(
+	// entry -> this.textDocumentService.getOrLoadTextDocument(entry.getKey(), entry.getValue()))
+	// .collect(Collectors.toList());
+	// return acceleoTextDocuments;
+	// }
 
 	/**
-	 * Recursively finds all Acceleo documents in the given folder, and loads them.
+	 * Provides the {@link AcceleoWorkspace}.
 	 * 
-	 * @param folderUri
-	 *            the (non-{@code null}) {@link String URI} of a folder from the client workspace.
-	 * @return the {@link List} of all loaded {@link AcceleoTextDocument}.
+	 * @return the current (non-{@code null}) {@link AcceleoWorkspace}.
 	 */
-	public List<AcceleoTextDocument> loadAllAcceleoDocumentsIn(String folderUri) {
-		Map<URI, String> acceleoDocumentsMap = this.acceleoLanguageServerContext.getAllAcceleoDocumentsIn(
-				folderUri);
-		List<AcceleoTextDocument> acceleoTextDocuments = acceleoDocumentsMap.entrySet().stream().map(
-				entry -> this.textDocumentService.getOrLoadTextDocument(entry.getKey(), entry.getValue()))
-				.collect(Collectors.toList());
-		return acceleoTextDocuments;
+	public AcceleoWorkspace getWorkspace() {
+		return this.getWorkspaceService().getWorkspace();
 	}
 
 }

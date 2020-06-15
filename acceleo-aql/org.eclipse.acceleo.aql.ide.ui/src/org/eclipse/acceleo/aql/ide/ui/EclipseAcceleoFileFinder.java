@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.acceleo.aql.parser.AcceleoParser;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
@@ -24,36 +19,43 @@ import org.eclipse.core.runtime.CoreException;
  * workspace is an Acceleo document or not.
  * 
  * @author Florent Latombe
+ * @deprecated
  */
 public class EclipseAcceleoFileFinder implements IResourceVisitor {
 
-	/**
-	 * The {@link List} of {@link IFile Acceleo files} found while visiting.
-	 */
-	private List<IFile> acceleoDocuments;
-
 	@Override
 	public boolean visit(IResource resource) throws CoreException {
-		if (resource.getType() == IResource.FILE && resource.getFileExtension().equals(
-				AcceleoParser.MODULE_FILE_EXTENSION)) {
-			IFile acceleoFile = (IFile)resource;
-			if (this.acceleoDocuments == null) {
-				this.acceleoDocuments = new ArrayList<>();
-			}
-			this.acceleoDocuments.add(acceleoFile);
-		}
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	/**
-	 * After having {@link IResource#accept(IResourceVisitor) visited} an {@link IResource} recursively,
-	 * provides the {@link List} of {@link IFile Acceleo documents} found.
-	 * 
-	 * @return the {@link List} of found {@link IFile Acceleo documents}.
-	 */
-	public List<IFile> getAcceleoDocuments() {
-		List<IFile> foundAcceleoDocuments = this.acceleoDocuments;
-		this.acceleoDocuments = null;
-		return foundAcceleoDocuments;
-	}
+	// /**
+	// * The {@link List} of {@link IFile Acceleo files} found while visiting.
+	// */
+	// private List<IFile> acceleoDocuments;
+	//
+	// @Override
+	// public boolean visit(IResource resource) throws CoreException {
+	// if (resource.getType() == IResource.FILE && resource.getFileExtension().equals(
+	// AcceleoParser.MODULE_FILE_EXTENSION)) {
+	// IFile acceleoFile = (IFile)resource;
+	// if (this.acceleoDocuments == null) {
+	// this.acceleoDocuments = new ArrayList<>();
+	// }
+	// this.acceleoDocuments.add(acceleoFile);
+	// }
+	// return true;
+	// }
+	//
+	// /**
+	// * After having {@link IResource#accept(IResourceVisitor) visited} an {@link IResource} recursively,
+	// * provides the {@link List} of {@link IFile Acceleo documents} found.
+	// *
+	// * @return the {@link List} of found {@link IFile Acceleo documents}.
+	// */
+	// public List<IFile> getAcceleoDocuments() {
+	// List<IFile> foundAcceleoDocuments = this.acceleoDocuments;
+	// this.acceleoDocuments = null;
+	// return foundAcceleoDocuments;
+	// }
 }

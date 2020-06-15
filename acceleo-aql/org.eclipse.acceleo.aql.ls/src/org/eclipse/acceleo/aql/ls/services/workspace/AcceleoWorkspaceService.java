@@ -30,12 +30,17 @@ public class AcceleoWorkspaceService implements WorkspaceService, LanguageClient
 	/**
 	 * The owning {@link AcceleoLanguageServer} of this service.
 	 */
-	private final AcceleoLanguageServer owner;
+	private final AcceleoLanguageServer server;
 
 	/**
 	 * The current client.
 	 */
 	private LanguageClient languageClient;
+
+	/**
+	 * The current {@link AcceleoWorkspace}.
+	 */
+	private final AcceleoWorkspace acceleoWorkspace;
 
 	/**
 	 * Creates a new {@link AcceleoWorkspaceService}.
@@ -44,12 +49,22 @@ public class AcceleoWorkspaceService implements WorkspaceService, LanguageClient
 	 *            the (non-{@code null}) owning {@link AcceleoLanguageServer}.
 	 */
 	public AcceleoWorkspaceService(AcceleoLanguageServer acceleoLanguageServer) {
-		this.owner = Objects.requireNonNull(acceleoLanguageServer);
+		this.server = Objects.requireNonNull(acceleoLanguageServer);
+		this.acceleoWorkspace = this.server.createWorkspace();
 	}
 
 	@Override
 	public void connect(LanguageClient newLanguageClient) {
 		this.languageClient = newLanguageClient;
+	}
+
+	/**
+	 * Provides the current {@link AcceleoWorkspace}.
+	 * 
+	 * @return the (non-{@code null}) current {@link AcceleoWorkspace}.
+	 */
+	public AcceleoWorkspace getWorkspace() {
+		return this.acceleoWorkspace;
 	}
 
 	@Override

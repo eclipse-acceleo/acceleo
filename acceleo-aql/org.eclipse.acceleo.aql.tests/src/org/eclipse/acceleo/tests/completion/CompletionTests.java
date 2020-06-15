@@ -120,7 +120,7 @@ public class CompletionTests {
 		final Module module = parsingResult.getModule();
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::tests::" + module.getName(), module);
 		final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(acceleoEnvironment,
-				source, position);
+				module.getName(), source, position);
 		final String actualCompletion = serialize(completionProposals);
 		final File expectedCompletionFile = getExpectedCompletionFile();
 		if (!expectedCompletionFile.exists()) {

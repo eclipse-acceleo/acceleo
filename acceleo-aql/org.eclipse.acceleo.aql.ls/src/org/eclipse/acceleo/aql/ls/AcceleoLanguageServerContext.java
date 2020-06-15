@@ -10,36 +10,33 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls;
 
-import java.net.URI;
-import java.util.Map;
-
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 
 /**
  * The context of the {@link AcceleoLanguageServer} provided by the runtime that hosts the server. It is used
- * for the integration of the Acceleo editor features into the host IDE.
+ * for the integration of the Acceleo editor features into the host IDE.<br/>
+ * <br/>
+ * FIXME: note that the services brought by this API should instead be implemented as extensions to the LSP
+ * protocol. Currently, an Acceleo LS assumes its creator also is able to provide information about the
+ * client, essentially binding the server with a particular client.
  * 
  * @author Florent Latombe
  */
 public interface AcceleoLanguageServerContext {
 
 	/**
-	 * Creates the {@link IAcceleoEnvironment} for an Acceleo document designated by its {@link URI}.
+	 * Creates an {@link AcceleoWorkspace}.
 	 * 
-	 * @param acceleoDocumentUri
-	 *            the (non-{@code null}) {@link URI} of an Acceleo document.
-	 * @return the newly-created {@link IAcceleoEnvironment} for the designated Acceleo document.
+	 * @return the newly-created {@link AcceleoWorkspace}.
 	 */
-	IAcceleoEnvironment createAcceleoEnvironmentFor(URI acceleoDocumentUri);
+	AcceleoWorkspace createWorkspace();
 
 	/**
-	 * Recursively navigates the folder designated by the given {@link URI} to find all the Acceleo text
-	 * documents.
+	 * Called when the owner {@link AcceleoLanguageServer} shutdowns.
 	 * 
-	 * @param folderUri
-	 *            the {@link String URI} to navigate.
-	 * @return the {@link Map} of each {@link URI Acceleo text document URI} to its {@link String contents}.
+	 * @param workspaceToDelete
+	 *            the (non-{@code null}) {@link AcceleoWorkspace} to delete.
 	 */
-	Map<URI, String> getAllAcceleoDocumentsIn(String folderUri);
+	void deleteWorkspace(AcceleoWorkspace workspaceToDelete);
 
 }

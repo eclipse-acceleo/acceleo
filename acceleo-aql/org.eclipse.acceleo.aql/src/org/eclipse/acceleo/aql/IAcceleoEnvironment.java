@@ -49,6 +49,14 @@ public interface IAcceleoEnvironment {
 	void registerModule(String qualifiedName, Module module);
 
 	/**
+	 * Un-registers any {@link Module} registered against the given {@link String qualified name}.
+	 * 
+	 * @param qualifiedName
+	 *            the (non-{@code null}) qualified name of the {@link Module}.
+	 */
+	void unregisterModule(String qualifiedName);
+
+	/**
 	 * Gets the {@link Module} qualified name.
 	 * 
 	 * @param module

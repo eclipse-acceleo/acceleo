@@ -69,9 +69,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 
 		try (InputStream input = classLoader.getResourceAsStream(getModuleResourceName(qualifiedName));) {
 			if (input != null) {
-				final String namespace = qualifiedName.substring(0, qualifiedName.lastIndexOf(
-						AcceleoParser.QUALIFIER_SEPARATOR));
-				res = parser.parse(input, StandardCharsets.UTF_8, namespace).getModule();
+				res = parser.parse(input, StandardCharsets.UTF_8, qualifiedName).getModule();
 			} else {
 				res = null;
 			}
