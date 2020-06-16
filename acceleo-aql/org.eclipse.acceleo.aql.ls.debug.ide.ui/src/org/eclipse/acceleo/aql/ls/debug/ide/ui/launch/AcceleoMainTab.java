@@ -10,10 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 
+import org.eclipse.acceleo.aql.ide.Activator;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
+import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AcceleoFileSelectionDialog;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -84,6 +92,11 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+		if (module != null) {
+			configuration.setMappedResources(new IResource[] {ResourcesPlugin.getWorkspace().getRoot()
+					.getFile(new Path(module)) });
+		}
+
 		configuration.setAttribute(AcceleoDebugger.MODULE, module);
 		configuration.setAttribute(AcceleoDebugger.MODEL, model);
 		configuration.setAttribute(AcceleoDebugger.DESTINATION, destination);
@@ -92,15 +105,21 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			moduleText.setText(configuration.getAttribute(AcceleoDebugger.MODULE, ""));
-			initialModule = module;
-			modelText.setText(configuration.getAttribute(AcceleoDebugger.MODEL, ""));
-			initialModel = model;
-			destinationText.setText(configuration.getAttribute(AcceleoDebugger.DESTINATION, ""));
-			initialDestination = destination;
+			if (configuration.hasAttribute(AcceleoDebugger.MODULE)) {
+				moduleText.setText(configuration.getAttribute(AcceleoDebugger.MODULE, ""));
+				initialModule = module;
+			}
+			if (configuration.hasAttribute(AcceleoDebugger.MODEL)) {
+				modelText.setText(configuration.getAttribute(AcceleoDebugger.MODEL, ""));
+				initialModel = model;
+			}
+			if (configuration.hasAttribute(AcceleoDebugger.DESTINATION)) {
+				destinationText.setText(configuration.getAttribute(AcceleoDebugger.DESTINATION, ""));
+				initialDestination = destination;
+			}
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
+					"couldn't initialize from launch configuration", e));
 		}
 	}
 
@@ -109,13 +128,48 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		setDefaults(configuration);
 		initialModule = module;
 		initialModel = model;
-		setDirty(module != initialModule || model != initialModel);
+		initialDestination = destination;
+		setDirty(module != initialModule || model != initialModel || destination != initialDestination);
 	}
 
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
-		// TODO check is main template
-		return true;
+		boolean res = true;
+
+		try {
+			if (launchConfig.hasAttribute(AcceleoDebugger.MODULE)) {
+				final IFile resource = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(launchConfig
+						.getAttribute(AcceleoDebugger.MODULE, "")));
+				if (!Activator.isAcceleoMain(resource)) {
+					setErrorMessage("The selected Acceleo module doesn't contain a main template.");
+					res = false;
+				}
+			} else {
+				setErrorMessage("Select an Acceleo module with main template.");
+				res = false;
+			}
+			if (res) {
+				if (!launchConfig.hasAttribute(AcceleoDebugger.MODEL)) {
+					setErrorMessage("Select a model file.");
+					res = false;
+				}
+			}
+			if (res) {
+				if (!launchConfig.hasAttribute(AcceleoDebugger.DESTINATION)) {
+					setErrorMessage("Select a destination folder.");
+					res = false;
+				}
+			}
+		} catch (CoreException e) {
+			AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
+					"couldn't validate launch configuration", e));
+		}
+
+		if (res) {
+			setErrorMessage(null);
+		}
+
+		return res;
 	}
 
 	@Override

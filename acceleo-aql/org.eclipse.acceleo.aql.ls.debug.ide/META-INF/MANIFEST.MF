@@ -21,4 +21,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.debug.ide
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin$Implementation
-Export-Package: org.eclipse.acceleo.aql.ls.debug.ide.launch
+Export-Package: org.eclipse.acceleo.aql.ls.debug.ide,
+ org.eclipse.acceleo.aql.ls.debug.ide.launch

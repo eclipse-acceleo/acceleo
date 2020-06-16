@@ -12,15 +12,26 @@
 
 package org.eclipse.acceleo.aql.ide;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.ide.resolver.EclipseQualifiedNameResolver;
 import org.eclipse.acceleo.aql.ide.resolver.IResolverFactoryDescriptor;
 import org.eclipse.acceleo.aql.ide.resolver.ResolverFactoryRegistryListener;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -223,6 +234,39 @@ public class Activator extends EMFPlugin {
 				RESOLVER_FACTORY_DESCRIPTORS.remove(descriptor);
 			}
 		}
+	}
+
+	/**
+	 * Tells if the given resource is a Acceleo {@link Module} with a {@link Template#isMain() main template}.
+	 * 
+	 * @param resource
+	 *            the {@link IResource}
+	 * @return <code>true</code> if the given resource is a Acceleo {@link Module} with a
+	 *         {@link Template#isMain() main template}, <code>false</code> otherwise
+	 */
+	public static boolean isAcceleoMain(IResource resource) {
+		boolean res = false;
+
+		final AcceleoParser parser = new AcceleoParser(Query.newEnvironment());
+		final IFile file = (IFile)resource;
+		try (InputStream contents = file.getContents()) {
+			final Module module = parser.parse(contents, Charset.forName(file.getCharset()), "none")
+					.getModule();
+			for (ModuleElement element : module.getModuleElements()) {
+				if (element instanceof Template && ((Template)element).isMain()) {
+					res = true;
+					break;
+				}
+			}
+		} catch (IOException e) {
+			Activator.getPlugin().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "couldn't parse module "
+					+ resource.getFullPath(), e));
+		} catch (CoreException e) {
+			Activator.getPlugin().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "couldn't parse module "
+					+ resource.getFullPath(), e));
+		}
+
+		return res;
 	}
 
 }

@@ -13,22 +13,29 @@ package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.aql.ide.Activator;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
+import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.acceleo.aql.ls.debug.ide.launch.AcceleoLaunchConfigurationDelegate;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.debug.ui.ILaunchShortcut2;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.ResourceUtil;
 
 public class AcceleoLaunchShortcut implements ILaunchShortcut2 {
@@ -56,18 +63,50 @@ public class AcceleoLaunchShortcut implements ILaunchShortcut2 {
 		if (configurations != null) {
 			for (ILaunchConfiguration config : configurations) {
 				try {
-					if (config.getModes().contains(mode)) {
-						// TODO other monitor ?
-						config.launch(mode, new NullProgressMonitor());
-						break;
-					}
+					// TODO other monitor ?
+					config.launch(mode, new NullProgressMonitor());
+					return;
 				} catch (CoreException e) {
-					// TODO: handle exception
-					e.printStackTrace();
+					AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
+							"couldn't launch module " + resource.getFullPath(), e));
 				}
 			}
+			createConfiguration(resource, mode);
 		} else {
 			// not an Acceleo 4 module with main template
+		}
+	}
+
+	/**
+	 * Creates a {@link ILaunchConfiguration} for the given {@link IResource}.
+	 * 
+	 * @param resource
+	 *            the {@link IResource} to launch
+	 * @param mode
+	 *            the launch mode
+	 */
+	protected void createConfiguration(IResource resource, String mode) {
+		try {
+			final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+			final ILaunchConfigurationType configType = launchManager.getLaunchConfigurationType(
+					AcceleoLaunchConfigurationDelegate.ID);
+			final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager
+					.generateLaunchConfigurationName(resource.getName()));
+			wc.setAttribute(AcceleoDebugger.MODULE, resource.getFullPath().toString());
+			wc.setMappedResources(new IResource[] {resource });
+			final ILaunchConfiguration config = wc.doSave();
+			IStructuredSelection selection;
+			if (config == null) {
+				selection = new StructuredSelection();
+			} else {
+				selection = new StructuredSelection(config);
+			}
+			final ILaunchGroup launchGroup = DebugUITools.getLaunchGroup(config, mode);
+			DebugUITools.openLaunchConfigurationDialogOnGroup(PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getShell(), selection, launchGroup.getIdentifier());
+		} catch (CoreException e) {
+			AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
+					"couldn't create launch configuration for module " + resource.getFullPath(), e));
 		}
 	}
 
@@ -92,7 +131,7 @@ public class AcceleoLaunchShortcut implements ILaunchShortcut2 {
 	private ILaunchConfiguration[] getLaunchConfigurations(IResource resource) {
 		final ILaunchConfiguration[] res;
 
-		if (isAcceleoMain(resource)) {
+		if (Activator.isAcceleoMain(resource)) {
 			final List<ILaunchConfiguration> configurations = new ArrayList<ILaunchConfiguration>();
 			final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 			final ILaunchConfigurationType configType = launchManager.getLaunchConfigurationType(
@@ -111,8 +150,8 @@ public class AcceleoLaunchShortcut implements ILaunchShortcut2 {
 					}
 				}
 			} catch (CoreException e) {
-				// TODO: handle exception
-				e.printStackTrace();
+				AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
+						"couldn't get launch configuration for module " + resource.getFullPath(), e));
 			}
 			res = configurations.toArray(new ILaunchConfiguration[configurations.size()]);
 		} else {
@@ -140,19 +179,6 @@ public class AcceleoLaunchShortcut implements ILaunchShortcut2 {
 	@Override
 	public IResource getLaunchableResource(IEditorPart editorpart) {
 		return ResourceUtil.getFile(editorpart.getEditorInput());
-	}
-
-	/**
-	 * Tells if the given resource is a Acceleo {@link Module} with a {@link Template#isMain() main template}.
-	 * 
-	 * @param resource
-	 *            the {@link IResource}
-	 * @return <code>true</code> if the given resource is a Acceleo {@link Module} with a
-	 *         {@link Template#isMain() main template}, <code>false</code> otherwise
-	 */
-	private boolean isAcceleoMain(IResource resource) {
-		// TODO Auto-generated method stub
-		return true;
 	}
 
 }

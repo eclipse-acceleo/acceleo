@@ -65,15 +65,8 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 				enableOkButton = true;
 			} else if (!onlyFileSelection && selected instanceof IContainer) {
 				final IContainer container = (IContainer)selected;
-				final int lastSlashIndex = fileName.lastIndexOf("/");
-				final String newFileName;
-				if (lastSlashIndex >= 0) {
-					newFileName = container.getFullPath().toString() + fileName.substring(lastSlashIndex);
-				} else {
-					newFileName = container.getFullPath().toString() + "/" + fileName;
-				}
-				fileText.setText(newFileName);
-				fileName = newFileName;
+				fileText.setText(container.getFullPath().toString());
+				fileName = container.getFullPath().toString();
 				enableOkButton = true;
 			} else {
 				enableOkButton = false;

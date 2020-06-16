@@ -33,6 +33,11 @@ public final class AcceleoDebugPlugin extends EMFPlugin {
 	public static final int PORT = 4711;
 
 	/**
+	 * The plug-ing ID.
+	 */
+	public static final String ID = "org.eclipse.acceleo.aql.ls.debug.ide";
+
+	/**
 	 * The implementation.
 	 */
 	private static Implementation plugin;

@@ -18,6 +18,13 @@
             description="Run and Debug Acceleo 4 generation"
             id="org.eclipse.acceleo.aql.ls.debug.ide.ui.launchConfigurationTabGroup"
             type="org.eclipse.acceleo.aql.ls.debug.ide.launchConfigurationType">
+         <launchMode
+               mode="run">
+         </launchMode>
+         <launchMode
+               mode="debug"
+               perspective="org.eclipse.debug.ui.DebugPerspective">
+         </launchMode>
       </launchConfigurationTabGroup>
    </extension>
    <extension
@@ -37,6 +44,38 @@
             id="org.eclipse.acceleo.aql.ls.debug.ide.ui.shortcut"
             label="Acceleo 4"
             modes="run, debug">
+         <configurationType
+               id="org.eclipse.acceleo.aql.ls.debug.ide.launchConfigurationType">
+         </configurationType>
+         <contextualLaunch>
+            <contextLabel
+                  label="Run Acceleo 4 generation"
+                  mode="run">
+            </contextLabel>
+            <contextLabel
+                  label="Debug Acceleo 4 generation"
+                  mode="debug">
+            </contextLabel>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <and>
+                           <test
+                                 property="org.eclipse.core.resources.name"
+                                 value="*.mtl">
+                           </test>
+                        </and>
+                     </adapt>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
       </shortcut>
    </extension>
 
