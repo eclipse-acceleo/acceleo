@@ -1,23 +1,23 @@
+stringServices
+	A4-DIFFERS oclAsType: validation error instead of 'invalid' ['test'.oclAsType(Integer)/]
+	A4-DIFFERS toBoolean, toReal, toInteger with incorrect value: validation error instead of 'invalid'
+	A4-UNSUPPORTED oclIsInvalid
 booleanServices
 	A4-DIFFERS oclAsType: validation error instead of 'invalid' [true.oclAsType(String)/]
-	A4-UNSUPPORTED oclIsInvalid
-emfServices
-	A4-DIFFERS oclAsType: validation error instead of 'invalid' [c.oclAsType(String)/]
 	A4-UNSUPPORTED oclIsInvalid
 numericServices
 	A4-DIFFERS Integer.oclAsType: validation error instead of 'invalid' [1.oclAsType(String)/]
 	A4-DIFFERS Real.oclAsType: validation error instead of 'invalid' [var1.oclAsType(String)/]
 	A4-UNSUPPORTED Integer.oclIsInvalid
 	A4-UNSUPPORTED Real.oclIsInvalid
-orderedSetsServices
-	A4-DIFFERS indexOf(invalidArg): returns 0 instead of 'invalid'
-	A4-DIFFERS: validation error instead of 'invalid' [strings.oclAsType(Integer)/]
+emfServices
+	A4-DIFFERS oclAsType: validation error instead of 'invalid' [c.oclAsType(String)/]
 	A4-UNSUPPORTED oclIsInvalid
 sequencesServices
 	A4-DIFFERS indexOf(invalidArg): returns 0 instead of 'invalid'
 	A4-DIFFERS oclAsType: validation error instead of 'invalid' [strings.oclAsType(Integer)/]
 	A4-UNSUPPORTED oclIsInvalid
-stringServices
-	A4-DIFFERS oclAsType: validation error instead of 'invalid' ['test'.oclAsType(Integer)/]
-	A4-DIFFERS toBoolean, toReal, toInteger with incorrect value: validation error instead of 'invalid'
+orderedSetsServices
+	A4-DIFFERS indexOf(invalidArg): returns 0 instead of 'invalid'
+	A4-DIFFERS: validation error instead of 'invalid' [strings.oclAsType(Integer)/]
 	A4-UNSUPPORTED oclIsInvalid

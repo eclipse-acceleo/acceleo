@@ -4,6 +4,11 @@ emfServices
 	 ? eInvoke(operation, arguments)
 	 ? oclIsInState(statespec)
 	(LOT1) check return types of EMF services (eClassifiers returns OrderedSet in A3 and Sequence in A4)
+sequencesServices
+	 ? asBag: order changes
+	 ? asSet: order changes
+	 ? closure
+	(LOT1) test mixed sequences (needs OclAny or something)
 orderedSetsServices
 	 ? asBag: order changes
 	 ? asSet: order changes
@@ -12,11 +17,6 @@ orderedSetsServices
 	 subOrderedSet(lower, upper), 
 	 symmetricDifference(s), 
 	(LOT1) test mixed ordered sets (needs OclAny or something)
-sequencesServices
-	 ? asBag: order changes
-	 ? asSet: order changes
-	 ? closure
-	(LOT1) test mixed sequences (needs OclAny or something)
 
 Differences when evaluated in A4:
 =================================
@@ -27,12 +27,25 @@ orderedSetsServices
 
 Unsupported in A4:
 ==================
+stringServices
+	 at
+	 characters
+	 lineSeparator
+	 oclAsSet
+	 replaceFirst
+	 strtok
+	 substituteFirst
+	 tokenizeLine
 acceleoServices
 	(LOT1) TODO ? OclAny could be replaced by Object but it causes a parser issue [let var : OclAny = self][var/]
 	(LOT1) TODO implement getProperties
 	(LOT1) TODO replace invoke by a direct service call[invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'})/]
 booleanServices
 	 oclAsSet
+numericServices
+	 Integer.oclAsSet
+	 Real.oclAsSet
+	(LOT1) WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
 emfServices
 	 current(element)
 	 current(int)
@@ -45,30 +58,6 @@ emfServices
 	 oclAsSet
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162936/ eGet(feature) [c.eGet(c.eClass().getEStructuralFeature('name'))/]
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162936/ eGet(feature, resolve) [c.eGet(c.eClass().getEStructuralFeature('name'), true)/]
-numericServices
-	 Integer.oclAsSet
-	 Real.oclAsSet
-	(LOT1) WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
-orderedSetsServices
-	 addAll
-	 collectNested
-	 drop
-	 dropRight
-	 endsWith
-	 flatten
-	 indexOfSlice
-	 lastIndexOf
-	 lastIndexOfSlice
-	 max
-	 min
-	 oclAsSet
-	 product
-	 removeAll
-	 selectByKind
-	 selectByType
-	 startsWith
-	(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
-	(LOT1) WIP https://git.eclipse.org/r/#/c/162938/ append
 sequencesServices
 	 addAll
 	 collectNested
@@ -89,12 +78,23 @@ sequencesServices
 	 startsWith
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162938/ append
-stringServices
-	 at
-	 characters
-	 lineSeparator
+orderedSetsServices
+	 addAll
+	 collectNested
+	 drop
+	 dropRight
+	 endsWith
+	 flatten
+	 indexOfSlice
+	 lastIndexOf
+	 lastIndexOfSlice
+	 max
+	 min
 	 oclAsSet
-	 replaceFirst
-	 strtok
-	 substituteFirst
-	 tokenizeLine
+	 product
+	 removeAll
+	 selectByKind
+	 selectByType
+	 startsWith
+	(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
+	(LOT1) WIP https://git.eclipse.org/r/#/c/162938/ append

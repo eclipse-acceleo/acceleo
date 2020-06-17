@@ -11,7 +11,11 @@
 package org.eclipse.acceleo.aql.migration.converters;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.Binding;
@@ -37,6 +41,7 @@ import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.migration.IModuleResolver;
 import org.eclipse.acceleo.aql.migration.MigrationException;
 import org.eclipse.acceleo.aql.migration.converters.utils.TypeUtils;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
@@ -45,11 +50,13 @@ import org.eclipse.acceleo.model.mtl.ModuleElementDocumentation;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.OCLExpression;
+import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 
 /**
@@ -167,7 +174,49 @@ public final class ModuleConverter extends AbstractConverter {
 			outputImport.setModule(moduleReference);
 			outputModule.getImports().add(outputImport);
 		}
+
+		// add imports for invoke()
+		addInvokeImports(inputModule, outputModule);
+
 		return outputModule;
+	}
+
+	private void addInvokeImports(org.eclipse.acceleo.model.mtl.Module inputModule,
+			final Module outputModule) {
+		// TODO this is sub optimal, we should have access to the output Module when migrating
+		// OperationCallExp
+		final Set<String> knownImports = new HashSet<String>();
+		for (Import imp : outputModule.getImports()) {
+			knownImports.add(imp.getModule().getQualifiedName());
+		}
+
+		final List<String> imports = new ArrayList<String>();
+		final Iterator<EObject> it = inputModule.eAllContents();
+		while (it.hasNext()) {
+			final EObject eObj = it.next();
+			if (eObj instanceof OperationCallExp && expressionConverter.isInvokeCall(
+					(OperationCallExp)eObj)) {
+				final OperationCallExp call = (OperationCallExp)eObj;
+				if (call.getArgument().get(0) instanceof StringLiteralExp) {
+					final String toImport = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)call
+							.getArgument().get(0)).getStringSymbol().replace(".",
+									AcceleoParser.QUALIFIER_SEPARATOR);
+					if (!knownImports.contains(toImport)) {
+						knownImports.add(toImport);
+						imports.add(toImport);
+					}
+				}
+			}
+		}
+		Collections.sort(imports);
+
+		for (String toImport : imports) {
+			final Import imp = AcceleoFactory.eINSTANCE.createImport();
+			final ModuleReference moduleRef = AcceleoFactory.eINSTANCE.createModuleReference();
+			imp.setModule(moduleRef);
+			moduleRef.setQualifiedName(toImport);
+			outputModule.getImports().add(imp);
+		}
 	}
 
 	private Object caseTemplate(org.eclipse.acceleo.model.mtl.Template inputTemplate) {

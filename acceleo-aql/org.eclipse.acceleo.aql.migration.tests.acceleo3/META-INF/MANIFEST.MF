@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Acceleo3 Module Runtime Plug-in
 Bundle-SymbolicName: org.eclipse.acceleo.aql.migration.tests.acceleo3
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.eclipse.acceleo.aql.migration.tests.acceleo3.Activator
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.core.runtime, 
  org.eclipse.emf.ecore,
@@ -15,9 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.profiler;bundle-version="3.3.0",
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  com.google.guava
-Bundle-RequiredExecutionEnvironment: JavaSE-11
-Bundle-ActivationPolicy: lazy
-Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: resources.evaluation.dualTemplateCall,
  resources.evaluation.elseletBlock,
  resources.evaluation.emptyBlocks,
@@ -33,6 +30,7 @@ Export-Package: resources.evaluation.dualTemplateCall,
  resources.evaluation.recursiveTemplateInvocation,
  resources.evaluation.templateVariableInitialization,
  resources.evaluation.variables,
+ resources.language.serviceInvocation,
  resources.services.acceleoServices,
  resources.services.booleanServices,
  resources.services.collectionsServices,
@@ -41,4 +39,5 @@ Export-Package: resources.evaluation.dualTemplateCall,
  resources.services.orderedSetsServices,
  resources.services.sequencesServices,
  resources.services.stringServices
+Automatic-Module-Name: org.eclipse.acceleo.aql.migration.tests.acceleo3
 

@@ -36,8 +36,10 @@ import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.ocl.ecore.BooleanLiteralExp;
 import org.eclipse.ocl.ecore.CollectionItem;
 import org.eclipse.ocl.ecore.CollectionLiteralExp;
@@ -222,19 +224,47 @@ public final class ExpressionConverter extends AbstractConverter {
 	}
 
 	private Expression caseOperationCallExp(OperationCallExp input) {
+		final Expression res;
+
 		if ("oclIsUndefined".equals(input.getReferredOperation().getName())) {
 			Call output = AstFactory.eINSTANCE.createCall();
 			output.setServiceName(AstBuilderListener.EQUALS_SERVICE_NAME);
 			output.setType(CallType.CALLSERVICE);
 			output.getArguments().add((Expression)convert(input.getSource()));
 			output.getArguments().add(AstFactory.eINSTANCE.createNullLiteral());
-			return output;
+			res = output;
+		} else if (isInvokeCall(input)) {
+			Call output = OperationUtils.createCall(input);
+			output.setType(CallType.CALLSERVICE);
+			final String serviceSignature = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
+					.getArgument().get(1)).getStringSymbol();
+			final String serviceName = serviceSignature.substring(0, serviceSignature.indexOf("("));
+			output.setServiceName(serviceName);
+			map(((CollectionLiteralExp)input.getArgument().get(2)).getPart(), output.getArguments());
+			res = output;
 		} else {
 			Call output = OperationUtils.createCall(input);
 			output.getArguments().add((Expression)convert(input.getSource()));
 			map(input.getArgument(), output.getArguments());
-			return output;
+			res = output;
 		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link OperationCallExp} is an invoke() call.
+	 * 
+	 * @param input
+	 *            the {@link OperationCallExp}
+	 * @return <code>true</code> if the given OperationCallExp is an invoke() call, <code>false</code>
+	 *         otherwise
+	 */
+	public boolean isInvokeCall(OperationCallExp input) {
+		final EOperation referredOperation = input.getReferredOperation();
+		return referredOperation != null && "invoke".equals(referredOperation.getName()) && referredOperation
+				.eContainer() instanceof EClass && "oclstdlib_OclAny_Class".equals(((EClass)referredOperation
+						.eContainer()).getName());
 	}
 
 	private Expression caseIteratorExp(IteratorExp input) {
