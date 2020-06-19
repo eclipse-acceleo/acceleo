@@ -10,7 +10,6 @@ null
 * Label:
 + 
 * Description:
-AQL Expression completion:
 + 
 * Text:
 + 
@@ -20,7 +19,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 < 
 * Description:
-AQL Expression completion:
 < 
 * Text:
 < 
@@ -30,7 +28,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 <= 
 * Description:
-AQL Expression completion:
 <= 
 * Text:
 <= 
@@ -40,7 +37,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 <> 
 * Description:
-AQL Expression completion:
 <> 
 * Text:
 <> 
@@ -50,7 +46,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 = 
 * Description:
-AQL Expression completion:
 = 
 * Text:
 = 
@@ -60,7 +55,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 > 
 * Description:
-AQL Expression completion:
 > 
 * Text:
 > 
@@ -70,7 +64,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 >= 
 * Description:
-AQL Expression completion:
 >= 
 * Text:
 >= 
@@ -80,7 +73,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 and 
 * Description:
-AQL Expression completion:
 and 
 * Text:
 and 
@@ -90,7 +82,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 implies 
 * Description:
-AQL Expression completion:
 implies 
 * Text:
 implies 
@@ -100,7 +91,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 or 
 * Description:
-AQL Expression completion:
 or 
 * Text:
 or 
@@ -110,7 +100,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 * Label:
 xor 
 * Description:
-AQL Expression completion:
 xor 
 * Text:
 xor 

@@ -12,6 +12,7 @@ package org.eclipse.acceleo.aql.completion;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -58,8 +59,15 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
+import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.EOperationServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -69,7 +77,74 @@ import org.eclipse.emf.ecore.EPackage;
  * 
  * @author Florent Latombe
  */
+@SuppressWarnings("restriction")
 public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionProposal>> {
+
+	/**
+	 * {@link Comparator} for {@link ICompletionProposal}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static class ProposalComparator implements Comparator<ICompletionProposal> {
+
+		@Override
+		public int compare(ICompletionProposal o1, ICompletionProposal o2) {
+			final int res;
+
+			final int value1 = getValue(o1);
+			final int value2 = getValue(o2);
+
+			if (o1 instanceof IServiceCompletionProposal && o2 instanceof IServiceCompletionProposal) {
+				res = ((IServiceCompletionProposal)o1).getObject().getShortSignature().compareTo(
+						((IServiceCompletionProposal)o2).getObject().getShortSignature());
+			} else if (value1 > value2) {
+				res = 1;
+			} else if (value1 < value2) {
+				res = -1;
+			} else if (o1 != null && o2 != null) {
+				res = o1.getProposal().compareTo(o2.getProposal());
+			} else {
+				res = 0;
+			}
+
+			return res;
+		}
+
+		/**
+		 * Gets a value order for the given {@link ICompletionProposal}.
+		 * 
+		 * @param proposal
+		 *            the {@link ICompletionProposal}
+		 * @return a value order for the given {@link ICompletionProposal}
+		 */
+		private int getValue(ICompletionProposal proposal) {
+			final int res;
+
+			if (proposal instanceof VariableCompletionProposal
+					|| proposal instanceof VariableDeclarationCompletionProposal) {
+				res = 0;
+			} else if (proposal instanceof EFeatureCompletionProposal) {
+				res = 1;
+			} else if (proposal instanceof IServiceCompletionProposal
+					|| proposal instanceof EOperationServiceCompletionProposal) {
+				res = 2;
+			} else if (proposal instanceof EClassifierCompletionProposal
+					|| proposal instanceof EEnumLiteralCompletionProposal
+					|| proposal instanceof EFeatureCompletionProposal) {
+				res = 3;
+			} else {
+				res = 4;
+			}
+
+			return res;
+		}
+
+	}
+
+	/**
+	 * The comparator of {@link ICompletionProposal}.
+	 */
+	private static final Comparator<ICompletionProposal> COMPLETION_PROPOSAL_COMPARATOR = new ProposalComparator();
 
 	/**
 	 * A space.
@@ -654,9 +729,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			IValidationResult aqlValidationResult) {
 		List<ICompletionProposal> aqlProposals = aqlCompletor.getProposals(variableNames,
 				aqlValidationResult);
+		Collections.sort(aqlProposals, COMPLETION_PROPOSAL_COMPARATOR);
 		List<AcceleoCompletionProposal> aqlProposalsAsAcceleoProposals = aqlProposals.stream().map(
-				AcceleoAstCompletor::transform).sorted((left, right) -> left.getLabel().compareTo(right
-						.getLabel())).collect(Collectors.toList());
+				AcceleoAstCompletor::transform).collect(Collectors.toList());
 		return aqlProposalsAsAcceleoProposals;
 	}
 
@@ -668,9 +743,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 * @return the corresponding {@link AcceleoCompletionProposal}.
 	 */
 	private static AcceleoCompletionProposal transform(ICompletionProposal aqlCompletionProposal) {
-		return new AcceleoCompletionProposal(aqlCompletionProposal.getProposal(),
-				"AQL Expression completion:\n" + aqlCompletionProposal.getProposal(), aqlCompletionProposal
-						.getProposal(), AcceleoPackage.Literals.EXPRESSION);
+		return new AcceleoCompletionProposal(aqlCompletionProposal.getProposal(), aqlCompletionProposal
+				.getDescription().replace("\n", "<br>"), aqlCompletionProposal.getProposal(),
+				AcceleoPackage.Literals.EXPRESSION);
 	}
 
 }

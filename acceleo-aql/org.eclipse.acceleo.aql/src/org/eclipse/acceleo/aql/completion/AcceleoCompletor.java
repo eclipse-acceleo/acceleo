@@ -29,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class AcceleoCompletor {
 
 	/**
