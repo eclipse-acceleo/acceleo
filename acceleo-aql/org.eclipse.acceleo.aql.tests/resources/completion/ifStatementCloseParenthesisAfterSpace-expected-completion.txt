@@ -1,11 +1,11 @@
 * Label:
-]
+)]
 * Description:
-Inserts the end of a Let Statement header:<br/><pre>]</pre>
+Inserts the closing parenthesis and end of an If Statement header:<br/><pre>)]</pre>
 * Text:
-]
+)]
 * Type (optional):
-http://www.eclipse.org/acceleo/4.0#//LetStatement
+http://www.eclipse.org/acceleo/4.0#//IfStatement
 
 * Label:
 + 

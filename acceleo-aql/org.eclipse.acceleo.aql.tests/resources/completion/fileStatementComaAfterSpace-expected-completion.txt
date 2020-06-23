@@ -1,13 +1,4 @@
 * Label:
-]
-* Description:
-Inserts the end of a Let Statement header:<br/><pre>]</pre>
-* Text:
-]
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//LetStatement
-
-* Label:
 + 
 * Description:
 + 
@@ -71,38 +62,11 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
-and 
+,
 * Description:
-and 
+Inserts the following text: <pre>, </pre>
 * Text:
-and 
+, 
 * Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-implies 
-* Description:
-implies 
-* Text:
-implies 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-or 
-* Description:
-or 
-* Text:
-or 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-xor 
-* Description:
-xor 
-* Text:
-xor 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
+null
 

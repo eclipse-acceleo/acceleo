@@ -8,101 +8,11 @@ Inserts the following text: <pre>)</pre>
 null
 
 * Label:
-+ 
+null
 * Description:
-+ 
+null
 * Text:
-+ 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-< 
-* Description:
-< 
-* Text:
-< 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-<= 
-* Description:
-<= 
-* Text:
-<= 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-<> 
-* Description:
-<> 
-* Text:
-<> 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-= 
-* Description:
-= 
-* Text:
-= 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-> 
-* Description:
-> 
-* Text:
-> 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
->= 
-* Description:
->= 
-* Text:
->= 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-and 
-* Description:
-and 
-* Text:
-and 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-implies 
-* Description:
-implies 
-* Text:
-implies 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-or 
-* Description:
-or 
-* Text:
-or 
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-xor 
-* Description:
-xor 
-* Text:
-xor 
+null
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 

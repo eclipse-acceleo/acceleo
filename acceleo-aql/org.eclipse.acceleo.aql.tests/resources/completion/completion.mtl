@@ -11,21 +11,21 @@
  * <<queryComment>>@param myParam the input EPackage<<queryCommentAfterParameters>>
 */]
 <<moduleElementAndImport>>
-[query <<queryVisibility>>public <<queryName>>myQuery<<queryOpenParenthesis>>(<<queryVariableName>>myParam <<queryVariableColon>>: <<queryVariableType>>ecore::EPackage<<queryCloseParenthesis>>) <<queryColon>>: <<queryType>>ecore::EClassifier <<queryEqual>>= <<queryExpression>>myParam.<<queryExpressionAfterDot>>eClassifiers->first()<<queryEndHeader>>/]
+[query <<queryVisibility>>public <<queryName>>myQuery<<queryOpenParenthesis>>(<<queryVariableName>>myParam <<queryVariableColon>>: <<queryVariableType>>ecore::EPackage<<queryCloseParenthesis>>) <<queryColon>>: <<queryType>>ecore::EClassifier <<queryEqual>>= <<queryExpression>>myParam.<<queryExpressionAfterDot>>eClassifiers->first()<<queryEndHeader>> <<queryEndHeaderAfterSpace>>/]
 
 [**
  * My template has a nice comment.
  * <<templateComment>>@param myParam the input EPackage<<templateCommentAfterParameters>>
 */]
-[template <<templateVisibility>>public <<templateName>>myTemplate<<templateOpenParenthesis>>(<<templateVariableName>>myParam <<templateVariableColon>>: <<templateVariableType>>ecore::EPackage<<templateCloseParenthesis>>) ? <<templateGuardOpenParenthesis>>(<<templateGuardExpression>>myParam.<<templateGuardExpressionAfterDot>>name <> null<<templateGuardCloseParenthesis>>) <<templatePost>>post(<<templatePostExpression>>self.<<templatePostExpressionAfterDot>>trim()<<templatePostCloseParenthesis>>) <<templateEndHeader>>]
+[template <<templateVisibility>>public <<templateName>>myTemplate<<templateOpenParenthesis>>(<<templateVariableName>>myParam <<templateVariableColon>>: <<templateVariableType>>ecore::EPackage<<templateCloseParenthesis>>) ? <<templateGuardOpenParenthesis>>(<<templateGuardExpression>>myParam.<<templateGuardExpressionAfterDot>>name <> null<<templateGuardCloseParenthesis>> <<templateGuardCloseParenthesisAfterSpace>>) <<templatePost>>post(<<templatePostExpression>>self.<<templatePostExpressionAfterDot>>trim()<<templatePostCloseParenthesis>> <<templatePostCloseParenthesisAfterSpace>>)<<templateEndHeader>> <<templateEndHeaderAfterSpace>>]
   <<statementInTemplate>>
   some static text.
-  [<<queryStatementExpression>>myParam.<<queryStatementExpressionAfterDot>>name + '.txt'<<queryStatementEnd>>/]
-  [file <<fileStatementOpenParenthesis>>(<<fileStatementExpression>>myParam.<<fileStatementExpressionAfterDot>>name + '.txt'<<fileStatementComa>>, <<fileStatementOpenModeKind>>overwrite<<fileStatementCloseParenthesis>>)<<fileStatementEndHeader>>]
+  [<<queryStatementExpression>>myParam.<<queryStatementExpressionAfterDot>>n<<queryStatementExpressionAfterN>>ame + '.txt'<<queryStatementEnd>> <<queryStatementEndAfterSpace>>/]
+  [file <<fileStatementOpenParenthesis>>(<<fileStatementExpression>>myParam.<<fileStatementExpressionAfterDot>>name + '.txt'<<fileStatementComa>> <<fileStatementComaAfterSpace>>, <<fileStatementOpenModeKind>>overwrite<<fileStatementCloseParenthesis>>)<<fileStatementEndHeader>>]
     <<statementInFileStatement>>
     some static text.
   [/file]
-  [for <<forStatementOpenParenthesis>>(<<forStatementBindingName>>myVariable <<forStatementBindingColon>>: <<forStatementBindingType>>ecore::EClassifier <<forStatementBindingPipe>>| <<forStatementBindingExpression>>myParam.<<forStatementBindingExpressionAfterDot>>eClassifiers<<forStatementCloseParenthesis>>)<<forStatementEndHeader>>]
+  [for <<forStatementOpenParenthesis>>(<<forStatementBindingName>>myVariable <<forStatementBindingColon>>: <<forStatementBindingType>>ecore::EClassifier <<forStatementBindingPipe>>| <<forStatementBindingExpression>>myParam.<<forStatementBindingExpressionAfterDot>>eClassifiers<<forStatementCloseParenthesis>> <<forStatementCloseParenthesisAfterSpace>>)<<forStatementEndHeader>>]
     <<statementInForStatement>>
     some static text.
   [/for]
@@ -33,21 +33,21 @@
     <<statementInForStatement>>
     some static text.
   [/for]
-  [if <<ifStatementOpenParenthesis>>(<<ifStatementExpression>>myParam.<<ifStatementExpressionAfterDot>>eClassifiers->size() = 0<<ifStatementCloseParenthesis>>)<<ifStatementEndHeader>>]
+  [if <<ifStatementOpenParenthesis>>(<<ifStatementExpression>>myParam.<<ifStatementExpressionAfterDot>>eClassifiers->size() = 0<<ifStatementCloseParenthesis>> <<ifStatementCloseParenthesisAfterSpace>>)<<ifStatementEndHeader>>]
     <<statementInIfStatementThen>>
     some static text.
-  [elseif <<ifStatementElseIfOpenParenthesis>>(<<ifStatementElseIfExpression>>myParam.<<ifStatementElseIfExpressionAfterDot>>eClassifiers->size() > 2<<ifStatementElseIfCloseParenthesis>>)<<ifStatementElseIfEndHeader>>]
+  [elseif <<ifStatementElseIfOpenParenthesis>>(<<ifStatementElseIfExpression>>myParam.<<ifStatementElseIfExpressionAfterDot>>eClassifiers->size() > 2<<ifStatementElseIfCloseParenthesis>> <<ifStatementElseIfCloseParenthesisAfterSpace>>)<<ifStatementElseIfEndHeader>>]
     <<statementInIfStatementElseIf>>
     some different static text.
   [else]
     <<statementInIfStatementElse>>
     yet some different static text again.
   [/if]
-  [let <<letStatementBindingName>>myVariable <<letStatementBindingColon>>: <<letStatementBindingType>>ecore::EClassifier <<letStatementBindingEqual>>= <<letStatementBindingExpression>>myParam.<<letStatementBindingExpressionAfterDot>>eClassifiers->first()<<letStatementEndHeader>>]
+  [let <<letStatementBindingName>>myVariable <<letStatementBindingColon>>: <<letStatementBindingType>>ecore::EClassifier <<letStatementBindingEqual>>= <<letStatementBindingExpression>>myParam.<<letStatementBindingExpressionAfterDot>>eClassifiers->first()<<letStatementEndHeader>> <<letStatementEndHeaderAfterSpace>>]
     <<statementInLetStatement>>
     some static text.
   [/let]
-  [protected <<protectedAreaOpenParenthesis>>(<<protectedAreaExpression>>myParam.name<<protectedAreaCloseParenthesis>>)<<protectedAreaEndHeader>>]
+  [protected <<protectedAreaOpenParenthesis>>(<<protectedAreaExpression>>myParam.name<<protectedAreaCloseParenthesis>> <<protectedAreaCloseParenthesisAfterSpace>>)<<protectedAreaEndHeader>>]
     <<statementInProtectedArea>>
     some static text.
   [/protected]
@@ -55,7 +55,7 @@
     [let myVariable2 : ecore::EClassifier = myParam.eClassifiers->first()]
       [for (myVariable3 : ecore::EClassifier | myParam.eClassifiers)]
         [for (myVariable4 : ecore::EClassifier | myParam.eClassifiers)]
-          [<<nestedQueryStatementExpression>>myParam.<<nestedQueryStatementExpressionAfterDot>>name + '.txt'/]
+          [<<nestedQueryStatementExpression>>myParam.<<nestedQueryStatementExpressionAfterDot>>name + '.txt'<<nestedQueryStatementExpressionEnd>> <<nestedQueryStatementExpressionEndAfterSpace>>/]
         [/for]
       [/for]
     [/let]

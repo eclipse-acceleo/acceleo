@@ -13,8 +13,10 @@ package org.eclipse.acceleo.aql.completion;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,16 +61,22 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.impl.BasicFilter;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
+import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -162,14 +170,24 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private final IAcceleoValidationResult acceleoValidationResult;
 
 	/**
+	 * The {@link QueryCompletionEngine}.
+	 */
+	private final QueryCompletionEngine aqlCompletionEngine;
+
+	/**
 	 * The {@link AstCompletor}.
 	 */
-	private final AstCompletor aqlCompletor;
+	private final AstCompletor astCompletor;
 
 	/**
 	 * The {@link AcceleoCompletionProposalsProvider}.
 	 */
 	private final AcceleoCompletionProposalsProvider acceleoCompletionProposalProvider;
+
+	/**
+	 * The module source fragment.
+	 */
+	private String moduleSourceFragment;
 
 	/**
 	 * Constructor.
@@ -184,9 +202,25 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		this.acceleoEnvironment = Objects.requireNonNull(acceleoEnvironment);
 		this.acceleoValidationResult = Objects.requireNonNull(acceleoValidationResult);
 
-		this.aqlCompletor = new AstCompletor(new CompletionServices(this.acceleoEnvironment
+		this.astCompletor = new AstCompletor(new CompletionServices(this.acceleoEnvironment
 				.getQueryEnvironment()));
+		this.aqlCompletionEngine = new QueryCompletionEngine(this.acceleoEnvironment.getQueryEnvironment());
 		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider(acceleoEnvironment);
+	}
+
+	/**
+	 * Get the {@link List} of {@link AcceleoCompletionProposal} for the given acceleo element.
+	 * 
+	 * @param sourceFragment
+	 *            the module source code
+	 * @param acceleoElementToComplete
+	 *            the acceleo element to complete
+	 * @return the {@link List} of {@link AcceleoCompletionProposal} for the given acceleo element
+	 */
+	public List<AcceleoCompletionProposal> getCompletion(String sourceFragment,
+			EObject acceleoElementToComplete) {
+		this.moduleSourceFragment = sourceFragment;
+		return doSwitch(acceleoElementToComplete);
 	}
 
 	@Override
@@ -362,21 +396,23 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			completionProposals.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 		} else if (errorTemplate.getGuard() != null && errorTemplate.getGuard().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			completionProposals.addAll(this.getAqlCompletionProposals(getVariableNames(errorTemplate),
+			completionProposals.addAll(this.getAqlCompletionProposals(getVariables(errorTemplate),
 					acceleoValidationResult.getValidationResult(errorTemplate.getGuard().getAst())));
 		} else if (errorTemplate.getMissingGuardCloseParenthesis() != -1) {
 			completionProposals.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
-			completionProposals.addAll(this.getAqlCompletionProposals(getVariableNames(errorTemplate),
+			completionProposals.addAll(this.getAqlCompletionProposals(getVariables(errorTemplate),
 					acceleoValidationResult.getValidationResult(errorTemplate.getGuard().getAst())));
 		} else if (errorTemplate.getPost() != null && errorTemplate.getPost().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			final Set<String> variableNames = new LinkedHashSet<String>();
-			variableNames.add("self");
-			completionProposals.addAll(getAqlCompletionProposals(variableNames, acceleoValidationResult
+			final Map<String, Set<IType>> variables = new HashMap<String, Set<IType>>();
+			final Set<IType> possibleTypes = Collections.singleton(new ClassType(acceleoEnvironment
+					.getQueryEnvironment(), String.class));
+			variables.put("self", possibleTypes);
+			completionProposals.addAll(getAqlCompletionProposals(variables, acceleoValidationResult
 					.getValidationResult(errorTemplate.getPost().getAst())));
 		} else if (errorTemplate.getMissingPostCloseParenthesis() != -1) {
 			completionProposals.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
-			completionProposals.addAll(this.getAqlCompletionProposals(getVariableNames(errorTemplate),
+			completionProposals.addAll(this.getAqlCompletionProposals(getVariables(errorTemplate),
 					acceleoValidationResult.getValidationResult(errorTemplate.getPost().getAst())));
 		} else if (errorTemplate.getMissingEndHeader() != -1) {
 			completionProposals.add(AcceleoSyntacticCompletionProposals.TEMPLATE_HEADER_END);
@@ -434,17 +470,19 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		} else if (errorQuery.getMissingColon() != -1) {
 			completionProposals.add(AcceleoSyntacticCompletionProposals.COLON_SPACE);
 		} else if (errorQuery.getMissingType() != -1) {
-			completionProposals.addAll(getAqlCompletionProposals(Collections.<String> emptySet(),
-					acceleoValidationResult.getValidationResult(errorQuery.getType())));
+			final IValidationResult typeValidation = acceleoValidationResult.getValidationResult(errorQuery
+					.getType());
+			completionProposals.addAll(astCompletor.getProposals(Collections.emptySet(), typeValidation)
+					.stream().map(AcceleoAstCompletor::transform).collect(Collectors.toList()));
 		} else if (errorQuery.getMissingEqual() != -1) {
 			completionProposals.add(AcceleoSyntacticCompletionProposals.EQUAL_SPACE);
 		} else if (errorQuery.getBody().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			completionProposals.addAll(this.getAqlCompletionProposals(getVariableNames(errorQuery),
+			completionProposals.addAll(this.getAqlCompletionProposals(getVariables(errorQuery),
 					acceleoValidationResult.getValidationResult(errorQuery.getBody().getAst())));
 		} else if (errorQuery.getMissingEnd() != -1) {
 			completionProposals.add(AcceleoSyntacticCompletionProposals.QUERY_END);
 			// Before the end of a query, there is the value expression, which is valid in this case.
-			completionProposals.addAll(this.getAqlCompletionProposals(getVariableNames(errorQuery),
+			completionProposals.addAll(this.getAqlCompletionProposals(getVariables(errorQuery),
 					acceleoValidationResult.getValidationResult(errorQuery.getBody().getAst())));
 		}
 
@@ -460,8 +498,10 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		} else if (errorVariable.getMissingColon() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.COLON_SPACE);
 		} else if (errorVariable.getMissingType() != -1) {
-			res.addAll(this.getAqlCompletionProposals(Collections.<String> emptySet(), acceleoValidationResult
-					.getValidationResult(errorVariable.getType())));
+			final IValidationResult typeValidation = acceleoValidationResult.getValidationResult(errorVariable
+					.getType());
+			res.addAll(astCompletor.getProposals(Collections.emptySet(), typeValidation).stream().map(
+					AcceleoAstCompletor::transform).collect(Collectors.toList()));
 		}
 
 		return res;
@@ -472,43 +512,45 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 
 		if (errorExpression.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorExpression),
-					acceleoValidationResult.getValidationResult(errorExpression.getAst())));
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorExpression), acceleoValidationResult
+					.getValidationResult(errorExpression.getAst())));
 		}
 
 		return res;
 	}
 
 	/**
-	 * Gets the {@link Set} of {@link String variable name} in the scope of the given {@link ASTNode}.
+	 * Gets the mapping of {@link String variable name} to its possible {@link IType} in the scope of the
+	 * given {@link ASTNode}.
 	 * 
 	 * @param scope
 	 *            the {@link ASTNode} scope
-	 * @return the {@link Set} of {@link String variable name} in the scope of the given {@link ASTNode}
+	 * @return the mapping of {@link String variable name} to its possible {@link IType} in the scope of the
+	 *         given {@link ASTNode}
 	 */
-	private Set<String> getVariableNames(ASTNode scope) {
-		final List<String> res = new ArrayList<String>();
+	private Map<String, Set<IType>> getVariables(ASTNode scope) {
+		final Map<String, Set<IType>> res = new HashMap<String, Set<IType>>();
 
 		ASTNode currentScope = scope;
 		while (currentScope != null) {
 			if (currentScope instanceof Template) {
 				final Template template = (Template)currentScope;
 				for (Variable variable : template.getParameters()) {
-					res.add(variable.getName());
+					res.put(variable.getName(), getPossibleTypes(variable));
 				}
 			} else if (currentScope instanceof Query) {
 				final Query query = (Query)currentScope;
 				for (Variable variable : query.getParameters()) {
-					res.add(variable.getName());
+					res.put(variable.getName(), getPossibleTypes(variable));
 				}
 			} else if (currentScope instanceof LetStatement) {
 				final LetStatement let = (LetStatement)currentScope;
 				for (Variable variable : let.getVariables()) {
-					res.add(variable.getName());
+					res.put(variable.getName(), getPossibleTypes(variable));
 				}
 			} else if (currentScope instanceof ForStatement) {
 				final ForStatement forStatement = (ForStatement)currentScope;
-				res.add(forStatement.getBinding().getName());
+				res.put(forStatement.getBinding().getName(), getPossibleTypes(forStatement.getBinding()));
 			}
 
 			if (currentScope.eContainer() instanceof ASTNode) {
@@ -518,9 +560,50 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			}
 		}
 
-		Collections.sort(res);
+		return res;
+	}
 
-		return new LinkedHashSet<String>(res);
+	/**
+	 * Gets the {@link Set} of possible {@link IType} for the given {@link Variable}.
+	 * 
+	 * @param variable
+	 *            the {@link Variable}
+	 * @return the {@link Set} of possible {@link IType} for the given {@link Variable}
+	 */
+	private LinkedHashSet<IType> getPossibleTypes(Variable variable) {
+		final LinkedHashSet<IType> res = new LinkedHashSet<IType>();
+
+		final IValidationResult validationResult = acceleoValidationResult.getValidationResult(variable
+				.getType());
+		if (variable.getType() != null) {
+			res.addAll(validationResult.getPossibleTypes(variable.getType().getAst()));
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Set} of possible {@link IType} for the given {@link Variable}.
+	 * 
+	 * @param binding
+	 *            the {@link Variable}
+	 * @return the {@link Set} of possible {@link IType} for the given {@link Variable}
+	 */
+	private LinkedHashSet<IType> getPossibleTypes(Binding binding) {
+		final LinkedHashSet<IType> res;
+
+		if (binding.getInitExpression() != null) {
+			final IValidationResult validationResult = acceleoValidationResult.getValidationResult(binding
+					.getInitExpression().getAst());
+			res = new LinkedHashSet<IType>();
+			if (binding.getType() != null) {
+				res.addAll(validationResult.getPossibleTypes(binding.getInitExpression().getAst().getAst()));
+			}
+		} else {
+			res = getPossibleTypes((Variable)binding);
+		}
+
+		return res;
 	}
 
 	@Override
@@ -536,8 +619,8 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		} else if (errorBinding.getMissingType() != -1) {
 			final IValidationResult typeValidationResult = acceleoValidationResult.getValidationResult(
 					errorBinding.getType());
-			completionProposals.addAll(this.getAqlCompletionProposals(Collections.<String> emptySet(),
-					typeValidationResult));
+			completionProposals.addAll(astCompletor.getProposals(Collections.emptySet(), typeValidationResult)
+					.stream().map(AcceleoAstCompletor::transform).collect(Collectors.toList()));
 		} else if (errorBinding.getMissingAffectationSymbolePosition() != -1) {
 			if (errorBinding.getType() == null && errorBinding.getTypeAql() == null) {
 				completionProposals.add(AcceleoSyntacticCompletionProposals.COLON_SPACE);
@@ -546,7 +629,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 					errorBinding.getMissingAffectationSymbole() + SPACE, AcceleoPackage.Literals.BINDING));
 		} else if (errorBinding.getInitExpression().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			completionProposals.addAll(this.getAqlCompletionProposals(getVariableNames(errorBinding),
+			completionProposals.addAll(this.getAqlCompletionProposals(getVariables(errorBinding),
 					acceleoValidationResult.getValidationResult(errorBinding.getInitExpression().getAst())));
 		}
 
@@ -560,11 +643,11 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 
 		if (errorExpressionStatement.getExpression().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorExpressionStatement),
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorExpressionStatement),
 					acceleoValidationResult.getValidationResult(errorExpressionStatement.getExpression()
 							.getAst())));
 		} else if (errorExpressionStatement.getMissingEndHeader() != -1) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorExpressionStatement),
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorExpressionStatement),
 					acceleoValidationResult.getValidationResult(errorExpressionStatement.getExpression()
 							.getAst())));
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_EXPRESSION_END);
@@ -581,10 +664,10 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 		} else if (errorProtectedArea.getId().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorProtectedArea),
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorProtectedArea),
 					acceleoValidationResult.getValidationResult(errorProtectedArea.getId().getAst())));
 		} else if (errorProtectedArea.getMissingCloseParenthesis() != -1) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorProtectedArea),
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorProtectedArea),
 					acceleoValidationResult.getValidationResult(errorProtectedArea.getId().getAst())));
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_HEADER_CLOSE_PARENTHESIS_AND_END);
 		} else if (errorProtectedArea.getMissingEndHeader() != -1) {
@@ -612,12 +695,12 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			if (errorForStatement.getSeparator() == null) {
 				res.add(AcceleoSyntacticCompletionProposals.STATEMENT_FOR_HEADER_SEPARATOR);
 			}
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorForStatement),
-					acceleoValidationResult.getValidationResult(errorForStatement.getBinding().getType())));
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorForStatement), acceleoValidationResult
+					.getValidationResult(errorForStatement.getBinding().getType())));
 		} else if (errorForStatement.getSeparator() != null && errorForStatement.getSeparator().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorForStatement),
-					acceleoValidationResult.getValidationResult(errorForStatement.getSeparator().getAst())));
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorForStatement), acceleoValidationResult
+					.getValidationResult(errorForStatement.getSeparator().getAst())));
 		} else if (errorForStatement.getMissingSeparatorCloseParenthesis() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_FOR_HEADER_CLOSE_PARENTHESIS_AND_END);
 		} else if (errorForStatement.getMissingEndHeader() != -1) {
@@ -641,12 +724,12 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 		} else if (errorIfStatement.getCondition().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorIfStatement),
-					acceleoValidationResult.getValidationResult(errorIfStatement.getCondition().getAst())));
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorIfStatement), acceleoValidationResult
+					.getValidationResult(errorIfStatement.getCondition().getAst())));
 		} else if (errorIfStatement.getMissingCloseParenthesis() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_IF_HEADER_CLOSE_PARENTHESIS_AND_END);
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorIfStatement),
-					acceleoValidationResult.getValidationResult(errorIfStatement.getCondition().getAst())));
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorIfStatement), acceleoValidationResult
+					.getValidationResult(errorIfStatement.getCondition().getAst())));
 		} else if (errorIfStatement.getMissingEndHeader() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_IF_HEADER_END);
 		} else if (errorIfStatement.getMissingEnd() != -1) {
@@ -675,7 +758,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			completionProposals.add(AcceleoSyntacticCompletionProposals.STATEMENT_LET_HEADER_END);
 
 			List<Binding> bindings = errorLetStatement.getVariables();
-			completionProposals.addAll(this.getAqlCompletionProposals(getVariableNames(errorLetStatement),
+			completionProposals.addAll(this.getAqlCompletionProposals(getVariables(errorLetStatement),
 					acceleoValidationResult.getValidationResult(bindings.get(bindings.size() - 1)
 							.getType())));
 		} else if (errorLetStatement.getMissingEnd() != -1) {
@@ -694,10 +777,10 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 		} else if (errorFileStatement.getUrl().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorFileStatement),
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorFileStatement),
 					acceleoValidationResult.getValidationResult(errorFileStatement.getUrl().getAst())));
 		} else if (errorFileStatement.getMissingComma() != -1) {
-			res.addAll(this.getAqlCompletionProposals(getVariableNames(errorFileStatement),
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorFileStatement),
 					acceleoValidationResult.getValidationResult(errorFileStatement.getUrl().getAst())));
 			res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
 		} else if (errorFileStatement.getMissingOpenMode() != -1) {
@@ -718,19 +801,25 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 * Retrieves the AQL completion proposals and transforms them into the corresponding Acceleo completion
 	 * proposals.
 	 * 
-	 * @param variableNames
+	 * @param variables
 	 *            see {@link AstCompletor#getProposals(Set, IValidationResult)}.
 	 * @param aqlValidationResult
 	 *            see {@link AstCompletor#getProposals(Set, IValidationResult)}.
 	 * @return the {@link List} of {@link AcceleoCompletionProposal} corresponding to the AQL completion
 	 *         proposals.
 	 */
-	private List<AcceleoCompletionProposal> getAqlCompletionProposals(Set<String> variableNames,
+	private List<AcceleoCompletionProposal> getAqlCompletionProposals(Map<String, Set<IType>> variables,
 			IValidationResult aqlValidationResult) {
-		List<ICompletionProposal> aqlProposals = aqlCompletor.getProposals(variableNames,
-				aqlValidationResult);
+		final int startPosition = acceleoValidationResult.getAcceleoAstResult().getStartPosition(
+				aqlValidationResult.getAstResult().getAst());
+		final String expression = moduleSourceFragment.substring(startPosition, moduleSourceFragment
+				.length());
+		final ICompletionResult completionResult = aqlCompletionEngine.getCompletion(expression, expression
+				.length(), variables);
+		final List<ICompletionProposal> aqlProposals = completionResult.getProposals(new BasicFilter(
+				completionResult));
 		Collections.sort(aqlProposals, COMPLETION_PROPOSAL_COMPARATOR);
-		List<AcceleoCompletionProposal> aqlProposalsAsAcceleoProposals = aqlProposals.stream().map(
+		final List<AcceleoCompletionProposal> aqlProposalsAsAcceleoProposals = aqlProposals.stream().map(
 				AcceleoAstCompletor::transform).collect(Collectors.toList());
 		return aqlProposalsAsAcceleoProposals;
 	}

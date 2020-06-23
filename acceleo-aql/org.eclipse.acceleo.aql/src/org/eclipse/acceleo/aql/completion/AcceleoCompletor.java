@@ -66,7 +66,8 @@ public class AcceleoCompletor {
 		// Find which element of the AST we are completing.
 		EObject acceleoElementToComplete = getElementToComplete(partialAcceleoAstResult);
 
-		return this.getProposals(acceleoEnvironment, acceleoValidationResult, acceleoElementToComplete);
+		return this.getProposals(acceleoEnvironment, partialAcceleoSource, acceleoValidationResult,
+				acceleoElementToComplete);
 	}
 
 	/**
@@ -75,6 +76,8 @@ public class AcceleoCompletor {
 	 * 
 	 * @param acceleoEnvironment
 	 *            the (non-{@code null}) contextual {@link IAcceleoEnvironment}.
+	 * @param sourceFragment
+	 *            the module source fragment
 	 * @param acceleoValidationResult
 	 *            the (non-{@code null}) contextual {@link IAcceleoValidationResult}.
 	 * @param acceleoElementToComplete
@@ -82,13 +85,15 @@ public class AcceleoCompletor {
 	 * @return the {@link List} of {@link AcceleoCompletionProposal}.
 	 */
 	protected List<AcceleoCompletionProposal> getProposals(IAcceleoEnvironment acceleoEnvironment,
-			IAcceleoValidationResult acceleoValidationResult, EObject acceleoElementToComplete) {
+			String sourceFragment, IAcceleoValidationResult acceleoValidationResult,
+			EObject acceleoElementToComplete) {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		AcceleoAstCompletor acceleoSyntaxCompletor = new AcceleoAstCompletor(acceleoEnvironment,
 				acceleoValidationResult);
 
-		completionProposals.addAll(acceleoSyntaxCompletor.doSwitch(acceleoElementToComplete));
+		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(sourceFragment,
+				acceleoElementToComplete));
 
 		return completionProposals;
 	}
