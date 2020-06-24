@@ -133,43 +133,7 @@ public class EPackageProvider implements IEPackageProvider {
 	}
 
 	/**
-	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage}s having the
-	 * given {@link EPackage#getName() name}.
-	 * 
-	 * @param name
-	 *            the {@link EPackage#getName() name}
-	 * @return the list of removed {@link EPackage}
-	 * @deprecated
-	 */
-	public Collection<EPackage> removePackage(String name) {
-		final Collection<EPackage> res;
-
-		final Collection<EPackage> removed = ePackages.remove(name);
-		if (removed != null) {
-			res = removed;
-			for (EPackage ePackage : removed) {
-				for (EClassifier eCls : ePackage.getEClassifiers()) {
-					removeEClassifierClass(eCls);
-					if (eCls instanceof EClass) {
-						removeFeatures((EClass)eCls);
-						removeSubType((EClass)eCls);
-					}
-				}
-				for (EPackage childPkg : ePackage.getESubpackages()) {
-					removePackage(childPkg.getName());
-				}
-				containingFeatures.clear();
-				allContainingFeatures.clear();
-			}
-		} else {
-			res = new LinkedHashSet<EPackage>();
-		}
-
-		return res;
-	}
-
-	/**
-	 * Removes the given {@link EClass} as been a sub tpye of its {@link EClass#getESuperTypes() super types}.
+	 * Removes the given {@link EClass} as been a sub type of its {@link EClass#getESuperTypes() super types}.
 	 * 
 	 * @param eCls
 	 *            the {@link EClass}
@@ -437,8 +401,8 @@ public class EPackageProvider implements IEPackageProvider {
 					if (result == null) {
 						result = foundClassifier;
 					} else {
-						String firstFullyQualifiedName = result.getEPackage().getName() + "."
-								+ result.getName();
+						String firstFullyQualifiedName = result.getEPackage().getName() + "." + result
+								.getName();
 						String secondFullyQualifiedName = foundClassifier.getEPackage().getName() + "."
 								+ foundClassifier.getName();
 						String message = "Ambiguous classifier request. At least two classifiers matches %s : %s and %s";
@@ -689,7 +653,8 @@ public class EPackageProvider implements IEPackageProvider {
 				for (EStructuralFeature feature : previousAdded) {
 					final EClass eContainingClass = feature.getEContainingClass();
 					if (!knownECls.contains(eContainingClass)) {
-						for (EStructuralFeature parentFeature : getContainingEStructuralFeatures(eContainingClass)) {
+						for (EStructuralFeature parentFeature : getContainingEStructuralFeatures(
+								eContainingClass)) {
 							if (result.add(parentFeature)) {
 								knownECls.add(eContainingClass);
 								currentAdded.add(parentFeature);

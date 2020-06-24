@@ -264,13 +264,6 @@ public class QueryEnvironmentTests {
 	}
 
 	@Test
-	public void removeEPackageNullName() {
-		queryEnvironment.removeEPackage((String)null);
-
-		assertListener(listener, 0, 0, 0, 0, 0);
-	}
-
-	@Test
 	public void removeEPackageNotRegistered() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 		ePkg.setName("test");
@@ -278,19 +271,6 @@ public class QueryEnvironmentTests {
 		ePkg.setNsPrefix("test");
 
 		queryEnvironment.removeEPackage(ePkg);
-
-		assertFalse(queryEnvironment.getEPackageProvider().getRegisteredEPackages().contains(ePkg));
-		assertListener(listener, 0, 0, 0, 0, 0);
-	}
-
-	@Test
-	public void removeEPackageNotRegisteredName() {
-		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
-		ePkg.setName("test");
-		ePkg.setNsURI("test");
-		ePkg.setNsPrefix("test");
-
-		queryEnvironment.removeEPackage(ePkg.getName());
 
 		assertFalse(queryEnvironment.getEPackageProvider().getRegisteredEPackages().contains(ePkg));
 		assertListener(listener, 0, 0, 0, 0, 0);
@@ -315,29 +295,11 @@ public class QueryEnvironmentTests {
 	}
 
 	@Test
-	public void removeEPackageRegisteredName() {
-		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
-		ePkg.setName("test");
-		ePkg.setNsURI("test");
-		ePkg.setNsPrefix("test");
-
-		queryEnvironment.registerEPackage(ePkg);
-
-		assertTrue(queryEnvironment.getEPackageProvider().getRegisteredEPackages().contains(ePkg));
-		assertListener(listener, 0, 0, 1, 0, 0);
-
-		queryEnvironment.removeEPackage(ePkg.getName());
-
-		assertFalse(queryEnvironment.getEPackageProvider().getRegisteredEPackages().contains(ePkg));
-		assertListener(listener, 0, 0, 1, 1, 0);
-	}
-
-	@Test
 	public void registerCustomClassMapping() {
 		queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEAttribute(), this.getClass());
 
-		assertEquals(this.getClass(), queryEnvironment.getEPackageProvider().getClass(
-				EcorePackage.eINSTANCE.getEAttribute()));
+		assertEquals(this.getClass(), queryEnvironment.getEPackageProvider().getClass(EcorePackage.eINSTANCE
+				.getEAttribute()));
 		assertListener(listener, 0, 0, 0, 0, 1);
 	}
 

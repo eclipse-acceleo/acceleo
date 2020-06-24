@@ -119,22 +119,6 @@ public class QueryEnvironment implements IQueryEnvironment {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeEPackage(java.lang.String)
-	 * @deprecated
-	 */
-	@Override
-	public void removeEPackage(String name) {
-		final Collection<EPackage> ePackages = getEPackageProvider().removePackage(name);
-		for (EPackage ePackage : ePackages) {
-			for (IQueryEnvironmentListener listener : getListeners()) {
-				listener.ePackageRemoved(ePackage);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
 	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#registerCustomClassMapping(org.eclipse.emf.ecore.EClassifier,
 	 *      java.lang.Class)
 	 */

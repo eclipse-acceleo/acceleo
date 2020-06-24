@@ -731,7 +731,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 			assertEquals(eObj2, result.get(0));
 			assertEquals(eObj3, result.get(1));
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -772,7 +772,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 			assertEquals(eObj3, result.get(1));
 			assertEquals(eObj4, result.get(2));
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 

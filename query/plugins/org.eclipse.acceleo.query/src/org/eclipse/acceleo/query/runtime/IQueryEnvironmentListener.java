@@ -51,7 +51,7 @@ public interface IQueryEnvironmentListener {
 	void ePackageRegistered(EPackage ePackage);
 
 	/**
-	 * Notifies a call to {@link IQueryEnvironment#removeEPackage(String)}.
+	 * Notifies a call to {@link IQueryEnvironment#removeEPackage(EPackage)}.
 	 * 
 	 * @param ePackage
 	 *            the removed {@link EPackage}
