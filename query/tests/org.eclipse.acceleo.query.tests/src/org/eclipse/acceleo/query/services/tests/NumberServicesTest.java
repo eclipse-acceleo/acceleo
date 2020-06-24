@@ -28,7 +28,7 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> servicesToRegister = ServiceUtils.getServices(getQueryEnvironment(),
+		final Set<IService<?>> servicesToRegister = ServiceUtils.getServices(getQueryEnvironment(),
 				NumberServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), servicesToRegister);
 		numServices = new NumberServices();

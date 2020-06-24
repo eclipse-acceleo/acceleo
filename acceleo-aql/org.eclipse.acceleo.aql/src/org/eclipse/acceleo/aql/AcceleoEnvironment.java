@@ -74,7 +74,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	private final Map<String, LinkedList<String>> moduleImports;
 
 	/** Keeps track of the services each qualified name provides, mapped to their names. */
-	private Map<String, Map<String, Set<IService>>> qualifiedNameServices;
+	private Map<String, Map<String, Set<IService<?>>>> qualifiedNameServices;
 
 	/** The AQL environment that will be used to evaluate aql expressions from this Acceleo context. */
 	private IQueryEnvironment aqlEnvironment;
@@ -246,14 +246,14 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * @return All IServices with the given {@code name} provided by the given module, <code>null</code> if
 	 *         none.
 	 */
-	public Set<IService> getServicesWithName(String qualifiedName, String moduleElementName) {
+	public Set<IService<?>> getServicesWithName(String qualifiedName, String moduleElementName) {
 		final Module module = getModule(qualifiedName);
 		if (module == null && !qualifiedNameServices.containsKey(qualifiedName)) {
 			resolveClass(qualifiedName);
 		}
 
 		return qualifiedNameServices.getOrDefault(qualifiedName, new LinkedHashMap<>()).getOrDefault(
-				moduleElementName, new LinkedHashSet<IService>());
+				moduleElementName, new LinkedHashSet<IService<?>>());
 	}
 
 	/**
@@ -269,11 +269,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		if (this.resolver != null) {
 			try {
 				res = resolver.resolveClass(qualifiedName);
-				final Map<String, Set<IService>> servicesMap = new LinkedHashMap<>();
+				final Map<String, Set<IService<?>>> servicesMap = new LinkedHashMap<>();
 				qualifiedNameServices.put(qualifiedName, servicesMap);
-				for (IService service : ServiceUtils.getServices(aqlEnvironment, res)) {
-					final Set<IService> services = servicesMap.computeIfAbsent(service.getName(),
-							key -> new LinkedHashSet<IService>());
+				for (IService<?> service : ServiceUtils.getServices(aqlEnvironment, res)) {
+					final Set<IService<?>> services = servicesMap.computeIfAbsent(service.getName(),
+							key -> new LinkedHashSet<IService<?>>());
 					services.add(service);
 				}
 			} catch (ClassNotFoundException e) {
@@ -311,7 +311,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 			}
 		}
 
-		final Map<String, Set<IService>> servicesMap = new LinkedHashMap<>();
+		final Map<String, Set<IService<?>>> servicesMap = new LinkedHashMap<>();
 		qualifiedNameServices.put(qualifiedName, servicesMap);
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template) {

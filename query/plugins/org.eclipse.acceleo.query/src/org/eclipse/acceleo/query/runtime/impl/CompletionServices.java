@@ -102,7 +102,7 @@ public class CompletionServices extends ValidationServices {
 			types = Collections.emptySet();
 		}
 
-		for (IService service : queryEnvironment.getLookupEngine().getServices(types)) {
+		for (IService<?> service : queryEnvironment.getLookupEngine().getServices(types)) {
 			if (callType == null || !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getName())) {
 				result.addAll(service.getProposals(queryEnvironment, receiverTypes));
 			}
@@ -118,7 +118,7 @@ public class CompletionServices extends ValidationServices {
 	 *            the {@link IService}
 	 * @return the {@link IServiceCompletionProposal} for the given {@link IService}
 	 */
-	protected IServiceCompletionProposal getServiceCompletionProposal(IService service) {
+	protected IServiceCompletionProposal getServiceCompletionProposal(IService<?> service) {
 		final IServiceCompletionProposal result;
 
 		if (service instanceof JavaMethodService) {

@@ -35,10 +35,10 @@ public class ServiceStore {
 
 	/**
 	 * Maps of multiservices : {@link IService#getNumberOfParameters() number of parameters} ->
-	 * {@link IService#getName() name} -> {@link IService} ordered by descending
-	 * {@link IService#getPriority() priority}.
+	 * {@link IService#getName() name} -> {@link IService} ordered by descending {@link IService#getPriority()
+	 * priority}.
 	 */
-	private final Map<Integer, Map<String, List<IService>>> services = new HashMap<Integer, Map<String, List<IService>>>();
+	private final Map<Integer, Map<String, List<IService<?>>>> services = new HashMap<Integer, Map<String, List<IService<?>>>>();
 
 	/**
 	 * Constructor.
@@ -62,8 +62,8 @@ public class ServiceStore {
 	 *         of {@link IService#getNumberOfParameters() parameters}
 	 */
 
-	public List<IService> getMultiService(String methodName, int argc) {
-		Map<String, List<IService>> argcServices = services.get(argc);
+	public List<IService<?>> getMultiService(String methodName, int argc) {
+		Map<String, List<IService<?>>> argcServices = services.get(argc);
 		if (argcServices == null) {
 			return null;
 		} else {
@@ -78,17 +78,17 @@ public class ServiceStore {
 	 *            the {@link IService} to store
 	 * @return the {@link List} of {@link IService} to store the given {@link IService}
 	 */
-	private List<IService> getOrCreateMultiService(IService service) {
+	private List<IService<?>> getOrCreateMultiService(IService<?> service) {
 		final int argc = service.getNumberOfParameters();
 		final String serviceName = service.getName();
-		Map<String, List<IService>> argcServices = services.get(argc);
+		Map<String, List<IService<?>>> argcServices = services.get(argc);
 		if (argcServices == null) {
-			argcServices = new HashMap<String, List<IService>>();
+			argcServices = new HashMap<String, List<IService<?>>>();
 			services.put(argc, argcServices);
 		}
-		List<IService> result = argcServices.get(serviceName);
+		List<IService<?>> result = argcServices.get(serviceName);
 		if (result == null) {
-			result = new ArrayList<IService>();
+			result = new ArrayList<IService<?>>();
 			argcServices.put(serviceName, result);
 		}
 		return result;
@@ -102,8 +102,8 @@ public class ServiceStore {
 	public int size() {
 		int result = 0;
 
-		for (Map<String, List<IService>> byArgC : services.values()) {
-			for (List<IService> byName : byArgC.values()) {
+		for (Map<String, List<IService<?>>> byArgC : services.values()) {
+			for (List<IService<?>> byName : byArgC.values()) {
 				result += byName.size();
 			}
 		}
@@ -118,22 +118,22 @@ public class ServiceStore {
 	 *            the {@link IService} to remove
 	 * @return the removed {@link IService} if any, <code>null</code> otherwise
 	 */
-	public IService remove(IService service) {
-		final IService result;
+	public IService<?> remove(IService<?> service) {
+		final IService<?> result;
 
 		if (service == null) {
 			return null;
 		}
 
 		final int argc = service.getNumberOfParameters();
-		final Map<String, List<IService>> argcServices = services.get(argc);
+		final Map<String, List<IService<?>>> argcServices = services.get(argc);
 		if (argcServices != null) {
 			final String serviceName = service.getName();
-			final List<IService> servicesList = argcServices.get(serviceName);
+			final List<IService<?>> servicesList = argcServices.get(serviceName);
 			if (servicesList != null && servicesList.remove(service)) {
 				result = service;
-				if (servicesList.isEmpty() && argcServices.remove(serviceName) != null
-						&& argcServices.isEmpty()) {
+				if (servicesList.isEmpty() && argcServices.remove(serviceName) != null && argcServices
+						.isEmpty()) {
 					services.remove(argc);
 				}
 			} else {
@@ -153,14 +153,14 @@ public class ServiceStore {
 	 *            the {@link IService} to add
 	 * @return the {@link ServiceRegistrationResult}
 	 */
-	public ServiceRegistrationResult add(IService service) {
+	public ServiceRegistrationResult add(IService<?> service) {
 		final ServiceRegistrationResult result = new ServiceRegistrationResult();
 
-		final List<IService> multiService = getOrCreateMultiService(service);
-		for (IService existingService : multiService) {
+		final List<IService<?>> multiService = getOrCreateMultiService(service);
+		for (IService<?> existingService : multiService) {
 			if (service.getPriority() > existingService.getPriority()) {
-				if (service.isLowerOrEqualParameterTypes(queryEnvironment, existingService)
-						|| existingService.isLowerOrEqualParameterTypes(queryEnvironment, service)) {
+				if (service.isLowerOrEqualParameterTypes(queryEnvironment, existingService) || existingService
+						.isLowerOrEqualParameterTypes(queryEnvironment, service)) {
 					result.addMasked(service, existingService);
 				}
 			} else if (service.getPriority() == existingService.getPriority()) {
@@ -172,8 +172,8 @@ public class ServiceStore {
 					result.addIsMaskedBy(service, existingService);
 				}
 			} else {
-				if (service.isLowerOrEqualParameterTypes(queryEnvironment, existingService)
-						|| existingService.isLowerOrEqualParameterTypes(queryEnvironment, service)) {
+				if (service.isLowerOrEqualParameterTypes(queryEnvironment, existingService) || existingService
+						.isLowerOrEqualParameterTypes(queryEnvironment, service)) {
 					result.addIsMaskedBy(service, existingService);
 				}
 			}
@@ -192,11 +192,11 @@ public class ServiceStore {
 	 * 
 	 * @return the {@link Set} of {@link ServiceStore#add(IService) stored} {@link IService}
 	 */
-	public Set<IService> getServices() {
-		final Set<IService> result = new LinkedHashSet<IService>();
+	public Set<IService<?>> getServices() {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
-		for (Map<String, List<IService>> byArgC : services.values()) {
-			for (List<IService> byName : byArgC.values()) {
+		for (Map<String, List<IService<?>>> byArgC : services.values()) {
+			for (List<IService<?>> byName : byArgC.values()) {
 				result.addAll(byName);
 			}
 		}
@@ -211,12 +211,12 @@ public class ServiceStore {
 	 *            the {@link IService} to check
 	 * @return <code>true</code> if the given {@link IService} is registered, <code>false</code> otherwise
 	 */
-	public boolean isRegistered(IService service) {
+	public boolean isRegistered(IService<?> service) {
 		if (service == null) {
 			return false;
 		}
 
-		final List<IService> multiService = getMultiService(service.getName(), service
+		final List<IService<?>> multiService = getMultiService(service.getName(), service
 				.getNumberOfParameters());
 
 		return multiService != null && multiService.contains(service);

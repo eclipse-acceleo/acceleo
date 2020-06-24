@@ -31,12 +31,12 @@ import org.eclipse.emf.ecore.EClass;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public abstract class AbstractService implements IService {
+public abstract class AbstractService<O> implements IService<O> {
 
 	/**
-	 * The {@link Object origin} of this service.
+	 * The {@link O origin} of this service.
 	 */
-	private final Object origin;
+	private final O origin;
 
 	/**
 	 * Constructor with an {@link Object origin}.
@@ -44,7 +44,7 @@ public abstract class AbstractService implements IService {
 	 * @param serviceOrigin
 	 *            the (maybe {@code null}) {@link Object origin} of this service.
 	 */
-	protected AbstractService(Object serviceOrigin) {
+	protected AbstractService(O serviceOrigin) {
 		this.origin = serviceOrigin;
 	}
 
@@ -54,7 +54,7 @@ public abstract class AbstractService implements IService {
 	 * @see org.eclipse.acceleo.query.runtime.IService#getOrigin()
 	 */
 	@Override
-	public Object getOrigin() {
+	public O getOrigin() {
 		return this.origin;
 	}
 
@@ -65,7 +65,7 @@ public abstract class AbstractService implements IService {
 	 *      org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service) {
+	public boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService<?> service) {
 		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
 		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
 		boolean result = paramTypes1.size() == paramTypes2.size();
@@ -90,7 +90,7 @@ public abstract class AbstractService implements IService {
 	 *      org.eclipse.acceleo.query.runtime.IService)
 	 */
 	public boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment,
-			IService service) {
+			IService<?> service) {
 		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
 		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
 		boolean result = paramTypes1.size() == paramTypes2.size();

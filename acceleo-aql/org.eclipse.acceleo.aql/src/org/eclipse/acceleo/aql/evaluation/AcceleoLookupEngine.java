@@ -69,13 +69,13 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 * </p>
 	 */
 	@Override
-	public IService lookup(String name, IType[] argumentTypes) {
+	public IService<?> lookup(String name, IType[] argumentTypes) {
 		AcceleoCallStack currentStack = acceleoEnvironment.getCurrentStack();
 
 		/* PRIVATE query or template in the same module as our current (last of the stack) */
 		String last = acceleoEnvironment.getModuleQualifiedName((Module)currentStack.peek().eContainer());
-		Set<IService> lastServices = acceleoEnvironment.getServicesWithName(last, name);
-		IService result = lookup(lastServices, argumentTypes, VisibilityKind.PRIVATE);
+		Set<IService<?>> lastServices = acceleoEnvironment.getServicesWithName(last, name);
+		IService<?> result = lookup(lastServices, argumentTypes, VisibilityKind.PRIVATE);
 
 		/*
 		 * PUBLIC or PROTECTED template or query in the extends hierarchy of our "lowest" module in that
@@ -117,10 +117,10 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 *            The visibility to consider for our services.
 	 * @return The service matching the criteria if any, <code>null</code> if none.
 	 */
-	private IService lookupExtendedService(String startQualifiedName, String name, IType[] argumentTypes,
+	private IService<?> lookupExtendedService(String startQualifiedName, String name, IType[] argumentTypes,
 			VisibilityKind... candidateVisibilities) {
-		Set<IService> services = acceleoEnvironment.getServicesWithName(startQualifiedName, name);
-		IService result = lookup(services, argumentTypes, candidateVisibilities);
+		Set<IService<?>> services = acceleoEnvironment.getServicesWithName(startQualifiedName, name);
+		IService<?> result = lookup(services, argumentTypes, candidateVisibilities);
 		if (result == null) {
 			final String extendedModuleQualifiedName = acceleoEnvironment.getExtend(startQualifiedName);
 			if (extendedModuleQualifiedName != null) {
@@ -144,8 +144,8 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 *            Type of the arguments accepted by the service we're looking for.
 	 * @return The service matching the criteria if any, <code>null</code> if none.
 	 */
-	private IService lookupImportedService(String start, String name, IType[] argumentTypes) {
-		IService result = null;
+	private IService<?> lookupImportedService(String start, String name, IType[] argumentTypes) {
+		IService<?> result = null;
 		Iterator<String> importedIterator = acceleoEnvironment.getImports(start).iterator();
 		while (importedIterator.hasNext() && result == null) {
 			String imported = importedIterator.next();
@@ -166,11 +166,11 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 *            The visibilities we're expecting this service to have.
 	 * @return The matching service if any, <code>null</code> if none.
 	 */
-	private IService lookup(Set<IService> services, IType[] argumentTypes,
+	private IService<?> lookup(Set<IService<?>> services, IType[] argumentTypes,
 			VisibilityKind... candidateVisibilities) {
 		List<VisibilityKind> visibilityList = Arrays.asList(candidateVisibilities);
 		// @formatter:off
-		Optional<IService> result = services.stream()
+		Optional<IService<?>> result = services.stream()
 				.filter(service -> service.getNumberOfParameters() == argumentTypes.length)
 				.filter(service -> isVisible(service, visibilityList))
 				.filter(service -> service.matches(queryEnvironment, argumentTypes))
@@ -189,7 +189,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 * @return <code>true</code> if the given {@link IService} is visible according to given
 	 *         {@link VisibilityKind}, <code>false</code> otherwise
 	 */
-	private boolean isVisible(IService service, List<VisibilityKind> visibilityList) {
+	private boolean isVisible(IService<?> service, List<VisibilityKind> visibilityList) {
 		final boolean res;
 
 		if (service instanceof AbstractModuleElementService) {

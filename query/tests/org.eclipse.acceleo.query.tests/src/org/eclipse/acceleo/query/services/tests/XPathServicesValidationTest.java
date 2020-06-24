@@ -39,7 +39,8 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), XPathServices.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
+				XPathServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
@@ -1079,7 +1080,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 		eCls2.setName("eCls2");
 		ePkg.getEClassifiers().add(eCls2);
 
-		final IService service = serviceLookUp("siblings", new Object[] {EcoreUtil.create(eCls1), eCls2 });
+		final IService<?> service = serviceLookUp("siblings", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));

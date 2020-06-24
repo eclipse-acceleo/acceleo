@@ -49,12 +49,12 @@ public class QueryEnvironmentTests {
 		public int customClassMappingRegistered;
 
 		@Override
-		public void serviceRegistered(ServiceRegistrationResult result, IService service) {
+		public void serviceRegistered(ServiceRegistrationResult result, IService<?> service) {
 			servicePackageRegistered++;
 		}
 
 		@Override
-		public void serviceRemoved(IService services) {
+		public void serviceRemoved(IService<?> services) {
 			servicePackageRemoved++;
 		}
 
@@ -130,14 +130,14 @@ public class QueryEnvironmentTests {
 
 	@Test
 	public void isRegisteredService() {
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
-		for (IService service : services) {
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		for (IService<?> service : services) {
 			assertFalse(queryEnvironment.isRegisteredService(service));
 		}
 
 		ServiceUtils.registerServices(queryEnvironment, services);
 
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			assertTrue(queryEnvironment.isRegisteredService(service));
 		}
 		assertListener(listener, 2, 0, 0, 0, 0);
@@ -150,10 +150,10 @@ public class QueryEnvironmentTests {
 
 	@Test
 	public void registerServiceNotRegistered() {
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
 		final ServiceRegistrationResult result = ServiceUtils.registerServices(queryEnvironment, services);
 
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			assertTrue(queryEnvironment.getLookupEngine().isRegisteredService(service));
 		}
 		assertFalse(result.getRegistered().isEmpty());
@@ -162,14 +162,14 @@ public class QueryEnvironmentTests {
 
 	@Test
 	public void registerServiceRegistered() {
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
 		ServiceRegistrationResult result = ServiceUtils.registerServices(queryEnvironment, services);
 
 		assertFalse(result.getRegistered().isEmpty());
 
 		result = ServiceUtils.registerServices(queryEnvironment, services);
 
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			assertTrue(queryEnvironment.getLookupEngine().isRegisteredService(service));
 		}
 		assertTrue(result.getRegistered().isEmpty());
@@ -184,16 +184,16 @@ public class QueryEnvironmentTests {
 
 	@Test
 	public void removeServiceNotRegistered() {
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
-		for (IService service : services) {
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		for (IService<?> service : services) {
 			assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(service));
 		}
 
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			queryEnvironment.getLookupEngine().removeService(service);
 		}
 
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(service));
 		}
 		assertListener(listener, 0, 0, 0, 0, 0);
@@ -201,22 +201,22 @@ public class QueryEnvironmentTests {
 
 	@Test
 	public void removeServiceRegistered() {
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
-		for (IService service : services) {
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		for (IService<?> service : services) {
 			assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(service));
 		}
 
 		ServiceRegistrationResult result = ServiceUtils.registerServices(queryEnvironment, services);
 
 		assertEquals(2, result.getRegistered().size());
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			assertTrue(queryEnvironment.isRegisteredService(service));
 		}
 		assertListener(listener, 2, 0, 0, 0, 0);
 
 		ServiceUtils.removeServices(queryEnvironment, services);
 
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			assertFalse(queryEnvironment.isRegisteredService(service));
 		}
 		assertListener(listener, 2, 2, 0, 0, 0);

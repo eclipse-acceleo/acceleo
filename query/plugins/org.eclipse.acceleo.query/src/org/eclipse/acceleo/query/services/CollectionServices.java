@@ -869,8 +869,8 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	@Override
-	protected IService getService(Method publicMethod) {
-		final IService result;
+	protected IService<Method> getService(Method publicMethod) {
+		final IService<Method> result;
 
 		if ("filter".equals(publicMethod.getName())) {
 			result = new SecondArgumentTypeInFirstArgumentCollectionType(publicMethod, this);

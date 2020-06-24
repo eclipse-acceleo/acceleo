@@ -947,8 +947,8 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
 	 */
 	@Override
-	protected IService getService(Method publicMethod) {
-		final IService result;
+	protected IService<Method> getService(Method publicMethod) {
+		final IService<Method> result;
 
 		if ("eContents".equals(publicMethod.getName())) {
 			result = new EContentsService(publicMethod, this);

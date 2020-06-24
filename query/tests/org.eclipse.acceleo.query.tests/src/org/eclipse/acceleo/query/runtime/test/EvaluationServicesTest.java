@@ -79,7 +79,7 @@ public class EvaluationServicesTest {
 	@Before
 	public void setup() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-		final Set<IService> servicesToRegister = ServiceUtils.getServices(queryEnvironment,
+		final Set<IService<?>> servicesToRegister = ServiceUtils.getServices(queryEnvironment,
 				TestServiceDefinition.class);
 		ServiceUtils.registerServices(queryEnvironment, servicesToRegister);
 		variables = new HashMap<String, Object>();

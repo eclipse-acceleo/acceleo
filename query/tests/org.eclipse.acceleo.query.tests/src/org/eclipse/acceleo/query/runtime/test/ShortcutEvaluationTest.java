@@ -39,7 +39,8 @@ public class ShortcutEvaluationTest {
 	@Before
 	public void setUp() {
 		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, ServicesCountCalls.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment,
+				ServicesCountCalls.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 		parser = QueryParsing.newBuilder(queryEnvironment);
 		evaluator = QueryEvaluation.newEngine(queryEnvironment);

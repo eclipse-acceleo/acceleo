@@ -33,7 +33,7 @@ public class TestServiceProvider implements IServiceProvider {
 
 	public static final String SERVICE_NAME = "service";
 
-	public class Service1 extends AbstractService {
+	public class Service1 extends AbstractService<Object> {
 
 		/**
 		 * @param serviceOrigin
@@ -132,7 +132,7 @@ public class TestServiceProvider implements IServiceProvider {
 
 	}
 
-	public class Service2 extends AbstractService {
+	public class Service2 extends AbstractService<Object> {
 
 		/**
 		 * @param serviceOrigin
@@ -247,8 +247,8 @@ public class TestServiceProvider implements IServiceProvider {
 	}
 
 	@Override
-	public List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
-		final List<IService> result = new ArrayList<IService>();
+	public List<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
+		final List<IService<?>> result = new ArrayList<IService<?>>();
 
 		result.add(new Service1(this));
 		result.add(new Service2(this));

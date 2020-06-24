@@ -132,14 +132,14 @@ public class ValidationServices extends AbstractLanguageServices {
 		try {
 			final ServicesValidationResult result = new ServicesValidationResult(queryEnvironment, this);
 			CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
-			final Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
+			final Map<IService<?>, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService<?>, Map<List<IType>, Set<IType>>>();
 			boolean serviceFound = false;
 			boolean emptyCombination = !it.hasNext();
 			List<String> notFoundSignatures = new ArrayList<String>();
 			while (it.hasNext()) {
 				List<IType> currentArgTypes = it.next();
-				IService service = queryEnvironment.getLookupEngine().lookup(serviceName,
-						currentArgTypes.toArray(new IType[currentArgTypes.size()]));
+				IService<?> service = queryEnvironment.getLookupEngine().lookup(serviceName, currentArgTypes
+						.toArray(new IType[currentArgTypes.size()]));
 				if (service != null) {
 					Map<List<IType>, Set<IType>> typeMapping = typesPerService.get(service);
 					if (typeMapping == null) {
@@ -157,8 +157,9 @@ public class ValidationServices extends AbstractLanguageServices {
 
 			if (!emptyCombination) {
 				if (serviceFound) {
-					for (Entry<IService, Map<List<IType>, Set<IType>>> entry : typesPerService.entrySet()) {
-						final IService service = entry.getKey();
+					for (Entry<IService<?>, Map<List<IType>, Set<IType>>> entry : typesPerService
+							.entrySet()) {
+						final IService<?> service = entry.getKey();
 						final Map<List<IType>, Set<IType>> types = entry.getValue();
 						result.addServiceTypes(service, types);
 					}
@@ -206,8 +207,8 @@ public class ValidationServices extends AbstractLanguageServices {
 					result.merge(validateCallOnSequence(call, validationResult, serviceName,
 							(SequenceType)receiverType, argTypesNoReceiver));
 				} else if (receiverType instanceof SetType) {
-					result.merge(validateCallOnSet(call, validationResult, serviceName,
-							(SetType)receiverType, argTypesNoReceiver));
+					result.merge(validateCallOnSet(call, validationResult, serviceName, (SetType)receiverType,
+							argTypesNoReceiver));
 				} else {
 					final List<Set<IType>> newArgTypes = new ArrayList<Set<IType>>(argTypesNoReceiver);
 					final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
@@ -334,10 +335,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			for (IType receiverType : receiverTypes) {
 				if (receiverType instanceof ClassType && receiverType.getType() == null) {
 					// Call on the NullLiteral
-					newReceiverTypes
-							.add(new SetType(
-									queryEnvironment,
-									nothing("The Collection was empty due to a null value being wrapped as a Collection.")));
+					newReceiverTypes.add(new SetType(queryEnvironment, nothing(
+							"The Collection was empty due to a null value being wrapped as a Collection.")));
 				} else if (!(receiverType instanceof ICollectionType)
 						&& !(receiverType instanceof NothingType)) {
 					// implicit set conversion.
@@ -424,8 +423,8 @@ public class ValidationServices extends AbstractLanguageServices {
 				} else {
 					result = type2;
 				}
-			} else if (type2.isAssignableFrom(type1)
-					|| type2.getType() == EcorePackage.eINSTANCE.getEObject()) {
+			} else if (type2.isAssignableFrom(type1) || type2.getType() == EcorePackage.eINSTANCE
+					.getEObject()) {
 				if (type1 instanceof EClassifierLiteralType) {
 					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type1).getType());
 				} else {

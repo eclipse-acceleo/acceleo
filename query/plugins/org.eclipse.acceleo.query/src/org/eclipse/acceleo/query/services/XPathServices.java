@@ -129,7 +129,8 @@ public class XPathServices extends AbstractServiceProvider {
 		 *         {@link EObject} {@link EClass}
 		 */
 		private Set<IType> getTypeForSpecificType(ValidationServices services,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
@@ -244,7 +245,8 @@ public class XPathServices extends AbstractServiceProvider {
 		 *         {@link EObject} {@link EClass}
 		 */
 		private Set<IType> getTypeForSpecificType(ValidationServices services,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
@@ -356,7 +358,8 @@ public class XPathServices extends AbstractServiceProvider {
 		 *         {@link EObject} {@link EClass}
 		 */
 		private Set<IType> getTypeForSpecificType(ValidationServices services,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
@@ -468,7 +471,8 @@ public class XPathServices extends AbstractServiceProvider {
 		 *         {@link EObject} {@link EClass}
 		 */
 		private Set<IType> getTypeForSpecificType(ValidationServices services,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
@@ -531,8 +535,8 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
 	 */
 	@Override
-	protected IService getService(Method publicMethod) {
-		final IService result;
+	protected IService<Method> getService(Method publicMethod) {
+		final IService<Method> result;
 		if ("ancestors".equals(publicMethod.getName())) {
 			result = new AncestorsService(publicMethod, this);
 		} else if ("followingSiblings".equals(publicMethod.getName())) {
@@ -697,8 +701,8 @@ public class XPathServices extends AbstractServiceProvider {
 					for (Object child : (Collection<?>)value) {
 						if (child == eObject) {
 							collect = true;
-						} else if (collect && child instanceof EObject
-								&& eIsInstanceOf((EObject)child, filters)) {
+						} else if (collect && child instanceof EObject && eIsInstanceOf((EObject)child,
+								filters)) {
 							result.add((EObject)child);
 						}
 					}
@@ -742,8 +746,8 @@ public class XPathServices extends AbstractServiceProvider {
 			filteredFeatures.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(
 					eCls));
 		}
-		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container)
-				.eClass().getEAllStructuralFeatures()).containments();
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container).eClass()
+				.getEAllStructuralFeatures()).containments();
 		boolean collect = false;
 		for (EStructuralFeature containmentFeature : containmentFeatures) {
 			if (containmentFeature == containingFeature) {
@@ -876,8 +880,8 @@ public class XPathServices extends AbstractServiceProvider {
 			filteredFeatures.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(
 					eCls));
 		}
-		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container)
-				.eClass().getEAllStructuralFeatures()).containments();
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container).eClass()
+				.getEAllStructuralFeatures()).containments();
 		for (EStructuralFeature containmentFeature : containmentFeatures) {
 			if (filteredFeatures.contains(containmentFeature)) {
 				result.add(containmentFeature);
@@ -963,13 +967,13 @@ public class XPathServices extends AbstractServiceProvider {
 				final Object value = ((EObject)container).eGet(containmentFeature);
 				if (value instanceof Collection<?>) {
 					for (Object child : (Collection<?>)value) {
-						if (child != eObject && child instanceof EObject
-								&& eIsInstanceOf((EObject)child, filters)) {
+						if (child != eObject && child instanceof EObject && eIsInstanceOf((EObject)child,
+								filters)) {
 							result.add((EObject)child);
 						}
 					}
-				} else if (value != eObject && value instanceof EObject
-						&& eIsInstanceOf((EObject)value, filters)) {
+				} else if (value != eObject && value instanceof EObject && eIsInstanceOf((EObject)value,
+						filters)) {
 					result.add((EObject)value);
 				}
 			}
@@ -1007,8 +1011,8 @@ public class XPathServices extends AbstractServiceProvider {
 			filteredFeatures.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(
 					eCls));
 		}
-		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container)
-				.eClass().getEAllStructuralFeatures()).containments();
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container).eClass()
+				.getEAllStructuralFeatures()).containments();
 		for (EStructuralFeature containmentFeature : containmentFeatures) {
 			if (filteredFeatures.contains(containmentFeature)) {
 				result.add(containmentFeature);

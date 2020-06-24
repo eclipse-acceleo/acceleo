@@ -38,7 +38,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
 				getQueryEnvironment()));
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
@@ -126,8 +126,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLIsKindOfEDataType() {
-		final IType[] parameterTypes = new IType[] {classType(Boolean.class),
-				eClassifierType(EcorePackage.eINSTANCE.getEBoolean()) };
+		final IType[] parameterTypes = new IType[] {classType(Boolean.class), eClassifierType(
+				EcorePackage.eINSTANCE.getEBoolean()) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "oclIsKindOf", parameterTypes);
@@ -151,7 +151,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLAsTypeClass() {
-		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(), Integer.class });
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {new Object(), Integer.class });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
@@ -173,7 +173,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLAsTypeEClassClass() {
-		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -197,7 +197,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testOCLAsTypeEClassEClassifier() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -222,7 +222,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLAsTypeEClassEClassifierUnregistered() {
-		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -255,7 +255,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testOCLAsTypeObjectToEInt() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEInt() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -278,7 +278,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLAsTypeObjectToEIntUnregistered() {
-		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEInt() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -332,7 +332,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 		getQueryEnvironment().registerEPackage(ePackage);
 
-		final IService service = serviceLookUp("oclAsType", new Object[] {EcoreUtil.create(a), x });
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {EcoreUtil.create(a), x });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new EClassifierType(getQueryEnvironment(), a));
@@ -355,7 +355,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testOCLAsTypeEIntToObject() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEInt(),
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEInt(),
 				new Object(), });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -378,7 +378,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLAsTypeEIntToObjectUnregistered() {
-		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEInt(),
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEInt(),
 				new Object(), });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -411,8 +411,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testOCLAsTypeIncompatibleTypes() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEClass(),
-				EcorePackage.eINSTANCE.getEPackage() });
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE
+				.getEClass(), EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -437,13 +437,14 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		assertTrue(next instanceof NothingType);
 		String allTypesMesg = ((NothingType)next).getMessage();
 		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
-		assertTrue(allTypesMesg.endsWith(argTypes.get(0) + " is not compatible with type " + argTypes.get(1)));
+		assertTrue(allTypesMesg.endsWith(argTypes.get(0) + " is not compatible with type " + argTypes.get(
+				1)));
 	}
 
 	@Test
 	public void testOCLAsTypeIncompatibleTypesUnregistered() {
-		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEClass(),
-				EcorePackage.eINSTANCE.getEPackage() });
+		final IService<?> service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE
+				.getEClass(), EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 
 		final List<IType> argTypes = new ArrayList<IType>();

@@ -83,7 +83,7 @@ public final class Query {
 	 */
 	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider) {
-		Set<IService> services = ServiceUtils.getServices(env, new AnyServices(env));
+		Set<IService<?>> services = ServiceUtils.getServices(env, new AnyServices(env));
 		ServiceUtils.registerServices(env, services);
 		env.registerEPackage(EcorePackage.eINSTANCE);
 		env.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),

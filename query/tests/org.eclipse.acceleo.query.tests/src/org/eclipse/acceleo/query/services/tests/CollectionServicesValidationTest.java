@@ -28,7 +28,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(),
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
 				CollectionServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}

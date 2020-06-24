@@ -35,19 +35,19 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 	/**
 	 * {@link List} of {@link IService}.
 	 */
-	private List<IService> services;
+	private List<IService<?>> services;
 
 	@Override
-	public List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
+	public List<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
 		try {
 			if (services == null) {
 				final Method getServicesMethod = getClass().getMethod("getServices",
 						IReadOnlyQueryEnvironment.class);
-				services = new ArrayList<IService>();
+				services = new ArrayList<IService<?>>();
 				final Method[] methods = this.getClass().getMethods();
 				for (Method method : methods) {
 					if (ServiceUtils.isServiceMethod(this, method) && !getServicesMethod.equals(method)) {
-						final IService service = getService(method);
+						final IService<Method> service = getService(method);
 						if (service != null) {
 							services.add(service);
 						}
@@ -71,6 +71,6 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 	 * @return the {@link IService} if any, <code>null</code> if no {@link IService} correspond to the given
 	 *         {@link Method}
 	 */
-	protected abstract IService getService(Method method);
+	protected abstract IService<Method> getService(Method method);
 
 }

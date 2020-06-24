@@ -39,18 +39,13 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class JavaMethodService extends AbstractService {
+public class JavaMethodService extends AbstractService<Method> {
 
 	/**
 	 * The {@link org.eclipse.acceleo.query.runtime.IService#getPriority() priority} for
 	 * {@link JavaMethodService}.
 	 */
 	public static final int PRIORITY = 200;
-
-	/**
-	 * The method that realizes the service.
-	 */
-	private final Method method;
 
 	/**
 	 * The instance on which the service must be called.
@@ -79,7 +74,6 @@ public class JavaMethodService extends AbstractService {
 	public JavaMethodService(Method method, Object serviceInstance) {
 		super(method);
 		this.instance = serviceInstance;
-		this.method = method;
 	}
 
 	/**
@@ -89,7 +83,7 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	public String getName() {
-		return method.getName();
+		return getOrigin().getName();
 	}
 
 	/**
@@ -101,7 +95,7 @@ public class JavaMethodService extends AbstractService {
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
 
-		for (Class<?> cls : method.getParameterTypes()) {
+		for (Class<?> cls : getOrigin().getParameterTypes()) {
 			result.add(getClassType(queryEnvironment, cls));
 		}
 
@@ -150,7 +144,7 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	public int getNumberOfParameters() {
-		return method.getParameterTypes().length;
+		return getOrigin().getParameterTypes().length;
 	}
 
 	/**
@@ -160,7 +154,7 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
-		return method.invoke(instance, arguments);
+		return getOrigin().invoke(instance, arguments);
 	}
 
 	/**
@@ -180,7 +174,7 @@ public class JavaMethodService extends AbstractService {
 		if (knwonEnvironment != queryEnvironment || returnTypes == null) {
 			knwonEnvironment = queryEnvironment;
 			returnTypes = new LinkedHashSet<IType>();
-			Type returnType = method.getGenericReturnType();
+			Type returnType = getOrigin().getGenericReturnType();
 			returnTypes.addAll(getIType(queryEnvironment, returnType));
 		}
 
@@ -298,15 +292,6 @@ public class JavaMethodService extends AbstractService {
 	}
 
 	/**
-	 * Gets the {@link Method}.
-	 * 
-	 * @return the {@link Method}
-	 */
-	public Method getMethod() {
-		return method;
-	}
-
-	/**
 	 * Gets the {@link Object} instance.
 	 * 
 	 * @return the {@link Object} instance if any, <code>null</code> otherwise
@@ -322,7 +307,7 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	public String getShortSignature() {
-		return serviceShortSignature(method.getParameterTypes());
+		return serviceShortSignature(getOrigin().getParameterTypes());
 	}
 
 	/**
@@ -332,7 +317,7 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	public String getLongSignature() {
-		return method.toString();
+		return getOrigin().toString();
 	}
 
 	/**
@@ -342,7 +327,7 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof JavaMethodService && ((JavaMethodService)obj).getMethod().equals(getMethod());
+		return obj instanceof JavaMethodService && ((JavaMethodService)obj).getOrigin().equals(getOrigin());
 	}
 
 	/**
@@ -352,7 +337,7 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	public int hashCode() {
-		return getMethod().hashCode();
+		return getOrigin().hashCode();
 	}
 
 	@Override
@@ -379,9 +364,9 @@ public class JavaMethodService extends AbstractService {
 	protected IType createReturnCollectionWithType(IReadOnlyQueryEnvironment queryEnvironment,
 			IType collectionType) {
 		IType result = collectionType;
-		if (List.class.isAssignableFrom(getMethod().getReturnType())) {
+		if (List.class.isAssignableFrom(getOrigin().getReturnType())) {
 			result = new SequenceType(queryEnvironment, collectionType);
-		} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
+		} else if (Set.class.isAssignableFrom(getOrigin().getReturnType())) {
 			result = new SetType(queryEnvironment, collectionType);
 		}
 		return result;

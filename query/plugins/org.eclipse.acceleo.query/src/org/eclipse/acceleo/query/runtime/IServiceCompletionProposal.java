@@ -24,6 +24,6 @@ public interface IServiceCompletionProposal extends ICompletionProposal {
 	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getObject()
 	 */
 	@Override
-	IService getObject();
+	IService<?> getObject();
 
 }

@@ -49,7 +49,7 @@ public class ResourceServices extends AbstractServiceProvider {
 	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
 	 */
 	@Override
-	protected IService getService(Method method) {
+	protected IService<Method> getService(Method method) {
 		if ("getContents".equals(method.getName())) {
 			return new GetContentsService(method, this);
 		}

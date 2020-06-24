@@ -63,7 +63,7 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 	}
 
 	protected void assertNoService(String serviceName, IType parameterTypes[]) {
-		final IService service = serviceLookUp(serviceName, parameterTypes);
+		final IService<?> service = serviceLookUp(serviceName, parameterTypes);
 
 		assertNull(service);
 	}
@@ -74,12 +74,12 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 
 	protected void assertValidation(IType expectedReturnTypes[], IType expectedAllReturnTypes[],
 			String serviceName, IType parameterTypes[]) {
-		final IService service = serviceLookUp(serviceName, parameterTypes);
+		final IService<?> service = serviceLookUp(serviceName, parameterTypes);
 
 		assertValidation(service, expectedReturnTypes, expectedAllReturnTypes, parameterTypes);
 	}
 
-	protected void assertValidation(IService service, IType expectedReturnTypes[],
+	protected void assertValidation(IService<?> service, IType expectedReturnTypes[],
 			IType expectedAllReturnTypes[], IType parameterTypes[]) {
 		assertNotNull("Service not found.", service);
 
@@ -116,7 +116,7 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 		}
 	}
 
-	protected IService serviceLookUp(String serviceName, IType[] parameterTypes) {
+	protected IService<?> serviceLookUp(String serviceName, IType[] parameterTypes) {
 		final IType[] argumentClasses = new IType[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; ++i) {
 			argumentClasses[i] = new ClassType(getQueryEnvironment(), getClass(parameterTypes[i]));

@@ -28,7 +28,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 * @return the {@link ServiceRegistrationResult}
 	 * @since 5.0
 	 */
-	ServiceRegistrationResult registerService(IService service);
+	ServiceRegistrationResult registerService(IService<?> service);
 
 	/**
 	 * Removes the given {@link IService} from {@link IQueryEnvironment#registerService(IService) registered}
@@ -38,7 +38,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 *            the {@link IService} to remove
 	 * @since 5.0
 	 */
-	void removeService(IService service);
+	void removeService(IService<?> service);
 
 	/**
 	 * Tells if the given {@link IService} is {@link IQueryEnvironment#registerService(IService) registered}.
@@ -49,7 +49,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 *         {@link IQueryEnvironment#registerService(IService) registered}, <code>false</code> otherwise
 	 * @since 5.0
 	 */
-	boolean isRegisteredService(IService service);
+	boolean isRegisteredService(IService<?> service);
 
 	/**
 	 * Registers a new {@link EPackage} that can be referred during evaluation and validation.

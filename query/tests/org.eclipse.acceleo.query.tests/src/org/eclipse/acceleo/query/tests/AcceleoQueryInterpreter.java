@@ -101,8 +101,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class.forName(
-						classToImport));
+				final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+						.forName(classToImport));
 				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
@@ -152,8 +152,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	public QueryValidationResult validateQuery(Query q) {
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class.forName(
-						classToImport));
+				final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+						.forName(classToImport));
 				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);

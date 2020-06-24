@@ -25,31 +25,31 @@ public final class ServiceRegistrationResult {
 	/**
 	 * The {@link List} of registered {@link IService}.
 	 */
-	private final List<IService> registered = new ArrayList<IService>();
+	private final List<IService<?>> registered = new ArrayList<IService<?>>();
 
 	/**
 	 * Mapping from newly registered services and {@link IService} it duplicates.
 	 */
-	private final Map<IService, List<IService>> duplicated = new LinkedHashMap<IService, List<IService>>();
+	private final Map<IService<?>, List<IService<?>>> duplicated = new LinkedHashMap<IService<?>, List<IService<?>>>();
 
 	/**
 	 * Mapping from newly registered services and {@link IService} it masks (at least one call to the masked
 	 * {@link IService} can be handled by the new {@link IService}).
 	 */
-	private final Map<IService, List<IService>> masked = new LinkedHashMap<IService, List<IService>>();
+	private final Map<IService<?>, List<IService<?>>> masked = new LinkedHashMap<IService<?>, List<IService<?>>>();
 
 	/**
 	 * Mapping from newly registered services and {@link IService} it is masked by (at least one call that can
 	 * be handled by the new {@link IService} will be handled by the masked by {@link IService}).
 	 */
-	private final Map<IService, List<IService>> isMaskedBy = new LinkedHashMap<IService, List<IService>>();
+	private final Map<IService<?>, List<IService<?>>> isMaskedBy = new LinkedHashMap<IService<?>, List<IService<?>>>();
 
 	/**
 	 * Gets the {@link List} of registered {@link IService}.
 	 * 
 	 * @return the {@link List} of registered {@link IService}
 	 */
-	public List<IService> getRegistered() {
+	public List<IService<?>> getRegistered() {
 		return registered;
 	}
 
@@ -58,7 +58,7 @@ public final class ServiceRegistrationResult {
 	 * 
 	 * @return the mapping from newly registered services and {@link IService} it duplicates
 	 */
-	public Map<IService, List<IService>> getDuplicated() {
+	public Map<IService<?>, List<IService<?>>> getDuplicated() {
 		return duplicated;
 	}
 
@@ -69,7 +69,7 @@ public final class ServiceRegistrationResult {
 	 * @return the mapping from newly registered services and {@link IService} it masks (at least one call to
 	 *         the masked {@link IService} can be handled by the new {@link IService})
 	 */
-	public Map<IService, List<IService>> getMasked() {
+	public Map<IService<?>, List<IService<?>>> getMasked() {
 		return masked;
 	}
 
@@ -81,7 +81,7 @@ public final class ServiceRegistrationResult {
 	 *         call that can be handled by the new {@link IService} will be handled by the masked by
 	 *         {@link IService})
 	 */
-	public Map<IService, List<IService>> getIsMaskedBy() {
+	public Map<IService<?>, List<IService<?>>> getIsMaskedBy() {
 		return isMaskedBy;
 	}
 
@@ -107,10 +107,10 @@ public final class ServiceRegistrationResult {
 	 *            the duplicated {@link IService}
 	 * @since 4.1
 	 */
-	public void addDuplicated(IService newService, IService duplicatedService) {
-		List<IService> services = duplicated.get(newService);
+	public void addDuplicated(IService<?> newService, IService<?> duplicatedService) {
+		List<IService<?>> services = duplicated.get(newService);
 		if (services == null) {
-			services = new ArrayList<IService>();
+			services = new ArrayList<IService<?>>();
 			duplicated.put(newService, services);
 		}
 		services.add(duplicatedService);
@@ -126,10 +126,10 @@ public final class ServiceRegistrationResult {
 	 *            the masked {@link IService}
 	 * @since 4.1
 	 */
-	public void addMasked(IService newService, IService maskedService) {
-		List<IService> services = masked.get(newService);
+	public void addMasked(IService<?> newService, IService<?> maskedService) {
+		List<IService<?>> services = masked.get(newService);
 		if (services == null) {
-			services = new ArrayList<IService>();
+			services = new ArrayList<IService<?>>();
 			masked.put(newService, services);
 		}
 		services.add(maskedService);
@@ -146,10 +146,10 @@ public final class ServiceRegistrationResult {
 	 *            the is masked by {@link IService}
 	 * @since 4.1
 	 */
-	public void addIsMaskedBy(IService newService, IService isMaskedByService) {
-		List<IService> services = isMaskedBy.get(newService);
+	public void addIsMaskedBy(IService<?> newService, IService<?> isMaskedByService) {
+		List<IService<?>> services = isMaskedBy.get(newService);
 		if (services == null) {
-			services = new ArrayList<IService>();
+			services = new ArrayList<IService<?>>();
 			isMaskedBy.put(newService, services);
 		}
 		services.add(isMaskedByService);

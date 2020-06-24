@@ -57,7 +57,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	}
 
 	@Override
-	public ServiceRegistrationResult registerService(IService service) {
+	public ServiceRegistrationResult registerService(IService<?> service) {
 		final ServiceRegistrationResult result = getLookupEngine().registerService(service);
 
 		if (!result.getRegistered().isEmpty()) {
@@ -75,8 +75,8 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeService(org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public void removeService(IService service) {
-		final IService removedService = getLookupEngine().removeService(service);
+	public void removeService(IService<?> service) {
+		final IService<?> removedService = getLookupEngine().removeService(service);
 		if (removedService != null) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.serviceRemoved(removedService);
@@ -96,7 +96,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRegistered(ePackage);
 			}
-			final Set<IService> services = ServiceUtils.getServices(ePackage);
+			final Set<IService<?>> services = ServiceUtils.getServices(ePackage);
 			ServiceUtils.registerServices(this, services);
 		}
 	}
@@ -193,7 +193,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#isRegisteredService(org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public boolean isRegisteredService(IService service) {
+	public boolean isRegisteredService(IService<?> service) {
 		return getLookupEngine().isRegisteredService(service);
 	}
 

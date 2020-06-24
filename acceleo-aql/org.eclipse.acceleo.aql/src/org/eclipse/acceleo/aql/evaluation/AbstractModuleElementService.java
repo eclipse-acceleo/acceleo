@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public abstract class AbstractModuleElementService extends AbstractService {
+public abstract class AbstractModuleElementService extends AbstractService<ModuleElement> {
 
 	/** The current evaluation environment. */
 	private final AcceleoEnvironment env;
@@ -146,7 +146,7 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof AbstractModuleElementService
-				&& getModuleElement() == ((AbstractModuleElementService)obj).getModuleElement();
+				&& getOrigin() == ((AbstractModuleElementService)obj).getOrigin();
 	}
 
 	/**
@@ -156,7 +156,7 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	 */
 	@Override
 	public int hashCode() {
-		return getModuleElement().hashCode();
+		return getOrigin().hashCode();
 	}
 
 	@Override

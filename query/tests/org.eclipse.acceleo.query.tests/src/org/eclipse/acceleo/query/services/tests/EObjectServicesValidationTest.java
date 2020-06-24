@@ -43,7 +43,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), EObjectServices.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
+				EObjectServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
@@ -63,8 +64,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 doesn't contain any other EClass")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eAllContents:\nEClassifier=eCls1 doesn't contain any other EClass")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"EClassifier=eCls1 doesn't contain any other EClass")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling eAllContents:\nEClassifier=eCls1 doesn't contain any other EClass")) };
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -77,13 +80,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
 							.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -96,13 +98,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()),
 					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
 							.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -115,19 +116,20 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getETypeParameter())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEOperation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEGenericType())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEParameter())) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEPackage()) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClassifier())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+											EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())), sequenceType(
+							eClassifierType(EcorePackage.eINSTANCE.getETypeParameter())), sequenceType(
+									eClassifierType(EcorePackage.eINSTANCE.getEOperation())), sequenceType(
+											eClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEGenericType())), sequenceType(
+							eClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())), sequenceType(
+									eClassifierType(EcorePackage.eINSTANCE.getEParameter())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -140,9 +142,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEObject())) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEObject()) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEObject())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -165,9 +168,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
+					eCls2) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -180,11 +186,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEPackage())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -199,8 +204,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEPackage())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -213,21 +218,20 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getETypeParameter())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEOperation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEGenericType())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEParameter())), };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClassifier())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+											EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())), sequenceType(
+							eClassifierType(EcorePackage.eINSTANCE.getETypeParameter())), sequenceType(
+									eClassifierType(EcorePackage.eINSTANCE.getEOperation())), sequenceType(
+											eClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEGenericType())), sequenceType(
+							eClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())), sequenceType(
+									eClassifierType(EcorePackage.eINSTANCE.getEParameter())), };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -240,19 +244,22 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEModelElement()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEModelElement())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getETypeParameter())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEOperation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEParameter())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClassifier())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+											EcorePackage.eINSTANCE.getEModelElement())), sequenceType(
+													eClassifierType(EcorePackage.eINSTANCE
+															.getETypeParameter())), sequenceType(
+																	eClassifierType(EcorePackage.eINSTANCE
+																			.getEOperation())), sequenceType(
+																					eClassifierType(
+																							EcorePackage.eINSTANCE
+																									.getEStructuralFeature())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())), sequenceType(
+							eClassifierType(EcorePackage.eINSTANCE.getEParameter())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -265,11 +272,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -297,9 +303,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
+					eCls2) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -312,7 +321,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEPackage()) };
 			final IType[] expectedReturnTypes = new IType[] {classType(EClass.class) };
 
 			assertValidation(expectedReturnTypes, "eClass", parameterTypes);
@@ -337,8 +347,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {nothingType("EClassifier=eCls1 can't be contained") };
-			final IType[] expectedAllReturnTypes = new IType[] {nothingType("Nothing will be left after calling eContainer:\nEClassifier=eCls1 can't be contained") };
+			final IType[] expectedReturnTypes = new IType[] {nothingType(
+					"EClassifier=eCls1 can't be contained") };
+			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
+					"Nothing will be left after calling eContainer:\nEClassifier=eCls1 can't be contained") };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {
@@ -348,7 +360,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 	@Test
 	public void testEContainer() {
-		final IService service = serviceLookUp("eContainer", new Object[] {EcorePackage.eINSTANCE.eClass() });
+		final IService<?> service = serviceLookUp("eContainer", new Object[] {EcorePackage.eINSTANCE
+				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
@@ -357,9 +370,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
-					eClassifierType(EcorePackage.eINSTANCE.getEAnnotation()) };
+			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEPackage()), eClassifierType(EcorePackage.eINSTANCE.getEAnnotation()) };
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
@@ -385,8 +397,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	public void testEContainerOnEStringToStringMapEntryCustomMapping() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			getQueryEnvironment().registerCustomClassMapping(
-					EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
+			getQueryEnvironment().registerCustomClassMapping(EcorePackage.eINSTANCE
+					.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 
 			final IType[] parameterTypes = new IType[] {new EClassifierType(getQueryEnvironment(),
 					EcorePackage.eINSTANCE.getEStringToStringMapEntry()) };
@@ -404,7 +416,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEObject()) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEObject()) };
 
@@ -429,9 +442,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {nothingType("EClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
-			final IType[] expectedAllReturnTypes = new IType[] {nothingType("Nothing will be left after calling eContainer:\nEClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(
+					eCls1) };
+			final IType[] expectedReturnTypes = new IType[] {nothingType(
+					"EClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
+			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
+					"Nothing will be left after calling eContainer:\nEClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {
@@ -444,8 +460,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEClass()) };
@@ -474,7 +489,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 	@Test
 	public void testEContainerFilteredLoweredByTypes() {
-		final IService service = serviceLookUp("eContainer", new Object[] {EcorePackage.eINSTANCE,
+		final IService<?> service = serviceLookUp("eContainer", new Object[] {EcorePackage.eINSTANCE,
 				EcorePackage.eINSTANCE.getEModelElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -485,12 +500,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getETypedElement()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getETypedElement()),
-					eClassifierType(EcorePackage.eINSTANCE.getEOperation()) };
+			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getETypedElement()), eClassifierType(EcorePackage.eINSTANCE.getEOperation()) };
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
@@ -503,8 +516,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEClass()) };
@@ -535,9 +547,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {nothingType("EClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
-			final IType[] expectedAllReturnTypes = new IType[] {nothingType("Nothing will be left after calling eContainer:\nEClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
+					eCls2) };
+			final IType[] expectedReturnTypes = new IType[] {nothingType(
+					"EClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
+			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
+					"Nothing will be left after calling eContainer:\nEClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {
@@ -560,9 +575,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {nothingType("EClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
-			final IType[] expectedAllReturnTypes = new IType[] {nothingType("Nothing will be left after calling eContainerOrSelf:\nEClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(
+					eCls1) };
+			final IType[] expectedReturnTypes = new IType[] {nothingType(
+					"EClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
+			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
+					"Nothing will be left after calling eContainerOrSelf:\nEClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
@@ -575,8 +593,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEClass()) };
@@ -608,12 +625,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getETypedElement()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getETypedElement()),
-					eClassifierType(EcorePackage.eINSTANCE.getEOperation()) };
+			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getETypedElement()), eClassifierType(EcorePackage.eINSTANCE.getEOperation()) };
 
 			assertValidation(expectedReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
@@ -626,8 +641,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEClass()) };
@@ -658,9 +672,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {nothingType("EClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
-			final IType[] expectedAllReturnTypes = new IType[] {nothingType("Nothing will be left after calling eContainerOrSelf:\nEClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
+					eCls2) };
+			final IType[] expectedReturnTypes = new IType[] {nothingType(
+					"EClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
+			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
+					"Nothing will be left after calling eContainerOrSelf:\nEClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
@@ -684,8 +701,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 doesn't contain any other EClass")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eContents:\nEClassifier=eCls1 doesn't contain any other EClass")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"EClassifier=eCls1 doesn't contain any other EClass")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling eContents:\nEClassifier=eCls1 doesn't contain any other EClass")) };
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "eContents", parameterTypes);
 		} finally {
@@ -698,11 +717,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEPackage()) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClassifier())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -715,9 +735,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEObject())) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEObject()) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEObject())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -740,9 +761,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
+					eCls2) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -755,11 +779,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEPackage())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -772,13 +795,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
 							.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -791,13 +813,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClassifier())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -810,13 +831,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClassifier())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -829,13 +849,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()),
 					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
 							.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -850,8 +869,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEPackage())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -864,13 +883,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEModelElement()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEClassifier())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -883,11 +901,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -915,9 +932,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
+					eCls2) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -943,7 +963,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 	@Test
 	public void testEInverseFiltered() {
-		final IService service = serviceLookUp("eInverse", new Object[] {EcorePackage.eINSTANCE,
+		final IService<?> service = serviceLookUp("eInverse", new Object[] {EcorePackage.eINSTANCE,
 				EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -953,8 +973,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
 			final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 					.getEPackage())) };
@@ -970,8 +989,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEEnum()) };
 			final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 					.getEEnum())) };
@@ -987,14 +1005,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEModelElement()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEFactory())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())) };
+			final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+					.getEClassifier())), setType(eClassifierType(EcorePackage.eINSTANCE.getEFactory())),
+					setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())), setType(eClassifierType(
+							EcorePackage.eINSTANCE.getEAnnotation())) };
 
 			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
 		} finally {
@@ -1007,7 +1023,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEObject()) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEObject()) };
 			final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 					.getEObject())) };
 
@@ -1038,11 +1055,12 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEOperation()) };
-			final IType[] expectedReturnTypes = new IType[] {setType(nothingType("EClassifier=EPackage don't have inverse to EClassifierLiteral=EOperation")) };
-			final IType[] expectedAllReturnTypes = new IType[] {setType(nothingType("Nothing will be left after calling eInverse:\nEClassifier=EPackage don't have inverse to EClassifierLiteral=EOperation")) };
+			final IType[] expectedReturnTypes = new IType[] {setType(nothingType(
+					"EClassifier=EPackage don't have inverse to EClassifierLiteral=EOperation")) };
+			final IType[] expectedAllReturnTypes = new IType[] {setType(nothingType(
+					"Nothing will be left after calling eInverse:\nEClassifier=EPackage don't have inverse to EClassifierLiteral=EOperation")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eInverse", parameterTypes);
 		} finally {
@@ -1057,8 +1075,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierLiteralType(EcorePackage.eINSTANCE
 					.getEAttribute()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
@@ -1072,8 +1092,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
@@ -1088,8 +1110,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierSetLiteralType(EcorePackage.eINSTANCE
 					.getEAttribute(), EcorePackage.eINSTANCE.getEReference()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
@@ -1104,8 +1128,10 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 					.getEClass())) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType(
+					"Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
@@ -1122,8 +1148,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierLiteralType(EcorePackage.eINSTANCE
 					.getEAttribute()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEAttribute())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAttribute())) };
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {
@@ -1156,9 +1182,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierSetLiteralType(EcorePackage.eINSTANCE
 					.getEAttribute(), EcorePackage.eINSTANCE.getEReference()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAttribute())),
-					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEReference())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEAttribute())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEReference())) };
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {

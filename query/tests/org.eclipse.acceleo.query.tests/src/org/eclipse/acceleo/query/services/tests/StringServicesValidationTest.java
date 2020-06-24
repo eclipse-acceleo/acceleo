@@ -23,7 +23,8 @@ public class StringServicesValidationTest extends AbstractServicesValidationTest
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), StringServices.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
+				StringServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 

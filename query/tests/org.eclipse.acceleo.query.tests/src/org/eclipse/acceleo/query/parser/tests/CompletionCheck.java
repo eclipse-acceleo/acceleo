@@ -82,7 +82,7 @@ public class CompletionCheck {
 			QueryCompletionEngine completionEngine = new QueryCompletionEngine(queryEnvironment);
 
 			for (String classToImport : next.getClassesToImport()) {
-				final Set<IService> services = ServiceUtils.getServices(queryEnvironment, Class.forName(
+				final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, Class.forName(
 						classToImport));
 				ServiceUtils.registerServices(queryEnvironment, services);
 			}

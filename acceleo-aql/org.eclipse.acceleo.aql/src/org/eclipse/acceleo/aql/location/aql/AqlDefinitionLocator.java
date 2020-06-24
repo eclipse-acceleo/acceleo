@@ -157,7 +157,7 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 		this.aqlValidator.validate(this.aqlVariablesContext.getVariableTypes(), this.aqlAstResult);
 
 		// Retrieve all the IServices which fit the name and argument types.
-		List<IService> candidateServices = new ArrayList<>();
+		List<IService<?>> candidateServices = new ArrayList<>();
 
 		// Name
 		String serviceName = call.getServiceName();
@@ -174,7 +174,7 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 		CombineIterator<IType> it = new CombineIterator<IType>(argumentTypes);
 		while (it.hasNext()) {
 			List<IType> currentArgTypes = it.next();
-			IService service = this.queryEnvironment.getLookupEngine().lookup(serviceName, currentArgTypes
+			IService<?> service = this.queryEnvironment.getLookupEngine().lookup(serviceName, currentArgTypes
 					.toArray(new IType[currentArgTypes.size()]));
 			if (service != null) {
 				candidateServices.add(service);

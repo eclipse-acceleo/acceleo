@@ -173,7 +173,7 @@ public final class AcceleoValidationUtils {
 			return new HashSet<>();
 		} else {
 			AstValidator aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
-			IValidationResult variableTypeValidationResult = aqlValidator.validate(Collections.EMPTY_MAP,
+			IValidationResult variableTypeValidationResult = aqlValidator.validate(Collections.emptyMap(),
 					typedElement.getType());
 			return variableTypeValidationResult.getPossibleTypes(typedElement.getTypeAql());
 		}

@@ -124,7 +124,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 *            The status to update in case of warnings or errors during this call.
 	 * @return the value produced by the service execution.
 	 */
-	private Object callService(IService service, Object[] arguments, Diagnostic diagnostic) {
+	private Object callService(IService<?> service, Object[] arguments, Diagnostic diagnostic) {
 		try {
 			final Object result = service.invoke(arguments);
 			if (result instanceof Nothing) {
@@ -163,7 +163,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 		}
 		try {
 			IType[] argumentTypes = getArgumentTypes(arguments);
-			IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
+			IService<?> service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 			if (service == null) {
 				Nothing placeHolder = nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName,
 						argumentTypes));
