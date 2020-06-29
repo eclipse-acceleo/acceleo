@@ -37,9 +37,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
  */
 public class TemplateService extends AbstractModuleElementService {
 
-	/** The underlying template. */
-	private final Template template;
-
 	/**
 	 * Wraps the given template as an IService.
 	 * 
@@ -50,29 +47,23 @@ public class TemplateService extends AbstractModuleElementService {
 	 */
 	public TemplateService(AcceleoEnvironment env, Template template) {
 		super(template, env);
-		this.template = template;
-	}
-
-	@Override
-	public Template getModuleElement() {
-		return template;
 	}
 
 	@Override
 	public VisibilityKind getVisibility() {
-		return template.getVisibility();
+		return ((Template)getOrigin()).getVisibility();
 	}
 
 	@Override
 	public String getName() {
-		return template.getName();
+		return ((Template)getOrigin()).getName();
 	}
 
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-		for (Variable var : template.getParameters()) {
+		for (Variable var : ((Template)getOrigin()).getParameters()) {
 			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
 					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
@@ -83,7 +74,7 @@ public class TemplateService extends AbstractModuleElementService {
 
 	@Override
 	public int getNumberOfParameters() {
-		return template.getParameters().size();
+		return ((Template)getOrigin()).getParameters().size();
 	}
 
 	@Override
@@ -98,10 +89,10 @@ public class TemplateService extends AbstractModuleElementService {
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		for (int i = 0; i < arguments.length; i++) {
-			Variable var = template.getParameters().get(i);
+			Variable var = ((Template)getOrigin()).getParameters().get(i);
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getEnv().getEvaluator().generate(template, variables);
+		return getEnv().getEvaluator().generate((Template)getOrigin(), variables);
 	}
 }

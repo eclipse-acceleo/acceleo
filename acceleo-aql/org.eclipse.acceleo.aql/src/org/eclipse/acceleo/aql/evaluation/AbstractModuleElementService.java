@@ -47,13 +47,6 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 	}
 
 	/**
-	 * Returns the wrapped module element.
-	 * 
-	 * @return The wrapped module element.
-	 */
-	public abstract ModuleElement getModuleElement();
-
-	/**
 	 * Returns the underlying element's visibility if any.
 	 * 
 	 * @return The underlying element's visibility if any.
@@ -75,7 +68,7 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 	 * @return the module qualified name
 	 */
 	public String getModuleQualifiedName() {
-		return env.getModuleQualifiedName((Module)getModuleElement().eContainer());
+		return env.getModuleQualifiedName((Module)getOrigin().eContainer());
 	}
 
 	/**
@@ -112,11 +105,11 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 	 */
 	private String getNamespace() {
 		String result = null;
-		Resource res = getModuleElement().eResource();
+		Resource res = getOrigin().eResource();
 		if (res != null) {
 			result = res.getURI().toString();
 		} else {
-			EObject container = getModuleElement().eContainer();
+			EObject container = getOrigin().eContainer();
 			while (!(container instanceof Module)) {
 				container = container.eContainer();
 			}
@@ -168,7 +161,7 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 	}
 
 	private void startInvoke() {
-		Module newModule = (Module)getModuleElement().eContainer();
+		Module newModule = (Module)getOrigin().eContainer();
 		String currentQualifiedName = getEnv().getCurrentStack().getStartingModuleQualifiedName();
 		String newQualifiedName = getEnv().getModuleQualifiedName(newModule);
 		if (currentQualifiedName != newQualifiedName) {
@@ -176,21 +169,21 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 			// If it is in our current module's hierarchy, we only need to push the new module element on the
 			// stack.
 			if (isInExtends(currentQualifiedName, newQualifiedName)) {
-				getEnv().push(getModuleElement());
+				getEnv().push(getOrigin());
 			} else {
 				// We can only be here if the module we're calling is in our imports or their respective
 				// hierarchy. We need to change the environment current namespace to said import.
 				Optional<String> importedModule = getEnv().getImports(currentQualifiedName).stream().filter(
 						imported -> isInExtends(imported, newQualifiedName)).findFirst();
 				if (importedModule.isPresent()) {
-					getEnv().pushImport(importedModule.get(), getModuleElement());
+					getEnv().pushImport(importedModule.get(), getOrigin());
 				} else {
 					// FIXME log exception : we couldn't find the import from which this called service
 					// originates
 				}
 			}
 		} else {
-			getEnv().push(getModuleElement());
+			getEnv().push(getOrigin());
 		}
 	}
 
@@ -206,7 +199,7 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 	}
 
 	private void endInvoke() {
-		getEnv().popStack(getModuleElement());
+		getEnv().popStack(getOrigin());
 	}
 
 }

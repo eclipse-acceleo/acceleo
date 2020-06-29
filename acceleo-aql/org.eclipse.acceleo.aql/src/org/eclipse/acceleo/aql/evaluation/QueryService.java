@@ -35,9 +35,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
  */
 public class QueryService extends AbstractModuleElementService {
 
-	/** The underlying query. */
-	protected final Query query;
-
 	/**
 	 * Wraps the given query as an IService.
 	 * 
@@ -48,29 +45,23 @@ public class QueryService extends AbstractModuleElementService {
 	 */
 	public QueryService(AcceleoEnvironment env, Query query) {
 		super(query, env);
-		this.query = query;
-	}
-
-	@Override
-	public Query getModuleElement() {
-		return query;
 	}
 
 	@Override
 	public VisibilityKind getVisibility() {
-		return query.getVisibility();
+		return ((Query)getOrigin()).getVisibility();
 	}
 
 	@Override
 	public String getName() {
-		return query.getName();
+		return ((Query)getOrigin()).getName();
 	}
 
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-		for (Variable var : query.getParameters()) {
+		for (Variable var : ((Query)getOrigin()).getParameters()) {
 			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
 					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
@@ -81,7 +72,7 @@ public class QueryService extends AbstractModuleElementService {
 
 	@Override
 	public int getNumberOfParameters() {
-		return query.getParameters().size();
+		return ((Query)getOrigin()).getParameters().size();
 	}
 
 	@Override
@@ -90,7 +81,8 @@ public class QueryService extends AbstractModuleElementService {
 		final AstValidator validator = new AstValidator(services);
 
 		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(
-				Collections.emptyMap(), query.getType()).getPossibleTypes(query.getType().getAst()));
+				Collections.emptyMap(), ((Query)getOrigin()).getType()).getPossibleTypes(((Query)getOrigin())
+						.getType().getAst()));
 
 		return result;
 	}
@@ -99,10 +91,10 @@ public class QueryService extends AbstractModuleElementService {
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		for (int i = 0; i < arguments.length; i++) {
-			Variable var = query.getParameters().get(i);
+			Variable var = ((Query)getOrigin()).getParameters().get(i);
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getEnv().getEvaluator().generate(query, variables);
+		return getEnv().getEvaluator().generate((Query)getOrigin(), variables);
 	}
 }
