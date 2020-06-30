@@ -249,6 +249,8 @@ Acceleo 3/OCL : The value of `self` is defined by the current Acceleo scope and 
 
 Acceleo 4/AQL : PENDING
 
+You can have a look at the MTL to AQL https://www.eclipse.org/acceleo/documentation/aql.html#MigratingfromMTLqueries[migration guide].
+
 === Module Element Call
 
 ==== Template invocation
