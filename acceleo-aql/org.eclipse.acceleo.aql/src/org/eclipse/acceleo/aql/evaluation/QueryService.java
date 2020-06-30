@@ -21,8 +21,10 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
+import org.eclipse.acceleo.aql.completion.proposals.QueryServiceCompletionProposal;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
@@ -33,7 +35,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class QueryService extends AbstractModuleElementService {
+public class QueryService extends AbstractModuleElementService<Query> {
 
 	/**
 	 * Wraps the given query as an IService.
@@ -49,19 +51,19 @@ public class QueryService extends AbstractModuleElementService {
 
 	@Override
 	public VisibilityKind getVisibility() {
-		return ((Query)getOrigin()).getVisibility();
+		return getOrigin().getVisibility();
 	}
 
 	@Override
 	public String getName() {
-		return ((Query)getOrigin()).getName();
+		return getOrigin().getName();
 	}
 
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-		for (Variable var : ((Query)getOrigin()).getParameters()) {
+		for (Variable var : getOrigin().getParameters()) {
 			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
 					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
@@ -72,7 +74,7 @@ public class QueryService extends AbstractModuleElementService {
 
 	@Override
 	public int getNumberOfParameters() {
-		return ((Query)getOrigin()).getParameters().size();
+		return getOrigin().getParameters().size();
 	}
 
 	@Override
@@ -81,8 +83,8 @@ public class QueryService extends AbstractModuleElementService {
 		final AstValidator validator = new AstValidator(services);
 
 		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(
-				Collections.emptyMap(), ((Query)getOrigin()).getType()).getPossibleTypes(((Query)getOrigin())
-						.getType().getAst()));
+				Collections.emptyMap(), getOrigin().getType()).getPossibleTypes(getOrigin().getType()
+						.getAst()));
 
 		return result;
 	}
@@ -91,10 +93,17 @@ public class QueryService extends AbstractModuleElementService {
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		for (int i = 0; i < arguments.length; i++) {
-			Variable var = ((Query)getOrigin()).getParameters().get(i);
+			Variable var = getOrigin().getParameters().get(i);
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getEnv().getEvaluator().generate((Query)getOrigin(), variables);
+		return getEnv().getEvaluator().generate(getOrigin(), variables);
 	}
+
+	@Override
+	public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+			Set<IType> receiverTypes) {
+		return Collections.singletonList(new QueryServiceCompletionProposal(this));
+	}
+
 }

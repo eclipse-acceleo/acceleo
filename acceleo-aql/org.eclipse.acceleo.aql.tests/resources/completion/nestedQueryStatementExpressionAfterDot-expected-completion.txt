@@ -305,6 +305,33 @@ getEClassifier()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+myQuery()
+* Description:
+<br> * My query has a nice comment.<br> * @param myParam the input EPackage<br>*
+* Text:
+myQuery()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+myTemplate()
+* Description:
+<br> * My template has a nice comment.<br> * @param myParam the input EPackage<br>*
+* Text:
+myTemplate()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+myTemplate1()
+* Description:
+
+* Text:
+myTemplate1()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 oclAsType()
 * Description:
 oclAsType(object: java.lang.Object, type: java.lang.Object) = Object<br><br>Casts the current object to the given type.<br><br>  @param object<br>        The object to cast<br>  @param type<br>        The type to cast the object to<br><br>  @return<br>        The current object cast to a "type"<br><br>

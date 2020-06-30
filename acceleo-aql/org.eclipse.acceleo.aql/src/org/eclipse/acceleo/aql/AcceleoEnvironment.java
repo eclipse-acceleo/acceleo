@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -241,19 +243,55 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * 
 	 * @param qualifiedName
 	 *            The qualified name which services we're looking up.
-	 * @param moduleElementName
+	 * @param serviceName
 	 *            Name of the service(s) we're searching for.
 	 * @return All IServices with the given {@code name} provided by the given module, <code>null</code> if
 	 *         none.
 	 */
-	public Set<IService<?>> getServicesWithName(String qualifiedName, String moduleElementName) {
+	public Set<IService<?>> getServicesWithName(String qualifiedName, String serviceName) {
 		final Module module = getModule(qualifiedName);
 		if (module == null && !qualifiedNameServices.containsKey(qualifiedName)) {
 			resolveClass(qualifiedName);
 		}
 
 		return qualifiedNameServices.getOrDefault(qualifiedName, new LinkedHashMap<>()).getOrDefault(
-				moduleElementName, new LinkedHashSet<IService<?>>());
+				serviceName, new LinkedHashSet<IService<?>>());
+	}
+
+	/**
+	 * Gets the {@link Set} of known {@link IService} with a compatible receiver {@link IType types} for the
+	 * given qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @param receiverTypes
+	 *            the receiver {@link IType types}
+	 * @return the {@link Set} of known {@link IService} with a compatible receiver {@link IType types}
+	 */
+	public Set<IService<?>> getServices(String qualifiedName, Set<IType> receiverTypes) {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
+
+		final Module module = getModule(qualifiedName);
+		if (module == null && !qualifiedNameServices.containsKey(qualifiedName)) {
+			resolveClass(qualifiedName);
+		}
+
+		final Set<IService<?>> storedServices = new LinkedHashSet<IService<?>>();
+		for (Entry<String, Set<IService<?>>> entry : qualifiedNameServices.getOrDefault(qualifiedName,
+				new LinkedHashMap<>()).entrySet()) {
+			storedServices.addAll(entry.getValue());
+		}
+		for (IType type : receiverTypes) {
+			if (type != null) {
+				for (IService<?> service : storedServices) {
+					if (service.getParameterTypes(aqlEnvironment).get(0).isAssignableFrom(type)) {
+						result.add(service);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**

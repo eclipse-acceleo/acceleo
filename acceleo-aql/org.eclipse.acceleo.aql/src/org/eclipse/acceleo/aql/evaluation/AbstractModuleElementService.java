@@ -26,9 +26,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 /**
  * Abstract implementation of a service that can wrap an Acceleo module element for AQL uses.
  * 
+ * @param <O>
+ *            the kind of {@link ModuleElement}
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public abstract class AbstractModuleElementService extends AbstractService<ModuleElement> {
+public abstract class AbstractModuleElementService<O extends ModuleElement> extends AbstractService<O> {
 
 	/** The current evaluation environment. */
 	private final AcceleoEnvironment env;
@@ -41,7 +43,7 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 	 * @param env
 	 *            The current evaluation environment.
 	 */
-	public AbstractModuleElementService(ModuleElement moduleElement, AcceleoEnvironment env) {
+	public AbstractModuleElementService(O moduleElement, AcceleoEnvironment env) {
 		super(moduleElement);
 		this.env = env;
 	}
@@ -139,7 +141,7 @@ public abstract class AbstractModuleElementService extends AbstractService<Modul
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof AbstractModuleElementService
-				&& getOrigin() == ((AbstractModuleElementService)obj).getOrigin();
+				&& getOrigin() == ((AbstractModuleElementService<?>)obj).getOrigin();
 	}
 
 	/**

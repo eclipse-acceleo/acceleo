@@ -22,8 +22,10 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
+import org.eclipse.acceleo.aql.completion.proposals.TemplateServiceCompletionProposal;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
@@ -35,7 +37,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class TemplateService extends AbstractModuleElementService {
+public class TemplateService extends AbstractModuleElementService<Template> {
 
 	/**
 	 * Wraps the given template as an IService.
@@ -51,19 +53,19 @@ public class TemplateService extends AbstractModuleElementService {
 
 	@Override
 	public VisibilityKind getVisibility() {
-		return ((Template)getOrigin()).getVisibility();
+		return getOrigin().getVisibility();
 	}
 
 	@Override
 	public String getName() {
-		return ((Template)getOrigin()).getName();
+		return getOrigin().getName();
 	}
 
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-		for (Variable var : ((Template)getOrigin()).getParameters()) {
+		for (Variable var : getOrigin().getParameters()) {
 			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
 					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
@@ -74,7 +76,7 @@ public class TemplateService extends AbstractModuleElementService {
 
 	@Override
 	public int getNumberOfParameters() {
-		return ((Template)getOrigin()).getParameters().size();
+		return getOrigin().getParameters().size();
 	}
 
 	@Override
@@ -89,10 +91,17 @@ public class TemplateService extends AbstractModuleElementService {
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		for (int i = 0; i < arguments.length; i++) {
-			Variable var = ((Template)getOrigin()).getParameters().get(i);
+			Variable var = getOrigin().getParameters().get(i);
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getEnv().getEvaluator().generate((Template)getOrigin(), variables);
+		return getEnv().getEvaluator().generate(getOrigin(), variables);
 	}
+
+	@Override
+	public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+			Set<IType> receiverTypes) {
+		return Collections.singletonList(new TemplateServiceCompletionProposal(this));
+	}
+
 }

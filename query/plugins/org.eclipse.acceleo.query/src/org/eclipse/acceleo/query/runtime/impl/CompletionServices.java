@@ -22,10 +22,8 @@ import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -106,25 +104,6 @@ public class CompletionServices extends ValidationServices {
 			if (callType == null || !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getName())) {
 				result.addAll(service.getProposals(queryEnvironment, receiverTypes));
 			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the {@link IServiceCompletionProposal} for the given {@link IService}.
-	 * 
-	 * @param service
-	 *            the {@link IService}
-	 * @return the {@link IServiceCompletionProposal} for the given {@link IService}
-	 */
-	protected IServiceCompletionProposal getServiceCompletionProposal(IService<?> service) {
-		final IServiceCompletionProposal result;
-
-		if (service instanceof JavaMethodService) {
-			result = new JavaMethodServiceCompletionProposal((JavaMethodService)service);
-		} else {
-			result = null;
 		}
 
 		return result;

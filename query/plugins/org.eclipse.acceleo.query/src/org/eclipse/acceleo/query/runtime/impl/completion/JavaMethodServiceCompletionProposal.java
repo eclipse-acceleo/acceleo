@@ -71,7 +71,7 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 	 */
 	@Override
 	public int getCursorOffset() {
-		int namelength = service.getName().length();
+		final int namelength = service.getName().length();
 		if (service.getNumberOfParameters() == 1) {
 			/*
 			 * if we have only one parameter we return the offset: self.serviceCall()^

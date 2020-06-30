@@ -12,9 +12,11 @@ package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.VisibilityKind;
@@ -74,6 +76,9 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 
 		/* PRIVATE query or template in the same module as our current (last of the stack) */
 		String last = acceleoEnvironment.getModuleQualifiedName((Module)currentStack.peek().eContainer());
+		if (last == null) {
+			last = currentStack.getStartingModuleQualifiedName();
+		}
 		Set<IService<?>> lastServices = acceleoEnvironment.getServicesWithName(last, name);
 		IService<?> result = lookup(lastServices, argumentTypes, VisibilityKind.PRIVATE);
 
@@ -168,11 +173,10 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 */
 	private IService<?> lookup(Set<IService<?>> services, IType[] argumentTypes,
 			VisibilityKind... candidateVisibilities) {
-		List<VisibilityKind> visibilityList = Arrays.asList(candidateVisibilities);
 		// @formatter:off
 		Optional<IService<?>> result = services.stream()
 				.filter(service -> service.getNumberOfParameters() == argumentTypes.length)
-				.filter(service -> isVisible(service, visibilityList))
+				.filter(service -> isVisible(service, candidateVisibilities))
 				.filter(service -> service.matches(queryEnvironment, argumentTypes))
 				.findAny();
 		// @formatter:on
@@ -184,21 +188,114 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 * 
 	 * @param service
 	 *            the {@link IService}
-	 * @param visibilityList
-	 *            the {@link List} of {@link VisibilityKind}
+	 * @param candidateVisibilities
+	 *            The visibilities we're expecting this service to have.
 	 * @return <code>true</code> if the given {@link IService} is visible according to given
 	 *         {@link VisibilityKind}, <code>false</code> otherwise
 	 */
-	private boolean isVisible(IService<?> service, List<VisibilityKind> visibilityList) {
+	private boolean isVisible(IService<?> service, VisibilityKind... candidateVisibilities) {
 		final boolean res;
 
+		List<VisibilityKind> visibilityList = Arrays.asList(candidateVisibilities);
 		if (service instanceof AbstractModuleElementService) {
-			res = visibilityList.contains(((AbstractModuleElementService)service).getVisibility());
+			res = visibilityList.contains(((AbstractModuleElementService<?>)service).getVisibility());
 		} else {
 			res = true;
 		}
 
 		return res;
+	}
+
+	@Override
+	public Set<IService<?>> getServices(Set<IType> receiverTypes) {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
+		AcceleoCallStack currentStack = acceleoEnvironment.getCurrentStack();
+
+		/* Query or Template in the same module as our current (last of the stack) */
+		String last = acceleoEnvironment.getModuleQualifiedName((Module)currentStack.peek().eContainer());
+		if (last == null) {
+			last = currentStack.getStartingModuleQualifiedName();
+		}
+		Set<IService<?>> lastServices = acceleoEnvironment.getServices(last, receiverTypes);
+		result.addAll(getServices(lastServices, VisibilityKind.PRIVATE));
+
+		/*
+		 * PUBLIC or PROTECTED template or query in the extends hierarchy of our "lowest" module in that
+		 * hierarchy (first of the stack)
+		 */
+		String start = currentStack.getStartingModuleQualifiedName();
+		result.addAll(getExtendedService(start, receiverTypes, VisibilityKind.PROTECTED,
+				VisibilityKind.PUBLIC));
+
+		/*
+		 * Imports of our current (last of the stack) module for a PUBLIC matching module element.
+		 */
+		result.addAll(getImportedService(last, receiverTypes));
+
+		result.addAll(super.getServices(receiverTypes));
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of imported {@link IService} for the given qualified name and that match the given
+	 * receiver {@link IType}.
+	 * 
+	 * @param start
+	 *            the qualified name
+	 * @param receiverTypes
+	 *            the {@link Set} of receiver {@link IType}
+	 * @return the {@link Set} of imported {@link IService} for the given qualified name and that match the
+	 *         given receiver {@link IType}
+	 */
+	private Set<IService<?>> getImportedService(String start, Set<IType> receiverTypes) {
+		Set<IService<?>> result = new LinkedHashSet<IService<?>>();
+		Iterator<String> importedIterator = acceleoEnvironment.getImports(start).iterator();
+		while (importedIterator.hasNext()) {
+			String imported = importedIterator.next();
+			result.addAll(getExtendedService(imported, receiverTypes, VisibilityKind.PUBLIC));
+		}
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} form the given qualified name that match the given
+	 * {@link IType} and {@link VisibilityKind}.
+	 * 
+	 * @param startQualifiedName
+	 *            the qualified name
+	 * @param receiverTypes
+	 *            the {@link Set} of receiver {@link IType}
+	 * @param candidateVisibilities
+	 * @return the {@link Set} of {@link IService} form the given qualified name that match the given
+	 *         {@link IType} and {@link VisibilityKind}
+	 */
+	private Set<IService<?>> getExtendedService(String startQualifiedName, Set<IType> receiverTypes,
+			VisibilityKind... candidateVisibilities) {
+		Set<IService<?>> services = acceleoEnvironment.getServices(startQualifiedName, receiverTypes);
+		Set<IService<?>> result = getServices(services, candidateVisibilities);
+		final String extendedModuleQualifiedName = acceleoEnvironment.getExtend(startQualifiedName);
+		if (extendedModuleQualifiedName != null) {
+			result.addAll(getExtendedService(extendedModuleQualifiedName, receiverTypes,
+					candidateVisibilities));
+		}
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} with the given {@link VisibilityKind} form the given
+	 * {@link Set} of {@link IService}.
+	 * 
+	 * @param services
+	 *            the {@link Set} of {@link IService}
+	 * @param candidateVisibilities
+	 *            the {@link VisibilityKind}
+	 * @return the {@link Set} of {@link IService} with the given {@link VisibilityKind} form the given
+	 *         {@link Set} of {@link IService}
+	 */
+	private Set<IService<?>> getServices(Set<IService<?>> services, VisibilityKind... candidateVisibilities) {
+		return services.stream().filter(s -> isVisible(s, candidateVisibilities)).collect(Collectors
+				.toCollection(LinkedHashSet::new));
 	}
 
 }

@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
@@ -63,17 +64,54 @@ public class AcceleoCompletor {
 				moduleQualifiedNameForCompletion);
 
 		// Second, validate the AST - this is required further on for the AQL completion.
-		acceleoEnvironment.registerModule(moduleQualifiedNameForCompletion, partialAcceleoAstResult
-				.getModule());
+		final AcceleoAstResult acceleoAstResult = acceleoParser.parse(source,
+				moduleQualifiedNameForCompletion);
+		acceleoEnvironment.registerModule(moduleQualifiedNameForCompletion, acceleoAstResult.getModule());
+
 		final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment);
 		IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(partialAcceleoAstResult,
 				moduleQualifiedNameForCompletion);
 
 		// Find which element of the AST we are completing.
 		EObject acceleoElementToComplete = getElementToComplete(partialAcceleoAstResult);
+		final List<AcceleoCompletionProposal> proposals;
+		final ModuleElement containingModuleElement = getContainingModuleElement(acceleoElementToComplete);
+		if (containingModuleElement != null) {
+			acceleoEnvironment.pushImport(moduleQualifiedNameForCompletion, containingModuleElement);
+		}
+		try {
+			proposals = this.getProposals(acceleoEnvironment, partialAcceleoSource, acceleoValidationResult,
+					acceleoElementToComplete);
+		} finally {
+			if (containingModuleElement != null) {
+				acceleoEnvironment.popStack(containingModuleElement);
+			}
+		}
 
-		return this.getProposals(acceleoEnvironment, partialAcceleoSource, acceleoValidationResult,
-				acceleoElementToComplete);
+		return proposals;
+	}
+
+	/**
+	 * Gets the containing {@link ModuleElement} for the given {@link EObject}.
+	 * 
+	 * @param eObj
+	 *            the {@link EObject}
+	 * @return the containing {@link ModuleElement} for the given {@link EObject} if any, <code>null</code>
+	 *         otherwise
+	 */
+	private ModuleElement getContainingModuleElement(EObject eObj) {
+		ModuleElement res = null;
+
+		EObject current = eObj;
+		while (current != null) {
+			if (current instanceof ModuleElement) {
+				res = (ModuleElement)current;
+				break;
+			}
+			current = current.eContainer();
+		}
+
+		return res;
 	}
 
 	/**
