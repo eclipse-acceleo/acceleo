@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.ide.jdt;
 import org.eclipse.acceleo.aql.ide.Activator;
 import org.eclipse.acceleo.aql.ide.resolver.EclipseQualifiedNameResolver;
 import org.eclipse.acceleo.aql.ide.resolver.IQualifiedNameResolverFactory;
+import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.resources.IProject;
 
@@ -24,7 +25,7 @@ import org.eclipse.core.resources.IProject;
 public class EclipseJDTQualifiedNameResolverFactory implements IQualifiedNameResolverFactory {
 
 	@Override
-	public EclipseQualifiedNameResolver createResolver(IReadOnlyQueryEnvironment queryEnvironment,
+	public IQualifiedNameResolver createResolver(IReadOnlyQueryEnvironment queryEnvironment,
 			IProject project) {
 		return new EclipseJDTQualifiedNameResolver(Activator.INSTANCE.getClass().getClassLoader(),
 				queryEnvironment, project);

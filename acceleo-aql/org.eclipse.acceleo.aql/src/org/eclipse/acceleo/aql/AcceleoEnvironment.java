@@ -431,6 +431,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	@Override
+	public Set<String> getAvailableQualifiedNames() {
+		return resolver.getAvailableQualifiedNames();
+	}
+
+	@Override
 	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
 			throws IOException {
 		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,

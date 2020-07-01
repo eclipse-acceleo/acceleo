@@ -26,7 +26,7 @@ public class EclipseQualifiedNameResolver extends ClassLoaderQualifiedNameResolv
 	/**
 	 * Can't load from workspace message.
 	 */
-	protected static final String CAN_T_LOAD_FROM_WORKSPACE = "can't load from workspace.";
+	public static final String CAN_T_LOAD_FROM_WORKSPACE = "can't load from workspace.";
 
 	/**
 	 * Constructor.
@@ -52,7 +52,7 @@ public class EclipseQualifiedNameResolver extends ClassLoaderQualifiedNameResolv
 	 *            the {@link IProject}
 	 * @return the class loader for the given {@link IProject}
 	 */
-	protected static ClassLoader createProjectClassLoader(ClassLoader classLoader, IProject project) {
+	public static ClassLoader createProjectClassLoader(ClassLoader classLoader, IProject project) {
 		ClassLoader res;
 
 		try {

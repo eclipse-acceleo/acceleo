@@ -363,12 +363,13 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			ErrorModuleReference errorModuleReference) {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<AcceleoCompletionProposal>();
 
-		// These errors are only created for null values.
-		// TODO: We should suggest the values accessible from the environment, but the IAcceleoEnvironment API
-		// does not allow that yet.
-		String sampleQualifiedName = AcceleoCodeTemplates.DEFAULT_NEW_IMPORT_BODY;
-		completionProposals.add(new AcceleoCodeTemplateCompletionProposal(sampleQualifiedName,
-				sampleQualifiedName, AcceleoPackage.Literals.MODULE_REFERENCE));
+		final List<String> availableQualifiedNames = new ArrayList<String>(acceleoEnvironment
+				.getAvailableQualifiedNames());
+		Collections.sort(availableQualifiedNames);
+		for (String qualifiedName : availableQualifiedNames) {
+			completionProposals.add(new AcceleoCodeTemplateCompletionProposal(qualifiedName, qualifiedName,
+					AcceleoPackage.Literals.MODULE_REFERENCE));
+		}
 
 		return completionProposals;
 	}

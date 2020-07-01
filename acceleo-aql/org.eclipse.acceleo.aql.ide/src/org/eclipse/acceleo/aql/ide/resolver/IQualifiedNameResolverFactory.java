@@ -10,20 +10,21 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.resolver;
 
+import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.resources.IProject;
 
 public interface IQualifiedNameResolverFactory {
 
 	/**
-	 * Creates an {@link EclipseQualifiedNameResolver} for the given {@link IProject}.
+	 * Creates an {@link IQualifiedNameResolver} for the given {@link IProject}.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param project
 	 *            the {@link IProject}
-	 * @return the created {@link EclipseQualifiedNameResolver}
+	 * @return the created {@link IQualifiedNameResolver}
 	 */
-	EclipseQualifiedNameResolver createResolver(IReadOnlyQueryEnvironment queryEnvironment, IProject project);
+	IQualifiedNameResolver createResolver(IReadOnlyQueryEnvironment queryEnvironment, IProject project);
 
 }

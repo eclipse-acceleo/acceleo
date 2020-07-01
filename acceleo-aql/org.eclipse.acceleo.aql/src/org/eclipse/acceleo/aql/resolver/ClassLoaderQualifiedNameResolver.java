@@ -10,13 +10,23 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.resolver;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -28,6 +38,16 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver {
+
+	/**
+	 * A slash.
+	 */
+	private static final String SLASH = "/";
+
+	/**
+	 * A dot.
+	 */
+	private static final String DOT = ".";
 
 	/**
 	 * The {@link ClassLoader}.
@@ -53,7 +73,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 * @param classLoader
 	 *            the {@link ClassLoader}
 	 * @param queryEnvironment
-	 *            The AQL environment to use when parsing resolved modules.
+	 *            the AQL environment to use when parsing resolved modules
 	 */
 	public ClassLoaderQualifiedNameResolver(ClassLoader classLoader,
 			IReadOnlyQueryEnvironment queryEnvironment) {
@@ -85,7 +105,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 * @return the {@link Module} resource name from the given qualified name
 	 */
 	private String getModuleResourceName(String qualifiedName) {
-		return qualifiedName.replace(AcceleoParser.QUALIFIER_SEPARATOR, "/") + "."
+		return qualifiedName.replace(AcceleoParser.QUALIFIER_SEPARATOR, SLASH) + DOT
 				+ AcceleoParser.MODULE_FILE_EXTENSION;
 	}
 
@@ -102,7 +122,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 * @return the {@link Class} name from the given qualified name
 	 */
 	private String getClassName(String qualifiedName) {
-		return qualifiedName.replace(AcceleoParser.QUALIFIER_SEPARATOR, ".");
+		return qualifiedName.replace(AcceleoParser.QUALIFIER_SEPARATOR, DOT);
 	}
 
 	@Override
@@ -121,7 +141,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 
 			final String filePath = resource.getFile();
 			final String[] segments = filePath.substring(0, filePath.length()
-					- (AcceleoParser.MODULE_FILE_EXTENSION.length() + 1)).split("/");
+					- (AcceleoParser.MODULE_FILE_EXTENSION.length() + 1)).split(SLASH);
 
 			final StringBuilder moduleQualifiedNameBuilder = new StringBuilder();
 			for (int i = segments.length - 1; i >= 0; i--) {
@@ -136,6 +156,115 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 
 			return res;
 		});
+	}
+
+	@Override
+	public Set<String> getAvailableQualifiedNames() {
+		final Set<String> res = new LinkedHashSet<String>();
+
+		try {
+			if (classLoader instanceof URLClassLoader) {
+				for (URL url : ((URLClassLoader)classLoader).getURLs()) {
+					res.addAll(getQualifiedNamesFromURL(url));
+				}
+			} else {
+				final Enumeration<URL> rootResources = classLoader.getResources("");
+				while (rootResources.hasMoreElements()) {
+					final URL url = rootResources.nextElement();
+					res.addAll(getQualifiedNamesFromURL(url));
+				}
+			}
+		} catch (IOException e1) {
+			// nothing to do here
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Set} of qualified names for the given {@link URL}.
+	 * 
+	 * @param url
+	 *            the {@link URL}
+	 * @return the {@link Set} of qualified names for the given {@link URL}
+	 */
+	protected Set<String> getQualifiedNamesFromURL(URL url) {
+		final Set<String> res = new LinkedHashSet<String>();
+
+		// TODO jar://
+		if ("file".equals(url.getProtocol())) {
+			try {
+				final File file = new File(url.toURI());
+				if (file.isDirectory()) {
+					res.addAll(getQualifiedNameFromFolder(file, ""));
+				} else if (file.isFile()) {
+					res.addAll(getQualifiedNameFromJar(file));
+				} else {
+					// can't happen
+				}
+			} catch (URISyntaxException e) {
+				// nothing to do here
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of qualified names in the given jar {@link File}.
+	 * 
+	 * @param file
+	 *            the jar {@link File}
+	 * @return the {@link List} of qualified names in the given jar {@link File}
+	 */
+	protected Set<String> getQualifiedNameFromJar(File file) {
+		final Set<String> res = new LinkedHashSet<String>();
+
+		try (ZipFile jarFile = new ZipFile(file);) {
+			final Enumeration<? extends ZipEntry> entries = jarFile.entries();
+			while (entries.hasMoreElements()) {
+				final ZipEntry entry = entries.nextElement();
+				final String name = entry.getName().replace(SLASH, AcceleoParser.QUALIFIER_SEPARATOR);
+				if (name.endsWith(".class") || name.endsWith(DOT + AcceleoParser.MODULE_FILE_EXTENSION)) {
+					res.add(name.substring(0, name.lastIndexOf(DOT)));
+				}
+			}
+		} catch (ZipException e) {
+			// nothing to do here
+		} catch (IOException e) {
+			// nothing to do here
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of qualified names inside the given folder and the given name space starting
+	 * point.
+	 * 
+	 * @param folder
+	 *            the folder
+	 * @param nameSpace
+	 *            the name space
+	 * @return the {@link List} of qualified names inside the given folder and the given name space starting
+	 *         point
+	 */
+	protected Set<String> getQualifiedNameFromFolder(File folder, String nameSpace) {
+		final Set<String> res = new LinkedHashSet<String>();
+
+		if (folder.exists() && folder.canRead()) {
+			for (File child : folder.listFiles()) {
+				if (child.isDirectory()) {
+					res.addAll(getQualifiedNameFromFolder(child, nameSpace + child.getName()
+							+ AcceleoParser.QUALIFIER_SEPARATOR));
+				} else if (child.isFile() && (child.getName().endsWith(".class") || child.getName().endsWith(
+						DOT + AcceleoParser.MODULE_FILE_EXTENSION))) {
+					res.add(nameSpace + child.getName().substring(0, child.getName().lastIndexOf(DOT)));
+				}
+			}
+		}
+
+		return res;
 	}
 
 }

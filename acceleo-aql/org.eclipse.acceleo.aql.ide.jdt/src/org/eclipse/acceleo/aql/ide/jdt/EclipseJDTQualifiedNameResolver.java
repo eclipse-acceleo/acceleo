@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.aql.ide.resolver.EclipseQualifiedNameResolver;
+import org.eclipse.acceleo.aql.resolver.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -28,7 +29,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
 
-public class EclipseJDTQualifiedNameResolver extends EclipseQualifiedNameResolver {
+public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameResolver {
 
 	/**
 	 * Constructor.
@@ -40,9 +41,9 @@ public class EclipseJDTQualifiedNameResolver extends EclipseQualifiedNameResolve
 	 * @param project
 	 *            the context {@link IProject}
 	 */
-	public EclipseJDTQualifiedNameResolver(ClassLoader classLoader, IReadOnlyQueryEnvironment queryEnvironment,
-			IProject project) {
-		super(createProjectClassLoader(classLoader, project), queryEnvironment, project);
+	public EclipseJDTQualifiedNameResolver(ClassLoader classLoader,
+			IReadOnlyQueryEnvironment queryEnvironment, IProject project) {
+		super(createProjectClassLoader(classLoader, project), queryEnvironment);
 	}
 
 	/**
@@ -72,11 +73,11 @@ public class EclipseJDTQualifiedNameResolver extends EclipseQualifiedNameResolve
 					res = new URLClassLoader(urls, classLoader);
 				} catch (CoreException e) {
 					Activator.getPlugin().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							CAN_T_LOAD_FROM_WORKSPACE, e));
+							EclipseQualifiedNameResolver.CAN_T_LOAD_FROM_WORKSPACE, e));
 					res = EclipseQualifiedNameResolver.createProjectClassLoader(classLoader, project);
 				} catch (MalformedURLException e) {
 					Activator.getPlugin().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							CAN_T_LOAD_FROM_WORKSPACE, e));
+							EclipseQualifiedNameResolver.CAN_T_LOAD_FROM_WORKSPACE, e));
 					res = EclipseQualifiedNameResolver.createProjectClassLoader(classLoader, project);
 				}
 			} else {

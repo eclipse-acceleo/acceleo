@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.Set;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
@@ -137,6 +138,13 @@ public interface IAcceleoEnvironment {
 	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
 	 */
 	Module getModule(URL url);
+
+	/**
+	 * Gets the {@link Set} of available qualified names.
+	 * 
+	 * @return the {@link Set} of available qualified names
+	 */
+	Set<String> getAvailableQualifiedNames();
 
 	/**
 	 * Gets the {@link IQueryEnvironment}.

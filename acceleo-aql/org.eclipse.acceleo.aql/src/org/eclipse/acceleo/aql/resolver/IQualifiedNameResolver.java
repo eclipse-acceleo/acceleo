@@ -12,6 +12,7 @@ package org.eclipse.acceleo.aql.resolver;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Set;
 
 import org.eclipse.acceleo.Module;
 
@@ -65,5 +66,12 @@ public interface IQualifiedNameResolver {
 	 *         {@link Module} {@link URL} if any, <code>null</code> otherwise
 	 */
 	String getQualifierName(URL resource);
+
+	/**
+	 * Gets the {@link Set} of available qualified names.
+	 * 
+	 * @return the {@link Set} of available qualified names
+	 */
+	Set<String> getAvailableQualifiedNames();
 
 }
