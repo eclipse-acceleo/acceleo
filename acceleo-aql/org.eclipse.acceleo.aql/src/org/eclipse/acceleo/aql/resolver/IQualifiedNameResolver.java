@@ -57,6 +57,16 @@ public interface IQualifiedNameResolver {
 	URL getModuleURL(String qualifiedName);
 
 	/**
+	 * Gets the source {@link URL} corresponding to the given {@link Module} qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name (e.g. <code>qualified::path::to::module</code>)
+	 * @return the source {@link URL} corresponding to the given {@link Module} qualified name if any,
+	 *         <code>null</code> otherwise
+	 */
+	URL getModuleSourceURL(String qualifiedName);
+
+	/**
 	 * Gets the qualified name (e.g. <code>qualified::path::to::module</code>) from the given {@link Module}
 	 * {@link URL}. {@link URL}.
 	 * 

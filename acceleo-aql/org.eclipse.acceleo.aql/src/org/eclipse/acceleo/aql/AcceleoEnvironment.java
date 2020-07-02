@@ -218,6 +218,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	}
 
 	@Override
+	public URL getModuleSourceURL(Module module) {
+		return resolver.getModuleSourceURL(getModuleQualifiedName(module));
+	}
+
+	@Override
 	public String getExtend(String qualifiedName) {
 		String extended = moduleExtends.get(qualifiedName);
 		if (extended != null && !hasQualifiedName(extended)) {

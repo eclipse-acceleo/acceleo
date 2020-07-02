@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.ls.services.textdocument;
 
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -320,8 +322,6 @@ public class AcceleoLocationLinkResolver {
 		}
 		AcceleoAstResult destinationAcceleoAstResult = destinationTextDocument.getAcceleoAstResult();
 
-		// Link target parameters.
-		String targetDocumentUri = destinationTextDocument.getUri().toString();
 		// Note: the destination ASTNode comes from a parsing that is not necessarily the one known by the
 		// destination text document, therefore we have to be able to locate the equivalent of an ASTNode in
 		// another AcceleoAstResult of the same Acceleo file.
@@ -332,8 +332,28 @@ public class AcceleoLocationLinkResolver {
 		// FIXME: we probably only want to select part of the target.
 		Range targetSelectionRange = targetRange;
 
-		LocationLink locationLink = new LocationLink(targetDocumentUri, targetRange, targetSelectionRange,
-				originSelectionRange);
+		// Link target parameters.
+		Module destinationModule = destinationTextDocument.getAcceleoAstResult().getModule();
+		String qualifiedName = destinationTextDocument.getAcceleoEnvironment().getModuleQualifiedName(
+				destinationModule);
+		if (qualifiedName == null) {
+			qualifiedName = URI.decode(destinationModule.eResource().getURI().toString());
+		}
+
+		// TODO this is a more general matter, it should be performed in the AcceleoWorkspace
+		// open source file whenever it's possible
+		java.net.URI targetDocumentUri;
+		try {
+			targetDocumentUri = destinationTextDocument.getAcceleoEnvironment().getModuleResolver()
+					.getModuleSourceURL(qualifiedName).toURI();
+		} catch (URISyntaxException e) {
+			targetDocumentUri = null;
+		}
+		if (targetDocumentUri == null) {
+			targetDocumentUri = destinationTextDocument.getUri();
+		}
+		LocationLink locationLink = new LocationLink(targetDocumentUri.toString(), targetRange,
+				targetSelectionRange, originSelectionRange);
 		return locationLink;
 	}
 

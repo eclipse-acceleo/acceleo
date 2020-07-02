@@ -80,6 +80,17 @@ public interface IAcceleoEnvironment {
 	URL getModuleURL(Module module);
 
 	/**
+	 * Gets the {@link Module} source {@link URL}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return the {@link Module} source {@link URL} if the {@link Module} is
+	 *         {@link IAcceleoEnvironment#registerModule(String, Module) registered}, <code>null</code>
+	 *         otherwise
+	 */
+	URL getModuleSourceURL(Module module);
+
+	/**
 	 * Gets the extend for the given module qualified name.
 	 * 
 	 * @param qualifiedName

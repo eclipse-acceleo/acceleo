@@ -104,7 +104,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 *            the qualified name (e.g. <code>qualified::path::to::module</code>)
 	 * @return the {@link Module} resource name from the given qualified name
 	 */
-	private String getModuleResourceName(String qualifiedName) {
+	protected String getModuleResourceName(String qualifiedName) {
 		return qualifiedName.replace(AcceleoParser.QUALIFIER_SEPARATOR, SLASH) + DOT
 				+ AcceleoParser.MODULE_FILE_EXTENSION;
 	}
@@ -134,6 +134,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	}
 
 	@Override
+	public URL getModuleSourceURL(String qualifiedName) {
+		return getModuleURL(qualifiedName);
+	}
+
+	@Override
 	public String getQualifierName(URL resource) {
 		// TODO null values are never cached...
 		return urlToQualifiedName.computeIfAbsent(resource, key -> {
@@ -149,7 +154,6 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 				final String qualifiedName = moduleQualifiedNameBuilder.toString();
 				if (getModuleURL(qualifiedName) != null) {
 					res = qualifiedName;
-					break;
 				}
 				moduleQualifiedNameBuilder.insert(0, AcceleoParser.QUALIFIER_SEPARATOR);
 			}

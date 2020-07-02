@@ -285,7 +285,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	@Override
 	public DSLSource getSource(EObject instruction) {
 		final AcceleoAstResult moduleAstResult = getModule(instruction).getAst();
-		final String path = environment.getModuleURL(moduleAstResult.getModule()).getFile();
+		final String path = environment.getModuleSourceURL(moduleAstResult.getModule()).getFile();
 
 		final DSLSource res;
 		if (instruction instanceof ASTNode) {
