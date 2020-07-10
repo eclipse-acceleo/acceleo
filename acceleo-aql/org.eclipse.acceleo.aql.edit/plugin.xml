@@ -19,7 +19,7 @@
       <!-- @generated acceleo -->
       <factory
             uri="http://www.eclipse.org/acceleo/4.0"
-            class="org.eclipse.acceleo.provider.AcceleoItemProviderAdapterFactory"
+            class="org.eclipse.acceleo.provider.AcceleoItemProviderAdapterFactorySpec"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider

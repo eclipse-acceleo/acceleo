@@ -100,6 +100,11 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 public class AcceleoParser {
 
 	/**
+	 * The acceleo URI protocol.
+	 */
+	public static final String ACCELEOENV_URI_PROTOCOL = "acceleoenv::";
+
+	/**
 	 * The module file extension.
 	 */
 	public static final String MODULE_FILE_EXTENSION = "mtl";
@@ -499,7 +504,8 @@ public class AcceleoParser {
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
 		final Module module = parseModule(comments);
 
-		final Resource containerEmfResource = new XMIResourceImpl(URI.createFileURI(qualifiedName));
+		final Resource containerEmfResource = new XMIResourceImpl(URI.createURI(ACCELEOENV_URI_PROTOCOL
+				+ qualifiedName));
 		containerEmfResource.getContents().add(module);
 
 		return new AcceleoAstResult(module, positions, errors);

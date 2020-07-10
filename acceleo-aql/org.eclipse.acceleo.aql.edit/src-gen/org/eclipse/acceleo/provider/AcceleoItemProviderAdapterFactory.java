@@ -1028,7 +1028,7 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected FileStatementItemProvider fileStatementItemProvider;
+	protected FileStatementItemProviderSpec fileStatementItemProvider;
 
 	/**
 	 * This creates an adapter for a {@link org.eclipse.acceleo.FileStatement}.
@@ -1039,7 +1039,7 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 	@Override
 	public Adapter createFileStatementAdapter() {
 		if (fileStatementItemProvider == null) {
-			fileStatementItemProvider = new FileStatementItemProvider(this);
+			fileStatementItemProvider = new FileStatementItemProviderSpec(this);
 		}
 
 		return fileStatementItemProvider;

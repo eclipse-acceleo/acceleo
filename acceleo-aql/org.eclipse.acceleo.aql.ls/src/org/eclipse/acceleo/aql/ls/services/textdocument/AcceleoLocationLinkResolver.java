@@ -25,6 +25,7 @@ import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -337,7 +338,8 @@ public class AcceleoLocationLinkResolver {
 		String qualifiedName = destinationTextDocument.getAcceleoEnvironment().getModuleQualifiedName(
 				destinationModule);
 		if (qualifiedName == null) {
-			qualifiedName = URI.decode(destinationModule.eResource().getURI().toString());
+			qualifiedName = URI.decode(destinationModule.eResource().getURI().toString().replaceFirst(
+					AcceleoParser.ACCELEOENV_URI_PROTOCOL, ""));
 		}
 
 		// TODO this is a more general matter, it should be performed in the AcceleoWorkspace

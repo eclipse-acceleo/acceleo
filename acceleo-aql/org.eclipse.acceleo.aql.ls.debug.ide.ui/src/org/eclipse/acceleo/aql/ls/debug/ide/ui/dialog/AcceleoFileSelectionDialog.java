@@ -190,7 +190,7 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 		final Label templateURILabel = new Label(fileComposite, container.getStyle());
 		templateURILabel.setText("File: ");
 
-		final Text res = new Text(fileComposite, container.getStyle());
+		final Text res = new Text(fileComposite, SWT.BORDER);
 		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(fileComposite, container.getStyle());
 		new Label(fileComposite, container.getStyle());

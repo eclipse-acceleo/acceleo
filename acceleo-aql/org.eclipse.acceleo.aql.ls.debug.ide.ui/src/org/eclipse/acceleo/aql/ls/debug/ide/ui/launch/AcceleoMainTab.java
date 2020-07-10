@@ -26,6 +26,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -34,21 +35,23 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ContainerSelectionDialog;
+import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
 
 public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 
 	/**
 	 * The Browse button text.
 	 */
-	private static final String BROWSE = "Browse";
+	protected static final String BROWSE = "Browse...";
 
 	/**
 	 * The module resource.
 	 */
-	private String module;
+	protected String module;
 
 	/**
 	 * The initial module.
@@ -58,7 +61,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * The model resource.
 	 */
-	private String model;
+	protected String model;
 
 	/**
 	 * The initial model.
@@ -68,7 +71,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * The destination.
 	 */
-	private String destination;
+	protected String destination;
 
 	/**
 	 * The initial destination.
@@ -129,7 +132,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		initialModule = module;
 		initialModel = model;
 		initialDestination = destination;
-		setDirty(module != initialModule || model != initialModel || destination != initialDestination);
+		setDirty(isDirty());
 	}
 
 	@Override
@@ -202,41 +205,28 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	 * @return the created {@link Text}
 	 */
 	private Text createModuleComposite(final Composite parent) {
-		final Composite moduleComposite = new Composite(parent, parent.getStyle());
-		moduleComposite.setLayout(new GridLayout(3, false));
-		moduleComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		final Label moduleLabel = new Label(moduleComposite, parent.getStyle());
-		moduleLabel.setText("Module file:");
-		final Text res = new Text(moduleComposite, parent.getStyle());
-		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		final Group group = new Group(parent, parent.getStyle());
+		group.setLayout(new GridLayout(2, false));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		group.setText("Module file:");
+		final Text res = new Text(group, SWT.BORDER);
+		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		res.addModifyListener(new ModifyListener() {
-
 			@Override
 			public void modifyText(ModifyEvent e) {
 				module = res.getText();
-				setDirty(module != initialModule || model != initialModel
-						|| destination != initialDestination);
+				setDirty(isDirty());
 				updateLaunchConfigurationDialog();
 			}
-
 		});
-		Button moduleBrowseButton = new Button(moduleComposite, SWT.BORDER);
-		moduleBrowseButton.setText(BROWSE);
-		moduleBrowseButton.addListener(SWT.Selection, new Listener() {
-
+		Button browseButton = createPushButton(group, BROWSE, null);
+		browseButton.setText(BROWSE);
+		browseButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				final AcceleoFileSelectionDialog dialog = new AcceleoFileSelectionDialog(getShell(),
-						"Select module file.", module, AcceleoParser.MODULE_FILE_EXTENSION, false);
-				final int dialogResult = dialog.open();
-				if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
-					moduleText.setText(dialog.getFileName());
-					setDirty(module != initialModule || model != initialModel
-							|| destination != initialDestination);
-				}
+				handleBrowseModuleButton();
 			}
 		});
-
 		return res;
 	}
 
@@ -248,39 +238,27 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	 * @return the created {@link Text}
 	 */
 	private Text createModelComposite(final Composite parent) {
-		final Composite modelComposite = new Composite(parent, parent.getStyle());
-		modelComposite.setLayout(new GridLayout(3, false));
-		modelComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		final Label modelLabel = new Label(modelComposite, parent.getStyle());
-		modelLabel.setText("Model file:");
-		final Text res = new Text(modelComposite, parent.getStyle());
-		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		final Group group = new Group(parent, parent.getStyle());
+		group.setLayout(new GridLayout(2, false));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		group.setText("Model file:");
+		final Text res = new Text(group, SWT.BORDER);
+		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		res.addModifyListener(new ModifyListener() {
-
 			@Override
 			public void modifyText(ModifyEvent e) {
 				model = res.getText();
-				setDirty(module != initialModule || model != initialModel
-						|| destination != initialDestination);
+				setDirty(isDirty());
 				updateLaunchConfigurationDialog();
 			}
 		});
-		Button modelBrowseButton = new Button(modelComposite, SWT.BORDER);
-		modelBrowseButton.setText(BROWSE);
-		modelBrowseButton.addListener(SWT.Selection, new Listener() {
-
+		Button browseButton = createPushButton(group, BROWSE, null);
+		browseButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				// TODO create a dialog for model selection
-				final AcceleoFileSelectionDialog dialog = new AcceleoFileSelectionDialog(getShell(),
-						"Select model file.", module, null, false);
-				final int dialogResult = dialog.open();
-				if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
-					modelText.setText(dialog.getFileName());
-				}
+				handleBrowseModelButton();
 			}
 		});
-
 		return res;
 	}
 
@@ -292,40 +270,84 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	 * @return the created {@link Text}
 	 */
 	private Text createDestinationComposite(final Composite parent) {
-		final Composite destinationComposite = new Composite(parent, parent.getStyle());
-		destinationComposite.setLayout(new GridLayout(3, false));
-		destinationComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		final Label destinationLabel = new Label(destinationComposite, parent.getStyle());
-		destinationLabel.setText("Destination folder:");
-		final Text res = new Text(destinationComposite, parent.getStyle());
-		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		final Group group = new Group(parent, parent.getStyle());
+		group.setLayout(new GridLayout(2, false));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		group.setText("Destination folder:");
+		final Text res = new Text(group, SWT.BORDER);
+		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		res.addModifyListener(new ModifyListener() {
-
 			@Override
 			public void modifyText(ModifyEvent e) {
 				destination = res.getText();
-				setDirty(module != initialModule || model != initialModel
-						|| destination != initialDestination);
+				setDirty(isDirty());
 				updateLaunchConfigurationDialog();
 			}
 		});
-		Button modelBrowseButton = new Button(destinationComposite, SWT.BORDER);
-		modelBrowseButton.setText(BROWSE);
-		modelBrowseButton.addListener(SWT.Selection, new Listener() {
-
+		Button browseButton = createPushButton(group, BROWSE, null);
+		browseButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				// TODO create a dialog for folder selection
-				final AcceleoFileSelectionDialog dialog = new AcceleoFileSelectionDialog(getShell(),
-						"Select destination folder.", module, null, false);
-				final int dialogResult = dialog.open();
-				if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
-					destinationText.setText(dialog.getFileName());
-				}
+				handleBrowseDestinationButton();
 			}
 		});
-
 		return res;
 	}
 
+	protected boolean isDirty() {
+		return module != initialModule || model != initialModel || destination != initialDestination;
+	}
+
+	private void handleBrowseModuleButton() {
+		final AcceleoFileSelectionDialog dialog = new AcceleoFileSelectionDialog(getShell(),
+				"Select a module file", module, AcceleoParser.MODULE_FILE_EXTENSION, false);
+		final int dialogResult = dialog.open();
+		if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
+			moduleText.setText(dialog.getFileName());
+			setDirty(isDirty());
+		}
+	}
+
+	private void handleBrowseModelButton() {
+		FilteredResourcesSelectionDialog dialog = new FilteredResourcesSelectionDialog(getShell(), false,
+				ResourcesPlugin.getWorkspace().getRoot(), IResource.FILE);
+		dialog.setTitle("Select the model file");
+		String path = modelText.getText();
+		if (path != null && path.length() > 0 && new Path(path).lastSegment().length() > 0) {
+			dialog.setInitialPattern(new Path(path).lastSegment());
+		} else {
+			String initial = "*.xmi"; //$NON-NLS-1$
+			dialog.setInitialPattern(initial);
+		}
+		dialog.open();
+		if (dialog.getResult() != null && dialog.getResult().length > 0 && dialog
+				.getResult()[0] instanceof IFile) {
+			modelText.setText(((IFile)dialog.getResult()[0]).getFullPath().toString());
+		}
+	}
+
+	private void handleBrowseDestinationButton() {
+		IResource initial;
+		if (destinationText.getText() != null && destinationText.getText().length() > 0) {
+			initial = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(destinationText
+					.getText()));
+			if (initial instanceof IFile) {
+				initial = initial.getParent();
+			}
+		} else {
+			initial = null;
+		}
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), ResourcesPlugin
+				.getWorkspace().getRoot(), true, "Select the destination folder");
+		if (initial != null) {
+			dialog.setInitialSelections(new Object[] {initial.getParent(), initial });
+		}
+		dialog.showClosedProjects(false);
+		if (dialog.open() == Window.OK) {
+			Object[] result = dialog.getResult();
+			if (result.length == 1) {
+				destinationText.setText(((Path)result[0]).toString());
+			}
+		}
+	}
 }

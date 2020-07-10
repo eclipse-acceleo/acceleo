@@ -23,6 +23,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.acceleo.aql.ls.debug.ide,
  org.eclipse.acceleo.aql.ide,
- org.eclipse.equinox.common
+ org.eclipse.equinox.common,
+ org.eclipse.emf.common.ui
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.debug.ide.ui
 Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog,
+ org.eclipse.acceleo.aql.ls.debug.ide.ui.launch

@@ -200,7 +200,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				spawnRunningThread(threadID, Thread.currentThread().getName(), module);
 				try {
 					if (isNoDebug()) {
-						AcceleoUtil.generate(new AcceleoEvaluator(environment), environment, module, model);
+						generateNoDebug(environment, module, model);
 					} else {
 						evaluator = new AcceleoDebugEvaluator(environment);
 						AcceleoUtil.generate(evaluator, environment, module, model);
@@ -211,6 +211,10 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				}
 			}
 		}, "Acceleo Debug Thread").start();
+	}
+
+	protected void generateNoDebug(IAcceleoEnvironment environment, Module module, Resource model) {
+		AcceleoUtil.generate(new AcceleoEvaluator(environment), environment, module, model);
 	}
 
 	@Override
