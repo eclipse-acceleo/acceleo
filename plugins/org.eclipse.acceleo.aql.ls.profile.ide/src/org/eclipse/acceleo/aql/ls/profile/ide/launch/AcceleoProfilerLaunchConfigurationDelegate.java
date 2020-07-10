@@ -48,9 +48,12 @@ public class AcceleoProfilerLaunchConfigurationDelegate extends DSPLaunchDelegat
 					(String)null)));
 			final URI modelUri = model.getLocation().toFile().getAbsoluteFile().toURI();
 			param.addProperty(AcceleoDebugger.DESTINATION, modelUri.toString());
-			// TODO [profiler] use value from launch configuration
-			param.addProperty(AcceleoProfiler.PROFILE_DESTINATION, model.getLocation().toFile()
-					.getAbsoluteFile() + ".mtlp");
+		}
+		if (wc.hasAttribute(AcceleoProfiler.PROFILE_MODEL)) {
+			final IFile profileModel = root.getFile(new Path(wc.getAttribute(AcceleoProfiler.PROFILE_MODEL,
+					(String)null)));
+			param.addProperty(AcceleoProfiler.PROFILE_MODEL, profileModel.getLocation().toFile()
+					.getAbsoluteFile().toString());
 		}
 
 		wc.setAttribute(DSPPlugin.ATTR_CUSTOM_LAUNCH_PARAMS, true);

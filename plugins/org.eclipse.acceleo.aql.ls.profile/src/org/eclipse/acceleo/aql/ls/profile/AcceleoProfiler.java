@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public class AcceleoProfiler extends AcceleoDebugger {
 
-	public static final String PROFILE_DESTINATION = "profileDestination";
+	public static final String PROFILE_MODEL = "profileModel";
 
 	private String modelURI;
 
@@ -25,7 +25,7 @@ public class AcceleoProfiler extends AcceleoDebugger {
 	@Override
 	public void initialize(boolean noDebug, Map<String, Object> arguments) {
 		super.initialize(noDebug, arguments);
-		this.modelURI = (String)arguments.get(PROFILE_DESTINATION);
+		this.modelURI = (String)arguments.get(PROFILE_MODEL);
 	}
 
 	@Override

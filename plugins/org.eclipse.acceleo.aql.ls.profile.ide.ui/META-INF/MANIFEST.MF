@@ -11,6 +11,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.aql.ls.debug.ide.ui;bundle-version="4.0.0",
  org.eclipse.debug.ui,
  org.eclipse.ui,
- org.eclipse.acceleo.aql.ls.profile.ide;bundle-version="4.0.0"
+ org.eclipse.acceleo.aql.ls.profile.ide;bundle-version="4.0.0",
+ org.eclipse.acceleo.aql.ls.profile,
+ org.eclipse.emf.ecore,
+ org.eclipse.ui.ide
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.profile.ide.ui
 Bundle-ActivationPolicy: lazy
