@@ -77,6 +77,8 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 	 */
 	@Override
 	public AcceleoSymbol caseQuery(Query query) {
+		final AcceleoSymbol res;
+
 		// Symbol name: "QueryName(TypeOfParameter1, TypeOfParameter2)"
 		String symbolName = query.getName();
 		if (!query.getParameters().isEmpty()) {
@@ -90,14 +92,20 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 		String symbolDetails = AcceleoValidationUtils.getPossibleTypesRepresentation(query,
 				this.acceleoValidationResult);
 
-		AcceleoSymbol symbolForQuery = this.createSymbol(query, symbolName, symbolDetails);
+		if (symbolName != null) {
+			AcceleoSymbol symbolForQuery = this.createSymbol(query, symbolName, symbolDetails);
 
-		// Children represent the parameters of the query.
-		for (Variable parameter : query.getParameters()) {
-			AcceleoSymbol symbolForParameter = this.doSwitch(parameter);
-			symbolForQuery.getChildren().add(symbolForParameter);
+			// Children represent the parameters of the query.
+			for (Variable parameter : query.getParameters()) {
+				AcceleoSymbol symbolForParameter = this.doSwitch(parameter);
+				symbolForQuery.getChildren().add(symbolForParameter);
+			}
+			res = symbolForQuery;
+		} else {
+			res = null;
 		}
-		return symbolForQuery;
+
+		return res;
 	}
 
 	/**
@@ -123,6 +131,8 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 	 */
 	@Override
 	public AcceleoSymbol caseTemplate(Template template) {
+		final AcceleoSymbol res;
+
 		// Symbol name: "TemplateName(TypeOfParameter1, TypeOfParameter2)"
 		String symbolName = template.getName();
 		if (!template.getParameters().isEmpty()) {
@@ -134,27 +144,32 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 
 		// Symbol details: return type.
 		String symbolDetails = "String";
-		AcceleoSymbol symbolForTemplate = this.createSymbol(template, symbolName, symbolDetails);
+		if (symbolName != null) {
+			AcceleoSymbol symbolForTemplate = this.createSymbol(template, symbolName, symbolDetails);
 
-		// Children for the parameters.
-		for (Variable parameter : template.getParameters()) {
-			AcceleoSymbol symbolForParameter = this.doSwitch(parameter);
-			symbolForTemplate.getChildren().add(symbolForParameter);
+			// Children for the parameters.
+			for (Variable parameter : template.getParameters()) {
+				AcceleoSymbol symbolForParameter = this.doSwitch(parameter);
+				symbolForTemplate.getChildren().add(symbolForParameter);
+			}
+
+			// TODO: complete this if we want the Outline View to have the same information as in Acceleo 3.
+			// i.e. have file/if/for/protected statements appear as children of the template they are in.
+			// Block bodyBlock = template.getBody();
+			// if (bodyBlock != null) {
+			// AcceleoSymbol symbolForBody = this.createSymbol(bodyBlock, "Template Body", "");
+			// symbolForTemplate.getChildren().add(symbolForBody);
+			// bodyBlock.getStatements().forEach(bodyStatement -> {
+			// symbolForBody.getChildren().add(this.doSwitch(bodyStatement));
+			// // TODO: implement cases for let, for, if, etc.
+			// });
+			// }
+			res = symbolForTemplate;
+		} else {
+			res = null;
 		}
 
-		// TODO: complete this if we want the Outline View to have the same information as in Acceleo 3.
-		// i.e. have file/if/for/protected statements appear as children of the template they are in.
-		// Block bodyBlock = template.getBody();
-		// if (bodyBlock != null) {
-		// AcceleoSymbol symbolForBody = this.createSymbol(bodyBlock, "Template Body", "");
-		// symbolForTemplate.getChildren().add(symbolForBody);
-		// bodyBlock.getStatements().forEach(bodyStatement -> {
-		// symbolForBody.getChildren().add(this.doSwitch(bodyStatement));
-		// // TODO: implement cases for let, for, if, etc.
-		// });
-		// }
-
-		return symbolForTemplate;
+		return res;
 	}
 
 }
