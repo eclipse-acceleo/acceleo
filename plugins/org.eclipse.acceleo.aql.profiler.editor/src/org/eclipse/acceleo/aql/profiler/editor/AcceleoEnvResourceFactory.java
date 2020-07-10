@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.profiler;
+package org.eclipse.acceleo.aql.profiler.editor;
 
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;

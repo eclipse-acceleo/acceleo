@@ -15,9 +15,9 @@ import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.acceleo.aql.profiler.AcceleoEnvResourceFactory;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
+import org.eclipse.acceleo.aql.profiler.editor.AcceleoEnvResourceFactory;
 import org.eclipse.acceleo.aql.profiler.provider.ProfilerItemProviderAdapterFactorySpec;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.presentation.EcoreEditor;

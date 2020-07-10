@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.acceleo.aql.ls.profile.ide.launch.AcceleoProfilerLaunchConfigurationDelegate"
+            delegateDescription="The Acceleo 4 Profiling Launcher supports profiling Acceleo 4 modules"
+            delegateName="Acceleo 4 Profiling Launcher"
+            id="org.eclipse.acceleo.aql.ls.profile.ide.launchConfigurationType"
+            modes="profile"
+            name="Acceleo 4 Profiler"
+            public="true"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+
+</plugin>

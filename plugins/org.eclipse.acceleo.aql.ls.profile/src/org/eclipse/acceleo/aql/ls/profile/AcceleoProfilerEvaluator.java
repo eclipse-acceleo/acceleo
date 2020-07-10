@@ -1,7 +1,9 @@
-package org.eclipse.acceleo.aql.profiler;
+package org.eclipse.acceleo.aql.ls.profile;
 
+import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.profiler.Profiler;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -36,11 +38,26 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	 */
 	@Override
 	public Object doSwitch(EObject eObject) {
-		profiler.start(eObject);
-		// TODO //profiler.loop(loopElement);
+		boolean profile = filter(eObject);
+		if (!profile) {
+			profiler.start(eObject);
+			// TODO //profiler.loop(loopElement);
+		}
 		Object res = super.doSwitch(eObject);
-		profiler.stop();
+		if (!profile) {
+			profiler.stop();
+		}
 		return res;
 	}
 
+	/**
+	 * Checks whether the element must be excluded from the profiling or not.
+	 * 
+	 * @param eObject
+	 *            the element to check
+	 * @return <true> if the element must not appear in the profiling result.
+	 */
+	private boolean filter(EObject eObject) {
+		return eObject instanceof TextStatement;
+	}
 }

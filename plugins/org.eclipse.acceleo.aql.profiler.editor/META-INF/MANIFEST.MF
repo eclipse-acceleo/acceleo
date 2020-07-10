@@ -27,4 +27,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
- org.eclipse.emf.ecore.editor
+ org.eclipse.emf.ecore.editor,
+ org.eclipse.acceleo.aql,
+ org.eclipse.acceleo.aql.ide,
+ org.eclipse.acceleo.query
