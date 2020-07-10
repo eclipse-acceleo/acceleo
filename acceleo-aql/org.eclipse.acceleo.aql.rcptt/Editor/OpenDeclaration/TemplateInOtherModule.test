@@ -1,0 +1,33 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _Ayow4KrpEeqpkej7GeVvKQ,_d8d2kKyFEeqylZAj0d4Xnw
+Element-Name: TemplateInOtherModule
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _Omj4UMElEeqjcPTfvO5d8Q
+Save-Time: 7/8/20 4:18 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | double-click
+
+with [get-editor "test.mtl" | get-text-viewer] {
+    set-caret-pos 11 33
+    open-declaration
+}
+get-editor "otherModule.mtl" | get-text-viewer | get-property "getSelectionText()" 
+    | equals "[template public myOtherTemplate(myParam : ecore::EClassifier)]\n"
+    + "  [myParam.name/].\n"
+    + "[/template]" | verify-true
+get-view "Package Explorer" | get-button "Link with Editor" | click -metaKeys ""
+with [get-view "Package Explorer" | get-tree] {
+    get-property "selection[0].path[0]" | equals test | verify-true
+    get-property "selection[0].path[1]" | equals src | verify-true
+    get-property "selection[0].path[2]" | equals test | verify-true
+    get-property "selection[0].path[3]" | equals "otherModule.mtl" | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

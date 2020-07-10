@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <prerequisites>
-    <maven>3.0</maven>
+    <maven>3.6</maven>
   </prerequisites>
 
   <groupId>org.eclipse.acceleo</groupId>
@@ -96,14 +96,14 @@
     <module>acceleo-aql/org.eclipse.acceleo.aql.migration</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.migration.tests</module>
 	
-	<module>acceleo-aql/org.eclipse.acceleo.aql.launcher</module>
-	<module>acceleo-aql/org.eclipse.acceleo.aql.launcher-feature</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.launcher</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.launcher-feature</module>
     
     <module>acceleo-aql/org.eclipse.acceleo.aql.feature</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.jdt.feature</module>
 
     <module>acceleo-aql/org.eclipse.acceleo.aql.rcpttproduct</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.rcptt</module>
+    <!--module>acceleo-aql/org.eclipse.acceleo.aql.rcptt</module-->
     <module>acceleo-aql/org.eclipse.acceleo.aql.update</module>
   </modules>
 

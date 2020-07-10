@@ -104,9 +104,6 @@ This Agreement is governed by the laws of the State of New York and the intellec
          </text>
    </license>
 
-   <plugins>
-   </plugins>
-
    <features>
       <feature id="org.eclipse.acceleo.aql.feature"/>
       <feature id="org.eclipse.acceleo.aql.ide.jdt.feature"/>
@@ -127,6 +124,12 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
       <property name="osgi.instance.area.default" value="@user.home/acceleows" os="macosx" />
    </configurations>
+
+   <repositories>
+      <repository location="http://download.eclipse.org/releases/2019-09" enabled="true" />
+      <repository location="http://https://download.eclipse.org/tools/orbit/downloads/drops/R20200529191137/repository" enabled="true" />
+      <repository location="http://download.eclipse.org/rcptt/release/2.5.1/repository" enabled="true" />
+   </repositories>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>
