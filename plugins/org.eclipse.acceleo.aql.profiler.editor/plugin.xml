@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+-->
+
+<plugin>
+
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.acceleo.aql.profiler.presentation.ProfilerEditorID"
+            name="%_UI_ProfilerEditor_label"
+            icon="icons/full/obj16/ProfilerModelFile.gif"
+            extensions="mtlp"
+            class="org.eclipse.acceleo.aql.profiler.presentation.ProfilerEditor"
+            contributorClass="org.eclipse.acceleo.aql.profiler.presentation.ProfilerActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
