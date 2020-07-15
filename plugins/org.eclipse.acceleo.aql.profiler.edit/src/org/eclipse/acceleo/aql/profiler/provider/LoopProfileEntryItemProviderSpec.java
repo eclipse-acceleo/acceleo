@@ -14,8 +14,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import org.eclipse.acceleo.aql.profiler.LoopProfileEntry;
-import org.eclipse.acceleo.aql.profiler.provider.LoopProfileEntryItemProvider;
-import org.eclipse.acceleo.aql.profiler.provider.ProfilerEditPlugin;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 
@@ -62,7 +60,7 @@ public class LoopProfileEntryItemProviderSpec extends LoopProfileEntryItemProvid
 		format.setMaximumFractionDigits(2);
 
 		return format.format(loopProfileEntry.getPercentage()) + "% / " + loopProfileEntry.getDuration() //$NON-NLS-1$
-				+ "ms / " + loopProfileEntry.getCount() + " times [" //$NON-NLS-1$ //$NON-NLS-2$
+				+ "ms / " + loopProfileEntry.getCount() + " times " + monitored.eClass().getName() + " [" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ ProfilerEditPlugin.LABEL_PROVIDER.getText(monitored) + "]"; //$NON-NLS-1$
 	}
 }
