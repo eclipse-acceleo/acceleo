@@ -451,7 +451,8 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 *         as an {@link AcceleoTextDocument}.
 		 */
 		private static boolean workspaceFileIsAcceleoTextDocument(IFile workspaceFile) {
-			return workspaceFile.getFileExtension().equals(AcceleoParser.MODULE_FILE_EXTENSION);
+			String fileExtension = workspaceFile.getFileExtension();
+			return fileExtension != null && fileExtension.equals(AcceleoParser.MODULE_FILE_EXTENSION);
 		}
 
 		/**
