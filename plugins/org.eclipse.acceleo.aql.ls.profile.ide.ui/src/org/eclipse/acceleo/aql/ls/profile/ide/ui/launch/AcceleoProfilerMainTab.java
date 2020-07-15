@@ -1,19 +1,15 @@
 package org.eclipse.acceleo.aql.ls.profile.ide.ui.launch;
 
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FileTreeContentProvider;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.ResourceSelectionDialog;
+import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AcceleoFileSelectionDialog;
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.AcceleoMainTab;
 import org.eclipse.acceleo.aql.ls.profile.AcceleoProfiler;
 import org.eclipse.acceleo.aql.ls.profile.ide.AcceleoProfilePlugin;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -22,7 +18,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
@@ -101,7 +97,7 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 		try {
 			if (res) {
 				if (!launchConfig.hasAttribute(AcceleoProfiler.PROFILE_MODEL)) {
-					setErrorMessage("Select a profile destination folder.");
+					setErrorMessage("Select a profile model");
 					res = false;
 				}
 			}
@@ -139,15 +135,13 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	 * @return the created {@link Text}
 	 */
 	private Text createProfileModelEditor(final Composite parent) {
-		final Composite destinationComposite = new Composite(parent, parent.getStyle());
-		destinationComposite.setLayout(new GridLayout(3, false));
-		destinationComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		final Label destinationLabel = new Label(destinationComposite, parent.getStyle());
-		destinationLabel.setText("Profile Destination:");
-		final Text res = new Text(destinationComposite, parent.getStyle());
-		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		final Group group = new Group(parent, parent.getStyle());
+		group.setLayout(new GridLayout(2, false));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		group.setText("Profile model:");
+		final Text res = new Text(group, SWT.BORDER);
+		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		res.addModifyListener(new ModifyListener() {
-
 			@Override
 			public void modifyText(ModifyEvent e) {
 				profileModel = res.getText();
@@ -155,16 +149,13 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
-		Button modelBrowseButton = new Button(destinationComposite, SWT.BORDER);
-		modelBrowseButton.setText(BROWSE);
-		modelBrowseButton.addListener(SWT.Selection, new Listener() {
-
+		Button browseButton = createPushButton(group, BROWSE, null);
+		browseButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 				handleBrowseProfileModelButton();
 			}
 		});
-
 		return res;
 	}
 
@@ -172,23 +163,11 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	 * Show a dialog that lists all the models.
 	 */
 	private void handleBrowseProfileModelButton() {
-		IResource initialResource;
-		if (new Path(profileModelText.getText()).segmentCount() >= 2 && ResourcesPlugin.getWorkspace()
-				.getRoot().getFile(new Path(profileModelText.getText())).exists()) {
-			initialResource = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(profileModelText
-					.getText()));
-		} else {
-			initialResource = ResourcesPlugin.getWorkspace().getRoot();
-		}
-		ResourceSelectionDialog dialog = new ResourceSelectionDialog(getShell(), initialResource,
-				"Select profile destination folder."); //$NON-NLS-1$
-		dialog.setContentProvider(new FileTreeContentProvider(true, PROFILE_EXTENSION));
-		dialog.open();
-
-		if (dialog.getResult() != null && dialog.getResult().length > 0 && dialog
-				.getResult()[0] instanceof IPath && ((IPath)dialog.getResult()[0]).segmentCount() > 0) {
-
-			String path = dialog.getResult()[0].toString();
+		final AcceleoFileSelectionDialog dialog = new AcceleoFileSelectionDialog(getShell(),
+				"Select the profile model", profileModel, PROFILE_EXTENSION, false);
+		final int dialogResult = dialog.open();
+		if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
+			String path = dialog.getFileName();
 			if (path.endsWith(PROFILE_EXTENSION)) {
 				profileModelText.setText(path);
 			} else if (path.endsWith("/")) { //$NON-NLS-1$
@@ -196,6 +175,7 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 			} else {
 				profileModelText.setText(path + "/profiling.mtlp"); //$NON-NLS-1$
 			}
+			setDirty(isDirty());
 		}
 	}
 }
