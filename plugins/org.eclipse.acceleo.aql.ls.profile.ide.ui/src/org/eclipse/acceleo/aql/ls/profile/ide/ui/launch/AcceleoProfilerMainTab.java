@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2020 Huawei.
+ * All rights reserved.
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.profile.ide.ui.launch;
 
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AcceleoFileSelectionDialog;
@@ -22,6 +29,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * The profiling launch configuration main tab.
+ * 
+ * @author wpiers
+ */
 public class AcceleoProfilerMainTab extends AcceleoMainTab {
 
 	/**

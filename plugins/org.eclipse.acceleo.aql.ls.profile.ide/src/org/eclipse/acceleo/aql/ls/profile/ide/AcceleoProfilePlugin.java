@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2020 Huawei.
+ * All rights reserved.
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.profile.ide;
 
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugFactory;
