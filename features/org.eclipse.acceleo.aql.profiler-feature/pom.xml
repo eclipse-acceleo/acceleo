@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (c) 2020 Huawei.
+   Copyright (C) 2011, Obeo
 
-   All rights reserved.
-   Contributors:
-     Obeo - initial API and implementation
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v1.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v10.html
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -19,17 +20,9 @@
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>org.eclipse.acceleo.aql.ls.profile.ide.ui</artifactId>
-  <version>4.0.0-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>  
+  <artifactId>org.eclipse.acceleo.aql.profiler-feature</artifactId>
+  <packaging>eclipse-feature</packaging>
 
-  <build>
-   <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
+  <name>Acceleo Profiler Feature</name>
   
 </project>
