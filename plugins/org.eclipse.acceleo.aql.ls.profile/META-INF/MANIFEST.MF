@@ -7,15 +7,9 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.emf.ecore,
- org.eclipse.acceleo.query,
+Require-Bundle: org.eclipse.acceleo.debug,
  org.eclipse.acceleo.aql,
- org.eclipse.acceleo.aql.ide,
- org.eclipse.core.resources,
- org.eclipse.equinox.common,
- org.eclipse.lsp4e,
  org.eclipse.acceleo.aql.ls.debug,
- org.eclipse.acceleo.debug,
  org.eclipse.acceleo.aql.profiler
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.profile
 Export-Package: org.eclipse.acceleo.aql.ls.profile

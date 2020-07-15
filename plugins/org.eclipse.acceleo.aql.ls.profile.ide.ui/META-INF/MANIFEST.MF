@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.acceleo.aql.ls.profile.ide,
  org.eclipse.acceleo.aql.ls.profile,
- org.eclipse.emf.ecore,
- org.eclipse.ui.ide
+ org.eclipse.emf.ecore
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.profile.ide.ui
 Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.acceleo.aql.ls.profile.ide.ui.launch

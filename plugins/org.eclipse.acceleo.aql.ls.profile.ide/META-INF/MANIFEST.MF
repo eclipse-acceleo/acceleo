@@ -8,16 +8,13 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.debug.core,
+ com.google.gson,
  org.eclipse.emf.ecore,
- org.eclipse.acceleo.query;bundle-version="[7.0.0,8.0.0)",
- org.eclipse.acceleo.aql,
+ org.eclipse.lsp4e.debug,
  org.eclipse.acceleo.debug,
  org.eclipse.acceleo.debug.ls,
  org.eclipse.acceleo.aql.ls.debug,
- org.eclipse.lsp4j.debug;bundle-version="0.8.1",
- org.eclipse.debug.core,
- org.eclipse.lsp4e.debug,
- com.google.gson,
  org.eclipse.acceleo.aql.ls.debug.ide,
  org.eclipse.acceleo.aql.ls.profile
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.debug.ide
