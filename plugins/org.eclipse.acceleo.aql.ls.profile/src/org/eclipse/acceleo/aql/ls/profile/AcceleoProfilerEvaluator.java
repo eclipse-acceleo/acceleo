@@ -44,29 +44,12 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	 */
 	@Override
 	public Object doSwitch(EObject eObject) {
-		boolean profile = filter(eObject);
-		if (!profile) {
-			profiler.start(eObject);
-			// TODO loop elements are not used, so we ignore them
-			// profiler.loop(loopElement);
-		}
+		profiler.start(eObject);
+		// TODO loop elements are not used, so we ignore them
+		// profiler.loop(loopElement);
 		Object res = super.doSwitch(eObject);
-		if (!profile) {
-			profiler.stop();
-		}
+		profiler.stop();
 		return res;
 	}
 
-	/**
-	 * Checks whether the element must be excluded from the profiling or not.
-	 * 
-	 * @param eObject
-	 *            the element to check
-	 * @return <true> if the element must not appear in the profiling result.
-	 */
-	private boolean filter(EObject eObject) {
-		return false;
-		// return eObject instanceof TextStatement || eObject instanceof ExpressionStatement
-		// || eObject instanceof Block;
-	}
 }

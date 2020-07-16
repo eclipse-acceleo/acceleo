@@ -16,19 +16,29 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Comment;
+import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
+import org.eclipse.acceleo.aql.profiler.ProfileResource;
 import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
 import org.eclipse.acceleo.aql.profiler.editor.AcceleoEnvResourceFactory;
 import org.eclipse.acceleo.aql.profiler.provider.ProfilerItemProviderAdapterFactorySpec;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -106,9 +116,11 @@ public final class ProfilerEditor extends EcoreEditor {
 		selectionViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				final Object selected = ((TreeSelection)event.getSelection()).getFirstElement();
-				EObject monitored = ((ProfileEntry)selected).getMonitored();
-				if (selected instanceof ProfileEntry && monitored != null) {
-					selectInEditor(monitored);
+				if (selected instanceof ProfileEntry && ((ProfileEntry)selected)
+						.getMonitored() instanceof ASTNode) {
+					selectInEditor((ASTNode)((ProfileEntry)selected).getMonitored());
+				} else if (selected instanceof ASTNode) {
+					selectInEditor((ASTNode)selected);
 				}
 			}
 		});
@@ -138,9 +150,60 @@ public final class ProfilerEditor extends EcoreEditor {
 		});
 
 		selectionViewer.setContentProvider(new ProfileEditorContentProvider(adapterFactory));
-
+		selectionViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory) {
+			@Override
+			public String getText(Object object) {
+				if (object instanceof Module) {
+					Module module = (Module)object;
+					return super.getText(module) + " (coverage: " + computeUsage(module) + "%)"; //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				return super.getText(object);
+			}
+		});
 		IToolBarManager toolBarManager = getActionBars().getToolBarManager();
 		toolBarManager.add(new ProfilerSortAction(sortStatus, selectionViewer));
+	}
+
+	private int computeUsage(Module module) {
+		// Compute all relevant elements
+		Set<EObject> moduleElements = new HashSet<EObject>();
+		for (Iterator<EObject> iterator = module.eAllContents(); iterator.hasNext();) {
+			EObject moduleElement = iterator.next();
+			if (isRelevant(moduleElement)) {
+				moduleElements.add(moduleElement);
+			}
+		}
+
+		// Compute all elements in use & in the previous list
+		Set<EObject> inUse = new HashSet<EObject>();
+		ProfileResource profileResource = getProfileResource();
+		for (Iterator<EObject> iterator = profileResource.eAllContents(); iterator.hasNext();) {
+			EObject profileEntry = iterator.next();
+			if (profileEntry instanceof ProfileEntry) {
+				EObject monitored = ((ProfileEntry)profileEntry).getMonitored();
+				if (moduleElements.contains(monitored)) {
+					inUse.add(monitored);
+				}
+			}
+		}
+		return inUse.size() * 100 / moduleElements.size();
+	}
+
+	private boolean isRelevant(EObject moduleElement) {
+		return !(moduleElement instanceof Comment || moduleElement instanceof CommentBody
+				|| moduleElement instanceof Import || moduleElement instanceof ModuleReference
+				|| moduleElement instanceof Expression || moduleElement instanceof Variable
+				|| moduleElement instanceof VariableDeclaration);
+	}
+
+	private ProfileResource getProfileResource() {
+		for (Resource resource : getEditingDomain().getResourceSet().getResources()) {
+			if (!resource.getContents().isEmpty() && resource.getContents().get(
+					0) instanceof ProfileResource) {
+				return (ProfileResource)resource.getContents().get(0);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -452,8 +515,8 @@ public final class ProfilerEditor extends EcoreEditor {
 		}
 	}
 
-	private void selectInEditor(EObject monitored) {
-		Resource eResource = monitored.eResource();
+	private void selectInEditor(ASTNode astNode) {
+		Resource eResource = astNode.eResource();
 		if (eResource != null && !eResource.getContents().isEmpty() && eResource.getContents().get(
 				0) instanceof Module) {
 			org.eclipse.acceleo.Module module = (org.eclipse.acceleo.Module)eResource.getContents().get(0);
@@ -465,15 +528,12 @@ public final class ProfilerEditor extends EcoreEditor {
 					if (files.length > 0) {
 						IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 								.getActivePage();
-						if (monitored instanceof ASTNode) {
-							ASTNode astNode = (ASTNode)monitored;
-							AcceleoAstResult ast = module.getAst();
-							int start = ast.getStartPosition(astNode);
-							int end = ast.getEndPosition(astNode);
-							IEditorPart editor = IDE.openEditor(page, files[0]);
-							if (editor instanceof TextEditor) {
-								((TextEditor)editor).selectAndReveal(start, end - start);
-							}
+						AcceleoAstResult ast = module.getAst();
+						int start = ast.getStartPosition(astNode);
+						int end = ast.getEndPosition(astNode);
+						IEditorPart editor = IDE.openEditor(page, files[0]);
+						if (editor instanceof TextEditor) {
+							((TextEditor)editor).selectAndReveal(start, end - start);
 						}
 					}
 				} catch (URISyntaxException e) {
