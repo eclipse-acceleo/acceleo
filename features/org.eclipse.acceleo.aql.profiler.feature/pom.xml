@@ -20,7 +20,7 @@
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>org.eclipse.acceleo.aql.profiler-feature</artifactId>
+  <artifactId>org.eclipse.acceleo.aql.profiler.feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
   <name>Acceleo Profiler Feature</name>
