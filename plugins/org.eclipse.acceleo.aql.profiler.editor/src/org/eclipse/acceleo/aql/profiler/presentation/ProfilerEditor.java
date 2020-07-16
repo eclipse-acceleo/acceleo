@@ -10,18 +10,33 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.profiler.presentation;
 
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
+import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
 import org.eclipse.acceleo.aql.profiler.editor.AcceleoEnvResourceFactory;
 import org.eclipse.acceleo.aql.profiler.provider.ProfilerItemProviderAdapterFactorySpec;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.presentation.EcoreEditor;
 import org.eclipse.emf.ecore.presentation.EcoreEditorPlugin;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -41,7 +56,13 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -61,6 +82,8 @@ public final class ProfilerEditor extends EcoreEditor {
 
 	/** The current sort status of the view. */
 	protected ProfilerSortStatus sortStatus = new ProfilerSortStatus();
+
+	private AcceleoEnvResourceFactory acceleoEnvResourceFactory;
 
 	/**
 	 * Constructor.
@@ -83,11 +106,11 @@ public final class ProfilerEditor extends EcoreEditor {
 		selectionViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				final Object selected = ((TreeSelection)event.getSelection()).getFirstElement();
-				if (selected instanceof ProfileEntry) {
-					// TODO open template editor
+				EObject monitored = ((ProfileEntry)selected).getMonitored();
+				if (selected instanceof ProfileEntry && monitored != null) {
+					selectInEditor(monitored);
 				}
 			}
-
 		});
 
 		selectionViewer.setComparator(new ViewerComparator() {
@@ -114,21 +137,7 @@ public final class ProfilerEditor extends EcoreEditor {
 			}
 		});
 
-		selectionViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory) {
-
-			@Override
-			public Object[] getChildren(Object object) {
-				if (object instanceof ProfileEntry) {
-					return ((ProfileEntry)object).getCallees().toArray();
-				}
-				return super.getChildren(object);
-			}
-
-			@Override
-			public Object[] getElements(Object object) {
-				return getChildren(object);
-			}
-		});
+		selectionViewer.setContentProvider(new ProfileEditorContentProvider(adapterFactory));
 
 		IToolBarManager toolBarManager = getActionBars().getToolBarManager();
 		toolBarManager.add(new ProfilerSortAction(sortStatus, selectionViewer));
@@ -298,6 +307,60 @@ public final class ProfilerEditor extends EcoreEditor {
 	}
 
 	/**
+	 * A customized content provider which allow filtering parts of the tree, and still display filtered parts
+	 * children.
+	 */
+	private final class ProfileEditorContentProvider extends AdapterFactoryContentProvider {
+		private ProfileEditorContentProvider(AdapterFactory adapterFactory) {
+			super(adapterFactory);
+		}
+
+		@Override
+		public Object[] getChildren(Object object) {
+			if (object instanceof ProfileEntry) {
+				return internalGetChildren((ProfileEntry)object).toArray();
+			}
+			return super.getChildren(object);
+		}
+
+		/**
+		 * Returns the children of the given profile entry. Skips filtered types.
+		 * 
+		 * @param profileEntry
+		 *            the root
+		 * @return the children
+		 */
+		private Collection<ProfileEntry> internalGetChildren(ProfileEntry profileEntry) {
+			List<ProfileEntry> children = new ArrayList<ProfileEntry>();
+			for (ProfileEntry child : profileEntry.getCallees()) {
+				if (isSkipped(child.getMonitored())) {
+					children.addAll(internalGetChildren(child));
+				} else {
+					children.add(child);
+				}
+			}
+			return children;
+		}
+
+		/**
+		 * Checks whether a profileEntry monitored element needs to be displayed or not.
+		 * 
+		 * @param object
+		 *            the element
+		 * @return <true> if the element must not appear in the editor
+		 */
+		private boolean isSkipped(Object object) {
+			return object instanceof TextStatement || object instanceof ExpressionStatement
+					|| object instanceof Block;
+		}
+
+		@Override
+		public Object[] getElements(Object object) {
+			return getChildren(object);
+		}
+	}
+
+	/**
 	 * Selection changed listener.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -383,9 +446,42 @@ public final class ProfilerEditor extends EcoreEditor {
 		if (editorInput instanceof FileEditorInput) {
 			FileEditorInput fip = (FileEditorInput)editorInput;
 			IProject project = fip.getFile().getProject();
-			// TODO use a project stored in the Metamodel
+			acceleoEnvResourceFactory = new AcceleoEnvResourceFactory(project);
 			getEditingDomain().getResourceSet().getResourceFactoryRegistry().getProtocolToFactoryMap().put(
-					"acceleoenv", new AcceleoEnvResourceFactory(project)); //$NON-NLS-1$
+					"acceleoenv", acceleoEnvResourceFactory); //$NON-NLS-1$
+		}
+	}
+
+	private void selectInEditor(EObject monitored) {
+		Resource eResource = monitored.eResource();
+		if (eResource != null && !eResource.getContents().isEmpty() && eResource.getContents().get(
+				0) instanceof Module) {
+			org.eclipse.acceleo.Module module = (org.eclipse.acceleo.Module)eResource.getContents().get(0);
+			URL sourceURL = acceleoEnvResourceFactory.getEnvironment().getModuleSourceURL(module);
+			if (sourceURL != null) {
+				try {
+					IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(sourceURL
+							.toURI());
+					if (files.length > 0) {
+						IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+								.getActivePage();
+						if (monitored instanceof ASTNode) {
+							ASTNode astNode = (ASTNode)monitored;
+							AcceleoAstResult ast = module.getAst();
+							int start = ast.getStartPosition(astNode);
+							int end = ast.getEndPosition(astNode);
+							IEditorPart editor = IDE.openEditor(page, files[0]);
+							if (editor instanceof TextEditor) {
+								((TextEditor)editor).selectAndReveal(start, end - start);
+							}
+						}
+					}
+				} catch (URISyntaxException e) {
+					ProfilerEditorPlugin.getPlugin().log(e);
+				} catch (PartInitException e) {
+					ProfilerEditorPlugin.getPlugin().log(e);
+				}
+			}
 		}
 	}
 

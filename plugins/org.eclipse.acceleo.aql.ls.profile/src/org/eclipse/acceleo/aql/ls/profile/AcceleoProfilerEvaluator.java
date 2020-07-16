@@ -7,9 +7,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.profile;
 
-import org.eclipse.acceleo.Block;
-import org.eclipse.acceleo.ExpressionStatement;
-import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.profiler.Profiler;
@@ -68,7 +65,8 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	 * @return <true> if the element must not appear in the profiling result.
 	 */
 	private boolean filter(EObject eObject) {
-		return eObject instanceof TextStatement || eObject instanceof ExpressionStatement
-				|| eObject instanceof Block;
+		return false;
+		// return eObject instanceof TextStatement || eObject instanceof ExpressionStatement
+		// || eObject instanceof Block;
 	}
 }

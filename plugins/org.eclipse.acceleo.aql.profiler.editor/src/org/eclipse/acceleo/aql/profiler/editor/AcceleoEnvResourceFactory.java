@@ -43,4 +43,8 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 		org.eclipse.acceleo.Module module = environment.getModule(qualifiedName);
 		return module.eResource();
 	}
+
+	public AcceleoEnvironment getEnvironment() {
+		return environment;
+	}
 }
