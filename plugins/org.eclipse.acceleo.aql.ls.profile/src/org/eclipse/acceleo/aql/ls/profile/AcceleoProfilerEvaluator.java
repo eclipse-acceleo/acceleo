@@ -50,7 +50,8 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 		boolean profile = filter(eObject);
 		if (!profile) {
 			profiler.start(eObject);
-			// TODO //profiler.loop(loopElement);
+			// TODO loop elements are not used, so we ignore them
+			// profiler.loop(loopElement);
 		}
 		Object res = super.doSwitch(eObject);
 		if (!profile) {

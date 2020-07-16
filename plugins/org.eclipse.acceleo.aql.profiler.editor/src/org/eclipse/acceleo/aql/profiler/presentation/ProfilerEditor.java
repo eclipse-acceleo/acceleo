@@ -383,6 +383,7 @@ public final class ProfilerEditor extends EcoreEditor {
 		if (editorInput instanceof FileEditorInput) {
 			FileEditorInput fip = (FileEditorInput)editorInput;
 			IProject project = fip.getFile().getProject();
+			// TODO use a project stored in the Metamodel
 			getEditingDomain().getResourceSet().getResourceFactoryRegistry().getProtocolToFactoryMap().put(
 					"acceleoenv", new AcceleoEnvResourceFactory(project)); //$NON-NLS-1$
 		}
