@@ -1365,7 +1365,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "eObject", value = "The eObject which EClass is requested.")
 		},
-		result = "The EClass of the specified EObject"
+		result = "The EClass of the specified EObject",
+		examples = {
+			@Example(
+				expression = "anEObject.eClass()",
+				result = "anEClass"
+			)
+		}
 	)
 	// @formatter:on
 	public EClass eClass(EObject eObject) {
@@ -1378,7 +1384,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "eObject", value = "The eObject which containing feature is requested.")
 		},
-		result = "The containing feature of the specified EObject"
+		result = "The containing feature of the specified EObject",
+		examples = {
+			@Example(
+				expression = "anEObject.eContainingFeature()",
+				result = "anEStructuralFeature"
+			)
+		}
 	)
 	// @formatter:on
 	public EStructuralFeature eContainingFeature(EObject eObject) {
@@ -1391,7 +1403,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "eObject", value = "The eObject which containment feature is requested.")
 		},
-		result = "The containment feature of the specified EObject"
+		result = "The containment feature of the specified EObject",
+		examples = {
+			@Example(
+				expression = "anEObject.eContainmentFeature()",
+				result = "anEReference"
+			)
+		}
 	)
 	// @formatter:on
 	public EReference eContainmentFeature(EObject eObject) {
@@ -1404,7 +1422,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "eObject", value = "The eObject which inverse references are requested.")
 		},
-		result = "The set of the inverse references"
+		result = "The set of the inverse references",
+		examples = {
+			@Example(
+				expression = "anEObject.eInverse()",
+				result = "OrderedSet{firstReferencingEObject, secondReferencingEObject...}"
+			)
+		}
 	)
 	// @formatter:on
 	public Set<EObject> eInverse(EObject self) {
@@ -1430,7 +1454,13 @@ public class EObjectServices extends AbstractServiceProvider {
 			@Param(name = "eObject", value = "The eObject which inverse references are requested."),
 			@Param(name = "type", value = "The type filter."),
 		},
-		result = "The set of the inverse references"
+		result = "The set of the inverse references",
+		examples = {
+			@Example(
+				expression = "anEObject.eInverse(anEClass)",
+				result = "OrderedSet{firstReferencingEObject, secondReferencingEObject...}"
+			)
+		}
 	)
 	// @formatter:on
 	public Set<EObject> eInverse(EObject self, EClassifier type) {
@@ -1459,7 +1489,13 @@ public class EObjectServices extends AbstractServiceProvider {
 			@Param(name = "eObject", value = "The eObject which inverse references are requested."),
 			@Param(name = "featureName", value = "The feature name."),
 		},
-		result = "The set of the inverse references"
+		result = "The set of the inverse references",
+		examples = {
+			@Example(
+				expression = "anEObject.eInverse(aFeatureName)",
+				result = "OrderedSet{firstReferencingEObject, secondReferencingEObject...}"
+			)
+		}
 	)
 	// @formatter:on
 	public Set<EObject> eInverse(EObject self, String featureName) {
@@ -1488,7 +1524,13 @@ public class EObjectServices extends AbstractServiceProvider {
 			@Param(name = "eObject", value = "The eObject we seek to retrieve a feature value of."),
 			@Param(name = "featureName", value = "The name of the feature which value we need to retrieve."),
 		},
-		result = "The value of the given feature on the given EObject"
+		result = "The value of the given feature on the given EObject",
+		examples = {
+			@Example(
+				expression = "anEObject.eGet(aFeatureName)",
+				result = "aValue"
+			)
+		}
 	)
 	// @formatter:on
 	public Object eGet(EObject eObject, final String featureName) {
@@ -1519,7 +1561,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "type", value = "The EClass"),
 		},
-		result = "all instances of the EClass"
+		result = "all instances of the EClass",
+		examples = {
+			@Example(
+				expression = "anEClass.allInstances()",
+				result = "Sequence{firstEObject,secondEObject...}"
+			)
+		}
 	)
 	// @formatter:on
 	public List<EObject> allInstances(EClass type) {
@@ -1542,7 +1590,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "types", value = "The OrderedSet of EClass"),
 		},
-		result = "all instances of any EClass from the OrderedSet"
+		result = "all instances of any EClass from the OrderedSet",
+		examples = {
+			@Example(
+				expression = "anEClass.allInstances({ecore::EPackage | ecore::EClass})",
+				result = "Sequence{ePackage, eClass, ...}"
+			)
+		}
 	)
 	// @formatter:on
 	public List<EObject> allInstances(Set<EClass> types) {
@@ -1566,7 +1620,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "eObject", value = "The eObject of which we need the cross-references."),
 		},
-		result = "The list of all EObjects cross-referenced from the receiver."
+		result = "The list of all EObjects cross-referenced from the receiver.",
+		examples = {
+			@Example(
+				expression = "anEObject.eCrossReferences()",
+				result = "Sequence{firstReferencedEObject, secondReferencedEObject...}"
+			)
+		}
 	)
 	// @formatter:on
 	public Object eCrossReferences(EObject eObject) {
