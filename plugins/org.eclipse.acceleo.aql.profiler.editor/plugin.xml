@@ -20,5 +20,32 @@
             contributorClass="org.eclipse.acceleo.aql.profiler.presentation.ProfilerActionBarContributor">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+       <specification
+            annotationType="org.eclipse.acceleo.aql.coverageAnnotation"
+            colorPreferenceKey="fullcoverage_color"
+            colorPreferenceValue="192,255,192"
+            contributesToHeader="false"
+            highlightPreferenceKey="fullcoverage_highlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="true"
+            isGoToNextNavigationTarget="false"
+            isGoToNextNavigationTargetKey="fullcoverage_isGoToNextNavigationTargetKey"
+            isGoToPreviousNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="fullcoverage_isGoToPreviousNavigationTargetKey"
+            label="%fullCoverageAnnotation.label"
+            overviewRulerPreferenceKey="fullcoverage_overviewRuler"
+            overviewRulerPreferenceValue="false"
+            presentationLayer="0"
+            showInNextPrevDropdownToolbarAction="false"
+            showInNextPrevDropdownToolbarActionKey="fullcoverage_showInNextPrevDropdownToolbarAction"
+            textPreferenceKey="fullcoverage_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="fullcoverage_stylePreferences"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="fullcoverage_verticalRuler"
+            verticalRulerPreferenceValue="true"/>
+   </extension>
 
 </plugin>

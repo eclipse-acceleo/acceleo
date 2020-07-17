@@ -31,4 +31,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.aql,
  org.eclipse.acceleo.aql.ide,
  org.eclipse.acceleo.query,
- org.eclipse.ui.editors
+ org.eclipse.ui.editors,
+ org.eclipse.text
