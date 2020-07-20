@@ -15,11 +15,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.acceleo.aql.profiler.LoopProfileEntry;
-import org.eclipse.acceleo.aql.profiler.ProfileEntry;
-import org.eclipse.acceleo.aql.profiler.ProfileResource;
-import org.eclipse.acceleo.aql.profiler.ProfilerFactory;
-import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -240,7 +235,12 @@ public class Profiler {
 				final Iterator<EObject> itContent = root.eAllContents();
 				while (itContent.hasNext()) {
 					final ProfileEntry node = (ProfileEntry)itContent.next();
-					node.setPercentage(node.getDuration() * 100.0 / baseTime);
+					if (node.getDuration() == baseTime) {
+						// prevents NaN when baseTime == 0
+						node.setPercentage(100);
+					} else {
+						node.setPercentage(node.getDuration() * 100.0 / baseTime);
+					}
 				}
 			}
 		}

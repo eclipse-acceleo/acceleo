@@ -22,8 +22,8 @@
    </extension>
    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
-       <specification
-            annotationType="org.eclipse.acceleo.aql.coverageAnnotation"
+      <specification
+            annotationType="org.eclipse.acceleo.aql.fullCoverageAnnotation"
             colorPreferenceKey="fullcoverage_color"
             colorPreferenceValue="192,255,192"
             contributesToHeader="false"
@@ -46,6 +46,29 @@
             textStylePreferenceValue="BOX"
             verticalRulerPreferenceKey="fullcoverage_verticalRuler"
             verticalRulerPreferenceValue="true"/>
+      <specification
+            annotationType="org.eclipse.acceleo.aql.noCoverageAnnotation"
+            colorPreferenceKey="nocoverage_color"
+            colorPreferenceValue="255,160,160"
+            contributesToHeader="false"
+            highlightPreferenceKey="nocoverage_highlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="true"
+            isGoToNextNavigationTarget="false"
+            isGoToNextNavigationTargetKey="nocoverage_isGoToNextNavigationTargetKey"
+            isGoToPreviousNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="nocoverage_isGoToPreviousNavigationTargetKey"
+            label="%noCoverageAnnotation.label"
+            overviewRulerPreferenceKey="nocoverage_overviewRuler"
+            overviewRulerPreferenceValue="false"
+            presentationLayer="1"
+            showInNextPrevDropdownToolbarAction="false"
+            showInNextPrevDropdownToolbarActionKey="nocoverage_showInNextPrevDropdownToolbarAction"
+            textPreferenceKey="nocoverage_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="nocoverage_stylePreferences"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="nocoverage_verticalRuler"
+            verticalRulerPreferenceValue="true"/>
    </extension>
-
 </plugin>

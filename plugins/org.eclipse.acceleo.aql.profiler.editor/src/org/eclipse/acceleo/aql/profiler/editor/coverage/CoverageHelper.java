@@ -21,7 +21,6 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
@@ -32,7 +31,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public class CoverageHelper {
 
-	private static final String COVERAGE_ANNOTATION_ID = "org.eclipse.acceleo.aql.coverageAnnotation"; //$NON-NLS-1$
+	private static final String FULL_COVERAGE_ANNOTATION_ID = "org.eclipse.acceleo.aql.fullCoverageAnnotation"; //$NON-NLS-1$
+
+	private static final String NO_COVERAGE_ANNOTATION_ID = "org.eclipse.acceleo.aql.noCoverageAnnotation"; //$NON-NLS-1$
 
 	private ProfileResource profileResource;
 
@@ -51,10 +52,11 @@ public class CoverageHelper {
 		this.profileResource = profileResource;
 		this.cache = new HashMap<Module, CoverageHelper.CoverageReport>();
 		this.allModules = new HashMap<Module, IFile>();
-		for (Resource resource : profileResource.eResource().getResourceSet().getResources()) {
-			if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Module) {
-				Module module = (Module)resource.getContents().get(0);
-				allModules.put(module, resourceFactory.getSourceFile(module));
+		for (ProfileEntry entry : profileResource.getEntries()) {
+			if (entry.getMonitored() instanceof Module) {
+				Module module = (Module)entry.getMonitored();
+				IFile sourceFile = resourceFactory.getSourceFile(module);
+				allModules.put(module, sourceFile);
 			}
 		}
 	}
@@ -109,21 +111,30 @@ public class CoverageHelper {
 			return;
 		}
 		IAnnotationModelExtension modelex = (IAnnotationModelExtension)model;
-		modelex.addAnnotationModel(null, createAnnotationModel(module));
+		IAnnotationModel coverageModel = modelex.getAnnotationModel(this);
+		if (coverageModel == null || cache.get(module) == null) {
+			// There is no annotation or the current annotations are out of sync
+			modelex.removeAnnotationModel(this);
+			modelex.addAnnotationModel(this, createAnnotationModel(module));
+		}
 	}
 
 	private IAnnotationModel createAnnotationModel(Module module) {
 		AnnotationModel res = new AnnotationModel();
 		AcceleoAstResult astResult = module.getAst();
 		CoverageReport report = getCoverageReport(module);
-		for (EObject element : report.usedElements) {
+		for (EObject element : report.allElements) {
 			if (element instanceof ASTNode) {
 				ASTNode astNode = (ASTNode)element;
 				int offset = astResult.getStartPosition(astNode);
 				int length = astResult.getEndPosition(astNode) - offset;
 				if (offset > 0 && length > 0) {
 					Position position = new Position(offset, length);
-					res.addAnnotation(new Annotation(COVERAGE_ANNOTATION_ID, false, null), position);
+					if (report.usedElements.contains(element)) {
+						res.addAnnotation(new Annotation(FULL_COVERAGE_ANNOTATION_ID, false, null), position);
+					} else {
+						res.addAnnotation(new Annotation(NO_COVERAGE_ANNOTATION_ID, false, null), position);
+					}
 				}
 			}
 		}

@@ -476,7 +476,7 @@ public final class ProfilerEditor extends EcoreEditor {
 		}
 	}
 
-	public CoverageHelper getCoverageHelper() {
+	private CoverageHelper getCoverageHelper() {
 		if (coverageHelper == null) {
 			coverageHelper = new CoverageHelper(getProfileResource(), acceleoEnvResourceFactory);
 		}
