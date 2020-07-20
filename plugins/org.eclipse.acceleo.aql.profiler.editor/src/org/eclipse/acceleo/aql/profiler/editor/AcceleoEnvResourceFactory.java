@@ -1,9 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2020 Huawei.
+ * All rights reserved.
  * 
  * Contributors:
  *     Obeo - initial API and implementation
@@ -26,6 +23,11 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
+/**
+ * A resource factory able to resolve acceleoenv URIs.
+ * 
+ * @author wpiers
+ */
 public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 
 	/**
@@ -33,7 +35,26 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 	 */
 	private AcceleoEnvironment environment;
 
+	/**
+	 * The project where to find modules.
+	 */
+	private IProject project;
+
+	/**
+	 * Creates a factory for the given project.
+	 * 
+	 * @param project
+	 *            the project
+	 */
 	public AcceleoEnvResourceFactory(IProject project) {
+		this.project = project;
+		init();
+	}
+
+	/**
+	 * Inits the factory acceleo environnement. Resets any module cache.
+	 */
+	public void init() {
 		environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), URI.createURI("TMP")); //$NON-NLS-1$
 		environment.setModuleResolver(Activator.getPlugin().createQualifiedNameResolver(environment
 				.getQueryEnvironment(), project));

@@ -516,4 +516,45 @@ public final class ProfilerEditor extends EcoreEditor {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.emf.ecore.presentation.EcoreEditor#handleChangedResources()
+	 */
+	@Override
+	protected void handleChangedResources() {
+		if (changedResources.contains(getProfileResource().eResource())) {
+			// We reinit the module resolver
+			acceleoEnvResourceFactory.init();
+
+			// We remove all module resources to force their reloading
+			List<Resource> moduleResources = new ArrayList<Resource>();
+			for (Resource resource : editingDomain.getResourceSet().getResources()) {
+				if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Module) {
+					moduleResources.add(resource);
+				}
+			}
+			editingDomain.getResourceSet().getResources().removeAll(moduleResources);
+
+			// TODO allow update of opened editors
+			// We reset the coverage informations
+			if (coverageHelper != null) {
+				coverageHelper.clearAnnotations();
+				coverageHelper = null;
+			}
+		}
+		super.handleChangedResources();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.emf.ecore.presentation.EcoreEditor#dispose()
+	 */
+	@Override
+	public void dispose() {
+		coverageHelper.clearAnnotations();
+		super.dispose();
+	}
+
 }
