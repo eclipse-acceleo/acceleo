@@ -113,7 +113,6 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 					+ openedDocumentUri);
 		} else {
 			this.openedDocumentsIndex.put(openedDocumentUri, openedAcceleoTextDocument);
-			openedAcceleoTextDocument.validateContents();
 		}
 	}
 
@@ -126,9 +125,6 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		AcceleoTextDocument changedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
 				changedDocumentUri);
 		changedAcceleoTextDocument.applyChanges(textDocumentContentchangeEvents);
-
-		// Upon every change, re-validate the module and send the results to the client.
-		changedAcceleoTextDocument.validateContents();
 	}
 
 	@Override

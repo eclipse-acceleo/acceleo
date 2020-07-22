@@ -173,8 +173,9 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	@Override
 	public void exit() {
 		if (this.languageClient != null) {
-			this.languageClient.logMessage(new MessageParams(MessageType.Log,
-					"Acceleo Language Server is exiting"));
+			// FIXME removed log on editor closing, fails in DEV mode
+			// this.languageClient.logMessage(new MessageParams(MessageType.Log,
+			// "Acceleo Language Server is exiting"));
 		}
 	}
 

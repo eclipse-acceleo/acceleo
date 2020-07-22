@@ -229,10 +229,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModule(Module module) {
-		String qualifiedNameLastSegment = this.qualifiedName.substring(this.qualifiedName.lastIndexOf(
-				AcceleoParser.QUALIFIER_SEPARATOR) + AcceleoParser.QUALIFIER_SEPARATOR.length(),
-				this.qualifiedName.length());
-
 		final Set<EPackage> ePackages = new HashSet<EPackage>();
 		for (Metamodel metamodel : module.getMetamodels()) {
 			doSwitch(metamodel);
@@ -421,6 +417,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			doSwitch(template.getBody());
 		} finally {
 			popVariableTypes();
+			environment.popStack(template);
 		}
 
 		return RETURN_VALUE;
@@ -502,6 +499,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 		} finally {
 			popVariableTypes();
+			environment.popStack(query);
 		}
 
 		return RETURN_VALUE;

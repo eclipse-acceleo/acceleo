@@ -335,12 +335,8 @@ public class AcceleoLocationLinkResolver {
 
 		// Link target parameters.
 		Module destinationModule = destinationTextDocument.getAcceleoAstResult().getModule();
-		String qualifiedName = destinationTextDocument.getAcceleoEnvironment().getModuleQualifiedName(
-				destinationModule);
-		if (qualifiedName == null) {
-			qualifiedName = URI.decode(destinationModule.eResource().getURI().toString().replaceFirst(
-					AcceleoParser.ACCELEOENV_URI_PROTOCOL, ""));
-		}
+		String qualifiedName = URI.decode(destinationModule.eResource().getURI().toString().replaceFirst(
+				AcceleoParser.ACCELEOENV_URI_PROTOCOL, ""));
 
 		// TODO this is a more general matter, it should be performed in the AcceleoWorkspace
 		// open source file whenever it's possible
@@ -348,12 +344,15 @@ public class AcceleoLocationLinkResolver {
 		try {
 			targetDocumentUri = destinationTextDocument.getAcceleoEnvironment().getModuleResolver()
 					.getModuleSourceURL(qualifiedName).toURI();
-		} catch (URISyntaxException e) {
+		} catch (
+
+		URISyntaxException e) {
 			targetDocumentUri = null;
 		}
 		if (targetDocumentUri == null) {
 			targetDocumentUri = destinationTextDocument.getUri();
 		}
+
 		LocationLink locationLink = new LocationLink(targetDocumentUri.toString(), targetRange,
 				targetSelectionRange, originSelectionRange);
 		return locationLink;

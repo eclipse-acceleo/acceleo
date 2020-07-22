@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.location.AcceleoLocator;
@@ -80,11 +81,13 @@ public class AcceleoTextDocument {
 	 *            the (non-{@code null}) {@link URI} of this text document.
 	 * @param textDocumentContents
 	 *            the (non-{@code null}) initial contents of this text document.
+	 * @param project
+	 *            the owner project
 	 */
-	public AcceleoTextDocument(URI textDocumentUri, String textDocumentContents) {
+	public AcceleoTextDocument(URI textDocumentUri, String textDocumentContents, AcceleoProject project) {
 		Objects.requireNonNull(textDocumentUri);
 		Objects.requireNonNull(textDocumentContents);
-
+		this.ownerProject = project;
 		this.uri = textDocumentUri;
 
 		this.setContents(textDocumentContents);
@@ -122,9 +125,12 @@ public class AcceleoTextDocument {
 	 *            the new (maybe-{@code null}) owner {@link AcceleoProject}.
 	 */
 	public void setProject(AcceleoProject acceleoProject) {
+		AcceleoProject oldProject = ownerProject;
 		this.ownerProject = acceleoProject;
-		// When the project changes, the environment changes.
-		this.environmentChanged();
+		if ((acceleoProject == null && oldProject != null) || !acceleoProject.equals(oldProject)) {
+			// When the project changes, the environment changes.
+			this.environmentChanged();
+		}
 	}
 
 	/**
@@ -301,8 +307,14 @@ public class AcceleoTextDocument {
 	 *         the Acceleo element found at the given position in the source contents.
 	 */
 	public List<AbstractLocationLink<?, ?>> getDefinitionLocations(int position) {
-		return new AcceleoLocator(this.getAcceleoEnvironment()).getDefinitionLocations(this.acceleoAstResult,
-				position);
+		IAcceleoEnvironment env = getAcceleoEnvironment();
+		// FIXME we need any module element
+		ModuleElement moduleElement = acceleoAstResult.getModule().getModuleElements().get(0);
+		env.pushImport(getModuleQualifiedName(), moduleElement);
+		List<AbstractLocationLink<?, ?>> definitionLocations = new AcceleoLocator(env).getDefinitionLocations(
+				this.acceleoAstResult, position);
+		env.popStack(moduleElement);
+		return definitionLocations;
 	}
 
 	/**
@@ -342,7 +354,6 @@ public class AcceleoTextDocument {
 		for (TextDocumentContentChangeEvent textDocumentContentChangeEvent : textDocumentContentchangeEvents) {
 			newTextDocumentContents = apply(textDocumentContentChangeEvent, newTextDocumentContents);
 		}
-
 		this.setContents(newTextDocumentContents);
 
 		return this;
