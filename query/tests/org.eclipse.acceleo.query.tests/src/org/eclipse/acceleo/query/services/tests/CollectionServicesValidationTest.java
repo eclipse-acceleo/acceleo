@@ -28,7 +28,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(),
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
 				CollectionServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
@@ -36,10 +36,10 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testAddListNothingString() {
 		final NothingType nothingType = nothingType("Empty");
-		final IType[] parameterTypes = new IType[] {sequenceType(nothingType),
-				sequenceType(classType(String.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType),
-				sequenceType(classType(String.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(nothingType), sequenceType(classType(
+				String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType), sequenceType(classType(
+				String.class)) };
 		final IType[] expectedAllReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, expectedAllReturnTypes, "add", parameterTypes);
@@ -48,10 +48,10 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testAddListStringNothing() {
 		final NothingType nothingType = nothingType("Empty");
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(nothingType) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(nothingType) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				nothingType) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				nothingType) };
 		final IType[] expectedAllReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, expectedAllReturnTypes, "add", parameterTypes);
@@ -59,10 +59,10 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testAddList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "add", parameterTypes);
 	}
@@ -71,8 +71,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testAddSetNothingString() {
 		final NothingType nothingType = nothingType("Empty");
 		final IType[] parameterTypes = new IType[] {setType(nothingType), setType(classType(String.class)) };
-		final IType[] expectedReturnTypes = new IType[] {setType(nothingType),
-				setType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(nothingType), setType(classType(
+				String.class)) };
 		final IType[] expectedAllReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, expectedAllReturnTypes, "add", parameterTypes);
@@ -82,8 +82,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testAddSetStringNothing() {
 		final NothingType nothingType = nothingType("Empty");
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), setType(nothingType) };
-		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)),
-				setType(nothingType) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)), setType(
+				nothingType) };
 		final IType[] expectedAllReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, expectedAllReturnTypes, "add", parameterTypes);
@@ -91,19 +91,20 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testAddSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				setType(classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)),
-				setType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), setType(classType(
+				Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)), setType(classType(
+				Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "add", parameterTypes);
 	}
 
 	@Test
 	public void testAnyNoBooleanLambda() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in an any must return a boolean") };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"expression in an any must return a boolean") };
 
 		assertValidation(expectedReturnTypes, "any", parameterTypes);
 	}
@@ -113,15 +114,13 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					setType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBoolean())) };
+			final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
 			assertValidation(expectedReturnTypes, "any", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -130,15 +129,13 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					sequenceType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBoolean())) };
+			final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
 			assertValidation(expectedReturnTypes, "any", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -191,9 +188,18 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testAt() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class) };
+	public void testAtList() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
+
+		assertValidation(expectedReturnTypes, "at", parameterTypes);
+	}
+
+	@Test
+	public void testAtSet() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class) };
 		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
 		assertValidation(expectedReturnTypes, "at", parameterTypes);
@@ -201,8 +207,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testSortedBySet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
@@ -210,8 +216,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testSortedByList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
@@ -219,8 +225,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testCollectSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "collect", parameterTypes);
@@ -228,8 +234,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testCollectList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "collect", parameterTypes);
@@ -237,18 +243,18 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testConcat() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "concat", parameterTypes);
 	}
 
 	@Test
 	public void testCountSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), sequenceType(classType(
+				Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
 
 		assertValidation(expectedReturnTypes, "count", parameterTypes);
@@ -256,8 +262,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testCountList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
 
 		assertValidation(expectedReturnTypes, "count", parameterTypes);
@@ -265,8 +271,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testExcludesSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), sequenceType(classType(
+				Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "excludes", parameterTypes);
@@ -274,8 +280,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testExcludesList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "excludes", parameterTypes);
@@ -283,8 +289,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIncludesSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), sequenceType(classType(
+				Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "includes", parameterTypes);
@@ -292,8 +298,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIncludesList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "includes", parameterTypes);
@@ -301,20 +307,20 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIncludingList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "including", parameterTypes);
 	}
 
 	@Test
 	public void testIncludingSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				classType(Integer.class) };
-		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)),
-				setType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)), setType(classType(
+				Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "including", parameterTypes);
 	}
@@ -337,8 +343,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIndexOf() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
 
 		assertValidation(expectedReturnTypes, "indexOf", parameterTypes);
@@ -346,10 +352,10 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testInsertAt() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class), classType(Double.class) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Double.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class), classType(Double.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Double.class)) };
 
 		assertValidation(expectedReturnTypes, "insertAt", parameterTypes);
 	}
@@ -369,14 +375,16 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)),
-					setType(eClassifierType(eCls2)) };
-			final IType[] expectedReturnTypes = new IType[] {setType(nothingType("Nothing left after intersection of Set(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
-			final IType[] expectedAllReturnTypes = new IType[] {setType(nothingType("Nothing left after intersection:\n Nothing left after intersection of Set(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
+			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)), setType(
+					eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {setType(nothingType(
+					"Nothing left after intersection of Set(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
+			final IType[] expectedAllReturnTypes = new IType[] {setType(nothingType(
+					"Nothing left after intersection:\n Nothing left after intersection of Set(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -406,20 +414,20 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)),
-					setType(eClassifierType(eCls2)) };
+			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)), setType(
+					eClassifierType(eCls2)) };
 			final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(eCls3)) };
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
 	@Test
 	public void testIntersectionSetSetSameType() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				setType(classType(String.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), setType(classType(
+				String.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -427,8 +435,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionSetSetEClassEClassifier() {
-		final IType[] parameterTypes = new IType[] {setType(classType(EClass.class)),
-				setType(classType(EClassifier.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(EClass.class)), setType(classType(
+				EClassifier.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -436,8 +444,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionSetSetEClassifierEClass() {
-		final IType[] parameterTypes = new IType[] {setType(classType(EClassifier.class)),
-				setType(classType(EClass.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(EClassifier.class)), setType(classType(
+				EClass.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -458,14 +466,16 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
-					sequenceType(eClassifierType(eCls2)) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection of Sequence(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection:\n Nothing left after intersection of Sequence(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)), sequenceType(
+					eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing left after intersection of Sequence(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing left after intersection:\n Nothing left after intersection of Sequence(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -495,20 +505,20 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
-					sequenceType(eClassifierType(eCls2)) };
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)), sequenceType(
+					eClassifierType(eCls2)) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls3)) };
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
 	@Test
 	public void testIntersectionListListSameType() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(String.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(String.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -516,8 +526,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionListListEClassEClassifier() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClass.class)),
-				sequenceType(classType(EClassifier.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClass.class)), sequenceType(
+				classType(EClassifier.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -525,8 +535,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionListListEClassifierEClass() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClassifier.class)),
-				sequenceType(classType(EClass.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClassifier.class)), sequenceType(
+				classType(EClass.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -547,14 +557,16 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
-					setType(eClassifierType(eCls2)) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection of Sequence(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection:\n Nothing left after intersection of Sequence(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)), setType(
+					eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing left after intersection of Sequence(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
+					"Nothing left after intersection:\n Nothing left after intersection of Sequence(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -584,20 +596,20 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
-					setType(eClassifierType(eCls2)) };
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)), setType(
+					eClassifierType(eCls2)) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls3)) };
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
 	@Test
 	public void testIntersectionListSetSameType() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				setType(classType(String.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), setType(classType(
+				String.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -605,8 +617,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionListSetEClassEClassifier() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClass.class)),
-				setType(classType(EClassifier.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClass.class)), setType(classType(
+				EClassifier.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -614,8 +626,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionListSetEClassifierEClass() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClassifier.class)),
-				setType(classType(EClass.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClassifier.class)), setType(
+				classType(EClass.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -636,14 +648,16 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)),
-					sequenceType(eClassifierType(eCls2)) };
-			final IType[] expectedReturnTypes = new IType[] {setType(nothingType("Nothing left after intersection of Set(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
-			final IType[] expectedAllReturnTypes = new IType[] {setType(nothingType("Nothing left after intersection:\n Nothing left after intersection of Set(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)), sequenceType(
+					eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {setType(nothingType(
+					"Nothing left after intersection of Set(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+			final IType[] expectedAllReturnTypes = new IType[] {setType(nothingType(
+					"Nothing left after intersection:\n Nothing left after intersection of Set(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -673,20 +687,20 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
 
-			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)),
-					sequenceType(eClassifierType(eCls2)) };
+			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)), sequenceType(
+					eClassifierType(eCls2)) };
 			final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(eCls3)) };
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
 	@Test
 	public void testIntersectionSetListSameType() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				sequenceType(classType(String.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), sequenceType(classType(
+				String.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -694,8 +708,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionSetListEClassEClassifier() {
-		final IType[] parameterTypes = new IType[] {setType(classType(EClass.class)),
-				sequenceType(classType(EClassifier.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(EClass.class)), sequenceType(classType(
+				EClassifier.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -703,8 +717,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIntersectionSetListEClassifierEClass() {
-		final IType[] parameterTypes = new IType[] {setType(classType(EClassifier.class)),
-				sequenceType(classType(EClass.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(EClassifier.class)), sequenceType(
+				classType(EClass.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
@@ -728,8 +742,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIsUniqueSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Object.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Object.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "isUnique", parameterTypes);
@@ -737,8 +751,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testIsUniqueList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Object.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Object.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "isUnique", parameterTypes);
@@ -770,9 +784,10 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testOneNoBooleanLambda() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in one must return a boolean") };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"expression in one must return a boolean") };
 
 		assertValidation(expectedReturnTypes, "one", parameterTypes);
 	}
@@ -782,15 +797,13 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					setType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBooleanObject())) };
+			final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())) };
 			final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -799,33 +812,32 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					sequenceType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBooleanObject())) };
+			final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())) };
 			final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testPrepend() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "prepend", parameterTypes);
 	}
 
 	@Test
 	public void testRejectNoBooleanLambda() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("expression in a reject must return a boolean")) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+				"expression in a reject must return a boolean")) };
 
 		assertValidation(expectedReturnTypes, "reject", parameterTypes);
 	}
@@ -835,15 +847,13 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					setType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBoolean())) };
+			final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "reject", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -852,23 +862,22 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					sequenceType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBoolean())) };
+			final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "reject", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testSelectNoBooleanLambda() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("expression in a select must return a boolean")) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+				classType(String.class), classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
+				"expression in a select must return a boolean")) };
 
 		assertValidation(expectedReturnTypes, "select", parameterTypes);
 	}
@@ -878,15 +887,13 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					setType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBoolean())) };
+			final IType[] parameterTypes = new IType[] {setType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "select", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -895,54 +902,52 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {
-					sequenceType(classType(String.class)),
-					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
-							.getEBoolean())) };
+			final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), lambdaType("i",
+					classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "select", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testSep2List() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "sep", parameterTypes);
 	}
 
 	@Test
 	public void testSep2Set() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				classType(Integer.class) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "sep", parameterTypes);
 	}
 
 	@Test
 	public void testSep4List() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class), classType(String.class), classType(Double.class) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)), sequenceType(classType(Double.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class), classType(String.class), classType(Double.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)), sequenceType(classType(Double.class)) };
 
 		assertValidation(expectedReturnTypes, "sep", parameterTypes);
 	}
 
 	@Test
 	public void testSep4Set() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				classType(Integer.class), classType(String.class), classType(Double.class) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)), sequenceType(classType(Double.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class), classType(String.class), classType(Double.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)), sequenceType(classType(Double.class)) };
 
 		assertValidation(expectedReturnTypes, "sep", parameterTypes);
 	}
@@ -965,8 +970,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testSubList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "sub", parameterTypes);
@@ -974,8 +979,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testSubSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				setType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), setType(classType(
+				Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "sub", parameterTypes);
@@ -983,8 +988,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testSubOrderedSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				classType(Integer.class), classType(Integer.class) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class), classType(Integer.class) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "subOrderedSet", parameterTypes);
@@ -992,8 +997,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testSubSequence() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				classType(Integer.class), classType(Integer.class) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class), classType(Integer.class) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "subSequence", parameterTypes);
@@ -1018,7 +1023,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testSumListNotNumber() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("Sum can only be used on a collection of numbers.") };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"Sum can only be used on a collection of numbers.") };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
 	}
@@ -1042,27 +1048,28 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testSumSetNotNumber() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("Sum can only be used on a collection of numbers.") };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"Sum can only be used on a collection of numbers.") };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
 	}
 
 	@Test
 	public void testUnionList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)), sequenceType(
+				classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "union", parameterTypes);
 	}
 
 	@Test
 	public void testUnionSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				setType(classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)),
-				setType(classType(Integer.class)) };
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), setType(classType(
+				Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)), setType(classType(
+				Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "union", parameterTypes);
 	}
@@ -1070,9 +1077,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testFilterList() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IType[] parameterTypes = new IType[] {
-				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-				eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
+		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClassifier())), eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
 				.getEClass())) };
 
@@ -1082,9 +1088,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testFilterSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IType[] parameterTypes = new IType[] {
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-				eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClassifier())), eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
 		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 				.getEClass())) };
 
@@ -1094,13 +1099,11 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testFilterListEClassifierSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IType[] parameterTypes = new IType[] {
-				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
-						.getEDataType()) };
-		final IType[] expectedReturnTypes = new IType[] {
-				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEDataType())) };
+		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClassifier())), eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(),
+						EcorePackage.eINSTANCE.getEDataType()) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEDataType())) };
 
 		assertValidation(expectedReturnTypes, "filter", parameterTypes);
 	}
@@ -1108,13 +1111,11 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testFilterSetEClassifierSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IType[] parameterTypes = new IType[] {
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
-						.getEDataType()) };
-		final IType[] expectedReturnTypes = new IType[] {
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEDataType())) };
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClassifier())), eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(),
+						EcorePackage.eINSTANCE.getEDataType()) };
+		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), setType(eClassifierType(EcorePackage.eINSTANCE.getEDataType())) };
 
 		assertValidation(expectedReturnTypes, "filter", parameterTypes);
 	}
@@ -1133,8 +1134,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testFilterSetEInt() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)),
-				eClassifierLiteralType(EcorePackage.eINSTANCE.getEInt()) };
+		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)), eClassifierLiteralType(
+				EcorePackage.eINSTANCE.getEInt()) };
 		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 				.getEInt())) };
 
@@ -1144,9 +1145,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testFilterSetIncompatibleTypes() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IType[] parameterTypes = new IType[] {
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
 		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 				.getEPackage())) };
 
@@ -1156,13 +1156,11 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testFilterSetCompatibleAndIncompatibleTypes() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IType[] parameterTypes = new IType[] {
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
-						.getEPackage()) };
-		final IType[] expectedReturnTypes = new IType[] {
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())) };
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(),
+						EcorePackage.eINSTANCE.getEPackage()) };
+		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())) };
 
 		assertValidation(expectedReturnTypes, "filter", parameterTypes);
 	}

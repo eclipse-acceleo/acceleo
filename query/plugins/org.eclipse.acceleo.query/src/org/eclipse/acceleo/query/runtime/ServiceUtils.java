@@ -51,8 +51,8 @@ public final class ServiceUtils {
 	 *            the {@link Class}
 	 * @return the {@link Set} of {@link IService} for the given {@link Class}
 	 */
-	public static Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
-		final Set<IService> result = new LinkedHashSet<IService>();
+	public static Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		Object instance = null;
 		try {
@@ -87,8 +87,9 @@ public final class ServiceUtils {
 	 * @return the {@link Set} of {@link IService} for the given {@link Class} with receiver as first
 	 *         parameter
 	 */
-	public static Set<IService> getReceiverServices(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
-		final Set<IService> result = new LinkedHashSet<IService>();
+	public static Set<IService<?>> getReceiverServices(IReadOnlyQueryEnvironment queryEnvironment,
+			Class<?> cls) {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		for (Method method : cls.getMethods()) {
 			if (isReveiverServiceMethod(method)) {
@@ -108,7 +109,7 @@ public final class ServiceUtils {
 	 *            the {@link Object instance}
 	 * @return the {@link Set} of {@link IService} for the given {@link Object instance}
 	 */
-	public static Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Object instance) {
+	public static Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, Object instance) {
 		return getServicesFromInstance(queryEnvironment, instance.getClass(), instance);
 	}
 
@@ -123,9 +124,9 @@ public final class ServiceUtils {
 	 *            the instance
 	 * @return the {@link ServiceRegistrationResult}
 	 */
-	private static Set<IService> getServicesFromInstance(IReadOnlyQueryEnvironment queryEnvironment,
+	private static Set<IService<?>> getServicesFromInstance(IReadOnlyQueryEnvironment queryEnvironment,
 			Class<?> cls, Object instance) {
-		final Set<IService> result = new LinkedHashSet<IService>();
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		if (instance instanceof IServiceProvider) {
 			result.addAll(((IServiceProvider)instance).getServices(queryEnvironment));
@@ -133,7 +134,7 @@ public final class ServiceUtils {
 			Method[] methods = cls.getMethods();
 			for (Method method : methods) {
 				if (isServiceMethod(instance, method)) {
-					final IService service = new JavaMethodService(method, instance);
+					final IService<?> service = new JavaMethodService(method, instance);
 					result.add(service);
 				}
 			}
@@ -199,10 +200,10 @@ public final class ServiceUtils {
 	 * @return the {@link ServiceRegistrationResult}
 	 */
 	public static ServiceRegistrationResult registerServices(IQueryEnvironment queryEnvironment,
-			Set<IService> services) {
+			Set<IService<?>> services) {
 		final ServiceRegistrationResult result = new ServiceRegistrationResult();
 
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			result.merge(queryEnvironment.registerService(service));
 		}
 
@@ -217,8 +218,8 @@ public final class ServiceUtils {
 	 * @param services
 	 *            the {@link Set} of {@link IService}
 	 */
-	public static void removeServices(IQueryEnvironment queryEnvironment, Set<IService> services) {
-		for (IService service : services) {
+	public static void removeServices(IQueryEnvironment queryEnvironment, Set<IService<?>> services) {
+		for (IService<?> service : services) {
 			queryEnvironment.removeService(service);
 		}
 	}
@@ -230,8 +231,8 @@ public final class ServiceUtils {
 	 *            the {@link EPackage}
 	 * @return the {@link Set} of {@link IService} for the given {@link EPackage}
 	 */
-	public static Set<IService> getServices(EPackage ePkg) {
-		final Set<IService> result = new LinkedHashSet<IService>();
+	public static Set<IService<?>> getServices(EPackage ePkg) {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		for (EClassifier eClassifier : ePkg.getEClassifiers()) {
 			if (eClassifier instanceof EClass) {
@@ -252,8 +253,8 @@ public final class ServiceUtils {
 	 *            the {@link EClass}
 	 * @return the {@link Set} of {@link IService} for the given {@link EClass}
 	 */
-	public static Set<IService> getServices(EClass eCls) {
-		final Set<IService> result = new LinkedHashSet<IService>();
+	public static Set<IService<?>> getServices(EClass eCls) {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		for (EOperation eOperation : eCls.getEAllOperations()) {
 			if (isServiceEOperation(eOperation)) {

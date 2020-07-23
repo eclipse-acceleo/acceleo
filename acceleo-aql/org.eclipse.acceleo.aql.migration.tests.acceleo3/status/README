@@ -1,0 +1,32 @@
+This document summarize the current state of what is supported by the conversion, what changes.
+Some of the unsupported things are isolated into tests, thus excuded directly in the test suite.
+
+Unsupported in A4
+=================
+* elselet blocks (Excluded in AcceleoAqlTests.java)
+* ranges in for loops (Excluded in AcceleoAqlTests.java)
+* type UnlimitedNatural
+* propertiesServices
+
+A4 bugs, WIP
+============
+* protected area blocks (Excluded in AcceleoAqlTests.java, LanguageTests.java)
+* encoding management (Excluded in AcceleoAqlTests.java)
+* type OclAny
+
+Unsupported by conversion
+=========================
+* "inline" comments are ignored (Excluded in AcceleoAqlTests.java)
+* comments before a module - but not module doc - are ignored (Excluded in AcceleoAqlTests.java)
+
+Modified by conversion
+======================
+* Unused parenthesis in expressions are ignored
+* boolean EOperations like "b._implies(b)" are translated into "b implies b" (language/services/booleanServices)
+* Bag => Sequence
+* Set => OrderedSet
+* Collection => Sequence
+* implicit iterator variables are explicited(e.g. collect(size()) becomes collect(temp1|temp1.size())))
+* iterators types are ignored (e.g. collect(s:String|....) becomes collec(s|...))
+
+See status/ for the current status of the services support.

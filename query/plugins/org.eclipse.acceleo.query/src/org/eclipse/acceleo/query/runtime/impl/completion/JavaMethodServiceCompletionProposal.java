@@ -71,7 +71,7 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 	 */
 	@Override
 	public int getCursorOffset() {
-		int namelength = service.getName().length();
+		final int namelength = service.getName().length();
 		if (service.getNumberOfParameters() == 1) {
 			/*
 			 * if we have only one parameter we return the offset: self.serviceCall()^
@@ -91,7 +91,7 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getObject()
 	 */
 	@Override
-	public IService getObject() {
+	public IService<Method> getObject() {
 		return service;
 	}
 
@@ -114,7 +114,7 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 	public String getDescription() {
 		StringBuffer buffer = new StringBuffer();
 
-		Method method = this.service.getMethod();
+		Method method = this.service.getOrigin();
 		if (method.isAnnotationPresent(Documentation.class)) {
 			Documentation documentation = method.getAnnotation(Documentation.class);
 
@@ -228,7 +228,7 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 		result.append(service.getName()).append('(');
 		boolean first = true;
 
-		Class<?>[] parameterTypes = service.getMethod().getParameterTypes();
+		Class<?>[] parameterTypes = service.getOrigin().getParameterTypes();
 		for (int i = 0; i < parameterTypes.length; i = i + 1) {
 			Object argType = parameterTypes[i];
 			if (!first) {
@@ -256,7 +256,7 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 		}
 		result.append(')');
 
-		Class<?> returnType = service.getMethod().getReturnType();
+		Class<?> returnType = service.getOrigin().getReturnType();
 		if (Void.class.equals(returnType)) {
 			result.append(" = void");
 		} else {

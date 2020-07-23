@@ -31,7 +31,7 @@ public interface IQueryEnvironmentListener {
 	 *            the registered {@link IService}
 	 * @since 5.0
 	 */
-	void serviceRegistered(ServiceRegistrationResult result, IService service);
+	void serviceRegistered(ServiceRegistrationResult result, IService<?> service);
 
 	/**
 	 * Notifies a call to {@link IQueryEnvironment#removeService(IService)}.
@@ -40,7 +40,7 @@ public interface IQueryEnvironmentListener {
 	 *            the removed {@link IService}
 	 * @since 5.0
 	 */
-	void serviceRemoved(IService service);
+	void serviceRemoved(IService<?> service);
 
 	/**
 	 * Notifies a call to {@link IQueryEnvironment#registerEPackage(EPackage)}.
@@ -51,7 +51,7 @@ public interface IQueryEnvironmentListener {
 	void ePackageRegistered(EPackage ePackage);
 
 	/**
-	 * Notifies a call to {@link IQueryEnvironment#removeEPackage(String)}.
+	 * Notifies a call to {@link IQueryEnvironment#removeEPackage(EPackage)}.
 	 * 
 	 * @param ePackage
 	 *            the removed {@link EPackage}

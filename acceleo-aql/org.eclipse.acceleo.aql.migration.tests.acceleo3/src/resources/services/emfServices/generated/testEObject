@@ -1,0 +1,31 @@
+@Test 'test'.oclAsType(String) => test
+@Test c.oclIsUndefined() => false
+@Test c.oclIsTypeOf(EClass) => true
+@Test c.oclIsTypeOf(EPackage) => false
+@Test c.oclIsKindOf(EClass) => true
+@Test c.oclIsKindOf(EPackage) => false
+@Test c.oclAsType(EClass).name => ClasseB
+@Test c.toString().startsWith('org.eclipse.emf.ecore.impl.EClassImpl@') => true
+@Test c.siblings(EClass)->collect(name) => ClasseAAbstractClass
+@Test c.precedingSiblings(EClass)->collect(name) => ClasseA
+@Test c.precedingSiblings()->collect(name) => target
+@Test c.followingSiblings(EClass)->collect(name) => AbstractClass
+@Test c.followingSiblings()->collect(name) => target
+@Test c.eResource().toString().startsWith('org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl@') => true
+@Test c.eGet('name') => ClasseB
+@Test c.eContainmentFeature().name => eClassifiers
+@Test c.eContainingFeature().name => eClassifiers
+@Test c.eContainer().oclIsTypeOf(EPackage) => true
+@Test c.eContainer(EPackage).name => target
+@Test c.eClass().name => EClass
+@Test c.ancestors(EPackage)->collect(name) => target
+@Test c.ancestors()->collect(name) => target
+@Test c.eAllContents(EAttribute)->collect(name) => anAttributeOfBanotherAttributeOfB
+@Test c <> c.eContainer() => true
+@Test c <> c => false
+@Test c = c.eContainer() => false
+@Test c = c => true
+@Test c.eAllContents()->collect(name) => targettargettargettargettargettargettarget
+@Test c.siblings()->collect(name) => targettarget
+@Test c.eContents()->collect(name) => targettargettargettarget
+@Test c.eCrossReferences()->collect(name) => targettargettargettargettargettargettargettargettargettargettargettargettarget

@@ -1,0 +1,1 @@
+La g�n�ration de code source est une op�ration permettant de g�n�rer automatiquement du code source.

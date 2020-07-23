@@ -1,0 +1,21 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+ * My query has a nice comment.
+ * @param myParam the input EPackage
+* (137..135)
+  myParam the input EPackage (107..133)[comment myParam the input EPackage (107..133) /] (107..133)[comment 
+ * My query has a nice comment.
+ * @param myParam the input EPackage
+* (137..135) /] (61..137)
+  
+ * My query has a nice comment.
+ * @param myParam the input EPackage
+* (137..135)
+  myParam the input EPackage (107..133)[comment myParam the input EPackage (107..133) /] (107..133)[comment 
+ * My query has a nice comment.
+ * @param myParam the input EPackage
+* (137..135) /] (61..137)public query myQuery(myParam : EPackage (160..185)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (210..239)
+  /] (138..241) (0..241)

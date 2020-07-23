@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.ImmutableSet;
-
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -37,7 +36,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -49,7 +48,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -61,7 +60,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -133,7 +132,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -145,7 +144,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -157,7 +156,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -169,7 +168,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -181,7 +180,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -193,7 +192,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -205,7 +204,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -277,7 +276,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -289,7 +288,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -301,7 +300,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -313,7 +312,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -325,7 +324,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -357,7 +356,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -369,7 +368,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -381,7 +380,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -393,7 +392,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -405,7 +404,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -477,7 +476,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -489,7 +488,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -501,7 +500,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -513,7 +512,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -525,7 +524,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -537,7 +536,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -549,7 +548,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -621,7 +620,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -633,7 +632,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -645,7 +644,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -657,7 +656,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 }

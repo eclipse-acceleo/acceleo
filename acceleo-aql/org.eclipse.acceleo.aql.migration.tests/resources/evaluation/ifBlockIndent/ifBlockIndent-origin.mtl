@@ -1,0 +1,22 @@
+[module ifBlockIndent('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public testingIf(p : EPackage)]
+[comment @main/]
+
+[file ('testIfNoIndent', false)]
+[if (true)]abcdef-testIfNoIndent[/if]
+[/file]
+
+  [file ('testIfA4Indent', false)]
+    [if (true)]abcdef-testIfA4Indent[/if]
+  [/file]
+  
+	[file ('testIfA3Indent', false)]
+		[if (true)]abcdef-testIfA3Indent[/if]
+	[/file]
+	
+[file ('testIfAnyIndent', false)]
+  			  [if (true)]abcdef-testIfAnyIndent[/if]
+[/file]	
+
+[/template]

@@ -42,8 +42,6 @@ public class EvaluationServiceStatusTests {
 
 	private static final String VARIABLE_NOT_FOUND = "Couldn't find the 'novariable' variable";
 
-	private static final String UNKNOWN_FEATURE = "Feature noname not found in EClass EAttribute";
-
 	Map<String, Object> variables;
 
 	BasicLookupEngine engine;
@@ -56,7 +54,7 @@ public class EvaluationServiceStatusTests {
 	public void setup() {
 		queryEnvironment = (QueryEnvironment)Query.newEnvironmentWithDefaultServices(null);
 		engine = queryEnvironment.getLookupEngine();
-		final Set<IService> servicesToRegister = ServiceUtils.getServices(queryEnvironment,
+		final Set<IService<?>> servicesToRegister = ServiceUtils.getServices(queryEnvironment,
 				TestServiceDefinition.class);
 		ServiceUtils.registerServices(queryEnvironment, servicesToRegister);
 		variables = new HashMap<String, Object>();

@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests;
 
-import com.google.common.collect.Maps;
-
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,9 +18,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.parser.AstEvaluator;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -64,8 +63,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	private final QmodelSwitch<EObject> varValueSwitch = new QmodelSwitch<EObject>() {
 		@Override
 		public EObject caseVariable(Variable object) {
-			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: "
-					+ object.eClass().getName());
+			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: " + object
+					.eClass().getName());
 		}
 
 		@Override
@@ -77,8 +76,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	private final QmodelSwitch<Set<IType>> varTypeSwitch = new QmodelSwitch<Set<IType>>() {
 		@Override
 		public Set<IType> caseVariable(Variable object) {
-			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: "
-					+ object.eClass().getName());
+			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: " + object
+					.eClass().getName());
 		}
 
 		@Override
@@ -102,14 +101,14 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+				final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(), Class
 						.forName(classToImport));
 				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
 			}
 		}
-		variables = Maps.newHashMap();
+		variables = new HashMap<>();
 		variables.put("self", startingPoint);
 		for (Variable var : q.getVariables()) {
 			variables.put(var.getName(), varValueSwitch.doSwitch(var));
@@ -153,14 +152,14 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	public QueryValidationResult validateQuery(Query q) {
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+				final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(), Class
 						.forName(classToImport));
 				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
 			}
 		}
-		Map<String, Set<IType>> variableTypes = Maps.newHashMap();
+		Map<String, Set<IType>> variableTypes = new HashMap<>();
 		Set<IType> startingTypes = new LinkedHashSet<IType>();
 		startingTypes.add(new EClassifierType(queryEnvironment, startingPoint.eClass()));
 		variableTypes.put("self", startingTypes);

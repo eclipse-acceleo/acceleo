@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.ImmutableSet;
-
+import java.util.Collections;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -35,7 +34,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -74,8 +73,8 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testGreaterThanNullComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("null > comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -83,13 +82,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testGreaterThanComparableNull() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable > null", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -97,13 +96,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testGreaterThanComparableComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable > comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -111,7 +110,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -123,7 +122,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -162,8 +161,8 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testGreaterThanEqualNullComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("null >= comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -171,13 +170,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testGreaterThanEqualComparableNull() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable >= null", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -185,13 +184,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testGreaterThanEqualComparableComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable >= comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -199,7 +198,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -211,7 +210,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -250,8 +249,8 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testLessThanNullComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("null < comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -259,13 +258,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testLessThanComparableNull() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable < null", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -273,13 +272,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testLessThanComparableComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable < comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -287,7 +286,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -299,7 +298,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -338,8 +337,8 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testLessThanEqualNullComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("null <= comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -347,13 +346,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testLessThanEqualComparableNull() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable <= null", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -361,13 +360,13 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testLessThanEqualComparableComparable() {
-		final VariableBuilder variables = new VariableBuilder().addVar("comparable",
-				classType(Comparable.class));
+		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
+				Comparable.class));
 		final IValidationResult validationResult = validate("comparable <= comparable", variables.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -375,7 +374,7 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 }

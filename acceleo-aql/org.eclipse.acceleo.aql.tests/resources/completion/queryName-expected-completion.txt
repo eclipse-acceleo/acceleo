@@ -1,0 +1,9 @@
+* Label:
+myQuery
+* Description:
+Inserts the following text: <pre>myQuery</pre>
+* Text:
+myQuery
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Query
+

@@ -1,0 +1,31 @@
+[module variables('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public test(p : EPackage)]
+[comment @main/]
+	[file ('implicit_self_query', false)]
+		[p.packageNameImplicitQuery()/]
+	[/file]
+	[file ('implicit_self_template', false)]
+		[p.packageNameImplicitTemplate()/]
+	[/file]
+	[file ('self_query', false)]
+		[p.packageNameQuery()/]
+	[/file]
+	[file ('self_template', false)]
+		[p.packageNameTemplate()/]
+	[/file]
+[/template]
+
+
+
+[query private packageNameImplicitQuery(package : EPackage) : String = name/]
+
+[query private packageNameQuery(package : EPackage) : String = self.name/]
+
+[template private packageNameImplicitTemplate(package : EPackage)]
+	[name/]
+[/template]
+
+[template private packageNameTemplate(package : EPackage)]
+	[self.name/]
+[/template]

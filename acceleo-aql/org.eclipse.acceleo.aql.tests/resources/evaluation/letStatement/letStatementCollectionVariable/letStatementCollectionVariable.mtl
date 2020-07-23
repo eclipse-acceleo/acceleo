@@ -1,0 +1,54 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file ('singleVariable', overwrite)]
+    [let myVariable : Sequence(String) = Sequence{'a'}]
+      [myVariable->sep(',')/]
+    [/let]
+    [let myVariable : Sequence(String) = Sequence{'a','b'}]
+      [myVariable->sep(',')/]
+    [/let]
+    [let myVariable : Sequence(String) = Sequence{'a','b','c'}]
+      [myVariable->sep(',')/]
+    [/let]
+  [/file]
+
+  [file ('singleSequence2Variables', overwrite)]
+    [let myVariable : Sequence(Sequence(String)) = Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}}]
+      [myVariable->sep(',')/]
+    [/let]
+  [/file]
+
+  [file ('singleSequence3Variables', overwrite)]
+    [let myVariable : Sequence(Sequence(Sequence(String))) = Sequence{
+      Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}},
+      Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}},
+      Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}}}]
+      [myVariable->sep(',')/]
+     [/let]
+  [/file]
+
+  [file ('multipleVariables', overwrite)]
+    [let myVariable1 : Sequence(String) = Sequence{'a','b','c'}, 
+         myVariable2 : Sequence(String) = Sequence{'d','e','f'}, 
+         myVariable3 : Sequence(String) = Sequence{'g','h','i'}]
+      [myVariable1->sep(',')/]
+      [myVariable2->sep(',')/]
+      [myVariable3->sep(',')/]
+    [/let]
+  [/file]
+
+  [file ('multipleSequenceVariables', overwrite)]
+    [let myVariable1 : Sequence(String) = Sequence{'a','b','c'},
+         myVariable2 : Sequence(Sequence(String)) = Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}},
+         myVariable3 : Sequence(Sequence(Sequence(String))) = Sequence{
+           Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}},
+           Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}},
+           Sequence{Sequence{'a','b','c'}, Sequence{'d','e','f'}, Sequence{'g','h','i'}}}]
+      [myVariable1->sep(',')/]
+      [myVariable2->sep(',')/]
+      [myVariable3->sep(',')/]
+    [/let]
+  [/file]
+[/template]

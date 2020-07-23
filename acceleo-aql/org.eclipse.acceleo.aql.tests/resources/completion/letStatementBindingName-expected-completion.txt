@@ -1,0 +1,9 @@
+* Label:
+myVariable
+* Description:
+Inserts the following text: <pre>myVariable</pre>
+* Text:
+myVariable
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Binding
+

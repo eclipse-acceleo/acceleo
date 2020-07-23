@@ -48,7 +48,7 @@ import org.eclipse.emf.ecore.EcorePackage;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  * @since 4.1
  */
-public class EOperationService extends AbstractService {
+public class EOperationService extends AbstractService<EOperation> {
 
 	/**
 	 * The {@link org.eclipse.acceleo.query.runtime.IService#getPriority() priority} for
@@ -62,11 +62,6 @@ public class EOperationService extends AbstractService {
 	protected static final String COULDN_T_INVOKE_EOPERATION = "Couldn't invoke the %s EOperation (%s)";
 
 	/**
-	 * The {@link EOperation} that realizes the service.
-	 */
-	private final EOperation eOperation;
-
-	/**
 	 * The Java method which actually implements the EOperation.
 	 */
 	private final Method method;
@@ -78,8 +73,8 @@ public class EOperationService extends AbstractService {
 	 *            the {@link EOperation} that realizes the service
 	 */
 	public EOperationService(EOperation eOperation) {
-		this.eOperation = eOperation;
-		this.method = lookupMethod(this.eOperation);
+		super(eOperation);
+		this.method = lookupMethod(eOperation);
 	}
 
 	/**
@@ -125,7 +120,7 @@ public class EOperationService extends AbstractService {
 	 */
 	@Override
 	public String getName() {
-		return eOperation.getName();
+		return getOrigin().getName();
 	}
 
 	/**
@@ -137,8 +132,8 @@ public class EOperationService extends AbstractService {
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
 
-		result.add(new EClassifierType(queryEnvironment, getEOperation().getEContainingClass()));
-		for (EParameter parameter : getEOperation().getEParameters()) {
+		result.add(new EClassifierType(queryEnvironment, getOrigin().getEContainingClass()));
+		for (EParameter parameter : getOrigin().getEParameters()) {
 			final EClassifierType rawType = new EClassifierType(queryEnvironment, parameter.getEType());
 			if (parameter.isMany()) {
 				result.add(new SequenceType(queryEnvironment, rawType));
@@ -157,7 +152,7 @@ public class EOperationService extends AbstractService {
 	 */
 	@Override
 	public int getNumberOfParameters() {
-		return eOperation.getEParameters().size() + 1;
+		return getOrigin().getEParameters().size() + 1;
 	}
 
 	/**
@@ -171,29 +166,29 @@ public class EOperationService extends AbstractService {
 		final EObject receiver = (EObject)arguments[0];
 		final Object[] localArguments = new Object[arguments.length];
 		for (int i = 1; i < arguments.length; ++i) {
-			if (eOperation.getEParameters().get(i - 1).isMany()) {
+			if (getOrigin().getEParameters().get(i - 1).isMany()) {
 				localArguments[i] = new BasicEList<Object>((Collection<?>)arguments[i]);
 			} else {
 				localArguments[i] = arguments[i];
 			}
 		}
 
-		if (!eOperation.getEContainingClass().isSuperTypeOf(receiver.eClass())) {
+		if (!getOrigin().getEContainingClass().isSuperTypeOf(receiver.eClass())) {
 			if (method != null) {
 				final Object[] parameters = Arrays.copyOfRange(localArguments, 1, localArguments.length);
 				result = eOperationJavaInvoke(method, receiver, parameters);
 			} else {
 				throw new IllegalStateException(String.format(
 						"EOperation %s not in %s type hierarchy of %s and no %s method in %s", getName(),
-						getEOperation().getEContainingClass().getName(), receiver.eClass().getName(),
-						getName(), receiver.getClass().getName()));
+						getOrigin().getEContainingClass().getName(), receiver.eClass().getName(), getName(),
+						receiver.getClass().getName()));
 			}
 		} else if (hasEInvoke(receiver)) {
 			final EList<Object> eArguments = new BasicEList<Object>(localArguments.length);
 			for (int i = 1; i < localArguments.length; ++i) {
 				eArguments.add(localArguments[i]);
 			}
-			result = receiver.eInvoke(eOperation, eArguments);
+			result = receiver.eInvoke(getOrigin(), eArguments);
 		} else if (method != null) {
 			final Object[] parameters = Arrays.copyOfRange(localArguments, 1, localArguments.length);
 			result = eOperationJavaInvoke(method, receiver, parameters);
@@ -264,8 +259,8 @@ public class EOperationService extends AbstractService {
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		final IType eClassifierType = new EClassifierType(queryEnvironment, eOperation.getEType());
-		if (eOperation.isMany()) {
+		final IType eClassifierType = new EClassifierType(queryEnvironment, getOrigin().getEType());
+		if (getOrigin().isMany()) {
 			result.add(new SequenceType(queryEnvironment, eClassifierType));
 		} else {
 			result.add(eClassifierType);
@@ -305,8 +300,8 @@ public class EOperationService extends AbstractService {
 					eClassifiers = new LinkedHashSet<EClassifier>();
 					eClassifiers.add(EcorePackage.eINSTANCE.getEEList());
 				} else {
-					eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
-							((IJavaType)iType).getType());
+					eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(((IJavaType)iType)
+							.getType());
 					if (eClassifiers == null) {
 						canMatch = false;
 						break;
@@ -331,7 +326,8 @@ public class EOperationService extends AbstractService {
 			boolean matched = false;
 			while (it.hasNext()) {
 				final List<IType> parameterTypes = it.next();
-				if (super.matches(queryEnvironment, parameterTypes.toArray(new IType[parameterTypes.size()]))) {
+				if (super.matches(queryEnvironment, parameterTypes.toArray(new IType[parameterTypes
+						.size()]))) {
 					matched = true;
 					break;
 				}
@@ -340,15 +336,6 @@ public class EOperationService extends AbstractService {
 		}
 
 		return canMatch;
-	}
-
-	/**
-	 * Gets the {@link EOperation}.
-	 * 
-	 * @return the {@link EOperation}
-	 */
-	public EOperation getEOperation() {
-		return eOperation;
 	}
 
 	/**
@@ -374,7 +361,7 @@ public class EOperationService extends AbstractService {
 		final String ePkgNsURI;
 		final String eCLassName;
 
-		final EClass eContainingClass = getEOperation().getEContainingClass();
+		final EClass eContainingClass = getOrigin().getEContainingClass();
 		if (eContainingClass != null) {
 			eCLassName = eContainingClass.getName();
 			final EPackage ePackage = eContainingClass.getEPackage();
@@ -398,8 +385,7 @@ public class EOperationService extends AbstractService {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof EOperationService
-				&& ((EOperationService)obj).getEOperation().equals(getEOperation());
+		return obj instanceof EOperationService && ((EOperationService)obj).getOrigin().equals(getOrigin());
 	}
 
 	/**
@@ -409,7 +395,7 @@ public class EOperationService extends AbstractService {
 	 */
 	@Override
 	public int hashCode() {
-		return getEOperation().hashCode();
+		return getOrigin().hashCode();
 	}
 
 	@Override
@@ -417,7 +403,7 @@ public class EOperationService extends AbstractService {
 			Set<IType> receiverTypes) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		result.add(new EOperationServiceCompletionProposal(getEOperation()));
+		result.add(new EOperationServiceCompletionProposal(getOrigin()));
 
 		return result;
 	}

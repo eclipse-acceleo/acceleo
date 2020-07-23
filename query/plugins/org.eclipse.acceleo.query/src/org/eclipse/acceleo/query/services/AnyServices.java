@@ -80,8 +80,8 @@ public class AnyServices extends AbstractServiceProvider {
 	}
 
 	@Override
-	protected IService getService(Method publicMethod) {
-		final IService result;
+	protected IService<Method> getService(Method publicMethod) {
+		final IService<Method> result;
 
 		if ("oclAsType".equals(publicMethod.getName())) {
 			result = new OCLAsTypeService(publicMethod, this);
@@ -371,9 +371,9 @@ public class AnyServices extends AbstractServiceProvider {
 			result.append("\t" + ePgk.getNsURI() + LINE_SEP);
 		}
 		result.append("Services:" + LINE_SEP);
-		final List<IService> services = new ArrayList<IService>(queryEnvironment.getLookupEngine()
+		final List<IService<?>> services = new ArrayList<IService<?>>(queryEnvironment.getLookupEngine()
 				.getRegisteredServices());
-		Collections.sort(services, new Comparator<IService>() {
+		Collections.sort(services, new Comparator<IService<?>>() {
 
 			/**
 			 * {@inheritDoc}
@@ -381,7 +381,7 @@ public class AnyServices extends AbstractServiceProvider {
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 			 */
 			@Override
-			public int compare(IService service1, IService service2) {
+			public int compare(IService<?> service1, IService<?> service2) {
 				final int result;
 
 				if (service1.getPriority() < service2.getPriority()) {
@@ -395,7 +395,7 @@ public class AnyServices extends AbstractServiceProvider {
 			}
 
 		});
-		for (IService service : services) {
+		for (IService<?> service : services) {
 			result.append("\t\t" + service.getLongSignature() + LINE_SEP);
 		}
 		result.append("receiver: ");

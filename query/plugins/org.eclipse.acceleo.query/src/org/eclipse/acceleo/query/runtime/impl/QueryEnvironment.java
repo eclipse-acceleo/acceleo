@@ -57,8 +57,8 @@ public class QueryEnvironment implements IQueryEnvironment {
 	}
 
 	@Override
-	public ServiceRegistrationResult registerService(IService service) {
-		final ServiceRegistrationResult result = lookupEngine.registerService(service);
+	public ServiceRegistrationResult registerService(IService<?> service) {
+		final ServiceRegistrationResult result = getLookupEngine().registerService(service);
 
 		if (!result.getRegistered().isEmpty()) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
@@ -75,8 +75,8 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeService(org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public void removeService(IService service) {
-		final IService removedService = lookupEngine.removeService(service);
+	public void removeService(IService<?> service) {
+		final IService<?> removedService = getLookupEngine().removeService(service);
 		if (removedService != null) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.serviceRemoved(removedService);
@@ -91,12 +91,12 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void registerEPackage(EPackage ePackage) {
-		final EPackage registeredEPackage = ePackageProvider.registerPackage(ePackage);
+		final EPackage registeredEPackage = getEPackageProvider().registerPackage(ePackage);
 		if (registeredEPackage != null) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRegistered(ePackage);
 			}
-			final Set<IService> services = ServiceUtils.getServices(ePackage);
+			final Set<IService<?>> services = ServiceUtils.getServices(ePackage);
 			ServiceUtils.registerServices(this, services);
 		}
 	}
@@ -108,26 +108,10 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void removeEPackage(EPackage ePackage) {
-		final Collection<EPackage> ePackages = ePackageProvider.removePackage(ePackage);
+		final Collection<EPackage> ePackages = getEPackageProvider().removePackage(ePackage);
 		for (EPackage ePkg : ePackages) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRemoved(ePkg);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeEPackage(java.lang.String)
-	 * @deprecated
-	 */
-	@Override
-	public void removeEPackage(String name) {
-		final Collection<EPackage> ePackages = ePackageProvider.removePackage(name);
-		for (EPackage ePackage : ePackages) {
-			for (IQueryEnvironmentListener listener : getListeners()) {
-				listener.ePackageRemoved(ePackage);
 			}
 		}
 	}
@@ -140,7 +124,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls) {
-		ePackageProvider.registerCustomClassMapping(eClassifier, cls);
+		getEPackageProvider().registerCustomClassMapping(eClassifier, cls);
 		for (IQueryEnvironmentListener listener : getListeners()) {
 			listener.customClassMappingRegistered(eClassifier, cls);
 		}
@@ -209,8 +193,8 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#isRegisteredService(org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public boolean isRegisteredService(IService service) {
-		return lookupEngine.isRegisteredService(service);
+	public boolean isRegisteredService(IService<?> service) {
+		return getLookupEngine().isRegisteredService(service);
 	}
 
 }

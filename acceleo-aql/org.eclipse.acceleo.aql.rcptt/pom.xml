@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (C) 2020, Obeo
+
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v1.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v10.html
+-->
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.acceleo</groupId>
+    <artifactId>org.eclipse.acceleo-parent</artifactId>
+    <version>3.7.10-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
+  </parent>
+
+  <artifactId>org.eclipse.acceleo.aql.rcptt</artifactId>
+  <version>4.0.0-SNAPSHOT</version>
+
+  <packaging>rcpttTest</packaging>
+
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>rcptt-releases</id>
+      <name>RCPTT Maven repository</name>
+      <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
+    </pluginRepository>
+  </pluginRepositories> 
+
+  <properties>
+    <rcptt-maven-version>2.5.1</rcptt-maven-version>
+  </properties> 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.rcptt</groupId>
+        <artifactId>rcptt-maven-plugin</artifactId>
+        <version>${rcptt-maven-version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <runner>
+            <version>${rcptt-maven-version}</version>
+          </runner>
+          <aut>
+            <groupId>org.eclipse.acceleo</groupId>
+            <artifactId>org.eclipse.acceleo.aql.rcpttproduct</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+          </aut>
+          <skipTags>
+            <skipTag>fail</skipTag>
+          </skipTags>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,13 +18,16 @@ import java.util.Set;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.emf.ecore.EOperation;
 
 /**
  * Interface that a service usable in query evaluation engine must implement.
  * 
+ * @param <O>
+ *            the origin type of the service
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
-public interface IService {
+public interface IService<O> {
 
 	/**
 	 * Gets the name of the service. This name is used to identify the service.
@@ -136,7 +140,7 @@ public interface IService {
 	 * @return <code>true</code> if this <= service in terms of parameter types, <code>false</code> otherwise
 	 * @since 5.0
 	 */
-	boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service);
+	boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService<?> service);
 
 	/**
 	 * Predicates that is <code>true</code> if and only if all given service's parameter types are the same as
@@ -149,7 +153,7 @@ public interface IService {
 	 * @return <code>true</code> if this == service in terms of parameter types, <code>false</code> otherwise
 	 * @since 5.0
 	 */
-	boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service);
+	boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService<?> service);
 
 	/**
 	 * Predicates that is <code>true</code> when the specified argument types match the specified service's
@@ -178,5 +182,13 @@ public interface IService {
 	 */
 	List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
 			Set<IType> receiverTypes);
+
+	/**
+	 * Provides the semantic element that is at the origin of this service, like a Java {@link Method}, an EMF
+	 * {@link EOperation}, ...
+	 * 
+	 * @return the {@link O origin} of this {@link IService}.
+	 */
+	O getOrigin();
 
 }

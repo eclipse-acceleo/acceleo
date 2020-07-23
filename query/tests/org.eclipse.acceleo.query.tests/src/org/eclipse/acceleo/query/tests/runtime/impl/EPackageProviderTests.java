@@ -50,7 +50,7 @@ public class EPackageProviderTests {
 
 		EPackage registerPackage(EPackage ePackage);
 
-		Collection<EPackage> removePackage(String name);
+		Collection<EPackage> removePackage(EPackage ePackage);
 
 	}
 
@@ -552,8 +552,8 @@ public class EPackageProviderTests {
 
 	@Test
 	public void getContainingEStructuralFeaturesNotRegistered() {
-		final Set<EStructuralFeature> features = provider
-				.getContainingEStructuralFeatures(EcorePackage.eINSTANCE.getEPackage());
+		final Set<EStructuralFeature> features = provider.getContainingEStructuralFeatures(
+				EcorePackage.eINSTANCE.getEPackage());
 
 		assertEquals(0, features.size());
 	}
@@ -562,8 +562,8 @@ public class EPackageProviderTests {
 	public void getContainingEStructuralFeaturesRegistered() {
 		provider.registerPackage(EcorePackage.eINSTANCE);
 
-		final Set<EStructuralFeature> features = provider
-				.getContainingEStructuralFeatures(EcorePackage.eINSTANCE.getEPackage());
+		final Set<EStructuralFeature> features = provider.getContainingEStructuralFeatures(
+				EcorePackage.eINSTANCE.getEPackage());
 
 		assertEquals(2, features.size());
 		final Iterator<EStructuralFeature> it = features.iterator();
@@ -578,8 +578,8 @@ public class EPackageProviderTests {
 
 	@Test
 	public void getAllContainingEStructuralFeaturesNotRegistered() {
-		final Set<EStructuralFeature> features = provider
-				.getAllContainingEStructuralFeatures(EcorePackage.eINSTANCE.getEPackage());
+		final Set<EStructuralFeature> features = provider.getAllContainingEStructuralFeatures(
+				EcorePackage.eINSTANCE.getEPackage());
 
 		assertEquals(0, features.size());
 	}
@@ -588,8 +588,8 @@ public class EPackageProviderTests {
 	public void getAllContainingEStructuralFeaturesRegistered() {
 		provider.registerPackage(EcorePackage.eINSTANCE);
 
-		final Set<EStructuralFeature> features = provider
-				.getAllContainingEStructuralFeatures(EcorePackage.eINSTANCE.getEPackage());
+		final Set<EStructuralFeature> features = provider.getAllContainingEStructuralFeatures(
+				EcorePackage.eINSTANCE.getEPackage());
 
 		assertEquals(10, features.size());
 		final Iterator<EStructuralFeature> it = features.iterator();

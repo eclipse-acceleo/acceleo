@@ -26,11 +26,10 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class CacheLookupEngine extends BasicLookupEngine {
-
 	/**
 	 * No service marker.
 	 */
-	private static final IService NO_SERVICE = new JavaMethodService(null, null);
+	private static final IService<?> NO_SERVICE = new JavaMethodService(null, null);
 
 	/**
 	 * A node of the cache forest.
@@ -47,7 +46,7 @@ public class CacheLookupEngine extends BasicLookupEngine {
 		/**
 		 * The {@link IService} if any, <code>null</code> otherwise.
 		 */
-		private IService service;
+		private IService<?> service;
 	}
 
 	/**
@@ -66,14 +65,14 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	}
 
 	@Override
-	public ServiceRegistrationResult registerService(IService service) {
+	public ServiceRegistrationResult registerService(IService<?> service) {
 		cache.clear();
 		return super.registerService(service);
 	}
 
 	@Override
-	public IService lookup(String name, IType[] argumentTypes) {
-		final IService result;
+	public IService<?> lookup(String name, IType[] argumentTypes) {
+		final IService<?> result;
 
 		final Node cachedNode = getNodeFromCache(name, argumentTypes);
 		if (cachedNode != null) {
@@ -103,7 +102,7 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	 * @param service
 	 *            the {@link IService} to cache
 	 */
-	private void cacheService(String name, IType[] argumentTypes, IService service) {
+	private void cacheService(String name, IType[] argumentTypes, IService<?> service) {
 		Node currentNode = cache.get(name);
 		if (currentNode == null) {
 			currentNode = new Node();
@@ -154,7 +153,7 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	}
 
 	@Override
-	public IService removeService(IService service) {
+	public IService<?> removeService(IService<?> service) {
 		cache.clear();
 		return super.removeService(service);
 	}

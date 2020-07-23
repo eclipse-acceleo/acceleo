@@ -1,0 +1,8 @@
+[module queryCall('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [myParam.calledQuery().name/]
+[/template]
+
+
+[query public calledQuery(myParam : ecore::EPackage) : ecore::EClassifier = myParam.eClassifiers->first()/]

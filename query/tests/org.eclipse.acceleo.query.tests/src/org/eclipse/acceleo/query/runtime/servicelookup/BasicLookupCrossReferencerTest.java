@@ -40,7 +40,7 @@ public class BasicLookupCrossReferencerTest extends AbstractEngineInitialization
 		setQueryEnvironnementWithCrossReferencer(eClass);
 		engine = queryEnvironment.getLookupEngine();
 
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, new CrossReferencerClass(
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, new CrossReferencerClass(
 				crossReferencer));
 		ServiceUtils.registerServices(queryEnvironment, services);
 	}
@@ -51,8 +51,8 @@ public class BasicLookupCrossReferencerTest extends AbstractEngineInitialization
 	 */
 	@Test
 	public void detectionCrossReferencerTest() {
-		assertEquals("service0", engine.lookup("service0",
-				new IType[] {new ClassType(queryEnvironment, String.class) }).getName());
+		assertEquals("service0", engine.lookup("service0", new IType[] {new ClassType(queryEnvironment,
+				String.class) }).getName());
 		assertNull(engine.lookup("setCrossReferencer", NO_ARG));
 
 		CrossReferencerClass crossReferencer = (CrossReferencerClass)((JavaMethodService)engine.lookup(

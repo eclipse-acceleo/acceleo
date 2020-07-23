@@ -1,0 +1,2 @@
+[module unqualifiedImports('http://www.eclipse.org/emf/2002/Ecore')/]
+[import misc::MyModule1/]

@@ -1,0 +1,1 @@
+@Test (true and false) or true implies (false xor true) => true

@@ -42,7 +42,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
 				getQueryEnvironment()));
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 		any = new AnyServices(getQueryEnvironment());
@@ -556,10 +556,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertTrue(result.contains("Metamodels:" + LINE_SEP + "\thttp://www.eclipse.org/emf/2002/Ecore"
 				+ LINE_SEP));
 		assertTrue(result.contains("Services:" + LINE_SEP));
-		assertTrue(result
-				.contains("\t\t"
-						+ "public java.lang.Boolean org.eclipse.acceleo.query.services.AnyServices.differs(java.lang.Object,java.lang.Object)"
-						+ LINE_SEP));
+		assertTrue(result.contains("\t\t"
+				+ "public java.lang.Boolean org.eclipse.acceleo.query.services.AnyServices.differs(java.lang.Object,java.lang.Object)"
+				+ LINE_SEP));
 		assertTrue(result.contains("receiver: 42" + LINE_SEP));
 	}
 

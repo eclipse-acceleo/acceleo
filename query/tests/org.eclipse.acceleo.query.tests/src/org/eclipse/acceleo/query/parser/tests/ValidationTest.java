@@ -70,7 +70,7 @@ public class ValidationTest {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 		engine = new QueryValidationEngine(queryEnvironment);
 
@@ -208,8 +208,8 @@ public class ValidationTest {
 
 	@Test
 	public void flattenSetNothingFeatureNotExistingAccessTest() {
-		final IValidationResult validationResult = engine
-				.validate("self->asSet().notExisting", variableTypes);
+		final IValidationResult validationResult = engine.validate("self->asSet().notExisting",
+				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -243,9 +243,7 @@ public class ValidationTest {
 				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
 				18, 45);
 	}
@@ -267,9 +265,7 @@ public class ValidationTest {
 				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
 				18, 45);
 	}
@@ -296,9 +292,7 @@ public class ValidationTest {
 				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
 				23, 35);
 	}
@@ -325,9 +319,7 @@ public class ValidationTest {
 				((NothingType)((SetType)type).getCollectionType()).getMessage());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
 				18, 30);
 	}
@@ -646,8 +638,8 @@ public class ValidationTest {
 
 	@Test
 	public void enumLiteralError() {
-		final IValidationResult validationResult = engine
-				.validate("anydsl::Part::NotExisting", variableTypes);
+		final IValidationResult validationResult = engine.validate("anydsl::Part::NotExisting",
+				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -862,9 +854,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"The predicate may evaluate to a value that is not a boolean type ([java.lang.Boolean, java.lang.Object]).",
 				0, 38);
 		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
@@ -873,8 +863,8 @@ public class ValidationTest {
 
 	@Test
 	public void testLetMaskingVariable() {
-		final IValidationResult validationResult = engine
-				.validate("let stuff = self in stuff", variableTypes);
+		final IValidationResult validationResult = engine.validate("let stuff = self in stuff",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 
@@ -1051,9 +1041,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage, EClassifier=EReference].",
 				61, 67);
 	}
@@ -1090,8 +1078,8 @@ public class ValidationTest {
 
 	@Test
 	public void eInverseFeatureNameStringLiteral() {
-		final IValidationResult validationResult = engine
-				.validate("self.eInverse('ePackage')", variableTypes);
+		final IValidationResult validationResult = engine.validate("self.eInverse('ePackage')",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1135,8 +1123,8 @@ public class ValidationTest {
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
-				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
@@ -1188,8 +1176,8 @@ public class ValidationTest {
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
-				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
@@ -1216,8 +1204,8 @@ public class ValidationTest {
 
 	@Test
 	public void eInverseFiltered() {
-		final IValidationResult validationResult = engine.validate(
-				"self.eInverse(ecore::EStructuralFeature)", variableTypes);
+		final IValidationResult validationResult = engine.validate("self.eInverse(ecore::EStructuralFeature)",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1232,8 +1220,8 @@ public class ValidationTest {
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
-				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -1351,9 +1339,7 @@ public class ValidationTest {
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage, EClassifier=EReference].",
 				62, 68);
 	}
@@ -1435,9 +1421,7 @@ public class ValidationTest {
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"Couldn't find the 'triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query)' service",
 				4, 36);
 	}
@@ -1478,8 +1462,8 @@ public class ValidationTest {
 
 	@Test
 	public void oclAsTypeManyTypesNoneMatching() {
-		final IValidationResult validationResult = engine.validate(
-				"self.eContainer().oclAsType(ecore::EInt)", variableTypes);
+		final IValidationResult validationResult = engine.validate("self.eContainer().oclAsType(ecore::EInt)",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1493,9 +1477,7 @@ public class ValidationTest {
 				((NothingType)possibleType).getMessage());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
 				17, 40);
 	}
@@ -1568,10 +1550,9 @@ public class ValidationTest {
 
 	@Test
 	public void eOperationNoReflectionListParameterTest() {
-		final IValidationResult validationResult = engine
-				.validate(
-						"noReflexion.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})",
-						variableTypes);
+		final IValidationResult validationResult = engine.validate(
+				"noReflexion.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);

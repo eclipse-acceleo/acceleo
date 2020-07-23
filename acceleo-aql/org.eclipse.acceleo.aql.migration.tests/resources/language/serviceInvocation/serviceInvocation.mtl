@@ -1,0 +1,9 @@
+[module serviceInvocation('http://www.eclipse.org/emf/2002/Ecore')/]
+[import misc::MyService/]
+
+[comment @main/]
+[template public test(anEClass : ecore::EClass)]
+  [file ('service_invocation', overwrite)]
+    [anEClass.myService('some text')/]
+  [/file]
+[/template]

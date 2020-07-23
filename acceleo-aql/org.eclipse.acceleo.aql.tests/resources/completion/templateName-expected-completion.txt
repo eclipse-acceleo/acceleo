@@ -1,0 +1,9 @@
+* Label:
+myTemplate
+* Description:
+Inserts the following text: <pre>myTemplate</pre>
+* Text:
+myTemplate
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Template
+

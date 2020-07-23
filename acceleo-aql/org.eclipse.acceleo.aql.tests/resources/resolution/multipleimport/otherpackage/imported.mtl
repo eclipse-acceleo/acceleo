@@ -1,0 +1,5 @@
+[module imported('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public t41(param1 : ecore::EPackage)]
+  generated from otherpackage.imported.t41(EPackage)
+[/template]

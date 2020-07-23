@@ -1,0 +1,7 @@
+[module nominalOnQuery('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**
+ * My query has a nice comment.
+ * @param myParam the input EPackage
+*/]
+[query public myQuery(myParam : ecore::EPackage) : ecore::EClassifier = myParam.eClassifiers->first()/]

@@ -1,0 +1,2 @@
+ (null 0 2) null[]
+   (org.eclipse.acceleo.aql 0 2) InvalidCharset fallback to UTF-8[org.eclipse.acceleo.impl.ExpressionImpl@00000000 (ast: org.eclipse.acceleo.query.parser.AstResult@00000000 [(myParam, org.eclipse.emf.ecore.impl.EPackageImpl@00000000 (name: anydsl) (nsURI: http://www.eclipse.org/acceleo/anydsl, nsPrefix: anydsl)), ]]

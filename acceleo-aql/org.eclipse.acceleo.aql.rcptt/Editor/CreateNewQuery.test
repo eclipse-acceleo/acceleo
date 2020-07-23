@@ -1,0 +1,28 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _Ayow4KrpEeqpkej7GeVvKQ,_d8d2kKyFEeqylZAj0d4Xnw
+Element-Name: CreateNewQuery
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _QnGbcMEfEeqjcPTfvO5d8Q
+Save-Time: 7/8/20 3:32 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | double-click
+
+with [get-editor "test.mtl" | get-text-viewer] {
+    set-caret-pos 18 1
+    key-type "M1+SPACE"
+    key-type Down -times 3
+    key-type Enter
+    set-caret-pos 18 1
+    select-range 18 92 18 1
+}
+get-editor "test.mtl" | get-text-viewer | get-property "getSelectionText()" 
+    | equals "[query public myQuery(myParameter : ecore::EJavaObject) : String = myParameter.toString()/]" | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

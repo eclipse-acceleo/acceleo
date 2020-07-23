@@ -1,0 +1,6 @@
+
+header position 0..58
+module myModule
+  *** error metamodel ***
+  missing end quote: 55
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..55) (0..58)

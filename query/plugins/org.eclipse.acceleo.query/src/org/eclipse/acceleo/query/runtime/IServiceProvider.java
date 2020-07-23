@@ -26,6 +26,6 @@ public interface IServiceProvider {
 	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @return services offered by this class
 	 */
-	List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment);
+	List<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment);
 
 }

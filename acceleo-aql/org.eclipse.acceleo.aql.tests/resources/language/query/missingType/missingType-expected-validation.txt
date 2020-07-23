@@ -1,0 +1,2 @@
+ERROR Missing or invalid type - 113 113
+WARNING Nothing(missing type literal) is incompatible with EClassifier=EClassifier - 61 146

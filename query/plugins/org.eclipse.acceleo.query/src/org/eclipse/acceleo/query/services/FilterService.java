@@ -93,9 +93,9 @@ public class FilterService extends JavaMethodService {
 		if (result.isEmpty()) {
 			final NothingType nothing = services.nothing("Nothing will be left after calling %s:" + builder
 					.toString(), getName());
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getOrigin().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, nothing));
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getOrigin().getReturnType())) {
 				result.add(new SetType(queryEnvironment, nothing));
 			} else {
 				result.add(nothing);

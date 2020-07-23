@@ -1,0 +1,342 @@
+* Label:
+concat()
+* Description:
+concat(self: java.lang.String, b: java.lang.String) = String<br><br>Returns a string that is the result of the concatenation of the current string and the string "b".<br><br>  @param self<br>        The current String.<br>  @param b<br>        The String that will be appended at the end of the current String.<br><br>  @return<br>        The concatenated String.<br><br>
+* Text:
+concat()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+contains()
+* Description:
+contains(self: java.lang.String, b: java.lang.String) = Boolean<br><br>Returns "true" if the current String contains the String "b"<br><br>  @param self<br>        The current String<br>  @param b<br>        The String that we will look for in the current String<br><br>  @return<br>        "true" if the current String contains the String "b", "false" otherwise<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "b" is null.<br><br>
+* Text:
+contains()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+endsWith()
+* Description:
+endsWith(self: java.lang.String, b: java.lang.String) = Boolean<br><br>Returns true if the current String ends with the string "b".<br><br>  @param self<br>        The current String<br>  @param b<br>        The String that may be at the end of the current String<br><br>  @return<br>        "true" if the current String ends with the string "b", "false" otherwise.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "b" is null.<br><br>
+* Text:
+endsWith()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+equalsIgnoreCase()
+* Description:
+equalsIgnoreCase(self: java.lang.String, b: java.lang.String) = Boolean<br><br>Returns true if the current String is equals to the String "b" without considering case in the comparison.<br><br>  @param self<br>        The current String<br>  @param b<br>        The String to compare with the current String<br><br>  @return<br>        "true" if the current String is equal to the string "b", without considering case, "false" otherwise.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "b" is null.<br><br>
+* Text:
+equalsIgnoreCase()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+first()
+* Description:
+first(self: java.lang.String, n: java.lang.Integer) = String<br><br>Returns the "n" first characters of the current String, or the current String itself if its size is less than "n".<br><br>  @param self<br>        The current String<br>  @param n<br>        The number of characters that must be retrieved from the beginning of the current String.<br><br>  @return<br>        The "n" first characters of the current String<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "n" is null.<br>  @throw java.lang.IndexOutOfBoundsException<br>        If "n" is not a valid index of self (i.e it is inferior to 0).<br><br>
+* Text:
+first()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+index()
+* Description:
+index(self: java.lang.String, subString: java.lang.String) = Integer<br><br>Returns the index of the first occurrence "subString" in the current String, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.<br><br>  @param self<br>        The current String<br>  @param subString<br>        The substring that we want to find in the current String<br><br>  @return<br>        The index of the first occurrence of subString in the current String or -1 if not found<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "subString" is null.<br><br>
+* Text:
+index()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+index()
+* Description:
+index(self: java.lang.String, subString: java.lang.String, indexString: java.lang.Integer) = Integer<br><br>Returns the index of the first occurrence "subString" in the current String from the given index, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.<br><br>  @param self<br>        The current String<br>  @param subString<br>        The substring that we want to find in the current String<br>  @param indexString<br>        The starting index from which the substring will be searched<br><br>  @return<br>        The index of the first occurrence of subString in the current String or -1 if not found<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String, "subString" or index is null.<br><br>
+* Text:
+index()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+isAlpha()
+* Description:
+isAlpha(self: java.lang.String) = Boolean<br><br>Returns "true" if self consists only of alphabetical characters, "false" otherwise.<br><br>  @param self<br>        The string we want to ensure it consists only of alphabetical characters.<br><br>  @return<br>        "true" if self consists only of alphabetical characters, "false" otherwise.<br><br>
+* Text:
+isAlpha()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+isAlphaNum()
+* Description:
+isAlphaNum(self: java.lang.String) = Boolean<br><br>Returns "true" if self consists only of alphanumeric characters, "false" otherwise.<br><br>  @param self<br>        The string we want to ensure it consists only of alphanumeric characters.<br><br>  @return<br>        "true" if self consists only of alphanumeric characters, "false" otherwise.<br><br>
+* Text:
+isAlphaNum()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+last()
+* Description:
+last(self: java.lang.String, n: java.lang.Integer) = String<br><br>Returns the "n" last characters of the current String, or the current String if its size is less than "n".<br><br>  @param self<br>        The current String<br>  @param n<br>        The number of characters that must be retrieved from the end of the current String<br><br>  @return<br>        The "n" last characters of the current String<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "n" is null.<br>  @throw java.lang.IndexOutOfBoundsException<br>        If "n" is not a valid index of self (i.e it is greater than the size of the current String).<br><br>
+* Text:
+last()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+lastIndex()
+* Description:
+lastIndex(self: java.lang.String, subString: java.lang.String) = Integer<br><br>Returns the index of the last occurrence of "subString" in the current String, "-1" if the current String doesn't contain this particular substring. The index referential is 1 as in OCL and not 0.<br><br>  @param self<br>        The current String<br>  @param subString<br>        The substring that we want to find in the current String<br><br>  @return<br>        The index of the last occurrence of subString in the current String or -1 if not found<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "subString" is null.<br><br>
+* Text:
+lastIndex()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+lastIndex()
+* Description:
+lastIndex(self: java.lang.String, subString: java.lang.String, indexString: java.lang.Integer) = Integer<br><br>Returns the index of the last occurrence "subString" in the current String searching backward from the given index, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.<br><br>  @param self<br>        The current String<br>  @param subString<br>        The substring that we want to find in the current String<br>  @param indexString<br>        The starting index from which the substring will be searched<br><br>  @return<br>        The index of the last occurrence of subString in the current String or -1 if not found<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String, "subString" or index is null.<br><br>
+* Text:
+lastIndex()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+matches()
+* Description:
+matches(self: java.lang.String, regex: java.lang.String) = Boolean<br><br>Returns "true" if the current String matches the given "regex".<br><br>  @param self<br>        The current String<br>  @param regex<br>        The regex used for the match<br><br>  @return<br>        "true" if "self" matches the given regex, "false" otherwise.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "regex" is null.<br><br>
+* Text:
+matches()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+oclAsType()
+* Description:
+oclAsType(object: java.lang.Object, type: java.lang.Object) = Object<br><br>Casts the current object to the given type.<br><br>  @param object<br>        The object to cast<br>  @param type<br>        The type to cast the object to<br><br>  @return<br>        The current object cast to a "type"<br><br>
+* Text:
+oclAsType()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+oclIsKindOf()
+* Description:
+oclIsKindOf(object: java.lang.Object, type: java.lang.Object) = Boolean<br><br>Evaluates to "true" if the type of the object o1 conforms to the type "classifier". That is, o1 is of type "classifier" or a subtype of "classifier".<br><br>  @param object<br>        The reference Object we seek to test.<br>  @param type<br>        The expected supertype classifier.<br><br>  @return<br>        "true" if the object o1 is a kind of the classifier, "false" otherwise.<br><br>
+* Text:
+oclIsKindOf()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+oclIsTypeOf()
+* Description:
+oclIsTypeOf(object: java.lang.Object, type: java.lang.Object) = Boolean<br><br>Evaluates to "true" if the object o1 if of the type "classifier" but not a subtype of the "classifier".<br><br>  @param object<br>        The reference Object we seek to test.<br>  @param type<br>        The expected type classifier.<br><br>  @return<br>        "true" if the object o1 is a type of the classifier, "false" otherwise.<br><br>
+* Text:
+oclIsTypeOf()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+prefix()
+* Description:
+prefix(self: java.lang.String, prefix: java.lang.String) = String<br><br>Returns the current String prefixed with the given "prefix".<br><br>  @param self<br>        The current String that will be prefixed<br>  @param prefix<br>        The String that will be prepended before the current String<br><br>  @return<br>        The current String prefixed with the given "prefix"<br><br>
+* Text:
+prefix()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+replace()
+* Description:
+replace(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String<br><br>Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".<br><br>  @param self<br>        The current String.<br>  @param regex<br>        The regular expression used to find the substring to replace in the current String.<br>  @param replacement<br>        The replacement String.<br><br>  @return<br>        Returns the resulting String of a substitution of the first substring matching the given regex by the given replacement<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "regex" or "replacement" is null.<br>  @throw java.util.regex.PatternSyntaxException<br>        If the regular expression's syntax is invalid<br><br>
+* Text:
+replace()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+replaceAll()
+* Description:
+replaceAll(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String<br><br>Replaces each substring of the current String that matches the given regular expression "regex" with the String "replacement".<br><br>  @param self<br>        The current String.<br>  @param regex<br>        The regular expression used to find all the substrings to replace in the current String.<br>  @param replacement<br>        The replacement String.<br><br>  @return<br>        Returns the resulting String of a substitution of all the substrings matching the given regex by the given replacement<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "regex" or "replacement" is null.<br>  @throw java.util.regex.PatternSyntaxException<br>        If the regular expression's syntax is invalid<br><br>
+* Text:
+replaceAll()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+size()
+* Description:
+size(self: java.lang.String) = Integer<br><br>Return the length of the current String.<br><br>  @param self<br>        The current String<br><br>  @return<br>        The length of the specified string<br><br>
+* Text:
+size()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+startsWith()
+* Description:
+startsWith(self: java.lang.String, b: java.lang.String) = Boolean<br><br>Returns true if the current String starts with the string "b".<br><br>  @param self<br>        The current String<br>  @param b<br>        The String that may be at the beginning of the current String<br><br>  @return<br>        "true" if the current String starts with the string "b", "false" otherwise.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "b" is null.<br><br>
+* Text:
+startsWith()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+strcmp()
+* Description:
+strcmp(self: java.lang.String, s1: java.lang.String) = Integer<br><br>Returns an integer that is either negative, zero or positive depending on whether s1 is alphabetically less than, equal to or greater than self. Note that upper case letters come before lower case ones, so that 'AA' is closer to 'AC' than it is to 'Ab'.<br><br>  @param self<br>        The current String<br>  @param s1<br>        The other String<br><br>  @return<br>        An integer that is either negative, zero or positive depending on whether s1 is alphabetically less than, equal to or greater than self. Note that upper case letters come before lower case ones, so that 'AA' is closer to 'AC' than it is to 'Ab'<br><br>
+* Text:
+strcmp()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+strstr()
+* Description:
+strstr(self: java.lang.String, r: java.lang.String) = Boolean<br><br>Searches r in self.<br><br>  @param self<br>        The current String<br>  @param r<br>        The String to search<br><br>  @return<br>        "true" if r is found, "false" otherwise<br><br>
+* Text:
+strstr()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substitute()
+* Description:
+substitute(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String<br><br>Substitutes the first occurrence of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.<br><br>  @param self<br>        The current String<br>  @param r<br>        The String to replace<br>  @param t<br>        The replacement String<br><br>  @return<br>        A new String<br><br>
+* Text:
+substitute()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substituteAll()
+* Description:
+substituteAll(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String<br><br>Substitutes all occurences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.<br><br>  @param self<br>        The current String<br>  @param r<br>        The String to replace<br>  @param t<br>        The replacement String<br><br>  @return<br>        A new String<br><br>
+* Text:
+substituteAll()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substring()
+* Description:
+substring(self: java.lang.String, lower: java.lang.Integer) = String<br><br>Returns a string containing all characters from self starting from index lower up to the end of the string included. The lower parameter should be contained between 1 and self.size() included. Lower cannot be greater than the size of the String.<br><br>  @param self<br>        The current String<br>  @param lower<br>        The lower bound<br><br>  @return<br>        A string containing all characters from self starting from index lower included.<br><br>
+* Text:
+substring()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substring()
+* Description:
+substring(self: java.lang.String, lower: java.lang.Integer, upper: java.lang.Integer) = String<br><br>Returns a string containing all characters from self starting from index lower up to index upper included. Both lower and upper parameters should be contained between 1 and self.size() included. Lower cannot be greater than upper.<br><br>  @param self<br>        The current String<br>  @param lower<br>        The lower bound<br>  @param upper<br>        The upper bound<br><br>  @return<br>        a string containing all characters from self starting from index lower up to index upper included. Both lower and upper parameters should be contained between 1 and self.size() included. lower cannot be greater than upper<br><br>
+* Text:
+substring()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toInteger()
+* Description:
+toInteger(self: java.lang.String) = Integer<br><br>Returns an integer of value equal to self<br><br>  @param self<br>        The current String<br><br>  @return<br>        An integer of value equal to self<br><br>  @throw java.lang.NumberFormatException<br>        Thrown if self does not represent an integer<br><br>
+* Text:
+toInteger()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toLower()
+* Description:
+toLower(self: java.lang.String) = String<br><br>Returns the current String with all characters transformed to lower case.<br><br>  @param self<br>        The current String from which we want to convert all characters to lower case.<br><br>  @return<br>        The current String with all upper case characters converted to lower case.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if "self" is "null".<br><br>
+* Text:
+toLower()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toLowerFirst()
+* Description:
+toLowerFirst(self: java.lang.String) = String<br><br>Returns the self string with the first characters transformed to lower case.<br><br>  @param self<br>        The current String from which we want to convert the first character to lower case.<br><br>  @return<br>        The current String with the first character transformed to lower case.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if "self" is "null".<br><br>
+* Text:
+toLowerFirst()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toReal()
+* Description:
+toReal(self: java.lang.String) = Double<br><br>Returns a real of value equal to self<br><br>  @param self<br>        The current String<br><br>  @return<br>        A real of value equal to self<br><br>  @throw java.lang.NumberFormatException<br>        Thrown if self does not represent a real<br><br>
+* Text:
+toReal()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toString()
+* Description:
+toString(self: java.lang.Object) = String<br><br>Returns a string representation of the current object.<br><br>  @param self<br>        The current object<br><br>  @return<br>        a String representation of the given Object. For Collections, this will be the concatenation of all contained Objects' toString.<br><br>
+* Text:
+toString()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toUpper()
+* Description:
+toUpper(self: java.lang.String) = String<br><br>Returns the current String with all characters transformed to upper case.<br><br>  @param self<br>        The current String from which we want to convert all characters to upper case.<br><br>  @return<br>        The current String with all lower case characters converted to upper case.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if "self" is "null".<br><br>
+* Text:
+toUpper()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toUpperFirst()
+* Description:
+toUpperFirst(self: java.lang.String) = String<br><br>Returns the current String with the first characters transformed to upper case.<br><br>  @param self<br>        The current String from which we want to convert the first character to upper case.<br><br>  @return<br>        The current String with the first character transformed to upper case.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if "self" is "null".<br><br>
+* Text:
+toUpperFirst()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+tokenize()
+* Description:
+tokenize(self: java.lang.String) = List<br><br>Splits the current String by whitespace delimiter into a collection of String<br><br>  @param self<br>        The current String<br><br>  @return<br>        The collection of substrings of the current String delimited by whitespaces<br><br>
+* Text:
+tokenize()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+tokenize()
+* Description:
+tokenize(self: java.lang.String, delimiter: java.lang.String) = List<br><br>Splits the current String by using the given "delimiter" into a collection of String<br><br>  @param self<br>        The current String<br>  @param delimiter<br>        The current String<br><br>  @return<br>        The collection of substrings of the current String delimited by the given "delimiter"<br><br>
+* Text:
+tokenize()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+trace()
+* Description:
+trace(self: java.lang.Object) = String<br><br>Returns a string representation of the current environment.<br><br>  @param self<br>        The current object<br><br>  @return<br>        a string representation of the current environment.<br><br>
+* Text:
+trace()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+trim()
+* Description:
+trim(self: java.lang.String) = String<br><br>Trims the given String.<br><br>  @param self<br>        The String to trim<br><br>  @return<br>        The trimmed String<br><br>
+* Text:
+trim()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+

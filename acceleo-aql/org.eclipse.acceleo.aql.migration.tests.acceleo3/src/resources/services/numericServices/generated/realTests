@@ -1,0 +1,42 @@
+@Test var1.oclAsType(Real) => 1.2
+@Test var1.oclIsUndefined() => false
+@Test var1.oclIsTypeOf(Real) => true
+@Test var1.oclIsTypeOf(EPackage) => false
+@Test var1.oclIsKindOf(Real) => true
+@Test var1.oclIsKindOf(EPackage) => false
+@Test var1 <> var1 => false
+@Test var1 <> var2 => true
+@Test var1 = var1 => true
+@Test var1 = var2 => false
+@Test var1.toString() => 1.2
+@Test var1 + var2 => 3.5
+@Test var1 - var2 => -1.0999999999999999
+@Test var2 - var1 => 1.0999999999999999
+@Test var1 * var2 => 2.76
+@Test var2 / var1 => 1.9166666666666665
+@Test var1 / var2 => 0.5217391304347826
+@Test var1 < var2 => true
+@Test var2 < var1 => false
+@Test var1 > var2 => false
+@Test var2 > var1 => true
+@Test var1 <= var1 => true
+@Test var1 <= var2 => true
+@Test var2 <= var1 => false
+@Test var1 >= var1 => true
+@Test var1 >= var2 => false
+@Test var2 >= var1 => true
+@Test var1.abs() => 1.2
+@Test var2.abs() => 2.3
+@Test var1.floor() => 1
+@Test var2.floor() => 2
+@Test var1.max(var2) => 2.3
+@Test var2.max(var1) => 2.3
+@Test var1.min(var2) => 1.2
+@Test var2.min(var1) => 1.2
+@Test var1.round() => 1
+@Test var2.round() => 2
+@Test var1.toString() => 1.2
+@Test var2.toString() => 2.3
+@Test 3.0 / 1.5 => 2.0
+@Test 0.5 * 2.0 => 1.0
+@Test 1.5 + (2.2 - 1.0)*3.2 >= 4.6 / 2.1 => true

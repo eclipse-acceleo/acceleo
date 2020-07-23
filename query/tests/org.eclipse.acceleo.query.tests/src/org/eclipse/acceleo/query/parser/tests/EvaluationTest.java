@@ -68,7 +68,7 @@ public class EvaluationTest {
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(RootPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 		engine = new QueryEvaluationEngine(queryEnvironment);
 		builder = new QueryBuilderEngine(queryEnvironment);

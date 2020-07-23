@@ -15,11 +15,13 @@ import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.head;
 import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.header;
 import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.html;
 
-import com.google.common.io.Files;
-
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
@@ -84,7 +86,7 @@ public final class DocumentationGenerator {
 		try {
 			File tocFile = new File(pluginFolder, "toc.xml");
 			System.out.println("Writing the content of toc.xml in " + tocFile.getAbsolutePath());
-			Files.write(buffer, tocFile, Charset.forName(UTF8));
+			write(buffer.toString(), tocFile, Charset.forName(UTF8));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -101,7 +103,7 @@ public final class DocumentationGenerator {
 					File file = new File(documentationFolder, AQLHelpContentUtils.AQL_HREF_PREFIX
 							+ serviceProviderClass.getSimpleName().toLowerCase() + ".html");
 					System.out.println("Writing content of " + file.getAbsolutePath());
-					Files.write(stringBuffer, file, Charset.forName(UTF8));
+					write(stringBuffer.toString(), file, Charset.forName(UTF8));
 
 					/*
 					 * generating a documentation aggregating all the services at once.
@@ -123,8 +125,7 @@ public final class DocumentationGenerator {
 		try {
 			List<StringBuffer> sections = AQLHelpContentUtils.computeAQLOverviewSections();
 
-			String inputHtmlContent = Files.toString(new File(inputFolder, "index.html"), Charset.forName(
-					UTF8));
+			String inputHtmlContent = read(new File(inputFolder, "index.html"), Charset.forName(UTF8));
 			int indexOfBodyStart = inputHtmlContent.indexOf("<body>");
 			if (indexOfBodyStart != -1 && indexOfBodyStart + 6 < inputHtmlContent.length()) {
 				inputHtmlContent = inputHtmlContent.substring(indexOfBodyStart + 6);
@@ -140,9 +141,19 @@ public final class DocumentationGenerator {
 					+ "\n" + aggregated);
 
 			System.out.println("Writing content of " + indexHtmlFile.getAbsolutePath());
-			Files.write(out, indexHtmlFile, Charset.forName(UTF8));
+			write(out, indexHtmlFile, Charset.forName(UTF8));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
+	}
+
+	private static void write(String content, File file, Charset charset) throws IOException {
+		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), charset)) {
+			writer.write(content);
+		}
+	}
+
+	private static String read(File file, Charset charset) throws IOException {
+		return new String(Files.readAllBytes(file.toPath()), charset);
 	}
 }

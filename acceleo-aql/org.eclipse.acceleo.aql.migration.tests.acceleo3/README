@@ -1,0 +1,33 @@
+The purpose of this project is to create the Acceleo3 dataset used by the migration tests.
+Tests are defined in the .mtl files, can be compiled & launched.
+It can be managed using several launch configurations:
+
+FormatTests
+===========
+When a line in a .mtl file starts with @Test, this utility rewrites the line like this:
+	@Test[some.test()/]
+		becomes
+	@Test some.test() => [some.test()/]
+This make the result in the generated more readable:
+	@Test some.test() => generation_result_of_test()
+	
+Generate Services Doc
+=====================
+This utility generates the status of the services tests. 
+The status consists of one static file, status/README which is not generated, and some other generated files:
+* status/IRRELEVANT: all comments starting with IRRELEVANT, non-relevant changes between A3/A4
+* status/PASS: all non-commented @Test lines, the actual perimeter of what is supported
+* status/TODO
+	* all comments starting with TODO: missing tests that we will have to write at some point
+	* all comments starting with A4-UNSUPPORTED: tests on something that is not supported yet in A4
+	* all comments starting with A4-DIFFERS: tests that produces an unexpected different result when generated in A3/A4
+* status/TODO_lot1: a subset of what is most relevant in TODO
+	* all comments starting with TODO(LOT1): missing tests that we will have to write at some point
+	* all comments starting with A4-UNSUPPORTED(LOT1): tests on something that is not supported yet in A4
+	* all comments starting with A4-DIFFERS(LOT1): tests that produces an unexpected different result when generated in A3/A4
+
+Synchronize Migration Tests
+===========================
+This configuration updates the org.eclipse.acceleo.aql.migration.tests/resources files according to what is defined in this project.
+It typically has to be used when modifying an A3 template.
+It copies & renames the .mtl, .emtl, model & generated code files to the actual migration tests.

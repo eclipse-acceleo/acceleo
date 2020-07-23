@@ -10,15 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
@@ -176,8 +174,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	@Test
-	public void testEInverseWithFeatureNullReceiver() throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public void testEInverseWithFeatureNullReceiver() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		createModelForInverseTests();
 		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
 		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
@@ -230,8 +228,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 	/**
 	 * Tests the {@link EObjectServices#eClass(EObject)} method. This test uses the
-	 * "resources/ecore/reverse.ecore" model.</br> It ensures that the {@link EObjectServices#eClass(EObject)}
-	 * returns the eClass of an eObject.
+	 * "resources/ecore/reverse.ecore" model.</br>
+	 * It ensures that the {@link EObjectServices#eClass(EObject)} returns the eClass of an eObject.
 	 */
 	@Test
 	public void testEClass() {
@@ -256,8 +254,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
-	 * Tests {@link EObjectServices#eContainer(EObject, EClass)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model to test if the eContainer is calculated correctly.
+	 * Tests {@link EObjectServices#eContainer(EObject, EClass)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model to test if the eContainer is calculated
+	 * correctly.
 	 * <ul>
 	 * <li>For the EClass "unused" it must return the EPackage "full-sirius-code" as container.</li>
 	 * <li>For the EAttribute "newEReference1" it must return the EClass "unused" as container if the filter
@@ -273,8 +272,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
-		assertEquals(fullSiriusCodePackage, eObjectServices
-				.eContainer(unused, fullSiriusCodePackage.eClass()));
+		assertEquals(fullSiriusCodePackage, eObjectServices.eContainer(unused, fullSiriusCodePackage
+				.eClass()));
 
 		unused.eAllContents().next();
 		EObject newEReference1 = unused.eAllContents().next();
@@ -299,8 +298,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
-	 * Tests {@link EObjectServices#eContainerOrSelf(EObject, EClass)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model to test if the eContainerOrSelf is calculated correctly.
+	 * Tests {@link EObjectServices#eContainerOrSelf(EObject, EClass)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model to test if the eContainerOrSelf is calculated
+	 * correctly.
 	 * <ul>
 	 * <li>For the EClass "unused" it must return the EPackage "full-sirius-code" as container.</li>
 	 * <li>For the EAttribute "newEReference1" it must return the EClass "unused" as container if the filter
@@ -342,8 +342,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
-	 * Tests {@link EObjectServices#eContainer(EObject)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model to test if the eContainer is calculated correctly.
+	 * Tests {@link EObjectServices#eContainer(EObject)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model to test if the eContainer is calculated
+	 * correctly.
 	 * <ul>
 	 * <li>For the EClass "unused" it must return the EPackage "full-sirius-code" as container.</li>
 	 * <li>For the EAttribute "newEReference1" it must return the EClass "unused" as container.</li>
@@ -370,8 +371,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
-	 * Tests {@link EObjectServices#eContents(EObject)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model to test if the eContents list is calculated correctly.
+	 * Tests {@link EObjectServices#eContents(EObject)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model to test if the eContents list is calculated
+	 * correctly.
 	 */
 	@Test
 	public void testFilteredEContentsNoEClassFilter() {
@@ -395,8 +397,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
-	 * Tests {@link EObjectServices#eContents(EObject, EClass)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model to test if the eContents list is calculated correctly.
+	 * Tests {@link EObjectServices#eContents(EObject, EClass)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model to test if the eContents list is calculated
+	 * correctly.
 	 */
 	@Test
 	public void testFilteredEContents() {
@@ -509,8 +512,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 				.getQueryEvaluationResult());
 		assertEquals(52, contents.size());
 
-		contents = eObjectServices
-				.eAllContents(fullSiriusCodePackage, QmodelPackage.eINSTANCE.getSetResult());
+		contents = eObjectServices.eAllContents(fullSiriusCodePackage, QmodelPackage.eINSTANCE
+				.getSetResult());
 		assertEquals(1, contents.size());
 	}
 
@@ -523,7 +526,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 		List<EObject> contents = eObjectServices.eAllContents(fullSiriusCodePackage, EcorePackage.eINSTANCE
 				.getEObject());
-		assertEquals(Iterators.size(fullSiriusCodePackage.eAllContents()), contents.size());
+		Iterable<EObject> iterable = () -> fullSiriusCodePackage.eAllContents();
+		assertEquals(StreamSupport.stream(iterable.spliterator(), false).count(), contents.size());
 	}
 
 	@Test
@@ -584,8 +588,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
-	 * Tests {@link EObjectServices#eAllContents(EObject)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model to test if the eAllContents list is calculated correctly.
+	 * Tests {@link EObjectServices#eAllContents(EObject)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model to test if the eAllContents list is calculated
+	 * correctly.
 	 */
 	@Test
 	public void testEAllContentsNoEClassFilter() {
@@ -664,8 +669,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
-	 * Tests {@link EObjectServices#eAllContents(EObject, EClass)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model to test if the eAllContents list is calculated correctly.
+	 * Tests {@link EObjectServices#eAllContents(EObject, EClass)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model to test if the eAllContents list is calculated
+	 * correctly.
 	 */
 	@Test
 	public void testEAllContents() {
@@ -725,7 +731,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 			assertEquals(eObj2, result.get(0));
 			assertEquals(eObj3, result.get(1));
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -766,14 +772,14 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 			assertEquals(eObj3, result.get(1));
 			assertEquals(eObj4, result.get(2));
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
 	/**
-	 * * Tests {@link EObjectServices#eGet(EObject, String)} method.</br> This test uses the
-	 * "resources/ecore/reverse.ecore" model. </br> It ensures that the
-	 * {@link EObjectServices#eGet(EObject, String)} returns the expected feature value.
+	 * * Tests {@link EObjectServices#eGet(EObject, String)} method.</br>
+	 * This test uses the "resources/ecore/reverse.ecore" model. </br>
+	 * It ensures that the {@link EObjectServices#eGet(EObject, String)} returns the expected feature value.
 	 * <ul>
 	 * We expect to get:
 	 * <li>for an instance of "Queries" with "name" feature filter: the eGet must return null because the
@@ -893,7 +899,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testAllInstancesNoRootProviderSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final Set<EClass> types = Sets.newLinkedHashSet();
+		final Set<EClass> types = new LinkedHashSet<>();
 		types.add(EcorePackage.eINSTANCE.getEAttribute());
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
@@ -952,7 +958,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null,
 				new RootEObjectProvider(EcorePackage.eINSTANCE, AnydslPackage.eINSTANCE));
 
-		final Set<EClass> types = Sets.newLinkedHashSet();
+		final Set<EClass> types = new LinkedHashSet<>();
 		types.add(EcorePackage.eINSTANCE.getEAttribute());
 		types.add(EcorePackage.eINSTANCE.getEReference());
 		final List<EObject> result = eObjectServices.allInstances(types);

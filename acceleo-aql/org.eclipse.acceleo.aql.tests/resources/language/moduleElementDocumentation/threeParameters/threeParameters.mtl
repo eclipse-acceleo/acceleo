@@ -1,0 +1,11 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @param myParam1 the input1 EPackage
+ * @param myParam2 the input2 EPackage
+*/]
+[template public myTemplate(myParam : ecore::EPackage,myParam1 : ecore::EPackage,myParam2 : ecore::EPackage)]
+  some static text.
+[/template]

@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -62,7 +63,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	/**
 	 * Variable definitions used during evaluation.
 	 */
-	private final Stack<Map<String, Object>> variablesStack;
+	private final Deque<Map<String, Object>> variablesStack = new ArrayDeque<Map<String, Object>>();
 
 	/**
 	 * The evaluation services.
@@ -91,7 +92,34 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	public AstEvaluator(EvaluationServices services) {
 		this.services = services;
-		variablesStack = new Stack<Map<String, Object>>();
+	}
+
+	/**
+	 * Pushes the given variables into the stack.
+	 * 
+	 * @param variables
+	 *            the variables to push
+	 */
+	protected void pushVariables(Map<String, Object> variables) {
+		variablesStack.addLast(variables);
+	}
+
+	/**
+	 * Peeks the last {@link #pushVariables(Map) pushed} variables from the stack.
+	 * 
+	 * @return the last {@link #pushVariables(Map) pushed} variables from the stack
+	 */
+	protected Map<String, Object> peekVariables() {
+		return variablesStack.peekLast();
+	}
+
+	/**
+	 * Pops the last {@link #pushVariables(Map) pushed} variables from the stack.
+	 * 
+	 * @return the last {@link #pushVariables(Map) pushed} variables from the stack
+	 */
+	protected Map<String, Object> popVariables() {
+		return variablesStack.removeLast();
 	}
 
 	/**
@@ -104,10 +132,10 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 * @return the evaluation of the specified ast.
 	 */
 	public EvaluationResult eval(Map<String, Object> varDefinitions, Expression ast) {
-		variablesStack.push(varDefinitions);
+		pushVariables(varDefinitions);
 		diagnostic = new BasicDiagnostic();
 		final Object result = doSwitch(ast);
-		variablesStack.pop();
+		popVariables();
 
 		return new EvaluationResult(result, diagnostic);
 	}
@@ -268,7 +296,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseVarRef(VarRef object) {
-		return services.getVariableValue(variablesStack.peek(), object.getVariableName(), diagnostic);
+		return services.getVariableValue(peekVariables(), object.getVariableName(), diagnostic);
 	}
 
 	/**
@@ -278,7 +306,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLambda(Lambda object) {
-		return new LambdaValue(object, new HashMap<String, Object>(variablesStack.peek()), this, diagnostic);
+		return new LambdaValue(object, new HashMap<String, Object>(peekVariables()), this, diagnostic);
 	}
 
 	/**
@@ -362,8 +390,8 @@ public class AstEvaluator extends AstSwitch<Object> {
 			}
 		} else {
 			Nothing nothing = new Nothing(String.format(BAD_PREDICATE_TYPE_MSG, selector));
-			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0,
-					nothing.getMessage(), new Object[] {object.getPredicate() });
+			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0, nothing
+					.getMessage(), new Object[] {object.getPredicate() });
 			((BasicDiagnostic)diagnostic).add(diag);
 			result = nothing;
 		}
@@ -377,13 +405,13 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLet(Let object) {
-		Map<String, Object> letEnv = new HashMap<String, Object>(variablesStack.peek());
+		Map<String, Object> letEnv = new HashMap<String, Object>(peekVariables());
 		for (Binding binding : object.getBindings()) {
 			letEnv.put(binding.getName(), doSwitch(binding.getValue()));
 		}
-		variablesStack.push(letEnv);
+		pushVariables(letEnv);
 		Object result = doSwitch(object.getBody());
-		variablesStack.pop();
+		popVariables();
 		return result;
 	}
 

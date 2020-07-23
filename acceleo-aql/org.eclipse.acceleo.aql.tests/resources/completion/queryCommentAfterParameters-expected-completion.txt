@@ -1,0 +1,9 @@
+* Label:
+/]
+* Description:
+Inserts the end of a Module Documentation or Module Element Documentation:<br/><pre>/]</pre>
+* Text:
+/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Documentation
+

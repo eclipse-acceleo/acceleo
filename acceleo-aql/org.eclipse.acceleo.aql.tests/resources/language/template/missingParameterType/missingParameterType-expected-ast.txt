@@ -1,0 +1,12 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(*** error variable ***
+  missing name: -1
+  missing colon: -1
+  missing type: 99
+   (89..99))
+    some static text. true (104..121) (101..122)
+  [/template] (61..133) (0..133)

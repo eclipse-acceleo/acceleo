@@ -1,0 +1,758 @@
+{
+	"information_for_contributors": [
+		"See https://macromates.com/manual/en/language_grammars for the documentation of this grammar language."
+	],
+	"version": "0.1",
+	"name": "Acceleo",
+	"scopeName": "text.acceleo",
+	"patterns": [
+		{
+			"include" : "#file-body"
+		}
+	],
+	"repository": {
+		"file-body": {
+			"patterns": [
+				{
+					"include": "#comment-block"
+				},
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#module-documentation"
+				},
+				{
+					"include": "#module"
+				}
+			]
+		},
+		"comment-block": {
+			"name": "comment.block.acceleo",
+			"begin": "\\[\\bcomment\\b\\]",
+			"end": "\\[/\\bcomment\\b\\]"
+		},
+		"comment": {
+			"name": "comment.line.character.acceleo",
+			"begin": "\\[\\bcomment\\b",
+			"end": "/\\]",
+			"patterns": [
+				{
+					"include": "#comment-main-tag"
+				}			
+			]
+		},
+		"comment-main-tag": {
+			"name": "meta.main.acceleo",
+			"match": "@\\bmain\\b"
+		},
+		"import": {
+			"name": "keyword.other.import.acceleo",
+			"begin": "\\[\\bimport\\b\\s*",
+			"end": "\\s*/\\]",
+			"patterns": [
+				{
+					"include": "#module-qualified-name"
+				}
+			]
+		},
+		"keyword-extends": {
+			"name": "keyword.other.extends.acceleo",
+			"match": "\\b(extends)\\b"
+		},
+		"module-qualified-name": {
+			"name": "meta.module.qualified-name",
+			"match": "\\w+(::\\w+)*"
+		},
+		
+		"module-documentation": {
+			"name": "comment.block.documentation.acceleo",
+			"begin": "\\[\\*\\*",
+			"end": "(/\\])",
+			"patterns": [
+				{
+					"include": "#module-documentation-tag"
+				},
+				{
+					"include": "#module-documentation-author-value"
+				},
+				{
+					"include": "#module-documentation-since-value"
+				},
+				{
+					"include": "#module-documentation-version-value"
+				}
+			]
+		},
+		"module-documentation-tag": {
+			"name": "keyword.other.documentation.acceleo",
+			"match": "@\\b(author|since|version)\\b"
+		},
+		"module-documentation-author-value": {
+			"name": "meta.documentation.tag.value.acceleo",
+			"begin": "(?<=@\\bauthor\\b)",
+			"end": "(?=$)"
+		},
+		"module-documentation-since-value": {
+			"name": "meta.documentation.tag.value.acceleo",
+			"begin": "(?<=@\\bsince\\b)",
+			"end": "(?=$)"
+		},
+		"module-documentation-version-value": {
+			"name": "meta.documentation.tag.value.acceleo",
+			"begin": "(?<=@\\bversion\\b)",
+			"end": "(?=$)"
+		},
+		
+		"module": {
+			"begin": "(?=\\[\\bmodule\\b)",
+			"end": "(?=not)possible",
+			"name": "meta.module.acceleo",
+			"patterns": [
+				{
+					"include": "#module-header"
+				},
+				{
+					"include": "#comment-block"
+				},
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#import"
+				},
+				{
+					"include": "#module-element-documentation"
+				},
+				{
+					"include": "#query"
+				},
+				{
+					"include": "#template"
+				}
+			]
+		},
+		"module-header": {
+			"begin": "\\[\\bmodule\\b",
+			"end": "/\\]",
+			"name": "keyword.other.module.acceleo",
+			"patterns": [
+				{
+					"include": "#module-identifier"
+				},
+				{
+					"include": "#module-metamodels"
+				},
+				{
+					"include": "#keyword-extends"
+				},
+				{
+					"include": "#module-qualified-name"
+				}
+			]
+		},
+		"module-identifier": {
+			"name": "entity.name.tag.module.acceleo",
+			"match": "(?<=\\[\\bmodule\\b)(?:\\s+)(\\w+)"
+		},
+		"module-metamodels": {
+			"begin": "\\(",
+			"end": "\\)",
+			"name": "meta.module.header.metamodels.acceleo",
+			"patterns": [
+				{
+					"include": "#module-metamodel"
+				}
+			]
+		},
+		"module-metamodel": {
+			"name": "string.quoted.single.acceleo",
+			"begin": "'",
+			"end": "'"
+		},
+		"module-element-documentation": {
+			"name": "comment.block.documentation.acceleo",
+			"begin": "\\[\\*\\*",
+			"end": "(/\\])",
+			"patterns": [
+				{
+					"include": "#module-element-documentation-tag"
+				},
+				{
+					"include": "#module-element-documentation-param-tag-value"
+				}
+			]
+		},
+		"module-element-documentation-tag": {
+			"name": "keyword.other.documentation.acceleo",
+			"match": "@\\b(param)\\b"
+		},
+		"module-element-documentation-param-tag-value": {
+			"name": "meta.documentation.tag.value",
+			"match": "(?<=@\\bparam\\b)(.*)(?=$)"
+		},
+		
+		"query": {
+			"name": "meta.query.acceleo",
+			"begin": "(?=\\[\\bquery\\b)",
+			"end": "(?<=/\\])",
+			"patterns": [
+				{
+					"include": "#query-tag-open"
+				},
+				{
+					"include": "#visibility"
+				},
+				{
+					"include": "#query-identifier"
+				},
+				{
+					"include": "#query-parameters-definition"
+				},
+				{
+					"include": "#query-return-type"
+				},
+				{
+					"include": "#query-body"
+				},
+				{
+					"include": "#query-tag-close"
+				}
+			]
+		},
+		"query-tag-open": {
+			"name": "keyword.other.query.acceleo",
+			"match": "\\[\\bquery\\b"
+		},
+		"visibility": {
+			"name": "storage.modifier.visibility.acceleo",
+			"match": "\\b(public|private|protected)\\b"
+		},
+		"query-identifier": {
+			"name": "entity.name.function.query.acceleo",
+			"match": "(\\w+)(?=\\s*\\()"
+		},
+		"query-parameters-definition": {
+			"name": "meta.query.parameters.acceleo",
+			"begin": "\\(",
+			"end": "\\)(?=\\s*:)",
+			"patterns": [
+				{
+					"include": "#query-parameter-definition"
+				}
+			]
+		},
+		"query-parameter-definition": {
+			"name": "meta.query.parameter.acceleo",
+			"begin": "(?<=\\(|,)(?:\\s*)",
+			"end": "(?=,|\\)\\s*:\\s*)",
+			"patterns": [
+				{
+					"include": "#query-parameter-identifier"
+				},
+				{
+					"include": "#query-parameter-type"
+				}
+			]
+		},
+		"query-parameter-identifier": {
+			"name": "variable.parameter.query.acceleo",
+			"match": "(\\w+)(?=\\s*:\\s*)(?!\\s*::\\s*)"
+		},
+		"query-parameter-type":{
+			"name": "meta.parameter.type",
+			"match": "(?<=:)(?:\\s*)(\\w+(::\\w+)*)(\\(\\w+)*(\\))*(?=((\\s*,)|(\\s*\\)\\s*:)))"
+		},
+		"query-return-type": {
+			"name": "meta.query.type.acceleo",
+			"match": "(?<=:)(?:\\s*)(\\w+)(?=\\s*=\\s*)"
+		},
+		"query-body" : {
+			"name": "meta.expression.aql",
+			"begin": "(?<==)(?:\\s*)",
+			"end": "(?=/\\])"
+		},
+		"query-tag-close": {
+			"name": "keyword.other.query.acceleo",
+			"match": "/\\]"
+		},
+		
+		
+		"template": {
+			"name": "meta.template.acceleo",
+			"begin": "(?=\\[\\btemplate\\b)",
+			"end": "(?<=\\[/\\btemplate\\b\\])",
+			"patterns": [
+				{
+					"include": "#template-header"
+				},
+				{
+					"include": "#template-footer"
+				},
+				{
+					"include": "#statement-file-header"
+				},
+				{
+					"include": "#statement-file-footer"
+				},
+				{
+					"include": "#statement-for-header"
+				},
+				{
+					"include": "#statement-for-footer"
+				},
+				{
+					"include": "#statement-if-header"
+				},
+				{
+					"include": "#statement-if-footer"
+				},
+				{
+					"include": "#statement-elseif"
+				},
+				{
+					"include": "#statement-else"
+				},
+				{
+					"include": "#statement-let-header"
+				},
+				{
+					"include": "#statement-let-footer"
+				},
+				{
+					"include": "#statement-protected-header"
+				},
+				{
+					"include": "#statement-protected-footer"
+				},
+				{
+					"include": "#statement-expression"
+				}
+			]
+		},
+		"template-header": {
+			"name": "meta.template.header.acceleo",
+			"begin": "(?=\\[\\btemplate\\b)",
+			"end": "(?<=\\])",
+			"patterns": [
+				{
+					"include": "#template-header-tag-open"
+				},
+				{
+					"include": "#visibility"
+				},
+				{
+					"include": "#template-identifier"
+				},
+				{
+					"include": "#template-parameters-definition"
+				},
+				{
+					"include": "#template-pre-condition"
+				},
+				{
+					"include": "#template-post-treatment"
+				},
+				{
+					"include": "#template-header-tag-close"
+				}
+			]
+		},
+		"template-header-tag-open": {
+			"name": "keyword.other.template.acceleo",
+			"match": "\\[\\btemplate\\b"
+		},
+		"template-identifier": {
+			"name": "entity.name.function.template.acceleo",
+			"match": "(\\w+)(?<!\\bpost\\b)(?=\\s*\\()"
+		},
+		"template-parameters-definition": {
+			"name": "meta.template.parameters.acceleo",
+			"begin": "\\(",
+			"end": "\\)(?=\\s*(\\?|\\bpost\\b|\\]))",
+			"patterns": [
+				{
+					"include": "#template-parameter-definition"
+				}
+			]
+		},
+		"template-parameter-definition": {
+			"name": "meta.template.parameter.acceleo",
+			"begin": "(?<=\\(|,)(?:\\s*)",
+			"end": "(?=,|\\)\\s*(\\?|\\bpost\\b|\\])\\s*)",
+			"patterns": [
+				{
+					"include": "#template-parameter-identifier"
+				},
+				{
+					"include": "#template-parameter-type"
+				}
+			]
+		},
+		"template-parameter-identifier": {
+			"name": "variable.parameter.template.acceleo",
+			"match": "(\\w+)(?=\\s*:\\s*)(?!\\s*::\\s*)"
+		},
+		"template-parameter-type":{
+			"name": "meta.parameter.type",
+			"match": "(?<=:)(?:\\s*)(\\w+(::\\w+)*)(\\(\\w+)*(\\))*(?=((\\s*,)|(\\s*\\)\\s*(\\?|\\bpost\\b|\\]))))"
+		},
+		"template-pre-condition": {
+			"name": "meta.template.header.precondition.acceleo",
+			"begin": "(?:\\s*)(?=\\?\\s*\\()",
+			"end": "(?=(\\bpost\\b|\\]))",
+			"patterns": [
+				{
+					"include": "#template-pre-condition-starter"
+				},
+				{
+					"include": "#template-pre-condition-expression"
+				},
+				{
+					"include": "#template-pre-condition-ender"
+				}
+			]
+		},
+		"template-pre-condition-starter": {
+			"name": "keyword.other.template.precondition.acceleo",
+			"match": "\\?\\s*\\("
+		},
+		"template-pre-condition-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
+			"end": "(?=\\)\\s*(\\bpost\\b|\\]))"
+		},		
+		"template-pre-condition-ender": {
+			"name": "keyword.other.template.precondition.acceleo",
+			"match": "\\)(?=((\\s*\\])|(\\s*\\bpost\\b\\s*\\()))"
+		},
+		"template-post-treatment": {
+			"name": "meta.template.header.posttreatment.acceleo",
+			"begin": "(?=\\bpost\\b)",
+			"end": "(?=\\])",
+			"patterns": [
+				{
+					"include": "#template-post-treatment-starter"
+				},
+				{
+					"include": "#template-post-treatment-ender"
+				},
+				{
+					"include": "#template-post-treatment-expression"
+				}
+			]
+		},
+		"template-post-treatment-starter": {
+			"name": "keyword.other.template.posttreatment.acceleo",
+			"match": "\\bpost\\b\\s*\\("
+		},
+		"template-post-treatment-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
+			"end": "(?=\\)\\s*\\])"
+		},
+		"template-post-treatment-ender": {
+			"name": "keyword.other.template.posttreatment.acceleo",
+			"match": "\\)\\s*(?=\\])"
+		},
+		"template-header-tag-close": {
+			"name": "keyword.other.template.acceleo",
+			"match": "\\s*\\]"
+		},
+		"template-footer": {
+			"name": "keyword.other.template.acceleo",
+			"match": "\\[/\\btemplate\\b\\]"
+		},
+		
+		
+		"statement-file-header": {
+			"name": "meta.statement.file.acceleo",
+			"begin": "(?=\\[\\bfile\\b)",
+			"end": "(?<=\\])",
+			"patterns": [
+				{
+					"include": "#statement-file-header-tag-open"
+				},
+				{
+					"include": "#statement-file-header-tag-close"
+				},
+				{
+					"include": "#statement-file-mode"
+				},
+				{
+					"include": "#statement-file-destination-expression"
+				},
+				{
+					"include": "#statement-file-encoding-expression"
+				}
+			]
+		},
+		"statement-file-header-tag-open": {
+			"name": "keyword.other.statement.file.acceleo",
+			"match": "\\[\\bfile\\b\\s*\\("
+		},
+		"statement-file-destination-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
+			"end": "(?=,)"
+		},
+		"statement-file-mode": {
+			"name": "keyword.other.statement.file.mode.acceleo",
+			"match": "(?<=,)\\s*\\b(overwrite|append|create)\\b\\s*(?=,|\\))" 
+		},
+		"statement-file-encoding-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=,)",
+			"end": "(?=\\)\\s*\\])"
+		},
+		"statement-file-header-tag-close": {
+			"name": "keyword.other.statement.file.acceleo",
+			"match": "\\)\\s*\\]"
+		},
+		"statement-file-footer": {
+			"name": "keyword.other.statement.file.acceleo",
+			"match": "\\[/\\bfile\\b\\]"
+		},
+		
+		
+		
+		"statement-for-header": {
+			"name": "keyword.other.statement.for.acceleo",
+			"begin": "\\[\\bfor\\b\\s*\\(",
+			"end": "(?<=\\])",
+			"patterns": [
+				{
+					"include": "#statement-for-variable-identifier"
+				},
+				{
+					"include": "#statement-for-variable-colon"
+				},
+				{
+					"include": "#statement-for-variable-type"
+				},
+				{
+					"include": "#statement-for-assignment"
+				},
+				{
+					"include": "#statement-for-header-tag-close"
+				},
+				{
+					"include": "#statement-for-expression"
+				},
+				{
+					"include": "#statement-for-separator"
+				},
+				{
+					"include": "#statement-for-separator-expression"
+				}
+			]
+		},
+		"statement-for-header-tag-open": {
+			"name": "keyword.other.statement.for.acceleo",
+			"match": "\\[\\bfor\\b\\s*\\("
+		},
+		"statement-for-header-tag-close": {
+			"name": "keyword.other.statement.for.acceleo",
+			"match": "\\)\\s*\\]"
+		},
+		"statement-for-variable-identifier": {
+			"name": "variable.parameter.statement.for.acceleo",
+			"match": "(?<=\\()(?:\\s*)\\w+(?=\\s*(:|\\|))"
+		},
+		"statement-for-variable-colon": {
+			"name": "punctuation.colon.acceleo",
+			"match": ":"
+		},
+		"statement-for-variable-type": {
+			"name": "meta.parameter.type.acceleo",
+			"match": "(?<=:)(?:\\s*)(\\w+(::\\w+)*)(\\(\\w+)*(\\))*(?=\\s*\\|)" 
+		},
+		"statement-for-assignment": {
+			"name": "keyword.other.statement.for.acceleo",
+			"match": "\\|"
+		},
+		"statement-for-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\|)",
+			"end": "(?=\\))"
+		},
+		"statement-for-separator": {
+			"name": "keyword.other.statement.for.acceleo",
+			"match": "\\s*\\bseparator\\b\\s*\\(" 
+		},
+		"statement-for-separator-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
+			"end": "(?=\\)\\s*\\])"
+		},
+		"statement-for-footer": {
+			"name": "keyword.other.statement.for.acceleo",
+			"match": "\\[/\\bfor\\b\\]"
+		},
+		
+		
+		
+		"statement-if-header": {
+			"name": "keyword.other.statement.if.acceleo",
+			"begin": "\\[\\bif\\b",
+			"end": "(?<=\\])",
+			"patterns": [
+				{
+					"include": "#statement-if-header-tag-close"
+				},
+				{
+					"include": "#statement-if-expression"
+				}
+			]
+		},
+		"statement-if-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
+			"end": "(?=\\)\\s*\\])"
+		},
+		"statement-if-header-tag-close": {
+			"name": "keyword.other.statement.if.acceleo",
+			"match": "\\)\\s*\\]"
+		},
+		"statement-if-footer": {
+			"name": "keyword.other.statement.if.acceleo",
+			"match": "\\[/\\bif\\b\\]"
+		},
+		
+		"statement-elseif": {
+			"name": "keyword.other.statement.elseif.acceleo",
+			"begin": "\\[\\belseif\\b\\s*\\(",
+			"end": "(?<=\\])",
+			"patterns": [
+				{
+					"include": "#statement-elseif-tag-close"
+				},
+				{
+					"include": "#statement-elseif-expression"
+				}
+			]
+		},
+		"statement-elseif-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
+			"end": "(?=\\)\\s*\\])"
+		},
+		"statement-elseif-tag-close": {
+			"name": "keyword.other.statement.elseif.acceleo",
+			"match": "\\)\\s*\\]"
+		},
+		
+		"statement-else": {
+			"name": "keyword.other.statement.else.acceleo",
+			"match" : "\\[\\belse\\b\\]"
+		},
+		
+		
+		"statement-let-header": {
+			"name": "keyword.other.statement.let.acceleo",
+			"begin": "\\[\\blet\\b",
+			"end": "(?<=\\])",
+			"patterns": [
+				{
+					"include": "#statement-let-header-tag-close"
+				},
+				{
+					"include": "#statement-let-variable-identifier"
+				},
+				{
+					"include": "#statement-let-variable-type"
+				},
+				{
+					"include": "#statement-let-assignment"
+				},
+				{
+					"include": "#statement-let-expression"
+				}
+			]
+		},
+		"statement-let-header-tag-close": {
+			"name": "keyword.other.statement.let.acceleo",
+			"match": "\\]"
+		},
+		"statement-let-variable-identifier": {
+			"name": "variable.parameter.statement.let.acceleo",
+			"match": "(\\w+)(?=\\s*(:|=))"
+		},
+		"statement-let-variable-type": {
+			"name": "meta.parameter.type.acceleo",
+			"match": "(?<=:)(?:\\s*)(\\w+(::\\w+)*)(\\(\\w+)*(\\))*(?=\\s*\\=)" 
+		},
+		"statement-let-assignment": {
+			"name": "keyword.other.statement.let.acceleo",
+			"match": "="
+		},
+		"statement-let-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<==)",
+			"end": "(?=(,|\\]))"
+		},
+		"statement-let-footer": {
+			"name": "keyword.other.statement.let.acceleo",
+			"match": "\\[/\\blet\\b\\]"
+		},
+		
+		
+		"statement-protected-header": {
+			"name": "keyword.other.statement.protected.acceleo",
+			"begin": "\\[\\bprotected\\b\\s*\\(",
+			"end": "(?<=\\])",
+			"patterns": [
+				{
+					"include": "#statement-protected-header-tag-close"
+				},
+				{
+					"include": "#statement-protected-identifier"
+				}
+			]
+		},
+		"statement-protected-identifier": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()(?:\\s*)",
+			"end": "(?=\\s*\\))"		
+		},
+		"statement-protected-header-tag-close": {
+			"name": "keyword.other.statement.protected.acceleo",
+			"match": "\\)\\s*\\]"
+		},
+		"statement-protected-footer": {
+			"name": "keyword.other.statement.protected.acceleo",
+			"match": "\\[/\\bprotected\\b\\]"
+		},
+		
+		
+		"statement-expression": {
+			"name": "meta.statement.expression.acceleo",
+			"begin": "(?=\\[)",
+			"end": "(?<=/\\])",
+			"patterns": [
+				{
+					"include": "#statement-expression-tag-open"
+				},
+				{
+					"include": "#statement-expression-tag-close"
+				},
+				{
+					"include": "#statement-expression-expression"
+				}
+			]
+		},
+		"statement-expression-tag-open": {
+			"name": "keyword.other.statement.expression.acceleo",
+			"match": "\\["
+		},
+		"statement-expression-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\[)",
+			"end": "(?=/\\])"
+		},
+		"statement-expression-tag-close": {
+			"name": "keyword.other.statement.expression.acceleo",
+			"match": "/\\]"
+		}	
+	}
+}

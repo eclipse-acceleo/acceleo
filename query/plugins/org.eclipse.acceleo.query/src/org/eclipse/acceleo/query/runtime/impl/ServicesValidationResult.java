@@ -50,7 +50,7 @@ public class ServicesValidationResult {
 	/**
 	 * Mapping from an {@link IService} and its parameter {@link IType} to the resulting call {@link IType}.
 	 */
-	private final Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
+	private final Map<IService<?>, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService<?>, Map<List<IType>, Set<IType>>>();
 
 	/**
 	 * Mapping from a service not found message to its {@link NothingType}.
@@ -80,7 +80,7 @@ public class ServicesValidationResult {
 	 * @param types
 	 *            the parameter {@link IType} to the resulting call {@link IType} mapping
 	 */
-	public void addServiceTypes(IService service, Map<List<IType>, Set<IType>> types) {
+	public void addServiceTypes(IService<?> service, Map<List<IType>, Set<IType>> types) {
 		final Map<List<IType>, Set<IType>> existingTypes = typesPerService.get(service);
 		if (existingTypes == null) {
 			typesPerService.put(service, types);
@@ -113,7 +113,7 @@ public class ServicesValidationResult {
 	 *            the {@link ServicesValidationResult} to merge
 	 */
 	public void merge(ServicesValidationResult other) {
-		for (Entry<IService, Map<List<IType>, Set<IType>>> entry : other.typesPerService.entrySet()) {
+		for (Entry<IService<?>, Map<List<IType>, Set<IType>>> entry : other.typesPerService.entrySet()) {
 			this.addServiceTypes(entry.getKey(), entry.getValue());
 		}
 		this.serviceNotFoundMessages.putAll(other.serviceNotFoundMessages);
@@ -173,8 +173,8 @@ public class ServicesValidationResult {
 
 		final Set<IType> aggregated = new LinkedHashSet<IType>();
 		if (!typesPerService.isEmpty()) {
-			for (Entry<IService, Map<List<IType>, Set<IType>>> entry : typesPerService.entrySet()) {
-				final IService service = entry.getKey();
+			for (Entry<IService<?>, Map<List<IType>, Set<IType>>> entry : typesPerService.entrySet()) {
+				final IService<?> service = entry.getKey();
 				final Map<List<IType>, Set<IType>> types = entry.getValue();
 				Set<IType> validatedTypes = service.validateAllType(validationServices, queryEnvironment,
 						types);

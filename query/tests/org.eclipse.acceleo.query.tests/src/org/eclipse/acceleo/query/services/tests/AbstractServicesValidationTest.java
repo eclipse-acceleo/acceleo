@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.ImmutableSet;
-
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -55,7 +53,7 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 		}
 
 		public VariableBuilder addVar(String name, IType... types) {
-			variables.put(name, ImmutableSet.copyOf(types));
+			variables.put(name, new LinkedHashSet<>(Arrays.asList(types)));
 			return this;
 		}
 
@@ -65,7 +63,7 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 	}
 
 	protected void assertNoService(String serviceName, IType parameterTypes[]) {
-		final IService service = serviceLookUp(serviceName, parameterTypes);
+		final IService<?> service = serviceLookUp(serviceName, parameterTypes);
 
 		assertNull(service);
 	}
@@ -76,12 +74,12 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 
 	protected void assertValidation(IType expectedReturnTypes[], IType expectedAllReturnTypes[],
 			String serviceName, IType parameterTypes[]) {
-		final IService service = serviceLookUp(serviceName, parameterTypes);
+		final IService<?> service = serviceLookUp(serviceName, parameterTypes);
 
 		assertValidation(service, expectedReturnTypes, expectedAllReturnTypes, parameterTypes);
 	}
 
-	protected void assertValidation(IService service, IType expectedReturnTypes[],
+	protected void assertValidation(IService<?> service, IType expectedReturnTypes[],
 			IType expectedAllReturnTypes[], IType parameterTypes[]) {
 		assertNotNull("Service not found.", service);
 
@@ -109,7 +107,8 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 			assertEqualsITypes(((SequenceType)expected).getCollectionType(), ((SequenceType)actual)
 					.getCollectionType());
 		} else if (expected instanceof SetType && actual instanceof SetType) {
-			assertEqualsITypes(((SetType)expected).getCollectionType(), ((SetType)actual).getCollectionType());
+			assertEqualsITypes(((SetType)expected).getCollectionType(), ((SetType)actual)
+					.getCollectionType());
 		} else if (expected instanceof NothingType && actual instanceof NothingType) {
 			assertEquals(((NothingType)expected).getMessage(), ((NothingType)actual).getMessage());
 		} else {
@@ -117,7 +116,7 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 		}
 	}
 
-	protected IService serviceLookUp(String serviceName, IType[] parameterTypes) {
+	protected IService<?> serviceLookUp(String serviceName, IType[] parameterTypes) {
 		final IType[] argumentClasses = new IType[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; ++i) {
 			argumentClasses[i] = new ClassType(getQueryEnvironment(), getClass(parameterTypes[i]));
@@ -159,7 +158,8 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 
 	protected LambdaType lambdaType(String evaluatorName, IType lambdaEvaluatorType,
 			IType lambdaExpressionType) {
-		return new LambdaType(getQueryEnvironment(), evaluatorName, lambdaEvaluatorType, lambdaExpressionType);
+		return new LambdaType(getQueryEnvironment(), evaluatorName, lambdaEvaluatorType,
+				lambdaExpressionType);
 	}
 
 	/**

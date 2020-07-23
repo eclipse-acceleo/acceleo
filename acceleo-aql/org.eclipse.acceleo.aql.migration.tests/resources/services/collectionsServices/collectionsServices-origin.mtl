@@ -1,0 +1,12 @@
+[module collectionsServices('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public test(p : EPackage)]
+[comment @main/]
+[file ('testCollectionTypeMigration', false)]
+  [let var : Collection(EPackage) = null][/let]
+  [let var : Sequence(EPackage) = null][/let]
+  [let var : Bag(EPackage) = null][/let]
+  [let var : Set(EPackage) = null][/let]
+  [let var : OrderedSet(EPackage) = null][/let]
+[/file]
+[/template]

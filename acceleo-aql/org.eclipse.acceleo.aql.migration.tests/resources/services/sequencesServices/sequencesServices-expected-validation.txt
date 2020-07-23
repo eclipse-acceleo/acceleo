@@ -1,0 +1,18 @@
+INFO Always true:
+Nothing inferred when temp6 (java.lang.String) is not type of java.lang.String - 1213 1238
+INFO Always true:
+Nothing inferred when temp7 (java.lang.Double) is not type of java.lang.Double - 1315 1338
+INFO Always true:
+Nothing inferred when temp8 (java.lang.Integer) is not type of java.lang.Integer - 1424 1450
+INFO Always true:
+Nothing inferred when temp9 (java.lang.Boolean) is not type of java.lang.Boolean - 1536 1562
+INFO Always true:
+Nothing inferred when temp11 (java.lang.String) is not kind of java.lang.String - 1784 1810
+INFO Always true:
+Nothing inferred when temp12 (java.lang.Double) is not kind of java.lang.Double - 1888 1912
+INFO Always true:
+Nothing inferred when temp13 (java.lang.Integer) is not kind of java.lang.Integer - 1999 2026
+INFO Always true:
+Nothing inferred when temp14 (java.lang.Boolean) is not kind of java.lang.Boolean - 2113 2140
+INFO Always true:
+Nothing inferred when temp15 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EObject - 2227 2261

@@ -1,0 +1,4 @@
+[module acceleoServices('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public test(p : ecore::EPackage)][/template]

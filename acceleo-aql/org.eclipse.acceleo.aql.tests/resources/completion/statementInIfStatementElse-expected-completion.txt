@@ -1,0 +1,103 @@
+* Label:
+[/if]
+* Description:
+Inserts the end of an If Statement:<br/><pre>[/if]</pre>
+* Text:
+[/if]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//IfStatement
+
+* Label:
+[if (
+* Description:
+Inserts the start of an If Statement header:<br/><pre>[if (</pre>
+* Text:
+[if (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//IfStatement
+
+* Label:
+[for (
+* Description:
+Inserts the start of a For Statement header:<br/><pre>[for (</pre>
+* Text:
+[for (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ForStatement
+
+* Label:
+[let 
+* Description:
+Inserts the start of a Let Statement header:<br/><pre>[let </pre>
+* Text:
+[let 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//LetStatement
+
+* Label:
+[
+* Description:
+Inserts the start of an Expression Statement:<br/><pre>[</pre>
+* Text:
+[
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ExpressionStatement
+
+* Label:
+[file (
+* Description:
+Inserts the start of a File Statement header:<br/><pre>[file (</pre>
+* Text:
+[file (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//FileStatement
+
+* Label:
+[protected (
+* Description:
+Inserts the start of a Protected Area Statement header:<br/><pre>[protected (</pre>
+* Text:
+[protected (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ProtectedArea
+
+* Label:
+[comment 
+* Description:
+Inserts the start of a Comment:<br/><pre>[comment </pre>
+* Text:
+[comment 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
+
+* Label:
+New Comment
+* Description:
+Inserts the following sample Comment:<br/><pre>[comment My comment./]</pre>
+* Text:
+[comment My comment./]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
+
+* Label:
+[comment]
+* Description:
+Inserts the start of a Block Comment:<br/><pre>[comment]</pre>
+* Text:
+[comment]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//BlockComment
+
+* Label:
+New Block Comment
+* Description:
+Inserts the following sample Block Comment:<br/><pre>[comment]
+My comment.
+[/comment]</pre>
+* Text:
+[comment]
+My comment.
+[/comment]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//BlockComment
+

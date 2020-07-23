@@ -1,0 +1,9 @@
+[module forStatementWithSeparator('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', false)]
+    [for (myVariable : ecore::EClassifier | myParam.eClassifiers) separator(', ')]
+      [myVariable.name/]
+    [/for]
+  [/file]
+[/template]

@@ -1,0 +1,16 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EClassifier (89..117))
+    [if .equals(.aqlFeatureAccess(myParam, 'name'), '') (127..144)
+      some static text. true (151..168) (146..171)
+    [else]
+      [if .not(.oclIsKindOf(myParam, EClass)) (180..218)
+        some static other text. true (225..248) (220..251)
+      [else]
+        [.aqlFeatureAccess(myParam, 'eSuperTypes') (263..282)/] true (262..284) (257..287)
+      [/if] (171..292) (-1..-1)
+    [/if] (122..292) (119..293)
+  [/template] (61..304) (0..304)

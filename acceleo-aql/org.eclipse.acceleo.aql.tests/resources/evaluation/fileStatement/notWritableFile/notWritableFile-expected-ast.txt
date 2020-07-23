@@ -1,0 +1,12 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main  (70..76) /] (61..78)
+  
+  public template myTemplate(myParam : EPackage (107..132))
+  @main
+    [file url 'notWritable.txt' (144..161) mode overwrite
+      some static text. true (179..196) (174..199)
+    [/file] (137..206) (134..207)
+  [/template] (79..218) (0..218)

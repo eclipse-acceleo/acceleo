@@ -10,20 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.services;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -41,7 +39,6 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.EncapsulatedClassifier;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.InstanceSpecification;
-import org.eclipse.uml2.uml.InstanceValue;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
@@ -139,7 +136,7 @@ public class UMLServices {
 	}
 
 	public List<EObject> getAllStereotypesAndProfiles(Element element) {
-		List<EObject> stereotypesAndProfiles = Lists.newArrayList();
+		List<EObject> stereotypesAndProfiles = new ArrayList<>();
 		Collection<Profile> profiles = getAllProfilesInPlatform(element);
 		// Get all stereotypes
 		stereotypesAndProfiles.addAll(getAllStereotypes(element, profiles));
@@ -149,7 +146,7 @@ public class UMLServices {
 	}
 
 	private List<Stereotype> getAllStereotypes(Element element, Collection<Profile> profiles) {
-		List<Stereotype> stereotypes = Lists.newArrayList();
+		List<Stereotype> stereotypes = new ArrayList<>();
 		for (Profile profile : profiles) {
 			org.eclipse.uml2.uml.Package pkg = element.getNearestPackage();
 			boolean isProfileApplied = false;
@@ -180,7 +177,7 @@ public class UMLServices {
 	static public Collection<Profile> getAllProfilesInPlatform(Element element) {
 		// Get element package container
 		org.eclipse.uml2.uml.Package package_ = element.getNearestPackage();
-		final List<Profile> roots = Lists.newArrayList();
+		final List<Profile> roots = new ArrayList<>();
 
 		if (package_ instanceof org.eclipse.uml2.uml.Package) {
 			final org.eclipse.uml2.uml.Package packageUML = (org.eclipse.uml2.uml.Package)package_;
@@ -317,21 +314,6 @@ public class UMLServices {
 	}
 
 	/**
-	 * Create an instance value.
-	 * 
-	 * @param instance
-	 *            Instance referenced by the slot
-	 * @param slot
-	 *            Slot under which instance will be created
-	 */
-	private void createInstanceValue(InstanceSpecification instance, Slot slot) {
-		// Set instance value
-		final InstanceValue value = UMLFactory.eINSTANCE.createInstanceValue();
-		value.setInstance(instance);
-		slot.getValues().add(value);
-	}
-
-	/**
 	 * Get all available types in model.
 	 * 
 	 * @param pkg
@@ -339,16 +321,13 @@ public class UMLServices {
 	 * @return All the available types
 	 */
 	public Set<Type> getAvailableTypes(Package pkg) {
-		Set<Type> availableTypes = Sets.newLinkedHashSet();
+		Set<Type> availableTypes = new LinkedHashSet<>();
 		Set<Package> availablePackages = getAvailablePackages(pkg);
+
 		for (Package availablePackage : availablePackages) {
-			Set<Type> types = Sets.newLinkedHashSet(Iterables.filter(availablePackage.getOwnedTypes(),
-					new Predicate<EObject>() {
-						public boolean apply(EObject input) {
-							return input instanceof Class || input instanceof Interface
-									|| input instanceof DataType;
-						}
-					}));
+			Set<Type> types = availablePackage.getOwnedTypes().stream().filter(type -> type instanceof Class
+					|| type instanceof Interface || type instanceof DataType).collect(Collectors.toCollection(
+							LinkedHashSet::new));
 			availableTypes.addAll(types);
 		}
 		return availableTypes;
@@ -362,7 +341,7 @@ public class UMLServices {
 	 * @return All the available packages
 	 */
 	public Set<Package> getAvailablePackages(Package pkg) {
-		Set<Package> packages = Sets.newLinkedHashSet();
+		Set<Package> packages = new LinkedHashSet<>();
 		packages.add(pkg);
 		for (Iterator<EObject> iterator = pkg.getModel().eAllContents(); iterator.hasNext();) {
 			EObject eObject = iterator.next();
@@ -427,17 +406,17 @@ public class UMLServices {
 	public String getStereotypesDescription(Element elt, String attributesToDisplay) {
 		String description = "";
 
-		final ArrayList<String> displayedAttributeList = new ArrayList<String>(Arrays
-				.asList(attributesToDisplay.split(SEPARATOR)));
+		final ArrayList<String> displayedAttributeList = new ArrayList<String>(Arrays.asList(
+				attributesToDisplay.split(SEPARATOR)));
 
-		for (final Iterator<Stereotype> stereotypesIterator = elt.getAppliedStereotypes().iterator(); stereotypesIterator
-				.hasNext();) {
+		for (final Iterator<Stereotype> stereotypesIterator = elt.getAppliedStereotypes()
+				.iterator(); stereotypesIterator.hasNext();) {
 			final Stereotype stereotype = stereotypesIterator.next();
 
 			description = description.concat("<<" + stereotype.getName() + ">>\n");
 
-			for (final Iterator<Property> attributeIterator = stereotype.getAllAttributes().iterator(); attributeIterator
-					.hasNext();) {
+			for (final Iterator<Property> attributeIterator = stereotype.getAllAttributes()
+					.iterator(); attributeIterator.hasNext();) {
 				final Property attribute = attributeIterator.next();
 
 				if (displayedAttributeList.contains(attribute.getName())) {
@@ -476,46 +455,37 @@ public class UMLServices {
 	public List<Package> getAllAvailableRootPackages(Element element) {
 		// <%script type="uml.Element" name="allAvailableRootPackages"%>
 		// <%(getRootContainer().filter("Package") + rootPackagesFromImportedModel).nMinimize()%>
-		List<Package> packages = Lists.newArrayList();
+		List<Package> packages = new ArrayList<>();
 		packages.add(element.getModel());
-		packages.addAll(Lists.newArrayList(Iterables.filter(element.getModel().getImportedPackages(),
-				Model.class)));
+		element.getModel().getImportedPackages().stream().filter(Model.class::isInstance).forEach(
+				packages::add);
 		return packages;
 	}
 
 	public List<EObject> getValidsForComponentDiagram(EObject cur) {
-		Predicate<EObject> validForComponentDiagram = new Predicate<EObject>() {
-
-			public boolean apply(EObject input) {
-				return input instanceof Package || input instanceof Interface
-						|| "Class".equals(input.eClass().getName())
-						|| "Component".equals(input.eClass().getName());
-			}
-		};
-		return allValidSessionElements(cur, validForComponentDiagram);
-	}
-
-	private List<EObject> allValidSessionElements(EObject cur, Predicate<EObject> validForClassDiagram) {
-		List<EObject> result = Lists.newArrayList();
-		Iterators.addAll(result, Iterators.filter(cur.eResource().getAllContents(), validForClassDiagram));
-		return result;
+		Iterable<EObject> allContents = () -> cur.eResource().getAllContents();
+		return StreamSupport.stream(allContents.spliterator(), false).filter(input -> input instanceof Package
+				|| input instanceof Interface || "Class".equals(input.eClass().getName()) || "Component"
+						.equals(input.eClass().getName())).collect(Collectors.toList());
 	}
 
 	public List<EObject> getValidsForCompositeDiagram(EObject cur) {
+		Iterable<EObject> allContents = () -> cur.eResource().getAllContents();
 		Predicate<EObject> validForCompositeDiagram = new Predicate<EObject>() {
 
-			public boolean apply(EObject input) {
+			public boolean test(EObject input) {
 				if (input instanceof StructuredClassifier) {
-					return !(input instanceof Interaction || input instanceof StateMachine || input instanceof Activity);
+					return !(input instanceof Interaction || input instanceof StateMachine
+							|| input instanceof Activity);
 				} else {
-					return input instanceof Package || input instanceof Interface
-							|| "Port".equals(input.eClass().getName())
-							|| "Property".equals(input.eClass().getName());
+					return input instanceof Package || input instanceof Interface || "Port".equals(input
+							.eClass().getName()) || "Property".equals(input.eClass().getName());
 				}
 
 			}
 		};
-		return allValidSessionElements(cur, validForCompositeDiagram);
+		return StreamSupport.stream(allContents.spliterator(), false).filter(validForCompositeDiagram)
+				.collect(Collectors.toList());
 	}
 
 	public Comment getComment(Element element) {
@@ -529,7 +499,8 @@ public class UMLServices {
 		return result;
 	}
 
-	public Set<Property> candidatesForInstanceSlot(InstanceSpecification source, InstanceSpecification target) {
+	public Set<Property> candidatesForInstanceSlot(InstanceSpecification source,
+			InstanceSpecification target) {
 		Set<Property> candidates = new HashSet<Property>();
 
 		for (Classifier sourceClassifier : source.getClassifiers()) {
@@ -735,7 +706,7 @@ public class UMLServices {
 	protected boolean isConnectable(Interface source, Port target) {
 
 		boolean res = false;
-		List<Dependency> clientDependencies = Lists.newArrayList(target.getClientDependencies());
+		List<Dependency> clientDependencies = new ArrayList<>(target.getClientDependencies());
 
 		if (target.getType() instanceof EncapsulatedClassifier) {
 			clientDependencies.addAll(target.getType().getClientDependencies());
@@ -774,7 +745,7 @@ public class UMLServices {
 
 		boolean res = false;
 
-		List<Dependency> clientDependencies = Lists.newArrayList(source.getClientDependencies());
+		List<Dependency> clientDependencies = new ArrayList<>(source.getClientDependencies());
 		if (source.getType() instanceof EncapsulatedClassifier) {
 			clientDependencies.addAll(source.getType().getClientDependencies());
 		}

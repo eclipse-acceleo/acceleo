@@ -1,0 +1,8 @@
+[module serviceInvocation(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[template public test(anEClass : EClass)]
+[comment @main /]
+[file ('service_invocation', false)]
+[invoke('misc.MyService', 'myService(java.lang.Object, java.lang.String)', Sequence{anEClass, 'some text'})/]
+[/file]
+[/template]

@@ -1,0 +1,28 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @main
+* (149..147)
+  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)[comment 
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @main
+* (149..147) /] (61..149)
+  
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @main
+* (149..147)
+  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)[comment 
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @main
+* (149..147) /] (61..149)
+  public template myTemplate(myParam : EPackage (178..203))
+  @main
+    some static text. true (208..225) (205..226)
+  [/template] (150..237) (0..237)

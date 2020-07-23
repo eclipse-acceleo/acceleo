@@ -63,25 +63,24 @@ public class BasicLookupEngine implements ILookupEngine {
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.ILookupEngine#getRegisteredServices()
 	 */
-	public Set<IService> getRegisteredServices() {
-		Set<IService> result = services.getServices();
+	public Set<IService<?>> getRegisteredServices() {
+		Set<IService<?>> result = services.getServices();
 
 		return result;
 	}
 
 	@Override
-	public IService lookup(String name, IType[] argumentTypes) {
-		List<IService> multiMethod = services.getMultiService(name, argumentTypes.length);
+	public IService<?> lookup(String name, IType[] argumentTypes) {
+		List<IService<?>> multiMethod = services.getMultiService(name, argumentTypes.length);
 		if (multiMethod == null) {
 			return null;
 		} else {
-			IService result = null;
-			for (IService service : multiMethod) {
+			IService<?> result = null;
+			for (IService<?> service : multiMethod) {
 				if (service.matches(queryEnvironment, argumentTypes)) {
-					if (result == null
-							|| service.getPriority() > result.getPriority()
-							|| (service.getPriority() == result.getPriority() && service
-									.isLowerOrEqualParameterTypes(queryEnvironment, result))) {
+					if (result == null || service.getPriority() > result.getPriority() || (service
+							.getPriority() == result.getPriority() && service.isLowerOrEqualParameterTypes(
+									queryEnvironment, result))) {
 						result = service;
 					}
 				}
@@ -97,7 +96,7 @@ public class BasicLookupEngine implements ILookupEngine {
 	 *            the {@link IService} to register
 	 * @return the {@link ServiceRegistrationResult}
 	 */
-	public ServiceRegistrationResult registerService(IService service) {
+	public ServiceRegistrationResult registerService(IService<?> service) {
 		final ServiceRegistrationResult result = services.add(service);
 
 		return result;
@@ -110,20 +109,20 @@ public class BasicLookupEngine implements ILookupEngine {
 	 *            the {@link IService} to remove.
 	 * @return the removed {@link IService} if any, <code>null</code> otherwise
 	 */
-	public IService removeService(IService service) {
-		final IService result = services.remove(service);
+	public IService<?> removeService(IService<?> service) {
+		final IService<?> result = services.remove(service);
 
 		return result;
 	}
 
 	@Override
-	public Set<IService> getServices(Set<IType> receiverTypes) {
-		final Set<IService> result = new LinkedHashSet<IService>();
+	public Set<IService<?>> getServices(Set<IType> receiverTypes) {
+		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
-		final Set<IService> storedServices = services.getServices();
+		final Set<IService<?>> storedServices = services.getServices();
 		for (IType type : receiverTypes) {
 			if (type != null) {
-				for (IService service : storedServices) {
+				for (IService<?> service : storedServices) {
 					if (service.getParameterTypes(queryEnvironment).get(0).isAssignableFrom(type)) {
 						result.add(service);
 					}
@@ -140,7 +139,7 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * @see org.eclipse.acceleo.query.runtime.ILookupEngine#isRegisteredService(org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public boolean isRegisteredService(IService service) {
+	public boolean isRegisteredService(IService<?> service) {
 		return services.isRegistered(service);
 	}
 

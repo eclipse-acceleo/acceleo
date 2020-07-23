@@ -1,0 +1,9 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EClassifier)]
+  [if (myParam.name = '')]
+    some static text.
+  [elseif (myParam.oclIsKindOf(ecore::EClass))]
+    [myParam.eSuperTypes/]
+  [/if]
+[/template]

@@ -12,7 +12,7 @@ package org.eclipse.acceleo.query.runtime;
 
 import java.util.Map;
 
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 
 /**
  * / Evaluation Engine is used to evaluate acceleo expressions. The evaluation engine allows to register

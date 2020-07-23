@@ -47,8 +47,8 @@ public abstract class AbstractServicesTest {
 	@Before
 	public void before() throws Exception {
 		queryEnvironment = Query.newEnvironment();
-		Set<IService> services = ServiceUtils
-				.getServices(queryEnvironment, new AnyServices(queryEnvironment));
+		Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, new AnyServices(
+				queryEnvironment));
 		ServiceUtils.registerServices(queryEnvironment, services);
 		services = ServiceUtils.getServices(queryEnvironment, new EObjectServices(queryEnvironment, null,
 				null));
@@ -92,7 +92,7 @@ public abstract class AbstractServicesTest {
 
 	protected void runTest(String serviceName, Object expectedResult, Object[] arguments)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		IService service = serviceLookUp(serviceName, arguments);
+		IService<?> service = serviceLookUp(serviceName, arguments);
 		assertTrue(service != null);
 		assertEquals(expectedResult, service.invoke(arguments));
 	}
@@ -123,12 +123,12 @@ public abstract class AbstractServicesTest {
 	 *            arguments
 	 * @return the matching service if any, <code>null</code> otherwise
 	 */
-	protected IService serviceLookUp(String serviceName, Object[] arguments) {
+	protected IService<?> serviceLookUp(String serviceName, Object[] arguments) {
 		IType argTypes[] = new IType[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
 			argTypes[i] = new ClassType(queryEnvironment, arguments[i].getClass());
 		}
-		IService service = lookupEngine.lookup(serviceName, argTypes);
+		IService<?> service = lookupEngine.lookup(serviceName, argTypes);
 		return service;
 	}
 

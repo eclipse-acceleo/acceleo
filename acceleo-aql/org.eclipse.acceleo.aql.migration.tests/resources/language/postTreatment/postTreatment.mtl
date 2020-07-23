@@ -1,0 +1,30 @@
+[module postTreatment('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public test(anEClass : ecore::EClass)]
+  before: [anEClass.aTemplate()/]
+  after : [anEClass.aTemplate()/]
+  separator : [anEClass.aTemplate()/]
+  
+  before:
+  [for (number : Integer | Sequence{1, 2, 3})]
+    [number/]
+  [/for]
+  
+  separator:
+  [for (number : Integer | Sequence{1, 2, 3}) separator(',')]
+    [number/]
+  [/for]
+  
+  after:
+  [for (number : Integer | Sequence{1, 2, 3})]
+    [number/]
+  [/for]
+  
+  all:
+  [for (number : Integer | Sequence{1, 2, 3}) separator(',')]
+    [number/]
+  [/for]
+[/template]
+
+[template public aTemplate(anEClass : ecore::EClass)]
+  [anEClass.name/][/template]

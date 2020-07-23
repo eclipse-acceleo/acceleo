@@ -1,0 +1,10 @@
+[module implicitForIterator(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[template public test(anEClass : EClass)]
+[comment @main /]
+[file ('test', false, 'UTF-8')]
+[for (Sequence{'a','b','c'})]
+value
+[/for]
+[/file]
+[/template]

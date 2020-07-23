@@ -1,0 +1,3 @@
+some inlined
+    block with a comment
+  

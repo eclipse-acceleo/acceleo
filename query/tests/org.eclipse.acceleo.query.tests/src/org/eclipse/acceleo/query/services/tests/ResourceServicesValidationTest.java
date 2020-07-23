@@ -41,14 +41,15 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils
-				.getServices(getQueryEnvironment(), ResourceServices.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
+				ResourceServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test
 	public void testEResource() {
-		final IService service = serviceLookUp("eResource", new Object[] {EcorePackage.eINSTANCE.eClass() });
+		final IService<?> service = serviceLookUp("eResource", new Object[] {EcorePackage.eINSTANCE
+				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
@@ -70,13 +71,14 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new ClassType(getQueryEnvironment(), Resource.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testGetURI() {
-		final IService service = serviceLookUp("getURI", new Object[] {EcorePackage.eINSTANCE.eResource() });
+		final IService<?> service = serviceLookUp("getURI", new Object[] {EcorePackage.eINSTANCE
+				.eResource() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEResource()));
@@ -98,13 +100,13 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new ClassType(getQueryEnvironment(), URI.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testGetContents() {
-		final IService service = serviceLookUp("getContents", new Object[] {EcorePackage.eINSTANCE
+		final IService<?> service = serviceLookUp("getContents", new Object[] {EcorePackage.eINSTANCE
 				.eResource() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -129,14 +131,14 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					EcorePackage.eINSTANCE.getEObject())), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testGetContentsFiltered() {
-		final IService service = serviceLookUp("getContents", new Object[] {
-				EcorePackage.eINSTANCE.eResource(), EcorePackage.eINSTANCE.getEPackage() });
+		final IService<?> service = serviceLookUp("getContents", new Object[] {EcorePackage.eINSTANCE
+				.eResource(), EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEResource()));
@@ -160,13 +162,13 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
 					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testLastSegment() {
-		final IService service = serviceLookUp("lastSegment", new Object[] {URI.createFileURI("") });
+		final IService<?> service = serviceLookUp("lastSegment", new Object[] {URI.createFileURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
@@ -188,13 +190,13 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testFileExtension() {
-		final IService service = serviceLookUp("fileExtension", new Object[] {URI.createFileURI("") });
+		final IService<?> service = serviceLookUp("fileExtension", new Object[] {URI.createFileURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
@@ -216,13 +218,14 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testIsPlatformResource() {
-		final IService service = serviceLookUp("isPlatformResource", new Object[] {URI.createFileURI("") });
+		final IService<?> service = serviceLookUp("isPlatformResource", new Object[] {URI.createFileURI(
+				"") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
@@ -244,13 +247,13 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
 	@Test
 	public void testIsPlatformPlugin() {
-		final IService service = serviceLookUp("isPlatformPlugin", new Object[] {URI.createFileURI("") });
+		final IService<?> service = serviceLookUp("isPlatformPlugin", new Object[] {URI.createFileURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
@@ -272,7 +275,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 }

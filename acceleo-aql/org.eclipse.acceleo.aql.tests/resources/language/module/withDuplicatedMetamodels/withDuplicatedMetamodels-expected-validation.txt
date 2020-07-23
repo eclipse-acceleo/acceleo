@@ -1,0 +1,2 @@
+WARNING http://www.eclipse.org/emf/2002/Ecore already referenced - 58 96
+WARNING http://www.eclipse.org/emf/2002/Ecore already referenced - 98 136

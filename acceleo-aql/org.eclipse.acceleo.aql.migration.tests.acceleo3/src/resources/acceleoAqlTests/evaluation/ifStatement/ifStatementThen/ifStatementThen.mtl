@@ -1,0 +1,13 @@
+[module ifStatementThen('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', false)]
+    [if (true)]
+      then block.
+    [elseif (false)]
+      elseif block.
+    [else]
+      else block.
+    [/if]
+  [/file]
+[/template]

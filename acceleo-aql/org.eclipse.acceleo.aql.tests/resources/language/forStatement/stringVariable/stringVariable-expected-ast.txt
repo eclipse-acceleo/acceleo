@@ -1,0 +1,10 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (89..114))
+    [for myVariable : java.lang.String = Sequence{'a', 'b', 'c', } (147..170) (125..170)
+      some static text. true (177..194) (172..197)
+    [/for] (119..203) (116..204)
+  [/template] (61..215) (0..215)

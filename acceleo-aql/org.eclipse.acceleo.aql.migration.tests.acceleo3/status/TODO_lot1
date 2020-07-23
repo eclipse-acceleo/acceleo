@@ -1,0 +1,31 @@
+Tests to write:
+================
+emfServices
+	 check return types of EMF services (eClassifiers returns OrderedSet in A3 and Sequence in A4)
+sequencesServices
+	 test mixed sequences (needs OclAny or something)
+orderedSetsServices
+	 test mixed ordered sets (needs OclAny or something)
+
+Differences when evaluated in A4:
+=================================
+numericServices
+	 WIP https://git.eclipse.org/r/#/c/163019/ divOp returns an Integer
+
+Unsupported in A4:
+==================
+acceleoServices
+	 TODO ? OclAny could be replaced by Object but it causes a parser issue [let var : OclAny = self][var/]
+	 TODO implement getProperties
+	 TODO replace invoke by a direct service call[invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'})/]
+numericServices
+	 WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
+emfServices
+	 WIP https://git.eclipse.org/r/#/c/162936/ eGet(feature) [c.eGet(c.eClass().getEStructuralFeature('name'))/]
+	 WIP https://git.eclipse.org/r/#/c/162936/ eGet(feature, resolve) [c.eGet(c.eClass().getEStructuralFeature('name'), true)/]
+sequencesServices
+	 WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
+	 WIP https://git.eclipse.org/r/#/c/162938/ append
+orderedSetsServices
+	 WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
+	 WIP https://git.eclipse.org/r/#/c/162938/ append

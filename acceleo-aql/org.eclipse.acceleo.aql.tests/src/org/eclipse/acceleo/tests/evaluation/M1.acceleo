@@ -1,0 +1,18 @@
+[module m1('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public t11(param1 : ecore::EPackage)]
+  generated from m1.t11(EPackage)
+[/template]
+
+[template public t11(param1 : ecore::EClass)]
+[param1.overrideMe()/]
+[param1.privateInBoth()/]
+[/template]
+
+[template public overrideMe(param1 : ecore::EClass)]
+  generated from m1.overrideMe(EClass)
+[/template]
+
+[template private privateInBoth(param1 : ecore::EClass)]
+  generated from m1.privateInBoth(EClass)
+[/template]

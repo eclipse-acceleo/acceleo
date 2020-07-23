@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests;
 
-import com.google.common.collect.Iterators;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,10 +18,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.acceleo.query.tests.qmodel.Query;
 import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResultExpectation;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -112,15 +112,21 @@ public abstract class TestEvaluationPerfQModel {
 	protected static Collection<Object[]> expectationsFrom(Resource reverse) throws URISyntaxException,
 			IOException {
 		Collection<Object[]> parameters = new ArrayList<Object[]>();
-		Iterator<QueryEvaluationResultExpectation> it = Iterators.filter(reverse.getAllContents(),
-				QueryEvaluationResultExpectation.class);
+		Iterable<EObject> allContents = () -> reverse.getAllContents();
 		int i = 0;
-		while (it.hasNext()) {
-			QueryEvaluationResultExpectation cur = it.next();
+		// @formatter:off
+		Iterator<QueryEvaluationResultExpectation> filtered = StreamSupport.stream(allContents.spliterator(), false)
+				.filter(QueryEvaluationResultExpectation.class::isInstance)
+				.map(QueryEvaluationResultExpectation.class::cast)
+				.iterator();
+		// @formatter:on
+		while (filtered.hasNext()) {
+			QueryEvaluationResultExpectation cur = filtered.next();
 			if (cur.getExpectedResult() != null) {
 				parameters.add(new Object[] {cur, ++i + " " + ((Query)cur.eContainer()).getExpression() });
 			}
 		}
+
 		return parameters;
 	}
 }

@@ -68,7 +68,7 @@ public interface ILookupEngine {
 	 * @return the best service's match of the registered services if any.
 	 * @since 5.0
 	 */
-	IService lookup(String name, IType[] argumentTypes);
+	IService<?> lookup(String name, IType[] argumentTypes);
 
 	/**
 	 * Gets the {@link Set} of known {@link IService} with a compatible receiver {@link IType types}.
@@ -77,7 +77,7 @@ public interface ILookupEngine {
 	 *            the receiver {@link IType types}
 	 * @return the {@link Set} of known {@link IService} with a compatible receiver {@link IType types}
 	 */
-	Set<IService> getServices(Set<IType> receiverTypes);
+	Set<IService<?>> getServices(Set<IType> receiverTypes);
 
 	/**
 	 * Gets the {@link Set} of registered {@link IService}.
@@ -85,7 +85,7 @@ public interface ILookupEngine {
 	 * @return the {@link Set} of registered {@link IService}
 	 * @since 5.0
 	 */
-	Set<IService> getRegisteredServices();
+	Set<IService<?>> getRegisteredServices();
 
 	/**
 	 * Tells if the given {@link IService} is registered.
@@ -95,6 +95,6 @@ public interface ILookupEngine {
 	 * @return <code>true</code> if the given {@link IService} is registered, <code>false</code> otherwise
 	 * @since 5.0
 	 */
-	boolean isRegisteredService(IService service);
+	boolean isRegisteredService(IService<?> service);
 
 }

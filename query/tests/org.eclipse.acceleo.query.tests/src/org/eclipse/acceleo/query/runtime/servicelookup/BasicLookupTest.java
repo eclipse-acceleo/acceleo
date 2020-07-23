@@ -28,7 +28,7 @@ public class BasicLookupTest extends AbtractServiceLookupTest {
 	IQueryEnvironment getQueryEnvironment() {
 		final IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 
-		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, ServicesClass.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, ServicesClass.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 
 		return queryEnvironment;

@@ -23,7 +23,8 @@ public class BooleanServicesValidationTest extends AbstractServicesValidationTes
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), BooleanServices.class);
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
+				BooleanServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 

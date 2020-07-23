@@ -1,0 +1,13 @@
+
+header position 0..53
+module m1
+  metamodel http://www.eclipse.org/emf/2002/Ecore (12..50)
+  imports not::existing (63..76) (55..78)
+  [comment @main  (89..95) /] (80..97)
+  
+  public template t11(param1 : EClass (119..141))
+  @main
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (153..173) mode overwrite
+      [.aqlFeatureAccess(param1, 'name') (192..203)/] true (191..205) (186..208)
+    [/file] (146..215) (143..216)
+  [/template] (98..227) (0..228)

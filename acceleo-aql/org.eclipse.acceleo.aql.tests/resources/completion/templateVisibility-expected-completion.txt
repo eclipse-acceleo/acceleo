@@ -1,0 +1,27 @@
+* Label:
+private
+* Description:
+The visibility of a Query or Template determines whether it is accessible to other Acceleo Modules.<br/><ul><li>public: always accessible to all Acceleo Modules.</li><li>protected: accessible only to this Module, and other Modules extending this Module.</li><li><b>private</b>: accessible only to this Module.</li></ul>
+* Text:
+private 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleElement
+
+* Label:
+protected
+* Description:
+The visibility of a Query or Template determines whether it is accessible to other Acceleo Modules.<br/><ul><li>public: always accessible to all Acceleo Modules.</li><li><b>protected</b>: accessible only to this Module, and other Modules extending this Module.</li><li>private: accessible only to this Module.</li></ul>
+* Text:
+protected 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleElement
+
+* Label:
+public
+* Description:
+The visibility of a Query or Template determines whether it is accessible to other Acceleo Modules.<br/><ul><li><b>public</b>: always accessible to all Acceleo Modules.</li><li>protected: accessible only to this Module, and other Modules extending this Module.</li><li>private: accessible only to this Module.</li></ul>
+* Text:
+public 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleElement
+

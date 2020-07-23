@@ -1,0 +1,336 @@
+  
+@Test strings.toString() => abc
+@Test reals.toString() => 1.22.13.2
+@Test integers.toString() => 123
+@Test booleans.toString() => truefalse
+@Test collections.toString() => abcefg
+  
+@Test strings.oclIsTypeOf(String) => truetruetrue
+@Test reals.oclIsTypeOf(Real) => truetruetrue
+@Test integers.oclIsTypeOf(Integer) => truetruetrue
+@Test booleans.oclIsTypeOf(Boolean) => truetrue
+@Test eClasses.oclIsTypeOf(EClass) => truetruetrue
+  
+@Test strings.oclIsKindOf(String) => truetruetrue
+@Test reals.oclIsKindOf(Real) => truetruetrue
+@Test integers.oclIsKindOf(Integer) => truetruetrue
+@Test booleans.oclIsKindOf(Boolean) => truetrue
+@Test eClasses.oclIsKindOf(EObject) => truetruetrue
+  
+@Test strings -> last() => c
+@Test reals -> last() => 3.2
+@Test integers -> last() => 3
+@Test booleans -> last() => false
+@Test eClasses -> last().name => AbstractClass
+@Test collections -> last() => efg
+  
+@Test strings -> collect(t | t.toString()) => abc
+@Test integers -> collect(t | t.toString()) => 123
+@Test booleans -> collect(t | t.toString()) => truefalse
+@Test reals -> collect(t | t.toString()) => 1.22.13.2
+@Test eClasses -> collect(t | t.name) => ClasseAClasseBAbstractClass
+@Test collections -> collect(t | t.toString()) => abcefg
+  
+@Test strings -> size() => 3
+@Test integers -> size() => 3
+@Test booleans -> size() => 2
+@Test reals -> size() => 3
+@Test eClasses -> size() => 3
+@Test collections -> size() => 2
+  
+@Test strings -> notEmpty() => true
+@Test integers -> notEmpty() => true
+@Test booleans -> notEmpty() => true
+@Test reals -> notEmpty() => true
+@Test eClasses -> notEmpty() => true
+@Test collections -> notEmpty() => true
+  
+@Test strings -> isEmpty() => false
+@Test integers -> isEmpty() => false
+@Test booleans -> isEmpty() => false
+@Test reals -> isEmpty() => false
+@Test eClasses -> isEmpty() => false
+@Test collections -> isEmpty() => false
+  
+@Test strings -> reverse() => cba
+@Test integers -> reverse() => 321
+@Test booleans -> reverse() => falsetrue
+@Test reals -> reverse() => 3.22.11.2
+@Test eClasses -> reverse() -> collect(name) => AbstractClassClasseBClasseA
+@Test collections -> reverse() => efgabc
+  
+@Test strings -> first() => a
+@Test integers -> first() => 1
+@Test booleans -> first() => true
+@Test reals -> first() => 1.2
+@Test eClasses -> first().name => ClasseA
+@Test collections -> first() => abc
+  
+@Test strings -> asSequence() => abc
+@Test integers -> asSequence() => 123
+@Test booleans -> asSequence() => truefalse
+@Test reals -> asSequence() => 1.22.13.2
+@Test eClasses -> asSequence() -> collect(name) => ClasseAClasseBAbstractClass
+@Test collections -> asSequence() => abcefg
+  
+@Test strings -> asOrderedSet()  => abc
+@Test integers -> asOrderedSet()  => 123
+@Test booleans -> asOrderedSet()  => truefalse
+@Test reals -> asOrderedSet()  => 1.22.13.2
+@Test eClasses -> asOrderedSet() -> collect(name) => ClasseAClasseBAbstractClass
+@Test collections -> asOrderedSet()  => abcefg
+  
+@Test strings -> sep(',') => a,b,c
+@Test integers -> sep(',') => 1,2,3
+@Test booleans -> sep(',') => true,false
+@Test reals -> sep(',') => 1.2,2.1,3.2
+@Test collections -> sep(',') => abc,efg
+  
+@Test strings -> sep('{', ',', '}') => {a,b,c}
+@Test integers -> sep('{', ',', '}') => {1,2,3}
+@Test booleans -> sep('{', ',', '}') => {true,false}
+@Test reals -> sep('{', ',', '}') => {1.2,2.1,3.2}
+@Test collections -> sep('{', ',', '}') => {abc,efg}
+  
+@Test strings -> includesAll(OrderedSet{'a','b'}) => true
+@Test strings -> includesAll(OrderedSet{'a','b','d'}) => false
+@Test integers -> includesAll(OrderedSet{1,2}) => true
+@Test integers -> includesAll(OrderedSet{1,2,4}) => false
+@Test booleans -> includesAll(OrderedSet{true,false}) => true
+@Test OrderedSet{false} -> includesAll(OrderedSet{true,false}) => false
+@Test reals -> includesAll(OrderedSet{1.2,2.1}) => true
+@Test reals -> includesAll(OrderedSet{1.2,2.3}) => false
+@Test collections -> includesAll(OrderedSet{OrderedSet{'a','b','c'}}) => true
+@Test collections -> includesAll(OrderedSet{OrderedSet{'a','b','d'}}) => false
+@Test collections -> includesAll(OrderedSet{'a','b','d'}) => false
+@Test eClasses -> includesAll(p.eClassifiers) => true
+@Test OrderedSet{p.eClassifiers->first()}-> includesAll(p.eClassifiers) => false
+  
+@Test strings -> includes('z') => false
+@Test strings -> includes('a') => true
+@Test integers -> includes(6) => false
+@Test integers -> includes(2) => true
+@Test OrderedSet{true,true} -> includes(false) => false
+@Test booleans -> includes(false) => true
+@Test reals -> includes(5.2) => false
+@Test reals -> includes(1.2) => true
+@Test eClasses -> includes(p.eClassifiers->first()) => true
+@Test OrderedSet{p.eClassifiers->first()} -> includes(p.eClassifiers->last()) => false
+@Test collections -> includes(OrderedSet{'a','b','c'}) => true
+@Test collections -> includes(OrderedSet{'z','b','c'}) => false
+  
+@Test strings -> excludesAll(OrderedSet{'a','b'}) => false
+@Test strings -> excludesAll(OrderedSet{'a','b','d'}) => false
+@Test integers -> excludesAll(OrderedSet{1,2}) => false
+@Test integers -> excludesAll(OrderedSet{1,2,4}) => false
+@Test booleans -> excludesAll(OrderedSet{true,false}) => false
+@Test OrderedSet{false} -> excludesAll(OrderedSet{true,false}) => false
+@Test reals -> excludesAll(OrderedSet{1.2,2.1}) => false
+@Test reals -> excludesAll(OrderedSet{1.2,2.3}) => false
+@Test collections -> excludesAll(OrderedSet{OrderedSet{'a','b','c'}}) => false
+@Test collections -> excludesAll(OrderedSet{OrderedSet{'a','b','d'}}) => true
+@Test collections -> excludesAll(OrderedSet{'a','b','d'}) => true
+@Test eClasses -> excludesAll(p.eClassifiers) => false
+@Test OrderedSet{p.eClassifiers->first()}-> excludesAll(p.eClassifiers) => false
+  
+@Test strings -> excludes('z') => true
+@Test strings -> excludes('a') => false
+@Test integers -> excludes(6) => true
+@Test integers -> excludes(2) => false
+@Test OrderedSet{true} -> excludes(false) => true
+@Test booleans -> excludes(false) => false
+@Test reals -> excludes(5.2) => true
+@Test reals -> excludes(1.2) => false
+@Test eClasses -> excludes(p.eClassifiers->first()) => false
+@Test OrderedSet{p.eClassifiers->first()} -> excludes(p.eClassifiers->last()) => true
+@Test collections -> excludes(OrderedSet{'a','b','c'}) => false
+@Test collections -> excludes(OrderedSet{'z','b','c'}) => true
+  
+@Test strings -> union(OrderedSet{'a','b'}) => abc
+@Test strings -> union(OrderedSet{'a','b','d'}) => abcd
+@Test integers -> union(OrderedSet{1,2}) => 123
+@Test integers -> union(OrderedSet{1,2,4}) => 1234
+@Test booleans -> union(OrderedSet{true,false}) -> sortedBy(toString()) => falsetrue
+@Test OrderedSet{false} -> union(OrderedSet{true,false}) -> sortedBy(toString()) => falsetrue
+@Test reals -> union(OrderedSet{1.2,2.1}) -> sortedBy(toString()) => 1.22.13.2
+@Test reals -> union(OrderedSet{1.2,2.3}) -> sortedBy(toString()) => 1.22.12.33.2
+@Test collections -> union(OrderedSet{OrderedSet{'a','b','c'}}) -> sortedBy(toString()) => abcefg
+@Test collections -> union(OrderedSet{OrderedSet{'a','b','d'}}) -> sortedBy(toString()) => abcabdefg
+@Test eClasses -> union(p.eClassifiers->asOrderedSet()) -> size() => 3
+  
+@Test strings -> count('z') => 0
+@Test strings -> count('a') => 1
+@Test integers -> count(6) => 0
+@Test integers -> count(2) => 1
+@Test OrderedSet{true,true} -> count(false) => 0
+@Test booleans -> count(false) => 1
+@Test reals -> count(5.2) => 0
+@Test reals -> count(1.2) => 1
+@Test eClasses -> count(p.eClassifiers->first()) => 1
+@Test OrderedSet{p.eClassifiers->first()} -> count(p.eClassifiers->last()) => 0
+@Test collections -> count(OrderedSet{'a','b','c'}) => 1
+@Test collections -> count(OrderedSet{'z','b','c'}) => 0
+  
+@Test strings -> prepend('z') => zabc
+@Test strings -> prepend('a') => abc
+@Test integers -> prepend(6) => 6123
+@Test integers -> prepend(2) => 213
+@Test OrderedSet{true,true} -> prepend(false) => falsetrue
+@Test booleans -> prepend(false) => falsetrue
+@Test reals -> prepend(5.2) => 5.21.22.13.2
+@Test reals -> prepend(1.2) => 1.22.13.2
+@Test eClasses -> prepend(p.eClassifiers->first()) -> collect(name) => ClasseAClasseBAbstractClass
+@Test OrderedSet{p.eClassifiers->first()} -> prepend(p.eClassifiers->last()) -> collect(name) => AbstractClassClasseA
+@Test collections -> prepend(OrderedSet{'a','b','c'}) => abcefg
+@Test collections -> prepend(OrderedSet{'z','b','c'}) => zbcabcefg
+  
+@Test strings -> insertAt(1,'z') => zabc
+@Test strings -> insertAt(1,'a') => abc
+@Test integers -> insertAt(1,6) => 6123
+@Test integers -> insertAt(1,2) => 213
+@Test OrderedSet{true,true} -> insertAt(1,false) => falsetrue
+@Test booleans -> insertAt(1,false) => falsetrue
+@Test reals -> insertAt(1,5.2) => 5.21.22.13.2
+@Test reals -> insertAt(1,1.2) => 1.22.13.2
+@Test eClasses -> insertAt(1,p.eClassifiers->first()) -> collect(name) => ClasseAClasseBAbstractClass
+@Test OrderedSet{p.eClassifiers->first()} -> insertAt(1,p.eClassifiers->last()) -> collect(name) => AbstractClassClasseA
+@Test collections -> insertAt(1,OrderedSet{'a','b','c'}) => abcefg
+@Test collections -> insertAt(1,OrderedSet{'z','b','c'}) => zbcabcefg
+  
+@Test strings -> indexOf('a') => 1
+@Test integers -> indexOf(2) => 2
+@Test booleans -> indexOf(false) => 2
+@Test reals -> indexOf(1.2) => 1
+@Test eClasses -> indexOf(p.eClassifiers->first()) => 1
+@Test collections -> indexOf(OrderedSet{'a','b','c'}) => 1
+  
+@Test strings -> including('z') => abcz
+@Test strings -> including('a') => abc
+@Test integers -> including(6) => 1236
+@Test integers -> including(2) => 123
+@Test OrderedSet{true,true} -> including(false) => truefalse
+@Test booleans -> including(false) => truefalse
+@Test reals -> including(5.2) => 1.22.13.25.2
+@Test reals -> including(1.2) => 1.22.13.2
+@Test eClasses -> including(p.eClassifiers->first()) -> size() => 3
+@Test OrderedSet{p.eClassifiers->first()} -> including(p.eClassifiers->last()) -> collect(name) -> sortedBy(toString()) => AbstractClassClasseA
+@Test collections -> including(OrderedSet{'a','b','c'}) => abcefg
+@Test collections -> including(OrderedSet{'z','b','c'}) => abcefgzbc
+  
+@Test strings -> excluding('z') => abc
+@Test strings -> excluding('a') => bc
+@Test integers -> excluding(6) => 123
+@Test integers -> excluding(2) => 13
+@Test OrderedSet{true,true} -> excluding(false) => true
+@Test booleans -> excluding(false) => true
+@Test reals -> excluding(5.2) => 1.22.13.2
+@Test eClasses -> excluding(p.eClassifiers->first()) -> collect(name) -> sortedBy(toString()) => AbstractClassClasseB
+@Test OrderedSet{p.eClassifiers->first()} -> excluding(p.eClassifiers->last()) -> collect(name) => ClasseA
+@Test collections -> excluding(OrderedSet{'a','b','c'}) => efg
+@Test collections -> excluding(OrderedSet{'z','b','c'}) => abcefg
+  
+@Test strings -> at(1) => a
+@Test integers -> at(1) => 1
+@Test booleans -> at(1) => true
+@Test reals -> at(1) => 1.2
+@Test eClasses -> at(1).name => ClasseA
+@Test collections -> at(1) => abc
+  
+@Test OrderedSet{'aaa','bb','ccccc'} -> sortedBy(t | t.size()) => bbaaaccccc
+@Test integers -> sortedBy(t | t) => 123
+@Test reals -> sortedBy(t | t) => 1.22.13.2
+@Test booleans -> sortedBy(t | t.toString()) => falsetrue
+@Test eClasses -> sortedBy(t | t.name) -> collect(name) => AbstractClassClasseAClasseB
+@Test OrderedSet{OrderedSet{'a','b','c'}, OrderedSet{'a','b'}} -> sortedBy(t | t->size()) => ababc
+  
+@Test integers -> sum() => 6
+@Test reals -> sum() => 6.5
+  
+@Test strings -> exists(t | t = 'b') => true
+@Test strings -> exists(t | t = 'z') => false
+@Test integers -> exists(t | t = 1) => true
+@Test integers -> exists(t | t = 4) => false
+@Test reals -> exists(t | t = 1.2) => true
+@Test reals -> exists(t | t = 4.2) => false
+@Test booleans -> exists(t | t = true) => true
+@Test eClasses -> exists(t | t.name = 'ClasseB') => true
+@Test collections -> exists(t | t.size() = 3) => false
+@Test collections -> exists(t | t.size() = 1) => false
+  
+@Test strings -> select(t | t = 'b') => b
+@Test strings -> select(t | t = 'z') => 
+@Test integers -> select(t | t = 1) => 1
+@Test integers -> select(t | t = 4) => 
+@Test reals -> select(t | t = 1.2) => 1.2
+@Test reals -> select(t | t = 4.2) => 
+@Test booleans -> select(t | t = true) => true
+@Test eClasses -> select(t | t.name = 'ClasseB') -> collect(name) => ClasseB
+@Test collections -> select(t | t.size() = 3) => 
+@Test collections -> select(t | t.size() = 1) => 
+  
+@Test strings -> reject(t | t = 'b') => ac
+@Test strings -> reject(t | t = 'z') => abc
+@Test integers -> reject(t | t = 1) => 23
+@Test integers -> reject(t | t = 4) => 123
+@Test reals -> reject(t | t = 1.2) => 2.13.2
+@Test reals -> reject(t | t = 4.2) => 1.22.13.2
+@Test booleans -> reject(t | t = true) => false
+@Test eClasses -> reject(t | t.name = 'ClasseB') -> collect(name) => ClasseAAbstractClass
+@Test collections -> reject(t | t.size() = 3) => abcefg
+@Test collections -> reject(t | t.size() = 1) => abcefg
+  
+@Test strings -> forAll(t | t = 'b') => false
+@Test strings -> forAll(t | t = 'z') => false
+@Test integers -> forAll(t | t = 1) => false
+@Test integers -> forAll(t | t = 4) => false
+@Test reals -> forAll(t | t = 1.2) => false
+@Test reals -> forAll(t | t = 4.2) => false
+@Test booleans -> forAll(t | t = true) => false
+@Test eClasses -> forAll(t | t.name = 'ClasseB') => false
+@Test collections -> forAll(t | t.size() = 3) => false
+@Test collections -> forAll(t | t.size() = 1) => false
+  
+@Test strings -> any(t | t = 'b') => b
+@Test strings -> any(t | t = 'z') => 
+@Test integers -> any(t | t = 1) => 1
+@Test integers -> any(t | t = 4) => 
+@Test reals -> any(t | t = 1.2) => 1.2
+@Test reals -> any(t | t = 4.2) => 
+@Test booleans -> any(t | t = true) => true
+@Test eClasses -> any(t | t.name = 'ClasseB') -> collect(name) => ClasseB
+@Test collections -> any(t | t.size() = 3) => 
+@Test collections -> any(t | t.size() = 1) => 
+  
+@Test strings -> one(t | t = 'b') => true
+@Test strings -> one(t | t = 'z') => false
+@Test integers -> one(t | t = 1) => true
+@Test integers -> one(t | t = 4) => false
+@Test reals -> one(t | t = 1.2) => true
+@Test reals -> one(t | t = 4.2) => false
+@Test booleans -> one(t | t = true) => true
+@Test eClasses -> one(t | t.name = 'ClasseB') => true
+@Test collections -> one(t | t.size() = 3) => false
+@Test collections -> one(t | t.size() = 1) => false
+  
+@Test strings -> isUnique(toString()) => true
+@Test integers -> isUnique(toString()) => true
+@Test reals -> isUnique(toString()) => true
+@Test booleans -> isUnique(toString()) => true
+@Test eClasses -> isUnique(toString()) => true
+@Test collections -> isUnique(toString()) => true
+  
+@Test strings -> oclIsUndefined() => false
+@Test integers -> oclIsUndefined() => false
+@Test booleans -> oclIsUndefined() => false
+@Test reals -> oclIsUndefined() => false
+@Test eClasses -> oclIsUndefined() => false
+@Test collections -> oclIsUndefined() => false
+@Test strings.oclIsUndefined() => falsefalsefalse
+@Test integers.oclIsUndefined() => falsefalsefalse
+@Test booleans.oclIsUndefined() => falsefalse
+@Test reals.oclIsUndefined() => falsefalsefalse
+@Test eClasses.oclIsUndefined() => falsefalsefalse
+@Test collections.oclIsUndefined() => falsefalse
+  
+@Test OrderedSet{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p => true
+@Test OrderedSet{p,'test',true,1,2.2} -> filter(EClass) -> size() => 0

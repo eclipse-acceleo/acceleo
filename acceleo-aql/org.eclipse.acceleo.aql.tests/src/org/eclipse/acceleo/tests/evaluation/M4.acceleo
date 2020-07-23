@@ -1,0 +1,10 @@
+[module m4('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::aql::tests::evaluation::m3/]
+
+[template public t41(param1 : ecore::EClass)]
+  generated from m4.t41(EClass)
+[param1.t31()/]
+[/template]
+
+[template public overrideMe(param1 : ecore::EClass)]
+  generated from m4.overrideMe(EClass)
+[/template]

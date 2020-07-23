@@ -23,7 +23,7 @@ public class ComparableServicesValidationTest extends AbstractServicesValidation
 	@Override
 	public void before() throws Exception {
 		super.before();
-		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(),
+		final Set<IService<?>> services = ServiceUtils.getServices(getQueryEnvironment(),
 				ComparableServices.class);
 		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}

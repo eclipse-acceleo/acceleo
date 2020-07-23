@@ -52,10 +52,10 @@ public class JavaMethodReceiverService extends JavaMethodService {
 	 * @return the parameter types including the receiver type
 	 */
 	private Class<?>[] getParameterTypes() {
-		final Class<?>[] parameters = new Class<?>[getMethod().getParameterTypes().length + 1];
+		final Class<?>[] parameters = new Class<?>[getOrigin().getParameterTypes().length + 1];
 		int i = 0;
-		parameters[i++] = getMethod().getDeclaringClass();
-		for (Class<?> cls : getMethod().getParameterTypes()) {
+		parameters[i++] = getOrigin().getDeclaringClass();
+		for (Class<?> cls : getOrigin().getParameterTypes()) {
 			parameters[i++] = cls;
 		}
 		return parameters;
@@ -110,7 +110,7 @@ public class JavaMethodReceiverService extends JavaMethodService {
 			newArguments[i] = arguments[i + 1];
 		}
 
-		return getMethod().invoke(receiver, newArguments);
+		return getOrigin().invoke(receiver, newArguments);
 	}
 
 }
