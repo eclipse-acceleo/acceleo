@@ -1,6 +1,0 @@
-[comment encoding = UTF-8 /]
-[module templatePostGuardVariableInitOverridesQualifiedName('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::parser::tests::template::files::templateValid/]
-
-[template public templatePostGuardVariableInitOverridesQualifiedName(eClass : EClass) overrides org::eclipse::acceleo::parser::tests::template::files::templateValid::templateValid ? (true) post(trim())  {javaName : String = 'javaName';}]
-
-[/template]

@@ -1,4 +1,0 @@
-[module prefix::mtlParserEcoreCommon(http://www.eclipse.org/emf/2002/Ecore)/]
-[template public toUFirst(s:EString)]
-	[s.substring(1,1).toUpper().concat(s.substring(2, s.size()))/]
-[/template]

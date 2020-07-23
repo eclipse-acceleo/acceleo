@@ -1,8 +1,0 @@
-[comment encoding = UTF-8 /]
-[module templateDocumentationTODOFIXME('http://www.eclipse.org/emf/2002/Ecore')/]
-
-[**This is some documentation@TODO do something...
-@FIXME do something else/]
-[template public templateDocumentationTODOFIXME(eClass : EClass)]
-
-[/template]

@@ -1,8 +1,0 @@
-[comment encoding = UTF-8 /]
-[module blockProtectedTemplate('http://www.eclipse.org/emf/2002/Ecore')/]
-
-[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][protected (eClass.templateTest())]
-[/protected][/file][/template]
-
-[template public templateTest(eClass : EClass)][eClass.name/][/template]
-

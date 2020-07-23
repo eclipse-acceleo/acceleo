@@ -1,8 +1,0 @@
-[comment encoding = UTF-8 /]
-[module blockForQuery2('http://www.eclipse.org/emf/2002/Ecore')/]
-
-[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.blockFor()/][/file][/template]
-
-[template public blockFor(eClass : EClass)][for(Sequence{queryInSequence('a'), queryInSequence('b')})][self/][/for][/template]
-
-[query public queryInSequence(str : String) : String = 'begin' + str + 'end'/]

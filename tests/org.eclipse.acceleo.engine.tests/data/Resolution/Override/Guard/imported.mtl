@@ -1,8 +1,0 @@
-[module imported(http://www.eclipse.org/emf/2002/Ecore)/]
-[template public override_resolution_definition_guard(c:EClassifier) ? (c.oclIsKindOf(EClass) and c.oclAsType(EClass).abstract)]
-	imported.override_resolution_definition_guard called on [c.oclAsType(EObject).eClass().name/] [c.name/]
-[/template]
-
-[template public override_resolution_external_definition_notguard(c:EClassifier) ? (c.oclIsKindOf(EClass) and not c.oclAsType(EClass).abstract)]
-	imported.override_resolution_definition_notguard called on [c.oclAsType(EObject).eClass().name/] [c.name/]
-[/template]

@@ -1,6 +1,0 @@
-[comment encoding = UTF-8 /]
-[module templateMultipleOverrideQualifiedName('http://www.eclipse.org/emf/2002/Ecore') extends templateValid, templateDocumentation/]
-
-[template public templateMultipleOverride(eClass : EClass) overrides org::eclipse::acceleo::parser::tests::template::files::templateValid::templateValid, org::eclipse::acceleo::parser::tests::template::files::templateDocumentation::templateDocumentation]
-
-[/template]

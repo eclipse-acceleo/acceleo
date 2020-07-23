@@ -1,8 +1,0 @@
-[module imported(http://www.eclipse.org/emf/2002/Ecore)/]
-[template public parameter_narrowing_definition(c:ENamedElement) ? (c.oclIsKindOf(EClassifier))]
-	imported.parameter_narrowing_definition called on [c.oclAsType(EObject).eClass().name/] [c.name/]
-[/template]
-
-[template public parameter_narrowing_external_definition(c:EClassifier)]
-	imported.parameter_narrowing_external_definition called on [c.oclAsType(EObject).eClass().name/] [c.name/]
-[/template]

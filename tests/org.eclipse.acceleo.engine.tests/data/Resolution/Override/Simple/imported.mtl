@@ -1,8 +1,0 @@
-[module imported(http://www.eclipse.org/emf/2002/Ecore)/]
-[template public import_defined(c:EClassifier)]
-	imported.import_defined called on [c.oclAsType(EObject).eClass().name/] [c.name/]
-[/template]
-
-[template public import_defined_3(c:EClassifier)]
-	imported.import_defined_3 called on [c.oclAsType(EObject).eClass().name/] [c.name/]
-[/template]

@@ -60,6 +60,9 @@
 
   <modules>
     <module>releng/org.eclipse.acceleo.targetplatforms/2019-09</module>
+	
+	<module>plugins/org.eclipse.acceleo.ui.interpreter</module>
+	<module>features/org.eclipse.acceleo.ui.interpreter-feature</module>
 
     <module>query/plugins/org.eclipse.acceleo.annotations</module>
     <module>query/plugins/org.eclipse.acceleo.query</module>

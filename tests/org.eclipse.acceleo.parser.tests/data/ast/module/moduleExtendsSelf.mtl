@@ -1,3 +1,0 @@
-[comment encoding = UTF-8 /]
-[module moduleExtendsSelf('http://www.eclipse.org/emf/2002/Ecore') extends moduleExtendsSelf/]
-

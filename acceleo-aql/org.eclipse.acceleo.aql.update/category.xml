@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="org.eclipse.acceleo.aql.feature"/>
-   <feature id="org.eclipse.acceleo.aql.ide.jdt.feature"/>
-   <feature id="org.eclipse.acceleo.query"/>
+   <feature id="org.eclipse.acceleo.aql.feature">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.aql.ide.jdt.feature">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.query">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.ui.interpreter">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <category-def name="org.eclipse.acceleo" label="Acceleo">
+      <description>
+         Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.).
+      </description>
+   </category-def>
 </site>
