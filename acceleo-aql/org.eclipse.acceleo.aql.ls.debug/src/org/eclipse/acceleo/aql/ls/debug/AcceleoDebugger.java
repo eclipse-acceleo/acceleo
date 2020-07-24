@@ -36,7 +36,14 @@ import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -208,6 +215,20 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				} finally {
 					terminate(threadID);
 					terminated();
+				}
+
+				IWorkspace workspace = ResourcesPlugin.getWorkspace();
+				if (workspace != null) {
+					IContainer container = workspace.getRoot().getContainerForLocation(new Path(environment
+							.getDestination().toFileString()));
+					if (container != null) {
+						try {
+							container.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+						} catch (CoreException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 		}, "Acceleo Debug Thread").start();
