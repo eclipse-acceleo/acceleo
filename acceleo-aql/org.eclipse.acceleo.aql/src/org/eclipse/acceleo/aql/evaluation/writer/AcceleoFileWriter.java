@@ -84,6 +84,7 @@ public class AcceleoFileWriter implements IAcceleoWriter {
 
 		OutputStream output = uriConverter.createOutputStream(fileURI);
 		Files.copy(temporaryFilePath, output);
+		output.close();
 	}
 
 	@Override
