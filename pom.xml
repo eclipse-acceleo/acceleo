@@ -81,33 +81,33 @@
     <module>query/tests/org.eclipse.acceleo.query.tests</module>
     <module>query/tests/org.eclipse.acceleo.query.ide.ui.tests</module>
 
-    <module>acceleo-aql/org.eclipse.acceleo.debug</module>
-    <module>acceleo-aql/org.eclipse.acceleo.debug.ls</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.edit</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.tests</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ls</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.tm</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.doc</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ide</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ide.jdt</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ide.ui</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ide.tests</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ls.debug.ide.ui</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.migration</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.migration.tests</module>
+    <module>plugins/org.eclipse.acceleo.debug</module>
+    <module>plugins/org.eclipse.acceleo.debug.ls</module>
+    <module>plugins/org.eclipse.acceleo.aql</module>
+    <module>plugins/org.eclipse.acceleo.aql.edit</module>
+    <module>tests/org.eclipse.acceleo.aql.tests</module>
+    <module>plugins/org.eclipse.acceleo.aql.ls</module>
+    <module>plugins/org.eclipse.acceleo.aql.tm</module>
+    <module>plugins/org.eclipse.acceleo.aql.doc</module>
+    <module>plugins/org.eclipse.acceleo.aql.ide</module>
+    <module>plugins/org.eclipse.acceleo.aql.ide.jdt</module>
+    <module>plugins/org.eclipse.acceleo.aql.ide.ui</module>
+    <module>tests/org.eclipse.acceleo.aql.ide.tests</module>
+    <module>plugins/org.eclipse.acceleo.aql.ls.debug</module>
+    <module>plugins/org.eclipse.acceleo.aql.ls.debug.ide</module>
+    <module>plugins/org.eclipse.acceleo.aql.ls.debug.ide.ui</module>
+    <module>plugins/org.eclipse.acceleo.aql.migration</module>
+    <module>tests/org.eclipse.acceleo.aql.migration.tests</module>
 	
-    <module>acceleo-aql/org.eclipse.acceleo.aql.launcher</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.launcher-feature</module>
+    <module>plugins/org.eclipse.acceleo.aql.launcher</module>
+    <module>features/org.eclipse.acceleo.aql.launcher-feature</module>
     
-    <module>acceleo-aql/org.eclipse.acceleo.aql.feature</module>
-    <module>acceleo-aql/org.eclipse.acceleo.aql.ide.jdt.feature</module>
+    <module>features/org.eclipse.acceleo.aql.feature</module>
+    <module>features/org.eclipse.acceleo.aql.ide.jdt.feature</module>
 
-    <module>acceleo-aql/org.eclipse.acceleo.aql.rcpttproduct</module>
+    <module>tests/org.eclipse.acceleo.aql.rcpttproduct</module>
     <!--module>acceleo-aql/org.eclipse.acceleo.aql.rcptt</module-->
-    <module>acceleo-aql/org.eclipse.acceleo.aql.update</module>
+    <module>releng/org.eclipse.acceleo.aql.update</module>
   </modules>
 
   <distributionManagement>
@@ -475,7 +475,7 @@
                 </goals>
                 <phase>verify</phase>
                 <configuration>
-                  <configLocation>${project.parent.relativePath}/features/org.eclipse.acceleo-feature/codestyle/AcceleoCheckstyleConfiguration5.xml</configLocation>
+                  <configLocation>${project.parent.relativePath}/dev/org.eclipse.acceleo.dev/codestyle/AcceleoCheckstyleConfiguration8.xml</configLocation>
                   <failOnErrors>false</failOnErrors>
                   <consoleOutput>true</consoleOutput>
                 </configuration>
