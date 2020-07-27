@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Acceleo Acceleo3 Module Runtime Plug-in
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.aql.migration.tests.acceleo3
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: Eclipse Modeling Project
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime, 
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
