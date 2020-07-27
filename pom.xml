@@ -72,6 +72,7 @@
     <module>query/plugins/org.eclipse.acceleo.query.doc</module>
 
     <module>query/features/org.eclipse.acceleo.query-feature</module>
+	<module>query/features/org.eclipse.acceleo.query.ui-feature</module>
 
     <module>query/tests/org.eclipse.acceleo.query.tests.nestedpackages</module>
     <module>query/tests/org.eclipse.acceleo.query.tests.qmodel</module>

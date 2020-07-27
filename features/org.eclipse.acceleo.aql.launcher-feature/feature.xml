@@ -3,19 +3,17 @@
       id="org.eclipse.acceleo.aql.launcher"
       label="%featureName"
       version="4.0.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.1">
 
    <description>
       %description
    </description>
 
-   <copyright url="%copyrightURL">
+   <copyright>
       %copyright
    </copyright>
-
-   <license url="%licenseURL">
-      %license
-   </license>
 
    <plugin
          id="org.eclipse.acceleo.aql.launcher"

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <feature id="org.eclipse.acceleo.query">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.query.ui">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.aql.feature">
       <category name="org.eclipse.acceleo"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.ide.jdt.feature">
       <category name="org.eclipse.acceleo"/>
    </feature>
-   <feature id="org.eclipse.acceleo.query">
+   <feature id="org.eclipse.acceleo.aql.launcher">
       <category name="org.eclipse.acceleo"/>
    </feature>
    <feature id="org.eclipse.acceleo.ui.interpreter">

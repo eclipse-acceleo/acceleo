@@ -11,13 +11,9 @@
       %description
    </description>
 
-   <copyright url="%copyrightURL">
+   <copyright>
       %copyright
    </copyright>
-
-   <license url="%licenseURL">
-      %license
-   </license>
 
    <plugin
          id="org.eclipse.acceleo.query.ide.ui"
