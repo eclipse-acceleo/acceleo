@@ -783,16 +783,18 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 			// resFrame.setInstructionPointerReference(instructionPointerReference);
 			// TODO ? resFrame.setModuleId(moduleId);
 			final DSLSource dslSource = debugger.getSource(currentFrame.getInstruction());
-			resFrame.setLine(dslSource.getStartLine());
-			resFrame.setColumn(dslSource.getStartColumn());
-			resFrame.setEndLine(dslSource.getEndLine());
-			resFrame.setEndColumn(dslSource.getEndColumn());
-			final Source source = new Source();
-			source.setName(dslSource.getPath());
-			source.setPath(dslSource.getPath());
-			resFrame.setSource(source);
-			resFrames.add(resFrame);
-			id++; // TODO id
+			if (dslSource != null) {
+				resFrame.setLine(dslSource.getStartLine());
+				resFrame.setColumn(dslSource.getStartColumn());
+				resFrame.setEndLine(dslSource.getEndLine());
+				resFrame.setEndColumn(dslSource.getEndColumn());
+				final Source source = new Source();
+				source.setName(dslSource.getPath());
+				source.setPath(dslSource.getPath());
+				resFrame.setSource(source);
+				resFrames.add(resFrame);
+				id++; // TODO id
+			}
 		}
 		res.setTotalFrames((long)resFrames.size());
 		res.setStackFrames(resFrames.toArray(new StackFrame[resFrames.size()]));

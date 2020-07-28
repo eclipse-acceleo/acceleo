@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
 
@@ -44,12 +45,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.lsp4e.LSPEclipseUtils;
+import org.eclipse.swt.widgets.Display;
 
 public class AcceleoDebugger extends AbstractDSLDebugger {
 
@@ -77,6 +80,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		@Override
 		public Object doSwitch(EObject eObject) {
+			if (isTerminated()) {
+				return null;
+			}
 			if (eObject instanceof Template || eObject instanceof Query) {
 				pushStackFrame(Thread.currentThread().getId(), eObject);
 			}
@@ -213,8 +219,17 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 						AcceleoUtil.generate(evaluator, environment, module, model);
 					}
 				} finally {
-					terminate(threadID);
-					terminated();
+					// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
+					// which cause makes the JobManager to stall and prevents the termination of the LSP
+					// process. By launching the termination in the UI thread in sync we allow the jobs to
+					// finish first.
+					Display.getDefault().syncExec(new Runnable() {
+						@Override
+						public void run() {
+							terminate(threadID);
+							terminated();
+						}
+					});
 				}
 
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -309,30 +324,40 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 	@Override
 	public DSLSource getSource(EObject instruction) {
-		final AcceleoAstResult moduleAstResult = getModule(instruction).getAst();
-		final String path = environment.getModuleSourceURL(moduleAstResult.getModule()).getFile();
+		DSLSource res = null;
+		String path = null;
+		Module module = getModule(instruction);
+		if (module != null) {
+			final AcceleoAstResult moduleAstResult = module.getAst();
+			URL moduleSourceURL = environment.getModuleSourceURL(moduleAstResult.getModule());
+			try {
+				path = URIUtil.toFile(moduleSourceURL.toURI()).toString();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-		final DSLSource res;
-		if (instruction instanceof ASTNode) {
-			final int startLine = moduleAstResult.getStartLine((ASTNode)instruction);
-			final int startColumn = moduleAstResult.getStartColumn((ASTNode)instruction);
-			final int endLine = moduleAstResult.getEndLine((ASTNode)instruction);
-			final int endColumn = moduleAstResult.getEndColumn((ASTNode)instruction);
-			res = new DSLSource(path, startLine + 1, startColumn + 1, endLine + 1, endColumn + 1);
-		} else if (instruction instanceof Expression) {
-			final int startLine = moduleAstResult.getStartLine((Expression)instruction);
-			final int startColumn = moduleAstResult.getStartColumn((Expression)instruction);
-			final int endLine = moduleAstResult.getEndLine((Expression)instruction);
-			final int endColumn = moduleAstResult.getEndColumn((Expression)instruction);
-			res = new DSLSource(path, startLine + 1, startColumn + 1, endLine + 1, endColumn + 1);
-		} else if (instruction instanceof VariableDeclaration) {
-			final int startLine = moduleAstResult.getStartLine((VariableDeclaration)instruction);
-			final int startColumn = moduleAstResult.getStartColumn((VariableDeclaration)instruction);
-			final int endLine = moduleAstResult.getEndLine((VariableDeclaration)instruction);
-			final int endColumn = moduleAstResult.getEndColumn((VariableDeclaration)instruction);
-			res = new DSLSource(path, startLine + 1, startColumn + 1, endLine + 1, endColumn + 1);
-		} else {
-			res = null;
+			if (instruction instanceof ASTNode) {
+				final int startLine = moduleAstResult.getStartLine((ASTNode)instruction);
+				final int startColumn = moduleAstResult.getStartColumn((ASTNode)instruction);
+				final int endLine = moduleAstResult.getEndLine((ASTNode)instruction);
+				final int endColumn = moduleAstResult.getEndColumn((ASTNode)instruction);
+				res = new DSLSource(path, startLine + 1, startColumn + 1, endLine + 1, endColumn + 1);
+			} else if (instruction instanceof Expression) {
+				final int startLine = moduleAstResult.getStartLine((Expression)instruction);
+				final int startColumn = moduleAstResult.getStartColumn((Expression)instruction);
+				final int endLine = moduleAstResult.getEndLine((Expression)instruction);
+				final int endColumn = moduleAstResult.getEndColumn((Expression)instruction);
+				res = new DSLSource(path, startLine + 1, startColumn + 1, endLine + 1, endColumn + 1);
+			} else if (instruction instanceof VariableDeclaration) {
+				final int startLine = moduleAstResult.getStartLine((VariableDeclaration)instruction);
+				final int startColumn = moduleAstResult.getStartColumn((VariableDeclaration)instruction);
+				final int endLine = moduleAstResult.getEndLine((VariableDeclaration)instruction);
+				final int endColumn = moduleAstResult.getEndColumn((VariableDeclaration)instruction);
+				res = new DSLSource(path, startLine + 1, startColumn + 1, endLine + 1, endColumn + 1);
+			} else {
+				res = null;
+			}
 		}
 
 		return res;

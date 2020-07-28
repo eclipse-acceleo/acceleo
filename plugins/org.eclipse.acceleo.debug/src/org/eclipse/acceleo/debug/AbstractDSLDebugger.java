@@ -328,6 +328,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 * @see org.eclipse.acceleo.debug.IDSLDebugger#terminated()
 	 */
 	public void terminated() {
+		setTerminated(true);
 		target.handleEvent(new TerminatedReply());
 	}
 
@@ -530,7 +531,9 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 * @see org.eclipse.acceleo.debug.IDSLDebugger#terminate(java.lang.Long)
 	 */
 	public void terminate(Long threadID) {
-		controllers.get(threadID).terminate();
+		if (controllers.containsKey(threadID)) {
+			controllers.get(threadID).terminate();
+		}
 	}
 
 	/**
@@ -629,6 +632,9 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 *            the context of the frame
 	 */
 	protected void pushStackFrame(Long threadID, EObject context) {
+		if (isTerminated()) {
+			return;
+		}
 		stackFrames.get(threadID).addLast(new StackFrame(context));
 	}
 
@@ -640,6 +646,9 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 * @return the current {@link StackFrame} of the given {@link Thread}
 	 */
 	protected StackFrame peekStackFrame(Long threadID) {
+		if (isTerminated()) {
+			return null;
+		}
 		return stackFrames.get(threadID).getLast();
 	}
 
@@ -651,6 +660,9 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 * @return the current {@link StackFrame} of the given {@link Thread}
 	 */
 	protected StackFrame popStackFrame(Long threadID) {
+		if (isTerminated()) {
+			return null;
+		}
 		return stackFrames.get(threadID).removeLast();
 	}
 
@@ -660,6 +672,9 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 * @see org.eclipse.acceleo.debug.IDSLDebugger#getStackFrame(java.lang.Long)
 	 */
 	public Deque<StackFrame> getStackFrame(Long threadID) {
+		if (isTerminated()) {
+			return new ArrayDeque<StackFrame>();
+		}
 		return stackFrames.get(threadID);
 	}
 

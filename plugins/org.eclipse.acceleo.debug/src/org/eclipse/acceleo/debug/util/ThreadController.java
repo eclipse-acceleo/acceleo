@@ -159,15 +159,21 @@ public class ThreadController {
 			if (this.suspended) { // client request
 				debugger.suspended(threadID);
 				putAsleep();
-				resuming(instruction);
+				if (!debugger.isTerminated() && !terminated) {
+					resuming(instruction);
+				}
 			} else if (debugger.shouldBreak(instruction)) { // breakpoint
 				debugger.breaked(threadID);
 				putAsleep();
-				resuming(instruction);
+				if (!debugger.isTerminated() && !terminated) {
+					resuming(instruction);
+				}
 			} else if (stepping != Stepping.NONE && shouldStep()) { // stepping
 				debugger.stepped(threadID);
 				putAsleep();
-				resuming(instruction);
+				if (!debugger.isTerminated() && !terminated) {
+					resuming(instruction);
+				}
 			}
 		}
 		return res;
