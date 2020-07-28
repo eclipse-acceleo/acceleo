@@ -3,19 +3,37 @@
    <feature id="org.eclipse.acceleo.query">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.query.source">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.query.ui">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.query.ui.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.feature">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.aql.feature.source">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.aql.ide.jdt.feature">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.aql.ide.jdt.feature.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.launcher">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.aql.launcher.source">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.ui.interpreter">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.ui.interpreter.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
