@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
@@ -266,7 +267,29 @@ public class AcceleoProject {
 	 * @return the {@link Set} of {@link AcceleoTextDocument} that depend on {@code moduleQualifiedName}.
 	 */
 	private Set<AcceleoTextDocument> getTextDocumentsThatDependOn(String moduleQualifiedName) {
-		// FIXME: naive implementation where we return all the documents.
-		return new HashSet<>(this.getTextDocuments());
+		Set<AcceleoTextDocument> res = new HashSet<>();
+		for (AcceleoTextDocument acceleoTextDocument : this.getTextDocuments()) {
+			if (!moduleQualifiedName.equals(acceleoTextDocument.getModuleQualifiedName()) && dependsOn(
+					acceleoTextDocument.getAcceleoAstResult().getModule(), moduleQualifiedName)) {
+				res.add(acceleoTextDocument);
+			}
+		}
+		return res;
+	}
+
+	private static boolean dependsOn(org.eclipse.acceleo.Module module, String moduleQualifiedName) {
+		boolean res = false;
+		if (module.getExtends() != null && moduleQualifiedName.equals(module.getExtends()
+				.getQualifiedName())) {
+			res = true;
+		} else {
+			for (Import imp : module.getImports()) {
+				if (moduleQualifiedName.equals(imp.getModule().getQualifiedName())) {
+					res = true;
+					break;
+				}
+			}
+		}
+		return res;
 	}
 }

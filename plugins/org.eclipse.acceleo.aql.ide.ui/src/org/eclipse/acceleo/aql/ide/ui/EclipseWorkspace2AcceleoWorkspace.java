@@ -452,7 +452,9 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 */
 		private static boolean workspaceFileIsAcceleoTextDocument(IFile workspaceFile) {
 			String fileExtension = workspaceFile.getFileExtension();
-			return fileExtension != null && fileExtension.equals(AcceleoParser.MODULE_FILE_EXTENSION);
+			// FIXME we simply ignore derived files, there might be a better way
+			return !workspaceFile.isDerived() && fileExtension != null && fileExtension.equals(
+					AcceleoParser.MODULE_FILE_EXTENSION);
 		}
 
 		/**
@@ -476,15 +478,18 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 */
 		private void updateFileContents(IFile workspaceFile) {
 			AcceleoTextDocument acceleoTextDocument = this.filesTrace.get(workspaceFile);
-
-			if (!workspaceFileIsAcceleoTextDocument(workspaceFile)) {
-				// The workspace file is no longer a file we consider as an Acceleo text document, so we want
-				// to remove it from our workspace.
-				acceleoTextDocument.getProject().removeTextDocument(acceleoTextDocument);
-				this.filesTrace.remove(workspaceFile);
-			} else {
-				String workspaceFileContents = readWorkspaceFile(workspaceFile);
-				acceleoTextDocument.setContents(workspaceFileContents);
+			// FIXME we ignore non-mtl files for now
+			if (acceleoTextDocument != null) {
+				if (!workspaceFileIsAcceleoTextDocument(workspaceFile)) {
+					// The workspace file is no longer a file we consider as an Acceleo text document, so we
+					// want
+					// to remove it from our workspace.
+					acceleoTextDocument.getProject().removeTextDocument(acceleoTextDocument);
+					this.filesTrace.remove(workspaceFile);
+				} else {
+					String workspaceFileContents = readWorkspaceFile(workspaceFile);
+					acceleoTextDocument.setContents(workspaceFileContents);
+				}
 			}
 		}
 
@@ -540,7 +545,8 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		private AcceleoTextDocument transform(IFile workspaceFile) {
 			URI textDocumentUri = workspaceFile.getLocationURI();
 			String textDocumentContents = readWorkspaceFile(workspaceFile);
-			return new AcceleoTextDocument(textDocumentUri, textDocumentContents);
+			AcceleoProject containerAcceleoProject = this.projectsTrace.get(workspaceFile.getProject());
+			return new AcceleoTextDocument(textDocumentUri, textDocumentContents, containerAcceleoProject);
 		}
 
 		/**
