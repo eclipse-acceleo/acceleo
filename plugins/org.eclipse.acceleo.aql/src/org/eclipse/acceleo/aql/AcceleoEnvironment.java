@@ -387,7 +387,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 				// Only remove the EPackage if none of the other modules of the environment also registered
 				// it.
 				if (this.moduleToQualifiedName.keySet().stream().noneMatch(otherModule -> !moduleToUnregister
-						.equals(otherModule) && !otherModule.getMetamodels().stream().map(
+						.equals(otherModule) && otherModule.getMetamodels().stream().map(
 								Metamodel::getReferencedPackage).anyMatch(
 										otherEPackage -> otherEPackage == ePackage))) {
 					this.aqlEnvironment.removeEPackage(ePackage);
