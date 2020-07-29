@@ -68,6 +68,7 @@ import org.eclipse.lsp4j.debug.LoadedSourcesResponse;
 import org.eclipse.lsp4j.debug.ModulesArguments;
 import org.eclipse.lsp4j.debug.ModulesResponse;
 import org.eclipse.lsp4j.debug.NextArguments;
+import org.eclipse.lsp4j.debug.OutputEventArguments;
 import org.eclipse.lsp4j.debug.PauseArguments;
 import org.eclipse.lsp4j.debug.ReadMemoryArguments;
 import org.eclipse.lsp4j.debug.ReadMemoryResponse;
@@ -361,6 +362,10 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 				} else {
 					debugger.initialize(false, args);
 				}
+				// Opens & focus the console
+				OutputEventArguments args = new OutputEventArguments();
+				args.setOutput(new String());
+				client.output(args);
 			}
 		});
 	}
