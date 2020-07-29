@@ -18,7 +18,7 @@ import java.net.URI;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -57,9 +57,12 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 			param.addProperty(AcceleoDebugger.MODEL, modelUri.toString());
 		}
 		if (wc.hasAttribute(AcceleoDebugger.DESTINATION)) {
-			final IFolder model = root.getFolder(new Path(wc.getAttribute(AcceleoDebugger.DESTINATION,
+			IResource destination = root.findMember(new Path(wc.getAttribute(AcceleoDebugger.DESTINATION,
 					(String)null)));
-			final URI modelUri = model.getLocation().toFile().getAbsoluteFile().toURI();
+			if (destination instanceof IFile) {
+				destination = destination.getParent();
+			}
+			final URI modelUri = destination.getLocation().toFile().getAbsoluteFile().toURI();
 			param.addProperty(AcceleoDebugger.DESTINATION, modelUri.toString());
 		}
 
