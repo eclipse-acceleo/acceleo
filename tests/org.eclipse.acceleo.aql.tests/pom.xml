@@ -15,9 +15,9 @@
 
     <parent>
         <groupId>org.eclipse.acceleo</groupId>
-        <artifactId>org.eclipse.acceleo-parent</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
-        <relativePath>../..</relativePath>
+        <artifactId>acceleo-test-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../test-parent</relativePath>
     </parent>
 
     <artifactId>org.eclipse.acceleo.aql.tests</artifactId>
@@ -30,7 +30,7 @@
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-surefire-plugin</artifactId>
                 <version>${tycho-version}</version>
-                <configuration>	   
+                <configuration>
                     <includes>
                         <include>org/eclipse/acceleo/tests/AllTests.class</include>
                     </includes>
