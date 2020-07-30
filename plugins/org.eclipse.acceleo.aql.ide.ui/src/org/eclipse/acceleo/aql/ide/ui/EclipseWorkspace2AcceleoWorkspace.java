@@ -35,6 +35,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 
 /**
@@ -146,6 +147,11 @@ public class EclipseWorkspace2AcceleoWorkspace {
 	private static class SynchronizerEclipseWorkspace2AcceleoWorkspace implements IResourceVisitor, IResourceChangeListener, IResourceDeltaVisitor {
 
 		/**
+		 * The java nature.
+		 */
+		private static final String JAVA_NATURE = "org.eclipse.jdt.core.javanature";
+
+		/**
 		 * The size of the buffer we use to read {@link IFile Acceleo documents}.
 		 */
 		private static final int BUFFER_SIZE = 1024;
@@ -185,8 +191,11 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 */
 		@Override
 		public boolean visit(IResource resource) throws CoreException {
-			this.synchronize(resource);
-			return true;
+			if (resource instanceof IWorkspaceRoot || resource.getProject().hasNature(JAVA_NATURE)) {
+				this.synchronize(resource);
+				return true;
+			}
+			return false;
 		}
 
 		/**
