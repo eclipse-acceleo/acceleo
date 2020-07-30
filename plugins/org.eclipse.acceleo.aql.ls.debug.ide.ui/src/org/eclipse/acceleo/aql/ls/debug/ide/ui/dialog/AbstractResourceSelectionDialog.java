@@ -16,10 +16,12 @@ import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -41,11 +43,11 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
- * File selection dialog.
+ * Resource selection dialog.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AcceleoFileSelectionDialog extends MessageDialog {
+public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 
 	/**
 	 * Listen to selection changes of the container tree.
@@ -60,13 +62,13 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 			final boolean enableOkButton;
 			if (selected instanceof IFile) {
 				final IFile file = (IFile)selected;
-				fileText.setText(file.getFullPath().toString());
-				fileName = file.getFullPath().toString();
+				resourceText.setText(file.getFullPath().toString());
+				resourceName = file.getFullPath().toString();
 				enableOkButton = true;
 			} else if (!onlyFileSelection && selected instanceof IContainer) {
 				final IContainer container = (IContainer)selected;
-				fileText.setText(container.getFullPath().toString());
-				fileName = container.getFullPath().toString();
+				resourceText.setText(container.getFullPath().toString());
+				resourceName = container.getFullPath().toString();
 				enableOkButton = true;
 			} else {
 				enableOkButton = false;
@@ -90,48 +92,38 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 	/**
 	 * The file {@link Text}.
 	 */
-	private Text fileText;
+	private Text resourceText;
 
 	/**
 	 * The default file name.
 	 */
-	private final String defaultFileName;
+	private final String defaultResourceName;
 
 	/**
-	 * The filtered file extension.
+	 * The selected resource name.
 	 */
-	private final String fileExtension;
-
-	/**
-	 * The selected file name.
-	 */
-	private String fileName;
+	private String resourceName;
 
 	/**
 	 * Tells if only file selection is allowed.
 	 */
-	private boolean onlyFileSelection;
+	protected boolean onlyFileSelection;
 
 	/**
-	 * Constructor.
+	 * Creates a file selection dialog.
 	 * 
 	 * @param parentShell
 	 *            the parent {@link Shell}
 	 * @param title
 	 *            the title
-	 * @param defaultFileName
-	 *            the default file name
-	 * @param fileExtension
-	 *            the filtered file extension
-	 * @param onlyFileSelection
-	 *            tells if only file selection is allowed
+	 * @param defaultResourceName
+	 *            the default resource name
 	 */
-	public AcceleoFileSelectionDialog(Shell parentShell, String title, String defaultFileName,
-			String fileExtension, boolean onlyFileSelection) {
-		super(parentShell, title, null, "Select a file.", MessageDialog.QUESTION, new String[] {
+	public AbstractResourceSelectionDialog(Shell parentShell, String title, String message,
+			String defaultResourceName, boolean onlyFileSelection) {
+		super(parentShell, title, null, message, MessageDialog.QUESTION, new String[] {
 				IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0);
-		this.defaultFileName = defaultFileName;
-		this.fileExtension = fileExtension;
+		this.defaultResourceName = defaultResourceName;
 		this.onlyFileSelection = onlyFileSelection;
 	}
 
@@ -141,7 +133,7 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 		container.setLayout(new GridLayout(1, false));
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		fileText = createFilePathComposite(container, defaultFileName);
+		resourceText = createFilePathComposite(container, defaultResourceName);
 
 		final TreeViewer containerTreeViewer = new TreeViewer(container, SWT.BORDER);
 		Tree tree = containerTreeViewer.getTree();
@@ -154,21 +146,51 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 			public Object[] getChildren(Object element) {
 				final List<Object> res = new ArrayList<>();
 				for (Object obj : super.getChildren(element)) {
-					if (obj instanceof IContainer || (obj instanceof IFile && (fileExtension == null
-							|| fileExtension.equals(((IFile)obj).getFileExtension())))) {
+					if (isValidTree(obj)) {
 						res.add(obj);
 					}
 				}
 				return res.toArray();
 			}
+
+			@Override
+			public boolean hasChildren(Object element) {
+				return element instanceof IContainer && getChildren(element).length > 0;
+			}
+
+			private boolean isValidTree(Object obj) {
+				if (obj instanceof IResource && !((IResource)obj).isDerived()) {
+					if (isValid((IResource)obj)) {
+						return true;
+					} else {
+						for (Object child : super.getChildren(obj)) {
+							if (isValidTree(child)) {
+								return true;
+							}
+						}
+					}
+				}
+				return false;
+			}
 		});
+
 		containerTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
 		containerTreeViewer.addSelectionChangedListener(new ContainerSelectionChangedListener());
 		containerTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
-		if (defaultFileName != null && !defaultFileName.isEmpty()) {
-			final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(defaultFileName));
-			containerTreeViewer.setSelection(new StructuredSelection(file));
+		if (defaultResourceName != null && !defaultResourceName.isEmpty()) {
+			IResource resource = findResource(defaultResourceName);
+			if (!resource.exists()) {
+				resource = resource.getParent();
+			}
+			containerTreeViewer.setSelection(new StructuredSelection(resource));
 		}
+
+		containerTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				okPressed();
+			}
+		});
 
 		return container;
 	}
@@ -177,9 +199,9 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 	 * Creates the file path {@link Composite}.
 	 * 
 	 * @param container
-	 *            the pasent {@link Composite}
+	 *            the parent {@link Composite}
 	 * @param defaultName
-	 *            the fefault file name
+	 *            the default file name
 	 * @return the file path {@link Text}
 	 */
 	protected Text createFilePathComposite(final Composite container, String defaultName) {
@@ -196,13 +218,13 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 		new Label(fileComposite, container.getStyle());
 		if (defaultName != null) {
 			res.setText(defaultName);
-			fileName = defaultName;
+			resourceName = defaultName;
 		}
 		res.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				fileName = res.getText();
+				resourceName = res.getText();
 			}
 
 			@Override
@@ -215,7 +237,25 @@ public class AcceleoFileSelectionDialog extends MessageDialog {
 	}
 
 	public String getFileName() {
-		return fileName;
+		return resourceName;
 	}
+
+	/**
+	 * Finds an actual resource for the given name. Cannot return null.
+	 * 
+	 * @param defaultResourceName
+	 *            the resource name
+	 * @return the resource
+	 */
+	protected abstract IResource findResource(String defaultResourceName);
+
+	/**
+	 * Checks whether or not the resource can be displayed. If yes its containers will be displayed anyway.
+	 * 
+	 * @param resource
+	 *            the resource to check
+	 * @return <true> if the resource can be displayed
+	 */
+	protected abstract boolean isValid(IResource resource);
 
 }

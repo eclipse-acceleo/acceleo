@@ -13,7 +13,9 @@ package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 import org.eclipse.acceleo.aql.ide.Activator;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AcceleoFileSelectionDialog;
+import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog;
+import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FileSelectionDialog;
+import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FolderSelectionDialog;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -26,7 +28,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -38,7 +39,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
 
 public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
@@ -299,8 +299,8 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private void handleBrowseModuleButton() {
-		final AcceleoFileSelectionDialog dialog = new AcceleoFileSelectionDialog(getShell(),
-				"Select a module file", module, AcceleoParser.MODULE_FILE_EXTENSION, false);
+		final AbstractResourceSelectionDialog dialog = new FileSelectionDialog(getShell(),
+				"Select a module file", module, AcceleoParser.MODULE_FILE_EXTENSION, true);
 		final int dialogResult = dialog.open();
 		if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
 			moduleText.setText(dialog.getFileName());
@@ -327,27 +327,12 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private void handleBrowseDestinationButton() {
-		IResource initial;
-		if (destinationText.getText() != null && destinationText.getText().length() > 0) {
-			initial = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(destinationText
-					.getText()));
-			if (initial instanceof IFile) {
-				initial = initial.getParent();
-			}
-		} else {
-			initial = null;
-		}
-		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), ResourcesPlugin
-				.getWorkspace().getRoot(), true, "Select the destination folder");
-		if (initial != null) {
-			dialog.setInitialSelections(new Object[] {initial.getParent(), initial });
-		}
-		dialog.showClosedProjects(false);
-		if (dialog.open() == Window.OK) {
-			Object[] result = dialog.getResult();
-			if (result.length == 1) {
-				destinationText.setText(((Path)result[0]).toString());
-			}
+		final AbstractResourceSelectionDialog dialog = new FolderSelectionDialog(getShell(),
+				"Select the destination folder", destination);
+		final int dialogResult = dialog.open();
+		if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
+			destinationText.setText(dialog.getFileName());
+			setDirty(isDirty());
 		}
 	}
 }
