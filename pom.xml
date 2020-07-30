@@ -52,6 +52,8 @@
     <asciidoc-version>2.0.0-RC.1</asciidoc-version>
     <jruby.version>9.2.8.0</jruby.version>
     <asciidoctorj.version>2.1.0</asciidoctorj.version>
+	
+	<checkstyle-version>3.1.1</checkstyle-version>
   </properties>
 
   <scm>
@@ -467,7 +469,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>2.11</version>
+            <version>${checkstyle-version}</version>
             <executions>
               <execution>
                 <id>check my sources</id>
