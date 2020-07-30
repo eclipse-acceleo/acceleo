@@ -100,14 +100,14 @@ public class EObjectServicesPerformanceTest {
 		error.stop();
 		System.out.println("PERFO: self.eAllContents(ecore::EClass)->select(c | not c.abstract)  :  "
 				+ noError.elapsed(TimeUnit.MILLISECONDS)
-				+ "ms /  self.eAllContents()->select(c | not c.abstract) : "
-				+ error.elapsed(TimeUnit.MILLISECONDS) + "ms");
+				+ "ms /  self.eAllContents()->select(c | not c.abstract) : " + error.elapsed(
+						TimeUnit.MILLISECONDS) + "ms");
 
 		final double noErrorElapsed = noError.elapsed(TimeUnit.MILLISECONDS);
 		final double errorElapsed = error.elapsed(TimeUnit.MILLISECONDS);
 
-		assertTrue("We expect a maximum overhead of 1600% (9 time more calls) and we had:"
-				+ (errorElapsed / noErrorElapsed) * 100 + "%", errorElapsed / noErrorElapsed < 16.0);
+		assertTrue("We expect a maximum overhead of 1800% and we had:" + (errorElapsed / noErrorElapsed) * 100
+				+ "%", errorElapsed / noErrorElapsed < 18.0);
 	}
 
 	/**
@@ -161,8 +161,8 @@ public class EObjectServicesPerformanceTest {
 		final long emfElapsed = emf.elapsed(TimeUnit.MILLISECONDS);
 
 		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than emf + 4s
-		assertTrue("The AQL implementation is supposed to be faster than the EMF one.",
-				(aqlElapsed - emfElapsed) < 4000L);
+		assertTrue("The AQL implementation is supposed to be faster than the EMF one.", (aqlElapsed
+				- emfElapsed) < 4000L);
 	}
 
 	@Test
@@ -201,8 +201,8 @@ public class EObjectServicesPerformanceTest {
 		final long emfElapsed = emf.elapsed(TimeUnit.MILLISECONDS);
 
 		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than emf + 4s
-		assertTrue("The AQL implementation is supposed to be faster than the EMF one.",
-				(aqlElapsed - emfElapsed) < 4000L);
+		assertTrue("The AQL implementation is supposed to be faster than the EMF one.", (aqlElapsed
+				- emfElapsed) < 4000L);
 	}
 
 }
