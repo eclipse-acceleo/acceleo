@@ -7,7 +7,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.profile.ide.ui.launch;
 
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AcceleoFileSelectionDialog;
+import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog;
+import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FileSelectionDialog;
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.AcceleoMainTab;
 import org.eclipse.acceleo.aql.ls.profile.AcceleoProfiler;
 import org.eclipse.acceleo.aql.ls.profile.ide.AcceleoProfilePlugin;
@@ -175,7 +176,7 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	 * Show a dialog that lists all the models.
 	 */
 	private void handleBrowseProfileModelButton() {
-		final AcceleoFileSelectionDialog dialog = new AcceleoFileSelectionDialog(getShell(),
+		final AbstractResourceSelectionDialog dialog = new FileSelectionDialog(getShell(),
 				"Select the profile model", profileModel, PROFILE_EXTENSION, false);
 		final int dialogResult = dialog.open();
 		if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
