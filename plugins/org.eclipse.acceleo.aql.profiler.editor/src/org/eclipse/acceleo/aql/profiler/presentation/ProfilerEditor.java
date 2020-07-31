@@ -553,7 +553,9 @@ public final class ProfilerEditor extends EcoreEditor {
 	 */
 	@Override
 	public void dispose() {
-		coverageHelper.clearAnnotations();
+		if (coverageHelper != null) {
+			coverageHelper.clearAnnotations();
+		}
 		super.dispose();
 	}
 
