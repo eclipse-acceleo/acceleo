@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Acceleo Documentation">
+ <topic href="doc/Acceleo/index.html" label="User Guide">
+ </topic>
+ <topic href="doc/Acceleo/language.html" label="Language">
+ </topic>
+ <topic href="doc/Acceleo/syntax.html" label="Syntax">
+ </topic>
+ <topic href="doc/Acceleo/migration.html" label="Migration">
+ </topic>
+</toc>
