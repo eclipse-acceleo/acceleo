@@ -5,8 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="Acceleo 4 Profiler User Guide">
-<title>Acceleo Profiler</title>
+<meta name="author" content="Acceleo 4 Syntax">
+<title>Acceleo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,100 +439,406 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Acceleo Profiler</h1>
+<h1>Acceleo</h1>
 <div class="details">
-<span id="author" class="author">Acceleo 4 Profiler User Guide</span><br>
+<span id="author" class="author">Acceleo 4 Syntax</span><br>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_launching_a_generation_with_the_profiler">2. Launching a generation with the profiler</a></li>
-<li><a href="#_acceleo_profile_files">3. Acceleo Profile Files</a></li>
-<li><a href="#_coverage_informations">4. Coverage informations</a></li>
+<li><a href="#_preface">1. Preface</a></li>
+<li><a href="#_syntax">2. Syntax</a>
+<ul class="sectlevel2">
+<li><a href="#_comment">2.1. Comment</a></li>
+<li><a href="#_module">2.2. Module</a></li>
+<li><a href="#_identifier">2.3. Identifier</a></li>
+<li><a href="#_module_documentation">2.4. Module Documentation</a></li>
+<li><a href="#_metamodel">2.5. Metamodel</a></li>
+<li><a href="#_import">2.6. Import</a></li>
+<li><a href="#_module_reference">2.7. Module Reference</a></li>
+<li><a href="#_module_qualified_name">2.8. Module Qualified Name</a></li>
+<li><a href="#_module_element">2.9. Module Element</a></li>
+<li><a href="#_template">2.10. Template</a></li>
+<li><a href="#_visibility">2.11. Visibility</a></li>
+<li><a href="#_parameter">2.12. Parameter</a></li>
+<li><a href="#_statement">2.13. Statement</a></li>
+<li><a href="#_aql_expression">2.14. AQL Expression</a></li>
+<li><a href="#_aql_type_literal">2.15. AQL Type Literal</a></li>
+<li><a href="#_query">2.16. Query</a></li>
+<li><a href="#_module_element_documentation">2.17. Module Element documentation</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_introduction">1. Introduction</h2>
+<h2 id="_preface">1. Preface</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Acceleo 4 Profiler allows you to keep track of executions and see where time is consumed during a generation, thus making it easier to identify (and hopefully fix) bottlenecks.</p>
+<p>This document describe the syntax of an Acceleo 4 module.</p>
+</div>
+<div class="paragraph">
+<p>The syntax is described using the <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">Backus Naur from</a> (BNF).</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_launching_a_generation_with_the_profiler">2. Launching a generation with the profiler</h2>
+<h2 id="_syntax">2. Syntax</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_comment">2.1. Comment</h3>
 <div class="paragraph">
-<p>The first thing to do to profile an Acceleo generation is to create a Profile Configuration, which is as we will see very similar to a Launch Configuration. To create a Profile Configuration, right-click on an Acceleo module file, and select Profile As &gt; Profile Configurations&#8230;&#8203;.</p>
+<p>A comment can be used to document any part of the <a href="#_module">Module</a>. It generates nothing if placed directly or indirectly in a <a href="#_file_statement">File Statement</a>. For simplification comments will not be present in the BNF representation of the grammar.</p>
 </div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/ProfileAs.png" alt="Profile As">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_comment">Comment</a> = '[comment ' ... '/]'</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_module">2.2. Module</h3>
 <div class="paragraph">
-<p>A configuration page appears, which looks very much like the traditional launch configuration page.</p>
+<p>The module is the top level element of a .mtl file. It represent a namespace declaring <a href="#_template">Template</a> and <a href="#_query">Query</a>. The name of the module is qualified by the location of the file in the source folder.</p>
 </div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/LaunchConfiguration.png" alt="Profiler Launch Configuration">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module">Module</a> =
+
+(<a href="#_module_documentation">Module Documentation</a>)* '[module ' <a href="#_identifier">Identifier</a> '(' <a href="#_metamodel">Metamodel</a> ',' (<a href="#_metamodel">Metamodel</a>)* ')' ('extends ' <a href="#_module_reference">Module Reference</a>)? '/]'
+
+<a href="#_import">Import</a>*
+
+<a href="#_module_element">Module Element</a>*</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_identifier">2.3. Identifier</h3>
 <div class="paragraph">
-<p>There is just one additional information to enter, which is the path to the profiling result file where Acceleo will store the profiling information of subsequent executions. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
-You can simply select a folder in this dialog, in which the profile file will be created.</p>
+<p>An identifier is used to name elements that need to be identified, or reference element that can be identified.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_acceleo_profile_files">3. Acceleo Profile Files</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Acceleo stores the result of a profiled execution in a file which extension is .mtlp. This file is actually just a serialized EMF model. Let&#8217;s take a closer look at it.</p>
-</div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/ProfileFile.png" alt="Profile File">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_identifier">Identifier</a> = [a-zA-Z_][a-zA-Z_0-9]*</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_documentation">2.4. Module Documentation</h3>
+<div class="paragraph">
+<p>The module documentation should contains a description of the <a href="#_module">Module</a>.</p>
 </div>
 <div class="paragraph">
-<p>The above image shows the content of an mtlp file, and correspondances between the profiled data and the Acceleo template elements.</p>
+<p>It can also contain metadata such as the author, version, and since (the version since this <a href="#_module">Module</a> exists).</p>
 </div>
-<div class="paragraph">
-<p>For each generated file, there is one entry in the root node of the profile.</p>
-</div>
-<div class="paragraph">
-<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a [for &#8230;&#8203; ] instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_coverage_informations">4. Coverage informations</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The profile editor also provides coverage informations based on the profiling result. For each used module it shows what percentage of it has been actually used.</p>
-</div>
-<div class="paragraph">
-<p>You can double-click on the module in the profile editor (or on any module element in the profile model) to accurately see what has been used in a given module. It shows in green what has been covered by the execution and in red what has been ignored.</p>
-</div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/Coverage.png" alt="Coverage">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_documentation">Module Documentation</a> =
+
+'[**'
+
+...
+
+('@author' ...)?
+
+('@version' ...)?
+
+('@since' ...)?
+
+...
+
+'/]'</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metamodel">2.5. Metamodel</h3>
+<div class="paragraph">
+<p>This is the declaration of metamodels used by the module. Metamodels are referenced using their EPackage nsURI between simple quote.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_metamodel">Metamodel</a> = '\'' ... '\''</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_import">2.6. Import</h3>
+<div class="paragraph">
+<p>This allows a module to import other <a href="#_module">Module</a> or service classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_import">Import</a> = '[import ' <a href="#_module_reference">Module Reference</a> '/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_reference">2.7. Module Reference</h3>
+<div class="paragraph">
+<p>The module reference is a qualified reference to a <a href="#_module">Module</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_reference">Module Reference</a> = <a href="#_module_qualified_name">Module Qualified Name</a></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_qualified_name">2.8. Module Qualified Name</h3>
+<div class="paragraph">
+<p>A module&#8217;s name is qualified according to its location in the source folder of a project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_qualified_name">Module Qualified Name</a> = <a href="#_identifier">Identifier</a> ('::' <a href="#_identifier">Identifier</a>)*</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_element">2.9. Module Element</h3>
+<div class="paragraph">
+<p>A module element is either a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_element">Module Element</a> = <a href="#_template">Template</a> | <a href="#_query">Query</a></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_template">2.10. Template</h3>
+<div class="paragraph">
+<p>A template returns a String produced using its contained <a href="#_statement">Statement</a>, it can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.</p>
+<p>Also a <a href="#_module">Module</a> can contain a template used as entry point of the generation. This template will be identified with a <a href="#_comment">Comment</a> preceding the template and containing the tag '@main'.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_template">Template</a> =
+
+'[template ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ('?' <a href="#_aql_expression">AQL Expression</a>)? ('post (' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
+
+(<a href="#_statement">Statement</a>)*
+
+'[/template]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_visibility">2.11. Visibility</h3>
+<div class="paragraph">
+<p>The visibility defines the scope in which a <a href="#_module_element">Module Element</a> can be called as a service.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_visibility">Visibility</a> = 'private' | 'protected' | 'public'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameter">2.12. Parameter</h3>
+<div class="paragraph">
+<p>A parameter is used to pass a value from the caller to a callee. This value can be later referenced using its identifier.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_parameter">Parameter</a> = <a href="#_identifier">Identifier</a> ':' <a href="#_aql_type_literal">AQL Type Literal</a></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_statement">2.13. Statement</h3>
+<div class="paragraph">
+<p>A statement is a directive used to produce an output or control the execution flow.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_statement">Statement</a> =
+
+<a href="#_file_statement">File Statement</a> | <a href="#_for_statement">For Statement</a> | <a href="#_if_statement">If Statement</a> | <a href="#_let_statement">Let Statement</a> | <a href="#_protected_area">Protected Area</a> | <a href="#_expression_statement">Expression Statement</a> | <a href="#_text_statement">Text Statement</a></code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_file_statement">2.13.1. File Statement</h4>
+<div class="paragraph">
+<p>This statement is used to start the generation of a new file. Strings returned by a statement contained directly or indirectly in the execution flow, will be generated into that file.</p>
+</div>
+<div class="paragraph">
+<p>The file statement itself returns an empty String.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_file_statement">File Statement</a> =
+
+'[file ' '(' <a href="#_aql_expression">AQL Expression</a> ',' <a href="#Open Mode Kind">[Open Mode Kind]</a> (',' <a href="#_aql_expression">AQL Expression</a>)? ')' ']'
+
+(<a href="#_statement">Statement</a>)*
+
+'[/file]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_for_statement">2.13.2. For Statement</h4>
+<div class="paragraph">
+<p>This statement loops over a list of values and return the concatenation of all returned String.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_for_statement">For Statement</a> =
+
+'[for ' '(' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '|' <a href="#_aql_expression">AQL Expression</a> ')' ['separator(' <a href="#_aql_expression">AQL Expression</a> ')'] ']'
+
+(<a href="#_statement">Statement</a>)*
+
+'[/for]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_if_statement">2.13.3. If Statement</h4>
+<div class="paragraph">
+<p>This statement create a branch in the execution flow and return the String of one of its branch according to the <a href="#_aql_expression">AQL Expression</a> evaluated to true. If a condition doesn&#8217;t evaluate to a boolean an empty String is generated and an error is logged.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_if_statement">If Statement</a> =
+
+'[if ' '(' <a href="#_aql_expression">AQL Expression</a> ')' ']'
+
+(<a href="#_statement">Statement</a>)*
+
+('[elseif ' '(' <a href="#_aql_expression">AQL Expression</a> ')' ']'
+
+(<a href="#_statement">Statement</a>)*)*
+
+('[else]'
+
+(<a href="#_statement">Statement</a>)*)?
+
+'[/if]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_let_statement">2.13.4. Let Statement</h4>
+<div class="paragraph">
+<p>This statement allows to compute one or more <a href="#_aql_expression">AQL Expression</a> and reference their value using an identifier. It can be used to improve readability of the template or increase performance when using the same <a href="#_aql_expression">AQL Expression</a> many times in a block of <a href="#_statement">Statement</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_let_statement">Let Statement</a> =
+
+'[let ' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '=' <a href="#_aql_expression">AQL Expression</a> (',' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '=' <a href="#_aql_expression">AQL Expression</a>)* ']'
+
+(<a href="#_statement">Statement</a>)*)?
+
+'[/let]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_protected_area">2.13.5. Protected Area</h4>
+<div class="paragraph">
+<p>This statement declares an identified area in the generated file. If the generated file exists and a protected area with the same identifier exists in its contents, then the existing content of this area is directly returned. If it doesn&#8217;t exist, then the concatenation of the body&#8217;s statements results is returned.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_protected_area">Protected Area</a> =
+
+'[protected ' '(' <a href="#_aql_expression">AQL Expression</a> ')' ']'
+
+(<a href="#_statement">Statement</a>)*)?
+
+'[/protected]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_expression_statement">2.13.6. Expression Statement</h4>
+<div class="paragraph">
+<p>This statement returns the String representation of the evaluation of its <a href="#_aql_expression">AQL Expression</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_expression_statement">Expression Statement</a> = '[' <a href="#_aql_expression">AQL Expression</a> '/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_text_statement">2.13.7. Text Statement</h4>
+<div class="paragraph">
+<p>This is any other text outside of '[' and ']'.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aql_expression">2.14. AQL Expression</h3>
+<div class="paragraph">
+<p>This is an Acceleo Query Language expression. It is used to navigate through models and call services. In the context of Acceleo, <a href="#_template">Template</a> and <a href="#_query">Query</a> can be called as services.</p>
+</div>
+<div class="paragraph">
+<p>TODO link AQL documentation</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aql_type_literal">2.15. AQL Type Literal</h3>
+<div class="paragraph">
+<p>This is a type literal as defined in the Acceleo Query Language.</p>
+</div>
+<div class="paragraph">
+<p>TODO link AQL documentation</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query">2.16. Query</h3>
+<div class="paragraph">
+<p>A query references an <a href="#_aql_expression">AQL Expression</a> with parameters and can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_query">Query</a> =
+
+'[query ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ':' <a href="#_aql_type_literal">AQL Type Literal</a> '=' <a href="#_aql_expression">AQL Expression</a> '/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_element_documentation">2.17. Module Element documentation</h3>
+<div class="paragraph">
+<p>The documentation of a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_element_documentation">Module Element documentation</a> =
+
+'[**'
+
+...
+
+'@param ' ...
+
+...
+
+'/]'</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-31 13:39:44 +0200
+Last updated 2020-07-28 14:30:32 +0200
 </div>
 </div>
+<-- TODO there should be a better way to add the BNF language support... -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/languages/ebnf.min.js"></script>
+<script>hljs.initHighlighting()</script>
 </body>
 </html>

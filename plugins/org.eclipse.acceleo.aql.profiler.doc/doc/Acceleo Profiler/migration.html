@@ -5,8 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="Acceleo 4 Profiler User Guide">
-<title>Acceleo Profiler</title>
+<meta name="author" content="Acceleo 3 to Acceleo 4 migration guide">
+<title>Acceleo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,99 +439,651 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Acceleo Profiler</h1>
+<h1>Acceleo</h1>
 <div class="details">
-<span id="author" class="author">Acceleo 4 Profiler User Guide</span><br>
+<span id="author" class="author">Acceleo 3 to Acceleo 4 migration guide</span><br>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_launching_a_generation_with_the_profiler">2. Launching a generation with the profiler</a></li>
-<li><a href="#_acceleo_profile_files">3. Acceleo Profile Files</a></li>
-<li><a href="#_coverage_informations">4. Coverage informations</a></li>
+<li><a href="#_preface">1. Preface</a>
+<ul class="sectlevel2">
+<li><a href="#_intended_audience">1.1. Intended Audience</a></li>
+</ul>
+</li>
+<li><a href="#_how_to_migrate_acceleo_3_templates_to_acceleo_4">2. How to migrate Acceleo 3 templates to Acceleo 4</a>
+<ul class="sectlevel2">
+<li><a href="#_the_migration_tool">2.1. The migration tool</a></li>
+<li><a href="#_launching_a_migration">2.2. Launching a migration</a></li>
+</ul>
+</li>
+<li><a href="#_language_changes">3. Language Changes</a>
+<ul class="sectlevel2">
+<li><a href="#_modules">3.1. Modules</a></li>
+<li><a href="#_templates">3.2. Templates</a></li>
+<li><a href="#_query">3.3. Query</a></li>
+<li><a href="#_file_block">3.4. File Block</a></li>
+<li><a href="#_for_block">3.5. For Block</a></li>
+<li><a href="#_let_statement">3.6. Let Statement</a></li>
+<li><a href="#_elselet_blocks">3.7. ElseLet Blocks</a></li>
+<li><a href="#_invocation">3.8. Invocation</a></li>
+<li><a href="#_module_element_call">3.9. Module Element Call</a></li>
+<li><a href="#_variable">3.10. Variable</a></li>
+<li><a href="#_expressions">3.11. Expressions</a></li>
+<li><a href="#_set_and_bags">3.12. Set and Bags</a></li>
+</ul>
+</li>
+<li><a href="#_behavior_changes">4. Behavior Changes</a>
+<ul class="sectlevel2">
+<li><a href="#_modules_2">4.1. Modules</a></li>
+<li><a href="#_query_3">4.2. Query</a></li>
+<li><a href="#_let_statement_2">4.3. Let Statement</a></li>
+</ul>
+</li>
+<li><a href="#_limitations">5. Limitations</a>
+<ul class="sectlevel2">
+<li><a href="#_comments">5.1. Comments</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_introduction">1. Introduction</h2>
+<h2 id="_preface">1. Preface</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_intended_audience">1.1. Intended Audience</h3>
 <div class="paragraph">
-<p>The Acceleo 4 Profiler allows you to keep track of executions and see where time is consumed during a generation, thus making it easier to identify (and hopefully fix) bottlenecks.</p>
+<p>This guide was written to describe the behavior changes between the two versions of Acceleo, for the purpose of migrating from one to the next.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_launching_a_generation_with_the_profiler">2. Launching a generation with the profiler</h2>
+<h2 id="_how_to_migrate_acceleo_3_templates_to_acceleo_4">2. How to migrate Acceleo 3 templates to Acceleo 4</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_the_migration_tool">2.1. The migration tool</h3>
 <div class="paragraph">
-<p>The first thing to do to profile an Acceleo generation is to create a Profile Configuration, which is as we will see very similar to a Launch Configuration. To create a Profile Configuration, right-click on an Acceleo module file, and select Profile As &gt; Profile Configurations&#8230;&#8203;.</p>
+<p>The migration tool consists on a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) required to perform a migration.</p>
 </div>
-<div class="imageblock">
+</div>
+<div class="sect2">
+<h3 id="_launching_a_migration">2.2. Launching a migration</h3>
+<div class="paragraph">
+<p>The migration tool requires a fully built Acceleo 3 project as input: the project folder must contain a bin/ folder with all of the compiled (.emtl) versions of the .mtl source files.</p>
+</div>
+<div class="paragraph">
+<p>The migration jar can be run in command line with the following arguments. We assume we are in the folder containing the migration jar, and that the Acceleo project is at the same level. There is also an empty "output" folder to receive the result of the migration:</p>
+</div>
+<div class="listingblock">
 <div class="content">
-<img src="images/ProfileAs.png" alt="Profile As">
+<pre>java -jar migrator.jar &lt;myproject&gt;/&lt;sourcefolder&gt; &lt;output_folder&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A configuration page appears, which looks very much like the traditional launch configuration page.</p>
+<p>For instance, for an Acceleo 3 project in which the source templates are in the src/ folder (anywhere in the sub-folders of src/):</p>
 </div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/LaunchConfiguration.png" alt="Profiler Launch Configuration">
+<pre>java -jar migrator.jar myProject/src output</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>There is just one additional information to enter, which is the path to the profiling result file where Acceleo will store the profiling information of subsequent executions. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
-You can simply select a folder in this dialog, in which the profile file will be created.</p>
+<p>The converted .mtl files will be created in the output folder, accordingly to the folder structure in the source project.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_acceleo_profile_files">3. Acceleo Profile Files</h2>
+<h2 id="_language_changes">3. Language Changes</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_modules">3.1. Modules</h3>
+<div class="sect3">
+<h4 id="_module_name">3.1.1. module name</h4>
 <div class="paragraph">
-<p>Acceleo stores the result of a profiled execution in a file which extension is .mtlp. This file is actually just a serialized EMF model. Let&#8217;s take a closer look at it.</p>
+<p>Acceleo 3 allowed users to set the fully qualified name of the module in its declaration, such as</p>
 </div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/ProfileFile.png" alt="Profile File">
+<pre>[module qualified::module::name(...)]</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The above image shows the content of an mtlp file, and correspondances between the profiled data and the Acceleo template elements.</p>
+<p>Acceleo 4 forbids anything other than the actual module name and this will thus become.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module name(...)]</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>For each generated file, there is one entry in the root node of the profile.</p>
+<p>Both versions require the module name to be equal to the name of the containing file minus the extension.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_multiple_inheritance">3.1.2. multiple inheritance</h4>
+<div class="paragraph">
+<p>The Acceleo 3 module declaration allowed users to declare multiple "extends" modules:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module qualified::module::name(...) extends another::module, and::a:second::module]</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a [for &#8230;&#8203; ] instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
+<p>Acceleo 4 modules can only define a single extended module.</p>
+</div>
+<div class="paragraph">
+<p><strong>Only the first extended module was taken into account</strong> in Acceleo 3 so the migration just strips all but the first extended modules' name.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_module_imports">3.1.3. module imports</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed imports of modules through unqualified names. This is forbidden in Acceleo 4 and the fully qualified names of the imports are required.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_templates">3.2. Templates</h3>
+<div class="paragraph">
+<p><strong>Important notes:</strong> Every template which had duplicated signatures (same name, same argument list, different pre-condition) needs to be manually checked after migration.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Acceleo 4 does not allow duplicated signatures and has no pre-condition, so duplicated templates might have to be combined into a single one with their pre-condition as an <code>If-Else</code> block inside.</p>
+</li>
+<li>
+<p>Initialization blocks could be different on duplicated templates, depending on the pre-condition. The migrated <code>Let</code> block thus needs to be different per branch of the above <code>If-Else</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 templates will automatically override their super-module templates if the signature matches. This was not the case in Acceleo 3 and matching templates thus need verified manually.</p>
+</div>
+<div class="sect3">
+<h4 id="_overriding">3.2.1. Overriding</h4>
+<div class="paragraph">
+<p>Acceleo 3 templates allowed users to override an arbitrary template through the "overrides" keyword:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) overrides anotherTemplateName]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only allows a template of name "xyz" to override a template from the extended module with the same "xyz" name.</p>
+</div>
+<div class="paragraph">
+<p>Furthermore, Acceleo 4 templates will automatically override their super-module&#8217;s public or protected templates if they have the same signature.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pre_conditions">3.2.2. Pre-conditions</h4>
+<div class="paragraph">
+<p>Acceleo 4 does not allow pre-conditions on templates.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post_treatment">3.2.3. Post-treatment</h4>
+<div class="paragraph">
+<p>Acceleo 3 used an implicit String-typed variable so the post expression could be a simple call without a variable:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) post (trim())]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 doesn&#8217;t allow implicit variables. The result of the template call will be stored in the <code>self</code> variable and the migration will thus transform this expression into:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) post (self.trim())]</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_init_block">3.2.4. Init block</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed variable initialization blocks on the template:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) {var1 = 'string'; var2 = param1.feature;}]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 removes the initialization blocks altogether, so the variable declarations must be manually transformed into a <code>let</code> block at the start of the template (this is not supported by the migration tool).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_namesakes">3.2.5. Namesakes</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed multiple templates with the same name and same argument list to co-exist within the same module, as long as their pre-condition differed.</p>
+</div>
+<div class="paragraph">
+<p>Though Acceleo 4 will allow multiple templates with the same signature to exist in a module, only the last one will ever be resolved for a call or override, all subsequent being ignored.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query">3.3. Query</h3>
+<div class="sect3">
+<h4 id="_java_services">3.3.1. Java services</h4>
+<div class="paragraph">
+<p>The best practice for Acceleo 3 was to wrap java services inside of a query. The special <code>invoke</code> service was used to this end.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[query public hasStereotype(element : uml::Element, stereotypeName : String) : Boolean =
+	invoke('org.eclipse.acceleo.module.sample.services.UMLServices', 'hasStereotype(org.eclipse.uml2.uml.Element, java.lang.String)', Sequence{element, stereotypeName})
+/]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 allows users to directly import java services.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_block">3.4. File Block</h3>
+<div class="paragraph">
+<p>The second argument for the file block in Acceleo 3 was a boolean (false = overwrite the file, true = append at the end of the file).</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 uses an enumeration, which allows the keyword "overwrite", "append" or "create" instead.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_for_block">3.5. For Block</h3>
+<div class="sect3">
+<h4 id="_simplified_syntax">3.5.1. Simplified Syntax</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed for loops in two formats:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (i : E | expr)]...[/for]</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (expr)]...[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the second case, the loop variable was <code>self</code>.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only allows for the first of these two formats. Note that typing the iteration variable is optional in Acceleo 4.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_iteration_count">3.5.2. Iteration count</h4>
+<div class="paragraph">
+<p>Acceleo 3 defined an implicit variable, <code>i</code>, that held the current iteration count.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (feature : ecore::EStructuralFeature | class.eStructuralFeatures)]
+iteration number [i/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 does not define any similar variable.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_before_separator_after">3.5.3. before, separator, after</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed users to specify a <code>before</code> expression that would be inserted right before the content generated by the loop body <em>if the loop had any iteration</em>. An <code>after</code> that would similarly inserted after the loop body if it generated any content, and finally a <code>separator</code> which content would be inserted in-between each iteration result.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (number : Integer | Sequence{1, 2, 3}) before ('int[] array = new int[') separator (', ') after ('];')][number/][/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only supports <code>separator</code>. This is not supported by the migration tool. To translate that in Acceleo 4 you could convert <code>before</code> and <code>after</code> into a <code>Let</code> holding the content of the iteration expression, then a <code>If</code> only generating before and after if the collection is not empty.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pre_condition">3.5.4. Pre-condition</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed users to specify a pre-condition that would be evaluated every iteration and that would prevent all generation for that iteration if <code>false</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (number : Integer | Sequence{1, 2, 3}) ? (isEven(number))]
+[number/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 does not have pre-conditions. This could be manually converted to an <code>If</code> at the start of the for body (this is not supported by the migration tool).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_init_block_2">3.5.5. Init block</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed variable initialization blocks on the for:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (feature : ecore::EStructuralFeature | class.eStructuralFeatures) {var : String = 'string'; className : String = class.name;}]
+[number/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 removes the initialization blocks altogether, so the variable declarations must be manually transformed into a <code>let</code> block before the <code>For</code> block (this is not supported by the migration tool).</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> the initialization block was evaluated before the for itself, and not for every loop.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ranges">3.5.6. Ranges</h4>
+<div class="paragraph">
+<p>Acceleo 4 does not support ranges, e.g.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (item : Integer | Sequence{1..5})]
+[item/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Such for blocks are ignored by the migration tool.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_let_statement">3.6. Let Statement</h3>
+<div class="paragraph">
+<p>Acceleo 3 only allowed a single variable per <code>Let</code>, forcing users to have multiple nested <code>Let</code> blocks to define more. The migration could aggregate multiple nested blocks into one with multiple variables if the nested blocks don&#8217;t use one of the outer `Let&#8217;s variable.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_elselet_blocks">3.7. ElseLet Blocks</h3>
+<div class="paragraph">
+<p>Acceleo 4 does not support elselet blocks, they are ignored by the migration tool.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_invocation">3.8. Invocation</h3>
+<div class="paragraph">
+<p>Acceleo 3 made use of implicit variables allowing module writers to avoid always specifying the target of an expression or call:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(class : ecore::EClass)]
+[name/] is equivalent to [class.name/] or [self.name/]
+[eAllContents()/] is equivalent to [class.eAllContents()/] or [self.eAllContents()/]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The implicit variable is always <code>self</code>, but the value of <code>self</code> may not be intuitive in all cases.</p>
+</div>
+<div class="paragraph">
+<p>The migration replaces the implicit variable with the correct variable for Acceleo 4.</p>
+</div>
+<div class="sect3">
+<h4 id="_template">3.8.1. Template</h4>
+<div class="paragraph">
+<p>Acceleo 3 : <code>self</code> is the first argument of the template.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the first argument of the template</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_2">3.8.2. Query</h4>
+<div class="paragraph">
+<p>Acceleo 3 : <code>self</code> is the first argument of the query.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the first argument of the query</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_for">3.8.3. For</h4>
+<div class="paragraph">
+<p>Acceleo 3 : <code>self</code> has the same value as the iteration variable.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the iteration variable</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_if">3.8.4. If</h4>
+<div class="paragraph">
+<p>Acceleo 3 : The value of <code>self</code> is not changed within the <code>if</code> scope and remains the value of <code>self</code> outside of the <code>if</code>.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the parent context</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_let">3.8.5. let</h4>
+<div class="paragraph">
+<p>Acceleo 3 : The value of <code>self</code> is not changed within the <code>let</code> scope and remains the value of <code>self</code> outside of the <code>let</code>.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the parent context</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_expression">3.8.6. Expression</h4>
+<div class="paragraph">
+<p>Acceleo 3/OCL : The value of <code>self</code> is defined by the current Acceleo scope and will not be altered by OCL.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4/AQL : The migration tool makes the variable explicit, using the parent context</p>
+</div>
+<div class="paragraph">
+<p>You can have a look at the MTL to AQL <a href="https://www.eclipse.org/acceleo/documentation/aql.html#MigratingfromMTLqueries">migration guide</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_element_call">3.9. Module Element Call</h3>
+<div class="sect3">
+<h4 id="_template_invocation">3.9.1. Template invocation</h4>
+<div class="paragraph">
+<p>Acceleo 3 allowed special template calls such as the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplate()]
+	[anotherTemplate() before ('inserted before generated body') separator ('in-between') after ('inserted after generated body')/]
+[/template]
+
+[template protected anotherTemplate()]
+	generated body
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both <code>before</code> and <code>after</code> expression are handled by Acceleo 3 and will respectively generate their content before and after the callee&#8217;s generated text. This is true even if the callee does not generate any text.</p>
+</div>
+<div class="paragraph">
+<p><code>separator</code> is not implemented by the engine so the migration strips it entirely.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_invocation">3.9.2. Query invocation</h4>
+<div class="paragraph">
+<p>Similar to template invocations, query invocations support <code>before</code>, <code>separator</code> and <code>after</code> expressions. None of which is implemented in the Acceleo 3 generation engine so they are stripped entirely.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_variable">3.10. Variable</h3>
+<div class="paragraph">
+<p>Acceleo 3 supported unqualified type names for the variables.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only accepts qualified types for the classifiers and the above becomes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : ecore::EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_expressions">3.11. Expressions</h3>
+<div class="paragraph">
+<p>Acceleo 3 was using OCL as the underlying expression language, while Acceleo 4 is using AQL. Please look at the <a href="https://www.eclipse.org/acceleo/documentation/#MigratingfromMTLqueries">AQL Documentation</a> for more information on migrating OCL expressions to AQL.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_set_and_bags">3.12. Set and Bags</h3>
+<div class="paragraph">
+<p>The OCL collection types Set and Bag are not anymore available in AQL, which supports only two types: Sequence and OrderedSet. All collections are ordered.
+Thus the migration tool translates each Set into an OrderedSet and each Bag into a Sequence.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_coverage_informations">4. Coverage informations</h2>
+<h2 id="_behavior_changes">4. Behavior Changes</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_modules_2">4.1. Modules</h3>
+<div class="sect3">
+<h4 id="_inheritance_behavior">4.1.1. inheritance behavior</h4>
 <div class="paragraph">
-<p>The profile editor also provides coverage informations based on the profiling result. For each used module it shows what percentage of it has been actually used.</p>
+<p>In Acceleo 3, once an overriding module (child) called a public or protected template of its extended module (parent), the execution flow would never come down to the child again until we <code>returned</code> out of the callee. This is contrary to other Object-oriented languages in which a <code>super</code> template could call down an <code>overriden</code> other template from the child when necessary.</p>
 </div>
 <div class="paragraph">
-<p>You can double-click on the module in the profile editor (or on any module element in the profile model) to accurately see what has been used in a given module. It shows in green what has been covered by the execution and in red what has been ignored.</p>
+<p>If you consider the following simplified modules:</p>
 </div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/Coverage.png" alt="Coverage">
+<pre>[module parentModule()/]
+
+[template public aTemplate()]
+	[anotherTemplate()/]
+[/template]
+
+[template protected anotherTemplate()]
+	parent behavior
+[/template]</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module childModule() extends parentModule/]
+
+[template public main()]
+	[aTemplate()/]
+[/template]
+
+[template protected anotherTemplate()]
+	child behavior
+[/template]</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_3">4.2. Query</h3>
+<div class="sect3">
+<h4 id="_validation">4.2.1. Validation</h4>
+<div class="paragraph">
+<p>In Acceleo 3, the return type of a query was not validated at compile time, so it was very easy for ClassCastExceptions to occur at runtime or for invalid templates to be written with the error only detected at runtime.</p>
+</div>
+<div class="paragraph">
+<p>For example, the following will fail when we try to generate, but is valid for the compiler:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(c : ecore::EClass)]
+	[file (c.name.concat('.java'), false, 'UTF-8')]
+	[for (attribute : ecore::EAttribute | getFeatures(c))]
+		attribute name : [attribute.name/] [if (attribute.iD)]is id attribute[/if]
+	[/for]
+	[/file]
+[/template]
+
+[query private getFeatures(c : ecore::EClass) : Set(ecore::EAttribute) = c.eStructuralFeatures/]</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.</p>
+<p>The template expected "getFeatures" to return a Set of Attributes, but the actual type is a set of EStructuralFeature. This will fail as soon as we try to generate for a class containing both attributes and references.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 validates the return type of the query&#8217;s body expression.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cache">4.2.2. Cache</h4>
+<div class="paragraph">
+<p>The MTL specification enforces that "A query is required to produce the same result each time it is invoked with the same arguments.". The result of a query call was thus cached in Acceleo 3, and never reevaluated. (This behavior could be disabled through a preference for Acceleo 3.)</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 will always reevaluate the query&#8217;s body even if the same argument list is passed twice.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_let_statement_2">4.3. Let Statement</h3>
+<div class="paragraph">
+<p>The Acceleo 3 let statement was equivalent to an "instance of" condition check to enter a block.</p>
+</div>
+<div class="paragraph">
+<p>If we consider the following let block:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In Acceleo 3, if the result of evaluating <code>anotherVar.eContainer()</code> is of type <code>EPackage</code> (the declared type of variable <code>var</code>), then this block will output the result of evaluating its body. In any other event, this would output no text and cause no failure as the block would be simply ignored if the types do not match.</p>
+</div>
+<div class="paragraph">
+<p>In Acceleo 4, this same let block will cause validation errors if the type of <code>anotherVar.eContainer()</code> cannot be an <code>EPackage</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_limitations">5. Limitations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_comments">5.1. Comments</h3>
+<div class="paragraph">
+<p>Comments are mostly ignored by the migration tool, except for module / template / queries documentation.</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-31 13:39:44 +0200
+Last updated 2020-07-31 12:51:43 +0200
 </div>
 </div>
 </body>

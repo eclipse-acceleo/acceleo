@@ -1,0 +1,285 @@
+= Acceleo
+Acceleo 4 Language
+
+:source-highlighter: highlightjs
+:listing-caption: Listing
+:toc:
+:toclevels: 3
+:sectnums:
+:icons: image
+
+== Preface
+
+=== Intended Audience
+
+This guide was written to describe the elements composing the Acceleo 4 templating language. This will not delve into the Acceleo Query Language (AQL) description.
+
+== Module
+
+An Acceleo module is defined in its own file and is the main container for generation <<Template,templates>> (that will generate text) and <<Query,queries>> (which purpose is to extract information from the input models).
+
+The name of the module will be qualified according to its location in the source folder of the project.
+
+An Acceleo file must start with the module declaration in the following format:
+
+----
+[**
+<module documentation>
+@author <author name>
+@version <version number>
+@since <first version in which this module appeared>
+/]
+[module <module name>('http://metamodel/URI/1', 'http://metamodel/URI/1', <additional_URIs>) extends <other module qualified name>]
+----
+
+Module documentation::
+The documentation of a module is optional, and can contain both the description of the module and optional metadata such as the author and version number.
+Module name::
+The module name can only contain alphanumeric (and underscore `_`) characters and cannot start with a number.
+Metamodel URIs::
+The metamodel(s) from which this module will take types. The list has to be exhaustive: if multiple connected metamodels are used, then all must be listed in the module declaration.
+Extends::
+The qualified name of another module. Acceleo allows you to override _protected_ and _public_ visibility templates from the extended module. Extending multiple modules is not allowed.
+*Note* that the extended module's name has to be qualified, even when overriding modules located in the same package.
+
+See also the <<syntax#_module,Module syntax documentation>>.
+
+=== Imports
+
+An Acceleo module can import any number of other modules or Java service class. All _public_ visibility templates and queries from the imported module(s) can be called by the importer, for Java class all public methods can be used a service.
+
+Importing modules can be done right after the module declaration line and requires the following format:
+
+----
+[import <other module or Java class qualified name>/]
+----
+
+*Note* that modules can only be referenced through their qualified name, even if they are located in the same package.
+
+See also the <<syntax#_import,Import>> as well as the <<syntax#_module_reference,Module Reference>> syntax documentation.
+
+=== Module Elements
+
+Following the imports declaration, any number of module element can now be written as the body of our Module. Please refer to <<Template>> and <<Query>> sections below for more information.
+
+== Template
+
+A Template is a set of Acceleo statements used to generate text. It is delimited by `[template ...][/template]` tags.
+
+The template signature must include the visbility and the name, and can optionally define a post-treatment expression.
+
+----
+[**
+<template documentation>
+@param class <documentation of the parameter>
+/]
+[template public generate(class : ecore::EClass) post (self.trim())]
+[/template]
+----
+
+visibility::
+One of
++
+* public : Public templates will be visible from all modules importing or extending the module declaring them. They can be overridden by extending modules.
+* protected : Protected templates will only be visible from extending modules and can be overridden.
+* private : Private templates are only visible by the defining module and cannot be overridden.
+name::
+The name of the template. Only alphanumeric (and underscore `_`) characters are allowed, and the name cannot start with a number.
+arguments::
+Arguments follow the <<_variable,format for variables>>.
+post::
+The post-treatment expression will be called on the result of the template (stored in variable `self`) and needs to be applicable to a String.
+
+*The result of a template is always a String.*
+
+See also the <<syntax#_template,Template syntax documentation>>.
+
+=== Main template
+
+Acceleo defines a special metadata tag on templates to specify the main entry point(s) of a generation, the template(s) that will be called first during the workflow. This metadata tag, `@main`, needs to be in the comments preceding the template, or within the template documentation
+
+Such templates do not necessarily contain a <<_file_block,File>> block themselves.
+
+Example:
+
+----
+[**
+<template documentation>
+@param class <param documentation>
+@main
+/]
+[template public generate(class : ecore::EClass)]
+[file (class.name + '.txt', overwrite)]
+Class [class.name/] structural features:
+[for (feature | class.eStructuralFeatures)]
+[feature.name/]
+[/for]
+[/file]
+[/template]
+----
+
+== Query
+
+A query is a re-useable AQL expression that can return any type of Object. They are commonly used to extract information from the input models. A query is enclosed in a `[query ...]` tag.
+
+The query signature must include the visibility and its name.
+
+----
+[**
+<query documentation>
+@param class <documentation of the parameter>
+/]
+[query public getPublicProperties(class : uml::Class) : Set(uml::Property) =
+	class.attribute->select(property : uml::Property | property.visibility = uml::VisbilityKind::public)
+/]
+----
+
+visibility::
+One of
++
+* public : Public templates will be visible from all modules importing or extending the module declaring them. They can be overridden by extending modules.
+* protected : Protected templates will only be visible from extending modules and can be overridden.
+* private : Private templates are only visible by the defining module and cannot be overridden.
+name::
+The name of the query. Only alphanumeric (and underscore `_`) characters are allowed, and the name cannot start with a number.
+arguments::
+Arguments follow the <<_variable,format for variables>>.
+return type::
+The return type describes the kind of object this query is expected to return. If the expression does not return an object of the accurate type, the evaluation will fail at runtime.
+
+See also the <<syntax#_query,Query syntax documentation>>.
+
+== File Block
+
+File blocks are used to tell the Acceleo engine it must generate the body of the `[file ...]` block in an actual file.
+
+----
+[file (<uri>, <open mode>, <charset>)][/file]
+----
+
+uri::
+An AQL expression denoting the output file name. Must evaluate to a String.
+open mode::
+The open mode for the file. This can be one of:
++
+* *(Not Supported Yet)* append : Append to the end of the file if it already exists, create it otherwise.
+* overwrite : Overwrite the whole file if it already exists, create it otherwise.
+* create : Do not change the file if it already exists, create it otherwise.
+charset::
+This can be used to tell Acceleo which charset to use for the generated file. This is optional and will default to UTF-8
+
+Example:
+
+----
+[template public generate(class : ecore::EClass)]
+[file (class.name + '.java', append, 'UTF-8')]
+[/file]
+[/template]
+----
+
+*Note* that the file will only be generated if the engine actually evaluates the file block. For example, if the template containing that block is never called, or if the file block is included in an `If` block which condition evalutes to `false`, then no file will be created.
+
+See also the <<syntax#_file_statement,File Statement syntax documentation>>.
+
+== For loops
+
+For loops in Acceleo need to be expressed using the following syntax:
+
+----
+[for (<variable> | <iteration expression>) separator(<separator expression>)]...[/for]
+----
+
+variable::
+The variable follows the <<_variable,format for variables>>. The variable type must match the result of the iteration expression. If the expression returns a collection of Strings, then the variable will be of type String. Because of this, typing the variable is optional.
+iteration expression::
+An AQL expression returning a collection of elements on which to iterate. If the expression doesn't return a collection but a single element, it will be used to iterate only once.
+separator::
+The separator expression will be evaluated to insert content in-between the content generated for each iteration of the for body. It will not be generated if the for loop doesn't generate text or only generates one iteration worth of content.
+
+Example:
+
+----
+[template public generate(class : ecore::EClass)]
+[for (feature | class.eStructuralFeatures)]
+[/for]
+[/template]
+----
+
+See also the <<syntax#_for_statement,For Statement syntax documentation>>.
+
+== If conditions
+
+The `If` statement in Acceleo uses the following syntax:
+
+----
+[if (condition)]
+[elseif (condition)]
+[else]
+[/if]
+----
+
+`elseif` and `else` are both optional. If one of the `condition` expressions does not evaluate to a boolean an error will be logged and nothing will be generated for that `if` block.
+
+See also the <<syntax#_if_statement,If Statement syntax documentation>>.
+
+== Let block
+
+Acceleo `Let` blocks use the following syntax:
+
+----
+[let <variable1> = <init expression>, <variable2> = <init expression>]
+[/let]
+----
+
+`Let` blocks allow template writers to define temporary variables that will be visible within the scope of the block.
+
+The variables follow the <<_variable,format for variables>>. All of their typing is optional since they must match the return type of their initialization expression.
+
+*Note* that all variables are immutable. Nested `Let` blocks can override the value of a variable within their own scope, but the variable will go back to its former value once outside of the nested `Let`. This will produce a warning during validation.
+
+See also the <<syntax#_let_statemnet,Let Statement syntax documentation>>.
+
+== Protected Area
+
+A protected area defines a set of statements that should only be generated if the file doesn't exist on disk or it does not contain an area with the specified protected area's identifier.
+
+Protected areas allow module writers to create a "safe" part of the generated file that can be modified directly in the generated file, without fear of these manual modifications to be lost during subsequent generations.
+
+----
+[comment @main/]
+[template public generate(class : ecore::EClass)]
+[file (class.name + '.java', overwrite, 'UTF-8')/]
+// [protected (class.name + ' imports')]
+imports java.util.List;
+// [/protected]
+
+public class [class.name.toUpperFirst()/] {
+
+}
+[/file]
+[/template]
+----
+
+The expression within the protected block's signature serves as the protected area's identifier and *must be unique* in the generated file's scope.
+
+*There must be nothing present on the line after the protected area's signature.* Otherwise, everything following said signature will be considered to be part of the area's identifier by the engine and the code will not be properly protected.
+
+Please also note that the protected area's first and last line are marked as comments in the generated code (by generating `//` at the start of their respective line, since this is Java code). This is to avoid generating invalid Java code as the markers will be present in the generated file's contents.
+
+== Variable
+
+Acceleo 4 variables use the AQL syntax and inference logic for their typing.
+
+----
+<name> : <type>
+----
+
+name::
+Name of the variable. Only alphanumeric (and underscore`_`) characters are allowed, and the name cannot start with a number.
+type::
+Type of the variable. Four different kind of types are accepted
++
+* primitive : Integer, Double, String, Boolean
+* collection : Sequence, OrderedSet. Collection types have to be further specified with their content types, such as Sequence(String) for a list of String elements.
+* eclassifier : in the form <epackage_name>::<classifier_name> such as ecore::EClass.
+* union type : in the form {<epackage_name>::<classifier_name> | <epackage_name>::<classifier_name> | ...}. This kind of typing describes a variable that can be either one of the _n_ specified classifiers. e.g. {ecore::EAttribute | ecore::EReference }.
