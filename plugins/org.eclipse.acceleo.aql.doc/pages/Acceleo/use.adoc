@@ -1,0 +1,44 @@
+Acceleo 4 can be used programmatically and for instance integrated in other products. 
+
+=== Parsing
+
+[source,java]
+---------
+URI destination = URI.createURI(...);
+environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), destination);
+IQualifiedNameResolver moduleResolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), environment.getQueryEnvironment());
+environment.setModuleResolver(moduleResolver);
+Module module = environment.getModule(qualifiedName);
+---------
+
+
+=== Validation
+
+[source,java]
+----
+AcceleoValidator validator = new AcceleoValidator(environment);
+List<IValidationMessage> messages = validator.validate(astResult, qualifiedName).getValidationMessages();
+----
+
+=== Completion
+
+[source,java]
+----
+AcceleoCompletor completor = new AcceleoCompletor();
+String source = ...;
+List<ICompletionProposal> proposals = completor.getProposals(environment, source, position);
+----
+
+=== Generation
+
+[source,java]
+----
+AcceleoEvaluator evaluator = new AcceleoEvaluator(environment);
+ResourceSetImpl rs = new ResourceSetImpl();
+Resource model = rs.getResource(..., true);
+AcceleoUtil.generate(evaluator, environment, module, model);
+----
+
+=== Unit test module
+
+You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/acceleo-aql/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java?h=acceleo-aql[FileStatementTests] and the corresponding https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/acceleo-aql/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement?h=acceleo-aql[folder].

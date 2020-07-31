@@ -267,13 +267,11 @@ This is any other text outside of '[' and ']'.
 
 This is an Acceleo Query Language expression. It is used to navigate through models and call services. In the context of Acceleo, <<Template>> and <<Query>> can be called as services.
 
-TODO link AQL documentation
+See the https://www.eclipse.org/acceleo/documentation/aql.html[AQL documentation] for more details about the language itself, the full list of standard services, and the differences with Acceleo/MTL.
 
 === AQL Type Literal
 
 This is a type literal as defined in the Acceleo Query Language.
-
-TODO link AQL documentation
 
 === Query
 

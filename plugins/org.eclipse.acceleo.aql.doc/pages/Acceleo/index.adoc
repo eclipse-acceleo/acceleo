@@ -1,0 +1,50 @@
+= Acceleo
+Acceleo 4 User Guide
+:toc:
+:toclevels: 3
+:toc-title: Table of Content
+:sectnums:
+:icons: font
+:source-highlighter: highlightjs
+:listing-caption: Listing
+
+<<<
+
+== Introduction
+
+Acceleo 4 is a a text generator based on templates. 
+It can be used to generate any kind of text file: code, configuration, documentation,...
+
+The template consists of imperative statements like conditionals, loops, and navigation expression used to retrieve data from models. 
+
+When generating, the engine use templates  statements and also replace navigation expressions by their values in order to produce the output text. 
+
+== Installation
+
+include::install.adoc[]
+
+== Getting Started
+
+include::start.adoc[]
+
+== The Acceleo Tooling
+
+include::tool.adoc[]
+
+== The Acceleo Language
+You can read to the link:language.html[language documentation] to understand Acceleo 4 language specificity. If you are looking for the syntax quick reference you can check the link:syntax.html[syntax page].
+
+include::language.adoc[]
+include::syntax.adoc[]
+
+== Launching an Acceleo generation
+
+include::generate.adoc[]
+
+== Using Acceleo 4 programmatically
+
+include::use.adoc[]
+
+== Migrate Acceleo 3 templates to Acceleo 4
+
+include::migration.adoc[]
