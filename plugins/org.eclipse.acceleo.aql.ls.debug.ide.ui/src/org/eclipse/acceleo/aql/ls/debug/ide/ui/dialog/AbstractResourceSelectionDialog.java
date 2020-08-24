@@ -50,6 +50,48 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 
 	/**
+	 * Filters {@link WorkbenchContentProvider}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private final class FilteredContentProvider extends WorkbenchContentProvider {
+		@Override
+		public Object[] getChildren(Object element) {
+			final List<Object> res = new ArrayList<>();
+			for (Object obj : super.getChildren(element)) {
+				if (isValidTree(obj)) {
+					res.add(obj);
+				}
+			}
+			return res.toArray();
+		}
+
+		@Override
+		public boolean hasChildren(Object element) {
+			return element instanceof IContainer && getChildren(element).length > 0;
+		}
+
+		private boolean isValidTree(Object obj) {
+			boolean res = false;
+
+			if (obj instanceof IResource && !((IResource)obj).isDerived()) {
+				if (isValid((IResource)obj)) {
+					res = true;
+				} else {
+					for (Object child : super.getChildren(obj)) {
+						if (isValidTree(child)) {
+							res = true;
+							break;
+						}
+					}
+				}
+			}
+
+			return res;
+		}
+	}
+
+	/**
 	 * Listen to selection changes of the container tree.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -90,6 +132,11 @@ public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 	private static final int TABLE_MINIMUM_WIDTH = 200;
 
 	/**
+	 * Tells if only file selection is allowed.
+	 */
+	protected boolean onlyFileSelection;
+
+	/**
 	 * The file {@link Text}.
 	 */
 	private Text resourceText;
@@ -105,26 +152,25 @@ public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 	private String resourceName;
 
 	/**
-	 * Tells if only file selection is allowed.
-	 */
-	protected boolean onlyFileSelection;
-
-	/**
 	 * Creates a file selection dialog.
 	 * 
 	 * @param parentShell
 	 *            the parent {@link Shell}
+	 * @param message
+	 *            the message
 	 * @param title
 	 *            the title
 	 * @param defaultResourceName
 	 *            the default resource name
+	 * @param onlyFile
+	 *            tells if only file selection is allowed
 	 */
 	public AbstractResourceSelectionDialog(Shell parentShell, String title, String message,
-			String defaultResourceName, boolean onlyFileSelection) {
+			String defaultResourceName, boolean onlyFile) {
 		super(parentShell, title, null, message, MessageDialog.QUESTION, new String[] {
 				IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0);
 		this.defaultResourceName = defaultResourceName;
-		this.onlyFileSelection = onlyFileSelection;
+		this.onlyFileSelection = onlyFile;
 	}
 
 	@Override
@@ -141,38 +187,7 @@ public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 		gdTable.minimumWidth = TABLE_MINIMUM_WIDTH;
 		gdTable.minimumHeight = TABLE_MINIMUM_HEIGHT;
 		tree.setLayoutData(gdTable);
-		containerTreeViewer.setContentProvider(new WorkbenchContentProvider() {
-			@Override
-			public Object[] getChildren(Object element) {
-				final List<Object> res = new ArrayList<>();
-				for (Object obj : super.getChildren(element)) {
-					if (isValidTree(obj)) {
-						res.add(obj);
-					}
-				}
-				return res.toArray();
-			}
-
-			@Override
-			public boolean hasChildren(Object element) {
-				return element instanceof IContainer && getChildren(element).length > 0;
-			}
-
-			private boolean isValidTree(Object obj) {
-				if (obj instanceof IResource && !((IResource)obj).isDerived()) {
-					if (isValid((IResource)obj)) {
-						return true;
-					} else {
-						for (Object child : super.getChildren(obj)) {
-							if (isValidTree(child)) {
-								return true;
-							}
-						}
-					}
-				}
-				return false;
-			}
-		});
+		containerTreeViewer.setContentProvider(new FilteredContentProvider());
 
 		containerTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
 		containerTreeViewer.addSelectionChangedListener(new ContainerSelectionChangedListener());
@@ -243,11 +258,11 @@ public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 	/**
 	 * Finds an actual resource for the given name. Cannot return null.
 	 * 
-	 * @param defaultResourceName
-	 *            the resource name
+	 * @param defaultName
+	 *            the default resource name
 	 * @return the resource
 	 */
-	protected abstract IResource findResource(String defaultResourceName);
+	protected abstract IResource findResource(String defaultName);
 
 	/**
 	 * Checks whether or not the resource can be displayed. If yes its containers will be displayed anyway.

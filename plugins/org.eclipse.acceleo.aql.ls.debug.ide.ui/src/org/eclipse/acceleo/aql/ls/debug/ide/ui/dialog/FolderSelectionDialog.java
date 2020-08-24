@@ -24,6 +24,16 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class FolderSelectionDialog extends AbstractResourceSelectionDialog {
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param parentShell
+	 *            the prent {@link Shell}
+	 * @param title
+	 *            the title
+	 * @param defaultResourceName
+	 *            tells if only files can be selected.
+	 */
 	public FolderSelectionDialog(Shell parentShell, String title, String defaultResourceName) {
 		super(parentShell, title, "Select a folder.", defaultResourceName, false);
 	}

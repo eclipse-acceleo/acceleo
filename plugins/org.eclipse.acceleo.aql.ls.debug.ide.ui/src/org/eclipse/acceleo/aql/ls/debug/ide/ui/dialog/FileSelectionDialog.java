@@ -24,8 +24,25 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class FileSelectionDialog extends AbstractResourceSelectionDialog {
 
-	private Object fileExtension;
+	/**
+	 * The file extension to filter.
+	 */
+	private String fileExtension;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param parentShell
+	 *            the parent {@link Shell}
+	 * @param title
+	 *            the title
+	 * @param defaultResourceName
+	 *            the default resource name
+	 * @param fileExtension
+	 *            the file extension to filter
+	 * @param onlyFileSelection
+	 *            tells if only files can be selected
+	 */
 	public FileSelectionDialog(Shell parentShell, String title, String defaultResourceName,
 			String fileExtension, boolean onlyFileSelection) {
 		super(parentShell, title, "Select a file.", defaultResourceName, onlyFileSelection);

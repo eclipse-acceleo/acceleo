@@ -54,24 +54,24 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	protected String module;
 
 	/**
-	 * The initial module.
-	 */
-	private String initialModule;
-
-	/**
 	 * The model resource.
 	 */
 	protected String model;
 
 	/**
-	 * The initial model.
-	 */
-	private String initialModel;
-
-	/**
 	 * The destination.
 	 */
 	protected String destination;
+
+	/**
+	 * The initial module.
+	 */
+	private String initialModule;
+
+	/**
+	 * The initial model.
+	 */
+	private String initialModel;
 
 	/**
 	 * The initial destination.

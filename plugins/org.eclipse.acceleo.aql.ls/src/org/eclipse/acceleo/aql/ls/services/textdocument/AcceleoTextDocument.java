@@ -425,7 +425,7 @@ public class AcceleoTextDocument {
 	// FIXME the "synchronized" here is an ugly but convenient way to ensure that a validation finishes before
 	// any other is triggered. Otherwise a validation can push imports which invalidates the services lookup
 	// for another validation
-	private synchronized static IAcceleoValidationResult validate(IAcceleoEnvironment acceleoEnvironment,
+	private static synchronized IAcceleoValidationResult validate(IAcceleoEnvironment acceleoEnvironment,
 			AcceleoValidator acceleoValidator, AcceleoAstResult acceleoAstResult) {
 		String moduleQualifiedNameForValidation = VALIDATION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR
 				+ acceleoAstResult.getModule().getName();

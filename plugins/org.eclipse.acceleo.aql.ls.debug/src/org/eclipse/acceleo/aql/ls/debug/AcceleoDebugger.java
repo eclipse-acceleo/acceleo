@@ -57,6 +57,55 @@ import org.eclipse.swt.widgets.Display;
 public class AcceleoDebugger extends AbstractDSLDebugger {
 
 	/**
+	 * The generate {@link Runnable}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private final class GenerateRunnable implements Runnable {
+
+		@Override
+		public void run() {
+			final Module module = astResult.getModule();
+			final long threadID = Thread.currentThread().getId();
+			spawnRunningThread(threadID, Thread.currentThread().getName(), module);
+			try {
+				if (isNoDebug()) {
+					generateNoDebug(environment, module, model);
+				} else {
+					evaluator = new AcceleoDebugEvaluator(environment);
+					AcceleoUtil.generate(evaluator, environment, module, model);
+				}
+			} finally {
+				// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
+				// which cause makes the JobManager to stall and prevents the termination of the LSP
+				// process. By launching the termination in the UI thread in sync we allow the jobs to
+				// finish first.
+				Display.getDefault().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						terminate(threadID);
+						terminated();
+					}
+				});
+			}
+
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			if (workspace != null) {
+				IContainer container = workspace.getRoot().getContainerForLocation(new Path(environment
+						.getDestination().toFileString()));
+				if (container != null) {
+					try {
+						container.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+					} catch (CoreException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Acceleo Debugger.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -204,53 +253,21 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 	@Override
 	public void start() {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				final Module module = astResult.getModule();
-				final long threadID = Thread.currentThread().getId();
-				spawnRunningThread(threadID, Thread.currentThread().getName(), module);
-				try {
-					if (isNoDebug()) {
-						generateNoDebug(environment, module, model);
-					} else {
-						evaluator = new AcceleoDebugEvaluator(environment);
-						AcceleoUtil.generate(evaluator, environment, module, model);
-					}
-				} finally {
-					// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
-					// which cause makes the JobManager to stall and prevents the termination of the LSP
-					// process. By launching the termination in the UI thread in sync we allow the jobs to
-					// finish first.
-					Display.getDefault().syncExec(new Runnable() {
-						@Override
-						public void run() {
-							terminate(threadID);
-							terminated();
-						}
-					});
-				}
-
-				IWorkspace workspace = ResourcesPlugin.getWorkspace();
-				if (workspace != null) {
-					IContainer container = workspace.getRoot().getContainerForLocation(new Path(environment
-							.getDestination().toFileString()));
-					if (container != null) {
-						try {
-							container.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-						} catch (CoreException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}, "Acceleo Debug Thread").start();
+		new Thread(new GenerateRunnable(), "Acceleo Debug Thread").start();
 	}
 
-	protected void generateNoDebug(IAcceleoEnvironment environment, Module module, Resource model) {
-		AcceleoUtil.generate(new AcceleoEvaluator(environment), environment, module, model);
+	/**
+	 * Generates without debug.
+	 * 
+	 * @param env
+	 *            the {@link IAcceleoEnvironment}
+	 * @param module
+	 *            the {@link Module} to generate
+	 * @param modelResource
+	 *            the model {@link Resource}
+	 */
+	protected void generateNoDebug(IAcceleoEnvironment env, Module module, Resource modelResource) {
+		AcceleoUtil.generate(new AcceleoEvaluator(env), env, module, modelResource);
 	}
 
 	@Override
