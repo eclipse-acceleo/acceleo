@@ -5,8 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="Acceleo 4 Language">
-<title>Acceleo</title>
+<title>Intended Audience</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,54 +438,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Acceleo</h1>
-<div class="details">
-<span id="author" class="author">Acceleo 4 Language</span><br>
-</div>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#_preface">1. Preface</a>
 <ul class="sectlevel2">
-<li><a href="#_intended_audience">1.1. Intended Audience</a></li>
-</ul>
-</li>
-<li><a href="#_module">2. Module</a>
-<ul class="sectlevel2">
-<li><a href="#_imports">2.1. Imports</a></li>
-<li><a href="#_module_elements">2.2. Module Elements</a></li>
-</ul>
-</li>
-<li><a href="#_template">3. Template</a>
-<ul class="sectlevel2">
-<li><a href="#_main_template">3.1. Main template</a></li>
-</ul>
-</li>
-<li><a href="#_query">4. Query</a></li>
-<li><a href="#_file_block">5. File Block</a></li>
-<li><a href="#_for_loops">6. For loops</a></li>
-<li><a href="#_if_conditions">7. If conditions</a></li>
-<li><a href="#_let_block">8. Let block</a></li>
-<li><a href="#_protected_area">9. Protected Area</a></li>
-<li><a href="#_variable">10. Variable</a></li>
+<li><a href="#_intended_audience">Intended Audience</a></li>
+<li><a href="#_module">Module</a></li>
+<li><a href="#_template">Template</a></li>
+<li><a href="#_query">Query</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_preface">1. Preface</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_intended_audience">1.1. Intended Audience</h3>
+<h3 id="_intended_audience">Intended Audience</h3>
 <div class="paragraph">
 <p>This guide was written to describe the elements composing the Acceleo 4 templating language. This will not delve into the Acceleo Query Language (AQL) description.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_module">2. Module</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_module">Module</h3>
 <div class="paragraph">
 <p>An Acceleo module is defined in its own file and is the main container for generation <a href="#_template">templates</a> (that will generate text) and <a href="#_query">queries</a> (which purpose is to extract information from the input models).</p>
 </div>
@@ -531,8 +501,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>See also the <a href="syntax.html#_module">Module syntax documentation</a>.</p>
 </div>
-<div class="sect2">
-<h3 id="_imports">2.1. Imports</h3>
+<div class="sect3">
+<h4 id="_imports">Imports</h4>
 <div class="paragraph">
 <p>An Acceleo module can import any number of other modules or Java service class. All <em>public</em> visibility templates and queries from the imported module(s) can be called by the importer, for Java class all public methods can be used a service.</p>
 </div>
@@ -551,17 +521,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>See also the <a href="syntax.html#_import">Import</a> as well as the <a href="syntax.html#_module_reference">Module Reference</a> syntax documentation.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_module_elements">2.2. Module Elements</h3>
+<div class="sect3">
+<h4 id="_module_elements">Module Elements</h4>
 <div class="paragraph">
 <p>Following the imports declaration, any number of module element can now be written as the body of our Module. Please refer to <a href="#_template">Template</a> and <a href="#_query">Query</a> sections below for more information.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_template">3. Template</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_template">Template</h3>
 <div class="paragraph">
 <p>A Template is a set of Acceleo statements used to generate text. It is delimited by <code>[template &#8230;&#8203;][/template]</code> tags.</p>
 </div>
@@ -617,8 +585,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>See also the <a href="syntax.html#_template">Template syntax documentation</a>.</p>
 </div>
-<div class="sect2">
-<h3 id="_main_template">3.1. Main template</h3>
+<div class="sect3">
+<h4 id="_main_template">Main template</h4>
 <div class="paragraph">
 <p>Acceleo defines a special metadata tag on templates to specify the main entry point(s) of a generation, the template(s) that will be called first during the workflow. This metadata tag, <code>@main</code>, needs to be in the comments preceding the template, or within the template documentation</p>
 </div>
@@ -646,11 +614,224 @@ Class [class.name/] structural features:
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_file_block">File Block</h4>
+<div class="paragraph">
+<p>File blocks are used to tell the Acceleo engine it must generate the body of the <code>[file &#8230;&#8203;]</code> block in an actual file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[file (&lt;uri&gt;, &lt;open mode&gt;, &lt;charset&gt;)][/file]</pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_query">4. Query</h2>
-<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">uri</dt>
+<dd>
+<p>An AQL expression denoting the output file name. Must evaluate to a String.</p>
+</dd>
+<dt class="hdlist1">open mode</dt>
+<dd>
+<p>The open mode for the file. This can be one of:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>(Not Supported Yet)</strong> append : Append to the end of the file if it already exists, create it otherwise.</p>
+</li>
+<li>
+<p>overwrite : Overwrite the whole file if it already exists, create it otherwise.</p>
+</li>
+<li>
+<p>create : Do not change the file if it already exists, create it otherwise.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">charset</dt>
+<dd>
+<p>This can be used to tell Acceleo which charset to use for the generated file. This is optional and will default to UTF-8</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(class : ecore::EClass)]
+[file (class.name + '.java', append, 'UTF-8')]
+[/file]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> that the file will only be generated if the engine actually evaluates the file block. For example, if the template containing that block is never called, or if the file block is included in an <code>If</code> block which condition evalutes to <code>false</code>, then no file will be created.</p>
+</div>
+<div class="paragraph">
+<p>See also the <a href="syntax.html#_file_statement">File Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_for_loops">For loops</h4>
+<div class="paragraph">
+<p>For loops in Acceleo need to be expressed using the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (&lt;variable&gt; | &lt;iteration expression&gt;) separator(&lt;separator expression&gt;)]...[/for]</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">variable</dt>
+<dd>
+<p>The variable follows the <a href="#_variable">format for variables</a>. The variable type must match the result of the iteration expression. If the expression returns a collection of Strings, then the variable will be of type String. Because of this, typing the variable is optional.</p>
+</dd>
+<dt class="hdlist1">iteration expression</dt>
+<dd>
+<p>An AQL expression returning a collection of elements on which to iterate. If the expression doesn&#8217;t return a collection but a single element, it will be used to iterate only once.</p>
+</dd>
+<dt class="hdlist1">separator</dt>
+<dd>
+<p>The separator expression will be evaluated to insert content in-between the content generated for each iteration of the for body. It will not be generated if the for loop doesn&#8217;t generate text or only generates one iteration worth of content.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(class : ecore::EClass)]
+[for (feature | class.eStructuralFeatures)]
+[/for]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See also the <a href="syntax.html#_for_statement">For Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_if_conditions">If conditions</h4>
+<div class="paragraph">
+<p>The <code>If</code> statement in Acceleo uses the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[if (condition)]
+[elseif (condition)]
+[else]
+[/if]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>elseif</code> and <code>else</code> are both optional. If one of the <code>condition</code> expressions does not evaluate to a boolean an error will be logged and nothing will be generated for that <code>if</code> block.</p>
+</div>
+<div class="paragraph">
+<p>See also the <a href="syntax.html#_if_statement">If Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_let_block">Let block</h4>
+<div class="paragraph">
+<p>Acceleo <code>Let</code> blocks use the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let &lt;variable1&gt; = &lt;init expression&gt;, &lt;variable2&gt; = &lt;init expression&gt;]
+[/let]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>Let</code> blocks allow template writers to define temporary variables that will be visible within the scope of the block.</p>
+</div>
+<div class="paragraph">
+<p>The variables follow the <a href="#_variable">format for variables</a>. All of their typing is optional since they must match the return type of their initialization expression.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> that all variables are immutable. Nested <code>Let</code> blocks can override the value of a variable within their own scope, but the variable will go back to its former value once outside of the nested <code>Let</code>. This will produce a warning during validation.</p>
+</div>
+<div class="paragraph">
+<p>See also the <a href="syntax.html#_let_statemnet">Let Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_protected_area">Protected Area</h4>
+<div class="paragraph">
+<p>A protected area defines a set of statements that should only be generated if the file doesn&#8217;t exist on disk or it does not contain an area with the specified protected area&#8217;s identifier.</p>
+</div>
+<div class="paragraph">
+<p>Protected areas allow module writers to create a "safe" part of the generated file that can be modified directly in the generated file, without fear of these manual modifications to be lost during subsequent generations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[comment @main/]
+[template public generate(class : ecore::EClass)]
+[file (class.name + '.java', overwrite, 'UTF-8')/]
+// [protected (class.name + ' imports')]
+imports java.util.List;
+// [/protected]
+
+public class [class.name.toUpperFirst()/] {
+
+}
+[/file]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The expression within the protected block&#8217;s signature serves as the protected area&#8217;s identifier and <strong>must be unique</strong> in the generated file&#8217;s scope.</p>
+</div>
+<div class="paragraph">
+<p><strong>There must be nothing present on the line after the protected area&#8217;s signature.</strong> Otherwise, everything following said signature will be considered to be part of the area&#8217;s identifier by the engine and the code will not be properly protected.</p>
+</div>
+<div class="paragraph">
+<p>Please also note that the protected area&#8217;s first and last line are marked as comments in the generated code (by generating <code>//</code> at the start of their respective line, since this is Java code). This is to avoid generating invalid Java code as the markers will be present in the generated file&#8217;s contents.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_variable">Variable</h4>
+<div class="paragraph">
+<p>Acceleo 4 variables use the AQL syntax and inference logic for their typing.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;name&gt; : &lt;type&gt;</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">name</dt>
+<dd>
+<p>Name of the variable. Only alphanumeric (and underscore`_`) characters are allowed, and the name cannot start with a number.</p>
+</dd>
+<dt class="hdlist1">type</dt>
+<dd>
+<p>Type of the variable. Four different kind of types are accepted</p>
+<div class="ulist">
+<ul>
+<li>
+<p>primitive : Integer, Double, String, Boolean</p>
+</li>
+<li>
+<p>collection : Sequence, OrderedSet. Collection types have to be further specified with their content types, such as Sequence(String) for a list of String elements.</p>
+</li>
+<li>
+<p>eclassifier : in the form &lt;epackage_name&gt;::&lt;classifier_name&gt; such as ecore::EClass.</p>
+</li>
+<li>
+<p>union type : in the form {&lt;epackage_name&gt;::&lt;classifier_name&gt; | &lt;epackage_name&gt;::&lt;classifier_name&gt; | &#8230;&#8203;}. This kind of typing describes a variable that can be either one of the <em>n</em> specified classifiers. e.g. {ecore::EAttribute | ecore::EReference }.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query">Query</h3>
 <div class="paragraph">
 <p>A query is a re-useable AQL expression that can return any type of Object. They are commonly used to extract information from the input models. A query is enclosed in a <code>[query &#8230;&#8203;]</code> tag.</p>
 </div>
@@ -706,237 +887,9 @@ Class [class.name/] structural features:
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_file_block">5. File Block</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>File blocks are used to tell the Acceleo engine it must generate the body of the <code>[file &#8230;&#8203;]</code> block in an actual file.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[file (&lt;uri&gt;, &lt;open mode&gt;, &lt;charset&gt;)][/file]</pre>
-</div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">uri</dt>
-<dd>
-<p>An AQL expression denoting the output file name. Must evaluate to a String.</p>
-</dd>
-<dt class="hdlist1">open mode</dt>
-<dd>
-<p>The open mode for the file. This can be one of:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>append : Append to the end of the file if it already exists, create it otherwise.</p>
-</li>
-<li>
-<p>overwrite : Overwrite the whole file if it already exists, create it otherwise.</p>
-</li>
-<li>
-<p>create : Do not change the file if it already exists, create it otherwise.</p>
-</li>
-</ul>
-</div>
-</dd>
-<dt class="hdlist1">charset</dt>
-<dd>
-<p>This can be used to tell Acceleo which charset to use for the generated file. This is optional and will default to UTF-8</p>
-</dd>
-</dl>
-</div>
-<div class="paragraph">
-<p>Example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[template public generate(class : ecore::EClass)]
-[file (class.name + '.java', append, 'UTF-8')]
-[/file]
-[/template]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong> that the file will only be generated if the engine actually evaluates the file block. For example, if the template containing that block is never called, or if the file block is included in an <code>If</code> block which condition evalutes to <code>false</code>, then no file will be created.</p>
-</div>
-<div class="paragraph">
-<p>See also the <a href="syntax.html#_file_statement">File Statement syntax documentation</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_for_loops">6. For loops</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For loops in Acceleo need to be expressed using the following syntax:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[for (&lt;variable&gt; | &lt;iteration expression&gt;) separator(&lt;separator expression&gt;)]...[/for]</pre>
-</div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">variable</dt>
-<dd>
-<p>The variable follows the <a href="#_variable">format for variables</a>. The variable type must match the result of the iteration expression. If the expression returns a collection of Strings, then the variable will be of type String. Because of this, typing the variable is optional.</p>
-</dd>
-<dt class="hdlist1">iteration expression</dt>
-<dd>
-<p>An AQL expression returning a collection of elements on which to iterate. If the expression doesn&#8217;t return a collection but a single element, it will be used to iterate only once.</p>
-</dd>
-<dt class="hdlist1">separator</dt>
-<dd>
-<p>The separator expression will be evaluated to insert content in-between the content generated for each iteration of the for body. It will not be generated if the for loop doesn&#8217;t generate text or only generates one iteration worth of content.</p>
-</dd>
-</dl>
-</div>
-<div class="paragraph">
-<p>Example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[template public generate(class : ecore::EClass)]
-[for (feature | class.eStructuralFeatures)]
-[/for]
-[/template]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>See also the <a href="syntax.html#_for_statement">For Statement syntax documentation</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_if_conditions">7. If conditions</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <code>If</code> statement in Acceleo uses the following syntax:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[if (condition)]
-[elseif (condition)]
-[else]
-[/if]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p><code>elseif</code> and <code>else</code> are both optional. If one of the <code>condition</code> expressions does not evaluate to a boolean an error will be logged and nothing will be generated for that <code>if</code> block.</p>
-</div>
-<div class="paragraph">
-<p>See also the <a href="syntax.html#_if_statement">If Statement syntax documentation</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_let_block">8. Let block</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Acceleo <code>Let</code> blocks use the following syntax:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[let &lt;variable1&gt; = &lt;init expression&gt;, &lt;variable2&gt; = &lt;init expression&gt;]
-[/let]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p><code>Let</code> blocks allow template writers to define temporary variables that will be visible within the scope of the block.</p>
-</div>
-<div class="paragraph">
-<p>The variables follow the <a href="#_variable">format for variables</a>. All of their typing is optional since they must match the return type of their initialization expression.</p>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong> that all variables are immutable. Nested <code>Let</code> blocks can override the value of a variable within their own scope, but the variable will go back to its former value once outside of the nested <code>Let</code>. This will produce a warning during validation.</p>
-</div>
-<div class="paragraph">
-<p>See also the <a href="syntax.html#_let_statemnet">Let Statement syntax documentation</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_protected_area">9. Protected Area</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>A protected area defines a set of statements that should only be generated if the file doesn&#8217;t exist on disk or it does not contain an area with the specified protected area&#8217;s identifier.</p>
-</div>
-<div class="paragraph">
-<p>Protected areas allow module writers to create a "safe" part of the generated file that can be modified directly in the generated file, without fear of these manual modifications to be lost during subsequent generations.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[comment @main/]
-[template public generate(class : ecore::EClass)]
-[file (class.name + '.java', overwrite, 'UTF-8')/]
-// [protected (class.name + ' imports')]
-imports java.util.List;
-// [/protected]
-
-public class [class.name.toUpperFirst()/] {
-
-}
-[/file]
-[/template]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The expression within the protected block&#8217;s signature serves as the protected area&#8217;s identifier and <strong>must be unique</strong> in the generated file&#8217;s scope.</p>
-</div>
-<div class="paragraph">
-<p><strong>There must be nothing present on the line after the protected area&#8217;s signature.</strong> Otherwise, everything following said signature will be considered to be part of the area&#8217;s identifier by the engine and the code will not be properly protected.</p>
-</div>
-<div class="paragraph">
-<p>Please also note that the protected area&#8217;s first and last line are marked as comments in the generated code (by generating <code>//</code> at the start of their respective line, since this is Java code). This is to avoid generating invalid Java code as the markers will be present in the generated file&#8217;s contents.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_variable">10. Variable</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Acceleo 4 variables use the AQL syntax and inference logic for their typing.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>&lt;name&gt; : &lt;type&gt;</pre>
-</div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">name</dt>
-<dd>
-<p>Name of the variable. Only alphanumeric (and underscore`_`) characters are allowed, and the name cannot start with a number.</p>
-</dd>
-<dt class="hdlist1">type</dt>
-<dd>
-<p>Type of the variable. Four different kind of types are accepted</p>
-<div class="ulist">
-<ul>
-<li>
-<p>primitive : Integer, Double, String, Boolean</p>
-</li>
-<li>
-<p>collection : Sequence, OrderedSet. Collection types have to be further specified with their content types, such as Sequence(String) for a list of String elements.</p>
-</li>
-<li>
-<p>eclassifier : in the form &lt;epackage_name&gt;::&lt;classifier_name&gt; such as ecore::EClass.</p>
-</li>
-<li>
-<p>union type : in the form {&lt;epackage_name&gt;::&lt;classifier_name&gt; | &lt;epackage_name&gt;::&lt;classifier_name&gt; | &#8230;&#8203;}. This kind of typing describes a variable that can be either one of the <em>n</em> specified classifiers. e.g. {ecore::EAttribute | ecore::EReference }.</p>
-</li>
-</ul>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-23 15:28:32 +0200
+Last updated 2020-08-24 10:27:31 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

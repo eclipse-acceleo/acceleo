@@ -436,6 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="article">
 <div id="header">
@@ -444,240 +445,104 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span id="author" class="author">Acceleo 4 User Guide</span><br>
 </div>
 <div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">Table of Content</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_generating">2. Generating</a>
-<ul class="sectlevel2">
-<li><a href="#_eclipse">2.1. Eclipse</a></li>
-<li><a href="#_maventycho">2.2. Maven/Tycho</a></li>
-</ul>
-</li>
-<li><a href="#_module_authoring">3. Module authoring</a>
-<ul class="sectlevel2">
-<li><a href="#_white_spaces">3.1. White spaces</a></li>
-<li><a href="#_editor">3.2. Editor</a></li>
-<li><a href="#_debugger">3.3. Debugger</a></li>
-<li><a href="#_unit_test_module">3.4. Unit test module</a></li>
-</ul>
-</li>
-<li><a href="#_using_acceleo_4_programmatically">4. Using Acceleo 4 programmatically</a>
-<ul class="sectlevel2">
-<li><a href="#_parsing">4.1. Parsing</a></li>
-<li><a href="#_validation">4.2. Validation</a></li>
-<li><a href="#_completion">4.3. Completion</a></li>
-<li><a href="#_generation">4.4. Generation</a></li>
-</ul>
-</li>
+<li><a href="#_installation">2. Installation</a></li>
+<li><a href="#_getting_started">3. Getting Started</a></li>
+<li><a href="#_the_acceleo_tooling">4. The Acceleo Tooling</a></li>
+<li><a href="#_the_acceleo_language">5. The Acceleo Language</a></li>
+<li><a href="#_launching_an_acceleo_generation">6. Launching an Acceleo generation</a></li>
+<li><a href="#_using_acceleo_4_programmatically">7. Using Acceleo 4 programmatically</a></li>
+<li><a href="#_migrate_acceleo_3_templates_to_acceleo_4">8. Migrate Acceleo 3 templates to Acceleo 4</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div style="page-break-after: always;"></div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_introduction">1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Acceleo 4 is a a text generator based on templates. It can be used to generate any kind of text file: code, configuration, documentation, &#8230;&#8203; The template consists of imperative statements like conditionals, loops, and navigation expression used to retrieve data from models. When generating the engine use templates  statements and also replace navigation expressions by their values in order to produce the output text.</p>
+<p>Acceleo 4 is a a text generator based on templates.
+It can be used to generate any kind of text file: code, configuration, documentation,&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>The template consists of imperative statements like conditionals, loops, and navigation expression used to retrieve data from models.</p>
+</div>
+<div class="paragraph">
+<p>When generating, the engine use templates  statements and also replace navigation expressions by their values in order to produce the output text.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_generating">2. Generating</h2>
+<h2 id="_installation">2. Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section describe how to launch a generation from <a href="#eclipse">[eclipse]</a> or <a href="#_maventycho">Maven/Tycho</a>. Note that you can also use the <a href="#_debugger">Debugger</a> to run a module or directly use Acceleo 4 programmatically, see <a href="#_generation">Generation</a>.</p>
-</div>
-<div class="sect2">
-<h3 id="_eclipse">2.1. Eclipse</h3>
-<div class="paragraph">
-<p>TODO</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_maventycho">2.2. Maven/Tycho</h3>
-<div class="paragraph">
-<p>Acceleo provides a specific eclipse application that can be used from command line or tycho in order to start a generation.
-In order to use the launcher, you will need to first package all of your generator projects into an update site, then use this update site as input of the application.</p>
-</div>
-<div class="paragraph">
-<p>An example is available in the Acceleo repository and can be checked out at <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/examples/MavenLauncher" class="bare">https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/examples/MavenLauncher</a> .</p>
-</div>
-<div class="paragraph">
-<p>This example includes:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>A generator project <code>org.eclipse.acceleo.aql.launcher.sample</code></p>
-</li>
-<li>
-<p>A feature including this project <code>org.eclipse.acceleo.aql.launcher.sample-feature</code></p>
-</li>
-<li>
-<p>An update site including this feature <code>org.eclipse.acceleo.aql.launcher.sample-site</code></p>
-</li>
-<li>
-<p>A pom.xml file that can be used to both package the generator and start the generation</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The packaging can be started through the command line <code>mvn clean verify</code>.
-Once packaged, generation can be started through the command line <code>mvn clean verify -Pgenerate</code>.</p>
-</div>
-<div class="paragraph">
-<p>The application takes a number of arguments that will have to be customized through the pom.xml file:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>&lt;applicationsArgs&gt;
-	&lt;args&gt;-application&lt;/args&gt;
-	&lt;args&gt;org.eclipse.acceleo.aql.launcher.AcceleoLauncher&lt;/args&gt;
-	&lt;args&gt;-data&lt;/args&gt;
-	&lt;args&gt;${project.build.directory}/wks&lt;/args&gt;
-	&lt;args&gt;-bundle&lt;/args&gt;
-	&lt;args&gt;org.eclipse.acceleo.aql.launcher.sample&lt;/args&gt;
-	&lt;args&gt;-module&lt;/args&gt;
-	&lt;args&gt;org::eclipse::acceleo::aql::launcher::sample::main&lt;/args&gt;
-	&lt;args&gt;-models&lt;/args&gt;
-	&lt;args&gt;platform:/plugin/org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi&lt;/args&gt;
-	&lt;args&gt;-target&lt;/args&gt;
-	&lt;args&gt;file:/${project.build.directory}/generated/&lt;/args&gt;
-&lt;/applicationsArgs&gt;</pre>
-</div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">application</dt>
-<dd>
-<p>Standard Eclipse argument, this tells Eclipse which application it needs to run. The specific launcher for Acceleo generations is <code>org.eclipse.acceleo.aql.launcher.AcceleoLauncher</code>.</p>
-</dd>
-<dt class="hdlist1">data</dt>
-<dd>
-<p>Standard Eclipse argument, this can be used to modify the workspace path.</p>
-</dd>
-<dt class="hdlist1">bundle</dt>
-<dd>
-<p>This needs to be the identifier of the bundle containing the main module for this generation.</p>
-</dd>
-<dt class="hdlist1">module</dt>
-<dd>
-<p>The starting point of the generation that is to be started. This needs to the qualified name of the module containing an "@main"-annotated template.</p>
-</dd>
-<dt class="hdlist1">models</dt>
-<dd>
-<p>The URI of the models that will be fed to the main module of the generation. This cannot be empty and needs to be an URI that eclipse is capable of resolving. In this example we&#8217;re using a <code>platform:/plugin/&#8230;&#8203;</code> URI since we&#8217;ve bundled the input model into our generator project.</p>
-</dd>
-<dt class="hdlist1">target</dt>
-<dd>
-<p>The destination URI for this generation. Generated files will use this folder as their root to resolve against. <strong>Note</strong> that this needs to end in a trailing <code>/</code>.</p>
-</dd>
-</dl>
-</div>
+<p>Unresolved directive in index.adoc - include::install.adoc[]</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_module_authoring">3. Module authoring</h2>
+<h2 id="_getting_started">3. Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section cover tools for template writing, debugging and testing. You can read to the <a href="language.html">language documentation</a> to understand Acceleo 4 language specificity. If you are looking for the syntax quick reference you can check the <a href="syntax.html">syntax page</a>.</p>
-</div>
-<div class="sect2">
-<h3 id="_white_spaces">3.1. White spaces</h3>
-<div class="paragraph">
-<p>When generating text, and especially code, white spaces and indentation is an important point. In order to keep template code indentation from interfering with the generated output, a few rules applies:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>each block has a mandatory indentation of two characters than will not be generated in the output (in yellow below)</p>
-</li>
-<li>
-<p>when generating a block if the last generated line is not empty, it is repeated at the beginning of each line generated by the block (in red below)</p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="./images/Indentation.png" alt="Indentation">
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_editor">3.2. Editor</h3>
-<div class="paragraph">
-<p>TODO</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_debugger">3.3. Debugger</h3>
-<div class="paragraph">
-<p>TODO</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_unit_test_module">3.4. Unit test module</h3>
-<div class="paragraph">
-<p>You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/acceleo-aql/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java?h=acceleo-aql">FileStatementTests</a> and the corresponding <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/acceleo-aql/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement?h=acceleo-aql">folder</a>.</p>
-</div>
+<p>Unresolved directive in index.adoc - include::start.adoc[]</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_using_acceleo_4_programmatically">4. Using Acceleo 4 programmatically</h2>
+<h2 id="_the_acceleo_tooling">4. The Acceleo Tooling</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Acceleo 4 can be used programmatically and for instance integrated in other products.</p>
-</div>
-<div class="sect2">
-<h3 id="_parsing">4.1. Parsing</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">URI destination = URI.createURI(...);
-environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), destination);
-IQualifiedNameResolver moduleResolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), environment.getQueryEnvironment());
-environment.setModuleResolver(moduleResolver);
-Module module = environment.getModule(qualifiedName);</code></pre>
+<p>Unresolved directive in index.adoc - include::tool.adoc[]</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_validation">4.2. Validation</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">AcceleoValidator validator = new AcceleoValidator(environment);
-List&lt;IValidationMessage&gt; messages = validator.validate(astResult, qualifiedName).getValidationMessages();</code></pre>
+<div class="sect1">
+<h2 id="_the_acceleo_language">5. The Acceleo Language</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can read to the <a href="language.html">language documentation</a> to understand Acceleo 4 language specificity. If you are looking for the syntax quick reference you can check the <a href="syntax.html">syntax page</a>.</p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::language.adoc[]
+Unresolved directive in index.adoc - include::syntax.adoc[]</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_completion">4.3. Completion</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">AcceleoCompletor completor = new AcceleoCompletor();
-String source = ...;
-List&lt;ICompletionProposal&gt; proposals = completor.getProposals(environment, source, position);</code></pre>
+<div class="sect1">
+<h2 id="_launching_an_acceleo_generation">6. Launching an Acceleo generation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::generate.adoc[]</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_generation">4.4. Generation</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">AcceleoEvaluator evaluator = new AcceleoEvaluator(environment);
-ResourceSetImpl rs = new ResourceSetImpl();
-Resource model = rs.getResource(..., true);
-AcceleoUtil.generate(evaluator, environment, module, model);</code></pre>
+<div class="sect1">
+<h2 id="_using_acceleo_4_programmatically">7. Using Acceleo 4 programmatically</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::use.adoc[]</p>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_migrate_acceleo_3_templates_to_acceleo_4">8. Migrate Acceleo 3 templates to Acceleo 4</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::migration.adoc[]</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-23 15:28:32 +0200
+Last updated 2020-08-24 10:27:31 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
