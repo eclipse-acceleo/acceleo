@@ -28,6 +28,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
 /**
@@ -44,14 +45,23 @@ public class AcceleoDefinitionLocator extends AcceleoSwitch<List<AbstractLocatio
 	private final IAcceleoEnvironment acceleoEnvironment;
 
 	/**
+	 * The {@link IQualifiedNameLookupEngine}.
+	 */
+	private IQualifiedNameLookupEngine lookupEngine;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param acceleoEnvironment
 	 *            the (non-{@code null}) {@link IAcceleoEnvironment} of the {@link Module} to which the
 	 *            argument {@link ASTNode} belongs.
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
 	 */
-	public AcceleoDefinitionLocator(IAcceleoEnvironment acceleoEnvironment) {
+	public AcceleoDefinitionLocator(IAcceleoEnvironment acceleoEnvironment,
+			IQualifiedNameLookupEngine lookupEngine) {
 		this.acceleoEnvironment = acceleoEnvironment;
+		this.lookupEngine = lookupEngine;
 	}
 
 	// Simple cases where the argument element is its own definition.
@@ -103,10 +113,10 @@ public class AcceleoDefinitionLocator extends AcceleoSwitch<List<AbstractLocatio
 	 */
 	@Override
 	public List<AbstractLocationLink<?, ?>> caseModuleReference(ModuleReference moduleReference) {
-		Module referencedModule = this.acceleoEnvironment.getModule(moduleReference.getQualifiedName());
-		if (referencedModule != null) {
+		final Object resolved = lookupEngine.getResolver().resolve(moduleReference.getQualifiedName());
+		if (resolved instanceof Module) {
 			return Collections.singletonList(new AcceleoLocationLinkToAcceleo(moduleReference,
-					referencedModule));
+					(Module)resolved));
 		} else {
 			// Could not resolve the module reference, which means that we will not be able to find the
 			// definition of the referenced module.

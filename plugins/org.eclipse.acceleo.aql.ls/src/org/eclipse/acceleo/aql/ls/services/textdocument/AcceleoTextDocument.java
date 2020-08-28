@@ -27,9 +27,10 @@ import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoProject;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
-import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 
@@ -219,7 +220,8 @@ public class AcceleoTextDocument {
 		Objects.requireNonNull(acceleoAstResult);
 		Objects.requireNonNull(acceleoEnvironment);
 
-		return validate(acceleoEnvironment, new AcceleoValidator(acceleoEnvironment), acceleoAstResult);
+		return validate(acceleoEnvironment, new AcceleoValidator(acceleoEnvironment, acceleoEnvironment
+				.getQueryEnvironment().getLookupEngine()), acceleoAstResult);
 	}
 
 	/**
@@ -275,11 +277,15 @@ public class AcceleoTextDocument {
 	 *         {@link IAcceleoEnvironment}.
 	 */
 	public String getModuleQualifiedName() {
-		if (this.getAcceleoEnvironment() == null || this.getAcceleoEnvironment()
-				.getModuleResolver() == null) {
+		if (this.getAcceleoEnvironment() == null || this.getAcceleoEnvironment().getQueryEnvironment() == null
+				|| this.getAcceleoEnvironment().getQueryEnvironment().getLookupEngine() == null || this
+						.getAcceleoEnvironment().getQueryEnvironment().getLookupEngine()
+						.getResolver() == null) {
 			return null;
 		} else {
-			return this.getAcceleoEnvironment().getModuleResolver().getQualifierName(this.getUrl());
+			final IQualifiedNameResolver resolver = this.getAcceleoEnvironment().getQueryEnvironment()
+					.getLookupEngine().getResolver();
+			return resolver.getQualifiedName(this.getUrl());
 		}
 	}
 
@@ -310,10 +316,12 @@ public class AcceleoTextDocument {
 		IAcceleoEnvironment env = getAcceleoEnvironment();
 		// FIXME we need any module element
 		ModuleElement moduleElement = acceleoAstResult.getModule().getModuleElements().get(0);
-		env.pushImport(getModuleQualifiedName(), moduleElement);
-		List<AbstractLocationLink<?, ?>> definitionLocations = new AcceleoLocator(env).getDefinitionLocations(
-				this.acceleoAstResult, position);
-		env.popStack(moduleElement);
+		final IQualifiedNameLookupEngine lookupEngine = env.getQueryEnvironment().getLookupEngine();
+		lookupEngine.pushImportsContext(getModuleQualifiedName(), getModuleQualifiedName());
+		List<AbstractLocationLink<?, ?>> definitionLocations = new AcceleoLocator(env, env
+				.getQueryEnvironment().getLookupEngine()).getDefinitionLocations(this.acceleoAstResult,
+						position);
+		lookupEngine.popContext(getModuleQualifiedName());
 		return definitionLocations;
 	}
 
@@ -327,8 +335,9 @@ public class AcceleoTextDocument {
 	 *         of the Acceleo element found at the given position in the source contents.
 	 */
 	public List<AbstractLocationLink<?, ?>> getDeclarationLocations(int position) {
-		return new AcceleoLocator(this.getAcceleoEnvironment()).getDeclarationLocations(this.acceleoAstResult,
-				position);
+		return new AcceleoLocator(this.getAcceleoEnvironment(), this.getAcceleoEnvironment()
+				.getQueryEnvironment().getLookupEngine()).getDeclarationLocations(this.acceleoAstResult,
+						position);
 	}
 
 	/**
@@ -429,7 +438,9 @@ public class AcceleoTextDocument {
 			AcceleoValidator acceleoValidator, AcceleoAstResult acceleoAstResult) {
 		String moduleQualifiedNameForValidation = VALIDATION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR
 				+ acceleoAstResult.getModule().getName();
-		acceleoEnvironment.registerModule(moduleQualifiedNameForValidation, acceleoAstResult.getModule());
+		final IQualifiedNameResolver resolver = acceleoEnvironment.getQueryEnvironment().getLookupEngine()
+				.getResolver();
+		resolver.register(moduleQualifiedNameForValidation, acceleoAstResult.getModule());
 
 		IAcceleoValidationResult validationResults = acceleoValidator.validate(acceleoAstResult,
 				moduleQualifiedNameForValidation);

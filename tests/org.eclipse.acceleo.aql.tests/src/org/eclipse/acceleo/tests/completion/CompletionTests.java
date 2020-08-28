@@ -34,9 +34,16 @@ import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -113,14 +120,25 @@ public class CompletionTests {
 	public void completion() throws FileNotFoundException, IOException {
 		final AcceleoCompletor completor = new AcceleoCompletor();
 
-		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(new DefaultGenerationStrategy(),
-				URI.createURI(""));
+		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
+				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
+		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment,
+				new DefaultGenerationStrategy(), URI.createURI(""));
+
+		final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
+				.getLookupEngine());
+		acceleoEnvironment.setEvaluator(evaluator);
+		resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
+		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+
 		final AcceleoParser parser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
 		final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
 		final Module module = parsingResult.getModule();
-		acceleoEnvironment.registerModule("org::eclipse::acceleo::tests::" + module.getName(), module);
+		resolver.register("org::eclipse::acceleo::tests::" + module.getName(), module);
 		final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(acceleoEnvironment,
-				module.getName(), source, position);
+				acceleoEnvironment.getQueryEnvironment().getLookupEngine(), module.getName(), source,
+				position);
 		final String actualCompletion = serialize(completionProposals);
 		final File expectedCompletionFile = getExpectedCompletionFile();
 		if (!expectedCompletionFile.exists()) {

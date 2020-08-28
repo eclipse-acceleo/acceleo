@@ -25,14 +25,15 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.migration.IModuleResolver;
 import org.eclipse.acceleo.aql.migration.ModuleMigrator;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -127,11 +128,10 @@ public abstract class AbstractMigrationTestSuite {
 	}
 
 	protected AcceleoParser createParser() {
-		String memoryDestinationString = "acceleotests://" + testFolder.toString() + "/";
-		URI memoryDestination = URI.createURI(memoryDestinationString);
-		AcceleoEnvironment environment = new AcceleoEnvironment(new DefaultGenerationStrategy(),
-				memoryDestination);
-		AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
+		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
+				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
+		AcceleoParser parser = new AcceleoParser(queryEnvironment);
 		return parser;
 	}
 

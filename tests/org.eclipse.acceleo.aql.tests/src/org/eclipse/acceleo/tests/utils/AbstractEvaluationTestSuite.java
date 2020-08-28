@@ -72,7 +72,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final File modelFile = getModelFile(new File(getTestFolderPath()));
 		final ResourceSet rs = getResourceSet();
 		model = getModel(modelFile, rs);
-		evaluator = new AcceleoEvaluator(environment);
+		evaluator = environment.getEvaluator();
 	}
 
 	/**

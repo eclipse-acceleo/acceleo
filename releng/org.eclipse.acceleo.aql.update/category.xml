@@ -12,16 +12,16 @@
    <feature id="org.eclipse.acceleo.query.ui.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.query.jdt">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.query.jdt.source">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.aql.feature">
       <category name="org.eclipse.acceleo"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.feature.source">
-      <category name="org.eclipse.acceleo"/>
-   </feature>
-   <feature id="org.eclipse.acceleo.aql.ide.jdt.feature">
-      <category name="org.eclipse.acceleo"/>
-   </feature>
-   <feature id="org.eclipse.acceleo.aql.ide.jdt.feature.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.launcher">

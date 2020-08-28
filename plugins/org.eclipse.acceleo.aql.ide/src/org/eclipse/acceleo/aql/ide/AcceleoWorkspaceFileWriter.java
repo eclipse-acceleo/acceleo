@@ -95,7 +95,7 @@ public class AcceleoWorkspaceFileWriter extends AcceleoFileWriter {
 				} catch (IOException ee) {
 					// FIXME log Couldn't create the lost file.
 				}
-				Activator.log("Cannot use JMerge on " + getTargetURI().toString(), false);
+				AcceleoPlugin.log("Cannot use JMerge on " + getTargetURI().toString(), false);
 			}
 		} else {
 			// FIXME log, couldn't find emf-merge.xml

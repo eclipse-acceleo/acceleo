@@ -27,6 +27,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -342,8 +343,9 @@ public class AcceleoLocationLinkResolver {
 		// open source file whenever it's possible
 		java.net.URI targetDocumentUri;
 		try {
-			targetDocumentUri = destinationTextDocument.getAcceleoEnvironment().getModuleResolver()
-					.getModuleSourceURL(qualifiedName).toURI();
+			final IQualifiedNameResolver resolver = destinationTextDocument.getAcceleoEnvironment()
+					.getQueryEnvironment().getLookupEngine().getResolver();
+			targetDocumentUri = resolver.getSourceURL(qualifiedName).toURI();
 		} catch (
 
 		URISyntaxException e) {

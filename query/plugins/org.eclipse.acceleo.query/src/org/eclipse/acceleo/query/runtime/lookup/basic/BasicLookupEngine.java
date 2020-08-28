@@ -30,7 +30,7 @@ public class BasicLookupEngine implements ILookupEngine {
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
-	protected IReadOnlyQueryEnvironment queryEnvironment;
+	protected final IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
 	 * The {@link ServiceStore}.

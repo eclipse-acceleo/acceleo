@@ -241,4 +241,9 @@ public abstract class AbstractService<O> implements IService<O> {
 		return Collections.emptyList();
 	}
 
+	@Override
+	public Visibility getVisibility() {
+		return Visibility.PUBLIC;
+	}
+
 }

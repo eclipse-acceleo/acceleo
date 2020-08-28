@@ -25,6 +25,7 @@ import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 
 /**
  * A representation, in the {@link AcceleoLanguageServer} of a container of {@link AcceleoTextDocument
@@ -209,14 +210,16 @@ public class AcceleoProject {
 	 *            the (non-{@code null}) {@link AcceleoTextDocument} that was saved.
 	 */
 	public void documentSaved(AcceleoTextDocument savedTextDocument) {
-		String qualifiedNameOfSavedModule = savedTextDocument.getModuleQualifiedName();
-		// First make sure our environment has an entry for the document that was changed.
-		if (!this.getAcceleoEnvironment().hasQualifiedName(qualifiedNameOfSavedModule)) {
-			// Do nothing.
-		}
+		final String qualifiedNameOfSavedModule = savedTextDocument.getModuleQualifiedName();
+		final IQualifiedNameLookupEngine lookupEngine = this.getAcceleoEnvironment().getQueryEnvironment()
+				.getLookupEngine();
+
+		// First clear the environment for the document that was changed.
+		lookupEngine.clearContext(qualifiedNameOfSavedModule);
+		lookupEngine.getResolver().clear(qualifiedNameOfSavedModule);
 
 		// Then update the environment with the new version of the module from the saved document.
-		this.getAcceleoEnvironment().registerModule(qualifiedNameOfSavedModule, savedTextDocument
+		lookupEngine.getResolver().register(qualifiedNameOfSavedModule, savedTextDocument
 				.getAcceleoAstResult().getModule());
 
 		// Re-validate all modules that depend on the changed module.
@@ -240,13 +243,17 @@ public class AcceleoProject {
 	 *            the (non-{@code null}) {@link AcceleoTextDocument} that has been removed.
 	 */
 	public void documentRemoved(AcceleoTextDocument removedTextDocument) {
+		final IQualifiedNameLookupEngine lookupEngine = this.getAcceleoEnvironment().getQueryEnvironment()
+				.getLookupEngine();
+
 		// Since the qualified name of a module depends on its environment, we want the qualified name
 		// according to our environment.
-		String removedModuleQualifiedName = this.getAcceleoEnvironment().getModuleResolver().getQualifierName(
-				removedTextDocument.getUrl());
+		String removedModuleQualifiedName = lookupEngine.getResolver().getQualifiedName(removedTextDocument
+				.getUrl());
 
 		// First unregister it from the environment.
-		this.getAcceleoEnvironment().unregisterModule(removedModuleQualifiedName);
+		lookupEngine.getResolver().clear(removedModuleQualifiedName);
+		lookupEngine.clearContext(removedModuleQualifiedName);
 
 		// Re-validate all modules that depend on the changed module.
 		Set<AcceleoTextDocument> consumers = getTextDocumentsThatDependOn(removedModuleQualifiedName);

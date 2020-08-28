@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 
-import org.eclipse.acceleo.aql.ide.Activator;
+import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog;
@@ -143,7 +143,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 			if (launchConfig.hasAttribute(AcceleoDebugger.MODULE)) {
 				final IFile resource = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(launchConfig
 						.getAttribute(AcceleoDebugger.MODULE, "")));
-				if (!Activator.isAcceleoMain(resource)) {
+				if (!AcceleoPlugin.isAcceleoMain(resource)) {
 					setErrorMessage("The selected Acceleo module doesn't contain a main template.");
 					res = false;
 				}

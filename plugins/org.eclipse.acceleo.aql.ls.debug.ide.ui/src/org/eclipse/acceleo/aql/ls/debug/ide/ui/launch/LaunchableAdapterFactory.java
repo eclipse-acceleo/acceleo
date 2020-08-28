@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 
-import org.eclipse.acceleo.aql.ide.Activator;
+import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IAdapterFactory;
@@ -27,7 +27,7 @@ public class LaunchableAdapterFactory implements IAdapterFactory {
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		final IResource resource = Adapters.adapt(adaptableObject, IResource.class);
-		if (adapterType.equals(ILaunchable.class) && Activator.isAcceleoMain(resource)) {
+		if (adapterType.equals(ILaunchable.class) && AcceleoPlugin.isAcceleoMain(resource)) {
 			return adapterType.cast(DUMMY);
 		}
 		return null;

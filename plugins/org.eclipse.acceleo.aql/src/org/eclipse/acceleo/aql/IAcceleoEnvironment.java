@@ -11,18 +11,12 @@
 package org.eclipse.acceleo.aql;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.Set;
 
-import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
-import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -40,156 +34,11 @@ public interface IAcceleoEnvironment {
 	URI getDestination();
 
 	/**
-	 * Registers the given module against this environment.
+	 * Gets the {@link IQualifiedNameQueryEnvironment}.
 	 * 
-	 * @param qualifiedName
-	 *            The qualified name of this module.
-	 * @param module
-	 *            The module to register.
+	 * @return the {@link IQualifiedNameQueryEnvironment}
 	 */
-	void registerModule(String qualifiedName, Module module);
-
-	/**
-	 * Un-registers any {@link Module} registered against the given {@link String qualified name}.
-	 * 
-	 * @param qualifiedName
-	 *            the (non-{@code null}) qualified name of the {@link Module}.
-	 */
-	void unregisterModule(String qualifiedName);
-
-	/**
-	 * Gets the {@link Module} qualified name.
-	 * 
-	 * @param module
-	 *            the {@link Module}
-	 * @return the {@link Module} qualified name if the {@link Module} is
-	 *         {@link IAcceleoEnvironment#registerModule(String, Module) registered}, <code>null</code>
-	 *         otherwise
-	 */
-	String getModuleQualifiedName(Module module);
-
-	/**
-	 * Gets the {@link Module} {@link URL}.
-	 * 
-	 * @param module
-	 *            the {@link Module}
-	 * @return the {@link Module} {@link URL} if the {@link Module} is
-	 *         {@link IAcceleoEnvironment#registerModule(String, Module) registered}, <code>null</code>
-	 *         otherwise
-	 */
-	URL getModuleURL(Module module);
-
-	/**
-	 * Gets the {@link Module} source {@link URL}.
-	 * 
-	 * @param module
-	 *            the {@link Module}
-	 * @return the {@link Module} source {@link URL} if the {@link Module} is
-	 *         {@link IAcceleoEnvironment#registerModule(String, Module) registered}, <code>null</code>
-	 *         otherwise
-	 */
-	URL getModuleSourceURL(Module module);
-
-	/**
-	 * Gets the extend for the given module qualified name.
-	 * 
-	 * @param qualifiedName
-	 *            the module qualified name
-	 * @return the extend for the given module qualified name if nay, <code>null</code> otherwise
-	 */
-	String getExtend(String qualifiedName);
-
-	/**
-	 * Gets the {@link Collection} of imports for the given module qualified name.
-	 * 
-	 * @param qualifiedName
-	 *            the module qualified name
-	 * @return the {@link Collection} of imports for the given module qualified name
-	 */
-	Collection<String> getImports(String qualifiedName);
-
-	/**
-	 * Gets the resolver for Acceleo modules.
-	 * 
-	 * @return the {@link IQualifiedNameResolver} of this environment.
-	 */
-	IQualifiedNameResolver getModuleResolver();
-
-	/**
-	 * Sets the resolver for Acceleo modules.
-	 * 
-	 * @param moduleResolver
-	 *            The module resolver for this environment.
-	 */
-	void setModuleResolver(IQualifiedNameResolver moduleResolver);
-
-	/**
-	 * Tells if the given qualified name exists.
-	 * 
-	 * @param qualifiedName
-	 *            the qualified name
-	 * @return <code>true</code> if the given qualified name exists, <code>false</code> otherwise
-	 */
-	boolean hasQualifiedName(String qualifiedName);
-
-	/**
-	 * Gets the {@link Module} with the given qualified name.
-	 * 
-	 * @param qualifiedName
-	 *            the qualified name
-	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
-	 */
-	Module getModule(String qualifiedName);
-
-	/**
-	 * Gets the {@link Module} with the given {@link URL}.
-	 * 
-	 * @param url
-	 *            the {@link URL}
-	 * @return the {@link Module} with the given qualified name if any, <code>null</code> otherwise
-	 */
-	Module getModule(URL url);
-
-	/**
-	 * Gets the {@link Set} of available qualified names.
-	 * 
-	 * @return the {@link Set} of available qualified names
-	 */
-	Set<String> getAvailableQualifiedNames();
-
-	/**
-	 * Gets the {@link IQueryEnvironment}.
-	 * 
-	 * @return the {@link IQueryEnvironment}
-	 */
-	IQueryEnvironment getQueryEnvironment();
-
-	/**
-	 * Pushes the given imported module qualified name.
-	 * 
-	 * @param importModuleQualifiedName
-	 *            the imported module qualified name
-	 * @param moduleElement
-	 *            the {@link ModuleElement} been called
-	 */
-	void pushImport(String importModuleQualifiedName, ModuleElement moduleElement);
-
-	/**
-	 * Pushes the given module qualified name.
-	 * 
-	 * @param moduleElement
-	 *            the {@link ModuleElement} been called
-	 */
-	void push(ModuleElement moduleElement);
-
-	/**
-	 * Removes a module qualified name from the latest call stack, popping that stack out as well if it's
-	 * empty afterwards.
-	 * 
-	 * @param moduleElement
-	 *            The {@link ModuleElement} we're exiting out of.
-	 */
-	void popStack(ModuleElement moduleElement);
+	IQualifiedNameQueryEnvironment getQueryEnvironment();
 
 	/**
 	 * Opens a writer for the given file uri.

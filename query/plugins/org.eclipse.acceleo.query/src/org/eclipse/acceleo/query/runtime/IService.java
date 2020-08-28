@@ -30,6 +30,26 @@ import org.eclipse.emf.ecore.EOperation;
 public interface IService<O> {
 
 	/**
+	 * Visibility of an {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	enum Visibility {
+		/**
+		 * Private.
+		 */
+		PRIVATE,
+		/**
+		 * Protected.
+		 */
+		PROTECTED,
+		/**
+		 * Public.
+		 */
+		PUBLIC
+	}
+
+	/**
 	 * Gets the name of the service. This name is used to identify the service.
 	 * 
 	 * @return the name of the service
@@ -190,5 +210,12 @@ public interface IService<O> {
 	 * @return the {@link O origin} of this {@link IService}.
 	 */
 	O getOrigin();
+
+	/**
+	 * Gets the {@link Visibility}.
+	 * 
+	 * @return the {@link Visibility}
+	 */
+	Visibility getVisibility();
 
 }

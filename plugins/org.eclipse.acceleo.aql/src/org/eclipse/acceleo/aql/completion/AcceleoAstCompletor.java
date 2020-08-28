@@ -73,6 +73,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionPropo
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
@@ -190,17 +191,25 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private String moduleSourceFragment;
 
 	/**
+	 * The {@link IQualifiedNameResolver}.
+	 */
+	private final IQualifiedNameResolver resolver;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param acceleoEnvironment
 	 *            the (non-{@code null}) contextual {@link IAcceleoEnvironment}.
 	 * @param acceleoValidationResult
 	 *            the (non-{@code null}) contextual {@link IAcceleoValidationResult}.
+	 * @param resolver
+	 *            the (non-{@code null}) contextual {@link IQualifiedNameResolver}.
 	 */
 	public AcceleoAstCompletor(IAcceleoEnvironment acceleoEnvironment,
-			IAcceleoValidationResult acceleoValidationResult) {
+			IAcceleoValidationResult acceleoValidationResult, IQualifiedNameResolver resolver) {
 		this.acceleoEnvironment = Objects.requireNonNull(acceleoEnvironment);
 		this.acceleoValidationResult = Objects.requireNonNull(acceleoValidationResult);
+		this.resolver = Objects.requireNonNull(resolver);
 
 		this.astCompletor = new AstCompletor(new CompletionServices(this.acceleoEnvironment
 				.getQueryEnvironment()));
@@ -363,7 +372,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			ErrorModuleReference errorModuleReference) {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<AcceleoCompletionProposal>();
 
-		final List<String> availableQualifiedNames = new ArrayList<String>(acceleoEnvironment
+		final List<String> availableQualifiedNames = new ArrayList<String>(resolver
 				.getAvailableQualifiedNames());
 		Collections.sort(availableQualifiedNames);
 		for (String qualifiedName : availableQualifiedNames) {

@@ -23,8 +23,13 @@ import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
-import org.eclipse.acceleo.aql.ide.resolver.OSGiQualifiedNameResolver;
-import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
@@ -210,20 +215,31 @@ public class AcceleoLauncher implements IApplication {
 			modelResourceSet.getResource(modelURI, true);
 		}
 
+		IQualifiedNameResolver resolver = new OSGiQualifiedNameResolver(bundle,
+				AcceleoParser.QUALIFIER_SEPARATOR);
+		final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
 		// TODO generation strategy should be configurable
-		IAcceleoEnvironment environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), URI
-				.createURI(target));
-		IQualifiedNameResolver resolver = new OSGiQualifiedNameResolver(bundle, environment
-				.getQueryEnvironment());
-		environment.setModuleResolver(resolver);
+		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment,
+				new DefaultGenerationStrategy(), URI.createURI(target));
+		AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment.getLookupEngine());
+		acceleoEnvironment.setEvaluator(evaluator);
 
-		Module mainModule = environment.getModule(moduleQualifiedName);
-		evaluate(environment, mainModule, modelResourceSet);
-		return environment.getGenerationResult();
+		resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
+		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+
+		final Object resolved = resolver.resolve(moduleQualifiedName);
+		final Module mainModule;
+		if (resolved instanceof Module) {
+			mainModule = (Module)resolved;
+		} else {
+			mainModule = null;
+		}
+		evaluate(evaluator, acceleoEnvironment, queryEnvironment.getLookupEngine(), mainModule, modelResourceSet);
+		return acceleoEnvironment.getGenerationResult();
 	}
 
-	private void evaluate(IAcceleoEnvironment environment, Module mainModule, ResourceSet modelResourceSet) {
-		AcceleoEvaluator evaluator = new AcceleoEvaluator(environment);
+	private void evaluate(AcceleoEvaluator evaluator, IAcceleoEnvironment environment,
+			IQualifiedNameLookupEngine lookupEngine, Module mainModule, ResourceSet modelResourceSet) {
 		AcceleoUtil.generate(evaluator, environment, mainModule, modelResourceSet);
 	}
 

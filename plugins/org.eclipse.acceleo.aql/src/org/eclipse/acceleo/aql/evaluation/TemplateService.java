@@ -20,8 +20,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
-import org.eclipse.acceleo.VisibilityKind;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.proposals.TemplateServiceCompletionProposal;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
@@ -29,6 +27,7 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -42,18 +41,23 @@ public class TemplateService extends AbstractModuleElementService<Template> {
 	/**
 	 * Wraps the given template as an IService.
 	 * 
-	 * @param env
-	 *            The current evaluation environment.
 	 * @param template
-	 *            The wrapped template.
+	 *            the (non-{@code null}) {@link Template} wrapped by this service.
+	 * @param evaluator
+	 *            the {@link AcceleoEvaluator}
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
+	 * @param contextQualifiedName
+	 *            the qualified name containing this service
 	 */
-	public TemplateService(AcceleoEnvironment env, Template template) {
-		super(template, env);
+	public TemplateService(Template template, AcceleoEvaluator evaluator,
+			IQualifiedNameLookupEngine lookupEngine, String contextQualifiedName) {
+		super(template, evaluator, lookupEngine, contextQualifiedName);
 	}
 
 	@Override
-	public VisibilityKind getVisibility() {
-		return getOrigin().getVisibility();
+	protected Visibility getVisibility(Template template) {
+		return getVisibility(template.getVisibility());
 	}
 
 	@Override
@@ -95,7 +99,7 @@ public class TemplateService extends AbstractModuleElementService<Template> {
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getEnv().getEvaluator().generate(getOrigin(), variables);
+		return getEvaluator().generate(getOrigin(), variables);
 	}
 
 	@Override

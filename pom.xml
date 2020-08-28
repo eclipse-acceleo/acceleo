@@ -82,12 +82,14 @@
     <module>query/plugins/org.eclipse.acceleo.annotations</module>
     <module>query/plugins/org.eclipse.acceleo.query</module>
     <module>query/plugins/org.eclipse.acceleo.query.ide</module>
+    <module>query/plugins/org.eclipse.acceleo.query.ide.jdt</module>
     <module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
 
     <module>query/plugins/org.eclipse.acceleo.query.doc</module>
 
     <module>query/features/org.eclipse.acceleo.query-feature</module>
     <module>query/features/org.eclipse.acceleo.query.ui-feature</module>
+    <module>query/features/org.eclipse.acceleo.query.jdt-feature</module>
 
     <module>query/tests/org.eclipse.acceleo.query.tests.nestedpackages</module>
     <module>query/tests/org.eclipse.acceleo.query.tests.qmodel</module>
@@ -106,7 +108,6 @@
     <module>plugins/org.eclipse.acceleo.aql.tm</module>
     <module>plugins/org.eclipse.acceleo.aql.doc</module>
     <module>plugins/org.eclipse.acceleo.aql.ide</module>
-    <module>plugins/org.eclipse.acceleo.aql.ide.jdt</module>
     <module>plugins/org.eclipse.acceleo.aql.ide.ui</module>
     <module>tests/org.eclipse.acceleo.aql.ide.tests</module>
     <module>plugins/org.eclipse.acceleo.aql.ls.debug</module>
@@ -119,7 +120,6 @@
     <module>features/org.eclipse.acceleo.aql.launcher-feature</module>
     
     <module>features/org.eclipse.acceleo.aql.feature</module>
-    <module>features/org.eclipse.acceleo.aql.ide.jdt.feature</module>
 
     <module>tests/org.eclipse.acceleo.aql.rcpttproduct</module>
     <!--module>acceleo-aql/org.eclipse.acceleo.aql.rcptt</module-->

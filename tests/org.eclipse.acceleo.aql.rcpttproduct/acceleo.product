@@ -106,7 +106,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <features>
       <feature id="org.eclipse.acceleo.aql.feature"/>
-      <feature id="org.eclipse.acceleo.aql.ide.jdt.feature"/>
+      <feature id="org.eclipse.acceleo.query.jdt"/>
       <feature id="org.eclipse.jdt"/>
       <feature id="org.eclipse.pde"/>
       <feature id="org.eclipse.platform"/>

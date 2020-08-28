@@ -11,17 +11,12 @@
 package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.VisibilityKind;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
-import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
-import org.eclipse.acceleo.query.runtime.impl.AbstractService;
+import org.eclipse.acceleo.query.runtime.impl.namespace.AbstractQualifiedNameService;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * Abstract implementation of a service that can wrap an Acceleo module element for AQL uses.
@@ -30,47 +25,87 @@ import org.eclipse.emf.ecore.resource.Resource;
  *            the kind of {@link ModuleElement}
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public abstract class AbstractModuleElementService<O extends ModuleElement> extends AbstractService<O> {
+public abstract class AbstractModuleElementService<O extends ModuleElement> extends AbstractQualifiedNameService<O> {
 
-	/** The current evaluation environment. */
-	private final AcceleoEnvironment env;
+	/**
+	 * The {@link Visibility}.
+	 */
+	private final Visibility visibility;
+
+	/**
+	 * The {@link AcceleoEvaluator}.
+	 */
+	private final AcceleoEvaluator evaluator;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param moduleElement
 	 *            the (non-{@code null}) {@link ModuleElement} wrapped by this service.
-	 * @param env
-	 *            The current evaluation environment.
+	 * @param evaluator
+	 *            the {@link AcceleoEvaluator}
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
+	 * @param contextQualifiedName
+	 *            the qualified name containing this service
 	 */
-	public AbstractModuleElementService(O moduleElement, AcceleoEnvironment env) {
-		super(moduleElement);
-		this.env = env;
+	public AbstractModuleElementService(O moduleElement, AcceleoEvaluator evaluator,
+			IQualifiedNameLookupEngine lookupEngine, String contextQualifiedName) {
+		super(moduleElement, lookupEngine, contextQualifiedName);
+		this.visibility = getVisibility(moduleElement);
+		this.evaluator = evaluator;
 	}
 
 	/**
-	 * Returns the underlying element's visibility if any.
+	 * Gets the {@link Visibility} from the given {@link VisibilityKind}.
 	 * 
-	 * @return The underlying element's visibility if any.
+	 * @param visibilityKind
+	 *            the {@link VisibilityKind}
+	 * @return the {@link Visibility} from the given {@link VisibilityKind}
 	 */
-	public abstract VisibilityKind getVisibility();
+	protected Visibility getVisibility(VisibilityKind visibilityKind) {
+		final Visibility res;
 
-	/**
-	 * Gets the {@link AcceleoEnvironment}.
-	 * 
-	 * @return the {@link AcceleoEnvironment}
-	 */
-	protected AcceleoEnvironment getEnv() {
-		return env;
+		switch (visibilityKind) {
+			case PRIVATE:
+				res = Visibility.PRIVATE;
+				break;
+			case PROTECTED:
+				res = Visibility.PROTECTED;
+				break;
+			case PUBLIC:
+				res = Visibility.PUBLIC;
+				break;
+
+			default:
+				res = Visibility.PUBLIC;
+				break;
+		}
+
+		return res;
 	}
 
 	/**
-	 * Gets the module qualified name.
+	 * Gets the {@link AcceleoEvaluator}.
 	 * 
-	 * @return the module qualified name
+	 * @return the {@link AcceleoEvaluator}
 	 */
-	public String getModuleQualifiedName() {
-		return env.getModuleQualifiedName((Module)getOrigin().eContainer());
+	protected AcceleoEvaluator getEvaluator() {
+		return evaluator;
+	}
+
+	/**
+	 * Gets the {@link Visibility} of the given {@link ModuleElement}.
+	 * 
+	 * @param moduleElement
+	 *            the {@link ModuleElement}
+	 * @return the {@link Visibility} of the given {@link ModuleElement}
+	 */
+	protected abstract Visibility getVisibility(O moduleElement);
+
+	@Override
+	public Visibility getVisibility() {
+		return visibility;
 	}
 
 	/**
@@ -80,7 +115,7 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	 */
 	@Override
 	public String getShortSignature() {
-		final List<IType> parameterTypes = getParameterTypes(getEnv().getQueryEnvironment());
+		final List<IType> parameterTypes = getParameterTypes(getLookupEngine().getQueryEnvironment());
 		final IType[] argumentTypes = parameterTypes.toArray(new IType[parameterTypes.size()]);
 
 		return serviceShortSignature(argumentTypes);
@@ -93,34 +128,11 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	 */
 	@Override
 	public String getLongSignature() {
-		String namespace = getNamespace();
+		String namespace = getContextQualifiedName();
 		if (namespace != null) {
 			return namespace + "::" + getShortSignature();
 		}
 		return getShortSignature();
-	}
-
-	/**
-	 * Returns the namespace of the underlying module element. This is used to recreate its qualified name.
-	 * 
-	 * @return The namespace of the underlying module element.
-	 */
-	private String getNamespace() {
-		String result = null;
-		Resource res = getOrigin().eResource();
-		if (res != null) {
-			result = res.getURI().toString();
-		} else {
-			EObject container = getOrigin().eContainer();
-			while (!(container instanceof Module)) {
-				container = container.eContainer();
-			}
-
-			if (container instanceof Module) {
-				result = ((Module)container).getName();
-			}
-		}
-		return result;
 	}
 
 	/**
@@ -152,56 +164,6 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	@Override
 	public int hashCode() {
 		return getOrigin().hashCode();
-	}
-
-	@Override
-	public Object invoke(Object... arguments) throws AcceleoQueryEvaluationException {
-		startInvoke();
-		Object result = super.invoke(arguments);
-		endInvoke();
-		return result;
-	}
-
-	private void startInvoke() {
-		Module newModule = (Module)getOrigin().eContainer();
-		String currentQualifiedName = getEnv().getCurrentStack().getStartingModuleQualifiedName();
-		String newQualifiedName = getEnv().getModuleQualifiedName(newModule);
-		if (currentQualifiedName != newQualifiedName) {
-			// The module element we're calling is not from our current stack's tip.
-			// If it is in our current module's hierarchy, we only need to push the new module element on the
-			// stack.
-			if (isInExtends(currentQualifiedName, newQualifiedName)) {
-				getEnv().push(getOrigin());
-			} else {
-				// We can only be here if the module we're calling is in our imports or their respective
-				// hierarchy. We need to change the environment current namespace to said import.
-				Optional<String> importedModule = getEnv().getImports(currentQualifiedName).stream().filter(
-						imported -> isInExtends(imported, newQualifiedName)).findFirst();
-				if (importedModule.isPresent()) {
-					getEnv().pushImport(importedModule.get(), getOrigin());
-				} else {
-					// FIXME log exception : we couldn't find the import from which this called service
-					// originates
-				}
-			}
-		} else {
-			getEnv().push(getOrigin());
-		}
-	}
-
-	private boolean isInExtends(String start, String calleeQualifiedName) {
-		String currentQualifiedName = start;
-		while (currentQualifiedName != null) {
-			if (currentQualifiedName.equals(calleeQualifiedName)) {
-				return true;
-			}
-			currentQualifiedName = getEnv().getExtend(currentQualifiedName);
-		}
-		return false;
-	}
-
-	private void endInvoke() {
-		getEnv().popStack(getOrigin());
 	}
 
 }

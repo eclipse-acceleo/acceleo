@@ -23,6 +23,8 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -43,6 +45,8 @@ public class AcceleoCompletor {
 	 * 
 	 * @param acceleoEnvironment
 	 *            the (non-{@code null}) contextual {@link IAcceleoEnvironment}.
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
 	 * @param moduleFileName
 	 *            the (non-{@code null}) name of the file containing the module (without extension).
 	 * @param source
@@ -53,7 +57,7 @@ public class AcceleoCompletor {
 	 *         position
 	 */
 	public List<AcceleoCompletionProposal> getProposals(IAcceleoEnvironment acceleoEnvironment,
-			String moduleFileName, String source, int position) {
+			IQualifiedNameLookupEngine lookupEngine, String moduleFileName, String source, int position) {
 		String moduleQualifiedNameForCompletion = TO_COMPLETION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR
 				+ moduleFileName;
 
@@ -66,26 +70,26 @@ public class AcceleoCompletor {
 		// Second, validate the AST - this is required further on for the AQL completion.
 		final AcceleoAstResult acceleoAstResult = acceleoParser.parse(source,
 				moduleQualifiedNameForCompletion);
-		acceleoEnvironment.registerModule(moduleQualifiedNameForCompletion, acceleoAstResult.getModule());
-
-		final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment);
-		IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(partialAcceleoAstResult,
-				moduleQualifiedNameForCompletion);
-
-		// Find which element of the AST we are completing.
-		EObject acceleoElementToComplete = getElementToComplete(partialAcceleoAstResult);
+		lookupEngine.getResolver().register(moduleQualifiedNameForCompletion, acceleoAstResult.getModule());
 		final List<AcceleoCompletionProposal> proposals;
-		final ModuleElement containingModuleElement = getContainingModuleElement(acceleoElementToComplete);
-		if (containingModuleElement != null) {
-			acceleoEnvironment.pushImport(moduleQualifiedNameForCompletion, containingModuleElement);
-		}
 		try {
-			proposals = this.getProposals(acceleoEnvironment, partialAcceleoSource, acceleoValidationResult,
-					acceleoElementToComplete);
-		} finally {
-			if (containingModuleElement != null) {
-				acceleoEnvironment.popStack(containingModuleElement);
+			final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment, lookupEngine);
+			IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(
+					partialAcceleoAstResult, moduleQualifiedNameForCompletion);
+
+			// Find which element of the AST we are completing.
+			EObject acceleoElementToComplete = getElementToComplete(partialAcceleoAstResult);
+			lookupEngine.pushImportsContext(moduleQualifiedNameForCompletion,
+					moduleQualifiedNameForCompletion);
+			try {
+				proposals = this.getProposals(acceleoEnvironment, lookupEngine.getResolver(),
+						partialAcceleoSource, acceleoValidationResult, acceleoElementToComplete);
+			} finally {
+				lookupEngine.popContext(moduleQualifiedNameForCompletion);
 			}
+		} finally {
+			lookupEngine.getResolver().clear(moduleQualifiedNameForCompletion);
+			lookupEngine.clearContext(moduleQualifiedNameForCompletion);
 		}
 
 		return proposals;
@@ -120,6 +124,8 @@ public class AcceleoCompletor {
 	 * 
 	 * @param acceleoEnvironment
 	 *            the (non-{@code null}) contextual {@link IAcceleoEnvironment}.
+	 * @param resolver
+	 *            the (non-{@code null}) contextual {@link IQualifiedNameResolver}.
 	 * @param sourceFragment
 	 *            the module source fragment
 	 * @param acceleoValidationResult
@@ -129,12 +135,12 @@ public class AcceleoCompletor {
 	 * @return the {@link List} of {@link AcceleoCompletionProposal}.
 	 */
 	protected List<AcceleoCompletionProposal> getProposals(IAcceleoEnvironment acceleoEnvironment,
-			String sourceFragment, IAcceleoValidationResult acceleoValidationResult,
-			EObject acceleoElementToComplete) {
+			IQualifiedNameResolver resolver, String sourceFragment,
+			IAcceleoValidationResult acceleoValidationResult, EObject acceleoElementToComplete) {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		AcceleoAstCompletor acceleoSyntaxCompletor = new AcceleoAstCompletor(acceleoEnvironment,
-				acceleoValidationResult);
+				acceleoValidationResult, resolver);
 
 		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(sourceFragment,
 				acceleoElementToComplete));

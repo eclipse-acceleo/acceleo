@@ -275,7 +275,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			String source = acceleoTextDocument.getContents();
 			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position, source);
 			List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(
-					acceleoEnvironment, acceleoTextDocument.getFileNameWithoutExtension(), source, atIndex);
+					acceleoEnvironment, acceleoEnvironment.getQueryEnvironment().getLookupEngine(),
+					acceleoTextDocument.getFileNameWithoutExtension(), source, atIndex);
 
 			canceler.checkCanceled();
 			List<CompletionItem> completionItems = AcceleoLanguageServerServicesUtils.transform(

@@ -19,8 +19,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Variable;
-import org.eclipse.acceleo.VisibilityKind;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.proposals.QueryServiceCompletionProposal;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
@@ -28,6 +26,7 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -40,18 +39,23 @@ public class QueryService extends AbstractModuleElementService<Query> {
 	/**
 	 * Wraps the given query as an IService.
 	 * 
-	 * @param env
-	 *            The current evaluation environment.
 	 * @param query
-	 *            The wrapped query.
+	 *            the (non-{@code null}) {@link Query} wrapped by this service.
+	 * @param evaluator
+	 *            the {@link AcceleoEvaluator}
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
+	 * @param contextQualifiedName
+	 *            the qualified name containing this service
 	 */
-	public QueryService(AcceleoEnvironment env, Query query) {
-		super(query, env);
+	public QueryService(Query query, AcceleoEvaluator evaluator, IQualifiedNameLookupEngine lookupEngine,
+			String contextQualifiedName) {
+		super(query, evaluator, lookupEngine, contextQualifiedName);
 	}
 
 	@Override
-	public VisibilityKind getVisibility() {
-		return getOrigin().getVisibility();
+	protected Visibility getVisibility(Query query) {
+		return getVisibility(query.getVisibility());
 	}
 
 	@Override
@@ -97,7 +101,7 @@ public class QueryService extends AbstractModuleElementService<Query> {
 			variables.put(var.getName(), arguments[i]);
 		}
 
-		return getEnv().getEvaluator().generate(getOrigin(), variables);
+		return getEvaluator().generate(getOrigin(), variables);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
-import org.eclipse.acceleo.aql.ide.Activator;
+import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EPackage;
 import org.junit.Before;
@@ -33,7 +33,7 @@ public class BundleTests {
 		// Make sure the org.eclipse.acceleo.aql is loaded
 		IAcceleoEnvironment.class.getClass();
 		// Make sure the org.eclipse.acceleo.aql.ide is loaded
-		Activator.getPlugin();
+		AcceleoPlugin.getPlugin();
 	}
 
 	@Test

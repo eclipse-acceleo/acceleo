@@ -14,7 +14,6 @@ import org.eclipse.acceleo.tests.completion.CompletionTests;
 import org.eclipse.acceleo.tests.evaluation.EvaluationTests;
 import org.eclipse.acceleo.tests.language.LanguageTests;
 import org.eclipse.acceleo.tests.resolution.ResolutionTests;
-import org.eclipse.acceleo.tests.resolver.ResolverTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -26,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {LanguageTests.class, CompletionTests.class, EvaluationTests.class,
-		ResolutionTests.class, ResolverTests.class, })
+		ResolutionTests.class, })
 public class AllTests {
 
 }

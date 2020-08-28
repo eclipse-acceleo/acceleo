@@ -50,6 +50,7 @@ import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -103,16 +104,24 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private String lastLineOfLastStatement;
 
 	/**
+	 * The {@link IQualifiedNameLookupEngine}.
+	 */
+	private final IQualifiedNameLookupEngine lookupEngine;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param environment
 	 *            the {@link IAcceleoEnvironment}
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
 	 */
-	public AcceleoEvaluator(IAcceleoEnvironment environment) {
+	public AcceleoEvaluator(IAcceleoEnvironment environment, IQualifiedNameLookupEngine lookupEngine) {
 		this.environment = environment;
 		environment.setEvaluator(this);
 		final IQueryEnvironment queryEnvironment = environment.getQueryEnvironment();
 		this.aqlEngine = QueryEvaluation.newEngine(queryEnvironment);
+		this.lookupEngine = lookupEngine;
 	}
 
 	/**
@@ -304,7 +313,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template && ((Template)element).isMain()) {
-				environment.pushImport(environment.getModuleQualifiedName(module), element);
+				final String start = lookupEngine.getResolver().getQualifiedName(module);
+				lookupEngine.pushImportsContext(start, start);
 				doSwitch(element);
 			}
 		}

@@ -21,6 +21,7 @@ import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -42,13 +43,21 @@ public class AcceleoLocator {
 	private final AqlLocator aqlLocator;
 
 	/**
+	 * The {@link IQualifiedNameLookupEngine}.
+	 */
+	private IQualifiedNameLookupEngine lookupEngine;
+
+	/**
 	 * Creates a new {@link AcceleoLocator}.
 	 * 
 	 * @param acceleoEnvironment
 	 *            the (non-{@code null}) {@link IAcceleoEnvironment} of the Acceleo contents.
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
 	 */
-	public AcceleoLocator(IAcceleoEnvironment acceleoEnvironment) {
+	public AcceleoLocator(IAcceleoEnvironment acceleoEnvironment, IQualifiedNameLookupEngine lookupEngine) {
 		this.acceleoEnvironment = acceleoEnvironment;
+		this.lookupEngine = lookupEngine;
 
 		this.aqlLocator = new AqlLocator(this.acceleoEnvironment.getQueryEnvironment());
 	}
@@ -136,7 +145,8 @@ public class AcceleoLocator {
 
 		// The definition locator needs the environment for resolving references to out-of-file elements, and
 		// the position so it can delegate to the AQL locator if we are inside an expression.
-		AcceleoDefinitionLocator definitionLocator = new AcceleoDefinitionLocator(this.acceleoEnvironment);
+		AcceleoDefinitionLocator definitionLocator = new AcceleoDefinitionLocator(this.acceleoEnvironment,
+				lookupEngine);
 
 		// Retrieve the links from our element to its definition location(s).
 		List<AbstractLocationLink<?, ?>> linksToDefinitionLocations = definitionLocator.doSwitch(

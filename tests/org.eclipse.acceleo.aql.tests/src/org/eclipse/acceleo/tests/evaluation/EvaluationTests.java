@@ -21,8 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {CommentTests.class, ExpressionStatementTests.class, FileStatementTests.class,
-		ForStatementTests.class, IfStatementTests.class, LetStatementTests.class, TextStatementTests.class,
-		TemplateLookupTest.class, })
+		ForStatementTests.class, IfStatementTests.class, LetStatementTests.class, TextStatementTests.class, })
 public class EvaluationTests {
 
 }

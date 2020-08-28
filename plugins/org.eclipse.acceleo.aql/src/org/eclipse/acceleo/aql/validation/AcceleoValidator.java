@@ -68,6 +68,7 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -124,11 +125,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private AcceleoValidationResult result;
 
 	/**
-	 * The module qualified name.
-	 */
-	private String qualifiedName;
-
-	/**
 	 * {@link String} {@link IType}.
 	 */
 	private final IType stringType;
@@ -144,13 +140,21 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final IType booleanObjectType;
 
 	/**
+	 * The {@link IQualifiedNameLookupEngine}.
+	 */
+	private final IQualifiedNameLookupEngine lookupEngine;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param environment
 	 *            the {@link IAcceleoEnvironment}
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
 	 */
-	public AcceleoValidator(IAcceleoEnvironment environment) {
+	public AcceleoValidator(IAcceleoEnvironment environment, IQualifiedNameLookupEngine lookupEngine) {
 		this.environment = environment;
+		this.lookupEngine = lookupEngine;
 		this.stringType = new ClassType(environment.getQueryEnvironment(), String.class);
 		this.booleanType = new ClassType(environment.getQueryEnvironment(), boolean.class);
 		this.booleanObjectType = new ClassType(environment.getQueryEnvironment(), Boolean.class);
@@ -198,10 +202,14 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		variableTypesStack = new ArrayDeque<Map<String, Set<IType>>>();
 		pushVariableTypes(new HashMap<String, Set<IType>>());
 		forceCollectionBinding = false;
-		qualifiedName = moduleQualifiedName;
 		result = new AcceleoValidationResult(astResult);
 
-		doSwitch(astResult.getModule());
+		lookupEngine.pushImportsContext(moduleQualifiedName, moduleQualifiedName);
+		try {
+			doSwitch(astResult.getModule());
+		} finally {
+			lookupEngine.popContext(moduleQualifiedName);
+		}
 
 		return result;
 	}
@@ -358,8 +366,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModuleReference(ModuleReference moduleReference) {
-		if (moduleReference.getQualifiedName() != null && !environment.hasQualifiedName(moduleReference
-				.getQualifiedName())) {
+		if (moduleReference.getQualifiedName() != null && lookupEngine.getResolver().getURL(moduleReference
+				.getQualifiedName()) == null) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not resolve " + moduleReference
 					.getQualifiedName(), acceleoAstResult.getStartPosition(moduleReference), acceleoAstResult
@@ -385,7 +393,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseTemplate(Template template) {
-		environment.pushImport(qualifiedName, template);
 		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
@@ -417,7 +424,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			doSwitch(template.getBody());
 		} finally {
 			popVariableTypes();
-			environment.popStack(template);
 		}
 
 		return RETURN_VALUE;
@@ -469,7 +475,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseQuery(Query query) {
-		environment.pushImport(qualifiedName, query);
 		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
@@ -499,7 +504,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 		} finally {
 			popVariableTypes();
-			environment.popStack(query);
 		}
 
 		return RETURN_VALUE;

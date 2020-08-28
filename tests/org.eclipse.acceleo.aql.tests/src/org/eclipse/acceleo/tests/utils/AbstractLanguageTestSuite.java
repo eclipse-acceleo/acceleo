@@ -36,12 +36,18 @@ import java.util.List;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.aql.resolver.ClassLoaderQualifiedNameResolver;
-import org.eclipse.acceleo.aql.resolver.IQualifiedNameResolver;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -122,23 +128,35 @@ public abstract class AbstractLanguageTestSuite {
 	public AbstractLanguageTestSuite(String testFolder) throws IOException {
 		this.memoryDestinationString = "acceleotests://" + testFolder + "/";
 		this.memoryDestination = URI.createURI(memoryDestinationString);
-		this.environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), memoryDestination);
 		this.testFolderPath = testFolder;
 		final File testFolderFile = new File(testFolderPath);
 		final File moduleFile = getModuleFile(testFolderFile);
 
 		final Path rootPath = testFolderFile.toPath().getName(0);
 		final URL[] urls = new URL[] {testFolderFile.toPath().getName(0).toUri().toURL() };
+
 		final ClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
-		final IQualifiedNameResolver moduleResolver = new ClassLoaderQualifiedNameResolver(classLoader,
-				environment.getQueryEnvironment());
-		environment.setModuleResolver(moduleResolver);
+		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
+				AcceleoParser.QUALIFIER_SEPARATOR);
+		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
+		this.environment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(),
+				memoryDestination);
+
+		final AcceleoEvaluator evaluator = new AcceleoEvaluator(this.environment, queryEnvironment
+				.getLookupEngine());
+		this.environment.setEvaluator(evaluator);
+		resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
+		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 		String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
 				"::") + "::";
 		qualifiedName = namespace + moduleFile.getName().substring(0, moduleFile.getName().lastIndexOf('.'));
-		Module module = environment.getModule(qualifiedName);
-		astResult = module.getAst();
+		final Object resolved = resolver.resolve(qualifiedName);
+		if (resolved instanceof Module) {
+			astResult = ((Module)resolved).getAst();
+		} else {
+			astResult = null;
+		}
 	}
 
 	/**
@@ -217,7 +235,8 @@ public abstract class AbstractLanguageTestSuite {
 	 */
 	@Test
 	public void validation() throws FileNotFoundException, IOException {
-		AcceleoValidator validator = new AcceleoValidator(environment);
+		AcceleoValidator validator = new AcceleoValidator(environment, environment.getQueryEnvironment()
+				.getLookupEngine());
 		final List<IValidationMessage> messages = validator.validate(astResult, qualifiedName)
 				.getValidationMessages();
 		final String actualContent = getValidationContent(messages);

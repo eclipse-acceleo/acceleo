@@ -13,7 +13,7 @@ package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.aql.ide.Activator;
+import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.acceleo.aql.ls.debug.ide.launch.AcceleoLaunchConfigurationDelegate;
@@ -131,7 +131,7 @@ public class AcceleoLaunchShortcut implements ILaunchShortcut2 {
 	private ILaunchConfiguration[] getLaunchConfigurations(IResource resource) {
 		final ILaunchConfiguration[] res;
 
-		if (Activator.isAcceleoMain(resource)) {
+		if (AcceleoPlugin.isAcceleoMain(resource)) {
 			final List<ILaunchConfiguration> configurations = new ArrayList<ILaunchConfiguration>();
 			final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 			final ILaunchConfigurationType configType = launchManager.getLaunchConfigurationType(
