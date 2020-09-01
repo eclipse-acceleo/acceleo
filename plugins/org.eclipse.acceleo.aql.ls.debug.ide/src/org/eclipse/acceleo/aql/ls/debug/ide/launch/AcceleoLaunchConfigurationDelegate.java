@@ -18,6 +18,7 @@ import java.net.URI;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -57,13 +58,18 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 			param.addProperty(AcceleoDebugger.MODEL, modelUri.toString());
 		}
 		if (wc.hasAttribute(AcceleoDebugger.DESTINATION)) {
-			IResource destination = root.findMember(new Path(wc.getAttribute(AcceleoDebugger.DESTINATION,
-					(String)null)));
+			final Path destinationPath = new Path(wc.getAttribute(AcceleoDebugger.DESTINATION, (String)null));
+			IResource destination = root.findMember(destinationPath);
 			if (destination instanceof IFile) {
 				destination = destination.getParent();
+			} else if (destination == null) {
+				destination = root.getFolder(destinationPath);
+				if (!destination.exists()) {
+					((IFolder)destination).create(true, true, monitor);
+				}
 			}
-			final URI modelUri = destination.getLocation().toFile().getAbsoluteFile().toURI();
-			param.addProperty(AcceleoDebugger.DESTINATION, modelUri.toString());
+			final URI destinationUri = destination.getLocation().toFile().getAbsoluteFile().toURI();
+			param.addProperty(AcceleoDebugger.DESTINATION, destinationUri.toString());
 		}
 
 		wc.setAttribute(DSPPlugin.ATTR_CUSTOM_LAUNCH_PARAMS, true);
