@@ -33,7 +33,7 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	 *            the profiler
 	 */
 	public AcceleoProfilerEvaluator(IAcceleoEnvironment environment, Profiler profiler) {
-		super(environment);
+		super(environment, environment.getQueryEnvironment().getLookupEngine());
 		this.profiler = profiler;
 	}
 

@@ -12,10 +12,17 @@ import java.net.URL;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
-import org.eclipse.acceleo.aql.ide.Activator;
+import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.aql.profiler.presentation.ProfilerEditorPlugin;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -55,9 +62,18 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 	 * Inits the factory acceleo environnement. Resets any module cache.
 	 */
 	public void init() {
-		environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), URI.createURI("TMP")); //$NON-NLS-1$
-		environment.setModuleResolver(Activator.getPlugin().createQualifiedNameResolver(environment
-				.getQueryEnvironment(), project));
+		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
+				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
+				AcceleoParser.QUALIFIER_SEPARATOR);
+		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
+		environment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(), URI
+				.createURI("TMP"));
+
+		final AcceleoEvaluator evaluator = new AcceleoEvaluator(environment, queryEnvironment
+				.getLookupEngine());
+		environment.setEvaluator(evaluator);
+		resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
+		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 	}
 
 	/**
@@ -68,8 +84,14 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 	@Override
 	public Resource createResource(URI uri) {
 		String qualifiedName = uri.toString().replaceFirst(AcceleoParser.ACCELEOENV_URI_PROTOCOL, ""); //$NON-NLS-1$
-		org.eclipse.acceleo.Module module = environment.getModule(qualifiedName);
-		return module.eResource();
+		final IQualifiedNameResolver resolver = environment.getQueryEnvironment().getLookupEngine()
+				.getResolver();
+		final Object resolved = resolver.resolve(qualifiedName);
+		if (resolved instanceof Module) {
+			return ((Module)resolved).eResource();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -82,7 +104,10 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 	 *             if the module resource URI cannot be resolved
 	 */
 	public IFile getSourceFile(Module module) {
-		URL sourceURL = environment.getModuleSourceURL(module);
+		final IQualifiedNameResolver resolver = environment.getQueryEnvironment().getLookupEngine()
+				.getResolver();
+		final String moduleQualifiedName = resolver.getQualifiedName(module);
+		URL sourceURL = resolver.getSourceURL(moduleQualifiedName);
 		if (sourceURL != null) {
 			try {
 				IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(sourceURL
