@@ -5,10 +5,22 @@ Acceleo 4 can be used programmatically and for instance integrated in other prod
 [source,java]
 ---------
 URI destination = URI.createURI(...);
-environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), destination);
-IQualifiedNameResolver moduleResolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), environment.getQueryEnvironment());
-environment.setModuleResolver(moduleResolver);
-Module module = environment.getModule(qualifiedName);
+
+final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
+IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(), destination);
+AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment.getLookupEngine());
+
+resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
+resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+
+final Object resolved = resolver.resolve(moduleQualifiedName);
+final Module mainModule;
+if (resolved instanceof Module) {
+  mainModule = (Module)resolved;
+} else {
+  mainModule = null;
+}
 ---------
 
 
@@ -16,29 +28,29 @@ Module module = environment.getModule(qualifiedName);
 
 [source,java]
 ----
-AcceleoValidator validator = new AcceleoValidator(environment);
-List<IValidationMessage> messages = validator.validate(astResult, qualifiedName).getValidationMessages();
+final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment, queryEnvironment.getLookupEngine());
+final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(mainModule.getAst(), moduleQualifiedNameForCompletion);
 ----
 
 === Completion
 
 [source,java]
 ----
-AcceleoCompletor completor = new AcceleoCompletor();
+final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
 String source = ...;
-List<ICompletionProposal> proposals = completor.getProposals(environment, source, position);
+int position = ...;
+List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(acceleoEnvironment, acceleoEnvironment.getQueryEnvironment().getLookupEngine(), qualifiedName, source, position);
 ----
 
 === Generation
 
 [source,java]
 ----
-AcceleoEvaluator evaluator = new AcceleoEvaluator(environment);
-ResourceSetImpl rs = new ResourceSetImpl();
-Resource model = rs.getResource(..., true);
+final ResourceSetImpl rs = new ResourceSetImpl();
+final Resource model = rs.getResource(..., true);
 AcceleoUtil.generate(evaluator, environment, module, model);
 ----
 
 === Unit test module
 
-You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/acceleo-aql/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java?h=acceleo-aql[FileStatementTests] and the corresponding https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/acceleo-aql/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement?h=acceleo-aql[folder].
+You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java[FileStatementTests] and the corresponding https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement[folder].
