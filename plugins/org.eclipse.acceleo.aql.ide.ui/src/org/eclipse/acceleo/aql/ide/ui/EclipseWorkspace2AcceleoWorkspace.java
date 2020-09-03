@@ -556,7 +556,6 @@ public class EclipseWorkspace2AcceleoWorkspace {
 
 			final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 					.getLookupEngine());
-			acceleoEnvironment.setEvaluator(evaluator);
 			resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
 			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 

@@ -93,6 +93,11 @@ public abstract class AbstractLanguageTestSuite {
 	protected final IAcceleoEnvironment environment;
 
 	/**
+	 * The {@link AcceleoEvaluator}.
+	 */
+	protected final AcceleoEvaluator evaluator;
+
+	/**
 	 * The memory destination {@link String}.
 	 */
 	protected final String memoryDestinationString;
@@ -142,9 +147,7 @@ public abstract class AbstractLanguageTestSuite {
 		this.environment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(),
 				memoryDestination);
 
-		final AcceleoEvaluator evaluator = new AcceleoEvaluator(this.environment, queryEnvironment
-				.getLookupEngine());
-		this.environment.setEvaluator(evaluator);
+		evaluator = new AcceleoEvaluator(this.environment, queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 

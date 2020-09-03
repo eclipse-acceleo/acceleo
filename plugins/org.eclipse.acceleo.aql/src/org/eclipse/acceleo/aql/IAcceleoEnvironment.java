@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.eclipse.acceleo.OpenModeKind;
-import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
@@ -82,18 +81,4 @@ public interface IAcceleoEnvironment {
 	 */
 	GenerationResult getGenerationResult();
 
-	/**
-	 * Sets the {@link AcceleoEvaluator}.
-	 * 
-	 * @param evaluator
-	 *            the {@link AcceleoEvaluator}
-	 */
-	void setEvaluator(AcceleoEvaluator evaluator);
-
-	/**
-	 * Gets the {@link AcceleoEvaluator}.
-	 * 
-	 * @return the {@link AcceleoEvaluator}
-	 */
-	AcceleoEvaluator getEvaluator();
 }

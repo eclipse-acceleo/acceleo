@@ -221,8 +221,8 @@ public class AcceleoLauncher implements IApplication {
 		// TODO generation strategy should be configurable
 		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment,
 				new DefaultGenerationStrategy(), URI.createURI(target));
-		AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment.getLookupEngine());
-		acceleoEnvironment.setEvaluator(evaluator);
+		AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
+				.getLookupEngine());
 
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
@@ -234,7 +234,8 @@ public class AcceleoLauncher implements IApplication {
 		} else {
 			mainModule = null;
 		}
-		evaluate(evaluator, acceleoEnvironment, queryEnvironment.getLookupEngine(), mainModule, modelResourceSet);
+		evaluate(evaluator, acceleoEnvironment, queryEnvironment.getLookupEngine(), mainModule,
+				modelResourceSet);
 		return acceleoEnvironment.getGenerationResult();
 	}
 

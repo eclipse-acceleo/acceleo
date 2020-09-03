@@ -90,7 +90,6 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 							evaluator));
 					resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-					environment.setEvaluator(evaluator);
 					AcceleoUtil.generate(evaluator, environment, module, model);
 				}
 			} finally {

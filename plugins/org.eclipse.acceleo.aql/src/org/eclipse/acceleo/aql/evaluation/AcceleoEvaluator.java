@@ -118,7 +118,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public AcceleoEvaluator(IAcceleoEnvironment environment, IQualifiedNameLookupEngine lookupEngine) {
 		this.environment = environment;
-		environment.setEvaluator(this);
 		final IQueryEnvironment queryEnvironment = environment.getQueryEnvironment();
 		this.aqlEngine = QueryEvaluation.newEngine(queryEnvironment);
 		this.lookupEngine = lookupEngine;

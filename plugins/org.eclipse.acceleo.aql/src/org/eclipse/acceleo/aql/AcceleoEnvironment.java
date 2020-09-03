@@ -16,7 +16,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.eclipse.acceleo.OpenModeKind;
-import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
@@ -49,11 +48,6 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * The {@link GenerationResult}.
 	 */
 	private final GenerationResult generationResult = new GenerationResult();
-
-	/**
-	 * The {@link AcceleoEvaluator}.
-	 */
-	private AcceleoEvaluator evaluator;
 
 	/**
 	 * Constructor.
@@ -111,16 +105,6 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	@Override
 	public GenerationResult getGenerationResult() {
 		return generationResult;
-	}
-
-	@Override
-	public void setEvaluator(AcceleoEvaluator evaluator) {
-		this.evaluator = evaluator;
-	}
-
-	@Override
-	public AcceleoEvaluator getEvaluator() {
-		return evaluator;
 	}
 
 }

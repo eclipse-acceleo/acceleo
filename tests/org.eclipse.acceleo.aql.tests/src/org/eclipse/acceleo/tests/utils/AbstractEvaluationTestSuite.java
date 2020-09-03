@@ -55,11 +55,6 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 	private final Resource model;
 
 	/**
-	 * The {@link AcceleoEvaluator}.
-	 */
-	private final AcceleoEvaluator evaluator;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param testFolder
@@ -72,7 +67,6 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final File modelFile = getModelFile(new File(getTestFolderPath()));
 		final ResourceSet rs = getResourceSet();
 		model = getModel(modelFile, rs);
-		evaluator = environment.getEvaluator();
 	}
 
 	/**
