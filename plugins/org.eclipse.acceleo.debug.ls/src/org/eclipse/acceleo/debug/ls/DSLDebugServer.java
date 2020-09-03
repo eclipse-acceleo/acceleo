@@ -947,7 +947,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
 		eventArguments.setAllThreadsContinued(false);
 
-		client.continued(eventArguments);
+		// client.continued(eventArguments);
 	}
 
 	@Override
@@ -957,7 +957,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
 		eventArguments.setAllThreadsContinued(false);
 
-		client.continued(eventArguments);
+		// client.continued(eventArguments);
 	}
 
 	@Override
@@ -967,7 +967,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
 		eventArguments.setAllThreadsContinued(false);
 
-		client.continued(eventArguments);
+		// client.continued(eventArguments);
 	}
 
 	@Override
@@ -977,7 +977,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
 		eventArguments.setAllThreadsContinued(false);
 
-		client.continued(eventArguments);
+		// client.continued(eventArguments);
 	}
 
 	@Override

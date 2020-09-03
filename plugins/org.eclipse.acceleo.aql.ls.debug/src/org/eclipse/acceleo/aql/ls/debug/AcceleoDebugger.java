@@ -101,6 +101,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					@Override
 					public void run() {
 						terminate(threadID);
+						terminated(threadID);
 						terminated();
 					}
 				});
