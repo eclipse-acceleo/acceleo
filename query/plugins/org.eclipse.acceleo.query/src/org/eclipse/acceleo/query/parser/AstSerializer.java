@@ -37,7 +37,9 @@ import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.impl.EClassifierImpl;
 
 /**
  * Serialize a {@link Expression}.
@@ -869,9 +871,18 @@ public class AstSerializer extends AstSwitch<Object> {
 					builder.append(((Class<?>)object.getValue()).getSimpleName());
 				}
 			} else if (object.getValue() instanceof EClassifier) {
-				builder.append(((EClassifier)object.getValue()).getEPackage().getName());
-				builder.append(ECORE_SEPARATOR);
-				builder.append(((EClassifier)object.getValue()).getName());
+				final EClassifier eClassifier = (EClassifier)object.getValue();
+				if (!eClassifier.eIsProxy()) {
+					builder.append(eClassifier.getEPackage().getName());
+					builder.append(ECORE_SEPARATOR);
+					builder.append(eClassifier.getName());
+				} else {
+					final URI proxyURI = ((EClassifierImpl)eClassifier).eProxyURI();
+					final String[] segments = proxyURI.fragment().split("/");
+					builder.append(segments[segments.length - 2]);
+					builder.append(ECORE_SEPARATOR);
+					builder.append(segments[segments.length - 1]);
+				}
 			}
 		}
 
