@@ -25,6 +25,7 @@ import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -46,6 +47,7 @@ import org.eclipse.ocl.ecore.CollectionLiteralExp;
 import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.EnumLiteralExp;
+import org.eclipse.ocl.ecore.IfExp;
 import org.eclipse.ocl.ecore.IntegerLiteralExp;
 import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.ecore.OCLExpression;
@@ -170,6 +172,9 @@ public final class ExpressionConverter extends AbstractConverter {
 			case EcorePackage.COLLECTION_LITERAL_EXP:
 				output = convertCollectionLiteralExp((CollectionLiteralExp)input);
 				break;
+			case EcorePackage.IF_EXP:
+				output = caseIfExp((IfExp)input);
+				break;
 			case EcorePackage.COLLECTION_ITEM:
 				output = convert(((CollectionItem)input).getItem());
 				break;
@@ -179,6 +184,16 @@ public final class ExpressionConverter extends AbstractConverter {
 			default:
 				throw new MigrationException(input);
 		}
+		return output;
+	}
+
+	private Object caseIfExp(IfExp input) {
+		Conditional output = AstFactory.eINSTANCE.createConditional();
+
+		output.setPredicate((Expression)convert(input.getCondition()));
+		output.setTrueBranch((Expression)convert(input.getThenExpression()));
+		output.setFalseBranch((Expression)convert(input.getElseExpression()));
+
 		return output;
 	}
 
