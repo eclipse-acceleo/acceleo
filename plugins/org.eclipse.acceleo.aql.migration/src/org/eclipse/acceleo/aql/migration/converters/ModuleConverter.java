@@ -46,7 +46,6 @@ import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
 import org.eclipse.acceleo.model.mtl.LetBlock;
-import org.eclipse.acceleo.model.mtl.ModuleElementDocumentation;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
@@ -109,9 +108,10 @@ public final class ModuleConverter extends AbstractConverter {
 			case MtlPackage.QUERY:
 				res = caseQuery((org.eclipse.acceleo.model.mtl.Query)input);
 				break;
+			case MtlPackage.DOCUMENTATION:
+			case MtlPackage.MODULE_DOCUMENTATION:
 			case MtlPackage.MODULE_ELEMENT_DOCUMENTATION:
-				res = caseModuleElementDocumentation(
-						(org.eclipse.acceleo.model.mtl.ModuleElementDocumentation)input);
+				res = caseDocumentation((org.eclipse.acceleo.model.mtl.Documentation)input);
 				break;
 			case MtlPackage.COMMENT:
 				res = caseComment((org.eclipse.acceleo.model.mtl.Comment)input);
@@ -389,7 +389,7 @@ public final class ModuleConverter extends AbstractConverter {
 		return outputVariable;
 	}
 
-	private Object caseModuleElementDocumentation(ModuleElementDocumentation input) {
+	private Object caseDocumentation(org.eclipse.acceleo.model.mtl.Documentation input) {
 		Documentation output = AcceleoFactory.eINSTANCE.createModuleElementDocumentation();
 		CommentBody body = AcceleoFactory.eINSTANCE.createCommentBody();
 		StringBuilder formatValue = new StringBuilder();
