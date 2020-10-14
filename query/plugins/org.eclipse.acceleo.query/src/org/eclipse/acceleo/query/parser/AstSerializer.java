@@ -73,6 +73,8 @@ public class AstSerializer extends AstSwitch<Object> {
 	 */
 	private StringBuilder builder;
 
+	final Map<String, String> ePackagesURItoName = new HashMap<>();
+
 	/**
 	 * Serializes the given {@link Expression}.
 	 * 
@@ -711,11 +713,25 @@ public class AstSerializer extends AstSwitch<Object> {
 
 	@Override
 	public Object caseEnumLiteral(EnumLiteral enumLiteral) {
-		builder.append(enumLiteral.getLiteral().getEEnum().getEPackage().getName());
-		builder.append(ECORE_SEPARATOR);
-		builder.append(enumLiteral.getLiteral().getEEnum().getName());
-		builder.append(ECORE_SEPARATOR);
-		builder.append(enumLiteral.getLiteral().getName());
+		if (!enumLiteral.getLiteral().eIsProxy()) {
+			builder.append(enumLiteral.getLiteral().getEEnum().getEPackage().getName());
+			builder.append(ECORE_SEPARATOR);
+			builder.append(enumLiteral.getLiteral().getEEnum().getName());
+			builder.append(ECORE_SEPARATOR);
+			builder.append(enumLiteral.getLiteral().getName());
+		} else {
+			final URI proxyURI = ((org.eclipse.emf.ecore.impl.EEnumLiteralImpl)enumLiteral.getLiteral())
+					.eProxyURI();
+			final String packageName = ePackagesURItoName.getOrDefault(removeFragment(proxyURI),
+					"packageName");
+			final String[] segments = proxyURI.fragment().split("/");
+			builder.append(packageName);
+			builder.append(ECORE_SEPARATOR);
+			builder.append(segments[segments.length - 2]);
+			builder.append(ECORE_SEPARATOR);
+			builder.append(segments[segments.length - 1]);
+		}
+
 		return DUMMY;
 	}
 
@@ -879,6 +895,7 @@ public class AstSerializer extends AstSwitch<Object> {
 				} else {
 					final URI proxyURI = ((EClassifierImpl)eClassifier).eProxyURI();
 					final String[] segments = proxyURI.fragment().split("/");
+					ePackagesURItoName.put(removeFragment(proxyURI), segments[segments.length - 2]);
 					builder.append(segments[segments.length - 2]);
 					builder.append(ECORE_SEPARATOR);
 					builder.append(segments[segments.length - 1]);
@@ -887,6 +904,10 @@ public class AstSerializer extends AstSwitch<Object> {
 		}
 
 		return DUMMY;
+	}
+
+	private String removeFragment(URI uri) {
+		return uri.toString().substring(0, uri.toString().length() - uri.fragment().length());
 	}
 
 	@Override
