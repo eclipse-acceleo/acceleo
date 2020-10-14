@@ -162,7 +162,12 @@ public final class ModuleConverter extends AbstractConverter {
 			ModuleReference moduleReference = AcceleoFactory.eINSTANCE.createModuleReference();
 			// only one module can be extended
 			org.eclipse.acceleo.model.mtl.Module extendedModule = inputModule.getExtends().get(0);
-			moduleReference.setQualifiedName(moduleResolver.getQualifiedName(inputModule, extendedModule));
+			if (extendedModule.getNsURI() != null) {
+				moduleReference.setQualifiedName(extendedModule.getNsURI());
+			} else {
+				moduleReference.setQualifiedName(moduleResolver.getQualifiedName(inputModule,
+						extendedModule));
+			}
 			outputModule.setExtends(moduleReference);
 		}
 
@@ -170,7 +175,12 @@ public final class ModuleConverter extends AbstractConverter {
 		for (org.eclipse.acceleo.model.mtl.Module importedModule : inputModule.getImports()) {
 			Import outputImport = AcceleoFactory.eINSTANCE.createImport();
 			ModuleReference moduleReference = AcceleoFactory.eINSTANCE.createModuleReference();
-			moduleReference.setQualifiedName(moduleResolver.getQualifiedName(inputModule, importedModule));
+			if (importedModule.getNsURI() != null) {
+				moduleReference.setQualifiedName(importedModule.getNsURI());
+			} else {
+				moduleReference.setQualifiedName(moduleResolver.getQualifiedName(inputModule,
+						importedModule));
+			}
 			outputImport.setModule(moduleReference);
 			outputModule.getImports().add(outputImport);
 		}
