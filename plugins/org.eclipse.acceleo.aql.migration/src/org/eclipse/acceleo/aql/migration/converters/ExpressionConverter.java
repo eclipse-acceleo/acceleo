@@ -256,6 +256,13 @@ public final class ExpressionConverter extends AbstractConverter {
 			final String serviceName = serviceSignature.substring(0, serviceSignature.indexOf("("));
 			output.setServiceName(serviceName);
 			map(((CollectionLiteralExp)input.getArgument().get(2)).getPart(), output.getArguments());
+			if (output.getArguments().isEmpty()) {
+				final String varName = ((Query)input.eContainer()).getParameter().get(0).getName();
+				final VarRef varRef = AstFactory.eINSTANCE.createVarRef();
+				varRef.setVariableName(varName);
+				output.getArguments().add(varRef);
+				// TODO add an arguments to the existing Java method ?
+			}
 			res = output;
 		} else {
 			Call output = OperationUtils.createCall(input);
