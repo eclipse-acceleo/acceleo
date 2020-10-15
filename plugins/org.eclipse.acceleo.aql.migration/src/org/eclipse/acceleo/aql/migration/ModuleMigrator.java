@@ -12,6 +12,7 @@ package org.eclipse.acceleo.aql.migration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,11 @@ public final class ModuleMigrator {
 	private IModuleResolver moduleResolver;
 
 	/**
+	 * The file separator.
+	 */
+	private final String fileSeparator = FileSystems.getDefault().getSeparator();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param moduleResolver
@@ -85,10 +91,12 @@ public final class ModuleMigrator {
 		org.eclipse.acceleo.model.mtl.Module legacyModule = (org.eclipse.acceleo.model.mtl.Module)ModelUtils
 				.load(emtlFile, resourceSet);
 
-		Module convertedModule = (Module)new ModuleConverter(moduleResolver).convert(legacyModule);
+		ModuleConverter moduleConverter = new ModuleConverter(moduleResolver);
+		Module convertedModule = (Module)moduleConverter.convert(legacyModule);
 		if (originMTLFile != null) {
 			parseModuleDocumentation(convertedModule, originMTLFile);
 		}
+
 		return convertedModule;
 	}
 

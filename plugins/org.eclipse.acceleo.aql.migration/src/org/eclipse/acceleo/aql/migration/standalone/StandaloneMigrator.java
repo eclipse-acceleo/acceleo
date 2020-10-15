@@ -20,6 +20,7 @@ import java.util.Iterator;
 import org.eclipse.acceleo.aql.migration.MigrationException;
 import org.eclipse.acceleo.aql.migration.ModuleMigrator;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
 
 /**
  * A standalone launcher.
@@ -36,7 +37,7 @@ public final class StandaloneMigrator {
 	/**
 	 * The mtl file extension.
 	 */
-	private static final String MTL_FILE_EXTENSION = ".mtl";
+	private static final String MTL_FILE_EXTENSION = "." + AcceleoParser.MODULE_FILE_EXTENSION;
 
 	/**
 	 * The emtl file extension.
@@ -88,6 +89,22 @@ public final class StandaloneMigrator {
 		while (iterator.hasNext()) {
 			Path mtlFile = (Path)iterator.next();
 			migrate(mtlFile);
+		}
+
+		iterator = Files.walk(sourceFolderPath).filter(p -> !p.getFileName().toString().endsWith(
+				MTL_FILE_EXTENSION)).iterator();
+		while (iterator.hasNext()) {
+			final Path javaPath = iterator.next();
+			final Path relativeJavaPath = sourceFolderPath.relativize(javaPath.toAbsolutePath());
+			final Path javaTargetPath = targetFolderPath.resolve(relativeJavaPath);
+
+			final File javaFile = javaPath.toFile();
+			final File javaTargetFile = javaTargetPath.toFile();
+			if (javaFile.exists() && !javaTargetFile.exists()) {
+				javaTargetFile.getParentFile().mkdirs();
+				Files.copy(javaFile.toPath(), javaTargetFile.toPath());
+				System.out.println("Copied " + javaFile.getAbsolutePath());
+			}
 		}
 	}
 

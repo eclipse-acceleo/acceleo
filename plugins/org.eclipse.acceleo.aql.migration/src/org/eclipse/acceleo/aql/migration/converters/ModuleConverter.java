@@ -81,6 +81,11 @@ public final class ModuleConverter extends AbstractConverter {
 	private IModuleResolver moduleResolver;
 
 	/**
+	 * The {@link List} of service class to copy.
+	 */
+	private final List<String> serviceClassToCopy = new ArrayList<>();
+
+	/**
 	 * Creates the converter using the given module resolver.
 	 * 
 	 * @param moduleResolver
@@ -208,11 +213,12 @@ public final class ModuleConverter extends AbstractConverter {
 					(OperationCallExp)eObj)) {
 				final OperationCallExp call = (OperationCallExp)eObj;
 				if (call.getArgument().get(0) instanceof StringLiteralExp) {
-					final String toImport = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)call
-							.getArgument().get(0)).getStringSymbol().replace(".",
-									AcceleoParser.QUALIFIER_SEPARATOR);
+					final String serviceClassName = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)call
+							.getArgument().get(0)).getStringSymbol();
+					final String toImport = serviceClassName.replace(".", AcceleoParser.QUALIFIER_SEPARATOR);
 					if (!knownImports.contains(toImport)) {
 						knownImports.add(toImport);
+						serviceClassToCopy.add(serviceClassName);
 						imports.add(toImport);
 					}
 				}
@@ -430,6 +436,15 @@ public final class ModuleConverter extends AbstractConverter {
 		output.setBody(body);
 		map(input.getBody(), body.getStatements());
 		return output;
+	}
+
+	/**
+	 * Gets the {@link List} of service class to copy.
+	 * 
+	 * @return the {@link List} of service class to copy
+	 */
+	public List<String> getServiceClassToCopy() {
+		return serviceClassToCopy;
 	}
 
 }
