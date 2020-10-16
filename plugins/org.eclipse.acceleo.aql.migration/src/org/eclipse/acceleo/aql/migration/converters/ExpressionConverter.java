@@ -37,10 +37,12 @@ import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl;
 import org.eclipse.ocl.ecore.BooleanLiteralExp;
 import org.eclipse.ocl.ecore.CollectionItem;
 import org.eclipse.ocl.ecore.CollectionLiteralExp;
@@ -233,7 +235,13 @@ public final class ExpressionConverter extends AbstractConverter {
 		}
 		output.getArguments().add((Expression)convert(input.getSource()));
 		StringLiteral propertyName = AstFactory.eINSTANCE.createStringLiteral();
-		propertyName.setValue(input.getReferredProperty().getName());
+		if (!input.getReferredProperty().eIsProxy()) {
+			propertyName.setValue(input.getReferredProperty().getName());
+		} else {
+			final URI proxyURI = ((EStructuralFeatureImpl)input.getReferredProperty()).eProxyURI();
+			final String[] segments = proxyURI.fragment().split("/");
+			propertyName.setValue(segments[segments.length - 1]);
+		}
 		output.getArguments().add(propertyName);
 		return output;
 	}
