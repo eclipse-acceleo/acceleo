@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.PrimitiveType;
@@ -62,7 +63,7 @@ public final class TypeUtils {
 			typeLiteral.setValue(inputType.getInstanceClass());
 		} else if (inputType instanceof AnyType) {
 			typeLiteral = AstFactory.eINSTANCE.createTypeLiteral();
-			typeLiteral.setValue(Object.class);
+			typeLiteral.setValue(EcorePackage.eINSTANCE.getEObject());
 		} else {
 			typeLiteral = AstFactory.eINSTANCE.createTypeLiteral();
 			typeLiteral.setValue(inputType);
