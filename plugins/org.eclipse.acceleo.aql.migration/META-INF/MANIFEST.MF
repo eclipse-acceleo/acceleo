@@ -16,4 +16,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.aql,
  org.eclipse.acceleo.query,
  org.eclipse.acceleo.parser
-Export-Package: org.eclipse.acceleo.aql.migration
+Export-Package: org.eclipse.acceleo.aql.migration,
+ org.eclipse.acceleo.aql.migration.standalone

@@ -30,6 +30,12 @@
    <feature id="org.eclipse.acceleo.aql.launcher.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.aql.migration">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.aql.migration.source">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.ui.interpreter">
       <category name="org.eclipse.acceleo"/>
    </feature>

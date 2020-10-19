@@ -113,7 +113,10 @@
     <module>plugins/org.eclipse.acceleo.aql.ls.debug</module>
     <module>plugins/org.eclipse.acceleo.aql.ls.debug.ide</module>
     <module>plugins/org.eclipse.acceleo.aql.ls.debug.ide.ui</module>
+
     <module>plugins/org.eclipse.acceleo.aql.migration</module>
+    <module>plugins/org.eclipse.acceleo.aql.migration.ide.ui</module>
+    <module>features/org.eclipse.acceleo.aql.migration-feature</module>
     <module>tests/org.eclipse.acceleo.aql.migration.tests</module>
     
     <module>plugins/org.eclipse.acceleo.aql.launcher</module>

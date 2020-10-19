@@ -69,13 +69,19 @@ public final class StandaloneMigrator {
 	 * 
 	 * @param sourceFolderPath
 	 *            the source path
+	 * @param binFolderPath
+	 *            the binary folder path
 	 * @param targetFolderPath
 	 *            the target path
 	 */
-	public StandaloneMigrator(Path sourceFolderPath, Path targetFolderPath) {
+	public StandaloneMigrator(Path sourceFolderPath, Path binFolderPath, Path targetFolderPath) {
 		this.sourceFolderPath = sourceFolderPath;
 		this.targetFolderPath = targetFolderPath;
-		binFolderPath = sourceFolderPath.getParent().resolve(BIN_FOLDER_NAME);
+		if (binFolderPath == null) {
+			this.binFolderPath = sourceFolderPath.getParent().resolve(BIN_FOLDER_NAME);
+		} else {
+			this.binFolderPath = binFolderPath;
+		}
 	}
 
 	/**
@@ -156,7 +162,7 @@ public final class StandaloneMigrator {
 		} else {
 			Path sourceFolderPath = Paths.get(args[0]);
 			Path targetFolderPath = Paths.get(args[1]);
-			new StandaloneMigrator(sourceFolderPath, targetFolderPath).migrateAll();
+			new StandaloneMigrator(sourceFolderPath, null, targetFolderPath).migrateAll();
 		}
 	}
 

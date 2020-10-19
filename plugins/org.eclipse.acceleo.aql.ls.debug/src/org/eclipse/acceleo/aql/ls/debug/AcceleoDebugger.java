@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.eclipse.acceleo.ASTNode;
@@ -56,6 +57,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -235,7 +237,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
 		environment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(),
 				destination);
-
+		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
+			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
+		}
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(environment.getQueryEnvironment()), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
@@ -253,6 +257,21 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		final ResourceSet resourceSetForModels = new ResourceSetImpl();
 		model = resourceSetForModels.getResource(modelURI, true);
+	}
+
+	/**
+	 * Registers the given {@link EPackage} in the given {@link IQualifiedNameQueryEnvironment} recursively.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param ePackage
+	 *            the {@link EPackage}
+	 */
+	private void registerEPackage(IQualifiedNameQueryEnvironment queryEnvironment, EPackage ePackage) {
+		queryEnvironment.registerEPackage(ePackage);
+		for (EPackage child : ePackage.getESubpackages()) {
+			registerEPackage(queryEnvironment, child);
+		}
 	}
 
 	/**
