@@ -2173,7 +2173,8 @@ public class AcceleoParser {
 			} else {
 				needNewLine = false;
 			}
-			if (localStartOfText < localEndOfText) {
+			final boolean isEmptyLine = columns[localStartOfText] == significantTextColumn && needNewLine;
+			if (localStartOfText < localEndOfText || isEmptyLine) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
 				res.setValue(text.substring(localStartOfText, localEndOfText));
 				res.setNewLineNeeded(needNewLine);
