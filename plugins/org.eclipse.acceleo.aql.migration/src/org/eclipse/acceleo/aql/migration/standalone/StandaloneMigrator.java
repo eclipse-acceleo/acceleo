@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Iterator;
 
 import org.eclipse.acceleo.aql.migration.MigrationException;
@@ -90,15 +91,8 @@ public final class StandaloneMigrator {
 	 * @throws IOException
 	 */
 	public void migrateAll() throws IOException {
-		Iterator<Path> iterator = Files.walk(sourceFolderPath).filter(p -> p.getFileName().toString()
+		Iterator<Path> iterator = Files.walk(sourceFolderPath).filter(p -> !p.getFileName().toString()
 				.endsWith(MTL_FILE_EXTENSION)).iterator();
-		while (iterator.hasNext()) {
-			Path mtlFile = (Path)iterator.next();
-			migrate(mtlFile);
-		}
-
-		iterator = Files.walk(sourceFolderPath).filter(p -> !p.getFileName().toString().endsWith(
-				MTL_FILE_EXTENSION)).iterator();
 		while (iterator.hasNext()) {
 			final Path javaPath = iterator.next();
 			final Path relativeJavaPath = sourceFolderPath.relativize(javaPath.toAbsolutePath());
@@ -106,11 +100,18 @@ public final class StandaloneMigrator {
 
 			final File javaFile = javaPath.toFile();
 			final File javaTargetFile = javaTargetPath.toFile();
-			if (javaFile.exists() && !javaTargetFile.exists()) {
+			if (javaFile.exists() && !javaFile.isDirectory()) {
 				javaTargetFile.getParentFile().mkdirs();
-				Files.copy(javaFile.toPath(), javaTargetFile.toPath());
+				Files.copy(javaFile.toPath(), javaTargetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				System.out.println("Copied " + javaFile.getAbsolutePath());
 			}
+		}
+
+		iterator = Files.walk(sourceFolderPath).filter(p -> p.getFileName().toString().endsWith(
+				MTL_FILE_EXTENSION)).iterator();
+		while (iterator.hasNext()) {
+			Path mtlFile = (Path)iterator.next();
+			migrate(mtlFile);
 		}
 	}
 
@@ -130,7 +131,7 @@ public final class StandaloneMigrator {
 			try {
 				// migrate AST
 				org.eclipse.acceleo.Module module = new ModuleMigrator(new StandaloneModuleResolver(
-						binFolderPath)).migrate(emtlFile, mtlFile.toFile());
+						binFolderPath), targetFolderPath).migrate(emtlFile, mtlFile.toFile());
 
 				// serialize
 				String a4Content = new AcceleoAstSerializer().serialize(module);

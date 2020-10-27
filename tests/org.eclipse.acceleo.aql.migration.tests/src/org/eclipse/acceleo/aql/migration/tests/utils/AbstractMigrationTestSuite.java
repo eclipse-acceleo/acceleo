@@ -64,7 +64,7 @@ public abstract class AbstractMigrationTestSuite {
 					.replaceAll("/", "::").replaceAll(".emtl", "");
 			return qualifiedName;
 		}
-	});
+	}, null);
 
 	/**
 	 * The test folder path.

@@ -12,8 +12,8 @@ package org.eclipse.acceleo.aql.migration;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,18 +62,21 @@ public final class ModuleMigrator {
 	private IModuleResolver moduleResolver;
 
 	/**
-	 * The file separator.
+	 * The target folder {@link Path}.
 	 */
-	private final String fileSeparator = FileSystems.getDefault().getSeparator();
+	private final Path targetFolderPath;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param moduleResolver
 	 *            a resolver able to retrieve qualified names of proxy modules (imports, extends)
+	 * @param targetFolderPath
+	 *            the target folder {@link Path}
 	 */
-	public ModuleMigrator(IModuleResolver moduleResolver) {
+	public ModuleMigrator(IModuleResolver moduleResolver, Path targetFolderPath) {
 		this.moduleResolver = moduleResolver;
+		this.targetFolderPath = targetFolderPath;
 		this.resourceSet = createA3ResourceSet();
 	}
 
@@ -91,7 +94,7 @@ public final class ModuleMigrator {
 		org.eclipse.acceleo.model.mtl.Module legacyModule = (org.eclipse.acceleo.model.mtl.Module)ModelUtils
 				.load(emtlFile, resourceSet);
 
-		ModuleConverter moduleConverter = new ModuleConverter(moduleResolver);
+		ModuleConverter moduleConverter = new ModuleConverter(moduleResolver, targetFolderPath);
 		Module convertedModule = (Module)moduleConverter.convert(legacyModule);
 		if (originMTLFile != null) {
 			parseModuleDocumentation(convertedModule, originMTLFile);

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.migration.converters;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -73,7 +74,7 @@ public final class ModuleConverter extends AbstractConverter {
 	/**
 	 * A converter dedicated to expressions.
 	 */
-	private ExpressionConverter expressionConverter = new ExpressionConverter();
+	private ExpressionConverter expressionConverter;
 
 	/**
 	 * The module resolver, for imports/extends.
@@ -90,9 +91,12 @@ public final class ModuleConverter extends AbstractConverter {
 	 * 
 	 * @param moduleResolver
 	 *            the module resolver
+	 * @param targetFolderPath
+	 *            the target folder {@link Path}
 	 */
-	public ModuleConverter(IModuleResolver moduleResolver) {
+	public ModuleConverter(IModuleResolver moduleResolver, Path targetFolderPath) {
 		this.moduleResolver = moduleResolver;
+		expressionConverter = new ExpressionConverter(targetFolderPath);
 	}
 
 	/**
