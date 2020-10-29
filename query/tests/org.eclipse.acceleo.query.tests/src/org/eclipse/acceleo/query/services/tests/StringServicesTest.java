@@ -1545,4 +1545,19 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals("azerty", stringServices.trim("\n\t    \razerty \t\t"));
 	}
 
+	@Test
+	public void atNullNull() {
+		assertEquals(null, stringServices.at(null, null));
+	}
+
+	@Test(expected = StringIndexOutOfBoundsException.class)
+	public void atOutOfBound() {
+		assertEquals(null, stringServices.at("cat", -1));
+	}
+
+	@Test
+	public void at() {
+		assertEquals("a", stringServices.at("cat", 2));
+	}
+
 }

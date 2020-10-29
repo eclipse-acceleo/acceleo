@@ -779,8 +779,8 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substituteAll(String self, String r, String t) {
-		return Pattern.compile(nullToEmpty(r), Pattern.LITERAL).matcher(nullToEmpty(self)).replaceAll(
-				Matcher.quoteReplacement(nullToEmpty(t)));
+		return Pattern.compile(nullToEmpty(r), Pattern.LITERAL).matcher(nullToEmpty(self)).replaceAll(Matcher
+				.quoteReplacement(nullToEmpty(t)));
 	}
 
 	// @formatter:off
@@ -854,6 +854,31 @@ public class StringServices {
 		}
 
 		return segments;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Gets the character at the given index of the given String.",
+		params = {
+			@Param(name = "self", value = "The current String"),
+			@Param(name = "index", value = "The index")
+		},
+		result = "The character at the given index",
+		examples = {
+			@Example(expression = "'cat'.at(2)", result = "'a'")
+		}
+	)
+	// @formatter:on
+	public String at(String str, Integer index) {
+		final String res;
+
+		if (str == null) {
+			res = null;
+		} else {
+			return String.valueOf(str.charAt(index - 1));
+		}
+
+		return res;
 	}
 
 	/**

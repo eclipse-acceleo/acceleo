@@ -1,4 +1,13 @@
 * Label:
+at()
+* Description:
+at(self: java.lang.String, index: java.lang.Integer) = String<br><br>Gets the character at the given index of the given String.<br><br>  @param self<br>        The current String<br>  @param index<br>        The index<br><br>  @return<br>        The character at the given index<br><br>
+* Text:
+at()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 concat()
 * Description:
 concat(self: java.lang.String, b: java.lang.String) = String<br><br>Returns a string that is the result of the concatenation of the current string and the string "b".<br><br>  @param self<br>        The current String.<br>  @param b<br>        The String that will be appended at the end of the current String.<br><br>  @return<br>        The concatenated String.<br><br>
