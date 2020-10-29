@@ -2317,7 +2317,7 @@ public class AcceleoParser {
 					// skip string literal
 					boolean isEscaped = false;
 					res++;
-					endStrinLiteral: while (currentPosition < text.length()) {
+					endStrinLiteral: while (res < text.length()) {
 						switch (text.charAt(res)) {
 							case '\\':
 								isEscaped = !isEscaped;
