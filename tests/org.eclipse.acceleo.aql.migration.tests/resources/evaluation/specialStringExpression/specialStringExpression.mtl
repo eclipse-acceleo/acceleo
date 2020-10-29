@@ -1,0 +1,7 @@
+[module specialStringExpression('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public testSpecialStringExpression(anEClass : ecore::EClass)]
+  [file ('testStaticText', overwrite, 'Cp1252')]
+    \(['['/]\?, ]+\)[/file]
+[/template]

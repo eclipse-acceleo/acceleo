@@ -381,7 +381,7 @@ public final class ModuleConverter extends AbstractConverter {
 
 	private Object caseText(StringLiteralExp input) {
 		TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
-		output.setValue(input.getStringSymbol());
+		output.setValue(input.getStringSymbol().replace("[", "['['/]"));
 		return output;
 	}
 
