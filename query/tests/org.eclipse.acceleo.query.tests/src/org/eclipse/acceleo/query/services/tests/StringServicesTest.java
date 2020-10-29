@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import java.util.List;
+
 import org.eclipse.acceleo.query.services.StringServices;
 import org.junit.Test;
 
@@ -1558,6 +1560,26 @@ public class StringServicesTest extends AbstractServicesTest {
 	@Test
 	public void at() {
 		assertEquals("a", stringServices.at("cat", 2));
+	}
+
+	@Test
+	public void charactersNull() {
+		assertEquals(0, stringServices.characters(null).size());
+	}
+
+	@Test
+	public void charactersEmpty() {
+		assertEquals(0, stringServices.characters("").size());
+	}
+
+	@Test
+	public void characters() {
+		final List<String> characters = stringServices.characters("cat");
+
+		assertEquals(3, characters.size());
+		assertEquals("c", characters.get(0));
+		assertEquals("a", characters.get(1));
+		assertEquals("t", characters.get(2));
 	}
 
 }

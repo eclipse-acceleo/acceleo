@@ -881,6 +881,29 @@ public class StringServices {
 		return res;
 	}
 
+	// @formatter:off
+	@Documentation(
+		value = "Converts the given String in a Sequence of Strings representing each caracter.",
+		params = {
+			@Param(name = "self", value = "The current String"),
+		},
+		result = "The Sequence of Strings representing each caracter",
+		examples = {
+			@Example(expression = "'cat'.characters()", result = "Sequence{'c', 'a', 't'}")
+		}
+	)
+	// @formatter:on
+	public List<String> characters(String str) {
+		final List<String> res = new ArrayList<String>();
+
+		final String string = nullToEmpty(str);
+		for (int i = 0; i < string.length(); i++) {
+			res.add(String.valueOf(string.charAt(i)));
+		}
+
+		return res;
+	}
+
 	/**
 	 * Gets the empty {@link String} if the given {@link String} is <code>null</code>.
 	 * 

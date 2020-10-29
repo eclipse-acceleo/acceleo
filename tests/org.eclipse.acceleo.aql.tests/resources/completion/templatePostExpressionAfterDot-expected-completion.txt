@@ -8,6 +8,15 @@ at()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+characters()
+* Description:
+characters(self: java.lang.String) = List<br><br>Converts the given String in a Sequence of Strings representing each caracter.<br><br>  @param self<br>        The current String<br><br>  @return<br>        The Sequence of Strings representing each caracter<br><br>
+* Text:
+characters()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 concat()
 * Description:
 concat(self: java.lang.String, b: java.lang.String) = String<br><br>Returns a string that is the result of the concatenation of the current string and the string "b".<br><br>  @param self<br>        The current String.<br>  @param b<br>        The String that will be appended at the end of the current String.<br><br>  @return<br>        The concatenated String.<br><br>

@@ -28,7 +28,6 @@ orderedSetsServices
 Unsupported in A4:
 ==================
 stringServices
-	 characters
 	 lineSeparator
 	 oclAsSet
 	 replaceFirst
