@@ -39,3 +39,5 @@
 @Test 'TEST'.toLowerCase() => test
 @Test 'TEST'.toLowerFirst() => tEST
 @Test 'test'.tokenize() => test
+@Test 'test'.at(2) => e
+@Test 'test'.characters() => test

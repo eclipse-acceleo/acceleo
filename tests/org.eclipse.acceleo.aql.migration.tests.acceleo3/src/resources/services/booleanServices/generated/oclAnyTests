@@ -13,3 +13,4 @@
 @Test false <> true => true
 @Test false <> false => false
 @Test true.toString() => true
+@Test true.oclAsSet() => true

@@ -1,8 +1,0 @@
-[module divOp(http://www.eclipse.org/emf/2002/Ecore)/]
-
-[comment @main/]
-[template public testDivOp(anEClass : EClass)]
-[file ('testDivOp', false, 'Cp1252')]
-[4/8/]
-[/file]
-[/template]

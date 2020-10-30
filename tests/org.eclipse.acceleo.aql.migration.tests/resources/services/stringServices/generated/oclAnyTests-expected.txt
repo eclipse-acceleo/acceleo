@@ -9,3 +9,4 @@
 @Test 'test' = 'toto' => false
 @Test 'test' = 'test' => true
 @Test 'test'.toString() => test
+@Test 'test'.oclAsSet() => test

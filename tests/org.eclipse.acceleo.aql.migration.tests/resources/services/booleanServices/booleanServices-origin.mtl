@@ -19,7 +19,7 @@
 @Test false <> true => [false <> true/]
 @Test false <> false => [false <> false/]
 @Test true.toString() => [true.toString()/]
-[comment]A4-UNSUPPORTED oclAsSet[/comment]
+@Test true.oclAsSet() => [true.oclAsSet()/]
 [comment]IRRELEVANT-A4-UNSUPPORTED oclIsInvalid[/comment]
 [comment]IRRELEVANT-A4-DIFFERS oclAsType: validation error instead of 'invalid' [true.oclAsType(String)/][/comment]
 [/file]

@@ -7,10 +7,10 @@ Nothing inferred when var2 (java.lang.Integer) is not kind of java.lang.Integer 
 INFO Always false:
 Nothing inferred when var2 (java.lang.Integer) is kind of EClassifierLiteral=EPackage - 621 654
 INFO Always true:
-Nothing inferred when var1 (java.lang.Double) is not type of java.lang.Double - 2639 2661
+Nothing inferred when var1 (java.lang.Double) is not type of java.lang.Double - 2825 2847
 INFO Always false:
-Nothing inferred when var1 (java.lang.Double) is type of EClassifierLiteral=EPackage - 2709 2742
+Nothing inferred when var1 (java.lang.Double) is type of EClassifierLiteral=EPackage - 2895 2928
 INFO Always true:
-Nothing inferred when var1 (java.lang.Double) is not kind of java.lang.Double - 2786 2808
+Nothing inferred when var1 (java.lang.Double) is not kind of java.lang.Double - 2972 2994
 INFO Always false:
-Nothing inferred when var1 (java.lang.Double) is kind of EClassifierLiteral=EPackage - 2856 2889
+Nothing inferred when var1 (java.lang.Double) is kind of EClassifierLiteral=EPackage - 3042 3075

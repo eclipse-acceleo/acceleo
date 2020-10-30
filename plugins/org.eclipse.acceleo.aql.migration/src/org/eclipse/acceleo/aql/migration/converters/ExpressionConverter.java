@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EOperationImpl;
 import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl;
 import org.eclipse.jdt.core.dom.AST;
@@ -453,8 +454,8 @@ public final class ExpressionConverter extends AbstractConverter {
 	private boolean isOclAsSetCall(OperationCallExp input) {
 		final EOperation referredOperation = input.getReferredOperation();
 		return referredOperation != null && "oclAsSet".equals(referredOperation.getName())
-				&& referredOperation.eContainer() instanceof EClass && "OclAny_Class".equals(
-						((EClass)referredOperation.eContainer()).getName());
+				&& referredOperation.eContainer() instanceof EClass && "oclstdlib".equals(
+						((EPackage)referredOperation.eContainer().eContainer()).getName());
 	}
 
 	/**

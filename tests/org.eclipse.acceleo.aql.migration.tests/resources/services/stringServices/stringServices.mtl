@@ -15,6 +15,7 @@
     @Test 'test' = 'toto' => ['test' = 'toto'/]
     @Test 'test' = 'test' => ['test' = 'test'/]
     @Test 'test'.toString() => ['test'.toString()/]
+    @Test 'test'.oclAsSet() => ['test'->asSet()/]
   [/file]
   
   [file ('testServices', overwrite)]
@@ -59,6 +60,8 @@
     @Test 'TEST'.toLowerCase() => ['TEST'.toLower()/]
     @Test 'TEST'.toLowerFirst() => ['TEST'.toLowerFirst()/]
     @Test 'test'.tokenize() => ['test'.tokenize()/]
+    @Test 'test'.at(2) => ['test'.at(2)/]
+    @Test 'test'.characters() => ['test'.characters()/]
   [/file]
   
   [file ('testAdd', overwrite)]

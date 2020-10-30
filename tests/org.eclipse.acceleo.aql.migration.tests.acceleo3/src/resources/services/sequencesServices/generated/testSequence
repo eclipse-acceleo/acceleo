@@ -171,6 +171,18 @@
 @Test Sequence{p.eClassifiers->first()} -> count(p.eClassifiers->last()) => 0
 @Test collections -> count(Sequence{'a','b','c'}) => 2
 @Test collections -> count(Sequence{'z','b','c'}) => 0
+@Test strings -> append('z') => abcz
+@Test strings -> append('a') => abca
+@Test integers -> append(6) => 1236
+@Test integers -> append(2) => 1232
+@Test Sequence{true,true} -> append(false) => truetruefalse
+@Test booleans -> append(false) => truefalsetruefalse
+@Test reals -> append(5.2) => 1.22.13.25.2
+@Test reals -> append(1.2) => 1.22.13.21.2
+@Test eClasses -> append(p.eClassifiers->first()) -> collect(name) => ClasseAClasseBAbstractClassClasseA
+@Test Sequence{p.eClassifiers->first()} -> append(p.eClassifiers->last()) -> collect(name) => ClasseAAbstractClass
+@Test collections -> append(Sequence{'a','b','c'}) => abcefgabcabc
+@Test collections -> append(Sequence{'z','b','c'}) => abcefgabczbc
   
 @Test strings -> prepend('z') => zabc
 @Test strings -> prepend('a') => aabc

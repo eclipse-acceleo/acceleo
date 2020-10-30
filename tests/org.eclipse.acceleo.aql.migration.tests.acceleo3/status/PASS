@@ -10,6 +10,7 @@ stringServices
 	'test' = 'toto'
 	'test' = 'test'
 	'test'.toString()
+	'test'.oclAsSet()
 	'test'.size()
 	'12'.toInteger()
 	'1.2'.toReal()
@@ -51,6 +52,8 @@ stringServices
 	'TEST'.toLowerCase()
 	'TEST'.toLowerFirst()
 	'test'.tokenize()
+	'test'.at(2)
+	'test'.characters()
 	'a' + 'b'
 	'a' + 'b' + 'c'
 	'a' + 'test'
@@ -58,6 +61,10 @@ stringServices
 	'a' + p.name
 	'a' + p.name + 'c'
 	'a' + p.name + 'c' + 'test'
+acceleoServices
+	'['
+	let var : OclAny = self][var.oclAsType(EPackage).name/][/le
+	invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'})
 booleanServices
 	true.oclAsType(Boolean)
 	true.oclIsUndefined()
@@ -74,6 +81,7 @@ booleanServices
 	false <> true
 	false <> false
 	true.toString()
+	true.oclAsSet()
 	not true
 	not false
 	true and false
@@ -121,6 +129,8 @@ numericServices
 	var1 - var2
 	var2 - var1
 	var1 * var2
+	var1 / var2
+	var2 / var1
 	var1 < var2
 	var2 < var1
 	var1 > var2
@@ -148,6 +158,7 @@ numericServices
 	var1.toString()
 	var2.toString()
 	1 + (2 - 1)*3 >= 4 + 2
+	var1.oclAsSet()
 	var1.oclAsType(Real)
 	var1.oclIsUndefined()
 	var1.oclIsTypeOf(Real)
@@ -190,6 +201,7 @@ numericServices
 	3.0 / 1.5
 	0.5 * 2.0
 	1.5 + (2.2 - 1.0)*3.2 >= 4.6 / 2.1
+	var1.oclAsSet()
 emfServices
 	'test'.oclAsType(String)
 	c.oclIsUndefined()
@@ -206,6 +218,8 @@ emfServices
 	c.followingSiblings()->collect(name)
 	c.eResource().toString().startsWith('org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl@')
 	c.eGet('name')
+	c.eGet(c.eClass().getEStructuralFeature('name'))
+	c.eGet(c.eClass().getEStructuralFeature('name'), true)
 	c.eContainmentFeature().name
 	c.eContainingFeature().name
 	c.eContainer().oclIsTypeOf(EPackage)
@@ -222,6 +236,7 @@ emfServices
 	c.siblings()->collect(name)
 	c.eContents()->collect(name)
 	c.eCrossReferences()->collect(name)
+	c.oclAsSet().name
 sequencesServices
 	strings.toString()
 	reals.toString()
@@ -376,6 +391,18 @@ sequencesServices
 	Sequence{p.eClassifiers->first()} -> count(p.eClassifiers->last())
 	collections -> count(Sequence{'a','b','c'})
 	collections -> count(Sequence{'z','b','c'})
+	strings -> append('z')
+	strings -> append('a')
+	integers -> append(6)
+	integers -> append(2)
+	Sequence{true,true} -> append(false)
+	booleans -> append(false)
+	reals -> append(5.2)
+	reals -> append(1.2)
+	eClasses -> append(p.eClassifiers->first()) -> collect(name)
+	Sequence{p.eClassifiers->first()} -> append(p.eClassifiers->last()) -> collect(name)
+	collections -> append(Sequence{'a','b','c'})
+	collections -> append(Sequence{'z','b','c'})
 	strings -> prepend('z')
 	strings -> prepend('a')
 	integers -> prepend(6)
@@ -683,6 +710,19 @@ orderedSetsServices
 	OrderedSet{p.eClassifiers->first()} -> count(p.eClassifiers->last())
 	collections -> count(OrderedSet{'a','b','c'})
 	collections -> count(OrderedSet{'z','b','c'})
+	strings -> append('z')
+	strings -> append('a')
+	Sequence{'a','b','c'} -> append('b')
+	integers -> append(6)
+	integers -> append(2)
+	OrderedSet{true,true} -> append(false)
+	booleans -> append(false)
+	reals -> append(5.2)
+	reals -> append(1.2)
+	eClasses -> append(p.eClassifiers->first()) -> collect(name)
+	OrderedSet{p.eClassifiers->first()} -> append(p.eClassifiers->last()) -> collect(name)
+	collections -> append(OrderedSet{'a','b','c'})
+	collections -> append(OrderedSet{'z','b','c'})
 	strings -> prepend('z')
 	strings -> prepend('a')
 	integers -> prepend(6)
@@ -830,3 +870,4 @@ orderedSetsServices
 	collections.oclIsUndefined()
 	OrderedSet{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p
 	OrderedSet{p,'test',true,1,2.2} -> filter(EClass) -> size()
+	collections.oclAsSet()

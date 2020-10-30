@@ -170,6 +170,19 @@
 @Test OrderedSet{p.eClassifiers->first()} -> count(p.eClassifiers->last()) => 0
 @Test collections -> count(OrderedSet{'a','b','c'}) => 1
 @Test collections -> count(OrderedSet{'z','b','c'}) => 0
+@Test strings -> append('z') => abcz
+@Test strings -> append('a') => bca
+@Test Sequence{'a','b','c'} -> append('b') => abcb
+@Test integers -> append(6) => 1236
+@Test integers -> append(2) => 132
+@Test OrderedSet{true,true} -> append(false) => truefalse
+@Test booleans -> append(false) => truefalse
+@Test reals -> append(5.2) => 1.22.13.25.2
+@Test reals -> append(1.2) => 2.13.21.2
+@Test eClasses -> append(p.eClassifiers->first()) -> collect(name) => ClasseBAbstractClassClasseA
+@Test OrderedSet{p.eClassifiers->first()} -> append(p.eClassifiers->last()) -> collect(name) => ClasseAAbstractClass
+@Test collections -> append(OrderedSet{'a','b','c'}) => efgabc
+@Test collections -> append(OrderedSet{'z','b','c'}) => abcefgzbc
   
 @Test strings -> prepend('z') => zabc
 @Test strings -> prepend('a') => abc
@@ -334,3 +347,4 @@
   
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p => true
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(EClass) -> size() => 0
+@Test collections.oclAsSet() => abcefg

@@ -19,6 +19,7 @@
     @Test false <> true => [false <> true/]
     @Test false <> false => [false <> false/]
     @Test true.toString() => [true.toString()/]
+    @Test true.oclAsSet() => [true->asSet()/]
   [/file]
   
   [file ('simpleTest', overwrite)]

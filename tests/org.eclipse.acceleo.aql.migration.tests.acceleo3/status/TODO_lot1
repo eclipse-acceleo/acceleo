@@ -13,8 +13,9 @@ Differences when evaluated in A4:
 Unsupported in A4:
 ==================
 acceleoServices
-	 TODO ? OclAny could be replaced by Object but it causes a parser issue [let var : OclAny = self][var/]
 	 TODO implement getProperties
+numericServices
+	 WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
 sequencesServices
 	 WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
 orderedSetsServices
