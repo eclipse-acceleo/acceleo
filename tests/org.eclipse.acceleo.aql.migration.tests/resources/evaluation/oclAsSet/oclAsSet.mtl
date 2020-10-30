@@ -1,0 +1,8 @@
+[module oclAsSet('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public testOclAsSet(anEClass : ecore::EClass)]
+  [file ('testOclAsSet', overwrite, 'Cp1252')]
+    [anEClass->asSet()->asSequence()->collect(temp1 | temp1.name)/]
+  [/file]
+[/template]

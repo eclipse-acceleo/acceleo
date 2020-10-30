@@ -365,34 +365,81 @@ public final class ExpressionConverter extends AbstractConverter {
 			output.getArguments().add(AstFactory.eINSTANCE.createNullLiteral());
 			res = output;
 		} else if (isInvokeCall(input)) {
-			Call output = OperationUtils.createCall(input);
-			output.setType(CallType.CALLSERVICE);
-			final String serviceSignature = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
-					.getArgument().get(1)).getStringSymbol();
-			final String serviceName = serviceSignature.substring(0, serviceSignature.indexOf("("));
-			output.setServiceName(serviceName);
-			map(((CollectionLiteralExp)input.getArgument().get(2)).getPart(), output.getArguments());
-			if (output.getArguments().isEmpty()) {
-				output.setServiceName(serviceName + JAVA_SERVICE);
-				final String varName = ((Query)input.eContainer()).getParameter().get(0).getName();
-				final VarRef varRef = AstFactory.eINSTANCE.createVarRef();
-				varRef.setVariableName(varName);
-				output.getArguments().add(varRef);
-				final String serviceClassName = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
-						.getArgument().get(0)).getStringSymbol();
-				try {
-					refactorService(serviceClassName, serviceName);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			res = output;
+			res = convertInvokeCall(input);
+		} else if (isOclAsSetCall(input)) {
+			res = convertOclAsSetCall(input);
 		} else {
 			Call output = OperationUtils.createCall(input);
 			output.getArguments().add((Expression)convert(input.getSource()));
 			map(input.getArgument(), output.getArguments());
 			res = output;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Converts the given oclAsSet {@link OperationCallExp}.
+	 * 
+	 * @param input
+	 *            the oclAsSet {@link OperationCallExp}
+	 * @return the converted oclAsSet {@link OperationCallExp}
+	 */
+	private Expression convertOclAsSetCall(OperationCallExp input) {
+		Call res = AstFactory.eINSTANCE.createCall();
+
+		res.setServiceName("asSet");
+		res.setType(CallType.COLLECTIONCALL);
+		res.getArguments().add((Expression)convert(input.getSource()));
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link OperationCallExp} is an oclAsSet call.
+	 * 
+	 * @param input
+	 *            the {@link OperationCallExp} to check
+	 * @return <code>true</code> if the given {@link OperationCallExp} is an oclAsSet call, <code>false</code>
+	 *         otherwise
+	 */
+	private boolean isOclAsSetCall(OperationCallExp input) {
+		final EOperation referredOperation = input.getReferredOperation();
+		return referredOperation != null && "oclAsSet".equals(referredOperation.getName())
+				&& referredOperation.eContainer() instanceof EClass && "OclAny_Class".equals(
+						((EClass)referredOperation.eContainer()).getName());
+	}
+
+	/**
+	 * Converts the given invoke {@link OperationCallExp}.
+	 * 
+	 * @param input
+	 *            the invoke call
+	 * @return the converted invoke {@link OperationCallExp}
+	 */
+	private Expression convertInvokeCall(OperationCallExp input) {
+		final Call res = OperationUtils.createCall(input);
+
+		res.setType(CallType.CALLSERVICE);
+		final String serviceSignature = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
+				.getArgument().get(1)).getStringSymbol();
+		final String serviceName = serviceSignature.substring(0, serviceSignature.indexOf("("));
+		res.setServiceName(serviceName);
+		map(((CollectionLiteralExp)input.getArgument().get(2)).getPart(), res.getArguments());
+		if (res.getArguments().isEmpty()) {
+			res.setServiceName(serviceName + JAVA_SERVICE);
+			final String varName = ((Query)input.eContainer()).getParameter().get(0).getName();
+			final VarRef varRef = AstFactory.eINSTANCE.createVarRef();
+			varRef.setVariableName(varName);
+			res.getArguments().add(varRef);
+			final String serviceClassName = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
+					.getArgument().get(0)).getStringSymbol();
+			try {
+				refactorService(serviceClassName, serviceName);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return res;

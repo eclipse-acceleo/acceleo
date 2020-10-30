@@ -1,0 +1,8 @@
+[module oclAsSet(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[comment @main/]
+[template public testOclAsSet(anEClass : EClass)]
+[file ('testOclAsSet', false, 'Cp1252')]
+[anEClass.oclAsSet().name/]
+[/file]
+[/template]

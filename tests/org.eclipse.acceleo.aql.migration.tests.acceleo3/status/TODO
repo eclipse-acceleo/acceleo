@@ -29,7 +29,6 @@ Unsupported in A4:
 ==================
 stringServices
 	 lineSeparator
-	 oclAsSet
 	 replaceFirst
 	 strtok
 	 substituteFirst
@@ -38,11 +37,7 @@ acceleoServices
 	(LOT1) TODO ? OclAny could be replaced by Object but it causes a parser issue [let var : OclAny = self][var/]
 	(LOT1) TODO implement getProperties
 	(LOT1) TODO replace invoke by a direct service call[invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'})/]
-booleanServices
-	 oclAsSet
 numericServices
-	 Integer.oclAsSet
-	 Real.oclAsSet
 	(LOT1) WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
 emfServices
 	 current(element)
@@ -53,7 +48,6 @@ emfServices
 	 eIsSet
 	 eSet
 	 eUnset
-	 oclAsSet
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162936/ eGet(feature) [c.eGet(c.eClass().getEStructuralFeature('name'))/]
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162936/ eGet(feature, resolve) [c.eGet(c.eClass().getEStructuralFeature('name'), true)/]
 sequencesServices
@@ -68,7 +62,6 @@ sequencesServices
 	 lastIndexOfSlice
 	 max
 	 min
-	 oclAsSet
 	 product
 	 removeAll
 	 selectByKind
@@ -88,7 +81,6 @@ orderedSetsServices
 	 lastIndexOfSlice
 	 max
 	 min
-	 oclAsSet
 	 product
 	 removeAll
 	 selectByKind
