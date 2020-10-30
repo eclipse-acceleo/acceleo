@@ -30,6 +30,7 @@ import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.query.ast.AstFactory;
+import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
@@ -50,6 +51,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.impl.EOperationImpl;
 import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -364,6 +366,8 @@ public final class ExpressionConverter extends AbstractConverter {
 			output.getArguments().add((Expression)convert(input.getSource()));
 			output.getArguments().add(AstFactory.eINSTANCE.createNullLiteral());
 			res = output;
+		} else if (isIntegerDivOpCall(input)) {
+			res = convertIntegerDivOpCall(input);
 		} else if (isInvokeCall(input)) {
 			res = convertInvokeCall(input);
 		} else if (isOclAsSetCall(input)) {
@@ -376,6 +380,49 @@ public final class ExpressionConverter extends AbstractConverter {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Converts the given integer div operator {@link OperationCallExp}.
+	 * 
+	 * @param input
+	 *            the oclAsSet {@link OperationCallExp}
+	 * @return the converted integer div operator {@link OperationCallExp}
+	 */
+	private Expression convertIntegerDivOpCall(OperationCallExp input) {
+		Call res = OperationUtils.createCall(input);
+
+		final Expression leftOperand = (Expression)convert(input.getSource());
+		final Expression rightOperand = (Expression)convert(input.getArgument().get(0));
+		final Call leftToDouble = AstPackage.eINSTANCE.getAstFactory().createCall();
+		leftToDouble.setServiceName("toDouble");
+		leftToDouble.getArguments().add(leftOperand);
+		final Call rightToDouble = AstPackage.eINSTANCE.getAstFactory().createCall();
+		rightToDouble.setServiceName("toDouble");
+		rightToDouble.getArguments().add(rightOperand);
+		res.getArguments().add(leftToDouble);
+		res.getArguments().add(rightToDouble);
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link OperationCallExp} is an integer div operator call.
+	 * 
+	 * @param input
+	 *            the {@link OperationCallExp} to check
+	 * @return <code>true</code> if the given {@link OperationCallExp} is an integer div operator call,
+	 *         <code>false</code> otherwise
+	 */
+	private boolean isIntegerDivOpCall(OperationCallExp input) {
+		final EOperation referredOperation = input.getReferredOperation();
+		// CHECKSTYLE:OFF
+		return referredOperation != null && ("/".equals(referredOperation.getName()) && referredOperation
+				.eContainer() instanceof EClass && "Integer_Class".equals(((EClass)referredOperation
+						.eContainer()).getName()) || referredOperation.eIsProxy()
+								&& ((EOperationImpl)referredOperation).eProxyURI().toString().equals(
+										"http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer_Class/%2F"));
+		// CHECKSTYLE:ON
 	}
 
 	/**

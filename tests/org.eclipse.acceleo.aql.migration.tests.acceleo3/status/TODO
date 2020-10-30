@@ -20,8 +20,6 @@ orderedSetsServices
 
 Differences when evaluated in A4:
 =================================
-numericServices
-	(LOT1) WIP https://git.eclipse.org/r/#/c/163019/ divOp returns an Integer
 orderedSetsServices
 	 collections.union(collection): returns nothing[collections -> union(OrderedSet{'a','b','d'}) -> sortedBy(toString())/]
 
@@ -37,8 +35,6 @@ acceleoServices
 	(LOT1) TODO ? OclAny could be replaced by Object but it causes a parser issue [let var : OclAny = self][var/]
 	(LOT1) TODO implement getProperties
 	(LOT1) TODO replace invoke by a direct service call[invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'})/]
-numericServices
-	(LOT1) WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
 emfServices
 	 current(element)
 	 current(int)
