@@ -361,4 +361,9 @@
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
+@Test strings.oclAsSet() => abc
+@Test integers.oclAsSet() => 123
+@Test reals.oclAsSet() => 1.22.13.2
+@Test booleans.oclAsSet() => truefalse
+@Test eClasses.oclAsSet() -> collect(name) => ClasseAClasseBAbstractClass
 @Test collections.oclAsSet() => abcefg

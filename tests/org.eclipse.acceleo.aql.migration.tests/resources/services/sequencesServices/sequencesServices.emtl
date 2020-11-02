@@ -5218,6 +5218,93 @@
                       </argument>
                     </body>
                     <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;"/>
+                    <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="@Test strings.oclAsSet() => "/>
+                    <body xsi:type="ocl.ecore:IteratorExp" name="collect" eType="/7/Sequence(String)">
+                      <source xsi:type="ocl.ecore:VariableExp" name="strings" eType="/7/Sequence(String)" referredVariable="/0/testSequence/%/%/strings"/>
+                      <body xsi:type="ocl.ecore:OperationCallExp" eType="/7/Set(String)">
+                        <source xsi:type="ocl.ecore:VariableExp" name="temp1" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collect.46/temp60">
+                          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                        </source>
+                        <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/oclAsSet"/>
+                      </body>
+                      <iterator xsi:type="ocl.ecore:Variable" name="temp60">
+                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                      </iterator>
+                    </body>
+                    <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;@Test integers.oclAsSet() => "/>
+                    <body xsi:type="ocl.ecore:IteratorExp" name="collect" eType="/7/Sequence(Integer)">
+                      <source xsi:type="ocl.ecore:VariableExp" name="integers" eType="/7/Sequence(Integer)" referredVariable="/0/testSequence/%/%/%/integers"/>
+                      <body xsi:type="ocl.ecore:OperationCallExp" eType="/7/Set(Integer)">
+                        <source xsi:type="ocl.ecore:VariableExp" name="temp1" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collect.47/temp61">
+                          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+                        </source>
+                        <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer_Class/oclAsSet"/>
+                      </body>
+                      <iterator xsi:type="ocl.ecore:Variable" name="temp61">
+                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+                      </iterator>
+                    </body>
+                    <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;@Test reals.oclAsSet() => "/>
+                    <body xsi:type="ocl.ecore:IteratorExp" name="collect" eType="/7/Sequence(Real)">
+                      <source xsi:type="ocl.ecore:VariableExp" name="reals" eType="/7/Sequence(Real)" referredVariable="/0/testSequence/%/%/%/%/reals"/>
+                      <body xsi:type="ocl.ecore:OperationCallExp" eType="/7/Set(Real)">
+                        <source xsi:type="ocl.ecore:VariableExp" name="temp1" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collect.48/temp62">
+                          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Real"/>
+                        </source>
+                        <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Real_Class/oclAsSet"/>
+                      </body>
+                      <iterator xsi:type="ocl.ecore:Variable" name="temp62">
+                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Real"/>
+                      </iterator>
+                    </body>
+                    <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;@Test booleans.oclAsSet() => "/>
+                    <body xsi:type="ocl.ecore:IteratorExp" name="collect" eType="/7/Sequence(Boolean)">
+                      <source xsi:type="ocl.ecore:VariableExp" name="booleans" eType="/7/Sequence(Boolean)" referredVariable="/0/testSequence/%/%/%/%/%/booleans"/>
+                      <body xsi:type="ocl.ecore:OperationCallExp" eType="/7/Set(Boolean)">
+                        <source xsi:type="ocl.ecore:VariableExp" name="temp1" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collect.49/temp63">
+                          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                        </source>
+                        <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/oclAsSet"/>
+                      </body>
+                      <iterator xsi:type="ocl.ecore:Variable" name="temp63">
+                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                      </iterator>
+                    </body>
+                    <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;@Test eClasses.oclAsSet() -> collect(name) => "/>
+                    <body xsi:type="ocl.ecore:IteratorExp" name="collect" eType="/7/Sequence(String)">
+                      <source xsi:type="ocl.ecore:IteratorExp" name="collect" eType="/7/Sequence(EClass)">
+                        <source xsi:type="ocl.ecore:VariableExp" name="eClasses" eType="/7/Sequence(EClass)" referredVariable="/0/testSequence/%/%/%/%/%/%/eClasses"/>
+                        <body xsi:type="ocl.ecore:OperationCallExp" eType="/7/Set(EClass)">
+                          <source xsi:type="ocl.ecore:VariableExp" name="temp1" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collect.50/collect/temp64">
+                            <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+                          </source>
+                          <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny_Class/oclAsSet"/>
+                        </body>
+                        <iterator xsi:type="ocl.ecore:Variable" name="temp64">
+                          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+                        </iterator>
+                      </source>
+                      <body xsi:type="ocl.ecore:PropertyCallExp">
+                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                        <source xsi:type="ocl.ecore:VariableExp" name="temp2" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collect.50/temp65">
+                          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+                        </source>
+                        <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/emf/2002/Ecore#//ENamedElement/name"/>
+                      </body>
+                      <iterator xsi:type="ocl.ecore:Variable" name="temp65">
+                        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+                      </iterator>
+                    </body>
+                    <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;@Test collections.oclAsSet() => "/>
+                    <body xsi:type="ocl.ecore:IteratorExp" name="collect" eType="/7/Sequence(String)">
+                      <source xsi:type="ocl.ecore:VariableExp" name="collections" eType="/7/Sequence(Sequence(String))" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collections"/>
+                      <body xsi:type="ocl.ecore:OperationCallExp" eType="/7/Set(Sequence(String))">
+                        <source xsi:type="ocl.ecore:VariableExp" name="temp1" eType="/7/Sequence(String)" referredVariable="/0/testSequence/%/%/%/%/%/%/%/collect.51/temp66"/>
+                        <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)_Class/oclAsSet"/>
+                      </body>
+                      <iterator xsi:type="ocl.ecore:Variable" name="temp66" eType="/7/Sequence(String)"/>
+                    </body>
+                    <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;"/>
                     <letVariable name="collections" eType="/7/Sequence(Sequence(String))">
                       <initExpression xsi:type="ocl.ecore:CollectionLiteralExp" eType="/7/Sequence(Sequence(String))" kind="Sequence">
                         <part xsi:type="ocl.ecore:CollectionItem" eType="/7/Sequence(String)">
@@ -5555,6 +5642,19 @@
     <eClassifiers xsi:type="ocl.ecore:SequenceType" name="Sequence(EPackage)" instanceClassName="java.util.List">
       <elementType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ocl.ecore:SetType" name="Set(String)" instanceClassName="java.util.Set">
+      <elementType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ocl.ecore:SetType" name="Set(Integer)" instanceClassName="java.util.Set">
+      <elementType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ocl.ecore:SetType" name="Set(Real)" instanceClassName="java.util.Set">
+      <elementType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Real"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ocl.ecore:SetType" name="Set(Boolean)" instanceClassName="java.util.Set">
+      <elementType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ocl.ecore:SetType" name="Set(Sequence(String))" instanceClassName="java.util.Set" elementType="/7/Sequence(String)"/>
   </ecore:EPackage>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
@@ -6579,47 +6679,65 @@
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
   <ecore:EAnnotation source="positions">
     <eAnnotations source="positions.0" references="/0/testSequence">
       <details key="start" value="70"/>
-      <details key="end" value="28412"/>
+      <details key="end" value="28713"/>
       <details key="line" value="3"/>
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/testSequence/%">
       <details key="start" value="132"/>
-      <details key="end" value="28400"/>
+      <details key="end" value="28701"/>
       <details key="line" value="5"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/testSequence/%/%">
       <details key="start" value="242"/>
-      <details key="end" value="28392"/>
+      <details key="end" value="28693"/>
       <details key="line" value="7"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/testSequence/%/%/%">
       <details key="start" value="299"/>
-      <details key="end" value="28386"/>
+      <details key="end" value="28687"/>
       <details key="line" value="8"/>
     </eAnnotations>
     <eAnnotations source="positions.4" references="/0/testSequence/%/%/%/%">
       <details key="start" value="352"/>
-      <details key="end" value="28380"/>
+      <details key="end" value="28681"/>
       <details key="line" value="9"/>
     </eAnnotations>
     <eAnnotations source="positions.5" references="/0/testSequence/%/%/%/%/%">
       <details key="start" value="405"/>
-      <details key="end" value="28374"/>
+      <details key="end" value="28675"/>
       <details key="line" value="10"/>
     </eAnnotations>
     <eAnnotations source="positions.6" references="/0/testSequence/%/%/%/%/%/%">
       <details key="start" value="470"/>
-      <details key="end" value="28368"/>
+      <details key="end" value="28669"/>
       <details key="line" value="11"/>
     </eAnnotations>
     <eAnnotations source="positions.7" references="/0/testSequence/%/%/%/%/%/%/%">
       <details key="start" value="535"/>
-      <details key="end" value="28362"/>
+      <details key="end" value="28663"/>
       <details key="line" value="12"/>
     </eAnnotations>
     <eAnnotations source="positions.8" references="/0/testSequence/%/%/%/%/%/%/%/%">
@@ -16392,172 +16510,377 @@
       <details key="end" value="27831"/>
       <details key="line" value="404"/>
     </eAnnotations>
-    <eAnnotations source="positions.1962" references="/0/testSequence/%/%/%/%/%/%/%/collections">
+    <eAnnotations source="positions.1962" references="/0/testSequence/%/%/%/%/%/%/%/%.545">
+      <details key="start" value="28011"/>
+      <details key="end" value="28039"/>
+      <details key="line" value="408"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1963" references="/0/testSequence/%/%/%/%/%/%/%/collect.46">
+      <details key="start" value="28040"/>
+      <details key="end" value="28058"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1964" references="/0/testSequence/%/%/%/%/%/%/%/collect.46/strings">
+      <details key="start" value="28040"/>
+      <details key="end" value="28047"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1965" references="/0/testSequence/%/%/%/%/%/%/%/collect.46/%">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1966" references="/0/testSequence/%/%/%/%/%/%/%/collect.46/%/temp1">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1967" references="/0/testSequence/%/%/%/%/%/%/%/collect.46/temp60">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1968" references="/0/testSequence/%/%/%/%/%/%/%/%.546">
+      <details key="start" value="28060"/>
+      <details key="end" value="28090"/>
+      <details key="line" value="409"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1969" references="/0/testSequence/%/%/%/%/%/%/%/collect.47">
+      <details key="start" value="28091"/>
+      <details key="end" value="28110"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1970" references="/0/testSequence/%/%/%/%/%/%/%/collect.47/integers">
+      <details key="start" value="28091"/>
+      <details key="end" value="28099"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1971" references="/0/testSequence/%/%/%/%/%/%/%/collect.47/%">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1972" references="/0/testSequence/%/%/%/%/%/%/%/collect.47/%/temp1">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1973" references="/0/testSequence/%/%/%/%/%/%/%/collect.47/temp61">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1974" references="/0/testSequence/%/%/%/%/%/%/%/%.547">
+      <details key="start" value="28112"/>
+      <details key="end" value="28139"/>
+      <details key="line" value="410"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1975" references="/0/testSequence/%/%/%/%/%/%/%/collect.48">
+      <details key="start" value="28140"/>
+      <details key="end" value="28156"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1976" references="/0/testSequence/%/%/%/%/%/%/%/collect.48/reals">
+      <details key="start" value="28140"/>
+      <details key="end" value="28145"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1977" references="/0/testSequence/%/%/%/%/%/%/%/collect.48/%">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1978" references="/0/testSequence/%/%/%/%/%/%/%/collect.48/%/temp1">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1979" references="/0/testSequence/%/%/%/%/%/%/%/collect.48/temp62">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1980" references="/0/testSequence/%/%/%/%/%/%/%/%.548">
+      <details key="start" value="28158"/>
+      <details key="end" value="28188"/>
+      <details key="line" value="411"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1981" references="/0/testSequence/%/%/%/%/%/%/%/collect.49">
+      <details key="start" value="28189"/>
+      <details key="end" value="28208"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1982" references="/0/testSequence/%/%/%/%/%/%/%/collect.49/booleans">
+      <details key="start" value="28189"/>
+      <details key="end" value="28197"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1983" references="/0/testSequence/%/%/%/%/%/%/%/collect.49/%">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1984" references="/0/testSequence/%/%/%/%/%/%/%/collect.49/%/temp1">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1985" references="/0/testSequence/%/%/%/%/%/%/%/collect.49/temp63">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1986" references="/0/testSequence/%/%/%/%/%/%/%/%.549">
+      <details key="start" value="28210"/>
+      <details key="end" value="28257"/>
+      <details key="line" value="412"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1987" references="/0/testSequence/%/%/%/%/%/%/%/collect.50">
+      <details key="start" value="28258"/>
+      <details key="end" value="28294"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1988" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/collect">
+      <details key="start" value="28258"/>
+      <details key="end" value="28277"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1989" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/collect/eClasses">
+      <details key="start" value="28258"/>
+      <details key="end" value="28266"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1990" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/collect/%">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1991" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/collect/%/temp1">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1992" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/collect/temp64">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1993" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/%">
+      <details key="start" value="28289"/>
+      <details key="end" value="28293"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1994" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/%/temp2">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1995" references="/0/testSequence/%/%/%/%/%/%/%/collect.50/temp65">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1996" references="/0/testSequence/%/%/%/%/%/%/%/%.550">
+      <details key="start" value="28296"/>
+      <details key="end" value="28329"/>
+      <details key="line" value="413"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1997" references="/0/testSequence/%/%/%/%/%/%/%/collect.51">
+      <details key="start" value="28330"/>
+      <details key="end" value="28352"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1998" references="/0/testSequence/%/%/%/%/%/%/%/collect.51/collections">
+      <details key="start" value="28330"/>
+      <details key="end" value="28341"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1999" references="/0/testSequence/%/%/%/%/%/%/%/collect.51/%">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2000" references="/0/testSequence/%/%/%/%/%/%/%/collect.51/%/temp1">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2001" references="/0/testSequence/%/%/%/%/%/%/%/collect.51/temp66">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2002" references="/0/testSequence/%/%/%/%/%/%/%/%.551">
+      <details key="start" value="28354"/>
+      <details key="end" value="28355"/>
+      <details key="line" value="414"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2003" references="/0/testSequence/%/%/%/%/%/%/%/collections">
       <details key="start" value="540"/>
       <details key="end" value="630"/>
       <details key="line" value="12"/>
     </eAnnotations>
-    <eAnnotations source="positions.1963" references="/0/testSequence/%/%/%/%/%/%/%/collections/%">
+    <eAnnotations source="positions.2004" references="/0/testSequence/%/%/%/%/%/%/%/collections/%">
       <details key="start" value="584"/>
       <details key="end" value="631"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1964" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%/strings">
+    <eAnnotations source="positions.2005" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%/strings">
       <details key="start" value="593"/>
       <details key="end" value="600"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1965" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%">
+    <eAnnotations source="positions.2006" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%">
       <details key="start" value="601"/>
       <details key="end" value="622"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1966" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%/%/%">
+    <eAnnotations source="positions.2007" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%/%/%">
       <details key="start" value="610"/>
       <details key="end" value="613"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1967" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%/%.1/%">
+    <eAnnotations source="positions.2008" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%/%.1/%">
       <details key="start" value="614"/>
       <details key="end" value="617"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1968" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%/%.2/%">
+    <eAnnotations source="positions.2009" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.1/%/%.2/%">
       <details key="start" value="618"/>
       <details key="end" value="621"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1969" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.2/strings">
+    <eAnnotations source="positions.2010" references="/0/testSequence/%/%/%/%/%/%/%/collections/%/%.2/strings">
       <details key="start" value="623"/>
       <details key="end" value="630"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1970" references="/0/testSequence/%/%/%/%/%/%/eClasses">
+    <eAnnotations source="positions.2011" references="/0/testSequence/%/%/%/%/%/%/eClasses">
       <details key="start" value="475"/>
       <details key="end" value="533"/>
       <details key="line" value="11"/>
     </eAnnotations>
-    <eAnnotations source="positions.1971" references="/0/testSequence/%/%/%/%/%/%/eClasses/%">
+    <eAnnotations source="positions.2012" references="/0/testSequence/%/%/%/%/%/%/eClasses/%">
       <details key="start" value="506"/>
       <details key="end" value="534"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1972" references="/0/testSequence/%/%/%/%/%/%/eClasses/%/%">
+    <eAnnotations source="positions.2013" references="/0/testSequence/%/%/%/%/%/%/eClasses/%/%">
       <details key="start" value="506"/>
       <details key="end" value="520"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1973" references="/0/testSequence/%/%/%/%/%/%/eClasses/%/%/p">
+    <eAnnotations source="positions.2014" references="/0/testSequence/%/%/%/%/%/%/eClasses/%/%/p">
       <details key="start" value="506"/>
       <details key="end" value="507"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1974" references="/0/testSequence/%/%/%/%/%/booleans">
+    <eAnnotations source="positions.2015" references="/0/testSequence/%/%/%/%/%/booleans">
       <details key="start" value="410"/>
       <details key="end" value="468"/>
       <details key="line" value="10"/>
     </eAnnotations>
-    <eAnnotations source="positions.1975" references="/0/testSequence/%/%/%/%/%/booleans/%">
+    <eAnnotations source="positions.2016" references="/0/testSequence/%/%/%/%/%/booleans/%">
       <details key="start" value="442"/>
       <details key="end" value="469"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1976" references="/0/testSequence/%/%/%/%/%/booleans/%/%/%">
+    <eAnnotations source="positions.2017" references="/0/testSequence/%/%/%/%/%/booleans/%/%/%">
       <details key="start" value="451"/>
       <details key="end" value="455"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1977" references="/0/testSequence/%/%/%/%/%/booleans/%/%.1/%">
+    <eAnnotations source="positions.2018" references="/0/testSequence/%/%/%/%/%/booleans/%/%.1/%">
       <details key="start" value="457"/>
       <details key="end" value="462"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1978" references="/0/testSequence/%/%/%/%/%/booleans/%/%.2/%">
+    <eAnnotations source="positions.2019" references="/0/testSequence/%/%/%/%/%/booleans/%/%.2/%">
       <details key="start" value="464"/>
       <details key="end" value="468"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1979" references="/0/testSequence/%/%/%/%/reals">
+    <eAnnotations source="positions.2020" references="/0/testSequence/%/%/%/%/reals">
       <details key="start" value="357"/>
       <details key="end" value="403"/>
       <details key="line" value="9"/>
     </eAnnotations>
-    <eAnnotations source="positions.1980" references="/0/testSequence/%/%/%/%/reals/%">
+    <eAnnotations source="positions.2021" references="/0/testSequence/%/%/%/%/reals/%">
       <details key="start" value="383"/>
       <details key="end" value="404"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1981" references="/0/testSequence/%/%/%/%/reals/%/%/%">
+    <eAnnotations source="positions.2022" references="/0/testSequence/%/%/%/%/reals/%/%/%">
       <details key="start" value="392"/>
       <details key="end" value="395"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1982" references="/0/testSequence/%/%/%/%/reals/%/%.1/%">
+    <eAnnotations source="positions.2023" references="/0/testSequence/%/%/%/%/reals/%/%.1/%">
       <details key="start" value="396"/>
       <details key="end" value="399"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1983" references="/0/testSequence/%/%/%/%/reals/%/%.2/%">
+    <eAnnotations source="positions.2024" references="/0/testSequence/%/%/%/%/reals/%/%.2/%">
       <details key="start" value="400"/>
       <details key="end" value="403"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1984" references="/0/testSequence/%/%/%/integers">
+    <eAnnotations source="positions.2025" references="/0/testSequence/%/%/%/integers">
       <details key="start" value="304"/>
       <details key="end" value="350"/>
       <details key="line" value="8"/>
     </eAnnotations>
-    <eAnnotations source="positions.1985" references="/0/testSequence/%/%/%/integers/%">
+    <eAnnotations source="positions.2026" references="/0/testSequence/%/%/%/integers/%">
       <details key="start" value="336"/>
       <details key="end" value="351"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1986" references="/0/testSequence/%/%/%/integers/%/%/%">
+    <eAnnotations source="positions.2027" references="/0/testSequence/%/%/%/integers/%/%/%">
       <details key="start" value="345"/>
       <details key="end" value="346"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1987" references="/0/testSequence/%/%/%/integers/%/%.1/%">
+    <eAnnotations source="positions.2028" references="/0/testSequence/%/%/%/integers/%/%.1/%">
       <details key="start" value="347"/>
       <details key="end" value="348"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1988" references="/0/testSequence/%/%/%/integers/%/%.2/%">
+    <eAnnotations source="positions.2029" references="/0/testSequence/%/%/%/integers/%/%.2/%">
       <details key="start" value="349"/>
       <details key="end" value="350"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1989" references="/0/testSequence/%/%/strings">
+    <eAnnotations source="positions.2030" references="/0/testSequence/%/%/strings">
       <details key="start" value="247"/>
       <details key="end" value="297"/>
       <details key="line" value="7"/>
     </eAnnotations>
-    <eAnnotations source="positions.1990" references="/0/testSequence/%/%/strings/%">
+    <eAnnotations source="positions.2031" references="/0/testSequence/%/%/strings/%">
       <details key="start" value="277"/>
       <details key="end" value="298"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1991" references="/0/testSequence/%/%/strings/%/%/%">
+    <eAnnotations source="positions.2032" references="/0/testSequence/%/%/strings/%/%/%">
       <details key="start" value="286"/>
       <details key="end" value="289"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1992" references="/0/testSequence/%/%/strings/%/%.1/%">
+    <eAnnotations source="positions.2033" references="/0/testSequence/%/%/strings/%/%.1/%">
       <details key="start" value="290"/>
       <details key="end" value="293"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1993" references="/0/testSequence/%/%/strings/%/%.2/%">
+    <eAnnotations source="positions.2034" references="/0/testSequence/%/%/strings/%/%.2/%">
       <details key="start" value="294"/>
       <details key="end" value="297"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1994" references="/0/testSequence/%/%.1">
+    <eAnnotations source="positions.2035" references="/0/testSequence/%/%.1">
       <details key="start" value="139"/>
       <details key="end" value="153"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.1995" references="/0/testSequence/p">
+    <eAnnotations source="positions.2036" references="/0/testSequence/p">
       <details key="start" value="100"/>
       <details key="end" value="112"/>
       <details key="line" value="3"/>
