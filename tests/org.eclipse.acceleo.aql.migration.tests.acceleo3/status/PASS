@@ -870,4 +870,10 @@ orderedSetsServices
 	collections.oclIsUndefined()
 	OrderedSet{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p
 	OrderedSet{p,'test',true,1,2.2} -> filter(EClass) -> size()
+	strings -> subOrderedSet(1,2)
+	integers -> subOrderedSet(1,2)
+	reals -> subOrderedSet(1,2)
+	booleans -> subOrderedSet(1,2)
+	eClasses -> subOrderedSet(1,2) -> collect(name)
+	collections -> subOrderedSet(1,2)
 	collections.oclAsSet()

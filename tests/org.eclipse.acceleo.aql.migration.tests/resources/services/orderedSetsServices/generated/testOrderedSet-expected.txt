@@ -347,4 +347,10 @@
   
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p => true
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(EClass) -> size() => 0
+@Test strings -> subOrderedSet(1,2) => ab
+@Test integers -> subOrderedSet(1,2) => 12
+@Test reals -> subOrderedSet(1,2) => 1.22.1
+@Test booleans -> subOrderedSet(1,2) => truefalse
+@Test eClasses -> subOrderedSet(1,2) -> collect(name) => ClasseAClasseB
+@Test collections -> subOrderedSet(1,2) => abcefg
 @Test collections.oclAsSet() => abcefg

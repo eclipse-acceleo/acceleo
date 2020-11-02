@@ -14,7 +14,6 @@ orderedSetsServices
 	 ? asSet: order changes
 	 ? closure
 	 intersection(bag)
-	 subOrderedSet(lower, upper), 
 	 symmetricDifference(s), 
 	(LOT1) test mixed ordered sets (needs OclAny or something)
 
