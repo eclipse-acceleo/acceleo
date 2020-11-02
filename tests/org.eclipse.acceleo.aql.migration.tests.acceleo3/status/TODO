@@ -48,7 +48,6 @@ sequencesServices
 	 collectNested
 	 drop
 	 dropRight
-	 endsWith
 	 flatten
 	 indexOfSlice
 	 lastIndexOf
@@ -60,14 +59,12 @@ sequencesServices
 	 removeAll
 	 selectByKind
 	 selectByType
-	 startsWith
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
 orderedSetsServices
 	 addAll
 	 collectNested
 	 drop
 	 dropRight
-	 endsWith
 	 flatten
 	 indexOfSlice
 	 lastIndexOf
@@ -78,5 +75,4 @@ orderedSetsServices
 	 removeAll
 	 selectByKind
 	 selectByType
-	 startsWith
 	(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)

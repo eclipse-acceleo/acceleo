@@ -355,3 +355,11 @@
 @Test booleans -> subSequence(1,2) => truefalse
 @Test eClasses -> subSequence(1,2) -> collect(name) => ClasseAClasseB
 @Test collections -> subSequence(1,2) => abcefg
+@Test integers -> startsWith(OrderedSet{1, 2}) => true
+@Test integers -> startsWith(OrderedSet{1, 1}) => true
+@Test integers -> startsWith(OrderedSet{1, 2}) => true
+@Test integers -> startsWith(OrderedSet{1, 1}) => true
+@Test integers -> endsWith(OrderedSet{2, 3}) => true
+@Test integers -> endsWith(OrderedSet{1, 1}) => false
+@Test integers -> endsWith(OrderedSet{2, 3}) => true
+@Test integers -> endsWith(OrderedSet{1, 1}) => false

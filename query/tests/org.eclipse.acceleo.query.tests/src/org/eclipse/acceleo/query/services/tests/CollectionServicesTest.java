@@ -5365,4 +5365,151 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(3), it.next());
 		assertEquals(Integer.valueOf(4), it.next());
 	}
+
+	@Test(expected = NullPointerException.class)
+	public void testStartsWithNullNull() {
+		collectionServices.startsWith(null, null);
+	}
+
+	@Test
+	public void testStartsWithSequenceSequence() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final List<Object> other = new ArrayList<>();
+		other.add(Integer.valueOf(1));
+		other.add(Integer.valueOf(2));
+
+		final Boolean result = collectionServices.startsWith(collection, other);
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void testStartsWithOrederedSetSequence() {
+		final Set<Object> collection = new LinkedHashSet<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final List<Object> other = new ArrayList<>();
+		other.add(Integer.valueOf(1));
+		other.add(Integer.valueOf(2));
+
+		final Boolean result = collectionServices.startsWith(collection, other);
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void testStartsWithSequenceOrderedSet() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final Set<Object> other = new LinkedHashSet<>();
+		other.add(Integer.valueOf(1));
+		other.add(Integer.valueOf(2));
+
+		final Boolean result = collectionServices.startsWith(collection, other);
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void testStartsWithOrderedSetOrderedSet() {
+		final Set<Object> collection = new LinkedHashSet<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final Set<Object> other = new LinkedHashSet<>();
+		other.add(Integer.valueOf(1));
+		other.add(Integer.valueOf(2));
+
+		final Boolean result = collectionServices.startsWith(collection, other);
+
+		assertTrue(result);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testendsWithNullNull() {
+		collectionServices.endsWith(null, null);
+	}
+
+	@Test
+	public void testendsWithSequenceSequence() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final List<Object> other = new ArrayList<>();
+		other.add(Integer.valueOf(3));
+		other.add(Integer.valueOf(4));
+
+		final Boolean result = collectionServices.endsWith(collection, other);
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void testendsWithOrederedSetSequence() {
+		final Set<Object> collection = new LinkedHashSet<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final List<Object> other = new ArrayList<>();
+		other.add(Integer.valueOf(3));
+		other.add(Integer.valueOf(4));
+
+		final Boolean result = collectionServices.endsWith(collection, other);
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void testendsWithSequenceOrderedSet() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final Set<Object> other = new LinkedHashSet<>();
+		other.add(Integer.valueOf(3));
+		other.add(Integer.valueOf(4));
+
+		final Boolean result = collectionServices.endsWith(collection, other);
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void testendsWithOrderedSetOrderedSet() {
+		final Set<Object> collection = new LinkedHashSet<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final Set<Object> other = new LinkedHashSet<>();
+		other.add(Integer.valueOf(3));
+		other.add(Integer.valueOf(4));
+
+		final Boolean result = collectionServices.endsWith(collection, other);
+
+		assertTrue(result);
+	}
+
 }

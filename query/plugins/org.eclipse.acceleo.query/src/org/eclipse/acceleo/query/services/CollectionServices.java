@@ -2805,6 +2805,91 @@ public class CollectionServices extends AbstractServiceProvider {
 		return new ArrayList<T>(sequence.subList(startIndex - 1, endIndex));
 	}
 
+	// @formatter:off
+	@Documentation(
+		value = "Returns \"true\" if the sequence starts with other, \"false\" otherwise",
+		params = {
+			@Param(name = "sequence", value = "The Sequence or OrderedSet"),
+			@Param(name = "other", value = "The other Sequence or OrderedSet")
+		},
+		result = "\\\"true\\\" if the sequence starts with other, \\\"false\\\" otherwise",
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c'}->startsWith('a', 'b')", result = "true")
+		}
+	)
+	// @formatter:on
+	public <T> Boolean startsWith(Collection<T> collection, Collection<T> other) {
+		final boolean res;
+
+		if (other.size() > collection.size()) {
+			res = false;
+		} else {
+			final Iterator<T> collectionIt = collection.iterator();
+			final Iterator<T> otherIt = other.iterator();
+			res = equalsIterator(collectionIt, otherIt);
+		}
+
+		return res;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns \"true\" if the sequence ends with other, \"false\" otherwise",
+		params = {
+			@Param(name = "sequence", value = "The Sequence or OrderedSet"),
+			@Param(name = "other", value = "The other Sequence or OrderedSet")
+		},
+		result = "\\\"true\\\" if the sequence ends with other, \\\"false\\\" otherwise",
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c'}->endsWith('b', 'c')", result = "true")
+		}
+	)
+	// @formatter:on
+	public <T> Boolean endsWith(Collection<T> collection, Collection<T> other) {
+		final boolean res;
+
+		if (other.size() > collection.size()) {
+			res = false;
+		} else {
+			final Iterator<T> collectionIt = collection.iterator();
+			final Iterator<T> otherIt = other.iterator();
+			for (int i = 0; i < collection.size() - other.size(); i++) {
+				collectionIt.next();
+			}
+			res = equalsIterator(collectionIt, otherIt);
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if both given {@link Iterator} contains the same elements.
+	 * 
+	 * @param <T>
+	 *            collections elements type
+	 * @param collectionIt
+	 *            the first {@link Iterator}
+	 * @param otherIt
+	 *            the second {@link Iterator}
+	 * @return <code>true</code> if both given {@link Iterator} contains the same elements, <code>false</code>
+	 *         otherwise
+	 */
+	private <T> boolean equalsIterator(final Iterator<T> collectionIt, final Iterator<T> otherIt) {
+		boolean res = true;
+
+		while (otherIt.hasNext()) {
+			final T element = collectionIt.next();
+			final T elementOther = otherIt.next();
+			if ((element != null && !element.equals(elementOther)) || (element == null
+					&& elementOther != null)) {
+				res = false;
+				break;
+			}
+		}
+
+		return res;
+	}
+
 	/**
 	 * Evaluates a lambda then uses the result as comparables.
 	 */
@@ -2852,4 +2937,5 @@ public class CollectionServices extends AbstractServiceProvider {
 			return result;
 		}
 	}
+
 }
