@@ -62,6 +62,24 @@ first()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+getProperty()
+* Description:
+getProperty(key: java.lang.String) = String<br><br>Get the property value for the given key.<br><br>  @param key<br>        The property key<br><br>  @return<br>        The property value<br><br>
+* Text:
+getProperty()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+getProperty()
+* Description:
+getProperty(key: java.lang.String, java.util.List) = String<br><br>Get the property value for the given key.<br><br>  @param key<br>        The property key<br><br>  @return<br>        The property value<br><br>
+* Text:
+getProperty()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 index()
 * Description:
 index(self: java.lang.String, subString: java.lang.String) = Integer<br><br>Returns the index of the first occurrence "subString" in the current String, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.<br><br>  @param self<br>        The current String<br>  @param subString<br>        The substring that we want to find in the current String<br><br>  @return<br>        The index of the first occurrence of subString in the current String or -1 if not found<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "subString" is null.<br><br>

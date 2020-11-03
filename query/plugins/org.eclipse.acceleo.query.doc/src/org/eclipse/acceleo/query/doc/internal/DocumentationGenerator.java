@@ -31,6 +31,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.PropertiesServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
@@ -56,7 +57,8 @@ public final class DocumentationGenerator {
 	 */
 	private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] {AnyServices.class,
 			BooleanServices.class, CollectionServices.class, ComparableServices.class, EObjectServices.class,
-			NumberServices.class, ResourceServices.class, StringServices.class, XPathServices.class, };
+			NumberServices.class, PropertiesServices.class, ResourceServices.class, StringServices.class,
+			XPathServices.class, };
 
 	/**
 	 * The constructor.

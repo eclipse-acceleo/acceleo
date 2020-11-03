@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.services.tests;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
@@ -26,6 +27,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.PropertiesServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
@@ -66,6 +68,8 @@ public abstract class AbstractServicesTest {
 		services = ServiceUtils.getServices(queryEnvironment, CollectionServices.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 		services = ServiceUtils.getServices(queryEnvironment, ResourceServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, new PropertiesServices(new Properties()));
 		ServiceUtils.registerServices(queryEnvironment, services);
 
 		this.lookupEngine = queryEnvironment.getLookupEngine();

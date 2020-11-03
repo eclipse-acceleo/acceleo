@@ -21,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
@@ -41,6 +42,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.PropertiesServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
@@ -1464,6 +1466,8 @@ public class LookupEngineTest {
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), BooleanServices.class));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), CollectionServices.class));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), ResourceServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new PropertiesServices(
+				new Properties())));
 
 		for (IService<?> service : services) {
 			engine.registerService(service);

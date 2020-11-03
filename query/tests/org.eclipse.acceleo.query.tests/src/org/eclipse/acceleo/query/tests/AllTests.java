@@ -44,6 +44,8 @@ import org.eclipse.acceleo.query.services.tests.EObjectServicesTest;
 import org.eclipse.acceleo.query.services.tests.EObjectServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.NumberServicesTest;
 import org.eclipse.acceleo.query.services.tests.NumberServicesValidationTest;
+import org.eclipse.acceleo.query.services.tests.PropertiesServicesTest;
+import org.eclipse.acceleo.query.services.tests.PropertiesServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.ResourceServicesTest;
 import org.eclipse.acceleo.query.services.tests.ResourceServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.StringServicesTest;
@@ -87,10 +89,11 @@ import org.junit.runners.Suite.SuiteClasses;
 		ComparableServicesValidationTest.class, ComparableServicesAstValidationTest.class,
 		EObjectServicesTest.class, XPathServicesTest.class, EObjectServicesValidationTest.class,
 		XPathServicesValidationTest.class, NumberServicesTest.class, NumberServicesValidationTest.class,
-		StringServicesTest.class, StringServicesValidationTest.class, AnyDSLEvaluationTests.class,
-		AnyDSLValidationTests.class, EcoreReverseTests.class, EcoreValidationTests.class,
-		UMLEvaluationTests.class, UMLValidationTests.class, LookupEngineTest.class,
-		ShortcutEvaluationTest.class, ResourceServicesTest.class, ResourceServicesValidationTest.class,
+		PropertiesServicesTest.class, PropertiesServicesValidationTest.class, StringServicesTest.class,
+		StringServicesValidationTest.class, AnyDSLEvaluationTests.class, AnyDSLValidationTests.class,
+		EcoreReverseTests.class, EcoreValidationTests.class, UMLEvaluationTests.class,
+		UMLValidationTests.class, LookupEngineTest.class, ShortcutEvaluationTest.class,
+		ResourceServicesTest.class, ResourceServicesValidationTest.class,
 		JavaMethodServiceCompletionProposalTests.class, EFeatureCompletionProposalTests.class,
 		EOperationCompletionProposalTests.class, TextCompletionProposalTests.class,
 		VariableDeclarationCompletionProposalTests.class, EEnumLiteralCompletionProposalTests.class,

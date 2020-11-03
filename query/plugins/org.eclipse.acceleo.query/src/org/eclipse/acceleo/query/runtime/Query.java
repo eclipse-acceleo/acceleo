@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
+import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
@@ -19,6 +20,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.PropertiesServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
@@ -83,6 +85,24 @@ public final class Query {
 	 */
 	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider) {
+		configureEnvironment(env, xRefProvider, rootProvider, new Properties());
+	}
+
+	/**
+	 * Configures an environment with all the default services provided by AQL.
+	 * 
+	 * @param env
+	 *            The environment in which to register all default services.
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @param rootProvider
+	 *            an instance to search all instances at evaluation time
+	 * @param properties
+	 *            the {@link Properties}
+	 * @since 7.1
+	 */
+	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
+			IRootEObjectProvider rootProvider, Properties properties) {
 		Set<IService<?>> services = ServiceUtils.getServices(env, new AnyServices(env));
 		ServiceUtils.registerServices(env, services);
 		env.registerEPackage(EcorePackage.eINSTANCE);
@@ -103,6 +123,8 @@ public final class Query {
 		services = ServiceUtils.getServices(env, CollectionServices.class);
 		ServiceUtils.registerServices(env, services);
 		services = ServiceUtils.getServices(env, ResourceServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, new PropertiesServices(properties));
 		ServiceUtils.registerServices(env, services);
 	}
 
