@@ -369,13 +369,10 @@
   
 @Test Sequence{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p => [Sequence{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p/]
 @Test Sequence{p,'test',true,1,2.2} -> filter(EClass) -> size() => [Sequence{p,'test',true,1,2.2} -> filter(EClass) -> size()/]
-[comment]A4-UNSUPPORTED(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)[/comment]
-[comment]
-[Sequence{p,'test',true,1,2.2} -> filter(String)/]
-[Sequence{p,'test',true,1,2.2} -> filter(Integer)/]
-[Sequence{p,'test',true,1,2.2} -> filter(Boolean)/]
-[Sequence{p,'test',true,1,2.2} -> filter(Real)/]
-[/comment]
+@Test Sequence{p,'test',true,1,2.2} -> filter(String) => [Sequence{p,'test',true,1,2.2} -> filter(String)/]
+@Test Sequence{p,'test',true,1,2.2} -> filter(Integer) => [Sequence{p,'test',true,1,2.2} -> filter(Integer)/]
+@Test Sequence{p,'test',true,1,2.2} -> filter(Boolean) => [Sequence{p,'test',true,1,2.2} -> filter(Boolean)/]
+@Test Sequence{p,'test',true,1,2.2} -> filter(Real) => [Sequence{p,'test',true,1,2.2} -> filter(Real)/]
   
 @Test strings -> subSequence(1,2) => [strings -> subSequence(1,2)/]
 @Test integers -> subSequence(1,2) => [integers -> subSequence(1,2)/]

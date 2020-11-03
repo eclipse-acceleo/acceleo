@@ -348,6 +348,10 @@
   
 @Test Sequence{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p => true
 @Test Sequence{p,'test',true,1,2.2} -> filter(EClass) -> size() => 0
+@Test Sequence{p,'test',true,1,2.2} -> filter(String) => test
+@Test Sequence{p,'test',true,1,2.2} -> filter(Integer) => 1
+@Test Sequence{p,'test',true,1,2.2} -> filter(Boolean) => true
+@Test Sequence{p,'test',true,1,2.2} -> filter(Real) => 2.2
   
 @Test strings -> subSequence(1,2) => ab
 @Test integers -> subSequence(1,2) => 12

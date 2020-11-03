@@ -55,6 +55,7 @@ import org.eclipse.acceleo.query.runtime.impl.ServicesValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
@@ -903,7 +904,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 					.getValue()));
 		} else if (object.getValue() instanceof Class<?>) {
 			possibleTypes = new LinkedHashSet<IType>();
-			possibleTypes.add(new ClassType(services.getQueryEnvironment(), (Class<?>)object.getValue()));
+			possibleTypes.add(new ClassLiteralType(services.getQueryEnvironment(), (Class<?>)object
+					.getValue()));
 		} else {
 			throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 		}
@@ -1272,6 +1274,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				for (EClassifier eClassifier : ((EClassifierSetLiteralType)iType).getEClassifiers()) {
 					res.add(new EClassifierType(queryEnvironment, eClassifier));
 				}
+			} else if (iType instanceof ClassLiteralType) {
+				res.add(new ClassType(queryEnvironment, ((ClassLiteralType)iType).getType()));
 			} else {
 				res.add(iType);
 			}

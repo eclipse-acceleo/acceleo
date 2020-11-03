@@ -17,7 +17,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public final class ClassType extends AbstractJavaType implements IJavaType {
+public class ClassType extends AbstractJavaType implements IJavaType {
 
 	/**
 	 * The {@link Class}.
@@ -90,9 +90,9 @@ public final class ClassType extends AbstractJavaType implements IJavaType {
 		final boolean result;
 
 		if (type != null) {
-			result = obj.getClass() == getClass() && type.equals(((ClassType)obj).getType());
+			result = obj instanceof ClassType && type.equals(((ClassType)obj).getType());
 		} else {
-			result = obj.getClass() == getClass() && ((ClassType)obj).getType() == null;
+			result = obj instanceof ClassType && ((ClassType)obj).getType() == null;
 		}
 
 		return result;

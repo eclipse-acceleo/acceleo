@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
+import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
@@ -128,6 +129,10 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 		return new ClassType(getQueryEnvironment(), cls);
 	}
 
+	protected ClassType classLiteralType(Class<?> cls) {
+		return new ClassLiteralType(getQueryEnvironment(), cls);
+	}
+
 	protected EClassifierType eClassifierType(EClassifier eClassifier) {
 		return new EClassifierType(getQueryEnvironment(), eClassifier);
 	}
@@ -174,7 +179,9 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 		final Class<?> result;
 
 		final Object t = type.getType();
-		if (t instanceof Class<?>) {
+		if (type instanceof ClassLiteralType) {
+			result = Class.class;
+		} else if (t instanceof Class<?>) {
 			result = (Class<?>)t;
 		} else if (type instanceof EClassifierLiteralType) {
 			result = EClass.class;

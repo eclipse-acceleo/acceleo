@@ -58,7 +58,6 @@ sequencesServices
 	 removeAll
 	 selectByKind
 	 selectByType
-	(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
 orderedSetsServices
 	 addAll
 	 collectNested
@@ -74,4 +73,3 @@ orderedSetsServices
 	 removeAll
 	 selectByKind
 	 selectByType
-	(LOT1) WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)

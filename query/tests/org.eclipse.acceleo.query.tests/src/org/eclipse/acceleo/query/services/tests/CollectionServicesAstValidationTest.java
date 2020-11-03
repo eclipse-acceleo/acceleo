@@ -1976,7 +1976,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello'}->select(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 30, 51);
@@ -1992,7 +1992,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello'}->select(i | not i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 34, 56);
@@ -2082,7 +2082,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello'}->select(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 32, 53);
@@ -2098,7 +2098,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello'}->select(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 32, 54);
@@ -2341,7 +2341,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 40, 61);
@@ -2357,7 +2357,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{1, 2}->collect(i | i.oclIsKindOf(String))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of java.lang.String";
+		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of ClassLiteral=java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 28, 49);
@@ -2452,7 +2452,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 42, 63);
@@ -2468,7 +2468,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{1, 2}->collect(i | i.oclIsKindOf(String))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of java.lang.String";
+		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of ClassLiteral=java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, message, 30, 51);
@@ -3419,7 +3419,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->any(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3436,7 +3436,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->any(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3550,7 +3550,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->any(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3567,7 +3567,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->any(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3753,7 +3753,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->exists(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3770,7 +3770,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->exists(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3877,7 +3877,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->exists(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3894,7 +3894,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->exists(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -3989,7 +3989,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4006,7 +4006,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4113,7 +4113,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4130,7 +4130,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4739,7 +4739,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->isUnique(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4756,7 +4756,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->isUnique(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4849,7 +4849,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->isUnique(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4866,7 +4866,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->isUnique(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4947,7 +4947,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->one(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -4964,7 +4964,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"Sequence{'hello', 'world'}->one(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -5070,7 +5070,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->one(i | i.oclIsKindOf(String))");
 
-		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of ClassLiteral=java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -5087,7 +5087,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello', 'world'}->one(i | i.oclIsKindOf(Integer))");
 
-		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());

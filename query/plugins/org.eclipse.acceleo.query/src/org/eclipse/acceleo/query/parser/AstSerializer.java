@@ -73,7 +73,10 @@ public class AstSerializer extends AstSwitch<Object> {
 	 */
 	private StringBuilder builder;
 
-	final Map<String, String> ePackagesURItoName = new HashMap<>();
+	/**
+	 * The mapping form nsURI to name.
+	 */
+	private final Map<String, String> ePackagesURItoName = new HashMap<>();
 
 	/**
 	 * Serializes the given {@link Expression}.

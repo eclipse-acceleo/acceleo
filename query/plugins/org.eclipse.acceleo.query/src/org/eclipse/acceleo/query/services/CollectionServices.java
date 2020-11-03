@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2017 Obeo.
+ * Copyright (c) 2015, 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import java.security.Provider.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +42,7 @@ import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -688,7 +688,7 @@ public class CollectionServices extends AbstractServiceProvider {
 				java.util.List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClassifierType> rawTypes = new LinkedHashSet<EClassifierType>();
+			final Set<IType> rawTypes = new LinkedHashSet<IType>();
 
 			final IType receiverType = argTypes.get(0);
 			if (receiverType instanceof NothingType) {
@@ -696,6 +696,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			} else if (receiverType instanceof ICollectionType && ((ICollectionType)receiverType)
 					.getCollectionType() instanceof NothingType) {
 				result.add(receiverType);
+			} else if (argTypes.get(1) instanceof ClassLiteralType) {
+				rawTypes.add(new ClassType(queryEnvironment, ((ClassLiteralType)argTypes.get(1)).getType()));
 			} else if (argTypes.get(1) instanceof ClassType && ((ClassType)argTypes.get(1))
 					.getType() == null) {
 				result.add(services.nothing("EClassifier on %s cannot be null.", getName()));
@@ -707,7 +709,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					rawTypes.add(new EClassifierType(queryEnvironment, eCls));
 				}
 			}
-			for (EClassifierType rawType : rawTypes) {
+			for (IType rawType : rawTypes) {
 				result.add(createReturnCollectionWithType(queryEnvironment, rawType));
 			}
 
@@ -1875,6 +1877,38 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
+		value = "Keeps only instances of the given primitive type (String, Integer, Real, Boolean) from the given set.",
+		params = {
+			@Param(name = "set", value = "The input set to filter"),
+			@Param(name = "cls", value = "The type used to filters element in the set")
+		},
+		result = "A new set containing instances of the given primitive type or null if the given set is null",
+		examples = {
+			@Example(expression = "OrderedSet{'a', 1, 3.14}->filter(String)", result = "OrederedSet{'a'}")
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> filter(Set<T> set, Class<?> cls) {
+		final Set<T> result;
+
+		if (set == null) {
+			result = null;
+		} else if (cls != null) {
+			result = new LinkedHashSet<T>();
+			for (T value : set) {
+				if (cls.isInstance(value)) {
+					result.add(value);
+				}
+			}
+		} else {
+			result = new LinkedHashSet<T>();
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Keeps only instances of the given EClassifier from the given set.",
 		params = {
 			@Param(name = "set", value = "The input set to filter"),
@@ -1887,7 +1921,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> filter(Set<T> set, final EClassifier eClassifier) {
+	public <T> Set<T> filter(Set<T> set, EClassifier eClassifier) {
 		final Set<T> result;
 
 		if (set == null) {
@@ -1917,7 +1951,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> filter(Set<T> set, final Set<EClassifier> eClassifiers) {
+	public <T> Set<T> filter(Set<T> set, Set<EClassifier> eClassifiers) {
 		final Set<T> result;
 
 		if (set == null) {
@@ -1941,6 +1975,38 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
+		value = "Keeps only instances of the given primitive type (String, Integer, Real, Boolean) from the given sequence.",
+		params = {
+			@Param(name = "sequence", value = "The input sequence to filter"),
+			@Param(name = "cls", value = "The type used to filters element in the sequence")
+		},
+		result = "A new sequence containing instances of the given primitive type or null if the given sequence is null",
+		examples = {
+			@Example(expression = "Sequence{'a', 1, 3.14}->filter(String)", result = "Sequence{'a'}")
+		}
+	)
+	// @formatter:on
+	public <T> List<T> filter(List<T> sequence, Class<?> cls) {
+		final List<T> result;
+
+		if (sequence == null) {
+			result = null;
+		} else if (cls != null) {
+			result = new ArrayList<T>();
+			for (T value : sequence) {
+				if (cls.isInstance(value)) {
+					result.add(value);
+				}
+			}
+		} else {
+			result = new ArrayList<T>();
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Keeps only instances of the given EClassifier in the given sequence.",
 		params = {
 			@Param(name = "sequence", value = "The input sequence to filter"),
@@ -1953,7 +2019,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> filter(List<T> sequence, final EClassifier eClassifier) {
+	public <T> List<T> filter(List<T> sequence, EClassifier eClassifier) {
 		final List<T> result;
 
 		if (sequence == null) {
@@ -1983,7 +2049,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> filter(List<T> sequence, final Set<EClassifier> eClassifiers) {
+	public <T> List<T> filter(List<T> sequence, Set<EClassifier> eClassifiers) {
 		final List<T> result;
 
 		if (sequence == null) {
@@ -2888,54 +2954,6 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		return res;
-	}
-
-	/**
-	 * Evaluates a lambda then uses the result as comparables.
-	 */
-	private static final class LambdaComparator<T> implements Comparator<T> {
-		/**
-		 * Pre-populated map linking the objects from the collection we're sorting with the values calculated
-		 * by this lambda.
-		 */
-		private final Map<T, Object> preComputedValues;
-
-		/**
-		 * Constructs a comparator given its lambda.
-		 * 
-		 * @param lambda
-		 *            the lambda providing our comparables.
-		 */
-		LambdaComparator(Map<T, Object> preComputedValues) {
-			this.preComputedValues = preComputedValues;
-		}
-
-		@Override
-		public int compare(T o1, T o2) {
-			final int result;
-
-			Object o1Result = preComputedValues.get(o1);
-			Object o2Result = preComputedValues.get(o2);
-			try {
-				if (o1Result instanceof Comparable<?>) {
-					@SuppressWarnings("unchecked")
-					Comparable<Object> c1 = (Comparable<Object>)o1Result;
-					result = c1.compareTo(o2Result);
-				} else if (o2Result instanceof Comparable<?>) {
-					@SuppressWarnings("unchecked")
-					Comparable<Object> c2 = (Comparable<Object>)o2Result;
-					result = -c2.compareTo(o1Result);
-				} else {
-					result = 0;
-				}
-				// CHECKSTYLE:OFF
-			} catch (Exception e) {
-				// CHECKSTYLE:ON
-				throw new IllegalArgumentException("Cannot compare " + o1 + " with " + o2, e);
-			}
-
-			return result;
-		}
 	}
 
 }

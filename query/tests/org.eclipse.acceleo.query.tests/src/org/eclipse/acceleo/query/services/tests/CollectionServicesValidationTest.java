@@ -1085,7 +1085,17 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testFilterList() {
+	public void testFilterListClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClassifier())), classLiteralType(String.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterListEClassifier() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
 				.getEClassifier())), eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
@@ -1096,7 +1106,17 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testFilterSet() {
+	public void testFilterSetClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClassifier())), classLiteralType(String.class) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterSetEClassifier() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 				.getEClassifier())), eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };

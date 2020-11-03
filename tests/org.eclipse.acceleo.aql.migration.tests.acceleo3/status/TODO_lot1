@@ -16,7 +16,3 @@ acceleoServices
 	 TODO implement getProperties
 numericServices
 	 WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
-sequencesServices
-	 WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)
-orderedSetsServices
-	 WIP https://git.eclipse.org/r/#/c/162879/ filter(primitiveType)

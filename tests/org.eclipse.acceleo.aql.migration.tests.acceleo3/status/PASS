@@ -551,6 +551,10 @@ sequencesServices
 	collections.oclIsUndefined()
 	Sequence{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p
 	Sequence{p,'test',true,1,2.2} -> filter(EClass) -> size()
+	Sequence{p,'test',true,1,2.2} -> filter(String)
+	Sequence{p,'test',true,1,2.2} -> filter(Integer)
+	Sequence{p,'test',true,1,2.2} -> filter(Boolean)
+	Sequence{p,'test',true,1,2.2} -> filter(Real)
 	strings -> subSequence(1,2)
 	integers -> subSequence(1,2)
 	reals -> subSequence(1,2)
@@ -884,6 +888,10 @@ orderedSetsServices
 	collections.oclIsUndefined()
 	OrderedSet{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p
 	OrderedSet{p,'test',true,1,2.2} -> filter(EClass) -> size()
+	OrderedSet{p,'test',true,1,2.2} -> filter(String)
+	OrderedSet{p,'test',true,1,2.2} -> filter(Integer)
+	OrderedSet{p,'test',true,1,2.2} -> filter(Boolean)
+	OrderedSet{p,'test',true,1,2.2} -> filter(Real)
 	strings -> subOrderedSet(1,2)
 	integers -> subOrderedSet(1,2)
 	reals -> subOrderedSet(1,2)

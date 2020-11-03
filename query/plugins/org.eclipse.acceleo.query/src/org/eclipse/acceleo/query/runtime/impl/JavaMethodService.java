@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
+import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -269,6 +270,8 @@ public class JavaMethodService extends AbstractService<Method> {
 						cls = Object.class;
 					}
 				}
+			} else if (iType instanceof ClassLiteralType) {
+				cls = Class.class;
 			} else if (iType instanceof IJavaType) {
 				cls = ((IJavaType)iType).getType();
 			} else {

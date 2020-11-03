@@ -347,6 +347,10 @@
   
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p => true
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(EClass) -> size() => 0
+@Test OrderedSet{p,'test',true,1,2.2} -> filter(String) => test
+@Test OrderedSet{p,'test',true,1,2.2} -> filter(Integer) => 1
+@Test OrderedSet{p,'test',true,1,2.2} -> filter(Boolean) => true
+@Test OrderedSet{p,'test',true,1,2.2} -> filter(Real) => 2.2
 @Test strings -> subOrderedSet(1,2) => ab
 @Test integers -> subOrderedSet(1,2) => 12
 @Test reals -> subOrderedSet(1,2) => 1.22.1

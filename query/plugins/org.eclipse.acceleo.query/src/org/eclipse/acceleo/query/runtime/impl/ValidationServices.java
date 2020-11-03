@@ -26,6 +26,7 @@ import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -420,6 +421,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			if (type1.isAssignableFrom(type2) || type1.getType() == EcorePackage.eINSTANCE.getEObject()) {
 				if (type2 instanceof EClassifierLiteralType) {
 					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type2).getType());
+				} else if (type2 instanceof ClassLiteralType) {
+					result = new ClassType(queryEnvironment, ((ClassLiteralType)type2).getType());
 				} else {
 					result = type2;
 				}
@@ -427,6 +430,8 @@ public class ValidationServices extends AbstractLanguageServices {
 					.getEObject()) {
 				if (type1 instanceof EClassifierLiteralType) {
 					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type1).getType());
+				} else if (type1 instanceof ClassLiteralType) {
+					result = new ClassType(queryEnvironment, ((ClassLiteralType)type1).getType());
 				} else {
 					result = type1;
 				}
