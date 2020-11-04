@@ -2399,9 +2399,8 @@ public class CollectionServicesTest {
 		set.add(a);
 		Set<Object> result = collectionServices.closure(set, lambdaValue);
 
-		assertEquals(6, result.size());
+		assertEquals(5, result.size());
 		Iterator<Object> it = result.iterator();
-		assertEquals(a, it.next());
 		assertEquals(b, it.next());
 		assertEquals(d, it.next());
 		assertEquals(c, it.next());
@@ -2447,9 +2446,8 @@ public class CollectionServicesTest {
 		set.add(a);
 		Set<Object> result = collectionServices.closure(set, lambdaValue);
 
-		assertEquals(6, result.size());
+		assertEquals(5, result.size());
 		Iterator<Object> it = result.iterator();
-		assertEquals(a, it.next());
 		assertEquals(b, it.next());
 		assertEquals(d, it.next());
 		assertEquals(c, it.next());
@@ -2469,8 +2467,7 @@ public class CollectionServicesTest {
 		LinkedHashSet<Object> set = new LinkedHashSet<Object>();
 		set.add(EcorePackage.eINSTANCE);
 		Set<Object> result = collectionServices.closure(set, nullLambdaValue);
-		assertEquals(1, result.size());
-		assertEquals(EcorePackage.eINSTANCE, result.iterator().next());
+		assertEquals(0, result.size());
 
 		final LambdaValue nothingLambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
@@ -2482,8 +2479,7 @@ public class CollectionServicesTest {
 		set = new LinkedHashSet<Object>();
 		set.add(EcorePackage.eINSTANCE);
 		result = collectionServices.closure(set, nothingLambdaValue);
-		assertEquals(1, result.size());
-		assertEquals(EcorePackage.eINSTANCE, result.iterator().next());
+		assertEquals(0, result.size());
 	}
 
 	@Test
@@ -2523,9 +2519,8 @@ public class CollectionServicesTest {
 
 		Set<Object> result = collectionServices.closure(Collections.singleton(pkg), subPackagesLambdaValue);
 
-		assertEquals(7, result.size());
+		assertEquals(6, result.size());
 		Iterator<Object> it = result.iterator();
-		assertEquals(pkg, it.next());
 		assertEquals(package11, it.next());
 		assertEquals(package12, it.next());
 		assertEquals(package111, it.next());

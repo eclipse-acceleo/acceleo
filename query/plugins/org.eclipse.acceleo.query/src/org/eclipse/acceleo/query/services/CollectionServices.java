@@ -1464,7 +1464,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (lambda == null) {
 			result = Collections.emptySet();
 		} else {
-			result = new LinkedHashSet<Object>(collection);
+			result = new LinkedHashSet<Object>();
 			Set<Object> currentSet = new LinkedHashSet<Object>(collection);
 			Set<Object> added;
 			do {
