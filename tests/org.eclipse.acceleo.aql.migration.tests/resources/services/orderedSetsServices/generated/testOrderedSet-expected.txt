@@ -357,6 +357,7 @@
 @Test booleans -> subOrderedSet(1,2) => truefalse
 @Test eClasses -> subOrderedSet(1,2) -> collect(name) => ClasseAClasseB
 @Test collections -> subOrderedSet(1,2) => abcefg
+@Test eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name) => AbstractClass
 @Test integers -> startsWith(OrderedSet{1, 2}) => true
 @Test integers -> startsWith(OrderedSet{1, 1}) => true
 @Test integers -> startsWith(OrderedSet{1, 2}) => true

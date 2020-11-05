@@ -7,12 +7,10 @@ emfServices
 sequencesServices
 	 ? asBag: order changes
 	 ? asSet: order changes
-	 ? closure
 	(LOT1) test mixed sequences (needs OclAny or something)
 orderedSetsServices
 	 ? asBag: order changes
 	 ? asSet: order changes
-	 ? closure
 	 intersection(bag)
 	 symmetricDifference(s), 
 	(LOT1) test mixed ordered sets (needs OclAny or something)

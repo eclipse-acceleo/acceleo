@@ -380,7 +380,7 @@
 @Test booleans -> subSequence(1,2) => [booleans -> subSequence(1,2)/]
 @Test eClasses -> subSequence(1,2) -> collect(name) => [eClasses -> subSequence(1,2) -> collect(name)/]
 @Test collections -> subSequence(1,2) => [collections -> subSequence(1,2)/]
-[comment]TODO ? closure[/comment]
+@Test eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name) => [eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name)/]
 [comment]TODO ? asBag: order changes[/comment]
 [comment]TODO ? asSet: order changes[/comment]
 [comment]A4-UNSUPPORTED product[/comment]

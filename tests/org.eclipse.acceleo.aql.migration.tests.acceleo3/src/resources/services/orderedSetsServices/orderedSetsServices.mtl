@@ -381,7 +381,7 @@
 @Test eClasses -> subOrderedSet(1,2) -> collect(name) => [eClasses -> subOrderedSet(1,2) -> collect(name)/]
 @Test collections -> subOrderedSet(1,2) => [collections -> subOrderedSet(1,2)/]
 [comment]TODO intersection(bag)[/comment]
-[comment]TODO ? closure[/comment]
+@Test eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name) => [eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name)/]
 [comment]TODO ? asBag: order changes[/comment]
 [comment]TODO ? asSet: order changes[/comment]
 [comment]A4-UNSUPPORTED product[/comment]
