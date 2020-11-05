@@ -1034,7 +1034,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testSumListNotNumber() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
 		final IType[] expectedReturnTypes = new IType[] {nothingType(
-				"Sum can only be used on a collection of numbers.") };
+				"sum can only be used on a collection of numbers.") };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
 	}
@@ -1059,9 +1059,109 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testSumSetNotNumber() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
 		final IType[] expectedReturnTypes = new IType[] {nothingType(
-				"Sum can only be used on a collection of numbers.") };
+				"sum can only be used on a collection of numbers.") };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testMinListInt() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "min", parameterTypes);
+	}
+
+	@Test
+	public void testMinListReal() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Double.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "min", parameterTypes);
+	}
+
+	@Test
+	public void testMinListNotNumber() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"min can only be used on a collection of numbers.") };
+
+		assertValidation(expectedReturnTypes, "min", parameterTypes);
+	}
+
+	@Test
+	public void testMinSetInt() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "min", parameterTypes);
+	}
+
+	@Test
+	public void testMinSetReal() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Double.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "min", parameterTypes);
+	}
+
+	@Test
+	public void testMinSetNotNumber() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"min can only be used on a collection of numbers.") };
+
+		assertValidation(expectedReturnTypes, "min", parameterTypes);
+	}
+
+	@Test
+	public void testMaxListInt() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "max", parameterTypes);
+	}
+
+	@Test
+	public void testMaxListReal() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Double.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "max", parameterTypes);
+	}
+
+	@Test
+	public void testMaxListNotNumber() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"max can only be used on a collection of numbers.") };
+
+		assertValidation(expectedReturnTypes, "max", parameterTypes);
+	}
+
+	@Test
+	public void testMaxSetInt() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "max", parameterTypes);
+	}
+
+	@Test
+	public void testMaxSetReal() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Double.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "max", parameterTypes);
+	}
+
+	@Test
+	public void testMaxSetNotNumber() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType(
+				"max can only be used on a collection of numbers.") };
+
+		assertValidation(expectedReturnTypes, "max", parameterTypes);
 	}
 
 	@Test

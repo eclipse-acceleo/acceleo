@@ -4466,6 +4466,154 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
+	public void testMinNull() {
+		collectionServices.min(null);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testMinSetNotNumber() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add("potatoes");
+		set.add(Integer.valueOf(3));
+
+		collectionServices.min(set);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testMinListNotNumber() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add("potatoes");
+		list.add(Integer.valueOf(3));
+
+		collectionServices.min(list);
+	}
+
+	@Test
+	public void testMinSetIntegers() {
+		Set<Number> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		Number result = collectionServices.min(set);
+		assertTrue(result instanceof Long);
+		assertEquals(Long.valueOf(1), result);
+	}
+
+	@Test
+	public void testMinSetTypeMix() {
+		Set<Number> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Long.valueOf(2));
+		set.add(Double.valueOf(3));
+		set.add(Float.valueOf(4));
+
+		Number result = collectionServices.min(set);
+		assertTrue(result instanceof Double);
+		assertEquals(Double.valueOf(1), result);
+	}
+
+	@Test
+	public void testMinListIntegers() {
+		List<Number> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Number result = collectionServices.min(list);
+		assertTrue(result instanceof Long);
+		assertEquals(Long.valueOf(1), result);
+	}
+
+	@Test
+	public void testMinListTypeMix() {
+		List<Number> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Double.valueOf(2));
+		list.add(Float.valueOf(3));
+
+		Number result = collectionServices.min(list);
+		assertTrue(result instanceof Double);
+		assertEquals(Double.valueOf(1), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testMaxNull() {
+		collectionServices.max(null);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testMaxSetNotNumber() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add("potatoes");
+		set.add(Integer.valueOf(3));
+
+		collectionServices.max(set);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testMaxListNotNumber() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add("potatoes");
+		list.add(Integer.valueOf(3));
+
+		collectionServices.max(list);
+	}
+
+	@Test
+	public void testMaxSetIntegers() {
+		Set<Number> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		Number result = collectionServices.max(set);
+		assertTrue(result instanceof Long);
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test
+	public void testMaxSetTypeMix() {
+		Set<Number> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Long.valueOf(2));
+		set.add(Double.valueOf(3));
+		set.add(Float.valueOf(4));
+
+		Number result = collectionServices.max(set);
+		assertTrue(result instanceof Double);
+		assertEquals(Double.valueOf(4), result);
+	}
+
+	@Test
+	public void testMaxListIntegers() {
+		List<Number> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Number result = collectionServices.max(list);
+		assertTrue(result instanceof Long);
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test
+	public void testMaxListTypeMix() {
+		List<Number> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Double.valueOf(2));
+		list.add(Float.valueOf(3));
+
+		Number result = collectionServices.max(list);
+		assertTrue(result instanceof Double);
+		assertEquals(Double.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
 	public void testIndexOfNullListNull() {
 		collectionServices.indexOf((List<?>)null, null);
 	}

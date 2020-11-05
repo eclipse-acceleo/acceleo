@@ -5192,7 +5192,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSumListNotNumber() {
 		final IValidationResult validationResult = validate("Sequence{1, 'potatoes', 2.0}->sum()");
 
-		String message = "Sum can only be used on a collection of numbers.";
+		String message = "sum can only be used on a collection of numbers.";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -5211,7 +5211,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSumOnNull() {
 		final IValidationResult validationResult = validate("null->sum()");
 
-		String message = "Sum can only be used on a collection of numbers.";
+		String message = "sum can only be used on a collection of numbers.";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());
@@ -5254,7 +5254,217 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSumSetNotNumber() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 'potatoes', 2.0}->sum()");
 
-		String message = "Sum can only be used on a collection of numbers.";
+		String message = "sum can only be used on a collection of numbers.";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testMinListIntegers() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->min()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Long.class)), types);
+	}
+
+	@Test
+	public void testMinListTypeMix() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3.0, 4.0}->min()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Double.class)), types);
+	}
+
+	@Test
+	public void testMinListNotNumber() {
+		final IValidationResult validationResult = validate("Sequence{1, 'potatoes', 2.0}->min()");
+
+		String message = "min can only be used on a collection of numbers.";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testMinOnNull() {
+		final IValidationResult validationResult = validate("null->min()");
+
+		String message = "min can only be used on a collection of numbers.";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testMinSetIntegers() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->min()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Long.class)), types);
+	}
+
+	@Test
+	public void testMinSetTypeMix() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3.0, 4.0}->min()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Double.class)), types);
+	}
+
+	@Test
+	public void testMinSetNotNumber() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 'potatoes', 2.0}->min()");
+
+		String message = "min can only be used on a collection of numbers.";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testMaxListIntegers() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->max()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Long.class)), types);
+	}
+
+	@Test
+	public void testMaxListTypeMix() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3.0, 4.0}->max()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Double.class)), types);
+	}
+
+	@Test
+	public void testMaxListNotNumber() {
+		final IValidationResult validationResult = validate("Sequence{1, 'potatoes', 2.0}->max()");
+
+		String message = "max can only be used on a collection of numbers.";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testMaxOnNull() {
+		final IValidationResult validationResult = validate("null->max()");
+
+		String message = "max can only be used on a collection of numbers.";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testMaxSetIntegers() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->max()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Long.class)), types);
+	}
+
+	@Test
+	public void testMaxSetTypeMix() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3.0, 4.0}->max()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(classType(Double.class)), types);
+	}
+
+	@Test
+	public void testMaxSetNotNumber() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 'potatoes', 2.0}->max()");
+
+		String message = "max can only be used on a collection of numbers.";
 		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
 		assertEquals(message, validationResult.getMessages().get(0).getMessage());

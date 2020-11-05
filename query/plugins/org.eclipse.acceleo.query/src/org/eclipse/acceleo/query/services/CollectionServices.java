@@ -69,7 +69,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	private static final String MESSAGE_SEPARATOR = "\n ";
 
 	/** Externalized here to avoid multiple uses. */
-	private static final String SUM_ONLY_NUMERIC_ERROR = "Sum can only be used on a collection of numbers.";
+	private static final String ONLY_NUMERIC_ERROR = "%s can only be used on a collection of numbers.";
 
 	/**
 	 * Exists {@link IService}.
@@ -335,11 +335,11 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Sum {@link IService}.
+	 * Sum, min, max {@link IService}.
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	private static final class SumService extends JavaMethodService {
+	private static final class NumberService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -349,7 +349,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
 		 */
-		private SumService(Method serviceMethod, Object serviceInstance) {
+		private NumberService(Method serviceMethod, Object serviceInstance) {
 			super(serviceMethod, serviceInstance);
 		}
 
@@ -370,7 +370,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					// any number that is not an int or long is widened to Double
 					result.add(new ClassType(queryEnvironment, Double.class));
 				} else {
-					result.add(services.nothing(SUM_ONLY_NUMERIC_ERROR));
+					result.add(services.nothing(String.format(ONLY_NUMERIC_ERROR, getName())));
 				}
 			}
 			return result;
@@ -393,7 +393,7 @@ public class CollectionServices extends AbstractServiceProvider {
 				} else if (returnType.equals(longType)) {
 					currentResult = new ClassType(queryEnvironment, Long.class);
 				} else {
-					currentResult = services.nothing(SUM_ONLY_NUMERIC_ERROR);
+					currentResult = services.nothing(String.format(ONLY_NUMERIC_ERROR, getName()));
 					break;
 				}
 			}
@@ -952,8 +952,9 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = new InsertAtService(publicMethod, this);
 		} else if ("intersection".equals(publicMethod.getName())) {
 			result = new IntersectionService(publicMethod, this);
-		} else if ("sum".equals(publicMethod.getName())) {
-			result = new SumService(publicMethod, this);
+		} else if ("sum".equals(publicMethod.getName()) || "min".equals(publicMethod.getName()) || "max"
+				.equals(publicMethod.getName())) {
+			result = new NumberService(publicMethod, this);
 		} else {
 			result = new JavaMethodService(publicMethod, this);
 		}
@@ -2546,7 +2547,7 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		for (Object input : collection) {
 			if (!(input instanceof Number)) {
-				throw new IllegalArgumentException(SUM_ONLY_NUMERIC_ERROR);
+				throw new IllegalArgumentException(String.format(ONLY_NUMERIC_ERROR, "sum"));
 			}
 
 			if (result instanceof Long && (input instanceof Long || input instanceof Integer)) {
@@ -2554,6 +2555,76 @@ public class CollectionServices extends AbstractServiceProvider {
 			} else {
 				// widen anything that is not a long or int to a double
 				result = result.doubleValue() + ((Number)input).doubleValue();
+			}
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Min element of the given collection if possible.",
+		params = {
+			@Param(name = "collection", value = "The collection")
+		},
+		result = "The min element of the given collection if possible",
+		exceptions = {
+			@Throw(type = IllegalArgumentException.class, value = "If an element of the collection cannot be processed")
+		},
+		examples = {
+			@Example(expression = "Sequence{1, 2, 3, 4}->min()", result = "1"),
+			@Example(expression = "Sequence{1, 2, 3.14, 4}->min()", result = "1.0")
+		}
+	)
+	// @formatter:on
+	public Number min(Collection<?> collection) {
+		Number result = Long.valueOf(Long.MAX_VALUE);
+
+		for (Object input : collection) {
+			if (!(input instanceof Number)) {
+				throw new IllegalArgumentException(String.format(ONLY_NUMERIC_ERROR, "min"));
+			}
+
+			if (result instanceof Long && (input instanceof Long || input instanceof Integer)) {
+				result = Long.min(result.longValue(), ((Number)input).longValue());
+			} else {
+				// widen anything that is not a long or int to a double
+				result = Double.min(result.doubleValue(), ((Number)input).doubleValue());
+			}
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Max element of the given collection if possible.",
+		params = {
+			@Param(name = "collection", value = "The collection")
+		},
+		result = "The max element of the given collection if possible",
+		exceptions = {
+			@Throw(type = IllegalArgumentException.class, value = "If an element of the collection cannot be processed")
+		},
+		examples = {
+			@Example(expression = "Sequence{1, 2, 3, 4}->max()", result = "4"),
+			@Example(expression = "Sequence{1, 2, 3.14, 4}->max()", result = "4")
+		}
+	)
+	// @formatter:on
+	public Number max(Collection<?> collection) {
+		Number result = Long.valueOf(Long.MIN_VALUE);
+
+		for (Object input : collection) {
+			if (!(input instanceof Number)) {
+				throw new IllegalArgumentException(String.format(ONLY_NUMERIC_ERROR, "max"));
+			}
+
+			if (result instanceof Long && (input instanceof Long || input instanceof Integer)) {
+				result = Long.max(result.longValue(), ((Number)input).longValue());
+			} else {
+				// widen anything that is not a long or int to a double
+				result = Double.max(result.doubleValue(), ((Number)input).doubleValue());
 			}
 		}
 
