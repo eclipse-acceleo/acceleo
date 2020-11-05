@@ -7,7 +7,6 @@ emfServices
 sequencesServices
 	 ? asBag: order changes
 	 ? asSet: order changes
-	(LOT1) test mixed sequences (needs OclAny or something)
 orderedSetsServices
 	 ? asBag: order changes
 	 ? asSet: order changes

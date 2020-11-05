@@ -1,22 +1,26 @@
   
+@Test mixed.toString() => ab11.1true
 @Test strings.toString() => abc
 @Test reals.toString() => 1.22.13.2
 @Test integers.toString() => 123
 @Test booleans.toString() => truefalsetrue
 @Test collections.toString() => abcefgabc
   
+@Test mixed.oclIsTypeOf(String) => truetruefalsefalsefalse
 @Test strings.oclIsTypeOf(String) => truetruetrue
 @Test reals.oclIsTypeOf(Real) => truetruetrue
 @Test integers.oclIsTypeOf(Integer) => truetruetrue
 @Test booleans.oclIsTypeOf(Boolean) => truetruetrue
 @Test eClasses.oclIsTypeOf(EClass) => truetruetrue
   
+@Test mixed.oclIsKindOf(String) => truetruefalsefalsefalse
 @Test strings.oclIsKindOf(String) => truetruetrue
 @Test reals.oclIsKindOf(Real) => truetruetrue
 @Test integers.oclIsKindOf(Integer) => truetruetrue
 @Test booleans.oclIsKindOf(Boolean) => truetruetrue
 @Test eClasses.oclIsKindOf(EObject) => truetruetrue
   
+@Test mixed -> last() => true
 @Test strings -> last() => c
 @Test reals -> last() => 3.2
 @Test integers -> last() => 3
@@ -24,6 +28,7 @@
 @Test eClasses -> last().name => AbstractClass
 @Test collections -> last() => abc
   
+@Test mixed -> collect(t | t.toString()) => ab11.1true
 @Test strings -> collect(t | t.toString()) => abc
 @Test integers -> collect(t | t.toString()) => 123
 @Test booleans -> collect(t | t.toString()) => truefalsetrue
@@ -31,6 +36,7 @@
 @Test eClasses -> collect(t | t.name) => ClasseAClasseBAbstractClass
 @Test collections -> collect(t | t.toString()) => abcefgabc
   
+@Test mixed -> size() => 5
 @Test strings -> size() => 3
 @Test integers -> size() => 3
 @Test booleans -> size() => 3
@@ -38,6 +44,7 @@
 @Test eClasses -> size() => 3
 @Test collections -> size() => 3
   
+@Test mixed -> notEmpty() => true
 @Test strings -> notEmpty() => true
 @Test integers -> notEmpty() => true
 @Test booleans -> notEmpty() => true
@@ -45,6 +52,7 @@
 @Test eClasses -> notEmpty() => true
 @Test collections -> notEmpty() => true
   
+@Test mixed -> isEmpty() => false
 @Test strings -> isEmpty() => false
 @Test integers -> isEmpty() => false
 @Test booleans -> isEmpty() => false
@@ -52,6 +60,7 @@
 @Test eClasses -> isEmpty() => false
 @Test collections -> isEmpty() => false
   
+@Test mixed -> reverse() => true1.11ba
 @Test strings -> reverse() => cba
 @Test integers -> reverse() => 321
 @Test booleans -> reverse() => truefalsetrue
@@ -59,6 +68,7 @@
 @Test eClasses -> reverse() -> collect(name) => AbstractClassClasseBClasseA
 @Test collections -> reverse() => abcefgabc
   
+@Test mixed -> first() => a
 @Test strings -> first() => a
 @Test integers -> first() => 1
 @Test booleans -> first() => true
@@ -66,6 +76,7 @@
 @Test eClasses -> first().name => ClasseA
 @Test collections -> first() => abc
   
+@Test mixed -> asSequence() => ab11.1true
 @Test strings -> asSequence() => abc
 @Test integers -> asSequence() => 123
 @Test booleans -> asSequence() => truefalsetrue
@@ -73,6 +84,7 @@
 @Test eClasses -> asSequence() -> collect(name) => ClasseAClasseBAbstractClass
 @Test collections -> asSequence() => abcefgabc
   
+@Test mixed -> asOrderedSet()  => ab11.1true
 @Test strings -> asOrderedSet()  => abc
 @Test integers -> asOrderedSet()  => 123
 @Test booleans -> asOrderedSet()  => truefalse
@@ -80,18 +92,22 @@
 @Test eClasses -> asOrderedSet() -> collect(name) => ClasseAClasseBAbstractClass
 @Test collections -> asOrderedSet()  => abcefg
   
+@Test mixed -> sep(',') => a,b,1,1.1,true
 @Test strings -> sep(',') => a,b,c
 @Test integers -> sep(',') => 1,2,3
 @Test booleans -> sep(',') => true,false,true
 @Test reals -> sep(',') => 1.2,2.1,3.2
 @Test collections -> sep(',') => abc,efg,abc
   
+@Test mixed -> sep('{', ',', '}') => {a,b,1,1.1,true}
 @Test strings -> sep('{', ',', '}') => {a,b,c}
 @Test integers -> sep('{', ',', '}') => {1,2,3}
 @Test booleans -> sep('{', ',', '}') => {true,false,true}
 @Test reals -> sep('{', ',', '}') => {1.2,2.1,3.2}
 @Test collections -> sep('{', ',', '}') => {abc,efg,abc}
   
+@Test mixed -> includesAll(Sequence{'a','b'}) => true
+@Test mixed -> includesAll(Sequence{'a','b','d'}) => false
 @Test strings -> includesAll(Sequence{'a','b'}) => true
 @Test strings -> includesAll(Sequence{'a','b','d'}) => false
 @Test integers -> includesAll(Sequence{1,2}) => true
@@ -106,6 +122,8 @@
 @Test eClasses -> includesAll(p.eClassifiers) => true
 @Test Sequence{p.eClassifiers->first()}-> includesAll(p.eClassifiers) => false
   
+@Test mixed -> includes('z') => false
+@Test mixed -> includes('a') => true
 @Test strings -> includes('z') => false
 @Test strings -> includes('a') => true
 @Test integers -> includes(6) => false
@@ -119,6 +137,8 @@
 @Test collections -> includes(Sequence{'a','b','c'}) => true
 @Test collections -> includes(Sequence{'z','b','c'}) => false
   
+@Test mixed -> excludesAll(Sequence{'a','b'}) => false
+@Test mixed -> excludesAll(Sequence{'a','b','d'}) => false
 @Test strings -> excludesAll(Sequence{'a','b'}) => false
 @Test strings -> excludesAll(Sequence{'a','b','d'}) => false
 @Test integers -> excludesAll(Sequence{1,2}) => false
@@ -133,6 +153,8 @@
 @Test eClasses -> excludesAll(p.eClassifiers) => false
 @Test Sequence{p.eClassifiers->first()}-> excludesAll(p.eClassifiers) => false
   
+@Test mixed -> excludes('z') => true
+@Test mixed -> excludes('a') => false
 @Test strings -> excludes('z') => true
 @Test strings -> excludes('a') => false
 @Test integers -> excludes(6) => true
@@ -146,6 +168,8 @@
 @Test collections -> excludes(Sequence{'a','b','c'}) => false
 @Test collections -> excludes(Sequence{'z','b','c'}) => true
   
+@Test mixed -> union(Sequence{'a','b'}) => ab11.1trueab
+@Test mixed -> union(Sequence{'a','b','d'}) => ab11.1trueabd
 @Test strings -> union(Sequence{'a','b'}) => abcab
 @Test strings -> union(Sequence{'a','b','d'}) => abcabd
 @Test integers -> union(Sequence{1,2}) => 12312
@@ -159,6 +183,8 @@
 @Test collections -> union(Sequence{'a','b','d'}) => abcefgabcabd
 @Test eClasses -> union(p.eClassifiers->asSequence()) -> collect(name) => ClasseAClasseBAbstractClassClasseAClasseBAbstractClass
   
+@Test mixed -> count('z') => 0
+@Test mixed -> count('a') => 1
 @Test strings -> count('z') => 0
 @Test strings -> count('a') => 1
 @Test integers -> count(6) => 0
@@ -171,6 +197,8 @@
 @Test Sequence{p.eClassifiers->first()} -> count(p.eClassifiers->last()) => 0
 @Test collections -> count(Sequence{'a','b','c'}) => 2
 @Test collections -> count(Sequence{'z','b','c'}) => 0
+@Test mixed -> append('z') => ab11.1truez
+@Test mixed -> append('a') => ab11.1truea
 @Test strings -> append('z') => abcz
 @Test strings -> append('a') => abca
 @Test integers -> append(6) => 1236
@@ -184,6 +212,8 @@
 @Test collections -> append(Sequence{'a','b','c'}) => abcefgabcabc
 @Test collections -> append(Sequence{'z','b','c'}) => abcefgabczbc
   
+@Test mixed -> prepend('z') => zab11.1true
+@Test mixed -> prepend('a') => aab11.1true
 @Test strings -> prepend('z') => zabc
 @Test strings -> prepend('a') => aabc
 @Test integers -> prepend(6) => 6123
@@ -197,6 +227,8 @@
 @Test collections -> prepend(Sequence{'a','b','c'}) => abcabcefgabc
 @Test collections -> prepend(Sequence{'z','b','c'}) => zbcabcefgabc
   
+@Test mixed -> insertAt(1,'z') => zab11.1true
+@Test mixed -> insertAt(1,'a') => aab11.1true
 @Test strings -> insertAt(1,'z') => zabc
 @Test strings -> insertAt(1,'a') => aabc
 @Test integers -> insertAt(1,6) => 6123
@@ -210,6 +242,7 @@
 @Test collections -> insertAt(1,Sequence{'a','b','c'}) => abcabcefgabc
 @Test collections -> insertAt(1,Sequence{'z','b','c'}) => zbcabcefgabc
   
+@Test mixed -> indexOf('a') => 1
 @Test strings -> indexOf('a') => 1
 @Test integers -> indexOf(2) => 2
 @Test booleans -> indexOf(false) => 2
@@ -217,6 +250,8 @@
 @Test eClasses -> indexOf(p.eClassifiers->first()) => 1
 @Test collections -> indexOf(Sequence{'a','b','c'}) => 1
   
+@Test mixed -> including('z') => ab11.1truez
+@Test mixed -> including('a') => ab11.1truea
 @Test strings -> including('z') => abcz
 @Test strings -> including('a') => abca
 @Test integers -> including(6) => 1236
@@ -230,6 +265,8 @@
 @Test collections -> including(Sequence{'a','b','c'}) => abcefgabcabc
 @Test collections -> including(Sequence{'z','b','c'}) => abcefgabczbc
   
+@Test mixed -> excluding('z') => ab11.1true
+@Test mixed -> excluding('a') => b11.1true
 @Test strings -> excluding('z') => abc
 @Test strings -> excluding('a') => bc
 @Test integers -> excluding(6) => 123
@@ -243,6 +280,7 @@
 @Test collections -> excluding(Sequence{'a','b','c'}) => efg
 @Test collections -> excluding(Sequence{'z','b','c'}) => abcefgabc
   
+@Test mixed -> at(1) => a
 @Test strings -> at(1) => a
 @Test integers -> at(1) => 1
 @Test booleans -> at(1) => true
@@ -260,6 +298,8 @@
 @Test integers -> sum() => 6
 @Test reals -> sum() => 6.5
   
+@Test mixed -> exists(t | t = 'b') => true
+@Test mixed -> exists(t | t = 'z') => false
 @Test strings -> exists(t | t = 'b') => true
 @Test strings -> exists(t | t = 'z') => false
 @Test integers -> exists(t | t = 1) => true
@@ -271,6 +311,8 @@
 @Test collections -> exists(t | t.size() = 3) => false
 @Test collections -> exists(t | t.size() = 1) => false
   
+@Test mixed -> select(t | t = 'b') => b
+@Test mixed -> select(t | t = 'z') => 
 @Test strings -> select(t | t = 'b') => b
 @Test strings -> select(t | t = 'z') => 
 @Test integers -> select(t | t = 1) => 1
@@ -282,6 +324,8 @@
 @Test collections -> select(t | t.size() = 3) => 
 @Test collections -> select(t | t.size() = 1) => 
   
+@Test mixed -> reject(t | t = 'b') => a11.1true
+@Test mixed -> reject(t | t = 'z') => ab11.1true
 @Test strings -> reject(t | t = 'b') => ac
 @Test strings -> reject(t | t = 'z') => abc
 @Test integers -> reject(t | t = 1) => 23
@@ -293,6 +337,8 @@
 @Test collections -> reject(t | t.size() = 3) => abcefgabc
 @Test collections -> reject(t | t.size() = 1) => abcefgabc
   
+@Test mixed -> forAll(t | t = 'b') => false
+@Test mixed -> forAll(t | t = 'z') => false
 @Test strings -> forAll(t | t = 'b') => false
 @Test strings -> forAll(t | t = 'z') => false
 @Test integers -> forAll(t | t = 1) => false
@@ -304,6 +350,8 @@
 @Test collections -> forAll(t | t.size() = 3) => false
 @Test collections -> forAll(t | t.size() = 1) => false
   
+@Test mixed -> any(t | t = 'b') => b
+@Test mixed -> any(t | t = 'z') => 
 @Test strings -> any(t | t = 'b') => b
 @Test strings -> any(t | t = 'z') => 
 @Test integers -> any(t | t = 1) => 1
@@ -315,6 +363,8 @@
 @Test collections -> any(t | t.size() = 3) => 
 @Test collections -> any(t | t.size() = 1) => 
   
+@Test mixed -> one(t | t = 'b') => true
+@Test mixed -> one(t | t = 'z') => false
 @Test strings -> one(t | t = 'b') => true
 @Test strings -> one(t | t = 'z') => false
 @Test integers -> one(t | t = 1) => true
@@ -326,6 +376,7 @@
 @Test collections -> one(t | t.size() = 3) => false
 @Test collections -> one(t | t.size() = 1) => false
   
+@Test mixed -> isUnique(toString()) => true
 @Test strings -> isUnique(toString()) => true
 @Test integers -> isUnique(toString()) => true
 @Test reals -> isUnique(toString()) => true
@@ -333,6 +384,7 @@
 @Test eClasses -> isUnique(toString()) => true
 @Test collections -> isUnique(toString()) => false
   
+@Test mixed -> oclIsUndefined() => false
 @Test strings -> oclIsUndefined() => false
 @Test integers -> oclIsUndefined() => false
 @Test booleans -> oclIsUndefined() => false
@@ -353,6 +405,7 @@
 @Test Sequence{p,'test',true,1,2.2} -> filter(Boolean) => true
 @Test Sequence{p,'test',true,1,2.2} -> filter(Real) => 2.2
   
+@Test mixed -> subSequence(1,2) => ab
 @Test strings -> subSequence(1,2) => ab
 @Test integers -> subSequence(1,2) => 12
 @Test reals -> subSequence(1,2) => 1.22.1
@@ -368,6 +421,7 @@
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
+@Test mixed.oclAsSet() => ab11.1true
 @Test strings.oclAsSet() => abc
 @Test integers.oclAsSet() => 123
 @Test reals.oclAsSet() => 1.22.13.2
