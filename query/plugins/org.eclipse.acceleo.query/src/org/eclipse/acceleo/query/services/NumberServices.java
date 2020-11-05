@@ -845,6 +845,22 @@ public class NumberServices {
 
 	// @formatter:off
 	@Documentation(
+		value = "Returns the double value of the given double.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The double value.",
+		examples = {
+			@Example(expression = "1.0.toDouble()", result = "1.0")
+		}
+	)
+	// @formatter:on
+	public Double toDouble(Double self) {
+		return Double.valueOf(self);
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Returns the double value of the given integer.",
 		params = {
 				@Param(name = "self", value = "The current value."),
@@ -877,13 +893,29 @@ public class NumberServices {
 
 	// @formatter:off
 	@Documentation(
+		value = "Returns the long value of the given long.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The long value.",
+		examples = {
+			@Example(expression = "1.toLong()", result = "1")
+		}
+	)
+	// @formatter:on
+	public Long toLong(Long self) {
+		return Long.valueOf(self);
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Returns the long value of the given integer.",
 		params = {
 				@Param(name = "self", value = "The current value."),
 		},
 		result = "The long value.",
 		examples = {
-			@Example(expression = "1.toDouble()", result = "1")
+			@Example(expression = "1.toLong()", result = "1")
 		}
 	)
 	// @formatter:on

@@ -316,4 +316,44 @@ public class NumberServicesValidationTest extends AbstractServicesValidationTest
 		assertValidation(expectedReturnTypes, "mod", parameterTypes);
 	}
 
+	@Test
+	public void testToDoubleDouble() {
+		final IType[] parameterTypes = new IType[] {classType(Double.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "toDouble", parameterTypes);
+	}
+
+	@Test
+	public void testToDoubleInteger() {
+		final IType[] parameterTypes = new IType[] {classType(Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "toDouble", parameterTypes);
+	}
+
+	@Test
+	public void testToDoubleFloat() {
+		final IType[] parameterTypes = new IType[] {classType(Float.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "toDouble", parameterTypes);
+	}
+
+	@Test
+	public void testToLongLong() {
+		final IType[] parameterTypes = new IType[] {classType(Long.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "toLong", parameterTypes);
+	}
+
+	@Test
+	public void testToLongInteger() {
+		final IType[] parameterTypes = new IType[] {classType(Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "toLong", parameterTypes);
+	}
+
 }

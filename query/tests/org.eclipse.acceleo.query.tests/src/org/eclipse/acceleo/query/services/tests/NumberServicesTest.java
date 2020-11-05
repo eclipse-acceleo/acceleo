@@ -1138,6 +1138,17 @@ public class NumberServicesTest extends AbstractServicesTest {
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
+	public void toDoubleDoubleNull() {
+		numServices.toDouble((Double)null);
+	}
+
+	@Test
+	public void toDoubleDouble() {
+		Double result = numServices.toDouble(Double.valueOf(3.14f));
+		assertTrue((result.doubleValue() - 3.14) < 0.001);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
 	public void toDoubleFloatNull() {
 		numServices.toDouble((Float)null);
 	}
@@ -1149,12 +1160,23 @@ public class NumberServicesTest extends AbstractServicesTest {
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
-	public void toLongNull() {
+	public void toLongLongNull() {
+		numServices.toLong((Long)null);
+	}
+
+	@Test
+	public void toLongLong() {
+		Long result = numServices.toLong(Long.valueOf(3));
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void toLongIntegerNull() {
 		numServices.toLong((Integer)null);
 	}
 
 	@Test
-	public void toLong() {
+	public void toLongInteger() {
 		Long result = numServices.toLong(Integer.valueOf(3));
 		assertEquals(Long.valueOf(3), result);
 	}
