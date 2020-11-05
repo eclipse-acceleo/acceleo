@@ -5,7 +5,7 @@
 [template public test(p : ecore::EPackage)]
   [file ('acceleoServices', overwrite, 'UTF-8')]
     @Test inligned special text => ['['/]
-    @Test let OclAny to EObject => [let var : ecore::EObject = p]
+    @Test let OclAny to EObject => [let var = p]
       [var.oclAsType(ecore::EPackage).name/][/let]
     
     @Test invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'}) => [p.myService('test')/]

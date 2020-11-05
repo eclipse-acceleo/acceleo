@@ -188,8 +188,8 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseBinding(Binding binding) {
 		builder.append(binding.getName());
-		builder.append(" : ");
 		if (binding.getType() != null) {
+			builder.append(" : ");
 			builder.append(querySerializer.serialize(binding.getType().getAst()));
 		}
 		builder.append(SPACE);

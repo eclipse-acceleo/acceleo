@@ -3,7 +3,7 @@
 [template public testOrderedSet(p : EPackage)]
 [comment @main/]
 [file ('testOrderedSet', false)]
-[comment]TODO(LOT1) test mixed ordered sets (needs OclAny or something)[/comment]
+[let mixed : OrderedSet(OclAny) = OrderedSet{'a','b',1,1.1,true}]
 [let strings : OrderedSet(String) = OrderedSet{'a','b','c'}]
 [let integers : OrderedSet(Integer) = OrderedSet{1,2,3}]
 [let reals : OrderedSet(Real) = OrderedSet{1.2,2.1,3.2}]
@@ -11,6 +11,7 @@
 [let eClasses : OrderedSet(EClass) = p.eClassifiers->asOrderedSet()]
 [let collections : OrderedSet(OrderedSet(String)) = OrderedSet{strings,OrderedSet{'e','f','g'},strings}]
   
+@Test mixed.toString() => [mixed.toString()/]
 @Test strings.toString() => [strings.toString()/]
 @Test reals.toString() => [reals.toString()/]
 @Test integers.toString() => [integers.toString()/]
@@ -18,17 +19,20 @@
 @Test collections.toString() => [collections.toString()/]
   
 @Test strings.oclIsTypeOf(String) => [strings.oclIsTypeOf(String)/]
+@Test strings.oclIsTypeOf(String) => [strings.oclIsTypeOf(String)/]
 @Test reals.oclIsTypeOf(Real) => [reals.oclIsTypeOf(Real)/]
 @Test integers.oclIsTypeOf(Integer) => [integers.oclIsTypeOf(Integer)/]
 @Test booleans.oclIsTypeOf(Boolean) => [booleans.oclIsTypeOf(Boolean)/]
 @Test eClasses.oclIsTypeOf(EClass) => [eClasses.oclIsTypeOf(EClass)/]
   
+@Test mixed.oclIsKindOf(String) => [mixed.oclIsKindOf(String)/]
 @Test strings.oclIsKindOf(String) => [strings.oclIsKindOf(String)/]
 @Test reals.oclIsKindOf(Real) => [reals.oclIsKindOf(Real)/]
 @Test integers.oclIsKindOf(Integer) => [integers.oclIsKindOf(Integer)/]
 @Test booleans.oclIsKindOf(Boolean) => [booleans.oclIsKindOf(Boolean)/]
 @Test eClasses.oclIsKindOf(EObject) => [eClasses.oclIsKindOf(EObject)/]
   
+@Test mixed -> last() => [mixed -> last()/]
 @Test strings -> last() => [strings -> last()/]
 @Test reals -> last() => [reals -> last()/]
 @Test integers -> last() => [integers -> last()/]
@@ -36,6 +40,7 @@
 @Test eClasses -> last().name => [eClasses -> last().name/]
 @Test collections -> last() => [collections -> last()/]
   
+@Test mixed -> collect(t | t.toString()) => [mixed -> collect(t | t.toString())/]
 @Test strings -> collect(t | t.toString()) => [strings -> collect(t | t.toString())/]
 @Test integers -> collect(t | t.toString()) => [integers -> collect(t | t.toString())/]
 @Test booleans -> collect(t | t.toString()) => [booleans -> collect(t | t.toString())/]
@@ -43,6 +48,7 @@
 @Test eClasses -> collect(t | t.name) => [eClasses -> collect(t | t.name)/]
 @Test collections -> collect(t | t.toString()) => [collections -> collect(t | t.toString())/]
   
+@Test mixed -> size() => [mixed -> size()/]
 @Test strings -> size() => [strings -> size()/]
 @Test integers -> size() => [integers -> size()/]
 @Test booleans -> size() => [booleans -> size()/]
@@ -50,6 +56,7 @@
 @Test eClasses -> size() => [eClasses -> size()/]
 @Test collections -> size() => [collections -> size()/]
   
+@Test mixed -> notEmpty() => [mixed -> notEmpty()/]
 @Test strings -> notEmpty() => [strings -> notEmpty()/]
 @Test integers -> notEmpty() => [integers -> notEmpty()/]
 @Test booleans -> notEmpty() => [booleans -> notEmpty()/]
@@ -57,6 +64,7 @@
 @Test eClasses -> notEmpty() => [eClasses -> notEmpty()/]
 @Test collections -> notEmpty() => [collections -> notEmpty()/]
   
+@Test mixed -> isEmpty() => [mixed -> isEmpty()/]
 @Test strings -> isEmpty() => [strings -> isEmpty()/]
 @Test integers -> isEmpty() => [integers -> isEmpty()/]
 @Test booleans -> isEmpty() => [booleans -> isEmpty()/]
@@ -64,6 +72,7 @@
 @Test eClasses -> isEmpty() => [eClasses -> isEmpty()/]
 @Test collections -> isEmpty() => [collections -> isEmpty()/]
   
+@Test mixed -> reverse() => [mixed -> reverse()/]
 @Test strings -> reverse() => [strings -> reverse()/]
 @Test integers -> reverse() => [integers -> reverse()/]
 @Test booleans -> reverse() => [booleans -> reverse()/]
@@ -71,6 +80,7 @@
 @Test eClasses -> reverse() -> collect(name) => [eClasses -> reverse() -> collect(name)/]
 @Test collections -> reverse() => [collections -> reverse()/]
   
+@Test mixed -> first() => [mixed -> first()/]
 @Test strings -> first() => [strings -> first()/]
 @Test integers -> first() => [integers -> first()/]
 @Test booleans -> first() => [booleans -> first()/]
@@ -78,6 +88,7 @@
 @Test eClasses -> first().name => [eClasses -> first().name/]
 @Test collections -> first() => [collections -> first()/]
   
+@Test mixed -> asSequence() => [mixed -> asSequence()/]
 @Test strings -> asSequence() => [strings -> asSequence()/]
 @Test integers -> asSequence() => [integers -> asSequence()/]
 @Test booleans -> asSequence() => [booleans -> asSequence()/]
@@ -85,6 +96,7 @@
 @Test eClasses -> asSequence() -> collect(name) => [eClasses -> asSequence() -> collect(name)/]
 @Test collections -> asSequence() => [collections -> asSequence()/]
   
+@Test mixed -> asOrderedSet()  => [mixed -> asOrderedSet() /]
 @Test strings -> asOrderedSet()  => [strings -> asOrderedSet() /]
 @Test integers -> asOrderedSet()  => [integers -> asOrderedSet() /]
 @Test booleans -> asOrderedSet()  => [booleans -> asOrderedSet() /]
@@ -92,18 +104,22 @@
 @Test eClasses -> asOrderedSet() -> collect(name) => [eClasses -> asOrderedSet() -> collect(name)/]
 @Test collections -> asOrderedSet()  => [collections -> asOrderedSet() /]
   
+@Test mixed -> sep(',') => [mixed -> sep(',')/]
 @Test strings -> sep(',') => [strings -> sep(',')/]
 @Test integers -> sep(',') => [integers -> sep(',')/]
 @Test booleans -> sep(',') => [booleans -> sep(',')/]
 @Test reals -> sep(',') => [reals -> sep(',')/]
 @Test collections -> sep(',') => [collections -> sep(',')/]
   
+@Test mixed -> sep('{', ',', '}') => [mixed -> sep('{', ',', '}')/]
 @Test strings -> sep('{', ',', '}') => [strings -> sep('{', ',', '}')/]
 @Test integers -> sep('{', ',', '}') => [integers -> sep('{', ',', '}')/]
 @Test booleans -> sep('{', ',', '}') => [booleans -> sep('{', ',', '}')/]
 @Test reals -> sep('{', ',', '}') => [reals -> sep('{', ',', '}')/]
 @Test collections -> sep('{', ',', '}') => [collections -> sep('{', ',', '}')/]
   
+@Test mixed -> includesAll(OrderedSet{'a','b'}) => [mixed -> includesAll(OrderedSet{'a','b'})/]
+@Test mixed -> includesAll(OrderedSet{'a','b','d'}) => [mixed -> includesAll(OrderedSet{'a','b','d'})/]
 @Test strings -> includesAll(OrderedSet{'a','b'}) => [strings -> includesAll(OrderedSet{'a','b'})/]
 @Test strings -> includesAll(OrderedSet{'a','b','d'}) => [strings -> includesAll(OrderedSet{'a','b','d'})/]
 @Test integers -> includesAll(OrderedSet{1,2}) => [integers -> includesAll(OrderedSet{1,2})/]
@@ -118,6 +134,8 @@
 @Test eClasses -> includesAll(p.eClassifiers) => [eClasses -> includesAll(p.eClassifiers)/]
 @Test OrderedSet{p.eClassifiers->first()}-> includesAll(p.eClassifiers) => [OrderedSet{p.eClassifiers->first()}-> includesAll(p.eClassifiers)/]
   
+@Test mixed -> includes('z') => [mixed -> includes('z')/]
+@Test mixed -> includes('a') => [mixed -> includes('a')/]
 @Test strings -> includes('z') => [strings -> includes('z')/]
 @Test strings -> includes('a') => [strings -> includes('a')/]
 @Test integers -> includes(6) => [integers -> includes(6)/]
@@ -131,6 +149,8 @@
 @Test collections -> includes(OrderedSet{'a','b','c'}) => [collections -> includes(OrderedSet{'a','b','c'})/]
 @Test collections -> includes(OrderedSet{'z','b','c'}) => [collections -> includes(OrderedSet{'z','b','c'})/]
   
+@Test mixed -> excludesAll(OrderedSet{'a','b'}) => [mixed -> excludesAll(OrderedSet{'a','b'})/]
+@Test mixed -> excludesAll(OrderedSet{'a','b','d'}) => [mixed -> excludesAll(OrderedSet{'a','b','d'})/]
 @Test strings -> excludesAll(OrderedSet{'a','b'}) => [strings -> excludesAll(OrderedSet{'a','b'})/]
 @Test strings -> excludesAll(OrderedSet{'a','b','d'}) => [strings -> excludesAll(OrderedSet{'a','b','d'})/]
 @Test integers -> excludesAll(OrderedSet{1,2}) => [integers -> excludesAll(OrderedSet{1,2})/]
@@ -145,6 +165,8 @@
 @Test eClasses -> excludesAll(p.eClassifiers) => [eClasses -> excludesAll(p.eClassifiers)/]
 @Test OrderedSet{p.eClassifiers->first()}-> excludesAll(p.eClassifiers) => [OrderedSet{p.eClassifiers->first()}-> excludesAll(p.eClassifiers)/]
   
+@Test mixed -> excludes('z') => [mixed -> excludes('z')/]
+@Test mixed -> excludes('a') => [mixed -> excludes('a')/]
 @Test strings -> excludes('z') => [strings -> excludes('z')/]
 @Test strings -> excludes('a') => [strings -> excludes('a')/]
 @Test integers -> excludes(6) => [integers -> excludes(6)/]
@@ -158,6 +180,8 @@
 @Test collections -> excludes(OrderedSet{'a','b','c'}) => [collections -> excludes(OrderedSet{'a','b','c'})/]
 @Test collections -> excludes(OrderedSet{'z','b','c'}) => [collections -> excludes(OrderedSet{'z','b','c'})/]
   
+[comment]A4-UNSUPPORTED order change: mixed -> union(OrderedSet{'a','b'}) => [mixed -> union(OrderedSet{'a','b'})/][/comment]
+[comment]A4-UNSUPPORTED order change: mixed -> union(OrderedSet{'a','b','d'}) => [mixed -> union(OrderedSet{'a','b','d'})/][/comment]
 @Test strings -> union(OrderedSet{'a','b'}) => [strings -> union(OrderedSet{'a','b'})/]
 @Test strings -> union(OrderedSet{'a','b','d'}) => [strings -> union(OrderedSet{'a','b','d'})/]
 @Test integers -> union(OrderedSet{1,2}) => [integers -> union(OrderedSet{1,2})/]
@@ -171,6 +195,8 @@
 @Test eClasses -> union(p.eClassifiers->asOrderedSet()) -> size() => [eClasses -> union(p.eClassifiers->asOrderedSet()) -> size()/]
 [comment]A4-DIFFERS collections.union(collection): returns nothing[collections -> union(OrderedSet{'a','b','d'}) -> sortedBy(toString())/][/comment]
   
+@Test mixed -> count('z') => [mixed -> count('z')/]
+@Test mixed -> count('a') => [mixed -> count('a')/]
 @Test strings -> count('z') => [strings -> count('z')/]
 @Test strings -> count('a') => [strings -> count('a')/]
 @Test integers -> count(6) => [integers -> count(6)/]
@@ -197,6 +223,8 @@
 @Test collections -> append(OrderedSet{'a','b','c'}) => [collections -> append(OrderedSet{'a','b','c'})/]
 @Test collections -> append(OrderedSet{'z','b','c'}) => [collections -> append(OrderedSet{'z','b','c'})/]
   
+@Test mixed -> prepend('z') => [mixed -> prepend('z')/]
+@Test mixed -> prepend('a') => [mixed -> prepend('a')/]
 @Test strings -> prepend('z') => [strings -> prepend('z')/]
 @Test strings -> prepend('a') => [strings -> prepend('a')/]
 @Test integers -> prepend(6) => [integers -> prepend(6)/]
@@ -210,6 +238,8 @@
 @Test collections -> prepend(OrderedSet{'a','b','c'}) => [collections -> prepend(OrderedSet{'a','b','c'})/]
 @Test collections -> prepend(OrderedSet{'z','b','c'}) => [collections -> prepend(OrderedSet{'z','b','c'})/]
   
+@Test mixed -> insertAt(1,'z') => [mixed -> insertAt(1,'z')/]
+@Test mixed -> insertAt(1,'a') => [mixed -> insertAt(1,'a')/]
 @Test strings -> insertAt(1,'z') => [strings -> insertAt(1,'z')/]
 @Test strings -> insertAt(1,'a') => [strings -> insertAt(1,'a')/]
 @Test integers -> insertAt(1,6) => [integers -> insertAt(1,6)/]
@@ -223,6 +253,7 @@
 @Test collections -> insertAt(1,OrderedSet{'a','b','c'}) => [collections -> insertAt(1,OrderedSet{'a','b','c'})/]
 @Test collections -> insertAt(1,OrderedSet{'z','b','c'}) => [collections -> insertAt(1,OrderedSet{'z','b','c'})/]
   
+@Test mixed -> indexOf('a') => [mixed -> indexOf('a')/]
 @Test strings -> indexOf('a') => [strings -> indexOf('a')/]
 @Test integers -> indexOf(2) => [integers -> indexOf(2)/]
 @Test booleans -> indexOf(false) => [booleans -> indexOf(false)/]
@@ -239,6 +270,8 @@
 [collections -> indexOf(Sequence{'z','b','c'})/]
 [/comment]
   
+@Test mixed -> including('z') => [mixed -> including('z')/]
+@Test mixed -> including('a') => [mixed -> including('a')/]
 @Test strings -> including('z') => [strings -> including('z')/]
 @Test strings -> including('a') => [strings -> including('a')/]
 @Test integers -> including(6) => [integers -> including(6)/]
@@ -252,6 +285,8 @@
 @Test collections -> including(OrderedSet{'a','b','c'}) => [collections -> including(OrderedSet{'a','b','c'})/]
 @Test collections -> including(OrderedSet{'z','b','c'}) => [collections -> including(OrderedSet{'z','b','c'})/]
   
+@Test mixed -> excluding('z') => [mixed -> excluding('z')/]
+@Test mixed -> excluding('a') => [mixed -> excluding('a')/]
 @Test strings -> excluding('z') => [strings -> excluding('z')/]
 @Test strings -> excluding('a') => [strings -> excluding('a')/]
 @Test integers -> excluding(6) => [integers -> excluding(6)/]
@@ -264,6 +299,7 @@
 @Test collections -> excluding(OrderedSet{'a','b','c'}) => [collections -> excluding(OrderedSet{'a','b','c'})/]
 @Test collections -> excluding(OrderedSet{'z','b','c'}) => [collections -> excluding(OrderedSet{'z','b','c'})/]
   
+@Test mixed -> at(1) => [mixed -> at(1)/]
 @Test strings -> at(1) => [strings -> at(1)/]
 @Test integers -> at(1) => [integers -> at(1)/]
 @Test booleans -> at(1) => [booleans -> at(1)/]
@@ -281,6 +317,8 @@
 @Test integers -> sum() => [integers -> sum()/]
 @Test reals -> sum() => [reals -> sum()/]
   
+@Test mixed -> exists(t | t = 'b') => [mixed -> exists(t | t = 'b')/]
+@Test mixed -> exists(t | t = 'z') => [mixed -> exists(t | t = 'z')/]
 @Test strings -> exists(t | t = 'b') => [strings -> exists(t | t = 'b')/]
 @Test strings -> exists(t | t = 'z') => [strings -> exists(t | t = 'z')/]
 @Test integers -> exists(t | t = 1) => [integers -> exists(t | t = 1)/]
@@ -292,6 +330,8 @@
 @Test collections -> exists(t | t.size() = 3) => [collections -> exists(t | t.size() = 3)/]
 @Test collections -> exists(t | t.size() = 1) => [collections -> exists(t | t.size() = 1)/]
   
+@Test mixed -> select(t | t = 'b') => [mixed -> select(t | t = 'b')/]
+@Test mixed -> select(t | t = 'z') => [mixed -> select(t | t = 'z')/]
 @Test strings -> select(t | t = 'b') => [strings -> select(t | t = 'b')/]
 @Test strings -> select(t | t = 'z') => [strings -> select(t | t = 'z')/]
 @Test integers -> select(t | t = 1) => [integers -> select(t | t = 1)/]
@@ -303,6 +343,8 @@
 @Test collections -> select(t | t.size() = 3) => [collections -> select(t | t.size() = 3)/]
 @Test collections -> select(t | t.size() = 1) => [collections -> select(t | t.size() = 1)/]
   
+@Test mixed -> reject(t | t = 'b') => [mixed -> reject(t | t = 'b')/]
+@Test mixed -> reject(t | t = 'z') => [mixed -> reject(t | t = 'z')/]
 @Test strings -> reject(t | t = 'b') => [strings -> reject(t | t = 'b')/]
 @Test strings -> reject(t | t = 'z') => [strings -> reject(t | t = 'z')/]
 @Test integers -> reject(t | t = 1) => [integers -> reject(t | t = 1)/]
@@ -314,6 +356,8 @@
 @Test collections -> reject(t | t.size() = 3) => [collections -> reject(t | t.size() = 3)/]
 @Test collections -> reject(t | t.size() = 1) => [collections -> reject(t | t.size() = 1)/]
   
+@Test mixed -> forAll(t | t = 'b') => [mixed -> forAll(t | t = 'b')/]
+@Test mixed -> forAll(t | t = 'z') => [mixed -> forAll(t | t = 'z')/]
 @Test strings -> forAll(t | t = 'b') => [strings -> forAll(t | t = 'b')/]
 @Test strings -> forAll(t | t = 'z') => [strings -> forAll(t | t = 'z')/]
 @Test integers -> forAll(t | t = 1) => [integers -> forAll(t | t = 1)/]
@@ -325,6 +369,8 @@
 @Test collections -> forAll(t | t.size() = 3) => [collections -> forAll(t | t.size() = 3)/]
 @Test collections -> forAll(t | t.size() = 1) => [collections -> forAll(t | t.size() = 1)/]
   
+@Test mixed -> any(t | t = 'b') => [mixed -> any(t | t = 'b')/]
+@Test mixed -> any(t | t = 'z') => [mixed -> any(t | t = 'z')/]
 @Test strings -> any(t | t = 'b') => [strings -> any(t | t = 'b')/]
 @Test strings -> any(t | t = 'z') => [strings -> any(t | t = 'z')/]
 @Test integers -> any(t | t = 1) => [integers -> any(t | t = 1)/]
@@ -336,6 +382,8 @@
 @Test collections -> any(t | t.size() = 3) => [collections -> any(t | t.size() = 3)/]
 @Test collections -> any(t | t.size() = 1) => [collections -> any(t | t.size() = 1)/]
   
+@Test mixed -> one(t | t = 'b') => [mixed -> one(t | t = 'b')/]
+@Test mixed -> one(t | t = 'z') => [mixed -> one(t | t = 'z')/]
 @Test strings -> one(t | t = 'b') => [strings -> one(t | t = 'b')/]
 @Test strings -> one(t | t = 'z') => [strings -> one(t | t = 'z')/]
 @Test integers -> one(t | t = 1) => [integers -> one(t | t = 1)/]
@@ -347,6 +395,7 @@
 @Test collections -> one(t | t.size() = 3) => [collections -> one(t | t.size() = 3)/]
 @Test collections -> one(t | t.size() = 1) => [collections -> one(t | t.size() = 1)/]
   
+@Test mixed -> isUnique(toString()) => [mixed -> isUnique(toString())/]
 @Test strings -> isUnique(toString()) => [strings -> isUnique(toString())/]
 @Test integers -> isUnique(toString()) => [integers -> isUnique(toString())/]
 @Test reals -> isUnique(toString()) => [reals -> isUnique(toString())/]
@@ -354,6 +403,7 @@
 @Test eClasses -> isUnique(toString()) => [eClasses -> isUnique(toString())/]
 @Test collections -> isUnique(toString()) => [collections -> isUnique(toString())/]
   
+@Test mixed -> oclIsUndefined() => [mixed -> oclIsUndefined()/]
 @Test strings -> oclIsUndefined() => [strings -> oclIsUndefined()/]
 @Test integers -> oclIsUndefined() => [integers -> oclIsUndefined()/]
 @Test booleans -> oclIsUndefined() => [booleans -> oclIsUndefined()/]
@@ -374,6 +424,7 @@
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(Boolean) => [OrderedSet{p,'test',true,1,2.2} -> filter(Boolean)/]
 @Test OrderedSet{p,'test',true,1,2.2} -> filter(Real) => [OrderedSet{p,'test',true,1,2.2} -> filter(Real)/]
 [comment]TODO symmetricDifference(s), [/comment]
+@Test mixed -> subOrderedSet(1,2) => [mixed -> subOrderedSet(1,2)/]
 @Test strings -> subOrderedSet(1,2) => [strings -> subOrderedSet(1,2)/]
 @Test integers -> subOrderedSet(1,2) => [integers -> subOrderedSet(1,2)/]
 @Test reals -> subOrderedSet(1,2) => [reals -> subOrderedSet(1,2)/]
@@ -403,6 +454,7 @@
 [comment]A4-UNSUPPORTED drop[/comment]
 [comment]A4-UNSUPPORTED lastIndexOf[/comment]
 [comment]A4-UNSUPPORTED lastIndexOfSlice[/comment]
+@Test mixed.oclAsSet() => [mixed.oclAsSet()/]
 @Test strings.oclAsSet() => [strings.oclAsSet()/]
 @Test integers.oclAsSet() => [integers.oclAsSet()/]
 @Test reals.oclAsSet() => [reals.oclAsSet()/]
@@ -414,6 +466,6 @@
 [comment]A4-UNSUPPORTED collectNested[/comment]
 [comment]IRRELEVANT-A4-UNSUPPORTED oclIsInvalid[/comment]
 [comment]IRRELEVANT-A4-DIFFERS: validation error instead of 'invalid' [strings.oclAsType(Integer)/][/comment]
-[/let][/let][/let][/let][/let][/let]
+[/let][/let][/let][/let][/let][/let][/let]
 [/file]
 [/template]

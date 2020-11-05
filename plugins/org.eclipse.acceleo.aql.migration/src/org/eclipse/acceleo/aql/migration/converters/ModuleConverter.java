@@ -316,7 +316,9 @@ public final class ModuleConverter extends AbstractConverter {
 		Binding binding = AcceleoFactory.eINSTANCE.createBinding();
 		output.getVariables().add(binding);
 		binding.setName(input.getLetVariable().getName());
-		binding.setType(createAstResult(TypeUtils.createTypeLiteral(input.getLetVariable().getType())));
+		if (!TypeUtils.containsOclAny(input.getLetVariable().getType())) {
+			binding.setType(createAstResult(TypeUtils.createTypeLiteral(input.getLetVariable().getType())));
+		}
 		binding.setInitExpression(expressionConverter.convertToExpression((OCLExpression)input
 				.getLetVariable().getInitExpression(), false));
 

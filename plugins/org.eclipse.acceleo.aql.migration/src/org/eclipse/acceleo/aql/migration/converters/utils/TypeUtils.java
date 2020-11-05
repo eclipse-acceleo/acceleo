@@ -36,6 +36,28 @@ public final class TypeUtils {
 	}
 
 	/**
+	 * Tells if the given {@link EClassifier} is OclAny or contains an OclAny.
+	 * 
+	 * @param type
+	 *            the {@link EClassifier}
+	 * @return <code>true</code> if the given {@link EClassifier} is OclAny or contains an OclAny,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean containsOclAny(EClassifier type) {
+		boolean res;
+
+		if (type instanceof AnyType) {
+			res = true;
+		} else if (type instanceof CollectionType) {
+			res = containsOclAny(((CollectionType)type).getElementType());
+		} else {
+			res = false;
+		}
+
+		return res;
+	}
+
+	/**
 	 * Creates a type literal from the input type.
 	 * 
 	 * @param inputType

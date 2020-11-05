@@ -13,7 +13,6 @@ orderedSetsServices
 	 ? asSet: order changes
 	 intersection(bag)
 	 symmetricDifference(s), 
-	(LOT1) test mixed ordered sets (needs OclAny or something)
 
 Differences when evaluated in A4:
 =================================
@@ -67,6 +66,8 @@ orderedSetsServices
 	 lastIndexOfSlice
 	 max
 	 min
+	 order change: mixed -> union(OrderedSet{'a','b','d'}) => [mixed -> union(OrderedSet{'a','b','d'})/]
+	 order change: mixed -> union(OrderedSet{'a','b'}) => [mixed -> union(OrderedSet{'a','b'})/]
 	 product
 	 removeAll
 	 selectByKind

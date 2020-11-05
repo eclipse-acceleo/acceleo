@@ -4,8 +4,6 @@ emfServices
 	 check return types of EMF services (eClassifiers returns OrderedSet in A3 and Sequence in A4)
 sequencesServices
 	 test mixed sequences (needs OclAny or something)
-orderedSetsServices
-	 test mixed ordered sets (needs OclAny or something)
 
 Differences when evaluated in A4:
 =================================
