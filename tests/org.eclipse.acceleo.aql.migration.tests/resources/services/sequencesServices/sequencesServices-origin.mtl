@@ -468,7 +468,15 @@
 @Test integers -> endsWith(OrderedSet{1, 1}) => [integers -> endsWith(OrderedSet{1, 1})/]
 [comment]A4-UNSUPPORTED dropRight[/comment]
 [comment]A4-UNSUPPORTED drop[/comment]
-[comment]A4-UNSUPPORTED lastIndexOf[/comment]
+
+@Test mixed -> append('a') -> lastIndexOf('a') => [mixed -> append('a') -> lastIndexOf('a')/]
+@Test strings -> append('a') -> lastIndexOf('a') => [strings -> append('a') -> lastIndexOf('a')/]
+@Test integers -> append(2) -> lastIndexOf(2) => [integers -> append(2) -> lastIndexOf(2)/]
+@Test booleans -> append(false) -> lastIndexOf(false) => [booleans -> append(false) -> lastIndexOf(false)/]
+@Test reals -> append(1.2) -> lastIndexOf(1.2) => [reals -> append(1.2) -> lastIndexOf(1.2)/]
+@Test eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first()) => [eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first())/]
+@Test collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'}) => [collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'})/]
+
 [comment]A4-UNSUPPORTED lastIndexOfSlice[/comment]
 @Test mixed.oclAsSet() => [mixed.oclAsSet()/]
 @Test strings.oclAsSet() => [strings.oclAsSet()/]

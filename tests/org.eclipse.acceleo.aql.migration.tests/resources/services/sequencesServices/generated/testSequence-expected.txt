@@ -437,6 +437,15 @@
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
+
+@Test mixed -> append('a') -> lastIndexOf('a') => 6
+@Test strings -> append('a') -> lastIndexOf('a') => 4
+@Test integers -> append(2) -> lastIndexOf(2) => 4
+@Test booleans -> append(false) -> lastIndexOf(false) => 4
+@Test reals -> append(1.2) -> lastIndexOf(1.2) => 4
+@Test eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first()) => 4
+@Test collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'}) => 4
+
 @Test mixed.oclAsSet() => ab11.1true
 @Test strings.oclAsSet() => abc
 @Test integers.oclAsSet() => 123
