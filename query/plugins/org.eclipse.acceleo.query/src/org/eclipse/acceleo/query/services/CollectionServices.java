@@ -2674,6 +2674,40 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
+		value = "Returns the last index of the given object in the given sequence ([1..size]).",
+		params = {
+			@Param(name = "sequence", value = "The sequence"),
+			@Param(name = "object", value = "The object")
+		},
+		result = "The last index of the given object",
+		examples = {
+			@Example(expression = "Sequence{1, 2, 3, 4, 3}->lastIndexOf(3)", result = "5")
+		}
+	)
+	// @formatter:on
+	public Integer lastIndexOf(List<?> sequence, Object object) {
+		return Integer.valueOf(sequence.lastIndexOf(object) + 1);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the last index of the given object in the given set ([1..size]).",
+		params = {
+			@Param(name = "set", value = "The set"),
+			@Param(name = "object", value = "The object")
+		},
+		result = "The last index of the given object",
+		examples = {
+			@Example(expression = "OrderedSet{1, 2, 3, 4}->lastIndexOf(3)", result = "3")
+		}
+	)
+	// @formatter:on
+	public Integer lastIndexOf(Set<?> set, Object object) {
+		return indexOf(set, object);
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Inserts the given object in a copy of the given sequence at the given position ([1..size]).",
 		params = {
 			@Param(name = "sequence", value = "The sequence"),

@@ -342,12 +342,39 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testIndexOf() {
+	public void testIndexOfList() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
 				Integer.class) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
 
 		assertValidation(expectedReturnTypes, "indexOf", parameterTypes);
+	}
+
+	@Test
+	public void testIndexOfSet() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "indexOf", parameterTypes);
+	}
+
+	@Test
+	public void testLastIndexOfList() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "lastIndexOf", parameterTypes);
+	}
+
+	@Test
+	public void testLastIndexOfSet() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "lastIndexOf", parameterTypes);
 	}
 
 	@Test

@@ -4709,6 +4709,107 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
+	public void testLastIndexOfNullListNull() {
+		collectionServices.lastIndexOf((List<?>)null, null);
+	}
+
+	@Test
+	public void testLastIndexOfListNull() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.lastIndexOf(list, null);
+		assertEquals(Integer.valueOf(0), result);
+
+		list.add(2, null);
+		result = collectionServices.lastIndexOf(list, null);
+		assertEquals(Integer.valueOf(3), result);
+	}
+
+	@Test
+	public void testLastIndexOfList() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+		list.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.lastIndexOf(list, Integer.valueOf(7));
+		assertEquals(Integer.valueOf(0), result);
+
+		result = collectionServices.lastIndexOf(list, Integer.valueOf(3));
+		assertEquals(Integer.valueOf(5), result);
+
+		list.remove(Integer.valueOf(3));
+		result = collectionServices.lastIndexOf(list, Integer.valueOf(3));
+		assertEquals(Integer.valueOf(4), result);
+
+		list.remove(Integer.valueOf(3));
+		result = collectionServices.lastIndexOf(list, Integer.valueOf(3));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testLastIndexOfNullSetNull() {
+		collectionServices.lastIndexOf((Set<?>)null, null);
+	}
+
+	@Test
+	public void testLastIndexOfSetNull() {
+		Set<Integer> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.lastIndexOf(set, null);
+		assertEquals(Integer.valueOf(0), result);
+
+		set.add(null);
+		result = collectionServices.lastIndexOf(set, null);
+		assertEquals(Integer.valueOf(4), result);
+	}
+
+	@Test
+	public void testLastIndexOfSet() {
+		Set<Integer> set = new LinkedHashSet<>();
+		set.add(null);
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.lastIndexOf(set, Integer.valueOf(7));
+		assertEquals(Integer.valueOf(0), result);
+
+		result = collectionServices.lastIndexOf(set, Integer.valueOf(3));
+		assertEquals(Integer.valueOf(4), result);
+
+		set.remove(Integer.valueOf(3));
+		result = collectionServices.lastIndexOf(set, Integer.valueOf(3));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void testLastIndexOfSetEquality() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(null);
+		set.add(Collections.singleton("s"));
+		set.add(Integer.valueOf(1));
+
+		Integer result = collectionServices.lastIndexOf(set, Integer.valueOf(7));
+		assertEquals(Integer.valueOf(0), result);
+
+		result = collectionServices.lastIndexOf(set, Collections.singleton("s"));
+		assertEquals(Integer.valueOf(2), result);
+
+		set.remove(Collections.singleton("s"));
+		result = collectionServices.lastIndexOf(set, Collections.singleton("s"));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
 	public void testInsertAtNullList() {
 		collectionServices.insertAt((List<?>)null, 1, null);
 	}
