@@ -440,6 +440,8 @@
                   @Test booleans.oclAsSet() => [booleans->collect(temp69 | temp69->asSet())/]
                   @Test eClasses.oclAsSet() -> collect(name) => [eClasses->collect(temp70 | temp70->asSet())->collect(temp71 | temp71.name)/]
                   @Test collections.oclAsSet() => [collections->collect(temp72 | temp72->asSet())/]
+                  @Test integers->min() => [integers->min()/]
+                  @Test reals->max() => [reals->max()/]
                 [/let]
               [/let]
             [/let]

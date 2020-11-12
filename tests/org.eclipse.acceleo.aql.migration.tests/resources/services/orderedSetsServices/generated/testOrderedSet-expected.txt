@@ -422,3 +422,5 @@
 @Test booleans.oclAsSet() => truefalse
 @Test eClasses.oclAsSet() -> collect(name) => ClasseAClasseBAbstractClass
 @Test collections.oclAsSet() => abcefg
+@Test integers->min() => 1
+@Test reals->max() => 3.2

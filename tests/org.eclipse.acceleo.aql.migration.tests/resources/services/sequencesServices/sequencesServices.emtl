@@ -6163,6 +6163,18 @@
                         </body>
                         <iterator xsi:type="ocl.ecore:Variable" name="temp72" eType="/7/Sequence(String)"/>
                       </body>
+                      <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;@Test integers->min() => "/>
+                      <body xsi:type="ocl.ecore:OperationCallExp">
+                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+                        <source xsi:type="ocl.ecore:VariableExp" name="integers" eType="/7/Sequence(Integer)" referredVariable="/0/testSequence/%/%/%/%/integers"/>
+                        <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)_Class/min"/>
+                      </body>
+                      <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;@Test reals->max() => "/>
+                      <body xsi:type="ocl.ecore:OperationCallExp">
+                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Real"/>
+                        <source xsi:type="ocl.ecore:VariableExp" name="reals" eType="/7/Sequence(Real)" referredVariable="/0/testSequence/%/%/%/%/%/reals"/>
+                        <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)_Class/max"/>
+                      </body>
                       <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;"/>
                       <letVariable name="collections" eType="/7/Sequence(Sequence(String))">
                         <initExpression xsi:type="ocl.ecore:CollectionLiteralExp" eType="/7/Sequence(Sequence(String))" kind="Sequence">
@@ -7780,52 +7792,58 @@
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
   <ecore:EAnnotation source="positions">
     <eAnnotations source="positions.0" references="/0/testSequence">
       <details key="start" value="70"/>
-      <details key="end" value="32375"/>
+      <details key="end" value="32381"/>
       <details key="line" value="3"/>
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/testSequence/%">
       <details key="start" value="132"/>
-      <details key="end" value="32363"/>
+      <details key="end" value="32369"/>
       <details key="line" value="5"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/testSequence/%/%">
       <details key="start" value="163"/>
-      <details key="end" value="32355"/>
+      <details key="end" value="32361"/>
       <details key="line" value="6"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/testSequence/%/%/%">
       <details key="start" value="225"/>
-      <details key="end" value="32349"/>
+      <details key="end" value="32355"/>
       <details key="line" value="7"/>
     </eAnnotations>
     <eAnnotations source="positions.4" references="/0/testSequence/%/%/%/%">
       <details key="start" value="282"/>
-      <details key="end" value="32343"/>
+      <details key="end" value="32349"/>
       <details key="line" value="8"/>
     </eAnnotations>
     <eAnnotations source="positions.5" references="/0/testSequence/%/%/%/%/%">
       <details key="start" value="335"/>
-      <details key="end" value="32337"/>
+      <details key="end" value="32343"/>
       <details key="line" value="9"/>
     </eAnnotations>
     <eAnnotations source="positions.6" references="/0/testSequence/%/%/%/%/%/%">
       <details key="start" value="388"/>
-      <details key="end" value="32331"/>
+      <details key="end" value="32337"/>
       <details key="line" value="10"/>
     </eAnnotations>
     <eAnnotations source="positions.7" references="/0/testSequence/%/%/%/%/%/%/%">
       <details key="start" value="453"/>
-      <details key="end" value="32325"/>
+      <details key="end" value="32331"/>
       <details key="line" value="11"/>
     </eAnnotations>
     <eAnnotations source="positions.8" references="/0/testSequence/%/%/%/%/%/%/%/%">
       <details key="start" value="518"/>
-      <details key="end" value="32319"/>
+      <details key="end" value="32325"/>
       <details key="line" value="12"/>
     </eAnnotations>
     <eAnnotations source="positions.9" references="/0/testSequence/%/%/%/%/%/%/%/%/%">
@@ -19425,210 +19443,240 @@
     </eAnnotations>
     <eAnnotations source="positions.2328" references="/0/testSequence/%/%/%/%/%/%/%/%/%.649">
       <details key="start" value="32010"/>
-      <details key="end" value="32011"/>
+      <details key="end" value="32036"/>
       <details key="line" value="465"/>
     </eAnnotations>
-    <eAnnotations source="positions.2329" references="/0/testSequence/%/%/%/%/%/%/%/%/collections">
+    <eAnnotations source="positions.2329" references="/0/testSequence/%/%/%/%/%/%/%/%/%.650">
+      <details key="start" value="32037"/>
+      <details key="end" value="32052"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2330" references="/0/testSequence/%/%/%/%/%/%/%/%/%.650/integers">
+      <details key="start" value="32037"/>
+      <details key="end" value="32045"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2331" references="/0/testSequence/%/%/%/%/%/%/%/%/%.651">
+      <details key="start" value="32054"/>
+      <details key="end" value="32077"/>
+      <details key="line" value="466"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2332" references="/0/testSequence/%/%/%/%/%/%/%/%/%.652">
+      <details key="start" value="32078"/>
+      <details key="end" value="32090"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2333" references="/0/testSequence/%/%/%/%/%/%/%/%/%.652/reals">
+      <details key="start" value="32078"/>
+      <details key="end" value="32083"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2334" references="/0/testSequence/%/%/%/%/%/%/%/%/%.653">
+      <details key="start" value="32092"/>
+      <details key="end" value="32093"/>
+      <details key="line" value="467"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2335" references="/0/testSequence/%/%/%/%/%/%/%/%/collections">
       <details key="start" value="523"/>
       <details key="end" value="613"/>
       <details key="line" value="12"/>
     </eAnnotations>
-    <eAnnotations source="positions.2330" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%">
+    <eAnnotations source="positions.2336" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%">
       <details key="start" value="567"/>
       <details key="end" value="614"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2331" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%/strings">
+    <eAnnotations source="positions.2337" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%/strings">
       <details key="start" value="576"/>
       <details key="end" value="583"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2332" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%">
+    <eAnnotations source="positions.2338" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%">
       <details key="start" value="584"/>
       <details key="end" value="605"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2333" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%/%/%">
+    <eAnnotations source="positions.2339" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%/%/%">
       <details key="start" value="593"/>
       <details key="end" value="596"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2334" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%/%.1/%">
+    <eAnnotations source="positions.2340" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%/%.1/%">
       <details key="start" value="597"/>
       <details key="end" value="600"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2335" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%/%.2/%">
+    <eAnnotations source="positions.2341" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.1/%/%.2/%">
       <details key="start" value="601"/>
       <details key="end" value="604"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2336" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.2/strings">
+    <eAnnotations source="positions.2342" references="/0/testSequence/%/%/%/%/%/%/%/%/collections/%/%.2/strings">
       <details key="start" value="606"/>
       <details key="end" value="613"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2337" references="/0/testSequence/%/%/%/%/%/%/%/eClasses">
+    <eAnnotations source="positions.2343" references="/0/testSequence/%/%/%/%/%/%/%/eClasses">
       <details key="start" value="458"/>
       <details key="end" value="516"/>
       <details key="line" value="11"/>
     </eAnnotations>
-    <eAnnotations source="positions.2338" references="/0/testSequence/%/%/%/%/%/%/%/eClasses/%">
+    <eAnnotations source="positions.2344" references="/0/testSequence/%/%/%/%/%/%/%/eClasses/%">
       <details key="start" value="489"/>
       <details key="end" value="517"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2339" references="/0/testSequence/%/%/%/%/%/%/%/eClasses/%/%">
+    <eAnnotations source="positions.2345" references="/0/testSequence/%/%/%/%/%/%/%/eClasses/%/%">
       <details key="start" value="489"/>
       <details key="end" value="503"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2340" references="/0/testSequence/%/%/%/%/%/%/%/eClasses/%/%/p">
+    <eAnnotations source="positions.2346" references="/0/testSequence/%/%/%/%/%/%/%/eClasses/%/%/p">
       <details key="start" value="489"/>
       <details key="end" value="490"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2341" references="/0/testSequence/%/%/%/%/%/%/booleans">
+    <eAnnotations source="positions.2347" references="/0/testSequence/%/%/%/%/%/%/booleans">
       <details key="start" value="393"/>
       <details key="end" value="451"/>
       <details key="line" value="10"/>
     </eAnnotations>
-    <eAnnotations source="positions.2342" references="/0/testSequence/%/%/%/%/%/%/booleans/%">
+    <eAnnotations source="positions.2348" references="/0/testSequence/%/%/%/%/%/%/booleans/%">
       <details key="start" value="425"/>
       <details key="end" value="452"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2343" references="/0/testSequence/%/%/%/%/%/%/booleans/%/%/%">
+    <eAnnotations source="positions.2349" references="/0/testSequence/%/%/%/%/%/%/booleans/%/%/%">
       <details key="start" value="434"/>
       <details key="end" value="438"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2344" references="/0/testSequence/%/%/%/%/%/%/booleans/%/%.1/%">
+    <eAnnotations source="positions.2350" references="/0/testSequence/%/%/%/%/%/%/booleans/%/%.1/%">
       <details key="start" value="440"/>
       <details key="end" value="445"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2345" references="/0/testSequence/%/%/%/%/%/%/booleans/%/%.2/%">
+    <eAnnotations source="positions.2351" references="/0/testSequence/%/%/%/%/%/%/booleans/%/%.2/%">
       <details key="start" value="447"/>
       <details key="end" value="451"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2346" references="/0/testSequence/%/%/%/%/%/reals">
+    <eAnnotations source="positions.2352" references="/0/testSequence/%/%/%/%/%/reals">
       <details key="start" value="340"/>
       <details key="end" value="386"/>
       <details key="line" value="9"/>
     </eAnnotations>
-    <eAnnotations source="positions.2347" references="/0/testSequence/%/%/%/%/%/reals/%">
+    <eAnnotations source="positions.2353" references="/0/testSequence/%/%/%/%/%/reals/%">
       <details key="start" value="366"/>
       <details key="end" value="387"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2348" references="/0/testSequence/%/%/%/%/%/reals/%/%/%">
+    <eAnnotations source="positions.2354" references="/0/testSequence/%/%/%/%/%/reals/%/%/%">
       <details key="start" value="375"/>
       <details key="end" value="378"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2349" references="/0/testSequence/%/%/%/%/%/reals/%/%.1/%">
+    <eAnnotations source="positions.2355" references="/0/testSequence/%/%/%/%/%/reals/%/%.1/%">
       <details key="start" value="379"/>
       <details key="end" value="382"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2350" references="/0/testSequence/%/%/%/%/%/reals/%/%.2/%">
+    <eAnnotations source="positions.2356" references="/0/testSequence/%/%/%/%/%/reals/%/%.2/%">
       <details key="start" value="383"/>
       <details key="end" value="386"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2351" references="/0/testSequence/%/%/%/%/integers">
+    <eAnnotations source="positions.2357" references="/0/testSequence/%/%/%/%/integers">
       <details key="start" value="287"/>
       <details key="end" value="333"/>
       <details key="line" value="8"/>
     </eAnnotations>
-    <eAnnotations source="positions.2352" references="/0/testSequence/%/%/%/%/integers/%">
+    <eAnnotations source="positions.2358" references="/0/testSequence/%/%/%/%/integers/%">
       <details key="start" value="319"/>
       <details key="end" value="334"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2353" references="/0/testSequence/%/%/%/%/integers/%/%/%">
+    <eAnnotations source="positions.2359" references="/0/testSequence/%/%/%/%/integers/%/%/%">
       <details key="start" value="328"/>
       <details key="end" value="329"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2354" references="/0/testSequence/%/%/%/%/integers/%/%.1/%">
+    <eAnnotations source="positions.2360" references="/0/testSequence/%/%/%/%/integers/%/%.1/%">
       <details key="start" value="330"/>
       <details key="end" value="331"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2355" references="/0/testSequence/%/%/%/%/integers/%/%.2/%">
+    <eAnnotations source="positions.2361" references="/0/testSequence/%/%/%/%/integers/%/%.2/%">
       <details key="start" value="332"/>
       <details key="end" value="333"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2356" references="/0/testSequence/%/%/%/strings">
+    <eAnnotations source="positions.2362" references="/0/testSequence/%/%/%/strings">
       <details key="start" value="230"/>
       <details key="end" value="280"/>
       <details key="line" value="7"/>
     </eAnnotations>
-    <eAnnotations source="positions.2357" references="/0/testSequence/%/%/%/strings/%">
+    <eAnnotations source="positions.2363" references="/0/testSequence/%/%/%/strings/%">
       <details key="start" value="260"/>
       <details key="end" value="281"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2358" references="/0/testSequence/%/%/%/strings/%/%/%">
+    <eAnnotations source="positions.2364" references="/0/testSequence/%/%/%/strings/%/%/%">
       <details key="start" value="269"/>
       <details key="end" value="272"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2359" references="/0/testSequence/%/%/%/strings/%/%.1/%">
+    <eAnnotations source="positions.2365" references="/0/testSequence/%/%/%/strings/%/%.1/%">
       <details key="start" value="273"/>
       <details key="end" value="276"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2360" references="/0/testSequence/%/%/%/strings/%/%.2/%">
+    <eAnnotations source="positions.2366" references="/0/testSequence/%/%/%/strings/%/%.2/%">
       <details key="start" value="277"/>
       <details key="end" value="280"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2361" references="/0/testSequence/%/%/mixed">
+    <eAnnotations source="positions.2367" references="/0/testSequence/%/%/mixed">
       <details key="start" value="168"/>
       <details key="end" value="223"/>
       <details key="line" value="6"/>
     </eAnnotations>
-    <eAnnotations source="positions.2362" references="/0/testSequence/%/%/mixed/%">
+    <eAnnotations source="positions.2368" references="/0/testSequence/%/%/mixed/%">
       <details key="start" value="196"/>
       <details key="end" value="224"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2363" references="/0/testSequence/%/%/mixed/%/%/%">
+    <eAnnotations source="positions.2369" references="/0/testSequence/%/%/mixed/%/%/%">
       <details key="start" value="205"/>
       <details key="end" value="208"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2364" references="/0/testSequence/%/%/mixed/%/%.1/%">
+    <eAnnotations source="positions.2370" references="/0/testSequence/%/%/mixed/%/%.1/%">
       <details key="start" value="209"/>
       <details key="end" value="212"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2365" references="/0/testSequence/%/%/mixed/%/%.2/%">
+    <eAnnotations source="positions.2371" references="/0/testSequence/%/%/mixed/%/%.2/%">
       <details key="start" value="213"/>
       <details key="end" value="214"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2366" references="/0/testSequence/%/%/mixed/%/%.3/%">
+    <eAnnotations source="positions.2372" references="/0/testSequence/%/%/mixed/%/%.3/%">
       <details key="start" value="215"/>
       <details key="end" value="218"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2367" references="/0/testSequence/%/%/mixed/%/%.4/%">
+    <eAnnotations source="positions.2373" references="/0/testSequence/%/%/mixed/%/%.4/%">
       <details key="start" value="219"/>
       <details key="end" value="223"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2368" references="/0/testSequence/%/%.1">
+    <eAnnotations source="positions.2374" references="/0/testSequence/%/%.1">
       <details key="start" value="139"/>
       <details key="end" value="153"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.2369" references="/0/testSequence/p">
+    <eAnnotations source="positions.2375" references="/0/testSequence/p">
       <details key="start" value="100"/>
       <details key="end" value="112"/>
       <details key="line" value="3"/>

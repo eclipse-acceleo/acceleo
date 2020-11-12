@@ -630,6 +630,8 @@ sequencesServices
 	booleans.oclAsSet()
 	eClasses.oclAsSet() -> collect(name)
 	collections.oclAsSet()
+	integers->min()
+	reals->max()
 orderedSetsServices
 	mixed.toString()
 	strings.toString()
@@ -1018,3 +1020,5 @@ orderedSetsServices
 	booleans.oclAsSet()
 	eClasses.oclAsSet() -> collect(name)
 	collections.oclAsSet()
+	integers->min()
+	reals->max()
