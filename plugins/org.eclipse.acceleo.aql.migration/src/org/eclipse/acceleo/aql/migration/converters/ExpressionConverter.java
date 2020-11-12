@@ -375,6 +375,8 @@ public final class ExpressionConverter extends AbstractConverter {
 			res = convertOclAsSetCall(input);
 		} else if (isAddAllCall(input)) {
 			res = convertAddAllCall(input);
+		} else if (isRemoveAllCall(input)) {
+			res = convertRemoveAllCall(input);
 		} else {
 			Call output = OperationUtils.createCall(input);
 			output.getArguments().add((Expression)convert(input.getSource()));
@@ -383,6 +385,22 @@ public final class ExpressionConverter extends AbstractConverter {
 		}
 
 		return res;
+	}
+
+	private Expression convertRemoveAllCall(OperationCallExp input) {
+		final Call res = OperationUtils.createCall(input);
+
+		res.setServiceName("sub");
+		res.getArguments().add((Expression)convert(input.getSource()));
+		map(input.getArgument(), res.getArguments());
+
+		return res;
+	}
+
+	private boolean isRemoveAllCall(OperationCallExp input) {
+		final EOperation referredOperation = input.getReferredOperation();
+		return referredOperation != null && ("removeAll".equals(referredOperation.getName()))
+				&& "oclstdlib_Collection(T)_Class".equals(((EClass)referredOperation.eContainer()).getName());
 	}
 
 	private Expression convertAddAllCall(OperationCallExp input) {

@@ -407,6 +407,20 @@
 @Test eClasses -> subOrderedSet(1,2) -> collect(name) => ClasseAClasseB
 @Test collections -> subOrderedSet(1,2) => abcefg
 @Test eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name) => AbstractClass
+@Test mixed -> removeAll(Sequence{'a','b'}) => 11.1true
+@Test mixed -> removeAll(Sequence{'a','b','d'}) => 11.1true
+@Test strings -> removeAll(Sequence{'a','b'}) => c
+@Test strings -> removeAll(Sequence{'a','b','d'}) => c
+@Test integers -> removeAll(Sequence{1,2}) => 3
+@Test integers -> removeAll(Sequence{1,2,4}) => 3
+@Test booleans -> removeAll(Sequence{true,false}) => 
+@Test Sequence{false} -> removeAll(Sequence{true,false}) => 
+@Test reals -> removeAll(Sequence{1.2,2.1}) => 3.2
+@Test reals -> removeAll(Sequence{1.2,2.3}) => 2.13.2
+@Test collections -> removeAll(Sequence{Sequence{'a','b','c'}}) => abcefg
+@Test collections -> removeAll(Sequence{Sequence{'a','b','d'}}) => abcefg
+@Test collections -> removeAll(Sequence{'a','b','d'}) => abcefg
+@Test eClasses -> removeAll(p.eClassifiers->asSequence()) -> collect(name) => 
 
 @Test mixed -> addAll(Sequence{'a','b'}) => ab11.1true
 @Test mixed -> addAll(Sequence{'a','b','d'}) => ab11.1trued

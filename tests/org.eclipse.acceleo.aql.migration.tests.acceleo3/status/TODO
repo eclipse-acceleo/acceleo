@@ -47,7 +47,6 @@ sequencesServices
 	 indexOfSlice
 	 lastIndexOfSlice
 	 product
-	 removeAll
 	 selectByKind
 	 selectByType
 orderedSetsServices
@@ -60,6 +59,5 @@ orderedSetsServices
 	 order change: mixed -> union(OrderedSet{'a','b','d'}) => [mixed -> union(OrderedSet{'a','b','d'})/]
 	 order change: mixed -> union(OrderedSet{'a','b'}) => [mixed -> union(OrderedSet{'a','b'})/]
 	 product
-	 removeAll
 	 selectByKind
 	 selectByType
