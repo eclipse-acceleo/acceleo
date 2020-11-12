@@ -40,7 +40,6 @@ emfServices
 	 eSet
 	 eUnset
 sequencesServices
-	 addAll
 	 collectNested
 	 drop
 	 dropRight
@@ -53,7 +52,6 @@ sequencesServices
 	 selectByKind
 	 selectByType
 orderedSetsServices
-	 addAll
 	 collectNested
 	 drop
 	 dropRight

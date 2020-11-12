@@ -407,6 +407,22 @@
 @Test eClasses -> subOrderedSet(1,2) -> collect(name) => ClasseAClasseB
 @Test collections -> subOrderedSet(1,2) => abcefg
 @Test eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name) => AbstractClass
+
+@Test mixed -> addAll(Sequence{'a','b'}) => ab11.1true
+@Test mixed -> addAll(Sequence{'a','b','d'}) => ab11.1trued
+@Test strings -> addAll(Sequence{'a','b'}) => abc
+@Test strings -> addAll(Sequence{'a','b','d'}) => abcd
+@Test integers -> addAll(Sequence{1,2}) => 123
+@Test integers -> addAll(Sequence{1,2,4}) => 1234
+@Test booleans -> addAll(Sequence{true,false}) => truefalse
+@Test Sequence{false} -> addAll(Sequence{true,false}) => falsetruefalse
+@Test reals -> addAll(Sequence{1.2,2.1}) => 1.22.13.2
+@Test reals -> addAll(Sequence{1.2,2.3}) => 1.22.13.22.3
+@Test collections -> addAll(Sequence{Sequence{'a','b','c'}}) => abcefgabc
+@Test collections -> addAll(Sequence{Sequence{'a','b','d'}}) => abcefgabd
+@Test collections -> addAll(Sequence{'a','b','d'}) => abcefgabd
+@Test eClasses -> addAll(p.eClassifiers->asSequence()) -> collect(name) => ClasseAClasseBAbstractClass
+
 @Test integers -> startsWith(OrderedSet{1, 2}) => true
 @Test integers -> startsWith(OrderedSet{1, 1}) => true
 @Test integers -> startsWith(OrderedSet{1, 2}) => true
