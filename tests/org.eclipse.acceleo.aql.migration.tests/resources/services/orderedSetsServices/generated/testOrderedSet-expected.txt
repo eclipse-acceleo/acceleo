@@ -422,6 +422,23 @@
 @Test collections -> removeAll(Sequence{'a','b','d'}) => abcefg
 @Test eClasses -> removeAll(p.eClassifiers->asSequence()) -> collect(name) => 
 
+@Test mixed->selectByType(String) => ab
+@Test strings->selectByType(String) => abc
+@Test reals->selectByType(Real) => 1.22.13.2
+@Test integers->selectByType(Integer) => 123
+@Test booleans->selectByType(Boolean) => truefalse
+@Test eClasses->selectByType(EClass) -> collect(name) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByType(EClassifier) -> collect(name) => 
+  
+@Test mixed->selectByKind(String) => ab
+@Test strings->selectByKind(String) => abc
+@Test reals->selectByKind(Real) => 1.22.13.2
+@Test integers->selectByKind(Integer) => 123
+@Test booleans->selectByKind(Boolean) => truefalse
+@Test eClasses->selectByKind(EObject) -> collect(name) => targettargettarget
+@Test eClasses->selectByKind(EClass) -> collect(name) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByKind(EClassifier) -> collect(name) => ClasseAClasseBAbstractClass
+
 @Test mixed -> addAll(Sequence{'a','b'}) => ab11.1true
 @Test mixed -> addAll(Sequence{'a','b','d'}) => ab11.1trued
 @Test strings -> addAll(Sequence{'a','b'}) => abc

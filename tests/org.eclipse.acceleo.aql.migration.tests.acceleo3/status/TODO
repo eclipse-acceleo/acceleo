@@ -47,8 +47,6 @@ sequencesServices
 	 indexOfSlice
 	 lastIndexOfSlice
 	 product
-	 selectByKind
-	 selectByType
 orderedSetsServices
 	 collectNested
 	 drop
@@ -59,5 +57,3 @@ orderedSetsServices
 	 order change: mixed -> union(OrderedSet{'a','b','d'}) => [mixed -> union(OrderedSet{'a','b','d'})/]
 	 order change: mixed -> union(OrderedSet{'a','b'}) => [mixed -> union(OrderedSet{'a','b'})/]
 	 product
-	 selectByKind
-	 selectByType

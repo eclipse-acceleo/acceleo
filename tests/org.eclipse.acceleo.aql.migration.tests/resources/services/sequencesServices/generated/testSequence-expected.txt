@@ -12,6 +12,7 @@
 @Test integers.oclIsTypeOf(Integer) => truetruetrue
 @Test booleans.oclIsTypeOf(Boolean) => truetruetrue
 @Test eClasses.oclIsTypeOf(EClass) => truetruetrue
+@Test eClasses.oclIsTypeOf(EClassifier) => falsefalsefalse
   
 @Test mixed.oclIsKindOf(String) => truetruefalsefalsefalse
 @Test strings.oclIsKindOf(String) => truetruetrue
@@ -19,6 +20,8 @@
 @Test integers.oclIsKindOf(Integer) => truetruetrue
 @Test booleans.oclIsKindOf(Boolean) => truetruetrue
 @Test eClasses.oclIsKindOf(EObject) => truetruetrue
+@Test eClasses.oclIsKindOf(EClass) => truetruetrue
+@Test eClasses.oclIsKindOf(EClassifier) => truetruetrue
   
 @Test mixed -> last() => true
 @Test strings -> last() => c
@@ -427,6 +430,23 @@
 @Test collections -> removeAll(Sequence{Sequence{'a','b','d'}}) => abcefgabc
 @Test collections -> removeAll(Sequence{'a','b','d'}) => abcefgabc
 @Test eClasses -> removeAll(p.eClassifiers->asSequence()) -> collect(name) => 
+
+@Test mixed->selectByType(String) => ab
+@Test strings->selectByType(String) => abc
+@Test reals->selectByType(Real) => 1.22.13.2
+@Test integers->selectByType(Integer) => 123
+@Test booleans->selectByType(Boolean) => truefalsetrue
+@Test eClasses->selectByType(EClass) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByType(EClassifier) => 
+  
+@Test mixed->selectByKind(String) => ab
+@Test strings->selectByKind(String) => abc
+@Test reals->selectByKind(Real) => 1.22.13.2
+@Test integers->selectByKind(Integer) => 123
+@Test booleans->selectByKind(Boolean) => truefalsetrue
+@Test eClasses->selectByKind(EObject) => targettargettarget
+@Test eClasses->selectByKind(EClass) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByKind(EClassifier) => ClasseAClasseBAbstractClass
 
 @Test mixed -> addAll(Sequence{'a','b'}) => ab11.1trueab
 @Test mixed -> addAll(Sequence{'a','b','d'}) => ab11.1trueabd

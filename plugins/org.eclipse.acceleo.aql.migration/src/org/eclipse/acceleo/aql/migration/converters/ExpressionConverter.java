@@ -182,6 +182,11 @@ public final class ExpressionConverter extends AbstractConverter {
 	private final Path targetFolderPath;
 
 	/**
+	 * The counter of created variable.
+	 */
+	private int varCount;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param targetFolderPath
@@ -377,6 +382,8 @@ public final class ExpressionConverter extends AbstractConverter {
 			res = convertAddAllCall(input);
 		} else if (isRemoveAllCall(input)) {
 			res = convertRemoveAllCall(input);
+		} else if (isSelectByKindOrTypeCall(input)) {
+			res = convertSelectByKindOrTypeCall(input);
 		} else {
 			Call output = OperationUtils.createCall(input);
 			output.getArguments().add((Expression)convert(input.getSource()));
@@ -385,6 +392,43 @@ public final class ExpressionConverter extends AbstractConverter {
 		}
 
 		return res;
+	}
+
+	private Expression convertSelectByKindOrTypeCall(OperationCallExp input) {
+		final Call res = AstFactory.eINSTANCE.createCall();
+		res.setType(CallType.COLLECTIONCALL);
+		res.setServiceName("select");
+		res.getArguments().add((Expression)convert(input.getSource()));
+
+		final Lambda lambda = AstFactory.eINSTANCE.createLambda();
+
+		final Call call = AstFactory.eINSTANCE.createCall();
+		call.setType(CallType.CALLSERVICE);
+		if ("selectByKind".equals(input.getReferredOperation().getName())) {
+			call.setServiceName("oclIsKindOf");
+		} else {
+			call.setServiceName("oclIsTypeOf");
+		}
+
+		final VariableDeclaration varDeclaration = AstFactory.eINSTANCE.createVariableDeclaration();
+		varDeclaration.setName("var" + varCount++);
+		lambda.getParameters().add(varDeclaration);
+		final VarRef varRef = AstFactory.eINSTANCE.createVarRef();
+		varRef.setVariableName(varDeclaration.getName());
+		call.getArguments().add(varRef);
+		call.getArguments().add((Expression)convert(input.getArgument().get(0)));
+		lambda.setExpression(call);
+		res.getArguments().add(lambda);
+
+		return res;
+	}
+
+	private boolean isSelectByKindOrTypeCall(OperationCallExp input) {
+		final EOperation referredOperation = input.getReferredOperation();
+		return referredOperation != null && ("selectByKind".equals(referredOperation.getName())
+				|| "selectByType".equals(referredOperation.getName())) && ("OrderedSet(T)_Class".equals(
+						((EClass)referredOperation.eContainer()).getName()) || "Sequence(T)_Class".equals(
+								((EClass)referredOperation.eContainer()).getName()));
 	}
 
 	private Expression convertRemoveAllCall(OperationCallExp input) {
