@@ -1362,4 +1362,44 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		assertValidation(expectedReturnTypes, "indexOfSlice", parameterTypes);
 	}
 
+	@Test
+	public void testlastIndexOfSliceListList() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "lastIndexOfSlice", parameterTypes);
+	}
+
+	@Test
+	public void testlastIndexOfSliceSetList() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "lastIndexOfSlice", parameterTypes);
+	}
+
+	@Test
+	public void testlastIndexOfSliceListSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "lastIndexOfSlice", parameterTypes);
+	}
+
+	@Test
+	public void testlastIndexOfSliceSetSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "lastIndexOfSlice", parameterTypes);
+	}
+
 }

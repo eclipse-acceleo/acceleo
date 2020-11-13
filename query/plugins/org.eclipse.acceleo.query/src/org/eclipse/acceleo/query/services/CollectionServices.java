@@ -3035,7 +3035,7 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the index of of the other collection in the given collection",
+		value = "Returns the index of the other collection in the given collection",
 		params = {
 			@Param(name = "sequence", value = "The Sequence or OrderedSet"),
 			@Param(name = "other", value = "The other Sequence or OrderedSet")
@@ -3052,6 +3052,44 @@ public class CollectionServices extends AbstractServiceProvider {
 		boolean found = false;
 		if (other.size() <= collection.size()) {
 			for (int i = 0; i < collection.size() - other.size() + 1; i++) {
+				final Iterator<T> collectionIt = collection.iterator();
+				res = i;
+				for (int j = 0; j < i; j++) {
+					collectionIt.next();
+				}
+				if (equalsIterator(collectionIt, other.iterator())) {
+					found = true;
+					break;
+				}
+			}
+		}
+
+		if (!found) {
+			res = -1;
+		}
+
+		return res + 1;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the last index of the other collection in the given collection",
+		params = {
+			@Param(name = "sequence", value = "The Sequence or OrderedSet"),
+			@Param(name = "other", value = "The other Sequence or OrderedSet")
+		},
+		result = "the last index of of the other collection in the given collection",
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c', 'a', 'b', 'c'}->lastIndexOfSlice(Sequence{'b', 'c'})", result = "5")
+		}
+	)
+	// @formatter:on
+	public <T> Integer lastIndexOfSlice(Collection<T> collection, Collection<T> other) {
+		Integer res = -1;
+
+		boolean found = false;
+		if (other.size() <= collection.size()) {
+			for (int i = collection.size() - other.size(); i >= 0; i--) {
 				final Iterator<T> collectionIt = collection.iterator();
 				res = i;
 				for (int j = 0; j < i; j++) {

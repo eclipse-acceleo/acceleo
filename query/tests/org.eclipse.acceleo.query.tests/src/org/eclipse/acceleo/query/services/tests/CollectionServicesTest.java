@@ -5887,4 +5887,57 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(3), result);
 	}
 
+	@Test(expected = NullPointerException.class)
+	public void testLastIndexOfSliceNullNull() {
+		collectionServices.lastIndexOfSlice(null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testLastIndexOfSliceListNull() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		collectionServices.lastIndexOfSlice(collection, null);
+	}
+
+	@Test
+	public void testLastIndexOfSliceListList() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final List<Object> other = new ArrayList<>();
+		other.add(Integer.valueOf(2));
+		other.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.lastIndexOfSlice(collection, other);
+
+		assertEquals(Integer.valueOf(6), result);
+
+		other.clear();
+		other.add(Integer.valueOf(1));
+		other.add(Integer.valueOf(2));
+
+		result = collectionServices.lastIndexOfSlice(collection, other);
+
+		assertEquals(Integer.valueOf(5), result);
+
+		other.clear();
+		other.add(Integer.valueOf(3));
+		other.add(Integer.valueOf(4));
+
+		result = collectionServices.lastIndexOfSlice(collection, other);
+
+		assertEquals(Integer.valueOf(7), result);
+	}
+
 }
