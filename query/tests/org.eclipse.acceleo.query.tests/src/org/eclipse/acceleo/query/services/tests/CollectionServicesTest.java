@@ -2531,7 +2531,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterSetNullSetAndNullClass() {
-		final Set<Object> result = collectionServices.filter((Set<Object>)null, (Class)null);
+		final Set<Object> result = collectionServices.filter((Set<Object>)null, (Class<?>)null);
 
 		assertEquals(null, result);
 	}
@@ -2551,7 +2551,7 @@ public class CollectionServicesTest {
 		set.add(EcorePackage.eINSTANCE);
 		set.add(EcorePackage.eINSTANCE.getEClass());
 
-		final Set<Object> result = collectionServices.filter(set, (Class)null);
+		final Set<Object> result = collectionServices.filter(set, (Class<?>)null);
 
 		assertEquals(0, result.size());
 	}
@@ -2614,7 +2614,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterListNullListAndNullClass() {
-		final List<Object> result = collectionServices.filter((List<Object>)null, (Class)null);
+		final List<Object> result = collectionServices.filter((List<Object>)null, (Class<?>)null);
 
 		assertEquals(null, result);
 	}
@@ -2634,7 +2634,7 @@ public class CollectionServicesTest {
 		list.add(EcorePackage.eINSTANCE);
 		list.add(EcorePackage.eINSTANCE.getEClass());
 
-		final List<Object> result = collectionServices.filter(list, (Class)null);
+		final List<Object> result = collectionServices.filter(list, (Class<?>)null);
 
 		assertEquals(0, result.size());
 	}
@@ -5836,6 +5836,55 @@ public class CollectionServicesTest {
 		final Boolean result = collectionServices.endsWith(collection, other);
 
 		assertTrue(result);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testIndexOfSliceNullNull() {
+		collectionServices.indexOfSlice(null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testIndexOfSliceListNull() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		collectionServices.indexOfSlice(collection, null);
+	}
+
+	@Test
+	public void testIndexOfSliceListList() {
+		final List<Object> collection = new ArrayList<>();
+		collection.add(Integer.valueOf(1));
+		collection.add(Integer.valueOf(2));
+		collection.add(Integer.valueOf(3));
+		collection.add(Integer.valueOf(4));
+
+		final List<Object> other = new ArrayList<>();
+		other.add(Integer.valueOf(2));
+		other.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.indexOfSlice(collection, other);
+
+		assertEquals(Integer.valueOf(2), result);
+
+		other.clear();
+		other.add(Integer.valueOf(1));
+		other.add(Integer.valueOf(2));
+
+		result = collectionServices.indexOfSlice(collection, other);
+
+		assertEquals(Integer.valueOf(1), result);
+
+		other.clear();
+		other.add(Integer.valueOf(3));
+		other.add(Integer.valueOf(4));
+
+		result = collectionServices.indexOfSlice(collection, other);
+
+		assertEquals(Integer.valueOf(3), result);
 	}
 
 }

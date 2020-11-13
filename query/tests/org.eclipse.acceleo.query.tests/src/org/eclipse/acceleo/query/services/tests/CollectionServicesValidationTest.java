@@ -1321,4 +1321,45 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 		assertValidation(expectedReturnTypes, "filter", parameterTypes);
 	}
+
+	@Test
+	public void testIndexOfSliceListList() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "indexOfSlice", parameterTypes);
+	}
+
+	@Test
+	public void testIndexOfSliceSetList() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "indexOfSlice", parameterTypes);
+	}
+
+	@Test
+	public void testIndexOfSliceListSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "indexOfSlice", parameterTypes);
+	}
+
+	@Test
+	public void testIndexOfSliceSetSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())), setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Integer.class) };
+
+		assertValidation(expectedReturnTypes, "indexOfSlice", parameterTypes);
+	}
+
 }

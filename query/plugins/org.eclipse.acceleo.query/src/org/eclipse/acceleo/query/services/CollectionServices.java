@@ -2985,7 +2985,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "\\\"true\\\" if the sequence starts with other, \\\"false\\\" otherwise",
 		examples = {
-			@Example(expression = "Sequence{'a', 'b', 'c'}->startsWith('a', 'b')", result = "true")
+			@Example(expression = "Sequence{'a', 'b', 'c'}->startsWith(Sequence{'a', 'b'})", result = "true")
 		}
 	)
 	// @formatter:on
@@ -3012,7 +3012,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "\\\"true\\\" if the sequence ends with other, \\\"false\\\" otherwise",
 		examples = {
-			@Example(expression = "Sequence{'a', 'b', 'c'}->endsWith('b', 'c')", result = "true")
+			@Example(expression = "Sequence{'a', 'b', 'c'}->endsWith(Sequence{'b', 'c'})", result = "true")
 		}
 	)
 	// @formatter:on
@@ -3031,6 +3031,44 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		return res;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the index of of the other collection in the given collection",
+		params = {
+			@Param(name = "sequence", value = "The Sequence or OrderedSet"),
+			@Param(name = "other", value = "The other Sequence or OrderedSet")
+		},
+		result = "the index of of the other collection in the given collection",
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c'}->indexOfSlice(Sequence{'b', 'c'})", result = "2")
+		}
+	)
+	// @formatter:on
+	public <T> Integer indexOfSlice(Collection<T> collection, Collection<T> other) {
+		Integer res = -1;
+
+		boolean found = false;
+		if (other.size() <= collection.size()) {
+			for (int i = 0; i < collection.size() - other.size() + 1; i++) {
+				final Iterator<T> collectionIt = collection.iterator();
+				res = i;
+				for (int j = 0; j < i; j++) {
+					collectionIt.next();
+				}
+				if (equalsIterator(collectionIt, other.iterator())) {
+					found = true;
+					break;
+				}
+			}
+		}
+
+		if (!found) {
+			res = -1;
+		}
+
+		return res + 1;
 	}
 
 	/**
