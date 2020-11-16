@@ -44,16 +44,12 @@ sequencesServices
 	 drop
 	 dropRight
 	 flatten
-	 indexOfSlice
-	 lastIndexOfSlice
 	 product
 orderedSetsServices
 	 collectNested
 	 drop
 	 dropRight
 	 flatten
-	 indexOfSlice
-	 lastIndexOfSlice
 	 order change: mixed -> union(OrderedSet{'a','b','d'}) => [mixed -> union(OrderedSet{'a','b','d'})/]
 	 order change: mixed -> union(OrderedSet{'a','b'}) => [mixed -> union(OrderedSet{'a','b'})/]
 	 product

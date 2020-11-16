@@ -492,7 +492,14 @@
 @Test integers -> startsWith(OrderedSet{1, 1}) => [integers -> startsWith(OrderedSet{1, 1})/]
 @Test integers -> startsWith(OrderedSet{1, 2}) => [integers -> startsWith(OrderedSet{1, 2})/]
 @Test integers -> startsWith(OrderedSet{1, 1}) => [integers -> startsWith(OrderedSet{1, 1})/]
-[comment]A4-UNSUPPORTED indexOfSlice[/comment]
+
+@Test mixed -> indexOfSlice(Sequence{'a','b'}) => [mixed -> indexOfSlice(Sequence{'a','b'})/]
+@Test strings -> indexOfSlice(Sequence{'a','b'}) => [strings -> indexOfSlice(Sequence{'a','b'})/]
+@Test integers -> indexOfSlice(Sequence{1,2}) => [integers -> indexOfSlice(Sequence{1,2})/]
+@Test booleans -> indexOfSlice(Sequence{true,false}) => [booleans -> indexOfSlice(Sequence{true,false})/]
+@Test reals -> indexOfSlice(Sequence{1.2,2.1}) => [reals -> indexOfSlice(Sequence{1.2,2.1})/]
+@Test eClasses -> indexOfSlice(p.eClassifiers) => [eClasses -> indexOfSlice(p.eClassifiers)/]
+
 @Test integers -> endsWith(OrderedSet{2, 3}) => [integers -> endsWith(OrderedSet{2, 3})/]
 @Test integers -> endsWith(OrderedSet{1, 1}) => [integers -> endsWith(OrderedSet{1, 1})/]
 @Test integers -> endsWith(OrderedSet{2, 3}) => [integers -> endsWith(OrderedSet{2, 3})/]
@@ -508,7 +515,13 @@
 @Test eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first()) => [eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first())/]
 @Test collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'}) => [collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'})/]
 
-[comment]A4-UNSUPPORTED lastIndexOfSlice[/comment]
+@Test mixed -> lastIndexOfSlice(Sequence{'a','b'}) => [mixed -> lastIndexOfSlice(Sequence{'a','b'})/]
+@Test strings -> lastIndexOfSlice(Sequence{'a','b'}) => [strings -> lastIndexOfSlice(Sequence{'a','b'})/]
+@Test integers -> lastIndexOfSlice(Sequence{1,2}) => [integers -> lastIndexOfSlice(Sequence{1,2})/]
+@Test booleans -> lastIndexOfSlice(Sequence{true,false}) => [booleans -> lastIndexOfSlice(Sequence{true,false})/]
+@Test reals -> lastIndexOfSlice(Sequence{1.2,2.1}) => [reals -> lastIndexOfSlice(Sequence{1.2,2.1})/]
+@Test eClasses -> lastIndexOfSlice(p.eClassifiers) => [eClasses -> lastIndexOfSlice(p.eClassifiers)/]
+
 @Test mixed.oclAsSet() => [mixed.oclAsSet()/]
 @Test strings.oclAsSet() => [strings.oclAsSet()/]
 @Test integers.oclAsSet() => [integers.oclAsSet()/]

@@ -1,40 +1,42 @@
 INFO Always true:
-Nothing inferred when temp7 (java.lang.String) is not type of ClassLiteral=java.lang.String - 1514 1539
+Nothing inferred when temp8 (java.lang.String) is not type of ClassLiteral=java.lang.String - 1634 1659
 INFO Always true:
-Nothing inferred when temp8 (java.lang.String) is not type of ClassLiteral=java.lang.String - 1638 1663
+Nothing inferred when temp9 (java.lang.String) is not type of ClassLiteral=java.lang.String - 1758 1783
 INFO Always true:
-Nothing inferred when temp9 (java.lang.Double) is not type of ClassLiteral=java.lang.Double - 1756 1779
+Nothing inferred when temp10 (java.lang.Double) is not type of ClassLiteral=java.lang.Double - 1877 1901
 INFO Always true:
-Nothing inferred when temp10 (java.lang.Integer) is not type of ClassLiteral=java.lang.Integer - 1882 1909
+Nothing inferred when temp11 (java.lang.Integer) is not type of ClassLiteral=java.lang.Integer - 2004 2031
 INFO Always true:
-Nothing inferred when temp11 (java.lang.Boolean) is not type of ClassLiteral=java.lang.Boolean - 2012 2039
+Nothing inferred when temp12 (java.lang.Boolean) is not type of ClassLiteral=java.lang.Boolean - 2134 2161
 INFO Always true:
-Nothing inferred when temp14 (java.lang.String) is not kind of ClassLiteral=java.lang.String - 2417 2443
+Nothing inferred when temp16 (java.lang.String) is not kind of ClassLiteral=java.lang.String - 2684 2710
 INFO Always true:
-Nothing inferred when temp15 (java.lang.Double) is not kind of ClassLiteral=java.lang.Double - 2537 2561
+Nothing inferred when temp17 (java.lang.Double) is not kind of ClassLiteral=java.lang.Double - 2804 2828
 INFO Always true:
-Nothing inferred when temp16 (java.lang.Integer) is not kind of ClassLiteral=java.lang.Integer - 2664 2691
+Nothing inferred when temp18 (java.lang.Integer) is not kind of ClassLiteral=java.lang.Integer - 2931 2958
 INFO Always true:
-Nothing inferred when temp17 (java.lang.Boolean) is not kind of ClassLiteral=java.lang.Boolean - 2794 2821
+Nothing inferred when temp19 (java.lang.Boolean) is not kind of ClassLiteral=java.lang.Boolean - 3061 3088
 INFO Always true:
-Nothing inferred when temp18 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EObject - 2924 2958
+Nothing inferred when temp20 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EObject - 3191 3225
 INFO Always true:
-Nothing inferred when var1 (java.lang.String) is not type of ClassLiteral=java.lang.String - 41237 41261
+Nothing inferred when temp22 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EClassifier - 3467 3505
 INFO Always true:
-Nothing inferred when var2 (java.lang.Double) is not type of ClassLiteral=java.lang.Double - 41340 41362
+Nothing inferred when var1 (java.lang.String) is not type of ClassLiteral=java.lang.String - 41784 41808
 INFO Always true:
-Nothing inferred when var3 (java.lang.Integer) is not type of ClassLiteral=java.lang.Integer - 41450 41475
+Nothing inferred when var2 (java.lang.Double) is not type of ClassLiteral=java.lang.Double - 41887 41909
 INFO Always true:
-Nothing inferred when var4 (java.lang.Boolean) is not type of ClassLiteral=java.lang.Boolean - 41563 41588
+Nothing inferred when var3 (java.lang.Integer) is not type of ClassLiteral=java.lang.Integer - 41997 42022
 INFO Always true:
-Nothing inferred when var8 (java.lang.String) is not kind of ClassLiteral=java.lang.String - 42169 42193
+Nothing inferred when var4 (java.lang.Boolean) is not type of ClassLiteral=java.lang.Boolean - 42110 42135
 INFO Always true:
-Nothing inferred when var9 (java.lang.Double) is not kind of ClassLiteral=java.lang.Double - 42272 42294
+Nothing inferred when var8 (java.lang.String) is not kind of ClassLiteral=java.lang.String - 42716 42740
 INFO Always true:
-Nothing inferred when var10 (java.lang.Integer) is not kind of ClassLiteral=java.lang.Integer - 42383 42409
+Nothing inferred when var9 (java.lang.Double) is not kind of ClassLiteral=java.lang.Double - 42819 42841
 INFO Always true:
-Nothing inferred when var11 (java.lang.Boolean) is not kind of ClassLiteral=java.lang.Boolean - 42498 42524
+Nothing inferred when var10 (java.lang.Integer) is not kind of ClassLiteral=java.lang.Integer - 42930 42956
 INFO Always true:
-Nothing inferred when var12 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EObject - 42630 42663
+Nothing inferred when var11 (java.lang.Boolean) is not kind of ClassLiteral=java.lang.Boolean - 43045 43071
 INFO Always true:
-Nothing inferred when var14 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EClassifier - 42995 43032
+Nothing inferred when var12 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EObject - 43177 43210
+INFO Always true:
+Nothing inferred when var14 (EClassifier=EClassifier) is not kind of EClassifierLiteral=EClassifier - 43542 43579

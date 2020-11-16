@@ -436,17 +436,17 @@
 @Test reals->selectByType(Real) => 1.22.13.2
 @Test integers->selectByType(Integer) => 123
 @Test booleans->selectByType(Boolean) => truefalsetrue
-@Test eClasses->selectByType(EClass) => ClasseAClasseBAbstractClass
-@Test eClasses->selectByType(EClassifier) => 
+@Test eClasses->selectByType(EClass) -> collect(name) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByType(EClassifier) -> collect(name) => 
   
 @Test mixed->selectByKind(String) => ab
 @Test strings->selectByKind(String) => abc
 @Test reals->selectByKind(Real) => 1.22.13.2
 @Test integers->selectByKind(Integer) => 123
 @Test booleans->selectByKind(Boolean) => truefalsetrue
-@Test eClasses->selectByKind(EObject) => targettargettarget
-@Test eClasses->selectByKind(EClass) => ClasseAClasseBAbstractClass
-@Test eClasses->selectByKind(EClassifier) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByKind(EObject) -> collect(name) => targettargettarget
+@Test eClasses->selectByKind(EClass) -> collect(name) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByKind(EClassifier) -> collect(name) => ClasseAClasseBAbstractClass
 
 @Test mixed -> addAll(Sequence{'a','b'}) => ab11.1trueab
 @Test mixed -> addAll(Sequence{'a','b','d'}) => ab11.1trueabd
@@ -467,6 +467,14 @@
 @Test integers -> startsWith(OrderedSet{1, 1}) => true
 @Test integers -> startsWith(OrderedSet{1, 2}) => true
 @Test integers -> startsWith(OrderedSet{1, 1}) => true
+
+@Test mixed -> indexOfSlice(Sequence{'a','b'}) => 1
+@Test strings -> indexOfSlice(Sequence{'a','b'}) => 1
+@Test integers -> indexOfSlice(Sequence{1,2}) => 1
+@Test booleans -> indexOfSlice(Sequence{true,false}) => 1
+@Test reals -> indexOfSlice(Sequence{1.2,2.1}) => 1
+@Test eClasses -> indexOfSlice(p.eClassifiers) => 1
+
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
@@ -479,6 +487,13 @@
 @Test reals -> append(1.2) -> lastIndexOf(1.2) => 4
 @Test eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first()) => 4
 @Test collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'}) => 4
+
+@Test mixed -> lastIndexOfSlice(Sequence{'a','b'}) => 1
+@Test strings -> lastIndexOfSlice(Sequence{'a','b'}) => 1
+@Test integers -> lastIndexOfSlice(Sequence{1,2}) => 1
+@Test booleans -> lastIndexOfSlice(Sequence{true,false}) => 1
+@Test reals -> lastIndexOfSlice(Sequence{1.2,2.1}) => 1
+@Test eClasses -> lastIndexOfSlice(p.eClassifiers) => 1
 
 @Test mixed.oclAsSet() => ab11.1true
 @Test strings.oclAsSet() => abc

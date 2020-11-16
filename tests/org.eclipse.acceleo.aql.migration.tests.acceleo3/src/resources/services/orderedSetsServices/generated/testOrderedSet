@@ -6,12 +6,14 @@
 @Test booleans.toString() => truefalse
 @Test collections.toString() => abcefg
   
+@Test mixed.oclIsTypeOf(String) => truetruefalsefalsefalse
 @Test strings.oclIsTypeOf(String) => truetruetrue
 @Test strings.oclIsTypeOf(String) => truetruetrue
 @Test reals.oclIsTypeOf(Real) => truetruetrue
 @Test integers.oclIsTypeOf(Integer) => truetruetrue
 @Test booleans.oclIsTypeOf(Boolean) => truetrue
 @Test eClasses.oclIsTypeOf(EClass) => truetruetrue
+@Test eClasses.oclIsTypeOf(EClassifier) => falsefalsefalse
   
 @Test mixed.oclIsKindOf(String) => truetruefalsefalsefalse
 @Test strings.oclIsKindOf(String) => truetruetrue
@@ -19,6 +21,8 @@
 @Test integers.oclIsKindOf(Integer) => truetruetrue
 @Test booleans.oclIsKindOf(Boolean) => truetrue
 @Test eClasses.oclIsKindOf(EObject) => truetruetrue
+@Test eClasses.oclIsKindOf(EClass) => truetruetrue
+@Test eClasses.oclIsKindOf(EClassifier) => truetruetrue
   
 @Test mixed -> last() => true
 @Test strings -> last() => c
@@ -458,6 +462,14 @@
 @Test integers -> startsWith(OrderedSet{1, 1}) => true
 @Test integers -> startsWith(OrderedSet{1, 2}) => true
 @Test integers -> startsWith(OrderedSet{1, 1}) => true
+
+@Test mixed -> indexOfSlice(Sequence{'a','b'}) => 1
+@Test strings -> indexOfSlice(Sequence{'a','b'}) => 1
+@Test integers -> indexOfSlice(Sequence{1,2}) => 1
+@Test booleans -> indexOfSlice(Sequence{true,false}) => 1
+@Test reals -> indexOfSlice(Sequence{1.2,2.1}) => 1
+@Test eClasses -> indexOfSlice(p.eClassifiers) => 1
+
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
@@ -470,6 +482,13 @@
 @Test reals -> append(1.2) -> lastIndexOf(1.2) => 3
 @Test eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first()) => 3
 @Test collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'}) => 3
+
+@Test mixed -> lastIndexOfSlice(Sequence{'a','b'}) => 1
+@Test strings -> lastIndexOfSlice(Sequence{'a','b'}) => 1
+@Test integers -> lastIndexOfSlice(Sequence{1,2}) => 1
+@Test booleans -> lastIndexOfSlice(Sequence{true,false}) => 1
+@Test reals -> lastIndexOfSlice(Sequence{1.2,2.1}) => 1
+@Test eClasses -> lastIndexOfSlice(p.eClassifiers) => 1
 
 @Test mixed.oclAsSet() => ab11.1true
 @Test strings.oclAsSet() => abc
