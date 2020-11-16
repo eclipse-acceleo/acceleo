@@ -904,6 +904,22 @@ public class StringServices {
 		return res;
 	}
 
+	// @formatter:off
+	@Documentation(
+		value = "Gets the platform line separator.",
+		params = {
+			@Param(name = "obj", value = "Any object"),
+		},
+		result = "'\\n' (Unix) or '\\r\\n' (Dos) or '\\r' (Mac Os Classic)",
+		examples = {
+			@Example(expression = "obj.lineSeparator()", result = "'\\n'")
+		}
+	)
+	// @formatter:on
+	public String lineSeparator(Object obj) {
+		return System.getProperty("line.separator");
+	}
+
 	/**
 	 * Gets the empty {@link String} if the given {@link String} is <code>null</code>.
 	 * 

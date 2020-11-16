@@ -143,6 +143,15 @@ lastIndex()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+lineSeparator()
+* Description:
+lineSeparator(obj: java.lang.Object) = String<br><br>Gets the platform line separator.<br><br>  @param obj<br>        Any object<br><br>  @return<br>        '\n' (Unix) or '\r\n' (Dos) or '\r' (Mac Os Classic)<br><br>
+* Text:
+lineSeparator()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 matches()
 * Description:
 matches(self: java.lang.String, regex: java.lang.String) = Boolean<br><br>Returns "true" if the current String matches the given "regex".<br><br>  @param self<br>        The current String<br>  @param regex<br>        The regex used for the match<br><br>  @return<br>        "true" if "self" matches the given regex, "false" otherwise.<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "regex" is null.<br><br>

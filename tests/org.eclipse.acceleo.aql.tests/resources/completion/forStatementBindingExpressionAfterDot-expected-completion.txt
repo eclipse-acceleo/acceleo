@@ -323,6 +323,15 @@ getEClassifier()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+lineSeparator()
+* Description:
+lineSeparator(obj: java.lang.Object) = String<br><br>Gets the platform line separator.<br><br>  @param obj<br>        Any object<br><br>  @return<br>        '\n' (Unix) or '\r\n' (Dos) or '\r' (Mac Os Classic)<br><br>
+* Text:
+lineSeparator()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 myQuery()
 * Description:
 <br> * My query has a nice comment.<br> * @param myParam the input EPackage<br>*

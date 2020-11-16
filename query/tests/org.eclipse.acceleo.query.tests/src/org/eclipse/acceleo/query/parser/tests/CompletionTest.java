@@ -162,7 +162,7 @@ public class CompletionTest {
 	public void navigationSegmentEmptyTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.", 5, variableTypes);
 
-		assertCompletion(completionResult, 75, "", "", 5, 0, "eAllContents()", "eClass()");
+		assertCompletion(completionResult, 76, "", "", 5, 0, "eAllContents()", "eClass()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -255,7 +255,7 @@ public class CompletionTest {
 	public void selfDotTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.", 5, variableTypes);
 
-		assertCompletion(completionResult, 75, "", "", 5, 0, "eClass()", "name");
+		assertCompletion(completionResult, 76, "", "", 5, 0, "eClass()", "name");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertEquals(5, completionResult.getReplacementOffset());
@@ -266,7 +266,7 @@ public class CompletionTest {
 	public void selfArrowTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, variableTypes);
 
-		assertCompletion(completionResult, 54, "", "", 6, 0, "size()", "including()");
+		assertCompletion(completionResult, 55, "", "", 6, 0, "size()", "including()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -282,7 +282,7 @@ public class CompletionTest {
 		final ICompletionResult dotCompletionResult = engine.getCompletion("Sequence{self}.", 15,
 				variableTypes);
 
-		assertCompletion(dotCompletionResult, 75, "", "", 15, 0, "name", "eContainer()", "oclIsKindOf()");
+		assertCompletion(dotCompletionResult, 76, "", "", 15, 0, "name", "eContainer()", "oclIsKindOf()");
 	}
 
 	@Test
@@ -290,7 +290,7 @@ public class CompletionTest {
 		final ICompletionResult arrowCompletionResult = engine.getCompletion("Sequence{self}->", 16,
 				variableTypes);
 
-		assertCompletion(arrowCompletionResult, 53, "", "", 16, 0, "size()", "select()", "collect()");
+		assertCompletion(arrowCompletionResult, 54, "", "", 16, 0, "size()", "select()", "collect()");
 	}
 
 	@Test
@@ -547,7 +547,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self.)", 35, variableTypes);
 
-		assertCompletion(completionResult, 75, "", "", 35, 0, "name", "eAllContents()");
+		assertCompletion(completionResult, 76, "", "", 35, 0, "name", "eAllContents()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -561,7 +561,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self->)", 36, variableTypes);
 
-		assertCompletion(completionResult, 54, "", "", 36, 0, "size()", "first()");
+		assertCompletion(completionResult, 55, "", "", 36, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -574,7 +574,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self.))", 65, variableTypes);
 
-		assertCompletion(completionResult, 75, "", "", 65, 0, "name");
+		assertCompletion(completionResult, 76, "", "", 65, 0, "name");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -588,7 +588,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self->))", 66, variableTypes);
 
-		assertCompletion(completionResult, 54, "", "", 66, 0, "size()", "first()");
+		assertCompletion(completionResult, 55, "", "", 66, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -913,7 +913,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{}->", 14, types);
 
-		assertCompletion(completionResult, 54, "", "", 14, 0, "size()", "first()");
+		assertCompletion(completionResult, 55, "", "", 14, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -925,7 +925,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("Sequence{}->", 12, types);
 
-		assertCompletion(completionResult, 53, "", "", 12, 0, "size()", "first()");
+		assertCompletion(completionResult, 54, "", "", 12, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -975,7 +975,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}.", 16,
 				variableTypes);
 
-		assertCompletion(completionResult, 48, "", "", 16, 0, "name", "eClass()");
+		assertCompletion(completionResult, 49, "", "", 16, 0, "name", "eClass()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -985,7 +985,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}->", 17,
 				variableTypes);
 
-		assertCompletion(completionResult, 54, "", "", 17, 0, "size()", "first()");
+		assertCompletion(completionResult, 55, "", "", 17, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
@@ -1122,7 +1122,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self.", 5, types);
 
-		assertCompletion(completionResult, 5, "", "", 5, 0, "toString()", "oclIsKindOf()");
+		assertCompletion(completionResult, 6, "", "", 5, 0, "toString()", "oclIsKindOf()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
@@ -1138,7 +1138,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertCompletion(completionResult, 54, "", "", 6, 0, "size()", "first()");
+		assertCompletion(completionResult, 55, "", "", 6, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
@@ -1154,7 +1154,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertCompletion(completionResult, 54, "", "", 6, 0, "size()", "first()");
+		assertCompletion(completionResult, 55, "", "", 6, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1170,7 +1170,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertCompletion(completionResult, 53, "", "", 6, 0, "size()", "first()");
+		assertCompletion(completionResult, 54, "", "", 6, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1217,7 +1217,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents()", 5,
 				variableTypes);
 
-		assertCompletion(completionResult, 75, "", "eAllContents", 5, 0, "eContainer()", "eAttributes");
+		assertCompletion(completionResult, 76, "", "eAllContents", 5, 0, "eContainer()", "eAttributes");
 	}
 
 	@Test

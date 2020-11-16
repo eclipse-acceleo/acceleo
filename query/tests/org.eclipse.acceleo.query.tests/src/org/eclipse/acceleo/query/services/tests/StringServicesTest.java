@@ -1582,4 +1582,14 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals("t", characters.get(2));
 	}
 
+	@Test
+	public void lineSeparatorNull() {
+		assertEquals(System.getProperty("line.separator"), stringServices.lineSeparator(null));
+	}
+
+	@Test
+	public void lineSeparator() {
+		assertEquals(System.getProperty("line.separator"), stringServices.lineSeparator(new Object()));
+	}
+
 }
