@@ -54,6 +54,7 @@ stringServices
 	'test'.tokenize()
 	'test'.at(2)
 	'test'.characters()
+	'*' + lineSeparator() + '*'
 	'a' + 'b'
 	'a' + 'b' + 'c'
 	'a' + 'test'

@@ -68,7 +68,7 @@
 [comment]A4-UNSUPPORTED strtok[/comment]
 [comment]A4-UNSUPPORTED substituteFirst[/comment]
 [comment]A4-UNSUPPORTED replaceFirst[/comment]
-[comment]A4-UNSUPPORTED lineSeparator[/comment]
+@Test '*' + lineSeparator() + '*' => ['*' + lineSeparator() + '*'/]
 [comment]IRRELEVANT-A4-DIFFERS toBoolean, toReal, toInteger with incorrect value: validation error instead of 'invalid'[/comment]
 [/file]
 

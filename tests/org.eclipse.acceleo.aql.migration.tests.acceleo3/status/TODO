@@ -21,7 +21,6 @@ orderedSetsServices
 Unsupported in A4:
 ==================
 stringServices
-	 lineSeparator
 	 replaceFirst
 	 strtok
 	 substituteFirst
