@@ -384,6 +384,8 @@ public final class ExpressionConverter extends AbstractConverter {
 			res = convertRemoveAllCall(input);
 		} else if (isSelectByKindOrTypeCall(input)) {
 			res = convertSelectByKindOrTypeCall(input);
+		} else if (isTokenizeLineCall(input)) {
+			res = convertTokenizeLineCall(input);
 		} else {
 			Call output = OperationUtils.createCall(input);
 			output.getArguments().add((Expression)convert(input.getSource()));
@@ -392,6 +394,29 @@ public final class ExpressionConverter extends AbstractConverter {
 		}
 
 		return res;
+	}
+
+	private Expression convertTokenizeLineCall(OperationCallExp input) {
+		final Call res = AstFactory.eINSTANCE.createCall();
+		res.setType(CallType.CALLSERVICE);
+		res.setServiceName("tokenize");
+		res.getArguments().add((Expression)convert(input.getSource()));
+
+		final StringLiteral stringLiteral = AstFactory.eINSTANCE.createStringLiteral();
+		stringLiteral.setValue("");
+		final Call lineSeparator = AstFactory.eINSTANCE.createCall();
+		lineSeparator.setType(CallType.CALLSERVICE);
+		lineSeparator.setServiceName("lineSeparator");
+		lineSeparator.getArguments().add(stringLiteral);
+		res.getArguments().add(lineSeparator);
+
+		return res;
+	}
+
+	private boolean isTokenizeLineCall(OperationCallExp input) {
+		final EOperation referredOperation = input.getReferredOperation();
+		return referredOperation != null && ("tokenizeLine".equals(referredOperation.getName()))
+				&& "oclstdlib_String_Class".equals(((EClass)referredOperation.eContainer()).getName());
 	}
 
 	private Expression convertSelectByKindOrTypeCall(OperationCallExp input) {
@@ -425,10 +450,12 @@ public final class ExpressionConverter extends AbstractConverter {
 
 	private boolean isSelectByKindOrTypeCall(OperationCallExp input) {
 		final EOperation referredOperation = input.getReferredOperation();
+		// CHECKSTYLE:OFF
 		return referredOperation != null && ("selectByKind".equals(referredOperation.getName())
 				|| "selectByType".equals(referredOperation.getName())) && ("OrderedSet(T)_Class".equals(
 						((EClass)referredOperation.eContainer()).getName()) || "Sequence(T)_Class".equals(
 								((EClass)referredOperation.eContainer()).getName()));
+		// CHECKSTYLE:ON
 	}
 
 	private Expression convertRemoveAllCall(OperationCallExp input) {

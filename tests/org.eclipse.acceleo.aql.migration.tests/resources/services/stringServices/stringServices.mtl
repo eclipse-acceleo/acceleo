@@ -62,6 +62,7 @@
     @Test 'test'.tokenize() => ['test'.tokenize()/]
     @Test 'test'.at(2) => ['test'.at(2)/]
     @Test 'test'.characters() => ['test'.characters()/]
+    @Test 'lineOne' + lineSeparator() + 'lineTwo' + lineSeparator() + 'LineThree'.tokenizeLine()->sep(', ') => ['lineOne' + p.lineSeparator() + 'lineTwo' + p.lineSeparator() + 'LineThree'.tokenize(''.lineSeparator())->sep(', ')/]
     @Test '*' + lineSeparator() + '*' => ['*' + p.lineSeparator() + '*'/]
   [/file]
   

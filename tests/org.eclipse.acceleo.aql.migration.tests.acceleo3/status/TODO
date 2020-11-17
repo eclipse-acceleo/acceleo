@@ -24,7 +24,6 @@ stringServices
 	 replaceFirst
 	 strtok
 	 substituteFirst
-	 tokenizeLine
 acceleoServices
 	(LOT1) TODO implement getProperties
 numericServices

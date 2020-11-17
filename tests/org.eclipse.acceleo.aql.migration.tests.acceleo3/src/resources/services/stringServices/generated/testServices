@@ -41,5 +41,8 @@
 @Test 'test'.tokenize() => test
 @Test 'test'.at(2) => e
 @Test 'test'.characters() => test
+@Test 'lineOne' + lineSeparator() + 'lineTwo' + lineSeparator() + 'LineThree'.tokenizeLine()->sep(', ') => lineOne
+lineTwo
+LineThree
 @Test '*' + lineSeparator() + '*' => *
 *

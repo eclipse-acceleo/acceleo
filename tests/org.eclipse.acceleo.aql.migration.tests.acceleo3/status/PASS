@@ -54,6 +54,7 @@ stringServices
 	'test'.tokenize()
 	'test'.at(2)
 	'test'.characters()
+	'lineOne' + lineSeparator() + 'lineTwo' + lineSeparator() + 'LineThree'.tokenizeLine()->sep(', ')
 	'*' + lineSeparator() + '*'
 	'a' + 'b'
 	'a' + 'b' + 'c'

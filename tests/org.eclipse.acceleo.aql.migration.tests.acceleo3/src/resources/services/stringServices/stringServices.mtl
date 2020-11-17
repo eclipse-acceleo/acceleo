@@ -64,7 +64,7 @@
 @Test 'test'.tokenize() => ['test'.tokenize()/]
 @Test 'test'.at(2) => ['test'.at(2)/]
 @Test 'test'.characters() => ['test'.characters()/]
-[comment]A4-UNSUPPORTED tokenizeLine[/comment]
+@Test 'lineOne' + lineSeparator() + 'lineTwo' + lineSeparator() + 'LineThree'.tokenizeLine()->sep(', ') => ['lineOne' + lineSeparator() + 'lineTwo' + lineSeparator() + 'LineThree'.tokenizeLine()->sep(', ')/]
 [comment]A4-UNSUPPORTED strtok[/comment]
 [comment]A4-UNSUPPORTED substituteFirst[/comment]
 [comment]A4-UNSUPPORTED replaceFirst[/comment]
