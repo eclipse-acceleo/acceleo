@@ -504,3 +504,4 @@
 @Test collections.oclAsSet() => abcefgabc
 @Test integers->min() => 1
 @Test reals->max() => 3.2
+

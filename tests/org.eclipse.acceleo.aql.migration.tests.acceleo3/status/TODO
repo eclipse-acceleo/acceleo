@@ -39,12 +39,14 @@ emfServices
 	 eSet
 	 eUnset
 sequencesServices
+	 [eClasses->iterate(cls : EClass; result : String = cls.name | cls.name.concat('.').concat(result))/]
 	 collectNested
 	 drop
 	 dropRight
 	 flatten
 	 product
 orderedSetsServices
+	 [eClasses->iterate(cls : EClass; result : String = cls.name | cls.name.concat('.').concat(result))/]
 	 collectNested
 	 drop
 	 dropRight

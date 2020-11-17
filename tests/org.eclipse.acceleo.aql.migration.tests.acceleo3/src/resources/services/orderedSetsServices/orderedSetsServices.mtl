@@ -531,6 +531,8 @@
 @Test collections.oclAsSet() => [collections.oclAsSet()/]
 @Test integers->min() => [integers->min()/]
 @Test reals->max() => [reals->max()/]
+
+[comment]A4-UNSUPPORTED [eClasses->iterate(cls : EClass; result : String = cls.name | cls.name.concat('.').concat(result))/][/comment]
 [comment]A4-UNSUPPORTED collectNested[/comment]
 [comment]IRRELEVANT-A4-UNSUPPORTED oclIsInvalid[/comment]
 [comment]IRRELEVANT-A4-DIFFERS: validation error instead of 'invalid' [strings.oclAsType(Integer)/][/comment]

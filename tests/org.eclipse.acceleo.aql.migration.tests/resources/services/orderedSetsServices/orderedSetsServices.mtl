@@ -511,6 +511,7 @@
                   @Test collections.oclAsSet() => [collections->asSequence()->collect(temp89 | temp89->asSet())/]
                   @Test integers->min() => [integers->min()/]
                   @Test reals->max() => [reals->max()/]
+                  
                 [/let]
               [/let]
             [/let]
