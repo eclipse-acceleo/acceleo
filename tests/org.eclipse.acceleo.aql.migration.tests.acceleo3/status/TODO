@@ -21,9 +21,7 @@ orderedSetsServices
 Unsupported in A4:
 ==================
 stringServices
-	 replaceFirst
 	 strtok
-	 substituteFirst
 acceleoServices
 	(LOT1) TODO implement getProperties
 numericServices

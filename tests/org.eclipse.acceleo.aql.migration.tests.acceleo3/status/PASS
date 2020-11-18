@@ -40,10 +40,10 @@ stringServices
 	'test'.lastIndex('t')
 	'test'.matches('test')
 	'test'.prefix('pre')
-	'test'.replace('te', 'ta')
+	'test test'.replace('te', 'ta')
 	'test'.startsWith('te')
 	'test'.startsWith('toto')
-	'test'.substitute('te', 'ta')
+	'test test'.substitute('te', 'ta')
 	'test'.substituteAll('t', 'z')
 	'test'.substring(2)
 	'test'.substring(2,3)
@@ -55,6 +55,8 @@ stringServices
 	'test'.at(2)
 	'test'.characters()
 	'lineOne' + lineSeparator() + 'lineTwo' + lineSeparator() + 'LineThree'.tokenizeLine()->sep(', ')
+	'test test'.substituteFirst('te', 'ta')
+	'test test'.replaceFirst('te', 'ta')
 	'*' + lineSeparator() + '*'
 	'a' + 'b'
 	'a' + 'b' + 'c'

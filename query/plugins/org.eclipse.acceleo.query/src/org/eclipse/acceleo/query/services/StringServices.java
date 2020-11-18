@@ -92,6 +92,29 @@ public class StringServices {
 		}
 	)
 	// @formatter:on
+	public String replaceFirst(String self, String regex, String replacement) {
+		return replace(self, regex, replacement);
+	}
+
+	// @formatter:off
+		@Documentation(
+			value = "Replaces the first substring of the current String that matches the regular expression \"regex\" " +
+		            "with the String \"replacement\".",
+			params = {
+				@Param(name = "self", value = "The current String."),
+				@Param(name = "regex", value = "The regular expression used to find the substring to replace in the current String."),
+				@Param(name = "replacement", value = "The replacement String.")
+			},
+			result = "Returns the resulting String of a substitution of the first substring matching the given regex by the given replacement",
+			exceptions = {
+				@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"regex\" or \"replacement\" is null."),
+				@Throw(type = PatternSyntaxException.class, value = "If the regular expression's syntax is invalid")
+			},
+			examples = {
+				@Example(expression = "'Hello'.replace('(.*)ll', 'Wh')", result = "'Who'")
+			}
+		)
+		// @formatter:on
 	public String replace(String self, String regex, String replacement) {
 		return nullToEmpty(self).replaceFirst(nullToEmpty(regex), nullToEmpty(replacement));
 	}
@@ -741,6 +764,25 @@ public class StringServices {
 	// @formatter:on
 	public Boolean strstr(String self, String r) {
 		return Boolean.valueOf(nullToEmpty(self).indexOf(nullToEmpty(r)) > -1);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Substitutes the first occurrence of the substring \"r\" in self by \"t\" and returns the resulting string." +
+		        " Will return self if it contains no occurrence of the substring r.",
+		params = {
+			@Param(name = "self", value = "The current String"),
+			@Param(name = "r", value = "The String to replace"),
+			@Param(name = "t", value = "The replacement String")
+		},
+		result = "A new String",
+		examples = {
+			@Example(expression = "'WorldWorld'.substitute('World', 'Hello')", result = "'HelloWorld'")
+		}
+	)
+	// @formatter:on
+	public String substituteFirst(String self, String r, String t) {
+		return substitute(self, r, t);
 	}
 
 	// @formatter:off

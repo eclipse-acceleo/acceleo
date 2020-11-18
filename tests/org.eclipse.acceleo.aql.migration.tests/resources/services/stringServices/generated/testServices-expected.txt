@@ -27,10 +27,10 @@
 @Test 'test'.lastIndex('t') => 4
 @Test 'test'.matches('test') => true
 @Test 'test'.prefix('pre') => pretest
-@Test 'test'.replace('te', 'ta') => tast
+@Test 'test test'.replace('te', 'ta') => tast test
 @Test 'test'.startsWith('te') => true
 @Test 'test'.startsWith('toto') => false
-@Test 'test'.substitute('te', 'ta') => tast
+@Test 'test test'.substitute('te', 'ta') => tast test
 @Test 'test'.substituteAll('t', 'z') => zesz
 @Test 'test'.substring(2) => est
 @Test 'test'.substring(2,3) => es
@@ -44,5 +44,7 @@
 @Test 'lineOne' + lineSeparator() + 'lineTwo' + lineSeparator() + 'LineThree'.tokenizeLine()->sep(', ') => lineOne
 lineTwo
 LineThree
+@Test 'test test'.substituteFirst('te', 'ta') => tast test
+@Test 'test test'.replaceFirst('te', 'ta') => tast test
 @Test '*' + lineSeparator() + '*' => *
 *

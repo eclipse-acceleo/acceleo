@@ -215,6 +215,15 @@ replaceAll()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+replaceFirst()
+* Description:
+replaceFirst(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String<br><br>Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".<br><br>  @param self<br>        The current String.<br>  @param regex<br>        The regular expression used to find the substring to replace in the current String.<br>  @param replacement<br>        The replacement String.<br><br>  @return<br>        Returns the resulting String of a substitution of the first substring matching the given regex by the given replacement<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "regex" or "replacement" is null.<br>  @throw java.util.regex.PatternSyntaxException<br>        If the regular expression's syntax is invalid<br><br>
+* Text:
+replaceFirst()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 size()
 * Description:
 size(self: java.lang.String) = Integer<br><br>Return the length of the current String.<br><br>  @param self<br>        The current String<br><br>  @return<br>        The length of the specified string<br><br>
@@ -265,6 +274,15 @@ substituteAll()
 substituteAll(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String<br><br>Substitutes all occurences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.<br><br>  @param self<br>        The current String<br>  @param r<br>        The String to replace<br>  @param t<br>        The replacement String<br><br>  @return<br>        A new String<br><br>
 * Text:
 substituteAll()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+substituteFirst()
+* Description:
+substituteFirst(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String<br><br>Substitutes the first occurrence of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.<br><br>  @param self<br>        The current String<br>  @param r<br>        The String to replace<br>  @param t<br>        The replacement String<br><br>  @return<br>        A new String<br><br>
+* Text:
+substituteFirst()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 
