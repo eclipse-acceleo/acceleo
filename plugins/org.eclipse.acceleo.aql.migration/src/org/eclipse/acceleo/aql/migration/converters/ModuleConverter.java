@@ -10,12 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.migration.converters;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.AcceleoFactory;
@@ -31,6 +37,7 @@ import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ProtectedArea;
@@ -50,10 +57,18 @@ import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.OperationCallExp;
@@ -87,6 +102,11 @@ public final class ModuleConverter extends AbstractConverter {
 	private final List<String> serviceClassToCopy = new ArrayList<>();
 
 	/**
+	 * The target folder {@link Path}.
+	 */
+	private final Path targetFolderPath;
+
+	/**
 	 * Creates the converter using the given module resolver.
 	 * 
 	 * @param moduleResolver
@@ -96,6 +116,7 @@ public final class ModuleConverter extends AbstractConverter {
 	 */
 	public ModuleConverter(IModuleResolver moduleResolver, Path targetFolderPath) {
 		this.moduleResolver = moduleResolver;
+		this.targetFolderPath = targetFolderPath;
 		expressionConverter = new ExpressionConverter(targetFolderPath);
 	}
 
@@ -197,7 +218,63 @@ public final class ModuleConverter extends AbstractConverter {
 		// add imports for invoke()
 		addInvokeImports(inputModule, outputModule);
 
+		for (Entry<Call, String> entry : expressionConverter.getJavaServiceCalls().entrySet()) {
+			if (isAmbiguousJavaServiceCall(outputModule, entry.getKey())) {
+				ASTParser parser = ASTParser.newParser(AST.JLS10);
+				final File javaFile = new File(targetFolderPath + FileSystems.getDefault().getSeparator()
+						+ entry.getValue().replace(".", FileSystems.getDefault().getSeparator()) + ".java");
+				if (javaFile.exists()) {
+					try {
+						final IDocument document = new Document(new String(Files.readAllBytes(javaFile
+								.toPath())));
+						parser.setSource(document.get().toCharArray());
+						parser.setKind(ASTParser.K_COMPILATION_UNIT);
+						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
+						cu.accept(new AmbiguousServiceMethodRefactorVisitor(document, entry.getKey()));
+						Files.write(javaFile.toPath(), document.get().getBytes(), StandardOpenOption.CREATE);
+						entry.getKey().setServiceName(entry.getKey().getServiceName()
+								+ ExpressionConverter.JAVA_SERVICE);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
 		return outputModule;
+	}
+
+	private boolean isAmbiguousJavaServiceCall(Module module, Call call) {
+		boolean res = false;
+
+		for (ModuleElement element : module.getModuleElements()) {
+			if (element instanceof Template) {
+				res = call.getServiceName().equals(((Template)element).getName()) && parameterMatch(call
+						.getArguments(), ((Template)element).getParameters());
+			} else if (element instanceof Query) {
+				res = call.getServiceName().equals(((Query)element).getName()) && parameterMatch(call
+						.getArguments(), ((Query)element).getParameters());
+			}
+			if (res) {
+				break;
+			}
+		}
+
+		return res;
+	}
+
+	private boolean parameterMatch(EList<Expression> arguments, EList<Variable> parameters) {
+		boolean res = true;
+
+		if (arguments.size() == parameters.size()) {
+			// TODO we should validate each expression and Variable type to see if they match
+			res = true;
+		} else {
+			res = false;
+		}
+
+		return res;
 	}
 
 	private void addInvokeImports(org.eclipse.acceleo.model.mtl.Module inputModule,

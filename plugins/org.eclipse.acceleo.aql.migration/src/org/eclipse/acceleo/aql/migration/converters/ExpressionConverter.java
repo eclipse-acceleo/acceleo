@@ -16,7 +16,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.ExpressionStatement;
@@ -55,20 +56,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EOperationImpl;
 import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.ReturnStatement;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ocl.ecore.BooleanLiteralExp;
@@ -90,8 +79,6 @@ import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
-import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.text.edits.TextEdit;
 
 /**
  * A converter dedicated to OCLExpressions.
@@ -100,71 +87,10 @@ import org.eclipse.text.edits.TextEdit;
  */
 public final class ExpressionConverter extends AbstractConverter {
 
-	private final class ServiceMethodRefactorVisitor extends ASTVisitor {
-
-		/**
-		 * The {@link IDocument} of the source code.
-		 */
-		private final IDocument document;
-
-		/**
-		 * The service name.
-		 */
-		private final String serviceName;
-
-		private ServiceMethodRefactorVisitor(IDocument document, String serviceName) {
-			this.document = document;
-			this.serviceName = serviceName;
-		}
-
-		@Override
-		public boolean visit(MethodDeclaration method) {
-			if (method.getName().getIdentifier().equals(serviceName) && method.parameters().isEmpty()) {
-				final ASTRewrite rewrite = ASTRewrite.create(method.getAST());
-
-				final MethodDeclaration newMethod = method.getAST().newMethodDeclaration();
-				// newMethod: <serviceModifiers> <serviceType> <serviceName>JavaService(Object object)
-				for (Object modifier : method.modifiers()) {
-					newMethod.modifiers().add(rewrite.createCopyTarget((ASTNode)modifier));
-				}
-				newMethod.setReturnType2((Type)rewrite.createCopyTarget(method.getReturnType2()));
-				newMethod.setName(newMethod.getAST().newSimpleName(serviceName + JAVA_SERVICE));
-				final SingleVariableDeclaration parameter = newMethod.getAST().newSingleVariableDeclaration();
-				parameter.setName(newMethod.getAST().newSimpleName("object"));
-				parameter.setType(newMethod.getAST().newSimpleType(newMethod.getAST().newName("Object")));
-				newMethod.parameters().add(parameter);
-
-				// newMethod body: return <serviceName>();
-				final Block body = newMethod.getAST().newBlock();
-				final ReturnStatement returnStatement = newMethod.getAST().newReturnStatement();
-				final MethodInvocation methodInvocation = newMethod.getAST().newMethodInvocation();
-				methodInvocation.setName(newMethod.getAST().newSimpleName(serviceName));
-				returnStatement.setExpression(methodInvocation);
-				body.statements().add(returnStatement);
-				newMethod.setBody(body);
-
-				// add the newMethod to the containing Class
-				final TypeDeclaration typeDeclaration = (TypeDeclaration)method.getParent();
-				final ListRewrite declarations = rewrite.getListRewrite(typeDeclaration,
-						TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
-				declarations.insertAfter(newMethod, method, null);
-				try {
-					final TextEdit edit = rewrite.rewriteAST(document, Collections.EMPTY_MAP);
-					edit.apply(document);
-				} catch (IllegalArgumentException | MalformedTreeException | BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-			return super.visit(method);
-		}
-	}
-
 	/**
 	 * The java service suffix.
 	 */
-	private static final String JAVA_SERVICE = "JavaService";
+	public static final String JAVA_SERVICE = "JavaService";
 
 	/**
 	 * The self variable.
@@ -187,6 +113,11 @@ public final class ExpressionConverter extends AbstractConverter {
 	private int varCount;
 
 	/**
+	 * The {@link Map} of Java service {@link Call} to there class qualified name.
+	 */
+	private Map<Call, String> javaServiceCalls = new HashMap<Call, String>();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param targetFolderPath
@@ -194,6 +125,15 @@ public final class ExpressionConverter extends AbstractConverter {
 	 */
 	public ExpressionConverter(Path targetFolderPath) {
 		this.targetFolderPath = targetFolderPath;
+	}
+
+	/**
+	 * Gets the {@link Map} of Java service {@link Call} to there class qualified name.
+	 * 
+	 * @return the {@link Map} of Java service {@link Call} to there class qualified name
+	 */
+	public Map<Call, String> getJavaServiceCalls() {
+		return javaServiceCalls;
 	}
 
 	/**
@@ -581,20 +521,22 @@ public final class ExpressionConverter extends AbstractConverter {
 		final String serviceName = serviceSignature.substring(0, serviceSignature.indexOf("("));
 		res.setServiceName(serviceName);
 		map(((CollectionLiteralExp)input.getArgument().get(2)).getPart(), res.getArguments());
+		final String serviceClassName = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
+				.getArgument().get(0)).getStringSymbol();
 		if (res.getArguments().isEmpty()) {
 			res.setServiceName(serviceName + JAVA_SERVICE);
 			final String varName = ((Query)input.eContainer()).getParameter().get(0).getName();
 			final VarRef varRef = AstFactory.eINSTANCE.createVarRef();
 			varRef.setVariableName(varName);
 			res.getArguments().add(varRef);
-			final String serviceClassName = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
-					.getArgument().get(0)).getStringSymbol();
 			try {
 				refactorService(serviceClassName, serviceName);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else {
+			javaServiceCalls.put(res, serviceClassName);
 		}
 
 		return res;
@@ -619,7 +561,7 @@ public final class ExpressionConverter extends AbstractConverter {
 			parser.setSource(document.get().toCharArray());
 			parser.setKind(ASTParser.K_COMPILATION_UNIT);
 			final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
-			cu.accept(new ServiceMethodRefactorVisitor(document, serviceName));
+			cu.accept(new ServiceWithNoParameterMethodRefactorVisitor(document, serviceName));
 			Files.write(javaFile.toPath(), document.get().getBytes(), StandardOpenOption.CREATE);
 		}
 	}
