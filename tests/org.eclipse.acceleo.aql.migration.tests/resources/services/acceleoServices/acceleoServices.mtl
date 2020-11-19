@@ -4,6 +4,7 @@
 [comment @main/]
 [template public test(p : ecore::EPackage)]
   [file ('acceleoServices', overwrite, 'UTF-8')]
+    @Test '\n' + '\t' + '\'' + '\\ ' + '\"' + '"' => ['\n' + '\t' + '\'' + '\\ ' + '"' + '"'/]
     @Test inligned special text => ['['/]
     @Test let OclAny to EObject => [let var = p]
       [var.oclAsType(ecore::EPackage).name/][/let]

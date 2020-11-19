@@ -66,6 +66,7 @@ stringServices
 	'a' + p.name + 'c'
 	'a' + p.name + 'c' + 'test'
 acceleoServices
+	'\n' + '\t' + '\'' + '\\ ' + '\"' + '"'
 	'['
 	let var : OclAny = self][var.oclAsType(EPackage).name/][/le
 	invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'})

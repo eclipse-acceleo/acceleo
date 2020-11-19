@@ -848,11 +848,28 @@ public class AstSerializer extends AstSwitch<Object> {
 
 		for (int i = 0; i < value.length(); i++) {
 			final char currentChar = value.charAt(i);
+			// TODO special UTF chars depending on the module encoding ?
 			switch (currentChar) {
-				case '\'':
+				case '\b':
+					res.append("\\b");
+					break;
+				case '\t':
+					res.append("\\t");
+					break;
+				case '\n':
+					res.append("\\n");
+					break;
+				case '\f':
+					res.append("\\f");
+					break;
+				case '\r':
+					res.append("\\r");
+					break;
 				case '\\':
-					res.append('\\');
-					res.append(currentChar);
+					res.append("\\\\");
+					break;
+				case '\'':
+					res.append("\\'");
 					break;
 				default:
 					res.append(currentChar);
