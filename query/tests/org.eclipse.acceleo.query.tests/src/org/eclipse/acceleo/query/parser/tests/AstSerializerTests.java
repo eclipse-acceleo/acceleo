@@ -150,6 +150,8 @@ public class AstSerializerTests {
 		res.add("1 - -1");
 		res.add("1 / -1");
 
+		res.add("('a' + 'b').toUpper()");
+
 		return res;
 	}
 

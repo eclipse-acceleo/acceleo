@@ -625,10 +625,12 @@ public class AstSerializer extends AstSwitch<Object> {
 		final boolean res;
 
 		final Integer precedence = OPERATOR_PRECEDENCE.get(call.getServiceName());
-		final Integer parentPrecedence;
-		if (call.eContainer() instanceof Call && ((Call)call.eContainer()).getArguments().get(0) == call) {
-			parentPrecedence = OPERATOR_PRECEDENCE.getOrDefault(((Call)call.eContainer()).getServiceName(),
-					-1);
+		Integer parentPrecedence;
+		if (call.eContainer() instanceof Call) {
+			parentPrecedence = OPERATOR_PRECEDENCE.get(((Call)call.eContainer()).getServiceName());
+			if (parentPrecedence == null && ((Call)call.eContainer()).getArguments().get(0) == call) {
+				parentPrecedence = -1;
+			}
 		} else {
 			parentPrecedence = null;
 		}
