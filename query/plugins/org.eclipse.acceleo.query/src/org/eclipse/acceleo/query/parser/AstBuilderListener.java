@@ -1147,7 +1147,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 		setPositions(errorStringLiteral, ctx.start, ctx.stop);
 
-		pushError(errorStringLiteral, "String literal is not properly closed by a simple-quote: " + text);
+		pushError(errorStringLiteral, "String literal is not properly closed by a simple-quote.");
 	}
 
 	@Override

@@ -1636,12 +1636,12 @@ public class BuildTest {
 		AstResult build = engine.build("'str");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorStringLiteral.class, 0, 0, 0, 4, 0, 4, ast);
+		assertExpression(build, ErrorStringLiteral.class, 0, 0, 0, 1, 0, 1, ast);
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("String literal is not properly closed by a simple-quote: 'str", build.getDiagnostic()
+		assertEquals("String literal is not properly closed by a simple-quote.", build.getDiagnostic()
 				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
@@ -1651,18 +1651,18 @@ public class BuildTest {
 		AstResult build = engine.build("self = 'str");
 		Expression ast = build.getAst();
 
-		assertExpression(build, Call.class, 0, 0, 0, 11, 0, 11, ast);
+		assertExpression(build, Call.class, 0, 0, 0, 8, 0, 8, ast);
 		assertEquals("equals", ((Call)ast).getServiceName());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, ErrorStringLiteral.class, 7, 0, 7, 11, 0, 11, ((Call)ast).getArguments().get(
+		assertExpression(build, ErrorStringLiteral.class, 7, 0, 7, 8, 0, 8, ((Call)ast).getArguments().get(
 				1));
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("String literal is not properly closed by a simple-quote: 'str", build.getDiagnostic()
+		assertEquals("String literal is not properly closed by a simple-quote.", build.getDiagnostic()
 				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
@@ -2992,6 +2992,17 @@ public class BuildTest {
 		assertExpression(build, StringLiteral.class, 24, 0, 24, 28, 0, 28, ((Call)ast).getArguments().get(1));
 		final StringLiteral arg1 = (StringLiteral)((Call)ast).getArguments().get(1);
 		assertEquals("name", arg1.getValue());
+	}
+
+	@Test()
+	public void escapedStrings() {
+		AstResult build = engine.build("'\\n' + '\\t' + '\\'' + '\\\\' + '\"'");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
+		assertEquals("add", ((Call)ast).getServiceName());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
 	}
 
 }
