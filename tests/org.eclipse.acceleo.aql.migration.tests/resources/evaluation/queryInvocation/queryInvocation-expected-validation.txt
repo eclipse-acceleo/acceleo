@@ -1,1 +1,1 @@
-WARNING Set(EClassifierLiteral=EAttribute) is incompatible with Sequence(EClassifier=EAttribute) - 458 576
+WARNING Set(EClassifier=EAttribute) is incompatible with Sequence(EClassifier=EAttribute) - 458 576

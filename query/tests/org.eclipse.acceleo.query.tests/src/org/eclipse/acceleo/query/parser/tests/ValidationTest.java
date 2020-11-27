@@ -23,6 +23,8 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
+import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -31,6 +33,7 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
+import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.services.ReceiverServices;
@@ -48,6 +51,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -989,6 +993,65 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
 		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void testLetBindingCompatibleTypeSequenceType() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar : Sequence(ecore::EClass) = Sequence{self} in newVar", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		IType collectionType = ((SequenceType)possibleType).getCollectionType();
+		assertTrue(collectionType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)collectionType).getType());
+		assertEquals(0, validationResult.getMessages().size());
+
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+		final Set<IType> bindingPossibleTypes = validator.getDeclarationTypes(queryEnvironment,
+				validationResult.getPossibleTypes(((Let)ast).getBindings().get(0).getType()));
+		it = bindingPossibleTypes.iterator();
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		collectionType = ((SequenceType)possibleType).getCollectionType();
+		assertTrue(collectionType instanceof EClassifierType);
+		assertFalse(collectionType instanceof EClassifierLiteralType);
+		assertFalse(collectionType instanceof EClassifierLiteralType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)collectionType).getType());
+	}
+
+	@Test
+	public void testLetBindingCompatibleTypeSetType() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar : OrderedSet(ecore::EClass) = OrderedSet{self} in newVar", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		IType collectionType = ((SetType)possibleType).getCollectionType();
+		assertTrue(collectionType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)collectionType).getType());
+		assertEquals(0, validationResult.getMessages().size());
+
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+		final Set<IType> bindingPossibleTypes = validator.getDeclarationTypes(queryEnvironment,
+				validationResult.getPossibleTypes(((Let)ast).getBindings().get(0).getType()));
+		it = bindingPossibleTypes.iterator();
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		collectionType = ((SetType)possibleType).getCollectionType();
+		assertTrue(collectionType instanceof EClassifierType);
+		assertFalse(collectionType instanceof EClassifierLiteralType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)collectionType).getType());
 	}
 
 	@Test

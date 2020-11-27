@@ -1276,6 +1276,18 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			} else if (iType instanceof ClassLiteralType) {
 				res.add(new ClassType(queryEnvironment, ((ClassLiteralType)iType).getType()));
+			} else if (iType instanceof SequenceType) {
+				final Set<IType> collectionTypes = Collections.singleton(((SequenceType)iType)
+						.getCollectionType());
+				for (IType collectionType : getDeclarationTypes(queryEnvironment, collectionTypes)) {
+					res.add(new SequenceType(queryEnvironment, collectionType));
+				}
+			} else if (iType instanceof SetType) {
+				final Set<IType> collectionTypes = Collections.singleton(((SetType)iType)
+						.getCollectionType());
+				for (IType collectionType : getDeclarationTypes(queryEnvironment, collectionTypes)) {
+					res.add(new SetType(queryEnvironment, collectionType));
+				}
 			} else {
 				res.add(iType);
 			}
