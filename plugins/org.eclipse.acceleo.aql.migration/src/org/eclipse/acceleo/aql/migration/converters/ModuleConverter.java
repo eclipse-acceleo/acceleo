@@ -60,8 +60,14 @@ import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
+import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -431,7 +437,7 @@ public final class ModuleConverter extends AbstractConverter {
 			// TODO manage implicit for block
 			throw new MigrationException(input);
 		}
-		binding.setInitExpression(expressionConverter.convertToExpression(input.getIterSet(), false));
+		binding.setInitExpression(getInitExpression(input));
 
 		// statements
 		final Block body = createBlock(output, input.getBody());
@@ -442,6 +448,36 @@ public final class ModuleConverter extends AbstractConverter {
 			output.setSeparator(expressionConverter.convertToExpression(each, false));
 		}
 		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
+	}
+
+	private org.eclipse.acceleo.Expression getInitExpression(ForBlock input) {
+		final org.eclipse.acceleo.Expression res;
+
+		final org.eclipse.acceleo.Expression initExpression = expressionConverter.convertToExpression(input
+				.getIterSet(), false);
+		if (input.getGuard() != null) {
+			final Call selectCall = AstFactory.eINSTANCE.createCall();
+			selectCall.setType(CallType.COLLECTIONCALL);
+			selectCall.setServiceName("select");
+			selectCall.getArguments().add(initExpression.getAst().getAst());
+
+			final Lambda lambda = AstFactory.eINSTANCE.createLambda();
+
+			final VariableDeclaration varDeclaration = AstFactory.eINSTANCE.createVariableDeclaration();
+			varDeclaration.setName(input.getLoopVariable().getName());
+			lambda.getParameters().add(varDeclaration);
+			final org.eclipse.acceleo.Expression guardExpression = expressionConverter.convertToExpression(
+					input.getGuard(), false);
+			lambda.setExpression(guardExpression.getAst().getAst());
+			selectCall.getArguments().add(lambda);
+
+			res = AcceleoFactory.eINSTANCE.createExpression();
+			res.setAst(new AstResult(selectCall, null, null, Diagnostic.OK_INSTANCE));
+		} else {
+			res = initExpression;
+		}
+
+		return res;
 	}
 
 	private List<Statement> caseIfBlock(IfBlock input) {
