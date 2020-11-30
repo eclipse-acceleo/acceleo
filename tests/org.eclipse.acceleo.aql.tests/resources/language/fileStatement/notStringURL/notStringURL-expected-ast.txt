@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [file url myParam (126..133) mode overwrite
-      some static text. true (151..168) (146..171)
-    [/file] (119..178) (116..179)
+      some static text. (newLineNeeded) (151..169) (146..171)
+    [/file] (119..178)
+     (newLineNeeded) (178..179) (116..179)
   [/template] (61..190) (0..190)

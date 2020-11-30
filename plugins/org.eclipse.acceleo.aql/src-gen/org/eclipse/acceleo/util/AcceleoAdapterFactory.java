@@ -53,6 +53,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.NamedElement;
+import org.eclipse.acceleo.NewLineStatement;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
@@ -377,6 +378,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseTextStatement(TextStatement object) {
 			return createTextStatementAdapter();
+		}
+
+		@Override
+		public Adapter caseNewLineStatement(NewLineStatement object) {
+			return createNewLineStatementAdapter();
 		}
 
 		@Override
@@ -1109,6 +1115,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTextStatementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.NewLineStatement <em>New Line Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.NewLineStatement
+	 * @generated
+	 */
+	public Adapter createNewLineStatementAdapter() {
 		return null;
 	}
 

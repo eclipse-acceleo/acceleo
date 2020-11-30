@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [protected .aqlFeatureAccess(notExisting, 'name') (131..147)
-      some static text. true (154..171) (149..174)
-    [/protected] (119..186) (116..187)
+      some static text. (newLineNeeded) (154..172) (149..174)
+    [/protected] (119..186)
+     (newLineNeeded) (186..187) (116..187)
   [/template] (61..198) (0..198)

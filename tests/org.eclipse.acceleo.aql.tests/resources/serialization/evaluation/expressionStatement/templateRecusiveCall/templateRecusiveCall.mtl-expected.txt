@@ -1,0 +1,17 @@
+[module recursiveTemplateInvocation('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public recursive_source_is_argument(c : ecore::EClass)]
+    [file ('recursive_template_invocation_is', overwrite)]
+        [c.recursive_is(true)/]
+    [/file]
+[/template]
+
+[template public recursive_is(c : ecore::EClass, b : Boolean)]
+    start
+    [if (not b)]
+        stop
+    [else]
+        continue [c.recursive_is(false)/]
+    [/if]
+[/template]

@@ -98,12 +98,21 @@ public class Synchronize {
 		// generated code
 		File a3Generated = new File(a3TestFolder, "generated");
 		File a4Generated = new File(a4TestFolder, "generated");
+		File a4GeneratedOrigin = new File(a4TestFolder, "generated-origin");
 		if (a3Generated.exists()) {
-			removeDirectory(a4Generated);
-			a4Generated.mkdir();
+			if (!a4Generated.exists()) {
+				a4Generated.mkdir();
+			}
+			removeDirectory(a4GeneratedOrigin);
+			a4GeneratedOrigin.mkdir();
 			for (File a3GeneratedFile : a3Generated.listFiles()) {
-				Files.copy(a3GeneratedFile.toPath(),
-						new File(a4Generated, a3GeneratedFile.getName() + "-expected.txt").toPath());
+				final File expectedFile = new File(a4Generated, a3GeneratedFile.getName() + "-expected.txt");
+				final File expectedOriginFile = new File(a4GeneratedOrigin,
+						a3GeneratedFile.getName() + "-expected.txt");
+				if (!expectedFile.exists()) {
+					Files.copy(a3GeneratedFile.toPath(), expectedFile.toPath());
+				}
+				Files.copy(a3GeneratedFile.toPath(), expectedOriginFile.toPath());
 			}
 		}
 	}

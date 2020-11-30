@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [for myVariable : java.lang.String = Sequence{'a', 'b', 'c', } (147..170) (125..170)
-      some static text. true (177..194) (172..197)
-    [/for] (119..203) (116..204)
+      some static text. (newLineNeeded) (177..195) (172..197)
+    [/for] (119..203)
+     (newLineNeeded) (203..204) (116..204)
   [/template] (61..215) (0..215)

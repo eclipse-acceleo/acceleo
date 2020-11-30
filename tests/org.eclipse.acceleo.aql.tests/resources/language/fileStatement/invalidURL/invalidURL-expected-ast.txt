@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [file url .add(.aqlFeatureAccess(notExisting, 'name'), '.txt') (126..151) mode overwrite
-      some static text. true (169..186) (164..189)
-    [/file] (119..196) (116..197)
+      some static text. (newLineNeeded) (169..187) (164..189)
+    [/file] (119..196)
+     (newLineNeeded) (196..197) (116..197)
   [/template] (61..208) (0..208)

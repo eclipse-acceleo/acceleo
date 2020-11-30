@@ -9,9 +9,11 @@ module myModule
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
       ['1
 2
-3' (184..193)/] false (183..195)
+3' (184..193)/] (183..195)
       [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (235..255) (201..255)
-        [.aqlFeatureAccess(myVariable, 'name') (277..292)/] true (276..294) (257..311)
-      [/for] (195..317) (178..320)
-    [/file] (137..327) (134..328)
+        [.aqlFeatureAccess(myVariable, 'name') (277..292)/] (newLineNeeded (276..295) (257..311)
+      [/for] (195..317)
+       (newLineNeeded) (317..318) (178..320)
+    [/file] (137..327)
+     (newLineNeeded) (327..328) (134..328)
   [/template] (79..339) (0..339)

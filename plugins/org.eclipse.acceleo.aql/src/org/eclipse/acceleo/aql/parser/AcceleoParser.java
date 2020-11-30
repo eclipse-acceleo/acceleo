@@ -66,6 +66,7 @@ import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.NewLineStatement;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
@@ -1399,6 +1400,7 @@ public class AcceleoParser {
 		final int startPosition = currentPosition;
 		boolean inlined = !text.startsWith(NEW_LINE, currentPosition)
 				&& headerStartLine == lines[currentPosition];
+		skipNewLine();
 		int beforeStatementPosition = currentPosition;
 		Statement statement = parseStatement(inlined, significantTextColumn);
 		int afterStatementPosition = currentPosition;
@@ -1410,6 +1412,8 @@ public class AcceleoParser {
 					if (onlyCommentsFromStart) {
 						inlined = !text.startsWith(NEW_LINE, currentPosition)
 								&& headerStartLine == lines[currentPosition];
+						// we skip the new line after a start of block header
+						skipNewLine();
 					}
 					if (lastLeafStatement != null) {
 						lastLeafStatement.setNewLineNeeded(lastLeafStatement.isNewLineNeeded() || (!inlined
@@ -1433,9 +1437,19 @@ public class AcceleoParser {
 			statement = parseStatement(inlined, significantTextColumn);
 			afterStatementPosition = currentPosition;
 		}
+		res.setInlined(inlined);
 		setPositions(res, startPosition, currentPosition);
 
 		return res;
+	}
+
+	/**
+	 * Skips the new line at current position if any, no operation otherwise.
+	 */
+	private void skipNewLine() {
+		if (text.startsWith(NEW_LINE, currentPosition)) {
+			currentPosition += NEW_LINE.length();
+		}
 	}
 
 	/**
@@ -2004,6 +2018,9 @@ public class AcceleoParser {
 				res.setNewLineNeeded(!inlined && text.startsWith(NEW_LINE, currentPosition));
 			}
 			res.setExpression(expression);
+			if (res.isNewLineNeeded()) {
+				currentPosition += NEW_LINE.length();
+			}
 			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
@@ -2153,15 +2170,82 @@ public class AcceleoParser {
 	 */
 	private TextStatement getSignificantTextStatement(int significantTextColumn, int endOfText) {
 		final TextStatement res;
-		// use the indentation
+
+		int localStartOfText = currentPosition;
+		if (columns[localStartOfText] == 0 && text.startsWith(NEW_LINE, localStartOfText)) {
+			final NewLineStatement newLineStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
+					.createNewLineStatement();
+			newLineStatement.setIndentationNeeded(false);
+			newLineStatement.setNewLineNeeded(true);
+			newLineStatement.setValue("");
+			currentPosition += NEW_LINE.length();
+			setPositions(newLineStatement, localStartOfText, currentPosition);
+			res = newLineStatement;
+		} else {
+			res = getNonEmptyLineTextStatement(significantTextColumn, endOfText);
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the significant {@link TextStatement} for indented text.
+	 * 
+	 * @param significantTextColumn
+	 *            the significant text column
+	 * @param endOfText
+	 *            the end of text
+	 * @return the significant {@link TextStatement} for indented text
+	 */
+	private TextStatement getNonEmptyLineTextStatement(int significantTextColumn, int endOfText) {
+		final TextStatement res;
+
 		int localStartOfText = currentPosition;
 		if (text.startsWith(NEW_LINE, localStartOfText)) {
-			localStartOfText = localStartOfText + NEW_LINE.length(); // skip the new line
+			if (columns[localStartOfText] > significantTextColumn) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
+				res.setNewLineNeeded(true);
+				res.setValue("");
+				currentPosition += NEW_LINE.length();
+				setPositions(res, localStartOfText, currentPosition);
+			} else {
+				currentPosition = currentPosition + NEW_LINE.length(); // skip the new line
+				res = getNonEmptyLineNonEmptyTextTextStatement(significantTextColumn, endOfText);
+			}
+		} else {
+			res = getNonEmptyLineNonEmptyTextTextStatement(significantTextColumn, endOfText);
 		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the non empty line {@link TextStatement}.
+	 * 
+	 * @param significantTextColumn
+	 *            the significant text column
+	 * @param endOfText
+	 *            the end of text
+	 * @return the non empty line {@link TextStatement}
+	 */
+	private TextStatement getNonEmptyLineNonEmptyTextTextStatement(int significantTextColumn, int endOfText) {
+		final TextStatement res;
+
+		int localStartOfText = currentPosition;
 		while (localStartOfText < endOfText && columns[localStartOfText] < significantTextColumn) {
 			localStartOfText++;
 		}
-		if (localStartOfText < endOfText) {
+		if (text.startsWith(NEW_LINE, localStartOfText)
+				&& columns[localStartOfText] == significantTextColumn) {
+			final NewLineStatement newLineStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
+					.createNewLineStatement();
+			newLineStatement.setIndentationNeeded(true);
+			newLineStatement.setNewLineNeeded(true);
+			newLineStatement.setValue("");
+			currentPosition = localStartOfText + NEW_LINE.length();
+			setPositions(newLineStatement, localStartOfText, currentPosition);
+			res = newLineStatement;
+		} else if (localStartOfText < endOfText) {
 			int localEndOfText = localStartOfText;
 			while (localEndOfText < endOfText && columns[localEndOfText] >= significantTextColumn) {
 				localEndOfText++;
@@ -2178,11 +2262,11 @@ public class AcceleoParser {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
 				res.setValue(text.substring(localStartOfText, localEndOfText));
 				res.setNewLineNeeded(needNewLine);
+				if (needNewLine) {
+					localEndOfText += NEW_LINE.length();
+				}
 				setPositions(res, localStartOfText, localEndOfText);
 				currentPosition = localEndOfText;
-				if (needNewLine) {
-					currentPosition++;
-				}
 			} else {
 				res = null;
 				currentPosition = localEndOfText;
@@ -2191,6 +2275,7 @@ public class AcceleoParser {
 			res = null;
 			currentPosition = endOfText;
 		}
+
 		return res;
 	}
 

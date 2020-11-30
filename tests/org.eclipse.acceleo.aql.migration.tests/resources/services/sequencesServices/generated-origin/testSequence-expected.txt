@@ -1,0 +1,507 @@
+  
+@Test mixed.toString() => ab11.1true
+@Test strings.toString() => abc
+@Test reals.toString() => 1.22.13.2
+@Test integers.toString() => 123
+@Test booleans.toString() => truefalsetrue
+@Test collections.toString() => abcefgabc
+  
+@Test mixed.oclIsTypeOf(String) => truetruefalsefalsefalse
+@Test strings.oclIsTypeOf(String) => truetruetrue
+@Test reals.oclIsTypeOf(Real) => truetruetrue
+@Test integers.oclIsTypeOf(Integer) => truetruetrue
+@Test booleans.oclIsTypeOf(Boolean) => truetruetrue
+@Test eClasses.oclIsTypeOf(EClass) => truetruetrue
+@Test eClasses.oclIsTypeOf(EClassifier) => falsefalsefalse
+  
+@Test mixed.oclIsKindOf(String) => truetruefalsefalsefalse
+@Test strings.oclIsKindOf(String) => truetruetrue
+@Test reals.oclIsKindOf(Real) => truetruetrue
+@Test integers.oclIsKindOf(Integer) => truetruetrue
+@Test booleans.oclIsKindOf(Boolean) => truetruetrue
+@Test eClasses.oclIsKindOf(EObject) => truetruetrue
+@Test eClasses.oclIsKindOf(EClass) => truetruetrue
+@Test eClasses.oclIsKindOf(EClassifier) => truetruetrue
+  
+@Test mixed -> last() => true
+@Test strings -> last() => c
+@Test reals -> last() => 3.2
+@Test integers -> last() => 3
+@Test booleans -> last() => true
+@Test eClasses -> last().name => AbstractClass
+@Test collections -> last() => abc
+  
+@Test mixed -> collect(t | t.toString()) => ab11.1true
+@Test strings -> collect(t | t.toString()) => abc
+@Test integers -> collect(t | t.toString()) => 123
+@Test booleans -> collect(t | t.toString()) => truefalsetrue
+@Test reals -> collect(t | t.toString()) => 1.22.13.2
+@Test eClasses -> collect(t | t.name) => ClasseAClasseBAbstractClass
+@Test collections -> collect(t | t.toString()) => abcefgabc
+  
+@Test mixed -> size() => 5
+@Test strings -> size() => 3
+@Test integers -> size() => 3
+@Test booleans -> size() => 3
+@Test reals -> size() => 3
+@Test eClasses -> size() => 3
+@Test collections -> size() => 3
+  
+@Test mixed -> notEmpty() => true
+@Test strings -> notEmpty() => true
+@Test integers -> notEmpty() => true
+@Test booleans -> notEmpty() => true
+@Test reals -> notEmpty() => true
+@Test eClasses -> notEmpty() => true
+@Test collections -> notEmpty() => true
+  
+@Test mixed -> isEmpty() => false
+@Test strings -> isEmpty() => false
+@Test integers -> isEmpty() => false
+@Test booleans -> isEmpty() => false
+@Test reals -> isEmpty() => false
+@Test eClasses -> isEmpty() => false
+@Test collections -> isEmpty() => false
+  
+@Test mixed -> reverse() => true1.11ba
+@Test strings -> reverse() => cba
+@Test integers -> reverse() => 321
+@Test booleans -> reverse() => truefalsetrue
+@Test reals -> reverse() => 3.22.11.2
+@Test eClasses -> reverse() -> collect(name) => AbstractClassClasseBClasseA
+@Test collections -> reverse() => abcefgabc
+  
+@Test mixed -> first() => a
+@Test strings -> first() => a
+@Test integers -> first() => 1
+@Test booleans -> first() => true
+@Test reals -> first() => 1.2
+@Test eClasses -> first().name => ClasseA
+@Test collections -> first() => abc
+  
+@Test mixed -> asSequence() => ab11.1true
+@Test strings -> asSequence() => abc
+@Test integers -> asSequence() => 123
+@Test booleans -> asSequence() => truefalsetrue
+@Test reals -> asSequence() => 1.22.13.2
+@Test eClasses -> asSequence() -> collect(name) => ClasseAClasseBAbstractClass
+@Test collections -> asSequence() => abcefgabc
+  
+@Test mixed -> asOrderedSet()  => ab11.1true
+@Test strings -> asOrderedSet()  => abc
+@Test integers -> asOrderedSet()  => 123
+@Test booleans -> asOrderedSet()  => truefalse
+@Test reals -> asOrderedSet()  => 1.22.13.2
+@Test eClasses -> asOrderedSet() -> collect(name) => ClasseAClasseBAbstractClass
+@Test collections -> asOrderedSet()  => abcefg
+  
+@Test mixed -> sep(',') => a,b,1,1.1,true
+@Test strings -> sep(',') => a,b,c
+@Test integers -> sep(',') => 1,2,3
+@Test booleans -> sep(',') => true,false,true
+@Test reals -> sep(',') => 1.2,2.1,3.2
+@Test collections -> sep(',') => abc,efg,abc
+  
+@Test mixed -> sep('{', ',', '}') => {a,b,1,1.1,true}
+@Test strings -> sep('{', ',', '}') => {a,b,c}
+@Test integers -> sep('{', ',', '}') => {1,2,3}
+@Test booleans -> sep('{', ',', '}') => {true,false,true}
+@Test reals -> sep('{', ',', '}') => {1.2,2.1,3.2}
+@Test collections -> sep('{', ',', '}') => {abc,efg,abc}
+  
+@Test mixed -> includesAll(Sequence{'a','b'}) => true
+@Test mixed -> includesAll(Sequence{'a','b','d'}) => false
+@Test strings -> includesAll(Sequence{'a','b'}) => true
+@Test strings -> includesAll(Sequence{'a','b','d'}) => false
+@Test integers -> includesAll(Sequence{1,2}) => true
+@Test integers -> includesAll(Sequence{1,2,4}) => false
+@Test booleans -> includesAll(Sequence{true,false}) => true
+@Test Sequence{false} -> includesAll(Sequence{true,false}) => false
+@Test reals -> includesAll(Sequence{1.2,2.1}) => true
+@Test reals -> includesAll(Sequence{1.2,2.3}) => false
+@Test collections -> includesAll(Sequence{Sequence{'a','b','c'}}) => true
+@Test collections -> includesAll(Sequence{Sequence{'a','b','d'}}) => false
+@Test collections -> includesAll(Sequence{'a','b','d'}) => false
+@Test eClasses -> includesAll(p.eClassifiers) => true
+@Test Sequence{p.eClassifiers->first()}-> includesAll(p.eClassifiers) => false
+  
+@Test mixed -> includes('z') => false
+@Test mixed -> includes('a') => true
+@Test strings -> includes('z') => false
+@Test strings -> includes('a') => true
+@Test integers -> includes(6) => false
+@Test integers -> includes(2) => true
+@Test Sequence{true,true} -> includes(false) => false
+@Test booleans -> includes(false) => true
+@Test reals -> includes(5.2) => false
+@Test reals -> includes(1.2) => true
+@Test eClasses -> includes(p.eClassifiers->first()) => true
+@Test Sequence{p.eClassifiers->first()} -> includes(p.eClassifiers->last()) => false
+@Test collections -> includes(Sequence{'a','b','c'}) => true
+@Test collections -> includes(Sequence{'z','b','c'}) => false
+  
+@Test mixed -> excludesAll(Sequence{'a','b'}) => false
+@Test mixed -> excludesAll(Sequence{'a','b','d'}) => false
+@Test strings -> excludesAll(Sequence{'a','b'}) => false
+@Test strings -> excludesAll(Sequence{'a','b','d'}) => false
+@Test integers -> excludesAll(Sequence{1,2}) => false
+@Test integers -> excludesAll(Sequence{1,2,4}) => false
+@Test booleans -> excludesAll(Sequence{true,false}) => false
+@Test Sequence{false} -> excludesAll(Sequence{true,false}) => false
+@Test reals -> excludesAll(Sequence{1.2,2.1}) => false
+@Test reals -> excludesAll(Sequence{1.2,2.3}) => false
+@Test collections -> excludesAll(Sequence{Sequence{'a','b','c'}}) => false
+@Test collections -> excludesAll(Sequence{Sequence{'a','b','d'}}) => true
+@Test collections -> excludesAll(Sequence{'a','b','d'}) => true
+@Test eClasses -> excludesAll(p.eClassifiers) => false
+@Test Sequence{p.eClassifiers->first()}-> excludesAll(p.eClassifiers) => false
+  
+@Test mixed -> excludes('z') => true
+@Test mixed -> excludes('a') => false
+@Test strings -> excludes('z') => true
+@Test strings -> excludes('a') => false
+@Test integers -> excludes(6) => true
+@Test integers -> excludes(2) => false
+@Test Sequence{true} -> excludes(false) => true
+@Test booleans -> excludes(false) => false
+@Test reals -> excludes(5.2) => true
+@Test reals -> excludes(1.2) => false
+@Test eClasses -> excludes(p.eClassifiers->first()) => false
+@Test Sequence{p.eClassifiers->first()} -> excludes(p.eClassifiers->last()) => true
+@Test collections -> excludes(Sequence{'a','b','c'}) => false
+@Test collections -> excludes(Sequence{'z','b','c'}) => true
+  
+@Test mixed -> union(Sequence{'a','b'}) => ab11.1trueab
+@Test mixed -> union(Sequence{'a','b','d'}) => ab11.1trueabd
+@Test strings -> union(Sequence{'a','b'}) => abcab
+@Test strings -> union(Sequence{'a','b','d'}) => abcabd
+@Test integers -> union(Sequence{1,2}) => 12312
+@Test integers -> union(Sequence{1,2,4}) => 123124
+@Test booleans -> union(Sequence{true,false}) => truefalsetruetruefalse
+@Test Sequence{false} -> union(Sequence{true,false}) => falsetruefalse
+@Test reals -> union(Sequence{1.2,2.1}) => 1.22.13.21.22.1
+@Test reals -> union(Sequence{1.2,2.3}) => 1.22.13.21.22.3
+@Test collections -> union(Sequence{Sequence{'a','b','c'}}) => abcefgabcabc
+@Test collections -> union(Sequence{Sequence{'a','b','d'}}) => abcefgabcabd
+@Test collections -> union(Sequence{'a','b','d'}) => abcefgabcabd
+@Test eClasses -> union(p.eClassifiers->asSequence()) -> collect(name) => ClasseAClasseBAbstractClassClasseAClasseBAbstractClass
+  
+@Test mixed -> count('z') => 0
+@Test mixed -> count('a') => 1
+@Test strings -> count('z') => 0
+@Test strings -> count('a') => 1
+@Test integers -> count(6) => 0
+@Test integers -> count(2) => 1
+@Test Sequence{true,true} -> count(false) => 0
+@Test booleans -> count(false) => 1
+@Test reals -> count(5.2) => 0
+@Test reals -> count(1.2) => 1
+@Test eClasses -> count(p.eClassifiers->first()) => 1
+@Test Sequence{p.eClassifiers->first()} -> count(p.eClassifiers->last()) => 0
+@Test collections -> count(Sequence{'a','b','c'}) => 2
+@Test collections -> count(Sequence{'z','b','c'}) => 0
+@Test mixed -> append('z') => ab11.1truez
+@Test mixed -> append('a') => ab11.1truea
+@Test strings -> append('z') => abcz
+@Test strings -> append('a') => abca
+@Test integers -> append(6) => 1236
+@Test integers -> append(2) => 1232
+@Test Sequence{true,true} -> append(false) => truetruefalse
+@Test booleans -> append(false) => truefalsetruefalse
+@Test reals -> append(5.2) => 1.22.13.25.2
+@Test reals -> append(1.2) => 1.22.13.21.2
+@Test eClasses -> append(p.eClassifiers->first()) -> collect(name) => ClasseAClasseBAbstractClassClasseA
+@Test Sequence{p.eClassifiers->first()} -> append(p.eClassifiers->last()) -> collect(name) => ClasseAAbstractClass
+@Test collections -> append(Sequence{'a','b','c'}) => abcefgabcabc
+@Test collections -> append(Sequence{'z','b','c'}) => abcefgabczbc
+  
+@Test mixed -> prepend('z') => zab11.1true
+@Test mixed -> prepend('a') => aab11.1true
+@Test strings -> prepend('z') => zabc
+@Test strings -> prepend('a') => aabc
+@Test integers -> prepend(6) => 6123
+@Test integers -> prepend(2) => 2123
+@Test Sequence{true,true} -> prepend(false) => falsetruetrue
+@Test booleans -> prepend(false) => falsetruefalsetrue
+@Test reals -> prepend(5.2) => 5.21.22.13.2
+@Test reals -> prepend(1.2) => 1.21.22.13.2
+@Test eClasses -> prepend(p.eClassifiers->first()) -> collect(name) => ClasseAClasseAClasseBAbstractClass
+@Test Sequence{p.eClassifiers->first()} -> prepend(p.eClassifiers->last()) -> collect(name) => AbstractClassClasseA
+@Test collections -> prepend(Sequence{'a','b','c'}) => abcabcefgabc
+@Test collections -> prepend(Sequence{'z','b','c'}) => zbcabcefgabc
+  
+@Test mixed -> insertAt(1,'z') => zab11.1true
+@Test mixed -> insertAt(1,'a') => aab11.1true
+@Test strings -> insertAt(1,'z') => zabc
+@Test strings -> insertAt(1,'a') => aabc
+@Test integers -> insertAt(1,6) => 6123
+@Test integers -> insertAt(1,2) => 2123
+@Test Sequence{true,true} -> insertAt(1,false) => falsetruetrue
+@Test booleans -> insertAt(1,false) => falsetruefalsetrue
+@Test reals -> insertAt(1,5.2) => 5.21.22.13.2
+@Test reals -> insertAt(1,1.2) => 1.21.22.13.2
+@Test eClasses -> insertAt(1,p.eClassifiers->first()) -> collect(name) => ClasseAClasseAClasseBAbstractClass
+@Test Sequence{p.eClassifiers->first()} -> insertAt(1,p.eClassifiers->last()) -> collect(name) => AbstractClassClasseA
+@Test collections -> insertAt(1,Sequence{'a','b','c'}) => abcabcefgabc
+@Test collections -> insertAt(1,Sequence{'z','b','c'}) => zbcabcefgabc
+  
+@Test mixed -> indexOf('a') => 1
+@Test strings -> indexOf('a') => 1
+@Test integers -> indexOf(2) => 2
+@Test booleans -> indexOf(false) => 2
+@Test reals -> indexOf(1.2) => 1
+@Test eClasses -> indexOf(p.eClassifiers->first()) => 1
+@Test collections -> indexOf(Sequence{'a','b','c'}) => 1
+  
+@Test mixed -> including('z') => ab11.1truez
+@Test mixed -> including('a') => ab11.1truea
+@Test strings -> including('z') => abcz
+@Test strings -> including('a') => abca
+@Test integers -> including(6) => 1236
+@Test integers -> including(2) => 1232
+@Test Sequence{true,true} -> including(false) => truetruefalse
+@Test booleans -> including(false) => truefalsetruefalse
+@Test reals -> including(5.2) => 1.22.13.25.2
+@Test reals -> including(1.2) => 1.22.13.21.2
+@Test eClasses -> including(p.eClassifiers->first()) -> collect(name) => ClasseAClasseBAbstractClassClasseA
+@Test Sequence{p.eClassifiers->first()} -> including(p.eClassifiers->last()) -> collect(name) => ClasseAAbstractClass
+@Test collections -> including(Sequence{'a','b','c'}) => abcefgabcabc
+@Test collections -> including(Sequence{'z','b','c'}) => abcefgabczbc
+  
+@Test mixed -> excluding('z') => ab11.1true
+@Test mixed -> excluding('a') => b11.1true
+@Test strings -> excluding('z') => abc
+@Test strings -> excluding('a') => bc
+@Test integers -> excluding(6) => 123
+@Test integers -> excluding(2) => 13
+@Test Sequence{true,true} -> excluding(false) => truetrue
+@Test booleans -> excluding(false) => truetrue
+@Test reals -> excluding(5.2) => 1.22.13.2
+@Test reals -> excluding(1.2) => 2.13.2
+@Test eClasses -> excluding(p.eClassifiers->first()) -> collect(name) => ClasseBAbstractClass
+@Test Sequence{p.eClassifiers->first()} -> excluding(p.eClassifiers->last()) -> collect(name) => ClasseA
+@Test collections -> excluding(Sequence{'a','b','c'}) => efg
+@Test collections -> excluding(Sequence{'z','b','c'}) => abcefgabc
+  
+@Test mixed -> at(1) => a
+@Test strings -> at(1) => a
+@Test integers -> at(1) => 1
+@Test booleans -> at(1) => true
+@Test reals -> at(1) => 1.2
+@Test eClasses -> at(1).name => ClasseA
+@Test collections -> at(1) => abc
+  
+@Test Sequence{'aaa','bb','ccccc'} -> sortedBy(t | t.size()) => bbaaaccccc
+@Test integers -> sortedBy(t | t) => 123
+@Test reals -> sortedBy(t | t) => 1.22.13.2
+@Test booleans -> sortedBy(t | t.toString()) => falsetruetrue
+@Test eClasses -> sortedBy(t | t.name) -> collect(name) => AbstractClassClasseAClasseB
+@Test Sequence{Sequence{'a','b','c'}, Sequence{'a','b'}} -> sortedBy(t | t->size()) => ababc
+  
+@Test integers -> sum() => 6
+@Test reals -> sum() => 6.5
+  
+@Test mixed -> exists(t | t = 'b') => true
+@Test mixed -> exists(t | t = 'z') => false
+@Test strings -> exists(t | t = 'b') => true
+@Test strings -> exists(t | t = 'z') => false
+@Test integers -> exists(t | t = 1) => true
+@Test integers -> exists(t | t = 4) => false
+@Test reals -> exists(t | t = 1.2) => true
+@Test reals -> exists(t | t = 4.2) => false
+@Test booleans -> exists(t | t = true) => true
+@Test eClasses -> exists(t | t.name = 'ClasseB') => true
+@Test collections -> exists(t | t.size() = 3) => false
+@Test collections -> exists(t | t.size() = 1) => false
+  
+@Test mixed -> select(t | t = 'b') => b
+@Test mixed -> select(t | t = 'z') => 
+@Test strings -> select(t | t = 'b') => b
+@Test strings -> select(t | t = 'z') => 
+@Test integers -> select(t | t = 1) => 1
+@Test integers -> select(t | t = 4) => 
+@Test reals -> select(t | t = 1.2) => 1.2
+@Test reals -> select(t | t = 4.2) => 
+@Test booleans -> select(t | t = true) => truetrue
+@Test eClasses -> select(t | t.name = 'ClasseB') -> collect(name) => ClasseB
+@Test collections -> select(t | t.size() = 3) => 
+@Test collections -> select(t | t.size() = 1) => 
+  
+@Test mixed -> reject(t | t = 'b') => a11.1true
+@Test mixed -> reject(t | t = 'z') => ab11.1true
+@Test strings -> reject(t | t = 'b') => ac
+@Test strings -> reject(t | t = 'z') => abc
+@Test integers -> reject(t | t = 1) => 23
+@Test integers -> reject(t | t = 4) => 123
+@Test reals -> reject(t | t = 1.2) => 2.13.2
+@Test reals -> reject(t | t = 4.2) => 1.22.13.2
+@Test booleans -> reject(t | t = true) => false
+@Test eClasses -> reject(t | t.name = 'ClasseB') -> collect(name) => ClasseAAbstractClass
+@Test collections -> reject(t | t.size() = 3) => abcefgabc
+@Test collections -> reject(t | t.size() = 1) => abcefgabc
+  
+@Test mixed -> forAll(t | t = 'b') => false
+@Test mixed -> forAll(t | t = 'z') => false
+@Test strings -> forAll(t | t = 'b') => false
+@Test strings -> forAll(t | t = 'z') => false
+@Test integers -> forAll(t | t = 1) => false
+@Test integers -> forAll(t | t = 4) => false
+@Test reals -> forAll(t | t = 1.2) => false
+@Test reals -> forAll(t | t = 4.2) => false
+@Test booleans -> forAll(t | t = true) => false
+@Test eClasses -> forAll(t | t.name = 'ClasseB') => false
+@Test collections -> forAll(t | t.size() = 3) => false
+@Test collections -> forAll(t | t.size() = 1) => false
+  
+@Test mixed -> any(t | t = 'b') => b
+@Test mixed -> any(t | t = 'z') => 
+@Test strings -> any(t | t = 'b') => b
+@Test strings -> any(t | t = 'z') => 
+@Test integers -> any(t | t = 1) => 1
+@Test integers -> any(t | t = 4) => 
+@Test reals -> any(t | t = 1.2) => 1.2
+@Test reals -> any(t | t = 4.2) => 
+@Test booleans -> any(t | t = true) => true
+@Test eClasses -> any(t | t.name = 'ClasseB') -> collect(name) => ClasseB
+@Test collections -> any(t | t.size() = 3) => 
+@Test collections -> any(t | t.size() = 1) => 
+  
+@Test mixed -> one(t | t = 'b') => true
+@Test mixed -> one(t | t = 'z') => false
+@Test strings -> one(t | t = 'b') => true
+@Test strings -> one(t | t = 'z') => false
+@Test integers -> one(t | t = 1) => true
+@Test integers -> one(t | t = 4) => false
+@Test reals -> one(t | t = 1.2) => true
+@Test reals -> one(t | t = 4.2) => false
+@Test booleans -> one(t | t = true) => false
+@Test eClasses -> one(t | t.name = 'ClasseB') => true
+@Test collections -> one(t | t.size() = 3) => false
+@Test collections -> one(t | t.size() = 1) => false
+  
+@Test mixed -> isUnique(toString()) => true
+@Test strings -> isUnique(toString()) => true
+@Test integers -> isUnique(toString()) => true
+@Test reals -> isUnique(toString()) => true
+@Test booleans -> isUnique(toString()) => false
+@Test eClasses -> isUnique(toString()) => true
+@Test collections -> isUnique(toString()) => false
+  
+@Test mixed -> oclIsUndefined() => false
+@Test strings -> oclIsUndefined() => false
+@Test integers -> oclIsUndefined() => false
+@Test booleans -> oclIsUndefined() => false
+@Test reals -> oclIsUndefined() => false
+@Test eClasses -> oclIsUndefined() => false
+@Test collections -> oclIsUndefined() => false
+@Test strings.oclIsUndefined() => falsefalsefalse
+@Test integers.oclIsUndefined() => falsefalsefalse
+@Test booleans.oclIsUndefined() => falsefalsefalse
+@Test reals.oclIsUndefined() => falsefalsefalse
+@Test eClasses.oclIsUndefined() => falsefalsefalse
+@Test collections.oclIsUndefined() => falsefalsefalse
+  
+@Test Sequence{p,'test',true,1,2.2} -> filter(EPackage) -> first() = p => true
+@Test Sequence{p,'test',true,1,2.2} -> filter(EClass) -> size() => 0
+@Test Sequence{p,'test',true,1,2.2} -> filter(String) => test
+@Test Sequence{p,'test',true,1,2.2} -> filter(Integer) => 1
+@Test Sequence{p,'test',true,1,2.2} -> filter(Boolean) => true
+@Test Sequence{p,'test',true,1,2.2} -> filter(Real) => 2.2
+  
+@Test mixed -> subSequence(1,2) => ab
+@Test strings -> subSequence(1,2) => ab
+@Test integers -> subSequence(1,2) => 12
+@Test reals -> subSequence(1,2) => 1.22.1
+@Test booleans -> subSequence(1,2) => truefalse
+@Test eClasses -> subSequence(1,2) -> collect(name) => ClasseAClasseB
+@Test collections -> subSequence(1,2) => abcefg
+@Test eClasses -> filter(EClass) -> closure(e : EClass | e.eSuperTypes->asSet()) -> collect(name) => AbstractClass
+@Test mixed -> removeAll(Sequence{'a','b'}) => 11.1true
+@Test mixed -> removeAll(Sequence{'a','b','d'}) => 11.1true
+@Test strings -> removeAll(Sequence{'a','b'}) => c
+@Test strings -> removeAll(Sequence{'a','b','d'}) => c
+@Test integers -> removeAll(Sequence{1,2}) => 3
+@Test integers -> removeAll(Sequence{1,2,4}) => 3
+@Test booleans -> removeAll(Sequence{true,false}) => 
+@Test Sequence{false} -> removeAll(Sequence{true,false}) => 
+@Test reals -> removeAll(Sequence{1.2,2.1}) => 3.2
+@Test reals -> removeAll(Sequence{1.2,2.3}) => 2.13.2
+@Test collections -> removeAll(Sequence{Sequence{'a','b','c'}}) => efg
+@Test collections -> removeAll(Sequence{Sequence{'a','b','d'}}) => abcefgabc
+@Test collections -> removeAll(Sequence{'a','b','d'}) => abcefgabc
+@Test eClasses -> removeAll(p.eClassifiers->asSequence()) -> collect(name) => 
+
+@Test mixed->selectByType(String) => ab
+@Test strings->selectByType(String) => abc
+@Test reals->selectByType(Real) => 1.22.13.2
+@Test integers->selectByType(Integer) => 123
+@Test booleans->selectByType(Boolean) => truefalsetrue
+@Test eClasses->selectByType(EClass) -> collect(name) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByType(EClassifier) -> collect(name) => 
+  
+@Test mixed->selectByKind(String) => ab
+@Test strings->selectByKind(String) => abc
+@Test reals->selectByKind(Real) => 1.22.13.2
+@Test integers->selectByKind(Integer) => 123
+@Test booleans->selectByKind(Boolean) => truefalsetrue
+@Test eClasses->selectByKind(EObject) -> collect(name) => targettargettarget
+@Test eClasses->selectByKind(EClass) -> collect(name) => ClasseAClasseBAbstractClass
+@Test eClasses->selectByKind(EClassifier) -> collect(name) => ClasseAClasseBAbstractClass
+
+@Test mixed -> addAll(Sequence{'a','b'}) => ab11.1trueab
+@Test mixed -> addAll(Sequence{'a','b','d'}) => ab11.1trueabd
+@Test strings -> addAll(Sequence{'a','b'}) => abcab
+@Test strings -> addAll(Sequence{'a','b','d'}) => abcabd
+@Test integers -> addAll(Sequence{1,2}) => 12312
+@Test integers -> addAll(Sequence{1,2,4}) => 123124
+@Test booleans -> addAll(Sequence{true,false}) => truefalsetruetruefalse
+@Test Sequence{false} -> addAll(Sequence{true,false}) => falsetruefalse
+@Test reals -> addAll(Sequence{1.2,2.1}) => 1.22.13.21.22.1
+@Test reals -> addAll(Sequence{1.2,2.3}) => 1.22.13.21.22.3
+@Test collections -> addAll(Sequence{Sequence{'a','b','c'}}) => abcefgabcabc
+@Test collections -> addAll(Sequence{Sequence{'a','b','d'}}) => abcefgabcabd
+@Test collections -> addAll(Sequence{'a','b','d'}) => abcefgabcabd
+@Test eClasses -> addAll(p.eClassifiers->asSequence()) -> collect(name) => ClasseAClasseBAbstractClassClasseAClasseBAbstractClass
+
+@Test integers -> startsWith(OrderedSet{1, 2}) => true
+@Test integers -> startsWith(OrderedSet{1, 1}) => true
+@Test integers -> startsWith(OrderedSet{1, 2}) => true
+@Test integers -> startsWith(OrderedSet{1, 1}) => true
+
+@Test mixed -> indexOfSlice(Sequence{'a','b'}) => 1
+@Test strings -> indexOfSlice(Sequence{'a','b'}) => 1
+@Test integers -> indexOfSlice(Sequence{1,2}) => 1
+@Test booleans -> indexOfSlice(Sequence{true,false}) => 1
+@Test reals -> indexOfSlice(Sequence{1.2,2.1}) => 1
+@Test eClasses -> indexOfSlice(p.eClassifiers) => 1
+
+@Test integers -> endsWith(OrderedSet{2, 3}) => true
+@Test integers -> endsWith(OrderedSet{1, 1}) => false
+@Test integers -> endsWith(OrderedSet{2, 3}) => true
+@Test integers -> endsWith(OrderedSet{1, 1}) => false
+
+@Test mixed -> append('a') -> lastIndexOf('a') => 6
+@Test strings -> append('a') -> lastIndexOf('a') => 4
+@Test integers -> append(2) -> lastIndexOf(2) => 4
+@Test booleans -> append(false) -> lastIndexOf(false) => 4
+@Test reals -> append(1.2) -> lastIndexOf(1.2) => 4
+@Test eClasses -> append(p.eClassifiers->first()) -> lastIndexOf(p.eClassifiers->first()) => 4
+@Test collections -> append(Sequence{'a','b','c'}) -> lastIndexOf(Sequence{'a','b','c'}) => 4
+
+@Test mixed -> lastIndexOfSlice(Sequence{'a','b'}) => 1
+@Test strings -> lastIndexOfSlice(Sequence{'a','b'}) => 1
+@Test integers -> lastIndexOfSlice(Sequence{1,2}) => 1
+@Test booleans -> lastIndexOfSlice(Sequence{true,false}) => 1
+@Test reals -> lastIndexOfSlice(Sequence{1.2,2.1}) => 1
+@Test eClasses -> lastIndexOfSlice(p.eClassifiers) => 1
+
+@Test mixed.oclAsSet() => ab11.1true
+@Test strings.oclAsSet() => abc
+@Test integers.oclAsSet() => 123
+@Test reals.oclAsSet() => 1.22.13.2
+@Test booleans.oclAsSet() => truefalsetrue
+@Test eClasses.oclAsSet() -> collect(name) => ClasseAClasseBAbstractClass
+@Test collections.oclAsSet() => abcefgabc
+@Test integers->min() => 1
+@Test reals->max() => 3.2
+

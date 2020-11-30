@@ -10,17 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.parser;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.acceleo.ASTNode;
-import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.BlockComment;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
-import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.FileStatement;
@@ -34,15 +33,14 @@ import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.NewLineStatement;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
-import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.util.AcceleoSwitch;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * Serializes {@link ASTNode}.
@@ -64,7 +62,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	/**
 	 * A new line.
 	 */
-	private static final char NEW_LINE = '\n';
+	private static final String NEW_LINE = "\n";
 
 	/**
 	 * A dummy {@link Object} to prevent switching in super types.
@@ -77,98 +75,24 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	private AstSerializer querySerializer = new AstSerializer();
 
 	/**
-	 * The resulting {@link IndentedStringBuilder}.
-	 */
-	private IndentedStringBuilder builder;
-
-	/**
 	 * The current binding separator.
 	 */
 	private String bindingSeparator;
 
-	private class IndentedStringBuilder {
-		/**
-		 * An on/off switch.
-		 */
-		private boolean enabled = true;
+	/**
+	 * The resulting {@link StringBuilder}.
+	 */
+	private StringBuilder builder;
 
-		/**
-		 * The current indentation.
-		 */
-		private int indentation;
+	/**
+	 * The current indentation.
+	 */
+	private String currentIndentation = "";
 
-		/**
-		 * The internal builder.
-		 */
-		private StringBuilder stringBuilder = new StringBuilder();
-
-		public void setEnabled(boolean enabled) {
-			this.enabled = enabled;
-		}
-
-		public void append(Object o) {
-			if (o instanceof TextStatement) {
-				String value = ((TextStatement)o).getValue();
-				EObject eContainer = ((TextStatement)o).eContainer();
-				boolean isLastOfABlock = eContainer instanceof Block && !(eContainer
-						.eContainer() instanceof ProtectedArea) && ((Block)eContainer).getStatements()
-								.indexOf(o) == (((Block)eContainer).getStatements().size() - 1);
-				if (!value.isEmpty() && value.charAt(value.length() - 1) == NEW_LINE && isLastOfABlock) {
-					append(value.substring(0, value.length() - 1));
-					stringBuilder.append(NEW_LINE);
-					stringBuilder.append(getIndentationString(indentation - 1));
-				} else {
-					append(value);
-				}
-			} else if (o instanceof Character) {
-				append((char)o);
-			} else {
-				String s = String.valueOf(o);
-				for (int i = 0; i < s.length(); i++) {
-					append(s.charAt(i));
-				}
-			}
-		}
-
-		public void append(char c) {
-			stringBuilder.append(c);
-			if (NEW_LINE == c) {
-				stringBuilder.append(getIndentationString(indentation));
-			}
-		}
-
-		private String getIndentationString(int count) {
-			if (!enabled) {
-				return "";
-			}
-			StringBuilder res = new StringBuilder();
-			for (int i = 0; i < count; i++) {
-				res.append(INDENTATION_SPACE);
-			}
-			return res.toString();
-		}
-
-		public int length() {
-			return stringBuilder.length();
-		}
-
-		public String substring(int i, int j) {
-			return stringBuilder.substring(i, j);
-		}
-
-		@Override
-		public String toString() {
-			return stringBuilder.toString();
-		}
-
-		public void indent() {
-			indentation++;
-		}
-
-		public void deindent() {
-			indentation--;
-		}
-	}
+	/**
+	 * The current block header start column.
+	 */
+	private int currentBlockHeaderStartColumn;
 
 	/**
 	 * Serializes the given {@link ASTNode}.
@@ -178,8 +102,10 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	 * @return the serialized {@link ASTNode}
 	 */
 	public String serialize(ASTNode node) {
-		builder = new IndentedStringBuilder();
+		builder = new StringBuilder();
 
+		currentIndentation = "";
+		updateCurrentBlockHeaderStartColumn();
 		doSwitch(node);
 
 		return builder.toString();
@@ -202,8 +128,31 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseBlock(Block block) {
-		for (Statement statement : block.getStatements()) {
-			doSwitch(statement);
+		final String savedIndentation = currentIndentation;
+		try {
+			final StringBuilder blockIndentation = new StringBuilder();
+			for (int i = 0; i < currentBlockHeaderStartColumn; i++) {
+				blockIndentation.append(SPACE);
+			}
+			if (block.isInlined()) {
+				currentIndentation = "";
+			} else {
+				if (block.getStatements().isEmpty()) {
+					currentIndentation = blockIndentation.toString();
+				} else {
+					currentIndentation = blockIndentation.toString() + INDENTATION_SPACE;
+				}
+				insertNewLine();
+			}
+			if (!block.getStatements().isEmpty()) {
+				for (int i = 0; i < block.getStatements().size() - 1; i++) {
+					doSwitch(block.getStatements().get(i));
+				}
+				currentIndentation = blockIndentation.toString();
+				doSwitch(block.getStatements().get(block.getStatements().size() - 1));
+			}
+		} finally {
+			currentIndentation = savedIndentation;
 		}
 
 		return DUMMY;
@@ -221,7 +170,6 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseComment(Comment comment) {
-		builder.append(NEW_LINE);
 		builder.append(AcceleoParser.COMMENT_START);
 		doSwitch(comment.getBody());
 		builder.append(AcceleoParser.COMMENT_END);
@@ -258,11 +206,15 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.EXPRESSION_STATEMENT_START);
 		doSwitch(expressionStatement.getExpression());
 		builder.append(AcceleoParser.EXPRESSION_STATEMENT_END);
+		if (expressionStatement.isNewLineNeeded()) {
+			insertNewLine();
+		}
 		return DUMMY;
 	}
 
 	@Override
 	public Object caseFileStatement(FileStatement fileStatement) {
+		updateCurrentBlockHeaderStartColumn();
 		builder.append(AcceleoParser.FILE_HEADER_START);
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		doSwitch(fileStatement.getUrl());
@@ -276,13 +228,14 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		}
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		builder.append(AcceleoParser.FILE_HEADER_END);
-		generateBlock(fileStatement.getBody());
+		doSwitch(fileStatement.getBody());
 		builder.append(AcceleoParser.FILE_END);
 		return DUMMY;
 	};
 
 	@Override
 	public Object caseForStatement(ForStatement forStatement) {
+		updateCurrentBlockHeaderStartColumn();
 		builder.append(AcceleoParser.FOR_HEADER_START);
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		bindingSeparator = AcceleoParser.PIPE;
@@ -298,7 +251,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		}
 		builder.append(AcceleoParser.FOR_HEADER_END);
-		generateBlock(forStatement.getBody());
+		doSwitch(forStatement.getBody());
 		builder.append(AcceleoParser.FOR_END);
 
 		return DUMMY;
@@ -306,13 +259,14 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseIfStatement(IfStatement ifStatement) {
+		updateCurrentBlockHeaderStartColumn();
 		builder.append(AcceleoParser.IF_HEADER_START);
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		doSwitch(ifStatement.getCondition());
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		builder.append(AcceleoParser.IF_HEADER_END);
 		if (ifStatement.getThen() != null) {
-			generateBlock(ifStatement.getThen());
+			doSwitch(ifStatement.getThen());
 		}
 		if (ifStatement.getElse() != null) {
 			final Block elseBlock = ifStatement.getElse();
@@ -330,6 +284,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	 *            the {@link Block}
 	 */
 	private void generateElse(Block block) {
+		updateCurrentBlockHeaderStartColumn();
 		if (block.getStatements().size() == 1 && block.getStatements().get(0) instanceof IfStatement) {
 			final IfStatement ifStatement = (IfStatement)block.getStatements().get(0);
 			builder.append(AcceleoParser.IF_ELSEIF);
@@ -337,14 +292,14 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 			doSwitch(ifStatement.getCondition());
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 			builder.append(AcceleoParser.IF_HEADER_END);
-			generateBlock(ifStatement.getThen());
+			doSwitch(ifStatement.getThen());
 			if (ifStatement.getElse() != null) {
 				final Block elseBlock = ifStatement.getElse();
 				generateElse(elseBlock);
 			}
 		} else {
 			builder.append(AcceleoParser.IF_ELSE);
-			generateBlock(block);
+			doSwitch(block);
 		}
 	}
 
@@ -353,17 +308,17 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.IMPORT_START);
 		doSwitch(imp.getModule());
 		builder.append(AcceleoParser.IMPORT_END);
-		builder.append(NEW_LINE);
 		return DUMMY;
 	}
 
 	@Override
 	public Object caseLetStatement(LetStatement letStatement) {
+		updateCurrentBlockHeaderStartColumn();
 		builder.append(AcceleoParser.LET_HEADER_START);
 		if (!letStatement.getVariables().isEmpty()) {
-			final IndentedStringBuilder previousBuilder = builder;
+			final StringBuilder previousBuilder = builder;
 			try {
-				builder = new IndentedStringBuilder();
+				builder = new StringBuilder();
 				bindingSeparator = AcceleoParser.EQUAL;
 				for (Binding binding : letStatement.getVariables()) {
 					doSwitch(binding);
@@ -376,21 +331,18 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 			}
 		}
 		builder.append(AcceleoParser.LET_HEADER_END);
-		generateBlock(letStatement.getBody());
+		doSwitch(letStatement.getBody());
 		builder.append(AcceleoParser.LET_END);
 
 		return DUMMY;
 	};
 
 	@Override
-	public Object caseErrorMetamodel(ErrorMetamodel object) {
-		return DUMMY;
-	}
-
-	@Override
 	public Object caseMetamodel(Metamodel metamodel) {
 		builder.append(AcceleoParser.QUOTE);
-		builder.append(metamodel.getReferencedPackage().getNsURI());
+		if (metamodel.getReferencedPackage() != null) {
+			builder.append(metamodel.getReferencedPackage().getNsURI());
+		}
 		builder.append(AcceleoParser.QUOTE);
 
 		return DUMMY;
@@ -400,14 +352,15 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	public Object caseModule(Module module) {
 		if (module.getDocumentation() != null) {
 			doSwitch(module.getDocumentation());
+			insertNewLine();
 		}
 		builder.append(AcceleoParser.MODULE_HEADER_START);
 		builder.append(module.getName());
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		if (!module.getMetamodels().isEmpty()) {
-			final IndentedStringBuilder previousBuilder = builder;
+			final StringBuilder previousBuilder = builder;
 			try {
-				builder = new IndentedStringBuilder();
+				builder = new StringBuilder();
 				for (Metamodel metamodel : module.getMetamodels()) {
 					doSwitch(metamodel);
 					builder.append(AcceleoParser.COMMA);
@@ -426,30 +379,44 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		}
 		builder.append(AcceleoParser.MODULE_HEADER_END);
 
-		if (!module.getModuleElements().isEmpty() || !module.getImports().isEmpty()) {
-			builder.append(NEW_LINE);
+		if (!module.getImports().isEmpty()) {
+			insertNewLine();
+			for (Import importedModule : module.getImports()) {
+				insertNewLine();
+				doSwitch(importedModule);
+			}
 		}
 
-		for (Import importedModule : module.getImports()) {
-			doSwitch(importedModule);
-		}
-
-		// @formatter:off
-		for (Iterator<ModuleElement> iterator = module.getModuleElements().iterator(); iterator.hasNext(); ) {
-			// @formatter:on
-			ModuleElement moduleElement = iterator.next();
-			if (moduleElement instanceof Query || moduleElement instanceof Template) {
-				builder.append(NEW_LINE);
+		final List<ModuleElement> moduleElements = getSignificantModuleElements(module);
+		final int numberOfElements = moduleElements.size();
+		int currentElementIndex = 0;
+		if (!moduleElements.isEmpty()) {
+			insertNewLine();
+			for (ModuleElement moduleElement : moduleElements) {
+				insertNewLine();
 				doSwitch(moduleElement);
-				if (iterator.hasNext()) {
-					builder.append(NEW_LINE);
+				currentElementIndex++;
+				if ((currentElementIndex < numberOfElements) && (moduleElement instanceof Template
+						|| moduleElement instanceof Query)) {
+					insertNewLine();
 				}
-			} else {
-				doSwitch(moduleElement);
 			}
 		}
 
 		return DUMMY;
+	}
+
+	private List<ModuleElement> getSignificantModuleElements(Module module) {
+		final List<ModuleElement> res = new ArrayList<ModuleElement>();
+
+		for (ModuleElement moduleElement : module.getModuleElements()) {
+			if (!(moduleElement instanceof Documentation) || ((Documentation)moduleElement)
+					.getDocumentedElement() == null) {
+				res.add(moduleElement);
+			}
+		}
+
+		return res;
 	}
 
 	@Override
@@ -457,7 +424,6 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.DOCUMENTATION_START);
 		doSwitch(moduleDocumentation.getBody());
 		builder.append(AcceleoParser.DOCUMENTATION_END);
-		builder.append(NEW_LINE);
 		return DUMMY;
 	}
 
@@ -466,7 +432,6 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.DOCUMENTATION_START);
 		doSwitch(moduleElementDocumentation.getBody());
 		builder.append(AcceleoParser.DOCUMENTATION_END);
-		builder.append(NEW_LINE);
 		return DUMMY;
 	}
 
@@ -478,6 +443,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseProtectedArea(ProtectedArea protectedArea) {
+		updateCurrentBlockHeaderStartColumn();
 		builder.append(AcceleoParser.PROTECTED_AREA_HEADER_START);
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		doSwitch(protectedArea.getId());
@@ -493,6 +459,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	public Object caseQuery(Query query) {
 		if (query.getDocumentation() != null) {
 			doSwitch(query.getDocumentation());
+			insertNewLine();
 		}
 		builder.append(AcceleoParser.QUERY_START);
 		builder.append(query.getVisibility());
@@ -500,9 +467,9 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(query.getName());
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		if (!query.getParameters().isEmpty()) {
-			final IndentedStringBuilder previousBuilder = builder;
+			final StringBuilder previousBuilder = builder;
 			try {
-				builder = new IndentedStringBuilder();
+				builder = new StringBuilder();
 				for (Variable parameter : query.getParameters()) {
 					doSwitch(parameter);
 					builder.append(AcceleoParser.COMMA);
@@ -533,16 +500,18 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	public Object caseTemplate(Template template) {
 		if (template.getDocumentation() != null) {
 			doSwitch(template.getDocumentation());
+			insertNewLine();
 		}
+		updateCurrentBlockHeaderStartColumn();
 		builder.append(AcceleoParser.TEMPLATE_HEADER_START);
 		builder.append(template.getVisibility());
 		builder.append(SPACE);
 		builder.append(template.getName());
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		if (!template.getParameters().isEmpty()) {
-			final IndentedStringBuilder previousBuilder = builder;
+			final StringBuilder previousBuilder = builder;
 			try {
-				builder = new IndentedStringBuilder();
+				builder = new StringBuilder();
 				for (Variable parameter : template.getParameters()) {
 					doSwitch(parameter);
 					builder.append(AcceleoParser.COMMA);
@@ -569,63 +538,18 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		}
 		builder.append(AcceleoParser.TEMPLATE_HEADER_END);
-		generateBlock(template.getBody());
+		doSwitch(template.getBody());
 		builder.append(AcceleoParser.TEMPLATE_END);
 
 		return DUMMY;
 	}
 
-	// NO FORMAT
-	// private void generateBlock(Block block) {
-	// for (Statement statement : block.getStatements()) {
-	// doSwitch(statement);
-	// }
-	// }
-
-	private void generateBlock(Block block) {
-		if (!block.getStatements().isEmpty()) {
-			builder.indent();
-			EObject container = block.eContainer();
-			if (container instanceof Template || isNewLineStatement(container)) {
-				builder.append(NEW_LINE);
-			}
-			Statement lastStatement = block.getStatements().get(block.getStatements().size() - 1);
-			for (Statement statement : block.getStatements()) {
-				doSwitch(statement);
-				if (statement.equals(lastStatement)) {
-					builder.deindent();
-				}
-				if (isNewLineStatement(statement) || statement instanceof IfStatement) {
-					builder.append(NEW_LINE);
-				}
-			}
-		}
-	}
-
-	private boolean isNewLineStatement(EObject eObject) {
-		boolean res = false;
-		switch (eObject.eClass().getClassifierID()) {
-			case AcceleoPackage.FILE_STATEMENT:
-				res = true;
-				break;
-			case AcceleoPackage.LET_STATEMENT:
-				res = true;
-				break;
-			case AcceleoPackage.FOR_STATEMENT:
-				res = true;
-				break;
-			case AcceleoPackage.PROTECTED_AREA:
-				res = true;
-				break;
-			default:
-				break;
-		}
-		return res;
-	}
-
 	@Override
 	public Object caseTextStatement(TextStatement textStatement) {
-		builder.append(textStatement);
+		builder.append(textStatement.getValue());
+		if (textStatement.isNewLineNeeded()) {
+			insertNewLine();
+		}
 		return DUMMY;
 	}
 
@@ -638,6 +562,40 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(querySerializer.serialize(variable.getType().getAst()));
 
 		return DUMMY;
+	}
+
+	@Override
+	public Object caseNewLineStatement(NewLineStatement newLineStatement) {
+		final int lastIndexOfNewLine = builder.lastIndexOf(NEW_LINE);
+		if (!newLineStatement.isIndentationNeeded()) {
+			if (builder.substring(lastIndexOfNewLine).trim().isEmpty()) {
+				builder.setLength(lastIndexOfNewLine + NEW_LINE.length());
+			} else {
+				builder.append(NEW_LINE);
+			}
+		}
+		insertNewLine();
+		return DUMMY;
+	}
+
+	/**
+	 * Inserts a new line.
+	 */
+	private void insertNewLine() {
+		builder.append(NEW_LINE);
+		builder.append(currentIndentation);
+	}
+
+	/**
+	 * Updates the current block header start column to the current position.
+	 */
+	private void updateCurrentBlockHeaderStartColumn() {
+		final int lastNewLineIndex = builder.lastIndexOf(NEW_LINE);
+		if (lastNewLineIndex <= 0) {
+			currentBlockHeaderStartColumn = builder.length();
+		} else {
+			currentBlockHeaderStartColumn = builder.length() - (lastNewLineIndex + NEW_LINE.length());
+		}
 	}
 
 }

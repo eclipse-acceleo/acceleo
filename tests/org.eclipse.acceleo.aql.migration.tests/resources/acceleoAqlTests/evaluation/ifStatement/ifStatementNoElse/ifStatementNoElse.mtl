@@ -2,7 +2,8 @@
 
 [template public myTemplate(myParam : ecore::EPackage)]
   [file (myParam.name + '.txt', overwrite)]
-    [if (false)]      then block.
+    [if (false)]
+            then block.
     [/if]
   [/file]
 [/template]

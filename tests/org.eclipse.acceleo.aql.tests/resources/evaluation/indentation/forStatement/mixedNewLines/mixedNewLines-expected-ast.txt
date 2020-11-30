@@ -1,0 +1,298 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main  (70..76) /] (61..78)
+  
+  public template myTemplate(myParam : EPackage (107..132))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
+      TextBefore1 (183..194)
+      ['
+' (195..199)/] (194..201)
+      TextBefore2  (201..213)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (253..273) (219..273)
+        [.aqlFeatureAccess(myVariable, 'name') (276..291)/] (275..293)
+        ['
+' (294..298)/] (293..300)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (301..326)/] (300..328) (275..328)
+      [/for] (213..334)
+       TextAfter1 (334..345)
+      ['
+' (346..350)/] (345..352)
+      TextAfter2 (newLineNeeded) (352..363)
+      NEW_LINE  (newLineNeeded) (363..364)
+      ******************************************************************************* (newLineNeeded) (368..448)
+      NEW_LINE  (newLineNeeded) (448..449)
+      TextBefore1 (453..464)
+      ['
+' (465..469)/] (464..471)
+      TextBefore2  (471..483)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (523..543) (489..543)
+        [.aqlFeatureAccess(myVariable, 'name') (583..598)/] (582..600)
+        ['
+' (601..605)/] (600..607)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (608..633)/] (607..635) (545..635)
+      [/for] (483..641)
+       TextAfter1 (641..652)
+      ['
+' (653..657)/] (652..659)
+      TextAfter2 (newLineNeeded) (659..670)
+      NEW_LINE  (newLineNeeded) (670..671)
+      ******************************************************************************* (newLineNeeded) (675..755)
+      NEW_LINE  (newLineNeeded) (755..756)
+      TextBefore1 (760..771)
+      ['
+' (772..776)/] (771..778)
+      TextBefore2  (778..790)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (830..850) (796..850)
+        [.aqlFeatureAccess(myVariable, 'name') (853..868)/] (852..870)
+        ['
+' (871..875)/] (870..877)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (878..903)/] (877..905)
+        
+                                   (905..940) (852..940)
+      [/for] (790..946)
+       TextAfter1 (946..957)
+      ['
+' (958..962)/] (957..964)
+      TextAfter2 (newLineNeeded) (964..975)
+      NEW_LINE  (newLineNeeded) (975..976)
+      ******************************************************************************* (newLineNeeded) (980..1060)
+      NEW_LINE  (newLineNeeded) (1060..1061)
+      TextBefore1 (1065..1076)
+      ['
+' (1077..1081)/] (1076..1083)
+      TextBefore2  (1083..1095)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (1135..1155) (1101..1155)
+        [.aqlFeatureAccess(myVariable, 'name') (1195..1210)/] (1194..1212)
+        ['
+' (1213..1217)/] (1212..1219)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (1220..1245)/] (newLineNeeded (1219..1248) (1157..1282)
+      [/for] (1095..1288)
+       TextAfter1 (1288..1299)
+      ['
+' (1300..1304)/] (1299..1306)
+      TextAfter2 (newLineNeeded) (1306..1317)
+      NEW_LINE  (newLineNeeded) (1317..1318)
+      ******************************************************************************* (newLineNeeded) (1322..1402)
+      NEW_LINE  (newLineNeeded) (1402..1403)
+      TextBefore1 (1407..1418)
+      ['
+' (1419..1423)/] (1418..1425)
+      TextBefore2  (1425..1437)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (1477..1497) (1443..1497)
+        [.aqlFeatureAccess(myVariable, 'name') (1500..1515)/] (1499..1517)
+        ['
+' (1518..1522)/] (1517..1524)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (1525..1550)/] (1524..1552) (1499..1552)
+      [/for] (1437..1558)
+       TextAfter1 (1558..1569)
+      ['
+' (1570..1574)/] (1569..1576)
+      TextAfter2 (newLineNeeded) (1576..1587)
+      NEW_LINE  (newLineNeeded) (1587..1588)
+      ******************************************************************************* (newLineNeeded) (1592..1672)
+      NEW_LINE  (newLineNeeded) (1672..1673)
+      TextBefore1 (1677..1688)
+      ['
+' (1689..1693)/] (1688..1695)
+      TextBefore2  (1695..1707)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (1747..1767) (1713..1767)
+        [.aqlFeatureAccess(myVariable, 'name') (1807..1822)/] (1806..1824)
+        ['
+' (1825..1829)/] (1824..1831)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (1832..1857)/] (1831..1859) (1769..1859)
+      [/for] (1707..1865)
+       TextAfter1 (1865..1876)
+      ['
+' (1877..1881)/] (1876..1883)
+      TextAfter2 (newLineNeeded) (1883..1894)
+      NEW_LINE  (newLineNeeded) (1894..1895)
+      ******************************************************************************* (newLineNeeded) (1899..1979)
+      NEW_LINE  (newLineNeeded) (1979..1980)
+      TextBefore1 (1984..1995)
+      ['
+' (1996..2000)/] (1995..2002)
+      TextBefore2  (2002..2014)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (2054..2074) (2020..2074)
+        [.aqlFeatureAccess(myVariable, 'name') (2077..2092)/] (2076..2094)
+        ['
+' (2095..2099)/] (2094..2101)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (2102..2127)/] (2101..2129)
+        
+                                   (2129..2164) (2076..2164)
+      [/for] (2014..2170)
+       TextAfter1 (2170..2181)
+      ['
+' (2182..2186)/] (2181..2188)
+      TextAfter2 (newLineNeeded) (2188..2199)
+      NEW_LINE  (newLineNeeded) (2199..2200)
+      ******************************************************************************* (newLineNeeded) (2204..2284)
+      NEW_LINE  (newLineNeeded) (2284..2285)
+      TextBefore1 (2289..2300)
+      ['
+' (2301..2305)/] (2300..2307)
+      TextBefore2  (2307..2319)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (2359..2379) (2325..2379)
+        [.aqlFeatureAccess(myVariable, 'name') (2419..2434)/] (2418..2436)
+        ['
+' (2437..2441)/] (2436..2443)
+        [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (2444..2469)/] (newLineNeeded (2443..2472) (2381..2506)
+      [/for] (2319..2512)
+       TextAfter1 (2512..2523)
+      ['
+' (2524..2528)/] (2523..2530)
+      TextAfter2 (newLineNeeded) (2530..2541)
+      NEW_LINE  (newLineNeeded) (2541..2542)
+      ******************************************************************************* (newLineNeeded) (2546..2626)
+      ******************************************************************************* (newLineNeeded) (2630..2710)
+      NEW_LINE  (newLineNeeded) (2710..2711)
+      BeforeTemplateCall  (2715..2734)
+      [.myOtherTemplate(myParam) (2735..2760)/] (2734..2762)
+       AfterTemplateCall (newLineNeeded) (2762..2781)
+      NEW_LINE  (newLineNeeded) (2781..2782) (178..2784)
+    [/file] (137..2791)
+     (newLineNeeded) (2791..2792) (134..2792)
+  [/template] (79..2803)
+  
+  public template myOtherTemplate(myParam : EPackage (2838..2863))
+      TextBefore1 (2868..2881)
+    ['
+' (2882..2886)/] (2881..2888)
+    TextBefore2  (2888..2900)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (2940..2960) (2906..2960)
+      [.aqlFeatureAccess(myVariable, 'name') (2963..2978)/] (2962..2980)
+      ['
+' (2981..2985)/] (2980..2987)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (2988..3013)/] (2987..3015) (2962..3015)
+    [/for] (2900..3021)
+     TextAfter1 (3021..3032)
+    ['
+' (3033..3037)/] (3032..3039)
+    TextAfter2 (newLineNeeded) (3039..3050)
+    NEW_LINE  (newLineNeeded) (3050..3051)
+      ******************************************************************************* (newLineNeeded) (3053..3135)
+    NEW_LINE  (newLineNeeded) (3135..3136)
+      TextBefore1 (3138..3151)
+    ['
+' (3152..3156)/] (3151..3158)
+    TextBefore2  (3158..3170)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (3210..3230) (3176..3230)
+      [.aqlFeatureAccess(myVariable, 'name') (3270..3285)/] (3269..3287)
+      ['
+' (3288..3292)/] (3287..3294)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (3295..3320)/] (3294..3322) (3232..3322)
+    [/for] (3170..3328)
+     TextAfter1 (3328..3339)
+    ['
+' (3340..3344)/] (3339..3346)
+    TextAfter2 (newLineNeeded) (3346..3357)
+    NEW_LINE  (newLineNeeded) (3357..3358)
+      ******************************************************************************* (newLineNeeded) (3360..3442)
+    NEW_LINE  (newLineNeeded) (3442..3443)
+      TextBefore1 (3445..3458)
+    ['
+' (3459..3463)/] (3458..3465)
+    TextBefore2  (3465..3477)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (3517..3537) (3483..3537)
+      [.aqlFeatureAccess(myVariable, 'name') (3540..3555)/] (3539..3557)
+      ['
+' (3558..3562)/] (3557..3564)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (3565..3590)/] (3564..3592)
+      
+                                   (3592..3627) (3539..3627)
+    [/for] (3477..3633)
+     TextAfter1 (3633..3644)
+    ['
+' (3645..3649)/] (3644..3651)
+    TextAfter2 (newLineNeeded) (3651..3662)
+    NEW_LINE  (newLineNeeded) (3662..3663)
+      ******************************************************************************* (newLineNeeded) (3665..3747)
+    NEW_LINE  (newLineNeeded) (3747..3748)
+      TextBefore1 (3750..3763)
+    ['
+' (3764..3768)/] (3763..3770)
+    TextBefore2  (3770..3782)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (3822..3842) (3788..3842)
+      [.aqlFeatureAccess(myVariable, 'name') (3882..3897)/] (3881..3899)
+      ['
+' (3900..3904)/] (3899..3906)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (3907..3932)/] (newLineNeeded (3906..3935) (3844..3969)
+    [/for] (3782..3975)
+     TextAfter1 (3975..3986)
+    ['
+' (3987..3991)/] (3986..3993)
+    TextAfter2 (newLineNeeded) (3993..4004)
+    NEW_LINE  (newLineNeeded) (4004..4005)
+      ******************************************************************************* (newLineNeeded) (4007..4089)
+    NEW_LINE  (newLineNeeded) (4089..4090)
+      TextBefore1 (4092..4105)
+    ['
+' (4106..4110)/] (4105..4112)
+    TextBefore2  (4112..4124)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (4164..4184) (4130..4184)
+      [.aqlFeatureAccess(myVariable, 'name') (4187..4202)/] (4186..4204)
+      ['
+' (4205..4209)/] (4204..4211)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (4212..4237)/] (4211..4239) (4186..4239)
+    [/for] (4124..4245)
+     TextAfter1 (4245..4256)
+    ['
+' (4257..4261)/] (4256..4263)
+    TextAfter2 (newLineNeeded) (4263..4274)
+    NEW_LINE  (newLineNeeded) (4274..4275)
+      ******************************************************************************* (newLineNeeded) (4277..4359)
+    NEW_LINE  (newLineNeeded) (4359..4360)
+      TextBefore1 (4362..4375)
+    ['
+' (4376..4380)/] (4375..4382)
+    TextBefore2  (4382..4394)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (4434..4454) (4400..4454)
+      [.aqlFeatureAccess(myVariable, 'name') (4494..4509)/] (4493..4511)
+      ['
+' (4512..4516)/] (4511..4518)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (4519..4544)/] (4518..4546) (4456..4546)
+    [/for] (4394..4552)
+     TextAfter1 (4552..4563)
+    ['
+' (4564..4568)/] (4563..4570)
+    TextAfter2 (newLineNeeded) (4570..4581)
+    NEW_LINE  (newLineNeeded) (4581..4582)
+      ******************************************************************************* (newLineNeeded) (4584..4666)
+    NEW_LINE  (newLineNeeded) (4666..4667)
+      TextBefore1 (4669..4682)
+    ['
+' (4683..4687)/] (4682..4689)
+    TextBefore2  (4689..4701)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (4741..4761) (4707..4761)
+      [.aqlFeatureAccess(myVariable, 'name') (4764..4779)/] (4763..4781)
+      ['
+' (4782..4786)/] (4781..4788)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (4789..4814)/] (4788..4816)
+      
+                                   (4816..4851) (4763..4851)
+    [/for] (4701..4857)
+     TextAfter1 (4857..4868)
+    ['
+' (4869..4873)/] (4868..4875)
+    TextAfter2 (newLineNeeded) (4875..4886)
+    NEW_LINE  (newLineNeeded) (4886..4887)
+      ******************************************************************************* (newLineNeeded) (4889..4971)
+    NEW_LINE  (newLineNeeded) (4971..4972)
+      TextBefore1 (4974..4987)
+    ['
+' (4988..4992)/] (4987..4994)
+    TextBefore2  (4994..5006)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (5046..5066) (5012..5066)
+      [.aqlFeatureAccess(myVariable, 'name') (5106..5121)/] (5105..5123)
+      ['
+' (5124..5128)/] (5123..5130)
+      [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (5131..5156)/] (newLineNeeded (5130..5159) (5068..5193)
+    [/for] (5006..5199)
+     TextAfter1 (5199..5210)
+    ['
+' (5211..5215)/] (5210..5217)
+    TextAfter2 (newLineNeeded) (5217..5228)
+    NEW_LINE  (newLineNeeded) (5228..5229) (2865..5229)
+  [/template] (2805..5240) (0..5240)

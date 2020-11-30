@@ -102,6 +102,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="statements" upperBound="-1"
         eType="#//Statement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inlined" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//ASTResult"/>
@@ -339,6 +341,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextStatement" eSuperTypes="#//LeafStatement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NewLineStatement" eSuperTypes="#//TextStatement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="indentationNeeded" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="ASTResult" instanceClassName="org.eclipse.acceleo.query.parser.AstResult"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ModuleQualifiedName" instanceClassName="java.lang.String"/>

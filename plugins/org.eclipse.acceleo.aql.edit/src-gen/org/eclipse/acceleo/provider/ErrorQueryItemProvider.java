@@ -494,8 +494,8 @@ public class ErrorQueryItemProvider extends ItemProviderAdapter implements IEdit
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createConditional()));
 
-		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL, AstFactory.eINSTANCE.createOr()));
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
+				AstFactory.eINSTANCE.createOr()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createAnd()));

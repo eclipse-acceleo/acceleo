@@ -16,5 +16,5 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
   guard .equals(.aqlFeatureAccess(myParam, 'name'), '') (118..135)
-    some static text. true (140..157) (137..158)
+    some static text. (newLineNeeded) (140..158) (137..158)
   [/template] (61..169) (0..169)

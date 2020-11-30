@@ -8,5 +8,5 @@ module myModule
   missing colon: -1
   missing type: 99
    (89..99))
-    some static text. true (104..121) (101..122)
+    some static text. (newLineNeeded) (104..122) (101..122)
   [/template] (61..133) (0..133)

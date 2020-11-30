@@ -8,7 +8,9 @@ module myModule
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
       [for myVariable : null = null (202..206) (189..206)
-        [myVariable (216..226)/] true (215..228) (208..233)
-      [/for] (183..239) (178..242)
-    [/file] (137..249) (134..250)
+        [myVariable (216..226)/] (newLineNeeded (215..229) (208..233)
+      [/for] (183..239)
+       (newLineNeeded) (239..240) (178..242)
+    [/file] (137..249)
+     (newLineNeeded) (249..250) (134..250)
   [/template] (79..261) (0..261)

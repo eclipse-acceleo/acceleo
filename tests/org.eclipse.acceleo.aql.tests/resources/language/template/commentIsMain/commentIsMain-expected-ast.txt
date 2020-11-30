@@ -6,5 +6,5 @@ module myModule
   
   public template myTemplate(myParam : EPackage (107..132))
   @main
-    some static text. true (137..154) (134..155)
+    some static text. (newLineNeeded) (137..155) (134..155)
   [/template] (79..166) (0..166)

@@ -318,8 +318,8 @@ public class ErrorVariableItemProvider extends ItemProviderAdapter implements IE
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createConditional()));
 
-		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL, AstFactory.eINSTANCE.createOr()));
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
+				AstFactory.eINSTANCE.createOr()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createAnd()));

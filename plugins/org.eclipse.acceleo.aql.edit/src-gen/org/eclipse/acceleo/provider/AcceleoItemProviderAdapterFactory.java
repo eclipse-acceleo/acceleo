@@ -1026,7 +1026,7 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 	 * This keeps track of the one adapter used for all {@link org.eclipse.acceleo.FileStatement} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected FileStatementItemProviderSpec fileStatementItemProvider;
 
@@ -1034,7 +1034,7 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 	 * This creates an adapter for a {@link org.eclipse.acceleo.FileStatement}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createFileStatementAdapter() {
@@ -1089,6 +1089,29 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 		}
 
 		return textStatementItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.eclipse.acceleo.NewLineStatement} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected NewLineStatementItemProvider newLineStatementItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.eclipse.acceleo.NewLineStatement}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createNewLineStatementAdapter() {
+		if (newLineStatementItemProvider == null) {
+			newLineStatementItemProvider = new NewLineStatementItemProvider(this);
+		}
+
+		return newLineStatementItemProvider;
 	}
 
 	/**
@@ -1278,6 +1301,8 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 			errorFileStatementItemProvider.dispose();
 		if (textStatementItemProvider != null)
 			textStatementItemProvider.dispose();
+		if (newLineStatementItemProvider != null)
+			newLineStatementItemProvider.dispose();
 	}
 
 }

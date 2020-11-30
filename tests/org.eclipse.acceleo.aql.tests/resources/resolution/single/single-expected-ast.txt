@@ -7,6 +7,7 @@ module m1
   public template t11(param1 : EPackage (94..118))
   @main
     [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (130..150) mode overwrite
-      generated from single.t11(EPackage) true (168..203) (163..206)
-    [/file] (123..213) (120..214)
+      generated from single.t11(EPackage) (newLineNeeded) (168..204) (163..206)
+    [/file] (123..213)
+     (newLineNeeded) (213..214) (120..214)
   [/template] (73..225) (0..225)

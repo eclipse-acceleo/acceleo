@@ -3,12 +3,10 @@
 [comment @main/]
 [template public testingIf(p : ecore::EPackage)]
   
-  [file ('testOneLine', overwrite)]
-    testOneLine[/file]
+  [file ('testOneLine', overwrite)]testOneLine[/file]
   
   
-  [file ('testNewLineBefore', overwrite)]
-    testNewLineBefore[/file]
+  [file ('testNewLineBefore', overwrite)]testNewLineBefore[/file]
   
   [file ('testNewLineAfter', overwrite)]
     testNewLineAfter

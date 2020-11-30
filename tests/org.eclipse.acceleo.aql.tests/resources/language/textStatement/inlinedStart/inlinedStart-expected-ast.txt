@@ -7,5 +7,5 @@ module myModule
       some static text 1.
   some static text 2.
   some static text 3.
- false (116..182) (116..182)
+ (116..182) (116..182)
   [/template] (61..193) (0..193)

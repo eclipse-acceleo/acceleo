@@ -8,6 +8,7 @@ module m1
   public template t11(param1 : EClass (119..141))
   @main
     [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (153..173) mode overwrite
-      [.aqlFeatureAccess(param1, 'name') (192..203)/] true (191..205) (186..208)
-    [/file] (146..215) (143..216)
+      [.aqlFeatureAccess(param1, 'name') (192..203)/] (newLineNeeded (191..206) (186..208)
+    [/file] (146..215)
+     (newLineNeeded) (215..216) (143..216)
   [/template] (98..227) (0..228)

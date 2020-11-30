@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [for myVariable : EString = Sequence{']', '', '', } (155..176) (125..176)
-      some static text. true (183..200) (178..203)
-    [/for] (119..209) (116..210)
+      some static text. (newLineNeeded) (183..201) (178..203)
+    [/for] (119..209)
+     (newLineNeeded) (209..210) (116..210)
   [/template] (61..221) (0..221)

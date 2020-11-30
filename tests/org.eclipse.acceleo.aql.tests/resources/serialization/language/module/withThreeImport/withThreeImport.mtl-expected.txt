@@ -1,0 +1,5 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import language::module::withThreeImport::importedModule/]
+[import language::module::withThreeImport::anotherImported/]
+[import language::module::withThreeImport::aThirdImported/]

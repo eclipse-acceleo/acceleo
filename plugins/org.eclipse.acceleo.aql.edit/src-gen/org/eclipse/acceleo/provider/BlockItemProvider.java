@@ -25,12 +25,14 @@ import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -63,8 +65,24 @@ public class BlockItemProvider extends ItemProviderAdapter implements IEditingDo
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addInlinedPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Inlined feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addInlinedPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Block_inlined_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Block_inlined_feature", "_UI_Block_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						AcceleoPackage.Literals.BLOCK__INLINED, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -116,7 +134,8 @@ public class BlockItemProvider extends ItemProviderAdapter implements IEditingDo
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Block_type"); //$NON-NLS-1$
+		Block block = (Block) object;
+		return getString("_UI_Block_type") + " " + block.isInlined(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -131,6 +150,9 @@ public class BlockItemProvider extends ItemProviderAdapter implements IEditingDo
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Block.class)) {
+		case AcceleoPackage.BLOCK__INLINED:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		case AcceleoPackage.BLOCK__STATEMENTS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
@@ -217,6 +239,9 @@ public class BlockItemProvider extends ItemProviderAdapter implements IEditingDo
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
 				AcceleoFactory.eINSTANCE.createTextStatement()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
+				AcceleoFactory.eINSTANCE.createNewLineStatement()));
 	}
 
 	/**

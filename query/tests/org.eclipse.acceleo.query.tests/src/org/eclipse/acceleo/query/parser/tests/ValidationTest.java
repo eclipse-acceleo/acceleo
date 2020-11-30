@@ -1021,7 +1021,6 @@ public class ValidationTest {
 		collectionType = ((SequenceType)possibleType).getCollectionType();
 		assertTrue(collectionType instanceof EClassifierType);
 		assertFalse(collectionType instanceof EClassifierLiteralType);
-		assertFalse(collectionType instanceof EClassifierLiteralType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)collectionType).getType());
 	}
 

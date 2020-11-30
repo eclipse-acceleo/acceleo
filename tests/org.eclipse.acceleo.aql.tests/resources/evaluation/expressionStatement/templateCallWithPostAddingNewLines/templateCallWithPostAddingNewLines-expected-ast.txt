@@ -7,13 +7,14 @@ module myModule
   public template myTemplate(myParam : EPackage (107..132))
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      [.myOtherTemplate(myParam) (184..209)/] true (183..211) (178..214)
-    [/file] (137..221) (134..222)
+      [.myOtherTemplate(myParam) (184..209)/] (newLineNeeded (183..212) (178..214)
+    [/file] (137..221)
+     (newLineNeeded) (221..222) (134..222)
   [/template] (79..233)
   
   public template myOtherTemplate(myParam : EPackage (268..293))
   post .add(.toUpper(self), '
 
 ') (300..323)
-    [.aqlFeatureAccess(myParam, 'name') (329..341)/] true (328..343) (325..344)
+    [.aqlFeatureAccess(myParam, 'name') (329..341)/] (newLineNeeded (328..344) (325..344)
   [/template] (235..355) (0..355)

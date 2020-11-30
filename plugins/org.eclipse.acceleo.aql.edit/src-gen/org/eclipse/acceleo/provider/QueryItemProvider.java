@@ -324,8 +324,8 @@ public class QueryItemProvider extends ModuleElementItemProvider {
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createConditional()));
 
-		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL, AstFactory.eINSTANCE.createOr()));
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
+				AstFactory.eINSTANCE.createOr()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createAnd()));

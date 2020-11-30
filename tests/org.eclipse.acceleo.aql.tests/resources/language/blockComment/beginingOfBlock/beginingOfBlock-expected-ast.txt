@@ -7,5 +7,6 @@ module myModule
     [blockComment][comment 
   a block comment
  (125..144) /] (116..154)
-    some static text. true (158..175) (116..176)
+    NEW_LINE  (newLineNeeded) (155..156)
+    some static text. (newLineNeeded) (158..176) (116..176)
   [/template] (61..187) (0..187)

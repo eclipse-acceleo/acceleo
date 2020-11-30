@@ -2,11 +2,9 @@
 
 [comment @main/]
 [template public recursive_source_is_argument(c : ecore::EClass)]
-  [file ('recursive_template_invocation_is', overwrite)]
-    [c.recursive_is(true)/][/file]
+  [file ('recursive_template_invocation_is', overwrite)][c.recursive_is(true)/][/file]
   
-  [file ('recursive_template_invocation_not', overwrite)]
-    [c.recursive_not(true)/][/file]
+  [file ('recursive_template_invocation_not', overwrite)][c.recursive_not(true)/][/file]
 [/template]
 
 [template public recursive_is(c : ecore::EClass, b : Boolean)]

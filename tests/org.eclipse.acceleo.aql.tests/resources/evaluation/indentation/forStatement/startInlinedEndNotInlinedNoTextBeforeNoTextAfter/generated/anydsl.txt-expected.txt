@@ -1,0 +1,26 @@
+first line
+World
+    MultiNamedElement
+    NamedElement
+    Producer
+    Adress
+    Company
+    ProductionCompany
+    Restaurant
+    Chef
+    Recipe
+    Food
+    Source
+    Plant
+    Animal
+    Color
+    Caliber
+    Group
+    Continent
+    Kind
+    Part
+    CountryData
+    SingleString
+    EStringToRecipeMap
+    
+last line

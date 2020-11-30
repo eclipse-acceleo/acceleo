@@ -1,0 +1,3 @@
+first line
+BEFORE_TEXT  AFTER_TEXT
+last line

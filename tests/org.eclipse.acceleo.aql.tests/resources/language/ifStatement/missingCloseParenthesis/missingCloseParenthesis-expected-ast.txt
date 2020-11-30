@@ -10,6 +10,7 @@ module myModule
     missing end header: -1
     missing end: -1
     [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (124..156)
-      some static text. true (162..179) (157..182)
-    [/if] (119..187) (116..188)
+      some static text. (newLineNeeded) (162..180) (157..182)
+    [/if] (119..187)
+     (newLineNeeded) (187..188) (116..188)
   [/template] (61..199) (0..199)

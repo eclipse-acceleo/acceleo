@@ -1,0 +1,12 @@
+@Test 'test'.oclAsType(String) => test
+@Test 'test'.oclIsUndefined() => false
+@Test 'test'.oclIsTypeOf(String) => true
+@Test 'test'.oclIsTypeOf(EPackage) => false
+@Test 'test'.oclIsKindOf(String) => true
+@Test 'test'.oclIsKindOf(EPackage) => false
+@Test 'test' <> 'toto' => true
+@Test 'test' <> 'test' => false
+@Test 'test' = 'toto' => false
+@Test 'test' = 'test' => true
+@Test 'test'.toString() => test
+@Test 'test'.oclAsSet() => test

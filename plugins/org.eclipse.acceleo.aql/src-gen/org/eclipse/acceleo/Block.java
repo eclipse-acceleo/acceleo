@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link org.eclipse.acceleo.Block#getStatements <em>Statements</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.Block#isInlined <em>Inlined</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getBlock()
@@ -45,5 +46,27 @@ public interface Block extends ASTNode {
 	 * @generated
 	 */
 	EList<Statement> getStatements();
+
+	/**
+	 * Returns the value of the '<em><b>Inlined</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Inlined</em>' attribute.
+	 * @see #setInlined(boolean)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getBlock_Inlined()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isInlined();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.Block#isInlined <em>Inlined</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Inlined</em>' attribute.
+	 * @see #isInlined()
+	 * @generated
+	 */
+	void setInlined(boolean value);
 
 } // Block

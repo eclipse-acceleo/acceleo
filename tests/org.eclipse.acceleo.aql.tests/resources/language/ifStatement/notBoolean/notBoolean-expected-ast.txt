@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [if .aqlFeatureAccess(myParam, 'name') (124..136)
-      some static text. true (143..160) (138..163)
-    [/if] (119..168) (116..169)
+      some static text. (newLineNeeded) (143..161) (138..163)
+    [/if] (119..168)
+     (newLineNeeded) (168..169) (116..169)
   [/template] (61..180) (0..180)

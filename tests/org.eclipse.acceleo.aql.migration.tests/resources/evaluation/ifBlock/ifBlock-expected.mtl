@@ -16,28 +16,36 @@
   [/file]
   [file ('testElseif', overwrite)]
     [for (c : ecore::EClass | p.eClassifiers)]
-      [if (c.name = 'ClasseA')]Class name is ClasseA.
-      [elseif (c.name = 'ClasseB')]Class name is ClasseB.
+      [if (c.name = 'ClasseA')]
+        Class name is ClasseA.
+      [elseif (c.name = 'ClasseB')]
+        Class name is ClasseB.
       [/if]
     [/for]
   [/file]
   [file ('testCompleteIf', overwrite)]
     [for (c : ecore::EClass | p.eClassifiers)]
-      [if (c.name = 'ClasseA')]Class name is ClasseA.
-      [elseif (c.name = 'ClasseB')]Class name is ClasseB.
-      [else]Class name is different from ClasseA and ClasseB.
+      [if (c.name = 'ClasseA')]
+        Class name is ClasseA.
+      [elseif (c.name = 'ClasseB')]
+        Class name is ClasseB.
+      [else]
+        Class name is different from ClasseA and ClasseB.
       [/if]
     [/for]
   [/file]
   [file ('testNestedIf', overwrite)]
     [for (c : ecore::EClass | p.eClassifiers)]
-      [if (c.name = 'ClasseA')]Class name is A.
+      [if (c.name = 'ClasseA')]
+        Class name is A.
         				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
         
-      [elseif (c.name = 'ClasseB')]Class name is B.
+      [elseif (c.name = 'ClasseB')]
+        Class name is B.
         				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
         
-      [else]Class name is different.
+      [else]
+        Class name is different.
         				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
         
       [/if]

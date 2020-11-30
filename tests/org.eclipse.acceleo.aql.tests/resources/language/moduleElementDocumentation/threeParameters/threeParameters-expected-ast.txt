@@ -31,5 +31,5 @@ module myModule
  * @param myParam2 the input2 EPackage
 * (218..216) /] (61..218)
   public template myTemplate(myParam : EPackage (247..272), myParam1 : EPackage (273..299), myParam2 : EPackage (300..326))
-    some static text. true (331..348) (328..349)
+    some static text. (newLineNeeded) (331..349) (328..349)
   [/template] (219..360) (0..360)

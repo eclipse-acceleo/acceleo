@@ -6,6 +6,7 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     [let 
     myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (158..187) (124..187)
-      [.aqlFeatureAccess(myVariable, 'name') (194..209)/] true (193..211) (188..214)
-    [/let] (119..220) (116..221)
+      [.aqlFeatureAccess(myVariable, 'name') (194..209)/] (newLineNeeded (193..212) (188..214)
+    [/let] (119..220)
+     (newLineNeeded) (220..221) (116..221)
   [/template] (61..232) (0..232)

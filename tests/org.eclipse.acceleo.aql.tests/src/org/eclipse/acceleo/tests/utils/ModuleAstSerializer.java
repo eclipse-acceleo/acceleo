@@ -45,6 +45,7 @@ import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.NewLineStatement;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
@@ -84,6 +85,12 @@ import org.eclipse.emf.ecore.EClassifier;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class ModuleAstSerializer extends AcceleoSwitch<Void> {
+
+	/**
+	 * The space character.
+	 */
+	private static final String SPACE = " ";
+
 	/** Prefix we'll use for the error messages on missing names. */
 	private static final String MISSING_NAME_MESSAGE_PREFIX = "missing name: ";
 
@@ -858,7 +865,18 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append(text.getValue().replaceAll("\r\n",
 				AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation).replaceAll("\r",
 						AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation));
-		builder.append(" " + text.isNewLineNeeded());
+		if (text.isNewLineNeeded()) {
+			builder.append(" (newLineNeeded)");
+		}
+		return null;
+	}
+
+	@Override
+	public Void caseNewLineStatement(NewLineStatement newLineStatement) {
+		builder.append("NEW_LINE ");
+		if (newLineStatement.isIndentationNeeded()) {
+			builder.append("(indentationNeeded)" + SPACE);
+		}
 		return null;
 	}
 
@@ -867,7 +885,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append('[');
 		doSwitch(expressionStatement.getExpression());
 		builder.append("/]");
-		builder.append(" " + expressionStatement.isNewLineNeeded());
+		if (expressionStatement.isNewLineNeeded()) {
+			builder.append(" (newLineNeeded");
+		}
 
 		return null;
 	}

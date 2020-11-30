@@ -427,6 +427,15 @@ public interface AcceleoFactory extends EFactory {
 	TextStatement createTextStatement();
 
 	/**
+	 * Returns a new object of class '<em>New Line Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>New Line Statement</em>'.
+	 * @generated
+	 */
+	NewLineStatement createNewLineStatement();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

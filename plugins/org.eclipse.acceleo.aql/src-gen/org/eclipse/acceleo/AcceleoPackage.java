@@ -1335,13 +1335,22 @@ public interface AcceleoPackage extends EPackage {
 	int BLOCK__STATEMENTS = AST_NODE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Inlined</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__INLINED = AST_NODE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Block</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BLOCK_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 1;
+	int BLOCK_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Block</em>' class.
@@ -3341,6 +3350,61 @@ public interface AcceleoPackage extends EPackage {
 	int TEXT_STATEMENT_OPERATION_COUNT = LEAF_STATEMENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.impl.NewLineStatementImpl <em>New Line Statement</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.impl.NewLineStatementImpl
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getNewLineStatement()
+	 * @generated
+	 */
+	int NEW_LINE_STATEMENT = 51;
+
+	/**
+	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NEW_LINE_STATEMENT__NEW_LINE_NEEDED = TEXT_STATEMENT__NEW_LINE_NEEDED;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NEW_LINE_STATEMENT__VALUE = TEXT_STATEMENT__VALUE;
+
+	/**
+	 * The feature id for the '<em><b>Indentation Needed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NEW_LINE_STATEMENT__INDENTATION_NEEDED = TEXT_STATEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>New Line Statement</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NEW_LINE_STATEMENT_FEATURE_COUNT = TEXT_STATEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>New Line Statement</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NEW_LINE_STATEMENT_OPERATION_COUNT = TEXT_STATEMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.VisibilityKind <em>Visibility Kind</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3348,7 +3412,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 51;
+	int VISIBILITY_KIND = 52;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.OpenModeKind <em>Open Mode Kind</em>}' enum.
@@ -3358,7 +3422,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 52;
+	int OPEN_MODE_KIND = 53;
 
 	/**
 	 * The meta object id for the '<em>AST Result</em>' data type.
@@ -3368,7 +3432,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
-	int AST_RESULT = 53;
+	int AST_RESULT = 54;
 
 	/**
 	 * The meta object id for the '<em>Module Qualified Name</em>' data type.
@@ -3378,7 +3442,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleQualifiedName()
 	 * @generated
 	 */
-	int MODULE_QUALIFIED_NAME = 54;
+	int MODULE_QUALIFIED_NAME = 55;
 
 	/**
 	 * The meta object id for the '<em>Ast Result</em>' data type.
@@ -3388,7 +3452,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoAstResult()
 	 * @generated
 	 */
-	int ACCELEO_AST_RESULT = 55;
+	int ACCELEO_AST_RESULT = 56;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Module <em>Module</em>}'.
@@ -3980,6 +4044,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getBlock_Statements();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.Block#isInlined <em>Inlined</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Inlined</em>'.
+	 * @see org.eclipse.acceleo.Block#isInlined()
+	 * @see #getBlock()
+	 * @generated
+	 */
+	EAttribute getBlock_Inlined();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.TypedElement <em>Typed Element</em>}'.
@@ -5144,6 +5219,27 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getTextStatement_Value();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.NewLineStatement <em>New Line Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>New Line Statement</em>'.
+	 * @see org.eclipse.acceleo.NewLineStatement
+	 * @generated
+	 */
+	EClass getNewLineStatement();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.NewLineStatement#isIndentationNeeded <em>Indentation Needed</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Indentation Needed</em>'.
+	 * @see org.eclipse.acceleo.NewLineStatement#isIndentationNeeded()
+	 * @see #getNewLineStatement()
+	 * @generated
+	 */
+	EAttribute getNewLineStatement_IndentationNeeded();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.VisibilityKind <em>Visibility Kind</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5720,6 +5816,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EReference BLOCK__STATEMENTS = eINSTANCE.getBlock_Statements();
+
+		/**
+		 * The meta object literal for the '<em><b>Inlined</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BLOCK__INLINED = eINSTANCE.getBlock_Inlined();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.TypedElementImpl <em>Typed Element</em>}' class.
@@ -6658,6 +6762,24 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TEXT_STATEMENT__VALUE = eINSTANCE.getTextStatement_Value();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.NewLineStatementImpl <em>New Line Statement</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.impl.NewLineStatementImpl
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getNewLineStatement()
+		 * @generated
+		 */
+		EClass NEW_LINE_STATEMENT = eINSTANCE.getNewLineStatement();
+
+		/**
+		 * The meta object literal for the '<em><b>Indentation Needed</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NEW_LINE_STATEMENT__INDENTATION_NEEDED = eINSTANCE.getNewLineStatement_IndentationNeeded();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.VisibilityKind <em>Visibility Kind</em>}' enum.

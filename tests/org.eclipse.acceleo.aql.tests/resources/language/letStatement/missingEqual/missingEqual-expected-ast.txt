@@ -12,6 +12,7 @@ module myModule
     missing affectation symbol: =
     missing affectation symbol position: 157
     myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (157..186) (124..186)
-      some static text. true (192..209) (187..212)
-    [/let] (119..218) (116..219)
+      some static text. (newLineNeeded) (192..210) (187..212)
+    [/let] (119..218)
+     (newLineNeeded) (218..219) (116..219)
   [/template] (61..230) (0..230)

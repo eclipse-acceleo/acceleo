@@ -49,6 +49,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.NewLineStatement;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
@@ -201,6 +202,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createErrorFileStatement();
 			case AcceleoPackage.TEXT_STATEMENT:
 				return createTextStatement();
+			case AcceleoPackage.NEW_LINE_STATEMENT:
+				return createNewLineStatement();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
 						+ "' is not a valid classifier"); //$NON-NLS-1$
@@ -737,6 +740,17 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public TextStatement createTextStatement() {
 		TextStatementImpl textStatement = new TextStatementImpl();
 		return textStatement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NewLineStatement createNewLineStatement() {
+		NewLineStatementImpl newLineStatement = new NewLineStatementImpl();
+		return newLineStatement;
 	}
 
 	/**

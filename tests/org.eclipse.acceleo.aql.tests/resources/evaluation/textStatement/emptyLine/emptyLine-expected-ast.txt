@@ -7,8 +7,9 @@ module myModule
   public template myTemplate(myParam : EPackage (107..132))
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      before empty line true (183..200)
-       true (205..205)
-      after empty line true (210..226) (178..229)
-    [/file] (137..236) (134..237)
+      before empty line (newLineNeeded) (183..201)
+      NEW_LINE (indentationNeeded)  (newLineNeeded) (205..206)
+      after empty line (newLineNeeded) (210..227) (178..229)
+    [/file] (137..236)
+     (newLineNeeded) (236..237) (134..237)
   [/template] (79..248) (0..248)

@@ -8,5 +8,6 @@ module myModule
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
       [comment a basic comment (192..207) /] (183..209) (178..212)
-    [/file] (137..219) (134..220)
+    [/file] (137..219)
+     (newLineNeeded) (219..220) (134..220)
   [/template] (79..231) (0..231)

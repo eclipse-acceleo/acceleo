@@ -12,6 +12,7 @@ module myModule
     missing end header: -1
     missing end: -1
     [for null binding
-      some static text. true (176..193) (171..196)
-    [/for] (119..202) (116..203)
+      some static text. (newLineNeeded) (176..194) (171..196)
+    [/for] (119..202)
+     (newLineNeeded) (202..203) (116..203)
   [/template] (61..214) (0..214)

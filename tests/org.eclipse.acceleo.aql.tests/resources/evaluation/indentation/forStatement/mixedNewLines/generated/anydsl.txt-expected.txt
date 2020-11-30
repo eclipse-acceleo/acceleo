@@ -1,0 +1,649 @@
+TextBefore1
+TextBefore2 World
+WORLDMultiNamedElement
+MULTINAMEDELEMENTNamedElement
+NAMEDELEMENTProducer
+PRODUCERAdress
+ADRESSCompany
+COMPANYProductionCompany
+PRODUCTIONCOMPANYRestaurant
+RESTAURANTChef
+CHEFRecipe
+RECIPEFood
+FOODSource
+SOURCEPlant
+PLANTAnimal
+ANIMALColor
+COLORCaliber
+CALIBERGroup
+GROUPContinent
+CONTINENTKind
+KINDPart
+PARTCountryData
+COUNTRYDATASingleString
+SINGLESTRINGEStringToRecipeMap
+ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+*******************************************************************************
+
+TextBefore1
+TextBefore2 World
+TextBefore2 WORLDMultiNamedElement
+TextBefore2 MULTINAMEDELEMENTNamedElement
+TextBefore2 NAMEDELEMENTProducer
+TextBefore2 PRODUCERAdress
+TextBefore2 ADRESSCompany
+TextBefore2 COMPANYProductionCompany
+TextBefore2 PRODUCTIONCOMPANYRestaurant
+TextBefore2 RESTAURANTChef
+TextBefore2 CHEFRecipe
+TextBefore2 RECIPEFood
+TextBefore2 FOODSource
+TextBefore2 SOURCEPlant
+TextBefore2 PLANTAnimal
+TextBefore2 ANIMALColor
+TextBefore2 COLORCaliber
+TextBefore2 CALIBERGroup
+TextBefore2 GROUPContinent
+TextBefore2 CONTINENTKind
+TextBefore2 KINDPart
+TextBefore2 PARTCountryData
+TextBefore2 COUNTRYDATASingleString
+TextBefore2 SINGLESTRINGEStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+*******************************************************************************
+
+TextBefore1
+TextBefore2 World
+WORLD
+                                  MultiNamedElement
+MULTINAMEDELEMENT
+                                  NamedElement
+NAMEDELEMENT
+                                  Producer
+PRODUCER
+                                  Adress
+ADRESS
+                                  Company
+COMPANY
+                                  ProductionCompany
+PRODUCTIONCOMPANY
+                                  Restaurant
+RESTAURANT
+                                  Chef
+CHEF
+                                  Recipe
+RECIPE
+                                  Food
+FOOD
+                                  Source
+SOURCE
+                                  Plant
+PLANT
+                                  Animal
+ANIMAL
+                                  Color
+COLOR
+                                  Caliber
+CALIBER
+                                  Group
+GROUP
+                                  Continent
+CONTINENT
+                                  Kind
+KIND
+                                  Part
+PART
+                                  CountryData
+COUNTRYDATA
+                                  SingleString
+SINGLESTRING
+                                  EStringToRecipeMap
+ESTRINGTORECIPEMAP
+                                   TextAfter1
+TextAfter2
+
+*******************************************************************************
+
+TextBefore1
+TextBefore2 World
+TextBefore2 WORLD
+TextBefore2 MultiNamedElement
+TextBefore2 MULTINAMEDELEMENT
+TextBefore2 NamedElement
+TextBefore2 NAMEDELEMENT
+TextBefore2 Producer
+TextBefore2 PRODUCER
+TextBefore2 Adress
+TextBefore2 ADRESS
+TextBefore2 Company
+TextBefore2 COMPANY
+TextBefore2 ProductionCompany
+TextBefore2 PRODUCTIONCOMPANY
+TextBefore2 Restaurant
+TextBefore2 RESTAURANT
+TextBefore2 Chef
+TextBefore2 CHEF
+TextBefore2 Recipe
+TextBefore2 RECIPE
+TextBefore2 Food
+TextBefore2 FOOD
+TextBefore2 Source
+TextBefore2 SOURCE
+TextBefore2 Plant
+TextBefore2 PLANT
+TextBefore2 Animal
+TextBefore2 ANIMAL
+TextBefore2 Color
+TextBefore2 COLOR
+TextBefore2 Caliber
+TextBefore2 CALIBER
+TextBefore2 Group
+TextBefore2 GROUP
+TextBefore2 Continent
+TextBefore2 CONTINENT
+TextBefore2 Kind
+TextBefore2 KIND
+TextBefore2 Part
+TextBefore2 PART
+TextBefore2 CountryData
+TextBefore2 COUNTRYDATA
+TextBefore2 SingleString
+TextBefore2 SINGLESTRING
+TextBefore2 EStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP
+ TextAfter1
+TextAfter2
+
+*******************************************************************************
+
+TextBefore1
+TextBefore2 World
+WORLDMultiNamedElement
+MULTINAMEDELEMENTNamedElement
+NAMEDELEMENTProducer
+PRODUCERAdress
+ADRESSCompany
+COMPANYProductionCompany
+PRODUCTIONCOMPANYRestaurant
+RESTAURANTChef
+CHEFRecipe
+RECIPEFood
+FOODSource
+SOURCEPlant
+PLANTAnimal
+ANIMALColor
+COLORCaliber
+CALIBERGroup
+GROUPContinent
+CONTINENTKind
+KINDPart
+PARTCountryData
+COUNTRYDATASingleString
+SINGLESTRINGEStringToRecipeMap
+ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+*******************************************************************************
+
+TextBefore1
+TextBefore2 World
+TextBefore2 WORLDMultiNamedElement
+TextBefore2 MULTINAMEDELEMENTNamedElement
+TextBefore2 NAMEDELEMENTProducer
+TextBefore2 PRODUCERAdress
+TextBefore2 ADRESSCompany
+TextBefore2 COMPANYProductionCompany
+TextBefore2 PRODUCTIONCOMPANYRestaurant
+TextBefore2 RESTAURANTChef
+TextBefore2 CHEFRecipe
+TextBefore2 RECIPEFood
+TextBefore2 FOODSource
+TextBefore2 SOURCEPlant
+TextBefore2 PLANTAnimal
+TextBefore2 ANIMALColor
+TextBefore2 COLORCaliber
+TextBefore2 CALIBERGroup
+TextBefore2 GROUPContinent
+TextBefore2 CONTINENTKind
+TextBefore2 KINDPart
+TextBefore2 PARTCountryData
+TextBefore2 COUNTRYDATASingleString
+TextBefore2 SINGLESTRINGEStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+*******************************************************************************
+
+TextBefore1
+TextBefore2 World
+WORLD
+                                  MultiNamedElement
+MULTINAMEDELEMENT
+                                  NamedElement
+NAMEDELEMENT
+                                  Producer
+PRODUCER
+                                  Adress
+ADRESS
+                                  Company
+COMPANY
+                                  ProductionCompany
+PRODUCTIONCOMPANY
+                                  Restaurant
+RESTAURANT
+                                  Chef
+CHEF
+                                  Recipe
+RECIPE
+                                  Food
+FOOD
+                                  Source
+SOURCE
+                                  Plant
+PLANT
+                                  Animal
+ANIMAL
+                                  Color
+COLOR
+                                  Caliber
+CALIBER
+                                  Group
+GROUP
+                                  Continent
+CONTINENT
+                                  Kind
+KIND
+                                  Part
+PART
+                                  CountryData
+COUNTRYDATA
+                                  SingleString
+SINGLESTRING
+                                  EStringToRecipeMap
+ESTRINGTORECIPEMAP
+                                   TextAfter1
+TextAfter2
+
+*******************************************************************************
+
+TextBefore1
+TextBefore2 World
+TextBefore2 WORLD
+TextBefore2 MultiNamedElement
+TextBefore2 MULTINAMEDELEMENT
+TextBefore2 NamedElement
+TextBefore2 NAMEDELEMENT
+TextBefore2 Producer
+TextBefore2 PRODUCER
+TextBefore2 Adress
+TextBefore2 ADRESS
+TextBefore2 Company
+TextBefore2 COMPANY
+TextBefore2 ProductionCompany
+TextBefore2 PRODUCTIONCOMPANY
+TextBefore2 Restaurant
+TextBefore2 RESTAURANT
+TextBefore2 Chef
+TextBefore2 CHEF
+TextBefore2 Recipe
+TextBefore2 RECIPE
+TextBefore2 Food
+TextBefore2 FOOD
+TextBefore2 Source
+TextBefore2 SOURCE
+TextBefore2 Plant
+TextBefore2 PLANT
+TextBefore2 Animal
+TextBefore2 ANIMAL
+TextBefore2 Color
+TextBefore2 COLOR
+TextBefore2 Caliber
+TextBefore2 CALIBER
+TextBefore2 Group
+TextBefore2 GROUP
+TextBefore2 Continent
+TextBefore2 CONTINENT
+TextBefore2 Kind
+TextBefore2 KIND
+TextBefore2 Part
+TextBefore2 PART
+TextBefore2 CountryData
+TextBefore2 COUNTRYDATA
+TextBefore2 SingleString
+TextBefore2 SINGLESTRING
+TextBefore2 EStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP
+ TextAfter1
+TextAfter2
+
+*******************************************************************************
+*******************************************************************************
+
+BeforeTemplateCall   TextBefore1
+TextBefore2 World
+WORLDMultiNamedElement
+MULTINAMEDELEMENTNamedElement
+NAMEDELEMENTProducer
+PRODUCERAdress
+ADRESSCompany
+COMPANYProductionCompany
+PRODUCTIONCOMPANYRestaurant
+RESTAURANTChef
+CHEFRecipe
+RECIPEFood
+FOODSource
+SOURCEPlant
+PLANTAnimal
+ANIMALColor
+COLORCaliber
+CALIBERGroup
+GROUPContinent
+CONTINENTKind
+KINDPart
+PARTCountryData
+COUNTRYDATASingleString
+SINGLESTRINGEStringToRecipeMap
+ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+  *******************************************************************************
+
+  TextBefore1
+TextBefore2 World
+TextBefore2 WORLDMultiNamedElement
+TextBefore2 MULTINAMEDELEMENTNamedElement
+TextBefore2 NAMEDELEMENTProducer
+TextBefore2 PRODUCERAdress
+TextBefore2 ADRESSCompany
+TextBefore2 COMPANYProductionCompany
+TextBefore2 PRODUCTIONCOMPANYRestaurant
+TextBefore2 RESTAURANTChef
+TextBefore2 CHEFRecipe
+TextBefore2 RECIPEFood
+TextBefore2 FOODSource
+TextBefore2 SOURCEPlant
+TextBefore2 PLANTAnimal
+TextBefore2 ANIMALColor
+TextBefore2 COLORCaliber
+TextBefore2 CALIBERGroup
+TextBefore2 GROUPContinent
+TextBefore2 CONTINENTKind
+TextBefore2 KINDPart
+TextBefore2 PARTCountryData
+TextBefore2 COUNTRYDATASingleString
+TextBefore2 SINGLESTRINGEStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+  *******************************************************************************
+
+  TextBefore1
+TextBefore2 World
+WORLD
+                                  MultiNamedElement
+MULTINAMEDELEMENT
+                                  NamedElement
+NAMEDELEMENT
+                                  Producer
+PRODUCER
+                                  Adress
+ADRESS
+                                  Company
+COMPANY
+                                  ProductionCompany
+PRODUCTIONCOMPANY
+                                  Restaurant
+RESTAURANT
+                                  Chef
+CHEF
+                                  Recipe
+RECIPE
+                                  Food
+FOOD
+                                  Source
+SOURCE
+                                  Plant
+PLANT
+                                  Animal
+ANIMAL
+                                  Color
+COLOR
+                                  Caliber
+CALIBER
+                                  Group
+GROUP
+                                  Continent
+CONTINENT
+                                  Kind
+KIND
+                                  Part
+PART
+                                  CountryData
+COUNTRYDATA
+                                  SingleString
+SINGLESTRING
+                                  EStringToRecipeMap
+ESTRINGTORECIPEMAP
+                                   TextAfter1
+TextAfter2
+
+  *******************************************************************************
+
+  TextBefore1
+TextBefore2 World
+TextBefore2 WORLD
+TextBefore2 MultiNamedElement
+TextBefore2 MULTINAMEDELEMENT
+TextBefore2 NamedElement
+TextBefore2 NAMEDELEMENT
+TextBefore2 Producer
+TextBefore2 PRODUCER
+TextBefore2 Adress
+TextBefore2 ADRESS
+TextBefore2 Company
+TextBefore2 COMPANY
+TextBefore2 ProductionCompany
+TextBefore2 PRODUCTIONCOMPANY
+TextBefore2 Restaurant
+TextBefore2 RESTAURANT
+TextBefore2 Chef
+TextBefore2 CHEF
+TextBefore2 Recipe
+TextBefore2 RECIPE
+TextBefore2 Food
+TextBefore2 FOOD
+TextBefore2 Source
+TextBefore2 SOURCE
+TextBefore2 Plant
+TextBefore2 PLANT
+TextBefore2 Animal
+TextBefore2 ANIMAL
+TextBefore2 Color
+TextBefore2 COLOR
+TextBefore2 Caliber
+TextBefore2 CALIBER
+TextBefore2 Group
+TextBefore2 GROUP
+TextBefore2 Continent
+TextBefore2 CONTINENT
+TextBefore2 Kind
+TextBefore2 KIND
+TextBefore2 Part
+TextBefore2 PART
+TextBefore2 CountryData
+TextBefore2 COUNTRYDATA
+TextBefore2 SingleString
+TextBefore2 SINGLESTRING
+TextBefore2 EStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP
+ TextAfter1
+TextAfter2
+
+  *******************************************************************************
+
+  TextBefore1
+TextBefore2 World
+WORLDMultiNamedElement
+MULTINAMEDELEMENTNamedElement
+NAMEDELEMENTProducer
+PRODUCERAdress
+ADRESSCompany
+COMPANYProductionCompany
+PRODUCTIONCOMPANYRestaurant
+RESTAURANTChef
+CHEFRecipe
+RECIPEFood
+FOODSource
+SOURCEPlant
+PLANTAnimal
+ANIMALColor
+COLORCaliber
+CALIBERGroup
+GROUPContinent
+CONTINENTKind
+KINDPart
+PARTCountryData
+COUNTRYDATASingleString
+SINGLESTRINGEStringToRecipeMap
+ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+  *******************************************************************************
+
+  TextBefore1
+TextBefore2 World
+TextBefore2 WORLDMultiNamedElement
+TextBefore2 MULTINAMEDELEMENTNamedElement
+TextBefore2 NAMEDELEMENTProducer
+TextBefore2 PRODUCERAdress
+TextBefore2 ADRESSCompany
+TextBefore2 COMPANYProductionCompany
+TextBefore2 PRODUCTIONCOMPANYRestaurant
+TextBefore2 RESTAURANTChef
+TextBefore2 CHEFRecipe
+TextBefore2 RECIPEFood
+TextBefore2 FOODSource
+TextBefore2 SOURCEPlant
+TextBefore2 PLANTAnimal
+TextBefore2 ANIMALColor
+TextBefore2 COLORCaliber
+TextBefore2 CALIBERGroup
+TextBefore2 GROUPContinent
+TextBefore2 CONTINENTKind
+TextBefore2 KINDPart
+TextBefore2 PARTCountryData
+TextBefore2 COUNTRYDATASingleString
+TextBefore2 SINGLESTRINGEStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP TextAfter1
+TextAfter2
+
+  *******************************************************************************
+
+  TextBefore1
+TextBefore2 World
+WORLD
+                                  MultiNamedElement
+MULTINAMEDELEMENT
+                                  NamedElement
+NAMEDELEMENT
+                                  Producer
+PRODUCER
+                                  Adress
+ADRESS
+                                  Company
+COMPANY
+                                  ProductionCompany
+PRODUCTIONCOMPANY
+                                  Restaurant
+RESTAURANT
+                                  Chef
+CHEF
+                                  Recipe
+RECIPE
+                                  Food
+FOOD
+                                  Source
+SOURCE
+                                  Plant
+PLANT
+                                  Animal
+ANIMAL
+                                  Color
+COLOR
+                                  Caliber
+CALIBER
+                                  Group
+GROUP
+                                  Continent
+CONTINENT
+                                  Kind
+KIND
+                                  Part
+PART
+                                  CountryData
+COUNTRYDATA
+                                  SingleString
+SINGLESTRING
+                                  EStringToRecipeMap
+ESTRINGTORECIPEMAP
+                                   TextAfter1
+TextAfter2
+
+  *******************************************************************************
+
+  TextBefore1
+TextBefore2 World
+TextBefore2 WORLD
+TextBefore2 MultiNamedElement
+TextBefore2 MULTINAMEDELEMENT
+TextBefore2 NamedElement
+TextBefore2 NAMEDELEMENT
+TextBefore2 Producer
+TextBefore2 PRODUCER
+TextBefore2 Adress
+TextBefore2 ADRESS
+TextBefore2 Company
+TextBefore2 COMPANY
+TextBefore2 ProductionCompany
+TextBefore2 PRODUCTIONCOMPANY
+TextBefore2 Restaurant
+TextBefore2 RESTAURANT
+TextBefore2 Chef
+TextBefore2 CHEF
+TextBefore2 Recipe
+TextBefore2 RECIPE
+TextBefore2 Food
+TextBefore2 FOOD
+TextBefore2 Source
+TextBefore2 SOURCE
+TextBefore2 Plant
+TextBefore2 PLANT
+TextBefore2 Animal
+TextBefore2 ANIMAL
+TextBefore2 Color
+TextBefore2 COLOR
+TextBefore2 Caliber
+TextBefore2 CALIBER
+TextBefore2 Group
+TextBefore2 GROUP
+TextBefore2 Continent
+TextBefore2 CONTINENT
+TextBefore2 Kind
+TextBefore2 KIND
+TextBefore2 Part
+TextBefore2 PART
+TextBefore2 CountryData
+TextBefore2 COUNTRYDATA
+TextBefore2 SingleString
+TextBefore2 SINGLESTRING
+TextBefore2 EStringToRecipeMap
+TextBefore2 ESTRINGTORECIPEMAP
+ TextAfter1
+TextAfter2
+
+ AfterTemplateCall
+

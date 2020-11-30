@@ -1,0 +1,91 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+    *******************************************************************************
+
+    BeforeTemplateCall [myParam.myOtherTemplate()/] AfterTemplateCall
+
+  [/file]
+[/template]
+
+[template public myOtherTemplate(myParam : ecore::EPackage)]
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/][/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)][myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+    *******************************************************************************
+
+    TextBefore1['\n'/]TextBefore2 [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
+                                    [myVariable.name/]['\n'/][myVariable.name.toUpper()/]
+                                  [/for] TextAfter1['\n'/]TextAfter2
+
+[/template]

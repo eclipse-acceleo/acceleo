@@ -8,17 +8,19 @@ module myModule
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
       [if false (188..193)
-        then block. true (202..213) (195..218)
+        then block. (newLineNeeded) (202..214) (195..218)
       [else]
         [if false (227..232)
-          first elseif block. true (241..260) (234..265)
+          first elseif block. (newLineNeeded) (241..261) (234..265)
         [else]
           [if '' (274..276)
-            second elseif block. true (285..305) (278..310)
+            second elseif block. (newLineNeeded) (285..306) (278..310)
           [else]
-            else block. true (323..334) (316..339)
+            else block. (newLineNeeded) (323..335) (316..339)
           [/if] (265..344) (-1..-1)
         [/if] (218..344) (-1..-1)
-      [/if] (183..344) (178..347)
-    [/file] (137..354) (134..355)
+      [/if] (183..344)
+       (newLineNeeded) (344..345) (178..347)
+    [/file] (137..354)
+     (newLineNeeded) (354..355) (134..355)
   [/template] (79..366) (0..366)

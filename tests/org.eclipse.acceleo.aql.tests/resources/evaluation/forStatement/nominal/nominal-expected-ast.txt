@@ -8,7 +8,9 @@ module myModule
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
       [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (223..243) (189..243)
-        [.aqlFeatureAccess(myVariable, 'name') (253..268)/] true (252..270) (245..275)
-      [/for] (183..281) (178..284)
-    [/file] (137..291) (134..292)
+        [.aqlFeatureAccess(myVariable, 'name') (253..268)/] (newLineNeeded (252..271) (245..275)
+      [/for] (183..281)
+       (newLineNeeded) (281..282) (178..284)
+    [/file] (137..291)
+     (newLineNeeded) (291..292) (134..292)
   [/template] (79..303) (0..303)

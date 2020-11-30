@@ -54,6 +54,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.NamedElement;
+import org.eclipse.acceleo.NewLineStatement;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
@@ -437,6 +438,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EClass textStatementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass newLineStatementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1084,6 +1092,16 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	@Override
 	public EReference getBlock_Statements() {
 		return (EReference)blockEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBlock_Inlined() {
+		return (EAttribute)blockEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2172,6 +2190,26 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
+	public EClass getNewLineStatement() {
+		return newLineStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getNewLineStatement_IndentationNeeded() {
+		return (EAttribute)newLineStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public EEnum getVisibilityKind() {
 		return visibilityKindEEnum;
 	}
@@ -2317,6 +2355,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		blockEClass = createEClass(BLOCK);
 		createEReference(blockEClass, BLOCK__STATEMENTS);
+		createEAttribute(blockEClass, BLOCK__INLINED);
 
 		typedElementEClass = createEClass(TYPED_ELEMENT);
 		createEAttribute(typedElementEClass, TYPED_ELEMENT__TYPE);
@@ -2452,6 +2491,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		textStatementEClass = createEClass(TEXT_STATEMENT);
 		createEAttribute(textStatementEClass, TEXT_STATEMENT__VALUE);
 
+		newLineStatementEClass = createEClass(NEW_LINE_STATEMENT);
+		createEAttribute(newLineStatementEClass, NEW_LINE_STATEMENT__INDENTATION_NEEDED);
+
 		// Create enums
 		visibilityKindEEnum = createEEnum(VISIBILITY_KIND);
 		openModeKindEEnum = createEEnum(OPEN_MODE_KIND);
@@ -2567,6 +2609,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		errorFileStatementEClass.getESuperTypes().add(this.getError());
 		errorFileStatementEClass.getESuperTypes().add(this.getFileStatement());
 		textStatementEClass.getESuperTypes().add(this.getLeafStatement());
+		newLineStatementEClass.getESuperTypes().add(this.getTextStatement());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(moduleEClass, org.eclipse.acceleo.Module.class, "Module", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
@@ -2739,6 +2782,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEReference(getBlock_Statements(), this.getStatement(), null, "statements", null, 0, -1, //$NON-NLS-1$
 				Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBlock_Inlined(), ecorePackage.getEBoolean(), "inlined", null, 1, 1, Block.class, //$NON-NLS-1$
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
 		initEClass(typedElementEClass, TypedElement.class, "TypedElement", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
@@ -3063,6 +3109,12 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEAttribute(getTextStatement_Value(), ecorePackage.getEString(), "value", null, 1, 1, //$NON-NLS-1$
 				TextStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(newLineStatementEClass, NewLineStatement.class, "NewLineStatement", !IS_ABSTRACT, //$NON-NLS-1$
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getNewLineStatement_IndentationNeeded(), ecorePackage.getEBoolean(),
+				"indentationNeeded", null, 1, 1, NewLineStatement.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
+				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(visibilityKindEEnum, VisibilityKind.class, "VisibilityKind"); //$NON-NLS-1$

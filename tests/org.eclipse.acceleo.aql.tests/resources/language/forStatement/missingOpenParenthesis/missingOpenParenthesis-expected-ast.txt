@@ -12,6 +12,7 @@ module myModule
     missing end header: -1
     missing end: -1
     [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (158..178) (124..178)
-      some static text. true (185..202) (180..205)
-    [/for] (119..211) (116..212)
+      some static text. (newLineNeeded) (185..203) (180..205)
+    [/for] (119..211)
+     (newLineNeeded) (211..212) (116..212)
   [/template] (61..223) (0..223)

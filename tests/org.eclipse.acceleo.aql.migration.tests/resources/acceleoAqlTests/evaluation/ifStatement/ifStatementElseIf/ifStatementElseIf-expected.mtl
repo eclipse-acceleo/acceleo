@@ -2,9 +2,12 @@
 
 [template public myTemplate(myParam : ecore::EPackage)]
   [file (myParam.name + '.txt', overwrite)]
-    [if (false)]      then block.
-    [elseif (true)]      elseif block.
-    [else]      else block.
+    [if (false)]
+            then block.
+    [elseif (true)]
+            elseif block.
+    [else]
+            else block.
     [/if]
   [/file]
 [/template]

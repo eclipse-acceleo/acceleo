@@ -8,7 +8,9 @@
 
 [template public recursive_is(c : ecore::EClass, b : Boolean)]
       start
-  [if (not b)]        stop
-  [else]        continue [c.recursive_is(false)/]
+  [if (not b)]
+            stop
+  [else]
+            continue [c.recursive_is(false)/]
   [/if]
 [/template]

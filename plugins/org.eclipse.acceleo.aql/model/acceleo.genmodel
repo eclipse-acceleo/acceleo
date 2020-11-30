@@ -99,6 +99,7 @@
     <genClasses image="false" ecoreClass="acceleo.ecore#//Error"/>
     <genClasses ecoreClass="acceleo.ecore#//Block">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Block/statements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Block/inlined"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//TypedElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute acceleo.ecore#//TypedElement/type"/>
@@ -230,6 +231,9 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//TextStatement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//TextStatement/value"/>
+    </genClasses>
+    <genClasses ecoreClass="acceleo.ecore#//NewLineStatement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//NewLineStatement/indentationNeeded"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Ast" ecorePackage="http://www.eclipse.org/acceleo/query/1.0#/">

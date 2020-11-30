@@ -2,6 +2,6 @@
 
 [template public myTemplate(myParam : ecore::EPackage)]
   [protected (myParam.name + ')')]
-      some static text.
+        some static text.
   [/protected]
 [/template]

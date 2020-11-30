@@ -357,8 +357,8 @@ public class ErrorBindingItemProvider extends ItemProviderAdapter implements IEd
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createConditional()));
 
-		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL, AstFactory.eINSTANCE.createOr()));
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
+				AstFactory.eINSTANCE.createOr()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.TYPED_ELEMENT__TYPE_AQL,
 				AstFactory.eINSTANCE.createAnd()));

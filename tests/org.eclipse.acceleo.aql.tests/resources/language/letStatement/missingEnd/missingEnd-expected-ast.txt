@@ -10,6 +10,6 @@ module myModule
     missing end: 211
     [let 
     myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (158..187) (124..187)
-      some static text. true (193..210) (188..211)
+      some static text. (newLineNeeded) (193..211) (188..211)
     [/let] (119..211) (116..211)
   [/template] (61..222) (0..222)

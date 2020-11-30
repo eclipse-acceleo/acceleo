@@ -9,7 +9,9 @@ module myModule
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
       [let 
       myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (222..251) (188..251)
-        [.aqlFeatureAccess(myVariable, 'name') (260..275)/] true (259..277) (252..282)
-      [/let] (183..288) (178..291)
-    [/file] (137..298) (134..299)
+        [.aqlFeatureAccess(myVariable, 'name') (260..275)/] (newLineNeeded (259..278) (252..282)
+      [/let] (183..288)
+       (newLineNeeded) (288..289) (178..291)
+    [/file] (137..298)
+     (newLineNeeded) (298..299) (134..299)
   [/template] (79..310) (0..310)

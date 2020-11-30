@@ -1,4 +1,5 @@
 [module serviceInvocation('http://www.eclipse.org/emf/2002/Ecore')/]
+
 [import misc::MyService/]
 
 [comment @main/]

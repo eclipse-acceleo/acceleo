@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [for myVariable : EClassifier = .aqlFeatureAccess(notExisting, 'eClassifiers') (159..183) (125..183)
-      some static text. true (190..207) (185..210)
-    [/for] (119..216) (116..217)
+      some static text. (newLineNeeded) (190..208) (185..210)
+    [/for] (119..216)
+     (newLineNeeded) (216..217) (116..217)
   [/template] (61..228) (0..228)

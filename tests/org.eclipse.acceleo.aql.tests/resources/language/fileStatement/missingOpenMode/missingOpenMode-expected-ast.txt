@@ -12,6 +12,7 @@ module myModule
     missing end header: -1
     missing end: -1
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (126..147) mode overwrite
-      some static text. true (156..173) (151..176)
-    [/file] (119..183) (116..184)
+      some static text. (newLineNeeded) (156..174) (151..176)
+    [/file] (119..183)
+     (newLineNeeded) (183..184) (116..184)
   [/template] (61..195) (0..195)

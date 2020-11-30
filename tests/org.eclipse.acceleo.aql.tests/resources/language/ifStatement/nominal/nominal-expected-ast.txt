@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (124..156)
-      some static text. true (163..180) (158..183)
-    [/if] (119..188) (116..189)
+      some static text. (newLineNeeded) (163..181) (158..183)
+    [/if] (119..188)
+     (newLineNeeded) (188..189) (116..189)
   [/template] (61..200) (0..200)

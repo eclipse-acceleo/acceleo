@@ -10,6 +10,6 @@ module myModule
     missing end header: -1
     missing end: 168
     [protected .aqlFeatureAccess(myParam, 'name') (131..143)
-      some static text. true (150..167) (145..168)
+      some static text. (newLineNeeded) (150..168) (145..168)
     [/protected] (119..168) (116..168)
   [/template] (61..179) (0..179)

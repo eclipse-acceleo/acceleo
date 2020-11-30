@@ -5,6 +5,7 @@ module myModule
   
   public template myTemplate(myParam : EPackage (89..114))
     [protected ***ERROR*** (131..131)
-      some static text. true (138..155) (133..158)
-    [/protected] (119..170) (116..171)
+      some static text. (newLineNeeded) (138..156) (133..158)
+    [/protected] (119..170)
+     (newLineNeeded) (170..171) (116..171)
   [/template] (61..182) (0..182)

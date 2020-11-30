@@ -1,0 +1,11 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [if (myParam.eClassifiers->size() = 0)]
+    some static text.
+  [elseif (myParam.eClassifiers->size() > 2)]
+    some different static text.
+  [else]
+    yet some different static text again.
+  [/if]
+[/template]

@@ -53,6 +53,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.NamedElement;
+import org.eclipse.acceleo.NewLineStatement;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
@@ -805,6 +806,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseStatement(textStatement);
 				if (result == null)
 					result = caseASTNode(textStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.NEW_LINE_STATEMENT: {
+				NewLineStatement newLineStatement = (NewLineStatement)theEObject;
+				T result = caseNewLineStatement(newLineStatement);
+				if (result == null)
+					result = caseTextStatement(newLineStatement);
+				if (result == null)
+					result = caseLeafStatement(newLineStatement);
+				if (result == null)
+					result = caseStatement(newLineStatement);
+				if (result == null)
+					result = caseASTNode(newLineStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -1576,6 +1592,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTextStatement(TextStatement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>New Line Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>New Line Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNewLineStatement(NewLineStatement object) {
 		return null;
 	}
 

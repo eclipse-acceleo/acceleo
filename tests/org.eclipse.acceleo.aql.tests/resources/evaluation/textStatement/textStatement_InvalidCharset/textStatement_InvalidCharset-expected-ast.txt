@@ -7,6 +7,7 @@ module myModule
   public template myTemplate(myParam : EPackage (107..132))
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite charset 'InvalidCharset' (178..194)
-      La génération de code source est une opération permettant de générer automatiquement du code source. true (201..301) (196..304)
-    [/file] (137..311) (134..312)
+      La génération de code source est une opération permettant de générer automatiquement du code source. (newLineNeeded) (201..302) (196..304)
+    [/file] (137..311)
+     (newLineNeeded) (311..312) (134..312)
   [/template] (79..323) (0..323)

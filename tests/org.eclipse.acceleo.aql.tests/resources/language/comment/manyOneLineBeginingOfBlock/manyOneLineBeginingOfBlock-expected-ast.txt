@@ -7,5 +7,5 @@ module myModule
     [comment a basic comment (125..140) /] (116..142)
     [comment an other one (151..163) /] (142..165)
     [comment a last one (174..184) /] (165..186)
-    some static text. true (189..206) (116..207)
+    some static text. (newLineNeeded) (189..207) (116..207)
   [/template] (61..218) (0..218)

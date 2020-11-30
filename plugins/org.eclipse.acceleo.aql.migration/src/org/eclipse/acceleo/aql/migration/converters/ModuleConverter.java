@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
@@ -42,6 +44,7 @@ import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
+import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
@@ -351,9 +354,9 @@ public final class ModuleConverter extends AbstractConverter {
 		res.add(outputTemplate);
 
 		// statements
-		Block body = AcceleoFactory.eINSTANCE.createBlock();
+		final Block body = createBlock(outputTemplate, inputTemplate.getBody());
 		outputTemplate.setBody(body);
-		map(inputTemplate.getBody(), body.getStatements());
+
 		return res;
 	}
 
@@ -378,10 +381,12 @@ public final class ModuleConverter extends AbstractConverter {
 		}
 		output.setUrl(expressionConverter.convertToExpression(input.getFileUrl(), false));
 		output.setMode(OpenModeKind.getByName(input.getOpenMode().getName().toLowerCase()));
-		Block body = AcceleoFactory.eINSTANCE.createBlock();
+
+		// statements
+		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);
-		map(input.getBody(), body.getStatements());
-		return output;
+
+		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
 	}
 
 	private Object caseLetBlock(LetBlock input) {
@@ -399,16 +404,23 @@ public final class ModuleConverter extends AbstractConverter {
 		binding.setInitExpression(expressionConverter.convertToExpression((OCLExpression)input
 				.getLetVariable().getInitExpression(), false));
 
-		Block body = AcceleoFactory.eINSTANCE.createBlock();
+		// statements
+		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);
-		map(input.getBody(), body.getStatements());
-		return output;
+		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
+	}
+
+	private TextStatement newLineAfterEndBlock() {
+		final TextStatement res = AcceleoFactory.eINSTANCE.createTextStatement();
+
+		res.setValue("");
+		res.setNewLineNeeded(true);
+
+		return res;
 	}
 
 	private Object caseForBlock(ForBlock input) {
 		ForStatement output = AcceleoFactory.eINSTANCE.createForStatement();
-		Block body = AcceleoFactory.eINSTANCE.createBlock();
-		output.setBody(body);
 		Binding binding = AcceleoFactory.eINSTANCE.createBinding();
 		output.setBinding(binding);
 		org.eclipse.ocl.ecore.Variable loopVariable = input.getLoopVariable();
@@ -420,21 +432,25 @@ public final class ModuleConverter extends AbstractConverter {
 			throw new MigrationException(input);
 		}
 		binding.setInitExpression(expressionConverter.convertToExpression(input.getIterSet(), false));
-		map(input.getBody(), body.getStatements());
+
+		// statements
+		final Block body = createBlock(output, input.getBody());
+		output.setBody(body);
+
 		OCLExpression each = input.getEach();
 		if (each != null) {
 			output.setSeparator(expressionConverter.convertToExpression(each, false));
 		}
-		return output;
+		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
 	}
 
-	private IfStatement caseIfBlock(IfBlock input) {
+	private List<Statement> caseIfBlock(IfBlock input) {
 		IfStatement output = AcceleoFactory.eINSTANCE.createIfStatement();
 		output.setCondition(expressionConverter.convertToExpression(input.getIfExpr(), false));
 
-		Block thenBlock = AcceleoFactory.eINSTANCE.createBlock();
+		// then statements
+		final Block thenBlock = createBlock(output, input.getBody());
 		output.setThen(thenBlock);
-		map(input.getBody(), thenBlock.getStatements());
 
 		List<org.eclipse.acceleo.model.mtl.Block> inputElseBlocks = new ArrayList<>();
 		inputElseBlocks.addAll(input.getElseIf());
@@ -445,23 +461,44 @@ public final class ModuleConverter extends AbstractConverter {
 		if (!inputElseBlocks.isEmpty()) {
 			IfStatement current = output;
 			for (org.eclipse.acceleo.model.mtl.Block inputElseBlock : inputElseBlocks) {
-				Block elseBlock = AcceleoFactory.eINSTANCE.createBlock();
-				current.setElse(elseBlock);
+				// else statements
 				if (inputElseBlock instanceof IfBlock) {
-					current = caseIfBlock((IfBlock)inputElseBlock);
+					Block elseBlock = AcceleoFactory.eINSTANCE.createBlock();
+					current.setElse(elseBlock);
+					current = (IfStatement)caseIfBlock((IfBlock)inputElseBlock).get(0);
 					elseBlock.getStatements().add(current);
 				} else {
-					map(inputElseBlock.getBody(), elseBlock.getStatements());
+					final Block elseBlock = createBlock(current, inputElseBlock.getBody());
+					current.setElse(elseBlock);
 				}
 			}
 		}
-		return output;
+		return Arrays.asList(new Statement[] {output, newLineAfterEndBlock() });
 	}
 
 	private Object caseText(StringLiteralExp input) {
-		TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
-		output.setValue(input.getStringSymbol().replace("[", "['['/]"));
-		return output;
+		final List<TextStatement> outputs = new ArrayList<TextStatement>();
+
+		final String text = input.getStringSymbol().replace("[", "['['/]");
+		int startOfText = 0;
+		int endOfText;
+		do {
+			endOfText = text.indexOf(NEW_LINE, startOfText);
+			if (endOfText < 0) {
+				endOfText = text.length();
+				final TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
+				output.setValue(text.substring(startOfText, endOfText));
+				output.setNewLineNeeded(false);
+				outputs.add(output);
+			} else {
+				final TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
+				output.setValue(text.substring(startOfText, endOfText));
+				output.setNewLineNeeded(true);
+				outputs.add(output);
+			}
+			startOfText = endOfText + NEW_LINE.length();
+		} while (endOfText < text.length() && startOfText < text.length());
+		return outputs;
 	}
 
 	private Object caseTypedModel(TypedModel input) {
@@ -515,10 +552,39 @@ public final class ModuleConverter extends AbstractConverter {
 	private Object caseProtectedAreaBlock(ProtectedAreaBlock input) {
 		ProtectedArea output = AcceleoFactory.eINSTANCE.createProtectedArea();
 		output.setId(expressionConverter.convertToExpression(input.getMarker(), false));
-		Block body = AcceleoFactory.eINSTANCE.createBlock();
+		// statements
+		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);
-		map(input.getBody(), body.getStatements());
-		return output;
+		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
+	}
+
+	private Block createBlock(ASTNode node, List<OCLExpression> inputStatements) {
+		Block res = AcceleoFactory.eINSTANCE.createBlock();
+
+		map(inputStatements, res.getStatements());
+
+		if (node instanceof Template || node instanceof File) {
+			res.setInlined(false);
+		} else if (node instanceof ProtectedArea) {
+			res.setInlined(false);
+			// remove the first new line
+			res.getStatements().remove(0);
+		} else {
+			boolean inlined = true;
+			for (Statement statement : res.getStatements()) {
+				if (statement instanceof TextStatement && ((TextStatement)statement).isNewLineNeeded()) {
+					inlined = false;
+					break;
+				}
+			}
+			res.setInlined(inlined);
+		}
+
+		if (res.getStatements().isEmpty()) {
+			res.setInlined(false);
+		}
+
+		return res;
 	}
 
 	/**

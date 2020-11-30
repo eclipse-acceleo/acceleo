@@ -1,0 +1,7 @@
+@Test 'a' + 'b' => ab
+@Test 'a' + 'b' + 'c' => abc
+@Test 'a' + 'test' => atest
+@Test 'a' + 'test' + 'c' => atestc
+@Test 'a' + p.name => atarget
+@Test 'a' + p.name + 'c' => atargetc
+@Test 'a' + p.name + 'c' + 'test' => atargetctest

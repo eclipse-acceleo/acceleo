@@ -5,8 +5,9 @@ module myModule
   
   public template myTemplate(myParam : EClassifier (89..117))
     [if .not(.oclIsKindOf(myParam, EClass)) (127..165)
-      some static text. true (172..189) (167..192)
+      some static text. (newLineNeeded) (172..190) (167..192)
     [else]
-      [.aqlFeatureAccess(myParam, 'eSuperTypes') (204..223)/] true (203..225) (198..228)
-    [/if] (122..233) (119..234)
+      [.aqlFeatureAccess(myParam, 'eSuperTypes') (204..223)/] (newLineNeeded (203..226) (198..228)
+    [/if] (122..233)
+     (newLineNeeded) (233..234) (119..234)
   [/template] (61..245) (0..245)
