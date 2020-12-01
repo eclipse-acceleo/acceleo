@@ -1,0 +1,20 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+       [for (myVariable : ecore::EClassifier | myParam.eClassifiers) separator('\n')]
+         - [myVariable.myTemplate1()/]
+       [/for]
+  [/file]
+[/template]
+
+[template public myTemplate1(eClassifier : ecore::EClassifier)]
+  * [eClassifier.name/]
+    [eClassifier.myTemplate2()/]
+[/template]
+
+[template public myTemplate2(eClassifier : ecore::EClassifier)]
+  . [eClassifier.name/]
+  . [eClassifier.name.toUpper()/]
+[/template]

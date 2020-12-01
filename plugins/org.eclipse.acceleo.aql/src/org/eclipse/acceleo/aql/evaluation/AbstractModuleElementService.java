@@ -91,7 +91,7 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	 * @return the {@link AcceleoEvaluator}
 	 */
 	protected AcceleoEvaluator getEvaluator() {
-		return evaluator;
+		return new AcceleoEvaluator(evaluator);
 	}
 
 	/**

@@ -112,6 +112,16 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	/**
 	 * Constructor.
 	 * 
+	 * @param other
+	 *            the other {@link AcceleoEvaluator}.
+	 */
+	public AcceleoEvaluator(AcceleoEvaluator other) {
+		this(other.environment, other.lookupEngine);
+	}
+
+	/**
+	 * Constructor.
+	 * 
 	 * @param environment
 	 *            the {@link IAcceleoEnvironment}
 	 * @param lookupEngine
@@ -273,10 +283,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public String caseExpressionStatement(ExpressionStatement expressionStatement) {
 		final String res;
 
+		final String indentation;
+		if (lastLineOfLastStatement.isEmpty()) {
+			indentation = peekIndentation();
+		} else {
+			indentation = lastLineOfLastStatement;
+		}
 		// TODO replace all possible new lines with the right one
 		String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
 		final boolean endsWithNewLine = expressionValue.endsWith(NEW_LINE);
-		final String indentation = peekIndentation();
 		if (!indentation.isEmpty()) {
 			expressionValue = expressionValue.replace(NEW_LINE, NEW_LINE + indentation);
 			if (endsWithNewLine) {

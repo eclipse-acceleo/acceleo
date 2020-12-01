@@ -1,0 +1,91 @@
+   - * World
+   -   . World
+   -   . WORLD
+
+   - * MultiNamedElement
+   -   . MultiNamedElement
+   -   . MULTINAMEDELEMENT
+
+   - * NamedElement
+   -   . NamedElement
+   -   . NAMEDELEMENT
+
+   - * Producer
+   -   . Producer
+   -   . PRODUCER
+
+   - * Adress
+   -   . Adress
+   -   . ADRESS
+
+   - * Company
+   -   . Company
+   -   . COMPANY
+
+   - * ProductionCompany
+   -   . ProductionCompany
+   -   . PRODUCTIONCOMPANY
+
+   - * Restaurant
+   -   . Restaurant
+   -   . RESTAURANT
+
+   - * Chef
+   -   . Chef
+   -   . CHEF
+
+   - * Recipe
+   -   . Recipe
+   -   . RECIPE
+
+   - * Food
+   -   . Food
+   -   . FOOD
+
+   - * Source
+   -   . Source
+   -   . SOURCE
+
+   - * Plant
+   -   . Plant
+   -   . PLANT
+
+   - * Animal
+   -   . Animal
+   -   . ANIMAL
+
+   - * Color
+   -   . Color
+   -   . COLOR
+
+   - * Caliber
+   -   . Caliber
+   -   . CALIBER
+
+   - * Group
+   -   . Group
+   -   . GROUP
+
+   - * Continent
+   -   . Continent
+   -   . CONTINENT
+
+   - * Kind
+   -   . Kind
+   -   . KIND
+
+   - * Part
+   -   . Part
+   -   . PART
+
+   - * CountryData
+   -   . CountryData
+   -   . COUNTRYDATA
+
+   - * SingleString
+   -   . SingleString
+   -   . SINGLESTRING
+
+   - * EStringToRecipeMap
+   -   . EStringToRecipeMap
+   -   . ESTRINGTORECIPEMAP

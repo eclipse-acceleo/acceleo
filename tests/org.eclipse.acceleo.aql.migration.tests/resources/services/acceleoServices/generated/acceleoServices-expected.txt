@@ -1,5 +1,5 @@
 @Test '\n' + '\t' + '\'' + '\\ ' + '\"' + '"' => 
-	'\ ""
+@Test '\n' + '\t' + '\'' + '\\ ' + '\"' + '"' => 	'\ ""
 @Test inligned special text => [
 @Test let OclAny to EObject => target
 

@@ -8,13 +8,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.tests;
+package org.eclipse.acceleo.tests.evaluation;
 
-import org.eclipse.acceleo.tests.completion.CompletionTests;
-import org.eclipse.acceleo.tests.evaluation.EvaluationTests;
-import org.eclipse.acceleo.tests.language.LanguageTests;
-import org.eclipse.acceleo.tests.parser.AcceleoAstSerializerTests;
-import org.eclipse.acceleo.tests.resolution.ResolutionTests;
+import org.eclipse.acceleo.tests.evaluation.indentation.IndentationTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -25,8 +21,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {LanguageTests.class, EvaluationTests.class, CompletionTests.class,
-		ResolutionTests.class, AcceleoAstSerializerTests.class, })
-public class AllTests {
+@SuiteClasses(value = {CommentTests.class, ExpressionStatementTests.class, FileStatementTests.class,
+		ForStatementTests.class, IfStatementTests.class, LetStatementTests.class, TextStatementTests.class,
+		IndentationTests.class })
+public class EvaluationTests {
 
 }
