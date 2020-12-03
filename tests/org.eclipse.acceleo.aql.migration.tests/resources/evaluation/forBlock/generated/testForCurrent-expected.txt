@@ -1,0 +1,42 @@
+				anAttribute
+				ClasseA
+				target
+
+				anAttribute
+				ClasseA
+				multivaluedAttribute
+				ClasseA
+				target
+
+				multivaluedAttribute
+				ClasseA
+				aReferenceFromA
+				ClasseA
+				target
+
+				aReferenceFromA
+				ClasseA
+				multivaluedReference
+				ClasseA
+				target
+
+				multivaluedReference
+				ClasseA
+				anAttributeOfB
+				ClasseB
+				target
+
+				anAttributeOfB
+				ClasseB
+				anotherAttributeOfB
+				ClasseB
+				target
+
+				anotherAttributeOfB
+				ClasseB
+				aReferenceFromB
+				ClasseB
+				target
+
+				aReferenceFromB
+				ClasseB

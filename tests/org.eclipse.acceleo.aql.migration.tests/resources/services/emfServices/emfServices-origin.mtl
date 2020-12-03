@@ -44,8 +44,6 @@
 [comment]TODO ? oclIsInState(statespec)[/comment]
 [comment]A4-UNSUPPORTED eInverse(filter)[/comment]
 [comment]A4-UNSUPPORTED eInverse[/comment]
-[comment]A4-UNSUPPORTED current(element)[/comment]
-[comment]A4-UNSUPPORTED current(int)[/comment]
 [comment]A4-UNSUPPORTED eIsProxy[/comment]
 [comment]A4-UNSUPPORTED eIsSet[/comment]
 [comment]A4-UNSUPPORTED eUnset[/comment]

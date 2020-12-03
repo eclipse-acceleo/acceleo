@@ -919,27 +919,27 @@
   <ecore:EAnnotation source="positions">
     <eAnnotations source="positions.0" references="/0/test">
       <details key="start" value="64"/>
-      <details key="end" value="3691"/>
+      <details key="end" value="3593"/>
       <details key="line" value="3"/>
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/test/%">
       <details key="start" value="242"/>
-      <details key="end" value="3679"/>
+      <details key="end" value="3581"/>
       <details key="line" value="6"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/test/%/%">
       <details key="start" value="307"/>
-      <details key="end" value="3673"/>
+      <details key="end" value="3575"/>
       <details key="line" value="7"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/test/%/%/%">
       <details key="start" value="374"/>
-      <details key="end" value="3667"/>
+      <details key="end" value="3569"/>
       <details key="line" value="8"/>
     </eAnnotations>
     <eAnnotations source="positions.4" references="/0/test/%/%/%/%">
       <details key="start" value="447"/>
-      <details key="end" value="3661"/>
+      <details key="end" value="3563"/>
       <details key="line" value="9"/>
     </eAnnotations>
     <eAnnotations source="positions.5" references="/0/test/%/%/%/%/%">
@@ -1883,28 +1883,28 @@
       <details key="line" value="43"/>
     </eAnnotations>
     <eAnnotations source="positions.193" references="/0/test/%/%/%/%/%.55">
-      <details key="start" value="3435"/>
-      <details key="end" value="3462"/>
-      <details key="line" value="53"/>
+      <details key="start" value="3337"/>
+      <details key="end" value="3364"/>
+      <details key="line" value="51"/>
     </eAnnotations>
     <eAnnotations source="positions.194" references="/0/test/%/%/%/%/collect.12">
-      <details key="start" value="3463"/>
-      <details key="end" value="3480"/>
+      <details key="start" value="3365"/>
+      <details key="end" value="3382"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.195" references="/0/test/%/%/%/%/collect.12/%">
-      <details key="start" value="3463"/>
-      <details key="end" value="3475"/>
+      <details key="start" value="3365"/>
+      <details key="end" value="3377"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.196" references="/0/test/%/%/%/%/collect.12/%/c">
-      <details key="start" value="3463"/>
-      <details key="end" value="3464"/>
+      <details key="start" value="3365"/>
+      <details key="end" value="3366"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.197" references="/0/test/%/%/%/%/collect.12/%.1">
-      <details key="start" value="3476"/>
-      <details key="end" value="3480"/>
+      <details key="start" value="3378"/>
+      <details key="end" value="3382"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.198" references="/0/test/%/%/%/%/collect.12/%.1/temp1">
@@ -1918,9 +1918,9 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.200" references="/0/test/%/%/%/%/%.56">
-      <details key="start" value="3482"/>
-      <details key="end" value="3483"/>
-      <details key="line" value="54"/>
+      <details key="start" value="3384"/>
+      <details key="end" value="3385"/>
+      <details key="line" value="52"/>
     </eAnnotations>
     <eAnnotations source="positions.201" references="/0/test/%/%/%/%/%.57">
       <details key="start" value="454"/>

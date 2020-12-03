@@ -25,6 +25,7 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.aql.migration.MigrationException;
 import org.eclipse.acceleo.aql.migration.converters.utils.OperationUtils;
 import org.eclipse.acceleo.aql.migration.converters.utils.TypeUtils;
+import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
@@ -326,6 +327,8 @@ public final class ExpressionConverter extends AbstractConverter {
 			res = convertSelectByKindOrTypeCall(input);
 		} else if (isTokenizeLineCall(input)) {
 			res = convertTokenizeLineCall(input);
+		} else if (isCurrentCall(input)) {
+			res = convertCurrentCall(input);
 		} else {
 			Call output = OperationUtils.createCall(input);
 			output.getArguments().add((Expression)convert(input.getSource()));
@@ -334,6 +337,86 @@ public final class ExpressionConverter extends AbstractConverter {
 		}
 
 		return res;
+	}
+
+	private Expression convertCurrentCall(OperationCallExp input) {
+		final Expression res;
+
+		String variableName;
+		org.eclipse.ocl.expressions.OCLExpression<EClassifier> firstArgument = input.getArgument().get(0);
+		if (firstArgument instanceof IntegerLiteralExp) {
+			int index = ((IntegerLiteralExp)firstArgument).getIntegerSymbol();
+			variableName = getCurrentVariableName(input, index);
+		} else if (firstArgument instanceof TypeExp) {
+			final EClassifier eClassifier = ((TypeExp)firstArgument).getReferredType();
+			variableName = getCurrentVariableName(input, eClassifier);
+		} else {
+			variableName = null;
+		}
+
+		if (variableName != null) {
+			res = AstFactory.eINSTANCE.createVarRef();
+			((VarRef)res).setVariableName(variableName);
+		} else {
+			// fallback to classic conversion
+			Call output = OperationUtils.createCall(input);
+			output.getArguments().add((Expression)convert(input.getSource()));
+			map(input.getArgument(), output.getArguments());
+			res = output;
+		}
+
+		return res;
+	}
+
+	private String getCurrentVariableName(OperationCallExp input, EClassifier eClassifier) {
+		String res = null;
+
+		EObject container = input.eContainer();
+		while (container != null) {
+			if (container instanceof ForBlock) {
+				final ForBlock forBlock = (ForBlock)container;
+				final EClassifier forType = forBlock.getLoopVariable().getType();
+				if (eClassifier == forType || (eClassifier instanceof EClass && forType instanceof EClass
+						&& ((EClass)forType).isSuperTypeOf((EClass)eClassifier))) {
+					res = forBlock.getLoopVariable().getName();
+					break;
+				}
+			}
+			container = container.eContainer();
+		}
+
+		return res;
+	}
+
+	private String getCurrentVariableName(OperationCallExp input, int index) {
+		String res = null;
+
+		int localIndex = index;
+		EObject container = input.eContainer();
+		ForBlock lastFor = null;
+		while (container != null) {
+			if (container instanceof ForBlock) {
+				final ForBlock forBlock = (ForBlock)container;
+				if (localIndex == 0) {
+					res = forBlock.getLoopVariable().getName();
+					break;
+				}
+				localIndex--;
+				lastFor = forBlock;
+			}
+			container = container.eContainer();
+
+			if (localIndex > 0 && lastFor != null) {
+				res = findVariable(lastFor).getName();
+			}
+		}
+		return res;
+	}
+
+	private boolean isCurrentCall(OperationCallExp input) {
+		final EOperation referredOperation = input.getReferredOperation();
+		return referredOperation != null && ("current".equals(referredOperation.getName()))
+		/* && "oclstdlib_OclAny_Class".equals(((EClass)referredOperation.eContainer()).getName()) */;
 	}
 
 	private Expression convertTokenizeLineCall(OperationCallExp input) {

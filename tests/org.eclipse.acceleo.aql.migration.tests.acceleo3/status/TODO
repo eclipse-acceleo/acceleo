@@ -27,8 +27,6 @@ acceleoServices
 numericServices
 	(LOT1) WIP https://git.eclipse.org/r/#/c/163019/ operations between Real And Integers
 emfServices
-	 current(element)
-	 current(int)
 	 eInverse
 	 eInverse(filter)
 	 eIsProxy
