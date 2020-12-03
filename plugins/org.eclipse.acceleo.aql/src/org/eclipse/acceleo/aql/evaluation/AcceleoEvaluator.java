@@ -110,6 +110,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private final IQualifiedNameLookupEngine lookupEngine;
 
 	/**
+	 * Tells if the current {@link Block} is {@link Block#isInlined() inlined}.
+	 */
+	private boolean inlinedBlock;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param other
@@ -205,8 +210,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	protected void pushIndentation(Block block, String indentation) {
 		if (block.isInlined()) {
+			inlinedBlock = true;
 			indentationStack.addLast("");
 		} else {
+			inlinedBlock = false;
 			indentationStack.addLast(indentation);
 		}
 	}
@@ -284,10 +291,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		final String indentation;
-		if (lastLineOfLastStatement.isEmpty()) {
-			indentation = peekIndentation();
+		if (inlinedBlock) {
+			indentation = "";
 		} else {
-			indentation = lastLineOfLastStatement;
+			if (lastLineOfLastStatement.isEmpty()) {
+				indentation = peekIndentation();
+			} else {
+				indentation = lastLineOfLastStatement;
+			}
 		}
 		// TODO replace all possible new lines with the right one
 		String expressionValue = toString(doSwitch(expressionStatement.getExpression()));

@@ -1,0 +1,17 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main  (70..76) /] (61..78)
+  
+  public template myTemplate(myParam : EPackage (107..132))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
+      some text  (178..188)
+      [.add(.add(.aqlFeatureAccess(myParam, 'name'), '.txt'), '
+
+last ExpressionStatement line') (189..248)/] (188..250)
+       some text (250..260) (178..260)
+    [/file] (137..267)
+     (newLineNeeded) (267..268) (134..268)
+  [/template] (79..279) (0..279)
