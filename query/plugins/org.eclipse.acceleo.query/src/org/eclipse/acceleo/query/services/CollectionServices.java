@@ -885,6 +885,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("subOrderedSet".equals(publicMethod.getName()) || "subSequence".equals(publicMethod
 				.getName())) {
 			result = new FirstCollectionTypeService(publicMethod, this);
+		} else if ("drop".equals(publicMethod.getName()) || "dropRight".equals(publicMethod.getName())) {
+			result = new FirstCollectionTypeService(publicMethod, this);
 		} else if ("first".equals(publicMethod.getName()) || "at".equals(publicMethod.getName()) || "last"
 				.equals(publicMethod.getName())) {
 			result = new FirstArgumentRawCollectionType(publicMethod, this);
@@ -2962,7 +2964,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		result = "A subset of the given sequence",
 		exceptions = {
 			@Throw(type = IndexOutOfBoundsException.class, value = "If we have an illegal end point value (startIndex < 1 || " +
-																   "endIndex > set.size() || startIndex > endIndex).")
+																   "endIndex > sequence.size() || startIndex > endIndex).")
 			},
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->subSequence(1, 2)", result = "Sequence{'a', 'b'}")
@@ -2974,6 +2976,90 @@ public class CollectionServices extends AbstractServiceProvider {
 			throw new IndexOutOfBoundsException();
 		}
 		return new ArrayList<T>(sequence.subList(startIndex - 1, endIndex));
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence of elements after the given index in the given sequence",
+		params = {
+			@Param(name = "sequence", value = "The sequence"),
+			@Param(name = "index", value = "The low start point (exclusive) of the subsequence")
+		},
+		result = "A subset of the given sequence",
+		exceptions = {
+			@Throw(type = IndexOutOfBoundsException.class, value = "If we have an illegal start point value (index < 1 || " +
+																   "index > sequence.size()).")
+			},
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c'}->drop(2)", result = "Sequence{'c'}")
+		}
+	)
+	// @formatter:on
+	public <T> List<T> drop(List<T> sequence, Integer index) {
+		return subSequence(sequence, index + 1, sequence.size());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a set of elements after the given index in the given set",
+		params = {
+			@Param(name = "set", value = "The set"),
+			@Param(name = "index", value = "The low start point (exclusive) of the subsequence")
+		},
+		result = "A subset of the given set",
+		exceptions = {
+			@Throw(type = IndexOutOfBoundsException.class, value = "If we have an illegal start point value (index < 1 || " +
+																   "index > set.size()).")
+			},
+		examples = {
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->drop(2)", result = "OrderedSet{'c'}")
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> drop(Set<T> set, Integer index) {
+		return subOrderedSet(set, index + 1, set.size());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence of elements before the given index in the given sequence",
+		params = {
+			@Param(name = "sequence", value = "The sequence"),
+			@Param(name = "index", value = "The high end point (exclusive) of the subsequence")
+		},
+		result = "A subset of the given sequence",
+		exceptions = {
+			@Throw(type = IndexOutOfBoundsException.class, value = "If we have an illegal end point value (index < 1 || " +
+																   "index > sequence.size()).")
+			},
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c'}->dropRight(2)", result = "Sequence{'a'}")
+		}
+	)
+	// @formatter:on
+	public <T> List<T> dropRight(List<T> sequence, Integer index) {
+		return subSequence(sequence, 1, index - 1);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a set of elements before the given index in the given set",
+		params = {
+			@Param(name = "set", value = "The set"),
+			@Param(name = "index", value = "The high end point (exclusive) of the subsequence")
+		},
+		result = "A subset of the given set",
+		exceptions = {
+			@Throw(type = IndexOutOfBoundsException.class, value = "If we have an illegal end point value (index < 1 || " +
+																   "index > set.size()).")
+			},
+		examples = {
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->dropRight(2)", result = "OrderedSet{'a'}")
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> dropRight(Set<T> set, Integer index) {
+		return subOrderedSet(set, 1, index - 1);
 	}
 
 	// @formatter:off

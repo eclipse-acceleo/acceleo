@@ -36,10 +36,9 @@ emfServices
 sequencesServices
 	 [eClasses->iterate(cls : EClass; result : String = cls.name | cls.name.concat('.').concat(result))/]
 	 collectNested
-	 drop
-	 dropRight
 	 flatten
 	 product
+	 result change (A4 result is correct): [mixed->dropRight(2)/]
 orderedSetsServices
 	 [eClasses->iterate(cls : EClass; result : String = cls.name | cls.name.concat('.').concat(result))/]
 	 collectNested

@@ -5697,6 +5697,340 @@ public class CollectionServicesTest {
 		collectionServices.startsWith(null, null);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testDropRightSequenceNull() {
+		collectionServices.dropRight((List<?>)null, Integer.valueOf(1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropRightSequenceIndexZero() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.dropRight((List<?>)list, Integer.valueOf(0));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropRightSequenceIndexOne() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.dropRight((List<?>)list, Integer.valueOf(0));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropRightSequenceIndexOverSize() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.dropRight((List<?>)list, Integer.valueOf(list.size() + 2));
+	}
+
+	@Test
+	public void testDropRightSequenceIndexSizePlusOne() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		final List<?> result = collectionServices.dropRight((List<?>)list, Integer.valueOf(list.size() + 1));
+
+		assertEquals(4, result.size());
+		assertEquals(Integer.valueOf(1), result.get(0));
+		assertEquals(Integer.valueOf(2), result.get(1));
+		assertEquals(Integer.valueOf(3), result.get(2));
+		assertEquals(Integer.valueOf(4), result.get(3));
+	}
+
+	@Test
+	public void testDropRightSequenceIndexSize() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		final List<?> result = collectionServices.dropRight((List<?>)list, Integer.valueOf(list.size()));
+
+		assertEquals(3, result.size());
+		assertEquals(Integer.valueOf(1), result.get(0));
+		assertEquals(Integer.valueOf(2), result.get(1));
+		assertEquals(Integer.valueOf(3), result.get(2));
+	}
+
+	@Test
+	public void testDropRightSequence() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		final List<?> result = collectionServices.dropRight((List<?>)list, Integer.valueOf(2));
+
+		assertEquals(1, result.size());
+		assertEquals(Integer.valueOf(1), result.get(0));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropRightSetIndexZero() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.dropRight((Set<?>)set, Integer.valueOf(0));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropRightSetIndexOne() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.dropRight((Set<?>)set, Integer.valueOf(0));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropRightSetIndexOverSize() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.dropRight((Set<?>)set, Integer.valueOf(set.size() + 2));
+	}
+
+	@Test
+	public void testDropRightSetIndexSizePlusOne() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<?> result = collectionServices.dropRight((Set<?>)set, Integer.valueOf(set.size() + 1));
+
+		assertEquals(4, result.size());
+		final Iterator<?> it = result.iterator();
+		assertEquals(Integer.valueOf(1), it.next());
+		assertEquals(Integer.valueOf(2), it.next());
+		assertEquals(Integer.valueOf(3), it.next());
+		assertEquals(Integer.valueOf(4), it.next());
+	}
+
+	@Test
+	public void testDropRightSetIndexSize() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<?> result = collectionServices.dropRight((Set<?>)set, Integer.valueOf(set.size()));
+
+		assertEquals(3, result.size());
+		final Iterator<?> it = result.iterator();
+		assertEquals(Integer.valueOf(1), it.next());
+		assertEquals(Integer.valueOf(2), it.next());
+		assertEquals(Integer.valueOf(3), it.next());
+	}
+
+	@Test
+	public void testDropRightSet() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<?> result = collectionServices.dropRight((Set<?>)set, Integer.valueOf(2));
+
+		assertEquals(1, result.size());
+		final Iterator<?> it = result.iterator();
+		assertEquals(Integer.valueOf(1), it.next());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testDropSequenceNull() {
+		collectionServices.drop((List<?>)null, Integer.valueOf(1));
+	}
+
+	@Test
+	public void testDropSequenceIndexZero() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.drop((List<?>)list, Integer.valueOf(0));
+	}
+
+	@Test
+	public void testDropSequenceIndexOne() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		final List<?> result = collectionServices.drop((List<?>)list, Integer.valueOf(0));
+
+		assertEquals(4, result.size());
+		assertEquals(Integer.valueOf(1), result.get(0));
+		assertEquals(Integer.valueOf(2), result.get(1));
+		assertEquals(Integer.valueOf(3), result.get(2));
+		assertEquals(Integer.valueOf(4), result.get(3));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropSequenceIndexOverSize() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.drop((List<?>)list, Integer.valueOf(list.size() + 2));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropSequenceIndexSizePlusOne() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.drop((List<?>)list, Integer.valueOf(list.size() + 1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropSequenceIndexSize() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.drop((List<?>)list, Integer.valueOf(list.size()));
+	}
+
+	@Test
+	public void testDropSequence() {
+		List<Object> list = new ArrayList<>();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		final List<?> result = collectionServices.drop((List<?>)list, Integer.valueOf(2));
+
+		assertEquals(2, result.size());
+		assertEquals(Integer.valueOf(3), result.get(0));
+		assertEquals(Integer.valueOf(4), result.get(1));
+	}
+
+	@Test
+	public void testDropSetIndexZero() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<?> result = collectionServices.drop((Set<?>)set, Integer.valueOf(0));
+
+		assertEquals(4, result.size());
+		final Iterator<?> it = result.iterator();
+		assertEquals(Integer.valueOf(1), it.next());
+		assertEquals(Integer.valueOf(2), it.next());
+		assertEquals(Integer.valueOf(3), it.next());
+		assertEquals(Integer.valueOf(4), it.next());
+	}
+
+	@Test
+	public void testDropSetIndexOne() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<?> result = collectionServices.drop((Set<?>)set, Integer.valueOf(0));
+
+		assertEquals(4, result.size());
+		final Iterator<?> it = result.iterator();
+		assertEquals(Integer.valueOf(1), it.next());
+		assertEquals(Integer.valueOf(2), it.next());
+		assertEquals(Integer.valueOf(3), it.next());
+		assertEquals(Integer.valueOf(4), it.next());
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropSetIndexOverSize() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.drop((Set<?>)set, Integer.valueOf(set.size() + 2));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropSetIndexSizePlusOne() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.drop((Set<?>)set, Integer.valueOf(set.size() + 1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testDropSetIndexSize() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.drop((Set<?>)set, Integer.valueOf(set.size()));
+	}
+
+	@Test
+	public void testDropSet() {
+		Set<Object> set = new LinkedHashSet<>();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<?> result = collectionServices.drop((Set<?>)set, Integer.valueOf(2));
+
+		assertEquals(2, result.size());
+		final Iterator<?> it = result.iterator();
+		assertEquals(Integer.valueOf(3), it.next());
+		assertEquals(Integer.valueOf(4), it.next());
+	}
+
 	@Test
 	public void testStartsWithSequenceSequence() {
 		final List<Object> collection = new ArrayList<>();

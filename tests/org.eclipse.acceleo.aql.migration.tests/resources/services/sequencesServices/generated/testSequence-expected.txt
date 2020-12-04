@@ -480,6 +480,19 @@
 @Test integers -> endsWith(OrderedSet{2, 3}) => true
 @Test integers -> endsWith(OrderedSet{1, 1}) => false
 
+@Test strings->dropRight(2) => a
+@Test reals->dropRight(2) => 1.2
+@Test integers->dropRight(2) => 1
+@Test booleans->dropRight(2) => true
+@Test eClasses->dropRight(2) -> collect(name) => ClasseA
+
+@Test mixed->drop(2) => 11.1true
+@Test strings->drop(2) => c
+@Test reals->drop(2) => 3.2
+@Test integers->drop(2) => 3
+@Test booleans->drop(2) => true
+@Test eClasses->drop(2) -> collect(name) => AbstractClass
+
 @Test mixed -> append('a') -> lastIndexOf('a') => 6
 @Test strings -> append('a') -> lastIndexOf('a') => 4
 @Test integers -> append(2) -> lastIndexOf(2) => 4

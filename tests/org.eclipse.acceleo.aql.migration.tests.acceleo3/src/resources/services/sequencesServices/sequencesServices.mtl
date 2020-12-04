@@ -504,8 +504,20 @@
 @Test integers -> endsWith(OrderedSet{1, 1}) => [integers -> endsWith(OrderedSet{1, 1})/]
 @Test integers -> endsWith(OrderedSet{2, 3}) => [integers -> endsWith(OrderedSet{2, 3})/]
 @Test integers -> endsWith(OrderedSet{1, 1}) => [integers -> endsWith(OrderedSet{1, 1})/]
-[comment]A4-UNSUPPORTED dropRight[/comment]
-[comment]A4-UNSUPPORTED drop[/comment]
+
+[comment]A4-UNSUPPORTED result change (A4 result is correct): [mixed->dropRight(2)/][/comment]
+@Test strings->dropRight(2) => [strings->dropRight(2)/]
+@Test reals->dropRight(2) => [reals->dropRight(2)/]
+@Test integers->dropRight(2) => [integers->dropRight(2)/]
+@Test booleans->dropRight(2) => [booleans->dropRight(2)/]
+@Test eClasses->dropRight(2) -> collect(name) => [eClasses->dropRight(2) -> collect(name)/]
+
+@Test mixed->drop(2) => [mixed->drop(2)/]
+@Test strings->drop(2) => [strings->drop(2)/]
+@Test reals->drop(2) => [reals->drop(2)/]
+@Test integers->drop(2) => [integers->drop(2)/]
+@Test booleans->drop(2) => [booleans->drop(2)/]
+@Test eClasses->drop(2) -> collect(name) => [eClasses->drop(2) -> collect(name)/]
 
 @Test mixed -> append('a') -> lastIndexOf('a') => [mixed -> append('a') -> lastIndexOf('a')/]
 @Test strings -> append('a') -> lastIndexOf('a') => [strings -> append('a') -> lastIndexOf('a')/]

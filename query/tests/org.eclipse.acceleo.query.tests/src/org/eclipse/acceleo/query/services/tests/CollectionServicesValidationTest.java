@@ -1042,6 +1042,42 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
+	public void testDropOrderedSet() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "drop", parameterTypes);
+	}
+
+	@Test
+	public void testDropSequence() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "drop", parameterTypes);
+	}
+
+	@Test
+	public void testDropRightOrderedSet() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "dropRight", parameterTypes);
+	}
+
+	@Test
+	public void testDropRightSequence() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)), classType(
+				Integer.class) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "dropRight", parameterTypes);
+	}
+
+	@Test
 	public void testSumListInt() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
