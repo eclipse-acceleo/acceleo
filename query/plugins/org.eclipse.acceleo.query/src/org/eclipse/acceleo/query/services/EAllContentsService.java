@@ -53,32 +53,13 @@ class EAllContentsService extends FilterService {
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		final IType receiverType = argTypes.get(0);
-		final Set<EClass> receiverEClasses = new LinkedHashSet<EClass>();
-		if (receiverType.getType() instanceof EClass) {
-			receiverEClasses.add((EClass)receiverType.getType());
-		} else if (receiverType.getType() instanceof Class) {
-			final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
-					(Class<?>)receiverType.getType());
-			if (eClassifiers != null) {
-				for (EClassifier eCls : eClassifiers) {
-					if (eCls instanceof EClass) {
-						receiverEClasses.add((EClass)eCls);
-					}
-				}
-			}
-		} else {
-			throw new IllegalStateException("don't know what to do with " + receiverType.getType());
-		}
-
-		if (receiverEClasses.isEmpty()) {
-			result.add(new SequenceType(queryEnvironment, services.nothing(
-					"Only EClass can contain other EClasses not %s", argTypes.get(0))));
-		} else {
-			for (EClass eCls : receiverEClasses) {
+		final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+		if (!eClasses.isEmpty()) {
+			for (EClass eCls : eClasses) {
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
+						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+								eCls)));
 					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
 						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
@@ -96,6 +77,9 @@ class EAllContentsService extends FilterService {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			}
+		} else {
+			result.add(new SequenceType(queryEnvironment, services.nothing(
+					"Only EClass can contain other EClasses not %s", argTypes.get(0))));
 		}
 
 		return result;
@@ -135,7 +119,8 @@ class EAllContentsService extends FilterService {
 		} else if (argTypes.size() == 2) {
 			final Set<IType> filterTypes = new LinkedHashSet<IType>();
 			if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
-				for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1)).getEClassifiers()) {
+				for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+						.getEClassifiers()) {
 					filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
 				}
 			} else if (argTypes.get(1) instanceof EClassifierLiteralType) {

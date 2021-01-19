@@ -84,26 +84,31 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
-						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
-						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)argTypes.get(1)).getType())));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
-						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
-								.getEClassifiers()) {
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						if (argTypes.size() == 1) {
 							result.add(new SequenceType(queryEnvironment, new EClassifierType(
-									queryEnvironment, eClassifier)));
+									queryEnvironment, eCls)));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierLiteralType) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, ((EClassifierLiteralType)argTypes.get(1)).getType())));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierSetLiteralType) {
+							for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+									.getEClassifiers()) {
+								result.add(new SequenceType(queryEnvironment, new EClassifierType(
+										queryEnvironment, eClassifier)));
+							}
+						} else if (argTypes.size() == 2) {
+							result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+									argTypes));
 						}
-					} else if (argTypes.size() == 2) {
-						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
-								argTypes));
+					} else {
+						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 					}
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SequenceType(queryEnvironment, services.nothing(
@@ -200,26 +205,31 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
-						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
-						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)argTypes.get(1)).getType())));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
-						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
-								.getEClassifiers()) {
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						if (argTypes.size() == 1) {
 							result.add(new SequenceType(queryEnvironment, new EClassifierType(
-									queryEnvironment, eClassifier)));
+									queryEnvironment, eCls)));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierLiteralType) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, ((EClassifierLiteralType)argTypes.get(1)).getType())));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierSetLiteralType) {
+							for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+									.getEClassifiers()) {
+								result.add(new SequenceType(queryEnvironment, new EClassifierType(
+										queryEnvironment, eClassifier)));
+							}
+						} else if (argTypes.size() == 2) {
+							result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+									argTypes));
 						}
-					} else if (argTypes.size() == 2) {
-						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
-								argTypes));
+					} else {
+						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 					}
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SequenceType(queryEnvironment, services.nothing(
@@ -313,26 +323,31 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
-						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
-						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)argTypes.get(1)).getType())));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
-						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
-								.getEClassifiers()) {
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						if (argTypes.size() == 1) {
 							result.add(new SequenceType(queryEnvironment, new EClassifierType(
-									queryEnvironment, eClassifier)));
+									queryEnvironment, eCls)));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierLiteralType) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, ((EClassifierLiteralType)argTypes.get(1)).getType())));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierSetLiteralType) {
+							for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+									.getEClassifiers()) {
+								result.add(new SequenceType(queryEnvironment, new EClassifierType(
+										queryEnvironment, eClassifier)));
+							}
+						} else if (argTypes.size() == 2) {
+							result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+									argTypes));
 						}
-					} else if (argTypes.size() == 2) {
-						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
-								argTypes));
+					} else {
+						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 					}
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SequenceType(queryEnvironment, services.nothing(
@@ -426,26 +441,31 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
-						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
-						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)argTypes.get(1)).getType())));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
-						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
-								.getEClassifiers()) {
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						if (argTypes.size() == 1) {
 							result.add(new SequenceType(queryEnvironment, new EClassifierType(
-									queryEnvironment, eClassifier)));
+									queryEnvironment, eCls)));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierLiteralType) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, ((EClassifierLiteralType)argTypes.get(1)).getType())));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierSetLiteralType) {
+							for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+									.getEClassifiers()) {
+								result.add(new SequenceType(queryEnvironment, new EClassifierType(
+										queryEnvironment, eClassifier)));
+							}
+						} else if (argTypes.size() == 2) {
+							result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+									argTypes));
 						}
-					} else if (argTypes.size() == 2) {
-						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
-								argTypes));
+					} else {
+						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 					}
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SequenceType(queryEnvironment, services.nothing(

@@ -37,6 +37,7 @@ import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
@@ -491,6 +492,35 @@ public class ValidationServices extends AbstractLanguageServices {
 		} else if (type1.getType() instanceof EClass && type2.getType() instanceof EClass) {
 			for (EClass eCls : getSubTypesTopIntersection((EClass)type1.getType(), (EClass)type2.getType())) {
 				result.add(new EClassifierType(getQueryEnvironment(), eCls));
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link EClass} form the given {@link IType}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param type
+	 *            the {@link IType}
+	 * @return the {@link Set} of {@link EClass} form the given {@link IType}
+	 */
+	public Set<EClass> getEClasses(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
+		final Set<EClass> result = new LinkedHashSet<EClass>();
+
+		if (type.getType() instanceof EClass) {
+			result.add((EClass)type.getType());
+		} else if (type.getType() instanceof Class) {
+			final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
+					(Class<?>)type.getType());
+			if (eClassifiers != null) {
+				for (EClassifier eClassifier : eClassifiers) {
+					if (eClassifier instanceof EClass) {
+						result.add((EClass)eClassifier);
+					}
+				}
 			}
 		}
 

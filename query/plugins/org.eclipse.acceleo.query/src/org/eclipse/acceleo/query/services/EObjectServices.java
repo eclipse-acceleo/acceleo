@@ -217,35 +217,12 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, IType receiverType, String featureName) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> receiverEClasses = new LinkedHashSet<EClass>();
-			if (receiverType.getType() instanceof EClass) {
-				receiverEClasses.add((EClass)receiverType.getType());
-			} else if (receiverType.getType() instanceof Class) {
-				final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
-						(Class<?>)receiverType.getType());
-				if (eClassifiers != null) {
-					for (EClassifier eCls : eClassifiers) {
-						if (eCls instanceof EClass) {
-							receiverEClasses.add((EClass)eCls);
-						}
-					}
-				}
-			} else if (receiverType.getType() != null) {
-				throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + receiverType.getType());
-			}
-
-			if (receiverEClasses.isEmpty()) {
-				if (receiverType.getType() != null) {
-					result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType
-							.getType().toString()));
-				} else {
-					result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, "null"));
-				}
-			} else {
-				for (EClass eClass : receiverEClasses) {
-					EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, receiverType);
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					EStructuralFeature feature = eCls.getEStructuralFeature(featureName);
 					if (feature == null) {
-						result.add(services.nothing(UNKNOWN_FEATURE, featureName, eClass.getName()));
+						result.add(services.nothing(UNKNOWN_FEATURE, featureName, eCls.getName()));
 					} else {
 						final EClassifierType featureBasicType = new EClassifierType(queryEnvironment, feature
 								.getEType());
@@ -255,6 +232,13 @@ public class EObjectServices extends AbstractServiceProvider {
 							result.add(featureBasicType);
 						}
 					}
+				}
+			} else {
+				if (receiverType.getType() != null) {
+					result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType
+							.getType().toString()));
+				} else {
+					result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, "null"));
 				}
 			}
 
@@ -350,17 +334,19 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
-						result.add(argTypes.get(0));
-					} else if (argTypes.size() == 2) {
-						result.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType)argTypes
-								.get(1)).getType()));
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						if (argTypes.size() == 1) {
+							result.add(new EClassifierType(queryEnvironment, eCls));
+						} else if (argTypes.size() == 2) {
+							result.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType)argTypes
+									.get(1)).getType()));
+						}
+					} else {
+						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 					}
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(services.nothing(ONLY_E_CLASS_CAN_BE_CONTAINED_INTO_OTHER_E_CLASSES_NOT_S, argTypes
@@ -451,13 +437,15 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					result.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType)argTypes.get(1))
-							.getType()));
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						result.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType)argTypes
+								.get(1)).getType()));
+					} else {
+						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
+					}
 				}
 			} else {
 				result.add(services.nothing(ONLY_E_CLASS_CAN_BE_CONTAINED_INTO_OTHER_E_CLASSES_NOT_S, argTypes
@@ -534,26 +522,31 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
-						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
-						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)argTypes.get(1)).getType())));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
-						for (EClassifier eClsFilter : ((EClassifierSetLiteralType)argTypes.get(1))
-								.getEClassifiers()) {
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						if (argTypes.size() == 1) {
 							result.add(new SequenceType(queryEnvironment, new EClassifierType(
-									queryEnvironment, eClsFilter)));
+									queryEnvironment, eCls)));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierLiteralType) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, ((EClassifierLiteralType)argTypes.get(1)).getType())));
+						} else if (argTypes.size() == 2 && argTypes.get(
+								1) instanceof EClassifierSetLiteralType) {
+							for (EClassifier eClsFilter : ((EClassifierSetLiteralType)argTypes.get(1))
+									.getEClassifiers()) {
+								result.add(new SequenceType(queryEnvironment, new EClassifierType(
+										queryEnvironment, eClsFilter)));
+							}
+						} else if (argTypes.size() == 2) {
+							result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+									argTypes));
 						}
-					} else if (argTypes.size() == 2) {
-						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
-								argTypes));
+					} else {
+						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 					}
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SequenceType(queryEnvironment, services.nothing(
@@ -722,17 +715,21 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClass)) {
-						result.add(new SetType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2) {
-						result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)argTypes.get(1)).getType())));
+			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			if (!eClasses.isEmpty()) {
+				for (EClass eCls : eClasses) {
+					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+						if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClass)) {
+							result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
+									eCls)));
+						} else if (argTypes.size() == 2) {
+							result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
+									((EClassifierLiteralType)argTypes.get(1)).getType())));
+						}
+					} else {
+						result.addAll(getTypeForSpecificType(call, services, queryEnvironment, argTypes,
+								eCls));
 					}
-				} else {
-					result.addAll(getTypeForSpecificType(call, services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SetType(queryEnvironment, services.nothing(
