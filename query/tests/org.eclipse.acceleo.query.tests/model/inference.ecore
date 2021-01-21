@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="inference" nsURI="http://www.eclipse.org/acceleo/inference"
+    nsPrefix="inference">
+  <eClassifiers xsi:type="ecore:EDataType" name="bool" instanceClassName="java.lang.Boolean"/>
+  <eClassifiers xsi:type="ecore:EClass" name="O"/>
+  <eClassifiers xsi:type="ecore:EClass" name="A"/>
+  <eClassifiers xsi:type="ecore:EClass" name="B" eSuperTypes="#//A #//X"/>
+  <eClassifiers xsi:type="ecore:EClass" name="C" eSuperTypes="#//B">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cAttr" eType="#//bool"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="X"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Y" eSuperTypes="#//B"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Z" eSuperTypes="#//C #//Y"/>
+</ecore:EPackage>

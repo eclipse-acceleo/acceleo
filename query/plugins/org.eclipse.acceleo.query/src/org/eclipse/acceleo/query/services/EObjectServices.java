@@ -217,7 +217,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, IType receiverType, String featureName) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, receiverType);
+			final Set<EClass> eClasses = services.getEClasses(receiverType);
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					EStructuralFeature feature = eCls.getEStructuralFeature(featureName);
@@ -334,7 +334,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
@@ -437,7 +437,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
@@ -522,7 +522,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
@@ -715,7 +715,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {

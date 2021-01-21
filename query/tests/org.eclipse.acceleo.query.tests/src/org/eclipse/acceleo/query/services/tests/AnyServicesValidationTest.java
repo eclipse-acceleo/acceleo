@@ -20,7 +20,6 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.AnyServices;
-import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
@@ -154,21 +153,21 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		final IService<?> service = serviceLookUp("oclAsType", new Object[] {new Object(), Integer.class });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+		argTypes.add(classType(Object.class));
+		argTypes.add(classType(Integer.class));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Integer.class), it.next());
+		assertEquals(classType(Integer.class), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 		assertEquals(1, types.size());
 		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Integer.class), it.next());
+		assertEquals(classType(Integer.class), it.next());
 	}
 
 	@Test
@@ -177,21 +176,21 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), EClass.class));
+		argTypes.add(classType(Object.class));
+		argTypes.add(classType(EClass.class));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), EClass.class), it.next());
+		assertEquals(classType(EClass.class), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 		assertEquals(1, types.size());
 		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), EClass.class), it.next());
+		assertEquals(classType(EClass.class), it.next());
 	}
 
 	@Test
@@ -201,23 +200,21 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(classType(Object.class));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEClass()));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
-				.next());
+		assertEquals(eClassifierType(EcorePackage.eINSTANCE.getEClass()), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 		assertEquals(1, types.size());
 		it = types.iterator();
-		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
-				.next());
+		assertEquals(eClassifierType(EcorePackage.eINSTANCE.getEClass()), it.next());
 	}
 
 	@Test
@@ -226,8 +223,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(classType(Object.class));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEClass()));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
@@ -259,21 +256,21 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				EcorePackage.eINSTANCE.getEInt() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
+		argTypes.add(classType(Object.class));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEInt()));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()), it.next());
+		assertEquals(eClassifierType(EcorePackage.eINSTANCE.getEInt()), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 		assertEquals(1, types.size());
 		it = types.iterator();
-		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()), it.next());
+		assertEquals(eClassifierType(EcorePackage.eINSTANCE.getEInt()), it.next());
 	}
 
 	@Test
@@ -282,8 +279,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				EcorePackage.eINSTANCE.getEInt() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
+		argTypes.add(classType(Object.class));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEInt()));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
@@ -335,8 +332,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		final IService<?> service = serviceLookUp("oclAsType", new Object[] {EcoreUtil.create(a), x });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), a));
-		argTypes.add(new EClassifierType(getQueryEnvironment(), x));
+		argTypes.add(eClassifierType(a));
+		argTypes.add(eClassifierType(x));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
@@ -359,21 +356,21 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				new Object(), });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEInt()));
+		argTypes.add(classType(Object.class));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Object.class), it.next());
+		assertEquals(classType(Object.class), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 		assertEquals(1, types.size());
 		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Object.class), it.next());
+		assertEquals(classType(Object.class), it.next());
 	}
 
 	@Test
@@ -382,8 +379,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				new Object(), });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEInt()));
+		argTypes.add(classType(Object.class));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
@@ -416,8 +413,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		assertTrue(service != null);
 
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEPackage()));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);
@@ -448,8 +445,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		assertTrue(service != null);
 
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEPackage()));
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
 				argTypes);

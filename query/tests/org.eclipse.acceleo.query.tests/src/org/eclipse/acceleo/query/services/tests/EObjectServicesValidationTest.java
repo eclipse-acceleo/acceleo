@@ -20,9 +20,6 @@ import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
-import org.eclipse.acceleo.query.validation.type.ClassType;
-import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -555,7 +552,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -576,7 +573,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), EClass.class));
+		argTypes.add(classType(EClass.class));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -596,8 +593,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {new EClassifierType(getQueryEnvironment(),
-					EcorePackage.eINSTANCE.getEStringToStringMapEntry()) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEStringToStringMapEntry()) };
 
 			assertNoService("eContainer", parameterTypes);
 		} finally {
@@ -610,8 +607,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
-			final IType[] parameterTypes = new IType[] {new ClassType(getQueryEnvironment(),
-					EStringToStringMapEntryImpl.class) };
+			final IType[] parameterTypes = new IType[] {classType(EStringToStringMapEntryImpl.class) };
 			final IType[] expectedReturnTypes = new IType[] {nothingType(
 					"Only EClass can be contained into other EClasses not org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl") };
 			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
@@ -630,8 +626,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerCustomClassMapping(EcorePackage.eINSTANCE
 					.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 
-			final IType[] parameterTypes = new IType[] {new EClassifierType(getQueryEnvironment(),
-					EcorePackage.eINSTANCE.getEStringToStringMapEntry()) };
+			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
+					.getEStringToStringMapEntry()) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEAnnotation()) };
 
@@ -648,8 +644,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerCustomClassMapping(EcorePackage.eINSTANCE
 					.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 
-			final IType[] parameterTypes = new IType[] {new ClassType(getQueryEnvironment(),
-					EStringToStringMapEntryImpl.class) };
+			final IType[] parameterTypes = new IType[] {classType(EStringToStringMapEntryImpl.class) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEAnnotation()) };
 
@@ -788,9 +783,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 				EcorePackage.eINSTANCE.getEModelElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
-				.getETypedElement()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(eClassifierLiteralType(EcorePackage.eINSTANCE.getETypedElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -812,9 +806,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 				EcorePackage.eINSTANCE.getEModelElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), EPackage.class));
-		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
-				.getETypedElement()));
+		argTypes.add(classType(EPackage.class));
+		argTypes.add(eClassifierLiteralType(EcorePackage.eINSTANCE.getETypedElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -1549,8 +1542,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 				EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -1572,8 +1565,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 				EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), EPackage.class));
-		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(classType(EPackage.class));
+		argTypes.add(eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);

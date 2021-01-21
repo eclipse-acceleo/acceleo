@@ -21,7 +21,7 @@ import org.eclipse.acceleo.query.parser.tests.CompletionTest;
 import org.eclipse.acceleo.query.parser.tests.EvaluationTest;
 import org.eclipse.acceleo.query.parser.tests.LexerTest;
 import org.eclipse.acceleo.query.parser.tests.PositionsTests;
-import org.eclipse.acceleo.query.parser.tests.ValidationInferrenceTest;
+import org.eclipse.acceleo.query.parser.tests.ValidationInferenceTest;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupCrossReferencerTest;
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupTest;
@@ -99,7 +99,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		EOperationCompletionProposalTests.class, TextCompletionProposalTests.class,
 		VariableDeclarationCompletionProposalTests.class, EEnumLiteralCompletionProposalTests.class,
 		VariableCompletionProposalTests.class, EClassifierCompletionProposalTests.class,
-		ValidationInferrenceTest.class, TypeTests.class, QueryEnvironmentTests.class,
+		ValidationInferenceTest.class, TypeTests.class, QueryEnvironmentTests.class,
 		EPackageProviderTests.class, CompletionCheck.class, FilterCamelCaseTest.class,
 		CollectionServicesAstValidationTest.class, DelegateTests.class, CombineIteratorTest.class,
 		PositionsTests.class, AstSerializerTests.class, })

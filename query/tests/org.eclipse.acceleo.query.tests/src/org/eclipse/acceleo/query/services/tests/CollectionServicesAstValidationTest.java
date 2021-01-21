@@ -1823,6 +1823,59 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testSortedBySetEObjectNameClass() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		VariableBuilder variables = new VariableBuilder().addVar("eCls1", classType(EClass.class)).addVar(
+				"eCls2", classType(EClass.class));
+		final IValidationResult validationResult = validate("OrderedSet{eCls1, eCls2}->sortedBy(i | i.name)",
+				variables.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(classType(EClass.class))), types);
+	}
+
+	@Test
+	public void testSortedBySetEObjectNameEClassifierLiteral() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		VariableBuilder variables = new VariableBuilder().addVar("eCls1", eClassifierLiteralType(
+				EcorePackage.eINSTANCE.getEClass())).addVar("eCls2", eClassifierLiteralType(
+						EcorePackage.eINSTANCE.getEClass()));
+		final IValidationResult validationResult = validate("OrderedSet{eCls1, eCls2}->sortedBy(i | i.name)",
+				variables.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+	}
+
+	@Test
 	public void testSortedBySetNoComparableLambda() {
 		final IValidationResult validationResult = validate(
 				"OrderedSet{'hello'}->sortedBy(i | i->asSequence())");
@@ -1923,6 +1976,59 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		VariableBuilder variables = new VariableBuilder().addVar("eCls1", eClassifierType(
 				EcorePackage.eINSTANCE.getEClass())).addVar("eCls2", eClassifierType(EcorePackage.eINSTANCE
 						.getEClass()));
+		final IValidationResult validationResult = validate("Sequence{eCls1, eCls2}->sortedBy(i | i.name)",
+				variables.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+	}
+
+	@Test
+	public void testSortedByListEObjectNameClass() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		VariableBuilder variables = new VariableBuilder().addVar("eCls1", classType(EClass.class)).addVar(
+				"eCls2", classType(EClass.class));
+		final IValidationResult validationResult = validate("Sequence{eCls1, eCls2}->sortedBy(i | i.name)",
+				variables.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(classType(EClass.class))), types);
+	}
+
+	@Test
+	public void testSortedByListEObjectNameEClassifierLiteral() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		VariableBuilder variables = new VariableBuilder().addVar("eCls1", eClassifierLiteralType(
+				EcorePackage.eINSTANCE.getEClass())).addVar("eCls2", eClassifierLiteralType(
+						EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("Sequence{eCls1, eCls2}->sortedBy(i | i.name)",
 				variables.build());
 
@@ -2495,6 +2601,35 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testClosureListClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("Sequence{pkg}->closure(i | i.eSubpackages)",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
+	}
+
+	@Test
+	public void testClosureListEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("Sequence{pkg}->closure(i | i.eSubpackages)",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
+	}
+
+	@Test
 	public void testClosureListMultipleTypes() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate(
@@ -2511,11 +2646,74 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testClosureListMultipleTypesClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}->closure(i | i.eSubpackages->union(i.eClassifiers))", new VariableBuilder()
+						.addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
+	public void testClosureListMultipleTypesEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}->closure(i | i.eSubpackages->union(i.eClassifiers))", new VariableBuilder()
+						.addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
 	public void testClosureListNull() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate("Sequence{pkg}->closure(null)",
 				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
 						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		// FIXME shouldn't parse
+		assertEquals(newSet(setType(classType(null))), types);
+	}
+
+	@Test
+	public void testClosureListNullClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("Sequence{pkg}->closure(null)",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		// FIXME shouldn't parse
+		assertEquals(newSet(setType(classType(null))), types);
+	}
+
+	@Test
+	public void testClosureListNullEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("Sequence{pkg}->closure(null)",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
@@ -2565,11 +2763,40 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testClosureSetMultipleTypes() {
+	public void testClosureSetClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("OrderedSet{pkg}->closure(i | i.eSubpackages)",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
+	}
+
+	@Test
+	public void testClosureSetEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("OrderedSet{pkg}->closure(i | i.eSubpackages)",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
+	}
+
+	@Test
+	public void testClosureSetMultipleTypesEClassifierLiteral() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate(
 				"OrderedSet{pkg}->closure(i | i.eSubpackages->union(i.eClassifiers))", new VariableBuilder()
-						.addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage())).build());
+						.addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage())).build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
@@ -2597,11 +2824,72 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testClosureSetNullCass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("OrderedSet{pkg}->closure(null)",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		// FIXME shouldn't parse
+		assertEquals(newSet(setType(classType(null))), types);
+	}
+
+	@Test
+	public void testClosureSetNullEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("OrderedSet{pkg}->closure(null)",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		// FIXME shouldn't parse
+		assertEquals(newSet(setType(classType(null))), types);
+	}
+
+	@Test
 	public void testFilterList() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate(
 				"Sequence{pkg}.eClassifiers->filter(ecore::EClass)", new VariableBuilder().addVar("pkg",
 						eClassifierType(EcorePackage.eINSTANCE.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+	}
+
+	@Test
+	public void testFilterListClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter(ecore::EClass)", new VariableBuilder().addVar("pkg",
+						classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+	}
+
+	@Test
+	public void testFilterListECLassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter(ecore::EClass)", new VariableBuilder().addVar("pkg",
+						eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage())).build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
@@ -2629,12 +2917,78 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testFilterListMultipleTypesClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter({ecore::EClass | ecore::EDataType})",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), sequenceType(
+				eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+	}
+
+	@Test
+	public void testFilterListMultipleTypesEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter({ecore::EClass | ecore::EDataType})",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), sequenceType(
+				eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+	}
+
+	@Test
 	public void testFilterListMultipleTypesSameHierarchy() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate(
 				"Sequence{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
 				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
 						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), sequenceType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
+	public void testFilterListMultipleTypesSameHierarchyClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), sequenceType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
+	public void testFilterListMultipleTypesSameHierarchyEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
@@ -2670,8 +3024,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testFilterOnNull() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate("null->filter(ecore::EClass)",
-				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
-						.build());
+				new VariableBuilder().build());
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -2706,6 +3059,36 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testFilterSetClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter(ecore::EClass)", new VariableBuilder().addVar("pkg",
+						classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+	}
+
+	@Test
+	public void testFilterSetEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter(ecore::EClass)", new VariableBuilder().addVar("pkg",
+						eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+	}
+
+	@Test
 	public void testFilterSetMultipleTypes() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate(
@@ -2723,12 +3106,78 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
+	public void testFilterSetMultipleTypesClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter({ecore::EClass | ecore::EDataType})",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+	}
+
+	@Test
+	public void testFilterSetMultipleTypesEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter({ecore::EClass | ecore::EDataType})",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+	}
+
+	@Test
 	public void testFilterSetMultipleTypesSameHierarchy() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IValidationResult validationResult = validate(
 				"OrderedSet{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
 				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
 						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
+	public void testFilterSetMultipleTypesSameHierarchyClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
+				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
+	public void testFilterSetMultipleTypesSameHierarchyEClassifierLiteral() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
+				new VariableBuilder().addVar("pkg", eClassifierLiteralType(EcorePackage.eINSTANCE
+						.getEPackage())).build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
 

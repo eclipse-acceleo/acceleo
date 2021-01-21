@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
@@ -419,7 +420,8 @@ public class ValidationServices extends AbstractLanguageServices {
 		if (type1 == null || type2 == null) {
 			result = null;
 		} else {
-			if (type1.isAssignableFrom(type2) || type1.getType() == EcorePackage.eINSTANCE.getEObject()) {
+			if (type1.isAssignableFrom(type2) || type1.getType() == EcorePackage.eINSTANCE.getEObject()
+					|| type1.getType() == EObject.class) {
 				if (type2 instanceof EClassifierLiteralType) {
 					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type2).getType());
 				} else if (type2 instanceof ClassLiteralType) {
@@ -427,8 +429,8 @@ public class ValidationServices extends AbstractLanguageServices {
 				} else {
 					result = type2;
 				}
-			} else if (type2.isAssignableFrom(type1) || type2.getType() == EcorePackage.eINSTANCE
-					.getEObject()) {
+			} else if (type2.isAssignableFrom(type1) || type2.getType() == EcorePackage.eINSTANCE.getEObject()
+					|| type2.getType() == EObject.class) {
 				if (type1 instanceof EClassifierLiteralType) {
 					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type1).getType());
 				} else if (type1 instanceof ClassLiteralType) {
@@ -489,9 +491,15 @@ public class ValidationServices extends AbstractLanguageServices {
 		final IType lowerType = lower(type1, type2);
 		if (lowerType != null) {
 			result.add(lowerType);
-		} else if (type1.getType() instanceof EClass && type2.getType() instanceof EClass) {
-			for (EClass eCls : getSubTypesTopIntersection((EClass)type1.getType(), (EClass)type2.getType())) {
-				result.add(new EClassifierType(getQueryEnvironment(), eCls));
+		} else if (type1 != null && type2 != null) {
+			Set<EClass> eClasses1 = getEClasses(type1);
+			Set<EClass> eClasses2 = getEClasses(type2);
+			for (EClass eCls1 : eClasses1) {
+				for (EClass eCls2 : eClasses2) {
+					for (EClass eCls : getSubTypesTopIntersection(eCls1, eCls2)) {
+						result.add(new EClassifierType(getQueryEnvironment(), eCls));
+					}
+				}
 			}
 		}
 
@@ -500,14 +508,12 @@ public class ValidationServices extends AbstractLanguageServices {
 
 	/**
 	 * Gets the {@link Set} of {@link EClass} form the given {@link IType}.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param type
 	 *            the {@link IType}
+	 * 
 	 * @return the {@link Set} of {@link EClass} form the given {@link IType}
 	 */
-	public Set<EClass> getEClasses(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
+	public Set<EClass> getEClasses(IType type) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
 		if (type.getType() instanceof EClass) {

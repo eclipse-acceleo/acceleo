@@ -21,8 +21,6 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
-import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.emf.common.util.URI;
@@ -37,7 +35,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests for the resource-related services' validation.
  */
-public class ResourceServicesValidationTest extends AbstractServicesTest {
+public class ResourceServicesValidationTest extends AbstractServicesValidationTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
@@ -52,7 +50,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -60,7 +58,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), Resource.class), it.next());
+			assertEquals(classType(Resource.class), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -68,7 +66,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), Resource.class), it.next());
+			assertEquals(classType(Resource.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
@@ -81,7 +79,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 				.eResource() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEResource()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEResource()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -89,7 +87,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), URI.class), it.next());
+			assertEquals(classType(URI.class), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -97,7 +95,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), URI.class), it.next());
+			assertEquals(classType(URI.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
@@ -110,7 +108,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 				.eResource() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEResource()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEResource()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -118,8 +116,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
-					EcorePackage.eINSTANCE.getEObject())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), eClassifierType(EcorePackage.eINSTANCE
+					.getEObject())), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -127,8 +125,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
-					EcorePackage.eINSTANCE.getEObject())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), eClassifierType(EcorePackage.eINSTANCE
+					.getEObject())), it.next());
 			assertFalse(it.hasNext());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
@@ -141,8 +139,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 				.eResource(), EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEResource()));
-		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(eClassifierType(EcorePackage.eINSTANCE.getEResource()));
+		argTypes.add(eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -150,8 +148,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
-					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), eClassifierType(EcorePackage.eINSTANCE
+					.getEPackage())), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -159,8 +157,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
-					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), eClassifierType(EcorePackage.eINSTANCE
+					.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
@@ -171,7 +169,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 		final IService<?> service = serviceLookUp("lastSegment", new Object[] {URI.createFileURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
+		argTypes.add(classType(URI.class));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -179,7 +177,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+			assertEquals(classType(String.class), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -187,7 +185,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+			assertEquals(classType(String.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
@@ -207,7 +205,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+			assertEquals(classType(String.class), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -215,7 +213,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+			assertEquals(classType(String.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
@@ -228,7 +226,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 				"") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
+		argTypes.add(classType(URI.class));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -236,7 +234,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+			assertEquals(classType(Boolean.class), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -244,7 +242,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+			assertEquals(classType(Boolean.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
@@ -256,7 +254,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 		final IService<?> service = serviceLookUp("isPlatformPlugin", new Object[] {URI.createFileURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
+		argTypes.add(classType(URI.class));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -264,7 +262,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+			assertEquals(classType(Boolean.class), it.next());
 			assertFalse(it.hasNext());
 
 			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
@@ -272,7 +270,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 			assertEquals(1, types.size());
 			it = types.iterator();
-			assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+			assertEquals(classType(Boolean.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);

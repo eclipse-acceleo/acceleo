@@ -7,6 +7,11 @@
 			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="src-gen-inference">
+		<attributes>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="src">
 		<attributes>
 			<attribute name="test" value="true"/>

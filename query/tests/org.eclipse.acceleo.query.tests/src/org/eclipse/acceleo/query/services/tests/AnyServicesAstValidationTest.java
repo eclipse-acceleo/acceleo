@@ -20,6 +20,8 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 
@@ -417,29 +419,6 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	}
 
 	@Test
-	public void testOclAsTypeNotCompatibleTypeClass() {
-		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("var", classType(String.class));
-		final IValidationResult validationResult = validate("var.oclAsType(Integer)", variables.build());
-
-		final String expectedMessage = "Nothing will be left after calling oclAsType:\n"
-				+ "java.lang.String is not compatible with type ClassLiteral=java.lang.Integer";
-
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR, expectedMessage, 3, 22);
-
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
-
-		assertEquals(1, types.size());
-		final Iterator<IType> it = types.iterator();
-		final IType type = it.next();
-		assertTrue(type instanceof NothingType);
-		assertEquals(expectedMessage, ((NothingType)type).getMessage());
-	}
-
-	@Test
 	public void testOclAsTypeNotCompatibleTypeClassLiteral() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classLiteralType(String.class));
@@ -488,6 +467,30 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	}
 
 	@Test
+	public void testOclAsTypeNotCompatibleTypeClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", classType(EClass.class));
+		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EPackage)", variables
+				.build());
+
+		final String expectedMessage = "Nothing will be left after calling oclAsType:\n"
+				+ "org.eclipse.emf.ecore.EClass is not compatible with type EClassifierLiteral=EPackage";
+
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, expectedMessage, 4, 31);
+
+		final AstResult ast = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		final Iterator<IType> it = types.iterator();
+		final IType type = it.next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(expectedMessage, ((NothingType)type).getMessage());
+	}
+
+	@Test
 	public void testOclAsTypeNotCompatibleTypeECLassifierLiteral() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierLiteralType(
@@ -517,6 +520,22 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", eClassifierType(
 				EcorePackage.eINSTANCE.getEClassifier()));
+		final IValidationResult validationResult = validate("eClasssifier.oclAsType(ecore::EClass)", variables
+				.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		final AstResult ast = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
+	}
+
+	@Test
+	public void testOclAsTypeMayBeCompatibleTypeClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", classType(
+				EClassifier.class));
 		final IValidationResult validationResult = validate("eClasssifier.oclAsType(ecore::EClass)", variables
 				.build());
 
@@ -754,6 +773,26 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	}
 
 	@Test
+	public void testOclIsKindOfNotCompatibleTypeClassClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", classType(EClass.class));
+		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EPackage)", variables
+				.build());
+
+		final String expectedMessage = "Always false:\n"
+				+ "Nothing inferred when eCls (org.eclipse.emf.ecore.EClass) is kind of EClassifierLiteral=EPackage";
+
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
+
+		final AstResult ast = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
+	}
+
+	@Test
 	public void testOclIsKindOfNotCompatibleTypeEClassifierLiteral() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierLiteralType(
@@ -779,6 +818,22 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", eClassifierType(
 				EcorePackage.eINSTANCE.getEClassifier()));
+		final IValidationResult validationResult = validate("eClasssifier.oclIsKindOf(ecore::EClass)",
+				variables.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		final AstResult ast = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testOclIsKindOfMayBeCompatibleTypeClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", classType(
+				EClassifier.class));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsKindOf(ecore::EClass)",
 				variables.build());
 
@@ -936,6 +991,26 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	}
 
 	@Test
+	public void testOclIsTypeOfSameTypeClassClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", classType(EClass.class));
+		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EClass)", variables
+				.build());
+
+		final String expectedMessage = "Always true:\n"
+				+ "Nothing inferred when eCls (org.eclipse.emf.ecore.EClass) is not type of EClassifierLiteral=EClass";
+
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
+
+		final AstResult ast = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
+	}
+
+	@Test
 	public void testOclIsTypeOfSameTypeEClassifierLiteral() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierLiteralType(
@@ -1041,6 +1116,22 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", eClassifierType(
 				EcorePackage.eINSTANCE.getEClassifier()));
+		final IValidationResult validationResult = validate("eClasssifier.oclIsTypeOf(ecore::EClass)",
+				variables.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		final AstResult ast = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testOclIsTypeOfMayBeCompatibleTypeClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", classType(
+				EClassifier.class));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsTypeOf(ecore::EClass)",
 				variables.build());
 

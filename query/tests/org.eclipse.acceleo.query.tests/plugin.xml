@@ -14,4 +14,12 @@
             genModel="model/nooperationreflection.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated inference -->
+      <package
+            uri="http://www.eclipse.org/acceleo/inference"
+            class="inference.InferencePackage"
+            genModel="model/inference.genmodel"/>
+   </extension>
+
 </plugin>

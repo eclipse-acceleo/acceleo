@@ -511,7 +511,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				for (IType argType : argTypes) {
 					final IType lowerArgType = services.lower(argType, argType);
 					final IType lowerType = services.lower(originalType, lowerArgType);
-					if (lowerArgType != null && lowerArgType.equals(originalType)) {
+					if (lowerArgType != null && lowerArgType.isAssignableFrom(originalType) && lowerType
+							.isAssignableFrom(lowerArgType)) {
 						inferredTrueTypes.add(lowerArgType);
 						final Set<EClass> upperSubEClasses = getUpperSubTypes(originalType);
 						if (upperSubEClasses.isEmpty()) {
@@ -599,8 +600,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	private Set<EClass> getUpperSubTypes(IType iType) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
-		if (iType.getType() instanceof EClass) {
-			final EClass eCls = (EClass)iType.getType();
+		for (EClass eCls : services.getEClasses(iType)) {
 			final Set<EClass> subEClasses = services.getQueryEnvironment().getEPackageProvider()
 					.getAllSubTypes(eCls);
 			for (EClass subEClass : subEClasses) {

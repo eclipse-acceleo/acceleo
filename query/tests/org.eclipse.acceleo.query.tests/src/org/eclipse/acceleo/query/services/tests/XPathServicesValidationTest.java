@@ -17,8 +17,6 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.XPathServices;
-import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -1778,8 +1776,8 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 		final IService<?> service = serviceLookUp("siblings", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
-		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
+		argTypes.add(eClassifierType(eCls1));
+		argTypes.add(eClassifierLiteralType(eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);

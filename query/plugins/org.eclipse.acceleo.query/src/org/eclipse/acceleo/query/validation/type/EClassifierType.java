@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import java.util.Set;
+
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -66,24 +68,71 @@ public class EClassifierType extends AbstractType {
 		if (!queryEnvironment.getEPackageProvider().isRegistered(type)) {
 			// This should not happen since the EClassifier must be registered for parsing
 			result = false;
-		} else if (getType() instanceof EClass && otherType.getType() instanceof EClass) {
-			result = getType() == otherType.getType()
-					|| getType() == EcorePackage.eINSTANCE.getEObject()
-					|| queryEnvironment.getEPackageProvider().getAllSubTypes((EClass)getType()).contains(
-							otherType.getType());
-		} else {
-			final Class<?> ourClass = queryEnvironment.getEPackageProvider().getClass(getType());
-			final Class<?> otherClass;
-			if (otherType instanceof EClassifierType) {
-				otherClass = queryEnvironment.getEPackageProvider().getClass(
-						((EClassifierType)otherType).getType());
-			} else if (otherType instanceof IJavaType) {
-				otherClass = ((IJavaType)otherType).getType();
+		} else if (getType() instanceof EClass) {
+			if (otherType.getType() instanceof EClass) {
+				result = getType() == otherType.getType() || getType() == EcorePackage.eINSTANCE.getEObject()
+						|| queryEnvironment.getEPackageProvider().getAllSubTypes((EClass)getType()).contains(
+								otherType.getType());
+			} else if (otherType.getType() instanceof Class<?>) {
+				result = emfIsAssignableFrom(otherType);
 			} else {
-				otherClass = null;
+				result = javaIsAssignableFrom(otherType);
 			}
-			result = isAssignableFrom(ourClass, otherClass);
+		} else {
+			result = javaIsAssignableFrom(otherType);
 		}
+		return result;
+	}
+
+	/**
+	 * Tells if the given {@link IType} is assignable using {@link EClass}.
+	 * 
+	 * @param otherType
+	 *            the {@link IType}
+	 * @return <code>true</code> if the given {@link IType} is assignable using {@link EClass},
+	 *         <code>false</code> otherwise
+	 */
+	private boolean emfIsAssignableFrom(IType otherType) {
+		final boolean result;
+		final Set<EClassifier> eClasses = queryEnvironment.getEPackageProvider().getEClassifiers(
+				(Class<?>)otherType.getType());
+		if (eClasses != null) {
+			boolean compatible = false;
+			for (EClassifier eCls : eClasses) {
+				if (getType() == eCls || getType() == EcorePackage.eINSTANCE.getEObject() || queryEnvironment
+						.getEPackageProvider().getAllSubTypes((EClass)getType()).contains(eCls)) {
+					compatible = true;
+					break;
+				}
+			}
+			result = compatible;
+		} else {
+			result = javaIsAssignableFrom(otherType);
+		}
+		return result;
+	}
+
+	/**
+	 * Tells if the given {@link IType} is assignable using {@link Class}.
+	 * 
+	 * @param otherType
+	 *            the {@link IType}
+	 * @return <code>true</code> if the given {@link IType} is assignable using {@link Class},
+	 *         <code>false</code> otherwise
+	 */
+	private boolean javaIsAssignableFrom(IType otherType) {
+		final boolean result;
+		final Class<?> ourClass = queryEnvironment.getEPackageProvider().getClass(getType());
+		final Class<?> otherClass;
+		if (otherType instanceof EClassifierType) {
+			otherClass = queryEnvironment.getEPackageProvider().getClass(((EClassifierType)otherType)
+					.getType());
+		} else if (otherType instanceof IJavaType) {
+			otherClass = ((IJavaType)otherType).getType();
+		} else {
+			otherClass = null;
+		}
+		result = isAssignableFrom(ourClass, otherClass);
 		return result;
 	}
 

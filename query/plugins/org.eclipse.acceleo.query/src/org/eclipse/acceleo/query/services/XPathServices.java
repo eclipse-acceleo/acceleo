@@ -84,7 +84,7 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
@@ -205,7 +205,7 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
@@ -323,7 +323,7 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
@@ -441,7 +441,7 @@ public class XPathServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClass> eClasses = services.getEClasses(queryEnvironment, argTypes.get(0));
+			final Set<EClass> eClasses = services.getEClasses(argTypes.get(0));
 			if (!eClasses.isEmpty()) {
 				for (EClass eCls : eClasses) {
 					if (eCls == EcorePackage.eINSTANCE.getEObject()) {
