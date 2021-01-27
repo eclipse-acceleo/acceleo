@@ -118,6 +118,7 @@ public class AQLConfiguration extends SourceViewerConfiguration {
 		assistant.setAutoActivationDelay(COMPLETION_AUTO_ACTIVATION_DELAY);
 		assistant.setProposalPopupOrientation(IContentAssistant.PROPOSAL_OVERLAY);
 		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+		assistant.install(sourceViewer);
 
 		return assistant;
 	}

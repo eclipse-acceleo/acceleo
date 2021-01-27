@@ -30,7 +30,7 @@ public class AQLScanner implements ITokenScanner {
 	/**
 	 * Keyword regular expression.
 	 */
-	private static final String KEYWORD_REGEX = "if|then|else|endif|let|in|true|false|null";
+	private static final String KEYWORD_REGEX = "if|then|else|endif|let|in|true|false|null|not";
 
 	/**
 	 * String literal regular expression.
@@ -51,8 +51,8 @@ public class AQLScanner implements ITokenScanner {
 	/**
 	 * Scanner {@link Pattern}.
 	 */
-	private static final Pattern SCANNER = Pattern.compile("(\\s+)|(" + KEYWORD_REGEX + ")|("
-			+ STRING_LITERAL_REGEX + ")|(String|Integer|Real|Boolean|Sequence(?=\\()|OrderedSet(?=\\()|"
+	private static final Pattern SCANNER = Pattern.compile("(\\s+)|((?<![a-zA-Z])(" + KEYWORD_REGEX + ")(?![a-zA-Z]))|("
+			+ STRING_LITERAL_REGEX + ")|((?<![a-zA-Z])((String|Integer|Real|Boolean)(?![a-zA-Z]))|Sequence(?=\\()|OrderedSet(?=\\()|"
 			+ ECLASSIFIER_SET_TYPE_REGEX + "|" + ECLASSIFIER_TYPE_REGEX + ")");
 
 	/**
@@ -68,12 +68,12 @@ public class AQLScanner implements ITokenScanner {
 	/**
 	 * Keyword group index.
 	 */
-	private static final int STRING_GROUP = 3;
+	private static final int STRING_GROUP = 4;
 
 	/**
 	 * Keyword group index.
 	 */
-	private static final int TYPE_LITERAL_GROUP = 5;
+	private static final int TYPE_LITERAL_GROUP = 6;
 
 	/**
 	 * Keyword.

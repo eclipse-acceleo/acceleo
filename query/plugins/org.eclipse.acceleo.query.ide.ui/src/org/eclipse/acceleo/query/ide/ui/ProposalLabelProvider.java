@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.ide.ui;
 import java.io.InputStream;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
@@ -95,8 +96,8 @@ public class ProposalLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		final String result;
 
-		if (element instanceof JavaMethodServiceCompletionProposal) {
-			result = ((JavaMethodServiceCompletionProposal)element).getObject().getShortSignature();
+		if (element instanceof IServiceCompletionProposal) {
+			result = ((IServiceCompletionProposal)element).getObject().getShortSignature();
 		} else if (element instanceof ICompletionProposal) {
 			result = ((ICompletionProposal)element).getProposal();
 		} else {
@@ -109,7 +110,7 @@ public class ProposalLabelProvider extends LabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		final Image result;
-		if (element instanceof JavaMethodServiceCompletionProposal) {
+		if (element instanceof IServiceCompletionProposal) {
 			result = service;
 		} else if (element instanceof TextCompletionProposal) {
 			result = text;
