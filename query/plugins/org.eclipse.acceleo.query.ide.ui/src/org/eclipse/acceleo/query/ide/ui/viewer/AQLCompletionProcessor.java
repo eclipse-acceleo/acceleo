@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.runtime.impl.BasicFilter;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.contentassist.ContextInformationValidator;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
@@ -75,8 +76,8 @@ public class AQLCompletionProcessor implements IContentAssistProcessor {
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 		final ICompletionResult completionResult = engine.getCompletion(viewer.getDocument().get(), offset,
 				variableTypes);
-		List<org.eclipse.acceleo.query.runtime.ICompletionProposal> proposals = completionResult
-				.getProposals(new BasicFilter(completionResult));
+		List<org.eclipse.acceleo.query.runtime.ICompletionProposal> proposals = completionResult.getProposals(
+				new BasicFilter(completionResult));
 
 		final ICompletionProposal[] result = new ICompletionProposal[proposals.size()];
 		int i = 0;
@@ -94,7 +95,7 @@ public class AQLCompletionProcessor implements IContentAssistProcessor {
 	 *      int)
 	 */
 	public IContextInformation[] computeContextInformation(ITextViewer viewer, int offset) {
-		return null;
+		return new IContextInformation[] {};
 	}
 
 	/**
@@ -130,7 +131,7 @@ public class AQLCompletionProcessor implements IContentAssistProcessor {
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationValidator()
 	 */
 	public IContextInformationValidator getContextInformationValidator() {
-		return null;
+		return new ContextInformationValidator(this);
 	}
 
 }

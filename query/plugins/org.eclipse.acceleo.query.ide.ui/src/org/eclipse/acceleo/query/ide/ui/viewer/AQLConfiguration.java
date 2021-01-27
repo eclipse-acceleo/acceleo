@@ -34,6 +34,12 @@ import org.eclipse.jface.viewers.ILabelProvider;
 public class AQLConfiguration extends SourceViewerConfiguration {
 
 	/**
+	 * The delay after which the content assistant is automatically invoked if the cursor is behind an auto
+	 * activation character.
+	 */
+	private static final int COMPLETION_AUTO_ACTIVATION_DELAY = 0;
+
+	/**
 	 * The {@link AQLDoubleClickStrategy}.
 	 */
 	private final AQLDoubleClickStrategy doubleClickStrategy;
@@ -44,9 +50,9 @@ public class AQLConfiguration extends SourceViewerConfiguration {
 	private final AQLScanner scanner;
 
 	/**
-	 * The {@link IContentAssistant}.
+	 * The {@link AQLCompletionProcessor}.
 	 */
-	private final ContentAssistant assistant;
+	private final AQLCompletionProcessor processor;
 
 	/**
 	 * Constructor.
@@ -67,10 +73,7 @@ public class AQLConfiguration extends SourceViewerConfiguration {
 
 		scanner = new AQLScanner(colorManager);
 
-		assistant = new ContentAssistant();
-		assistant.setContentAssistProcessor(new AQLCompletionProcessor(labelProvider, queryEnvironment,
-				variableTypes), IDocument.DEFAULT_CONTENT_TYPE);
-
+		processor = new AQLCompletionProcessor(labelProvider, queryEnvironment, variableTypes);
 	}
 
 	/**
@@ -109,6 +112,13 @@ public class AQLConfiguration extends SourceViewerConfiguration {
 
 	@Override
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
+		final ContentAssistant assistant = new ContentAssistant();
+		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.enableAutoActivation(true);
+		assistant.setAutoActivationDelay(COMPLETION_AUTO_ACTIVATION_DELAY);
+		assistant.setProposalPopupOrientation(IContentAssistant.PROPOSAL_OVERLAY);
+		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+
 		return assistant;
 	}
 

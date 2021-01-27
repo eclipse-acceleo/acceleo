@@ -14,6 +14,7 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ICompletionProposalExtension5;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -24,7 +25,7 @@ import org.eclipse.swt.graphics.Point;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AQLCompletionProposal implements org.eclipse.jface.text.contentassist.ICompletionProposal {
+public class AQLCompletionProposal implements org.eclipse.jface.text.contentassist.ICompletionProposal, ICompletionProposalExtension5, IContextInformation {
 
 	/**
 	 * The {@link ILabelProvider}.
@@ -65,8 +66,8 @@ public class AQLCompletionProposal implements org.eclipse.jface.text.contentassi
 	 */
 	public void apply(IDocument document) {
 		try {
-			document.replace(completionResult.getReplacementOffset(),
-					completionResult.getReplacementLength(), proposal.getProposal());
+			document.replace(completionResult.getReplacementOffset(), completionResult.getReplacementLength(),
+					proposal.getProposal());
 		} catch (BadLocationException e) {
 			// nothing to do here
 		}
@@ -114,7 +115,24 @@ public class AQLCompletionProposal implements org.eclipse.jface.text.contentassi
 	 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getContextInformation()
 	 */
 	public IContextInformation getContextInformation() {
-		return null;
+		return this;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension5#getAdditionalProposalInfo(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public Object getAdditionalProposalInfo(org.eclipse.core.runtime.IProgressMonitor monitor) {
+		return proposal.getDescription();
+	}
+
+	public String getContextDisplayString() {
+		return getAdditionalProposalInfo();
+	}
+
+	public String getInformationDisplayString() {
+		return getAdditionalProposalInfo();
+	};
 
 }
