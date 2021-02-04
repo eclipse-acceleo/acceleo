@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,7 +12,6 @@
 package org.eclipse.acceleo;
 
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -42,12 +41,12 @@ public interface TypedElement extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type</em>' attribute.
-	 * @see #setType(AstResult)
+	 * @see #setType(org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getTypedElement_Type()
 	 * @model dataType="org.eclipse.acceleo.ASTResult" required="true"
 	 * @generated
 	 */
-	AstResult getType();
+	org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult getType();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.acceleo.TypedElement#getType <em>Type</em>}' attribute.
@@ -57,7 +56,7 @@ public interface TypedElement extends EObject {
 	 * @see #getType()
 	 * @generated
 	 */
-	void setType(AstResult value);
+	void setType(org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult value);
 
 	/**
 	 * Returns the value of the '<em><b>Type Aql</b></em>' containment reference.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,9 @@ package org.eclipse.acceleo.query.delegates;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
@@ -46,8 +46,8 @@ public class AQLValidationDelegate extends AbstractEnvironmentProvider implement
 	 *      org.eclipse.emf.ecore.EObject, java.util.Map, org.eclipse.emf.ecore.EOperation, java.lang.String)
 	 */
 	@Override
-	public boolean validate(EClass eClass, EObject eObject, Map<Object, Object> context,
-			EOperation invariant, String expression) {
+	public boolean validate(EClass eClass, EObject eObject, Map<Object, Object> context, EOperation invariant,
+			String expression) {
 		return Boolean.TRUE.equals(evaluate(eObject, expression));
 	}
 
@@ -70,8 +70,8 @@ public class AQLValidationDelegate extends AbstractEnvironmentProvider implement
 	 *      java.lang.Object, java.util.Map, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean validate(EDataType eDataType, Object value, Map<Object, Object> context,
-			String constraint, String expression) {
+	public boolean validate(EDataType eDataType, Object value, Map<Object, Object> context, String constraint,
+			String expression) {
 		return Boolean.TRUE.equals(evaluate(value, expression));
 	}
 
@@ -102,8 +102,8 @@ public class AQLValidationDelegate extends AbstractEnvironmentProvider implement
 				for (Diagnostic child : evaluationResult.getDiagnostic().getChildren()) {
 					messages.append("\n" + child.getMessage());
 				}
-				throw new IllegalArgumentException("Unable to evaluate \"" + expression + "\""
-						+ messages.toString());
+				throw new IllegalArgumentException("Unable to evaluate \"" + expression + "\"" + messages
+						.toString());
 			}
 			return evaluationResult.getResult();
 		} else {
@@ -111,7 +111,8 @@ public class AQLValidationDelegate extends AbstractEnvironmentProvider implement
 			for (Diagnostic child : astResult.getDiagnostic().getChildren()) {
 				messages.append("\n" + child.getMessage());
 			}
-			throw new IllegalArgumentException("Unable to parse \"" + expression + "\"" + messages.toString());
+			throw new IllegalArgumentException("Unable to parse \"" + expression + "\"" + messages
+					.toString());
 		}
 
 	}

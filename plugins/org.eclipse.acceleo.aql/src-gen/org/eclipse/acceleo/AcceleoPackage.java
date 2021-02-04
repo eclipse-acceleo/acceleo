@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -3428,7 +3428,7 @@ public interface AcceleoPackage extends EPackage {
 	 * The meta object id for the '<em>AST Result</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.acceleo.query.parser.AstResult
+	 * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
@@ -5260,12 +5260,12 @@ public interface AcceleoPackage extends EPackage {
 	EEnum getOpenModeKind();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.acceleo.query.parser.AstResult <em>AST Result</em>}'.
+	 * Returns the meta object for data type '{@link org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult <em>AST Result</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>AST Result</em>'.
-	 * @see org.eclipse.acceleo.query.parser.AstResult
-	 * @model instanceClass="org.eclipse.acceleo.query.parser.AstResult"
+	 * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
+	 * @model instanceClass="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"
 	 * @generated
 	 */
 	EDataType getASTResult();
@@ -6805,7 +6805,7 @@ public interface AcceleoPackage extends EPackage {
 		 * The meta object literal for the '<em>AST Result</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.acceleo.query.parser.AstResult
+		 * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
 		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 		 * @generated
 		 */

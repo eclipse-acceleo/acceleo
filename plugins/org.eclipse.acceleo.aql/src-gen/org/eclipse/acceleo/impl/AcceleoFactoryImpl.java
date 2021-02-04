@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -60,7 +60,6 @@ import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -802,8 +801,10 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AstResult createASTResultFromString(EDataType eDataType, String initialValue) {
-		return (AstResult)super.createFromString(eDataType, initialValue);
+	public org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult createASTResultFromString(
+			EDataType eDataType, String initialValue) {
+		return (org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult)super.createFromString(
+				eDataType, initialValue);
 	}
 
 	/**

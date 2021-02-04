@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,8 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
  * {@link IQualifiedNameLookupEngine#pushContext(String) push imports},
  * {@link IQualifiedNameLookupEngine#popContext(String) pop}.
  * 
+ * @param <O>
+ *            the origin type of the service
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractQualifiedNameService<O> extends AbstractService<O> {
