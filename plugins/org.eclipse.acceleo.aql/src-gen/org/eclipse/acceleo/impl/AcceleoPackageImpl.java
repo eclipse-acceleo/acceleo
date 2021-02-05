@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -67,6 +67,7 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -3127,9 +3128,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		addEEnumLiteral(openModeKindEEnum, OpenModeKind.CREATE);
 
 		// Initialize data types
-		initEDataType(astResultEDataType,
-				org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult.class, "ASTResult", //$NON-NLS-1$
-				IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(astResultEDataType, AstResult.class, "ASTResult", IS_SERIALIZABLE, //$NON-NLS-1$
+				!IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(moduleQualifiedNameEDataType, String.class, "ModuleQualifiedName", IS_SERIALIZABLE, //$NON-NLS-1$
 				!IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(acceleoAstResultEDataType, AcceleoAstResult.class, "AcceleoAstResult", IS_SERIALIZABLE, //$NON-NLS-1$

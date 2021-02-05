@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,6 +13,7 @@ package org.eclipse.acceleo.impl;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Expression;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -45,7 +46,7 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements Expr
 	 * @generated
 	 * @ordered
 	 */
-	protected static final org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult AST_EDEFAULT = null;
+	protected static final AstResult AST_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getAst() <em>Ast</em>}' attribute.
@@ -55,7 +56,7 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements Expr
 	 * @generated
 	 * @ordered
 	 */
-	protected org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult ast = AST_EDEFAULT;
+	protected AstResult ast = AST_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAql() <em>Aql</em>}' containment reference.
@@ -92,7 +93,7 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements Expr
 	 * @generated
 	 */
 	@Override
-	public org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult getAst() {
+	public AstResult getAst() {
 		return ast;
 	}
 
@@ -102,8 +103,8 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements Expr
 	 * @generated
 	 */
 	@Override
-	public void setAst(org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult newAst) {
-		org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult oldAst = ast;
+	public void setAst(AstResult newAst) {
+		AstResult oldAst = ast;
 		ast = newAst;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.EXPRESSION__AST, oldAst,
@@ -202,7 +203,7 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements Expr
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AcceleoPackage.EXPRESSION__AST:
-				setAst((org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult)newValue);
+				setAst((AstResult)newValue);
 				return;
 			case AcceleoPackage.EXPRESSION__AQL:
 				setAql((org.eclipse.acceleo.query.ast.Expression)newValue);

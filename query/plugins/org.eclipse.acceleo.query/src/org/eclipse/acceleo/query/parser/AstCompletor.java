@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,6 @@ import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
@@ -104,8 +103,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			result = doSwitch(errorToComplete);
 		} else {
 			// no need for variables here since "expression variable" can't be valid
-			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
-					.getAst());
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
+					.getAstResult().getAst());
 			result = getExpressionTextFollows(possibleTypes);
 		}
 
@@ -269,8 +268,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments().get(
-				1)));
+		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments()
+				.get(1)));
 
 		return result;
 	}
@@ -468,8 +467,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	 * 
 	 * @param possibleTypes
 	 *            possible types of the {@link org.eclipse.acceleo.query.ast.Expression Expression}
-	 * @return the {@link TextCompletionProposal} following an {@link org.eclipse.acceleo.query.ast.Expression
-	 *         Expression}
+	 * @return the {@link TextCompletionProposal} following an
+	 *         {@link org.eclipse.acceleo.query.ast.Expression Expression}
 	 */
 	private List<ICompletionProposal> getExpressionTextFollows(Set<IType> possibleTypes) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();

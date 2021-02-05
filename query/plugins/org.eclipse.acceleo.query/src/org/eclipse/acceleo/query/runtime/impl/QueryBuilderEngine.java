@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;

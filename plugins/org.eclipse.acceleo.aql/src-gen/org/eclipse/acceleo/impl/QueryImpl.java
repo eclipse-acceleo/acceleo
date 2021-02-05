@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -109,7 +110,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult TYPE_EDEFAULT = null;
+	protected static final AstResult TYPE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
@@ -119,7 +120,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * @generated
 	 * @ordered
 	 */
-	protected org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult type = TYPE_EDEFAULT;
+	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getTypeAql() <em>Type Aql</em>}' containment reference. <!--
@@ -303,18 +304,17 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * @generated
 	 */
 	@Override
-	public org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult getType() {
+	public AstResult getType() {
 		return type;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public void setType(org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult newType) {
-		org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult oldType = type;
+	public void setType(AstResult newType) {
+		AstResult oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__TYPE, oldType, type));
@@ -536,7 +536,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 				setName((String)newValue);
 				return;
 			case AcceleoPackage.QUERY__TYPE:
-				setType((org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult)newValue);
+				setType((AstResult)newValue);
 				return;
 			case AcceleoPackage.QUERY__TYPE_AQL:
 				setTypeAql((org.eclipse.acceleo.query.ast.Expression)newValue);

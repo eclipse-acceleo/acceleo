@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2020 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,6 +10,8 @@
  *      Obeo - initial API and implementation
  */
 package org.eclipse.acceleo;
+
+import org.eclipse.acceleo.query.parser.AstResult;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Expression</b></em>'. <!--
@@ -37,12 +39,12 @@ public interface Expression extends ASTNode {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Ast</em>' attribute.
-	 * @see #setAst(org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult)
+	 * @see #setAst(AstResult)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getExpression_Ast()
 	 * @model dataType="org.eclipse.acceleo.ASTResult" required="true"
 	 * @generated
 	 */
-	org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult getAst();
+	AstResult getAst();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.acceleo.Expression#getAst <em>Ast</em>}' attribute.
@@ -52,7 +54,7 @@ public interface Expression extends ASTNode {
 	 * @see #getAst()
 	 * @generated
 	 */
-	void setAst(org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult value);
+	void setAst(AstResult value);
 
 	/**
 	 * Returns the value of the '<em><b>Aql</b></em>' containment reference.

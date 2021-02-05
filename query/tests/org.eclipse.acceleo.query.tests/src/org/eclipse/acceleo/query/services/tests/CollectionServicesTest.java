@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,9 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.Query;

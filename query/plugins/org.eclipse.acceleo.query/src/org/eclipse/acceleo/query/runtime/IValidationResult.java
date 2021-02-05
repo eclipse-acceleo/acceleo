@@ -1,5 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**

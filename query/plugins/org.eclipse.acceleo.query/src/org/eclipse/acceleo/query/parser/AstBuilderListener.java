@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -109,7 +109,6 @@ import org.eclipse.acceleo.query.parser.QueryParser.VarRefContext;
 import org.eclipse.acceleo.query.parser.QueryParser.VariableDefinitionContext;
 import org.eclipse.acceleo.query.parser.QueryParser.XorContext;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
