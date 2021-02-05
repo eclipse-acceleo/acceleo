@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.acceleo.query.tests;singleton:=true
 Automatic-Module-Name: org.eclipse.acceleo.query.tests
-Bundle-Version: 7.0.0.qualifier
+Bundle-Version: 8.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Name: %pluginName
@@ -21,23 +21,24 @@ Require-Bundle: org.junit;bundle-version="[4.11.0,5.0.0)",
  org.eclipse.acceleo.query.tests.nestedpackages,
  org.antlr.runtime;bundle-version="[4.7.2,4.7.3)"
 Bundle-ActivationPolicy: lazy
-Export-Package: nooperationreflection,
+Export-Package: inference,
+ inference.impl,
+ inference.util,
+ nooperationreflection,
  nooperationreflection.impl,
  nooperationreflection.util,
- org.eclipse.acceleo.query.ast.test;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.parser.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.runtime.servicelookup;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.runtime.test;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.services.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.ast.test,
+ org.eclipse.acceleo.query.ast.test.delegates,
+ org.eclipse.acceleo.query.parser.tests,
+ org.eclipse.acceleo.query.runtime.servicelookup,
+ org.eclipse.acceleo.query.runtime.test,
+ org.eclipse.acceleo.query.services.tests,
+ org.eclipse.acceleo.query.tests,
  org.eclipse.acceleo.query.tests.runtime.impl,
  org.eclipse.acceleo.query.tests.runtime.impl.completion,
  org.eclipse.acceleo.query.tests.runtime.lookup.basic,
- org.eclipse.acceleo.query.tests.services;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests.unit;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests.validation.types,
- inference,
- inference.impl,
- inference.util
+ org.eclipse.acceleo.query.tests.services,
+ org.eclipse.acceleo.query.tests.unit,
+ org.eclipse.acceleo.query.tests.validation.types
 Import-Package: com.google.common.collect;version="[22.0.0,28.0.0)",
  com.google.common.base;version="[22.0.0,28.0.0)"

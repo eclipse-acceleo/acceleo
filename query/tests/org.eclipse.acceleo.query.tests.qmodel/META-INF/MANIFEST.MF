@@ -2,30 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.query.tests.qmodel;singleton:=true
-Bundle-Version: 7.0.0.qualifier
+Bundle-Version: 8.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.acceleo.query.tests.qmodel;
-  x-friends:="org.eclipse.acceleo.query.tests.qmodel.edit,
-   org.eclipse.acceleo.query.tests.qmodel.editor,
-   org.eclipse.acceleo.query.tests.editor,
-   org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests.qmodel.impl;
-  x-friends:="org.eclipse.acceleo.query.tests.qmodel.edit,
-   org.eclipse.acceleo.query.tests.qmodel.editor,
-   org.eclipse.acceleo.query.tests.editor,
-   org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests.qmodel.util;
-  x-friends:="org.eclipse.acceleo.query.tests.qmodel.edit,
-   org.eclipse.acceleo.query.tests.qmodel.editor,
-   org.eclipse.acceleo.query.tests.editor,
-   org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.compat.tests"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.acceleo.query.tests.qmodel,
+ org.eclipse.acceleo.query.tests.qmodel.impl,
+ org.eclipse.acceleo.query.tests.qmodel.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.acceleo.query
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.acceleo.query.tests.qmodel

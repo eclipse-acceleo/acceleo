@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.query.tests.anydsl;singleton:=true
-Bundle-Version: 7.0.0.qualifier
+Bundle-Version: 8.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -10,25 +10,10 @@ Bundle-Activator: org.eclipse.acceleo.query.tests.anydsl.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.acceleo.query.tests.anydsl;
-  x-friends:="org.eclipse.acceleo.query.tests.anydsl.edit,
-   org.eclipse.acceleo.query.tests.anydsl.editor,
-   org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.ide.ui.test",
- org.eclipse.acceleo.query.tests.anydsl.impl;
-  x-friends:="org.eclipse.acceleo.query.tests.anydsl.edit,
-   org.eclipse.acceleo.query.tests.anydsl.editor,
-   org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.ide.ui.test",
- org.eclipse.acceleo.query.tests.anydsl.util;
-  x-friends:="org.eclipse.acceleo.query.tests.anydsl.edit,
-   org.eclipse.acceleo.query.tests.anydsl.editor,
-   org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.ide.ui.test",
- org.eclipse.acceleo.query.tests.anydsl.validation;
-  x-friends:="org.eclipse.acceleo.query.tests.anydsl.edit,
-   org.eclipse.acceleo.query.tests.anydsl.editor,
-   org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.ide.ui.test"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.acceleo.query.tests.anydsl,
+ org.eclipse.acceleo.query.tests.anydsl.impl,
+ org.eclipse.acceleo.query.tests.anydsl.util,
+ org.eclipse.acceleo.query.tests.anydsl.validation
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.acceleo.query.tests.anydsl
