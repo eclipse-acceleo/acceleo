@@ -51,6 +51,7 @@
   </scm>
 
   <modules>
+    <module>releng/org.eclipse.acceleo.targetplatforms/2020-12</module>
     <module>releng/org.eclipse.acceleo.targetplatforms/2019-09</module>
     <module>releng/org.eclipse.acceleo.targetplatforms/photon</module>
     <module>releng/org.eclipse.acceleo.targetplatforms/oxygen</module>
