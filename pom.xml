@@ -347,7 +347,7 @@
         <module>query/tests/org.eclipse.acceleo.query.tests.anydsl.editor</module>
         <module>query/tests/org.eclipse.acceleo.query.tests</module>
         <module>query/tests/org.eclipse.acceleo.query.ide.tests</module>
-        <module>query/tests/org.eclipse.acceleo.query.ide.ui.tests</module>
+        <!--module>query/tests/org.eclipse.acceleo.query.ide.ui.tests</module-->
 
         <module>plugins/org.eclipse.acceleo.ui.interpreter.ocl</module>
         <module>plugins/org.eclipse.acceleo.ui.interpreter.completeocl.edit</module>
