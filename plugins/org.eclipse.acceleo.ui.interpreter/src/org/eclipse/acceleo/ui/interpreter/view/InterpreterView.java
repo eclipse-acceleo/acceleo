@@ -104,6 +104,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -166,7 +167,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class InterpreterView extends ViewPart {
+public class InterpreterView extends ViewPart implements ISelectionProvider {
 	/** Prefix of the messages corresponding to compilation problems. */
 	protected static final String COMPILATION_MESSAGE_PREFIX = "compilation.message"; //$NON-NLS-1$
 
@@ -713,7 +714,7 @@ public class InterpreterView extends ViewPart {
 		IContextService contextService = (IContextService)site.getService(IContextService.class);
 		contextActivationToken = contextService.activateContext(INTERPRETER_VIEW_CONTEXT_ID);
 
-		eobjectSelectionListener = new NotifierSelectionListener();
+		eobjectSelectionListener = new NotifierSelectionListener(this);
 		activationListener = new ActivationListener(this);
 		site.getPage().addPartListener(activationListener);
 		site.getPage().addSelectionListener(eobjectSelectionListener);
@@ -1214,6 +1215,8 @@ public class InterpreterView extends ViewPart {
 
 		toolkit.paintBordersFor(resultSectionBody);
 		resultSection.setClient(resultSectionBody);
+
+		getSite().setSelectionProvider(this.resultViewer);
 	}
 
 	/**
@@ -2414,11 +2417,20 @@ public class InterpreterView extends ViewPart {
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
 	private class NotifierSelectionListener implements ISelectionListener {
+	    
+	    /**
+	     * This interpreter view.
+	     */
+		private final InterpreterView view;
+
 		/**
-		 * Increases visibility of the default constructor.
+		 * Constructs this listener.
+		 * 
+		 * @param view
+		 *            The view on which the selection should not be triggered.
 		 */
-		NotifierSelectionListener() {
-			// Increases visibility
+		NotifierSelectionListener(InterpreterView view) {
+			this.view = view;
 		}
 
 		/**
@@ -2429,7 +2441,7 @@ public class InterpreterView extends ViewPart {
 		 */
 		@SuppressWarnings("unchecked")
 		public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-			if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
+			if (!selection.isEmpty() && selection instanceof IStructuredSelection && part != this.view) {
 				boolean cleared = false;
 				final Iterator<Object> selectionIterator = ((IStructuredSelection)selection).iterator();
 				while (selectionIterator.hasNext()) {
@@ -2912,6 +2924,34 @@ public class InterpreterView extends ViewPart {
 					evaluateSubExpression(((SplitExpression)selection).getFullExpression());
 				}
 			}
+		}
+	}
+
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		if (resultViewer != null) {
+			this.resultViewer.addSelectionChangedListener(listener);
+		}
+
+	}
+
+	public ISelection getSelection() {
+		if (resultViewer != null) {
+			return this.resultViewer.getSelection();
+		} else {
+			return null;
+		}
+	}
+
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		if (resultViewer != null) {
+			this.resultViewer.removeSelectionChangedListener(listener);
+		}
+
+	}
+
+	public void setSelection(ISelection selection) {
+		if (resultViewer != null) {
+			this.resultViewer.setSelection(selection);
 		}
 	}
 }
