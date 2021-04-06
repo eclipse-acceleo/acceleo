@@ -367,7 +367,7 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__GENERATOR_NAME:
-				return GENERATOR_NAME_EDEFAULT == null ? generatorName != null : !GENERATOR_NAME_EDEFAULT.equals(generatorName);
+				return !GENERATOR_NAME_EDEFAULT.equals(generatorName);
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__ACCELEO_MODULES:
 				return acceleoModules != null && !acceleoModules.isEmpty();
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__PLUGIN_DEPENDENCIES:
