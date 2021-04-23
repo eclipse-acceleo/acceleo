@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,49 +12,46 @@
 package org.eclipse.acceleo.impl;
 
 import java.util.Collection;
+
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.ErrorLetStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Statement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error Let Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Let Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getVariables <em>Variables</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingBindings <em>Missing Bindings</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEnd <em>Missing End</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getVariables <em>Variables</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingBindings <em>Missing
+ * Bindings</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEndHeader <em>Missing End
+ * Header</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implements ErrorLetStatement {
 	/**
-	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVariables()
 	 * @generated
 	 * @ordered
@@ -62,9 +59,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected EList<Binding> variables;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -72,9 +69,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected Block body;
 
 	/**
-	 * The default value of the '{@link #getMissingBindings() <em>Missing Bindings</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingBindings() <em>Missing Bindings</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingBindings()
 	 * @generated
 	 * @ordered
@@ -82,9 +79,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_BINDINGS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingBindings() <em>Missing Bindings</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingBindings() <em>Missing Bindings</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingBindings()
 	 * @generated
 	 * @ordered
@@ -92,9 +89,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingBindings = MISSING_BINDINGS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -102,9 +99,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -112,9 +109,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -122,9 +119,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -132,8 +129,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ErrorLetStatementImpl() {
@@ -141,8 +138,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -151,8 +148,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -165,8 +162,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -175,8 +172,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -194,8 +191,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -217,8 +214,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -227,8 +224,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -242,8 +239,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -252,8 +249,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -267,8 +264,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -277,8 +274,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -291,8 +288,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -307,8 +304,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -329,8 +326,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -358,8 +355,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -385,8 +382,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -407,8 +404,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -433,8 +430,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -459,8 +456,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -479,4 +476,4 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 		return result.toString();
 	}
 
-} //ErrorLetStatementImpl
+} // ErrorLetStatementImpl

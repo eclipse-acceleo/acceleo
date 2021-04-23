@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,8 @@ public interface VarRef extends Expression {
 	String getVariableName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.VarRef#getVariableName
-	 * <em>Variable Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.VarRef#getVariableName <em>Variable
+	 * Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Variable Name</em>' attribute.

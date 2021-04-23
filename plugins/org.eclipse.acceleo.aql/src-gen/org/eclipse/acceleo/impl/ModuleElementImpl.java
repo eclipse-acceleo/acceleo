@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,16 +17,15 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Module Element</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Module Element</b></em>'. <!--
+ * end-user-doc -->
  *
  * @generated
  */
 public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container implements ModuleElement {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ModuleElementImpl() {
@@ -34,8 +33,8 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container imp
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -43,4 +42,4 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container imp
 		return AcceleoPackage.Literals.MODULE_ELEMENT;
 	}
 
-} //ModuleElementImpl
+} // ModuleElementImpl

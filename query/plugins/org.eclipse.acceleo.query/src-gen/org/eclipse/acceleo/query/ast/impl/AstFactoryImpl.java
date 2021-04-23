@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -18,8 +18,10 @@ import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
@@ -41,7 +43,6 @@ import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
-import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
@@ -108,8 +109,10 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createBooleanLiteral();
 			case AstPackage.ENUM_LITERAL:
 				return createEnumLiteral();
-			case AstPackage.TYPE_LITERAL:
-				return createTypeLiteral();
+			case AstPackage.ECLASSIFIER_TYPE_LITERAL:
+				return createEClassifierTypeLiteral();
+			case AstPackage.CLASS_TYPE_LITERAL:
+				return createClassTypeLiteral();
 			case AstPackage.TYPE_SET_LITERAL:
 				return createTypeSetLiteral();
 			case AstPackage.COLLECTION_TYPE_LITERAL:
@@ -170,8 +173,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 		switch (eDataType.getClassifierID()) {
 			case AstPackage.CALL_TYPE:
 				return createCallTypeFromString(eDataType, initialValue);
-			case AstPackage.OBJECT_TYPE:
-				return createObjectTypeFromString(eDataType, initialValue);
+			case AstPackage.JAVA_CLASS:
+				return createJavaClassFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName()
 						+ "' is not a valid classifier");
@@ -188,8 +191,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 		switch (eDataType.getClassifierID()) {
 			case AstPackage.CALL_TYPE:
 				return convertCallTypeToString(eDataType, instanceValue);
-			case AstPackage.OBJECT_TYPE:
-				return convertObjectTypeToString(eDataType, instanceValue);
+			case AstPackage.JAVA_CLASS:
+				return convertJavaClassToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName()
 						+ "' is not a valid classifier");
@@ -201,6 +204,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public VarRef createVarRef() {
 		VarRefImpl varRef = new VarRefImpl();
 		return varRef;
@@ -211,6 +215,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Call createCall() {
 		CallImpl call = new CallImpl();
 		return call;
@@ -221,6 +226,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Literal createLiteral() {
 		LiteralImpl literal = new LiteralImpl();
 		return literal;
@@ -231,6 +237,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public IntegerLiteral createIntegerLiteral() {
 		IntegerLiteralImpl integerLiteral = new IntegerLiteralImpl();
 		return integerLiteral;
@@ -241,6 +248,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public RealLiteral createRealLiteral() {
 		RealLiteralImpl realLiteral = new RealLiteralImpl();
 		return realLiteral;
@@ -251,6 +259,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public StringLiteral createStringLiteral() {
 		StringLiteralImpl stringLiteral = new StringLiteralImpl();
 		return stringLiteral;
@@ -261,6 +270,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public BooleanLiteral createBooleanLiteral() {
 		BooleanLiteralImpl booleanLiteral = new BooleanLiteralImpl();
 		return booleanLiteral;
@@ -271,6 +281,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EnumLiteral createEnumLiteral() {
 		EnumLiteralImpl enumLiteral = new EnumLiteralImpl();
 		return enumLiteral;
@@ -281,9 +292,10 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
-	public TypeLiteral createTypeLiteral() {
-		TypeLiteralImpl typeLiteral = new TypeLiteralImpl();
-		return typeLiteral;
+	@Override
+	public EClassifierTypeLiteral createEClassifierTypeLiteral() {
+		EClassifierTypeLiteralImpl eClassifierTypeLiteral = new EClassifierTypeLiteralImpl();
+		return eClassifierTypeLiteral;
 	}
 
 	/**
@@ -291,6 +303,18 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
+	public ClassTypeLiteral createClassTypeLiteral() {
+		ClassTypeLiteralImpl classTypeLiteral = new ClassTypeLiteralImpl();
+		return classTypeLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public TypeSetLiteral createTypeSetLiteral() {
 		TypeSetLiteralImpl typeSetLiteral = new TypeSetLiteralImpl();
 		return typeSetLiteral;
@@ -301,6 +325,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public CollectionTypeLiteral createCollectionTypeLiteral() {
 		CollectionTypeLiteralImpl collectionTypeLiteral = new CollectionTypeLiteralImpl();
 		return collectionTypeLiteral;
@@ -311,6 +336,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Lambda createLambda() {
 		LambdaImpl lambda = new LambdaImpl();
 		return lambda;
@@ -321,6 +347,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public NullLiteral createNullLiteral() {
 		NullLiteralImpl nullLiteral = new NullLiteralImpl();
 		return nullLiteral;
@@ -331,6 +358,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public SetInExtensionLiteral createSetInExtensionLiteral() {
 		SetInExtensionLiteralImpl setInExtensionLiteral = new SetInExtensionLiteralImpl();
 		return setInExtensionLiteral;
@@ -341,6 +369,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public SequenceInExtensionLiteral createSequenceInExtensionLiteral() {
 		SequenceInExtensionLiteralImpl sequenceInExtensionLiteral = new SequenceInExtensionLiteralImpl();
 		return sequenceInExtensionLiteral;
@@ -351,6 +380,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public VariableDeclaration createVariableDeclaration() {
 		VariableDeclarationImpl variableDeclaration = new VariableDeclarationImpl();
 		return variableDeclaration;
@@ -361,6 +391,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorExpression createErrorExpression() {
 		ErrorExpressionImpl errorExpression = new ErrorExpressionImpl();
 		return errorExpression;
@@ -371,6 +402,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorTypeLiteral createErrorTypeLiteral() {
 		ErrorTypeLiteralImpl errorTypeLiteral = new ErrorTypeLiteralImpl();
 		return errorTypeLiteral;
@@ -381,6 +413,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorEClassifierTypeLiteral createErrorEClassifierTypeLiteral() {
 		ErrorEClassifierTypeLiteralImpl errorEClassifierTypeLiteral = new ErrorEClassifierTypeLiteralImpl();
 		return errorEClassifierTypeLiteral;
@@ -391,6 +424,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorEnumLiteral createErrorEnumLiteral() {
 		ErrorEnumLiteralImpl errorEnumLiteral = new ErrorEnumLiteralImpl();
 		return errorEnumLiteral;
@@ -401,6 +435,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorCall createErrorCall() {
 		ErrorCallImpl errorCall = new ErrorCallImpl();
 		return errorCall;
@@ -411,6 +446,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorVariableDeclaration createErrorVariableDeclaration() {
 		ErrorVariableDeclarationImpl errorVariableDeclaration = new ErrorVariableDeclarationImpl();
 		return errorVariableDeclaration;
@@ -421,6 +457,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorStringLiteral createErrorStringLiteral() {
 		ErrorStringLiteralImpl errorStringLiteral = new ErrorStringLiteralImpl();
 		return errorStringLiteral;
@@ -431,6 +468,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorConditional createErrorConditional() {
 		ErrorConditionalImpl errorConditional = new ErrorConditionalImpl();
 		return errorConditional;
@@ -441,6 +479,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Binding createBinding() {
 		BindingImpl binding = new BindingImpl();
 		return binding;
@@ -451,6 +490,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ErrorBinding createErrorBinding() {
 		ErrorBindingImpl errorBinding = new ErrorBindingImpl();
 		return errorBinding;
@@ -461,6 +501,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Let createLet() {
 		LetImpl let = new LetImpl();
 		return let;
@@ -471,6 +512,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Conditional createConditional() {
 		ConditionalImpl conditional = new ConditionalImpl();
 		return conditional;
@@ -481,6 +523,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Or createOr() {
 		OrImpl or = new OrImpl();
 		return or;
@@ -491,6 +534,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public And createAnd() {
 		AndImpl and = new AndImpl();
 		return and;
@@ -501,6 +545,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Implies createImplies() {
 		ImpliesImpl implies = new ImpliesImpl();
 		return implies;
@@ -533,8 +578,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
-	public Object createObjectTypeFromString(EDataType eDataType, String initialValue) {
-		return super.createFromString(eDataType, initialValue);
+	public Class createJavaClassFromString(EDataType eDataType, String initialValue) {
+		return (Class)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -542,7 +587,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
-	public String convertObjectTypeToString(EDataType eDataType, Object instanceValue) {
+	public String convertJavaClassToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -551,6 +596,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public AstPackage getAstPackage() {
 		return (AstPackage)getEPackage();
 	}

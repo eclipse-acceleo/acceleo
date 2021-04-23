@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -26,12 +26,13 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getPredicate <em>Predicate</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getTrueBranch <em>True Branch</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getFalseBranch <em>False Branch</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getFalseBranch <em>False
+ * Branch</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -90,6 +91,7 @@ public class ErrorConditionalImpl extends ExpressionImpl implements ErrorConditi
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getPredicate() {
 		return predicate;
 	}
@@ -118,6 +120,7 @@ public class ErrorConditionalImpl extends ExpressionImpl implements ErrorConditi
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setPredicate(Expression newPredicate) {
 		if (newPredicate != predicate) {
 			NotificationChain msgs = null;
@@ -140,6 +143,7 @@ public class ErrorConditionalImpl extends ExpressionImpl implements ErrorConditi
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getTrueBranch() {
 		return trueBranch;
 	}
@@ -168,6 +172,7 @@ public class ErrorConditionalImpl extends ExpressionImpl implements ErrorConditi
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setTrueBranch(Expression newTrueBranch) {
 		if (newTrueBranch != trueBranch) {
 			NotificationChain msgs = null;
@@ -190,6 +195,7 @@ public class ErrorConditionalImpl extends ExpressionImpl implements ErrorConditi
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getFalseBranch() {
 		return falseBranch;
 	}
@@ -218,6 +224,7 @@ public class ErrorConditionalImpl extends ExpressionImpl implements ErrorConditi
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setFalseBranch(Expression newFalseBranch) {
 		if (newFalseBranch != falseBranch) {
 			NotificationChain msgs = null;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,36 +15,32 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.IfStatement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>If Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>If Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getCondition <em>Condition</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getThen <em>Then</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getElse <em>Else</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getCondition <em>Condition</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getThen <em>Then</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.IfStatementImpl#getElse <em>Else</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfStatement {
 	/**
-	 * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getCondition()
 	 * @generated
 	 * @ordered
@@ -52,9 +48,9 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	protected Expression condition;
 
 	/**
-	 * The cached value of the '{@link #getThen() <em>Then</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getThen() <em>Then</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getThen()
 	 * @generated
 	 * @ordered
@@ -62,9 +58,9 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	protected Block then;
 
 	/**
-	 * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getElse()
 	 * @generated
 	 * @ordered
@@ -72,8 +68,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	protected Block else_;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected IfStatementImpl() {
@@ -81,8 +77,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -91,8 +87,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -101,8 +97,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetCondition(Expression newCondition, NotificationChain msgs) {
@@ -120,8 +116,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -143,8 +139,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -153,8 +149,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetThen(Block newThen, NotificationChain msgs) {
@@ -172,8 +168,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -195,8 +191,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -205,8 +201,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetElse(Block newElse, NotificationChain msgs) {
@@ -224,8 +220,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -247,8 +243,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -265,8 +261,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -283,8 +279,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -304,8 +300,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -325,8 +321,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -342,4 +338,4 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfS
 		return super.eIsSet(featureID);
 	}
 
-} //IfStatementImpl
+} // IfStatementImpl

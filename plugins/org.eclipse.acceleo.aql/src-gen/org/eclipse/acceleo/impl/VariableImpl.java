@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,9 +33,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class VariableImpl extends TypedElementImpl implements Variable {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -43,9 +43,9 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -54,6 +54,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected VariableImpl() {
@@ -62,6 +63,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -71,6 +73,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -80,6 +83,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -93,6 +97,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -106,6 +111,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -120,6 +126,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -134,6 +141,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -147,6 +155,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -170,6 +179,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -193,6 +203,7 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

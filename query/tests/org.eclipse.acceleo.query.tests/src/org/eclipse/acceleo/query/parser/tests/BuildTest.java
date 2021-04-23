@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,12 +17,15 @@ import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -69,7 +72,7 @@ public class BuildTest {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
-		engine = new QueryBuilderEngine(queryEnvironment);
+		engine = new QueryBuilderEngine();
 	}
 
 	/**
@@ -755,11 +758,12 @@ public class BuildTest {
 				.get(0));
 		assertEquals("var", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
-		assertExpression(build, TypeLiteral.class, 19, 0, 19, 32, 0, 32,
+		assertExpression(build, EClassifierTypeLiteral.class, 19, 0, 19, 32, 0, 32,
 				((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters().get(0))
 						.getType());
-		assertEquals(true, ((TypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).getType()).getValue() == EcorePackage.Literals.ECLASS);
+		assertEquals(EcorePackage.Literals.ECLASS.getName(),
+				((EClassifierTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
+						.getParameters().get(0)).getType()).getEClassifierName());
 		assertExpression(build, BooleanLiteral.class, 35, 0, 35, 39, 0, 39, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 	}
@@ -894,8 +898,8 @@ public class BuildTest {
 				.getArguments().get(1)).getElementType());
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getValue() == List.class);
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType()
-				.getValue() == String.class);
+		assertEquals(true, ((ClassTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
+				.getElementType()).getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -917,8 +921,8 @@ public class BuildTest {
 				.getValue() == Set.class);
 		assertExpression(build, TypeLiteral.class, 23, 0, 23, 29, 0, 29, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
-		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getElementType()).getValue() == String.class);
+		assertEquals(true, ((ClassTypeLiteral)((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments()
+				.get(1)).getElementType())).getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -929,8 +933,9 @@ public class BuildTest {
 		AstResult build = engine.build("ecore::EClass");
 		Expression ast = build.getAst();
 
-		assertExpression(build, TypeLiteral.class, 0, 0, 0, 13, 0, 13, ast);
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((TypeLiteral)ast).getValue());
+		assertExpression(build, EClassifierTypeLiteral.class, 0, 0, 0, 13, 0, 13, ast);
+		assertEquals(EcorePackage.eINSTANCE.getEClass().getName(), ((EClassifierTypeLiteral)ast)
+				.getEClassifierName());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -941,8 +946,8 @@ public class BuildTest {
 		AstResult build = engine.build("Integer");
 		Expression ast = build.getAst();
 
-		assertExpression(build, TypeLiteral.class, 0, 0, 0, 7, 0, 7, ast);
-		assertEquals(java.lang.Integer.class, ((TypeLiteral)ast).getValue());
+		assertExpression(build, ClassTypeLiteral.class, 0, 0, 0, 7, 0, 7, ast);
+		assertEquals(java.lang.Integer.class, ((ClassTypeLiteral)ast).getValue());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -953,8 +958,8 @@ public class BuildTest {
 		AstResult build = engine.build("Real");
 		Expression ast = build.getAst();
 
-		assertExpression(build, TypeLiteral.class, 0, 0, 0, 4, 0, 4, ast);
-		assertEquals(java.lang.Double.class, ((TypeLiteral)ast).getValue());
+		assertExpression(build, ClassTypeLiteral.class, 0, 0, 0, 4, 0, 4, ast);
+		assertEquals(java.lang.Double.class, ((ClassTypeLiteral)ast).getValue());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -965,17 +970,11 @@ public class BuildTest {
 		AstResult build = engine.build("anydsl::EClass");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorTypeLiteral.class, 0, 0, 0, 14, 0, 14, ast);
-		assertFalse(((ErrorTypeLiteral)ast).isMissingColon());
-		assertEquals("anydsl", ((ErrorTypeLiteral)ast).getSegments().get(0));
-		assertEquals("EClass", ((ErrorTypeLiteral)ast).getSegments().get(1));
-		assertEquals(1, build.getErrors().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal anydsl::EClass", build.getDiagnostic().getChildren().get(0)
-				.getMessage());
-		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertExpression(build, EClassifierTypeLiteral.class, 0, 0, 0, 14, 0, 14, ast);
+		assertEquals("anydsl", ((EClassifierTypeLiteral)ast).getEPackageName());
+		assertEquals("EClass", ((EClassifierTypeLiteral)ast).getEClassifierName());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 	}
 
 	@Test
@@ -984,8 +983,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, EnumLiteral.class, 0, 0, 0, 19, 0, 19, ast);
-		assertEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other"), ((EnumLiteral)ast)
-				.getLiteral());
+		assertEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other").getName(), ((EnumLiteral)ast)
+				.getEEnumLiteralName());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -996,18 +995,12 @@ public class BuildTest {
 		AstResult build = engine.build("anydsl::Part::NotExisting");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorEnumLiteral.class, 0, 0, 0, 25, 0, 25, ast);
-		assertFalse(((ErrorEnumLiteral)ast).isMissingColon());
-		assertEquals("anydsl", ((ErrorEnumLiteral)ast).getSegments().get(0));
-		assertEquals("Part", ((ErrorEnumLiteral)ast).getSegments().get(1));
-		assertEquals("NotExisting", ((ErrorEnumLiteral)ast).getSegments().get(2));
-		assertEquals(1, build.getErrors().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid enum literal: no literal registered with this name", build.getDiagnostic()
-				.getChildren().get(0).getMessage());
-		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertExpression(build, EnumLiteral.class, 0, 0, 0, 25, 0, 25, ast);
+		assertEquals("anydsl", ((EnumLiteral)ast).getEPackageName());
+		assertEquals("Part", ((EnumLiteral)ast).getEEnumName());
+		assertEquals("NotExisting", ((EnumLiteral)ast).getEEnumLiteralName());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 	}
 
 	@Test
@@ -1033,9 +1026,10 @@ public class BuildTest {
 		assertEquals("precedingSiblings", ((Call)ast).getServiceName());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, TypeLiteral.class, 23, 0, 23, 36, 0, 36, ((Call)ast).getArguments().get(1));
-		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+		assertExpression(build, EClassifierTypeLiteral.class, 23, 0, 23, 36, 0, 36, ((Call)ast).getArguments()
+				.get(1));
+		final EClassifierTypeLiteral typeLiteral = (EClassifierTypeLiteral)((Call)ast).getArguments().get(1);
+		assertEquals(EcorePackage.eINSTANCE.getEClass().getName(), typeLiteral.getEClassifierName());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -1050,9 +1044,10 @@ public class BuildTest {
 		assertEquals("followingSiblings", ((Call)ast).getServiceName());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, TypeLiteral.class, 23, 0, 23, 36, 0, 36, ((Call)ast).getArguments().get(1));
-		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+		assertExpression(build, EClassifierTypeLiteral.class, 23, 0, 23, 36, 0, 36, ((Call)ast).getArguments()
+				.get(1));
+		final EClassifierTypeLiteral typeLiteral = (EClassifierTypeLiteral)((Call)ast).getArguments().get(1);
+		assertEquals(EcorePackage.eINSTANCE.getEClass().getName(), typeLiteral.getEClassifierName());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -1095,9 +1090,10 @@ public class BuildTest {
 		assertEquals("eInverse", ((Call)ast).getServiceName());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, TypeLiteral.class, 14, 0, 14, 27, 0, 27, ((Call)ast).getArguments().get(1));
-		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+		assertExpression(build, EClassifierTypeLiteral.class, 14, 0, 14, 27, 0, 27, ((Call)ast).getArguments()
+				.get(1));
+		final EClassifierTypeLiteral typeLiteral = (EClassifierTypeLiteral)((Call)ast).getArguments().get(1);
+		assertEquals(EcorePackage.eINSTANCE.getEClass().getName(), typeLiteral.getEClassifierName());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -1793,10 +1789,10 @@ public class BuildTest {
 		AstResult build = engine.build("toto::");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorTypeLiteral.class, 0, 0, 0, 6, 0, 6, ast);
-		assertFalse(((ErrorTypeLiteral)ast).isMissingColon());
-		assertEquals(1, ((ErrorTypeLiteral)ast).getSegments().size());
-		assertEquals("toto", ((ErrorTypeLiteral)ast).getSegments().get(0));
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 0, 0, 0, 6, 0, 6, ast);
+		assertFalse(((ErrorEClassifierTypeLiteral)ast).isMissingColon());
+		assertEquals("toto", ((ErrorEClassifierTypeLiteral)ast).getEPackageName());
+		assertEquals(null, ((ErrorEClassifierTypeLiteral)ast).getEClassifierName());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
@@ -1813,9 +1809,9 @@ public class BuildTest {
 
 		assertExpression(build, ErrorEnumLiteral.class, 0, 0, 0, 12, 0, 12, ast);
 		assertFalse(((ErrorEnumLiteral)ast).isMissingColon());
-		assertEquals(2, ((ErrorEnumLiteral)ast).getSegments().size());
-		assertEquals("toto", ((ErrorEnumLiteral)ast).getSegments().get(0));
-		assertEquals("tata", ((ErrorEnumLiteral)ast).getSegments().get(1));
+		assertEquals("toto", ((ErrorEnumLiteral)ast).getEPackageName());
+		assertEquals("tata", ((ErrorEnumLiteral)ast).getEEnumName());
+		assertEquals(null, ((ErrorEnumLiteral)ast).getEEnumLiteralName());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
@@ -1940,10 +1936,6 @@ public class BuildTest {
 		assertExpression(build, ErrorTypeLiteral.class, 17, 0, 17, 17, 0, 17,
 				((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters().get(0))
 						.getType());
-		assertFalse(((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).getType()).isMissingColon());
-		assertEquals(0, ((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).getType()).getSegments().size());
 		assertExpression(build, ErrorExpression.class, 17, 0, 17, 17, 0, 17, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(3, build.getErrors().size());
@@ -1974,15 +1966,15 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 27, 0, 27, 27, 0, 27, ((Call)ast).getArguments().get(1));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
-		assertExpression(build, ErrorTypeLiteral.class, 18, 0, 18, 25, 0, 25,
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 18, 0, 18, 25, 0, 25,
 				((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters().get(0))
 						.getType());
-		assertFalse(((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).getType()).isMissingColon());
-		assertEquals(1, ((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).getType()).getSegments().size());
-		assertEquals("ecore", ((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments()
-				.get(1)).getParameters().get(0)).getType()).getSegments().get(0));
+		assertFalse(((ErrorEClassifierTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments()
+				.get(1)).getParameters().get(0)).getType()).isMissingColon());
+		assertEquals("ecore", ((ErrorEClassifierTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast)
+				.getArguments().get(1)).getParameters().get(0)).getType()).getEPackageName());
+		assertEquals(null, ((ErrorEClassifierTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast)
+				.getArguments().get(1)).getParameters().get(0)).getType()).getEClassifierName());
 		assertExpression(build, ErrorExpression.class, 27, 0, 27, 27, 0, 27, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(3, build.getErrors().size());
@@ -2012,11 +2004,12 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 31, 0, 31, 31, 0, 31, ((Call)ast).getArguments().get(1));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
-		assertExpression(build, TypeLiteral.class, 18, 0, 18, 31, 0, 31,
+		assertExpression(build, EClassifierTypeLiteral.class, 18, 0, 18, 31, 0, 31,
 				((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters().get(0))
 						.getType());
-		assertEquals(true, ((TypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).getType()).getValue() == EcorePackage.Literals.ECLASS);
+		assertEquals(EcorePackage.Literals.ECLASS.getName(),
+				((EClassifierTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
+						.getParameters().get(0)).getType()).getEClassifierName());
 		assertExpression(build, ErrorExpression.class, 31, 0, 31, 31, 0, 31, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(3, build.getErrors().size());
@@ -2158,8 +2151,6 @@ public class BuildTest {
 				.getValue() == List.class);
 		assertExpression(build, ErrorTypeLiteral.class, 21, 0, 21, 21, 0, 21,
 				((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType());
-		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getElementType()).isMissingColon());
 		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
@@ -2188,8 +2179,8 @@ public class BuildTest {
 				.getArguments().get(1)).getElementType());
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getValue() == List.class);
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType()
-				.getValue() == String.class);
+		assertEquals(true, ((ClassTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
+				.getElementType()).getValue() == String.class);
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
@@ -2219,8 +2210,6 @@ public class BuildTest {
 				.getValue() == Set.class);
 		assertExpression(build, ErrorTypeLiteral.class, 23, 0, 23, 23, 0, 23,
 				((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType());
-		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getElementType()).isMissingColon());
 		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
@@ -2249,7 +2238,7 @@ public class BuildTest {
 				.getValue() == Set.class);
 		assertExpression(build, TypeLiteral.class, 23, 0, 23, 29, 0, 29, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
-		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
+		assertEquals(true, ((ClassTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getElementType()).getValue() == String.class);
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -2378,9 +2367,10 @@ public class BuildTest {
 		assertExpression(build, Let.class, 0, 0, 0, 22, 0, 22, ast);
 		assertEquals(1, ((Let)ast).getBindings().size());
 		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
-		assertExpression(build, ErrorTypeLiteral.class, 8, 0, 8, 15, 0, 15, ((Let)ast).getBindings().get(0)
-				.getType());
-		assertFalse(((ErrorTypeLiteral)((Let)ast).getBindings().get(0).getType()).isMissingColon());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 8, 0, 8, 15, 0, 15, ((Let)ast)
+				.getBindings().get(0).getType());
+		assertFalse(((ErrorEClassifierTypeLiteral)((Let)ast).getBindings().get(0).getType())
+				.isMissingColon());
 		assertExpression(build, ErrorExpression.class, 18, 0, 18, 18, 0, 18, ((Let)ast).getBindings().get(0)
 				.getValue());
 		assertExpression(build, VarRef.class, 21, 0, 21, 22, 0, 22, ((Let)ast).getBody());
@@ -2416,7 +2406,7 @@ public class BuildTest {
 		assertExpression(build, IntegerLiteral.class, 6, 0, 6, 7, 0, 7, ((Let)ast).getBindings().get(0)
 				.getValue());
 		assertEquals("b", ((Let)ast).getBindings().get(1).getName());
-		assertTrue(((Let)ast).getBindings().get(1).getType() instanceof ErrorTypeLiteral);
+		assertTrue(((Let)ast).getBindings().get(1).getType() instanceof ErrorEClassifierTypeLiteral);
 		assertExpression(build, ErrorExpression.class, 23, 0, 23, 23, 0, 23, ((Let)ast).getBindings().get(1)
 				.getValue());
 		assertExpression(build, Call.class, 26, 0, 26, 31, 0, 31, ((Let)ast).getBody());
@@ -2673,9 +2663,8 @@ public class BuildTest {
 		assertEquals(2, ((TypeSetLiteral)ast).getTypes().size());
 		assertExpression(build, TypeLiteral.class, 1, 0, 1, 14, 0, 14, ((TypeSetLiteral)ast).getTypes().get(
 				0));
-		assertExpression(build, ErrorTypeLiteral.class, 16, 0, 16, 16, 0, 16, ((TypeSetLiteral)ast).getTypes()
-				.get(1));
-		assertFalse(((ErrorTypeLiteral)((TypeSetLiteral)ast).getTypes().get(1)).isMissingColon());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 16, 0, 16, 16, 0, 16, ((TypeSetLiteral)ast)
+				.getTypes().get(1));
 		assertEquals(build.getErrors().get(0), ((TypeSetLiteral)ast).getTypes().get(1));
 	}
 
@@ -2700,8 +2689,9 @@ public class BuildTest {
 		final ErrorCall call = (ErrorCall)lambda.getExpression();
 		assertEquals(2, call.getArguments().size());
 		assertExpression(build, VarRef.class, 33, 0, 33, 34, 0, 34, call.getArguments().get(0));
-		assertExpression(build, ErrorTypeLiteral.class, 47, 0, 47, 51, 0, 51, call.getArguments().get(1));
-		assertTrue(((ErrorTypeLiteral)call.getArguments().get(1)).isMissingColon());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 47, 0, 47, 51, 0, 51, call.getArguments()
+				.get(1));
+		assertTrue(((ErrorEClassifierTypeLiteral)call.getArguments().get(1)).isMissingColon());
 
 		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -2739,8 +2729,10 @@ public class BuildTest {
 		assertEquals(2, call.getArguments().size());
 		assertExpression(build, VarRef.class, 33, 0, 33, 34, 0, 34, call.getArguments().get(0));
 		assertExpression(build, ErrorEnumLiteral.class, 47, 0, 47, 61, 0, 61, call.getArguments().get(1));
-		assertEquals(2, ((ErrorEnumLiteral)call.getArguments().get(1)).getSegments().size());
 		assertTrue(((ErrorEnumLiteral)call.getArguments().get(1)).isMissingColon());
+		assertEquals("anydsl", ((ErrorEnumLiteral)call.getArguments().get(1)).getEPackageName());
+		assertEquals("Color", ((ErrorEnumLiteral)call.getArguments().get(1)).getEEnumName());
+		assertEquals(null, ((ErrorEnumLiteral)call.getArguments().get(1)).getEEnumLiteralName());
 
 		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -2769,8 +2761,8 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 51, 0, 51, 51, 0, 51, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorExpression.class, 51, 0, 51, 51, 0, 51, lambda.getExpression());
-		assertExpression(build, ErrorTypeLiteral.class, 44, 0, 44, 51, 0, 51, lambda.getParameters().get(0)
-				.getType());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 44, 0, 44, 51, 0, 51, lambda
+				.getParameters().get(0).getType());
 
 		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -2797,8 +2789,8 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 55, 0, 55, 55, 0, 55, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorExpression.class, 55, 0, 55, 55, 0, 55, lambda.getExpression());
-		assertExpression(build, ErrorTypeLiteral.class, 44, 0, 44, 56, 0, 56, lambda.getParameters().get(0)
-				.getType());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 44, 0, 44, 56, 0, 56, lambda
+				.getParameters().get(0).getType());
 
 		assertEquals(4, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -2827,9 +2819,12 @@ public class BuildTest {
 		assertEquals("aPackage", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
 		assertExpression(build, Lambda.class, 37, 0, 37, 66, 0, 66, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
-		assertExpression(build, ErrorTypeLiteral.class, 27, 0, 27, 36, 0, 36, lambda.getParameters().get(0)
-				.getType());
-		assertEquals(0, ((ErrorTypeLiteral)lambda.getParameters().get(0).getType()).getSegments().size());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 27, 0, 27, 36, 0, 36, lambda
+				.getParameters().get(0).getType());
+		assertEquals(null, ((ErrorEClassifierTypeLiteral)lambda.getParameters().get(0).getType())
+				.getEPackageName());
+		assertEquals(null, ((ErrorEClassifierTypeLiteral)lambda.getParameters().get(0).getType())
+				.getEClassifierName());
 		assertEquals("", lambda.getParameters().get(0).getName());
 		assertExpression(build, Call.class, 37, 0, 37, 66, 0, 66, lambda.getExpression());
 		assertEquals("differs", ((Call)lambda.getExpression()).getServiceName());
@@ -2863,16 +2858,12 @@ public class BuildTest {
 		assertEquals("not", ((Call)lambda.getExpression()).getServiceName());
 		assertEquals(1, ((Call)lambda.getExpression()).getArguments().size());
 
-		assertEquals(2, build.getErrors().size());
+		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal uml::Slot", build.getDiagnostic().getChildren().get(0)
-				.getMessage());
+		assertEquals("invalid iteration call", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
-		assertEquals("invalid iteration call", build.getDiagnostic().getChildren().get(1).getMessage());
-		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test

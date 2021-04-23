@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=" Copyright (c) 2015 Obeo.&#xA; All rights reserved. This program and the accompanying materials&#xA; are made available under the terms of the Eclipse Public License v1.0&#xA; which accompanies this distribution, and is available at&#xA; http://www.eclipse.org/legal/epl-v10.html&#xA; &#xA; Contributors:&#xA;     Obeo - initial API and implementation&#xA;"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=" Copyright (c) 2015, 2021 Obeo.&#xA; All rights reserved. This program and the accompanying materials&#xA; are made available under the terms of the Eclipse Public License v1.0&#xA; which accompanies this distribution, and is available at&#xA; http://www.eclipse.org/legal/epl-v10.html&#xA; &#xA; Contributors:&#xA;     Obeo - initial API and implementation&#xA;"
     modelDirectory="/org.eclipse.acceleo.query/src-gen" editDirectory="/org.eclipse.acceleo.query.edit/src-gen"
     editorDirectory="/org.eclipse.acceleo.query.editor/src-gen" modelPluginID="org.eclipse.acceleo.query"
     templateDirectory="" modelName="Ast" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="/org.eclipse.acceleo.query.tests/src-gen" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="6.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
-    operationReflection="true" importOrganizing="true">
+    complianceLevel="6.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>ast.ecore</foreignModel>
   <genPackages prefix="Ast" basePackage="org.eclipse.acceleo.query" disposableProviderFactory="true"
       ecorePackage="ast.ecore#/">
@@ -15,7 +14,7 @@
       <genEnumLiterals ecoreEnumLiteral="ast.ecore#//CallType/CALLORAPPLY"/>
       <genEnumLiterals ecoreEnumLiteral="ast.ecore#//CallType/COLLECTIONCALL"/>
     </genEnums>
-    <genDataTypes ecoreDataType="ast.ecore#//ObjectType"/>
+    <genDataTypes ecoreDataType="ast.ecore#//JavaClass"/>
     <genClasses image="false" ecoreClass="ast.ecore#//Expression"/>
     <genClasses ecoreClass="ast.ecore#//VarRef">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//VarRef/variableName"/>
@@ -39,10 +38,17 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//BooleanLiteral/value"/>
     </genClasses>
     <genClasses ecoreClass="ast.ecore#//EnumLiteral">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ast.ecore#//EnumLiteral/literal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//EnumLiteral/ePackageName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//EnumLiteral/eEnumName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//EnumLiteral/eEnumLiteralName"/>
     </genClasses>
-    <genClasses ecoreClass="ast.ecore#//TypeLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//TypeLiteral/value"/>
+    <genClasses ecoreClass="ast.ecore#//TypeLiteral"/>
+    <genClasses ecoreClass="ast.ecore#//EClassifierTypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//EClassifierTypeLiteral/ePackageName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//EClassifierTypeLiteral/eClassifierName"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//ClassTypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ClassTypeLiteral/value"/>
     </genClasses>
     <genClasses ecoreClass="ast.ecore#//TypeSetLiteral">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//TypeSetLiteral/types"/>
@@ -68,13 +74,11 @@
     </genClasses>
     <genClasses image="false" ecoreClass="ast.ecore#//Error"/>
     <genClasses ecoreClass="ast.ecore#//ErrorExpression"/>
-    <genClasses ecoreClass="ast.ecore#//ErrorTypeLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorTypeLiteral/segments"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorTypeLiteral/missingColon"/>
+    <genClasses ecoreClass="ast.ecore#//ErrorTypeLiteral"/>
+    <genClasses ecoreClass="ast.ecore#//ErrorEClassifierTypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorEClassifierTypeLiteral/missingColon"/>
     </genClasses>
-    <genClasses ecoreClass="ast.ecore#//ErrorEClassifierTypeLiteral"/>
     <genClasses ecoreClass="ast.ecore#//ErrorEnumLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorEnumLiteral/segments"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorEnumLiteral/missingColon"/>
     </genClasses>
     <genClasses ecoreClass="ast.ecore#//ErrorCall">

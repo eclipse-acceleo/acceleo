@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,10 @@ import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -37,9 +39,6 @@ import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.impl.EClassifierImpl;
 
 /**
  * Serialize a {@link Expression}.
@@ -72,11 +71,6 @@ public class AstSerializer extends AstSwitch<Object> {
 	 * The {@link StringBuilder} used to serialize.
 	 */
 	private StringBuilder builder;
-
-	/**
-	 * The mapping form nsURI to name.
-	 */
-	private final Map<String, String> ePackagesURItoName = new HashMap<>();
 
 	/**
 	 * Serializes the given {@link Expression}.
@@ -719,24 +713,11 @@ public class AstSerializer extends AstSwitch<Object> {
 
 	@Override
 	public Object caseEnumLiteral(EnumLiteral enumLiteral) {
-		if (!enumLiteral.getLiteral().eIsProxy()) {
-			builder.append(enumLiteral.getLiteral().getEEnum().getEPackage().getName());
-			builder.append(ECORE_SEPARATOR);
-			builder.append(enumLiteral.getLiteral().getEEnum().getName());
-			builder.append(ECORE_SEPARATOR);
-			builder.append(enumLiteral.getLiteral().getName());
-		} else {
-			final URI proxyURI = ((org.eclipse.emf.ecore.impl.EEnumLiteralImpl)enumLiteral.getLiteral())
-					.eProxyURI();
-			final String packageName = ePackagesURItoName.getOrDefault(removeFragment(proxyURI),
-					"packageName");
-			final String[] segments = proxyURI.fragment().split("/");
-			builder.append(packageName);
-			builder.append(ECORE_SEPARATOR);
-			builder.append(segments[segments.length - 2]);
-			builder.append(ECORE_SEPARATOR);
-			builder.append(segments[segments.length - 1]);
-		}
+		builder.append(enumLiteral.getEPackageName());
+		builder.append(ECORE_SEPARATOR);
+		builder.append(enumLiteral.getEEnumName());
+		builder.append(ECORE_SEPARATOR);
+		builder.append(enumLiteral.getEEnumLiteralName());
 
 		return DUMMY;
 	}
@@ -901,36 +882,23 @@ public class AstSerializer extends AstSwitch<Object> {
 	}
 
 	@Override
-	public Object caseTypeLiteral(TypeLiteral object) {
-		if (!(object instanceof TypeSetLiteral) && !(object instanceof CollectionTypeLiteral)) {
-			if (object.getValue() instanceof Class) {
-				if (object.getValue() == Double.class) {
-					builder.append("Real");
-				} else {
-					builder.append(((Class<?>)object.getValue()).getSimpleName());
-				}
-			} else if (object.getValue() instanceof EClassifier) {
-				final EClassifier eClassifier = (EClassifier)object.getValue();
-				if (!eClassifier.eIsProxy()) {
-					builder.append(eClassifier.getEPackage().getName());
-					builder.append(ECORE_SEPARATOR);
-					builder.append(eClassifier.getName());
-				} else {
-					final URI proxyURI = ((EClassifierImpl)eClassifier).eProxyURI();
-					final String[] segments = proxyURI.fragment().split("/");
-					ePackagesURItoName.put(removeFragment(proxyURI), segments[segments.length - 2]);
-					builder.append(segments[segments.length - 2]);
-					builder.append(ECORE_SEPARATOR);
-					builder.append(segments[segments.length - 1]);
-				}
-			}
+	public Object caseClassTypeLiteral(ClassTypeLiteral classTypeLiteral) {
+		if (classTypeLiteral.getValue() == Double.class) {
+			builder.append("Real");
+		} else {
+			builder.append(((Class<?>)classTypeLiteral.getValue()).getSimpleName());
 		}
 
 		return DUMMY;
 	}
 
-	private String removeFragment(URI uri) {
-		return uri.toString().substring(0, uri.toString().length() - uri.fragment().length());
+	@Override
+	public Object caseEClassifierTypeLiteral(EClassifierTypeLiteral object) {
+		builder.append(object.getEPackageName());
+		builder.append(ECORE_SEPARATOR);
+		builder.append(object.getEClassifierName());
+
+		return DUMMY;
 	}
 
 	@Override

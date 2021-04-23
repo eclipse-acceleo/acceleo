@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,42 +18,42 @@ import org.eclipse.acceleo.ErrorForStatement;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.Statement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error For Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error For Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBinding <em>Binding</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getSeparator <em>Separator</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingBinding <em>Missing Binding</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingSeparatorCloseParenthesis <em>Missing Separator Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEnd <em>Missing End</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBinding <em>Binding</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getSeparator <em>Separator</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingOpenParenthesis <em>Missing Open
+ * Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingBinding <em>Missing Binding</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingCloseParenthesis <em>Missing Close
+ * Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingSeparatorCloseParenthesis <em>Missing
+ * Separator Close Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEndHeader <em>Missing End
+ * Header</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implements ErrorForStatement {
 	/**
-	 * The cached value of the '{@link #getBinding() <em>Binding</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBinding() <em>Binding</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBinding()
 	 * @generated
 	 * @ordered
@@ -61,9 +61,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected Binding binding;
 
 	/**
-	 * The cached value of the '{@link #getSeparator() <em>Separator</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getSeparator() <em>Separator</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSeparator()
 	 * @generated
 	 * @ordered
@@ -71,9 +71,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected Expression separator;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -81,9 +81,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected Block body;
 
 	/**
-	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -91,9 +91,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_OPEN_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -101,9 +101,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingBinding() <em>Missing Binding</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingBinding() <em>Missing Binding</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingBinding()
 	 * @generated
 	 * @ordered
@@ -111,9 +111,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_BINDING_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingBinding() <em>Missing Binding</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingBinding() <em>Missing Binding</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingBinding()
 	 * @generated
 	 * @ordered
@@ -121,9 +121,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingBinding = MISSING_BINDING_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -131,9 +131,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -141,9 +141,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingSeparatorCloseParenthesis() <em>Missing Separator Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingSeparatorCloseParenthesis() <em>Missing Separator Close
+	 * Parenthesis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingSeparatorCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -151,9 +151,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_SEPARATOR_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingSeparatorCloseParenthesis() <em>Missing Separator Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingSeparatorCloseParenthesis() <em>Missing Separator Close
+	 * Parenthesis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingSeparatorCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -161,9 +161,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingSeparatorCloseParenthesis = MISSING_SEPARATOR_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -171,9 +171,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -181,9 +181,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -191,9 +191,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -201,8 +201,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ErrorForStatementImpl() {
@@ -210,8 +210,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -220,8 +220,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -230,8 +230,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBinding(Binding newBinding, NotificationChain msgs) {
@@ -249,8 +249,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -272,8 +272,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -282,8 +282,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetSeparator(Expression newSeparator, NotificationChain msgs) {
@@ -301,8 +301,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -324,8 +324,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -334,8 +334,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -353,8 +353,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -376,8 +376,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -386,8 +386,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -401,8 +401,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -411,8 +411,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -425,8 +425,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -435,8 +435,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -450,8 +450,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -460,8 +460,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -475,8 +475,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -485,8 +485,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -500,8 +500,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -510,8 +510,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -524,8 +524,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -542,8 +542,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -572,8 +572,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -611,8 +611,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -650,8 +650,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -680,8 +680,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -708,8 +708,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -736,8 +736,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -762,4 +762,4 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 		return result.toString();
 	}
 
-} //ErrorForStatementImpl
+} // ErrorForStatementImpl

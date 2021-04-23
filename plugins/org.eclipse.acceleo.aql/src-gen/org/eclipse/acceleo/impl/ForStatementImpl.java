@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,36 +16,32 @@ import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ForStatement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>For Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>For Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBinding <em>Binding</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getSeparator <em>Separator</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBinding <em>Binding</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getSeparator <em>Separator</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ForStatementImpl extends MinimalEObjectImpl.Container implements ForStatement {
 	/**
-	 * The cached value of the '{@link #getBinding() <em>Binding</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBinding() <em>Binding</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBinding()
 	 * @generated
 	 * @ordered
@@ -53,9 +49,9 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	protected Binding binding;
 
 	/**
-	 * The cached value of the '{@link #getSeparator() <em>Separator</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getSeparator() <em>Separator</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSeparator()
 	 * @generated
 	 * @ordered
@@ -63,9 +59,9 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	protected Expression separator;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -73,8 +69,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	protected Block body;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ForStatementImpl() {
@@ -82,8 +78,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -92,8 +88,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -102,8 +98,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBinding(Binding newBinding, NotificationChain msgs) {
@@ -121,8 +117,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -144,8 +140,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -154,8 +150,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetSeparator(Expression newSeparator, NotificationChain msgs) {
@@ -173,8 +169,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -196,8 +192,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -206,8 +202,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -225,8 +221,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -248,8 +244,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -266,8 +262,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -284,8 +280,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -305,8 +301,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -326,8 +322,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -343,4 +339,4 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 		return super.eIsSet(featureID);
 	}
 
-} //ForStatementImpl
+} // ForStatementImpl

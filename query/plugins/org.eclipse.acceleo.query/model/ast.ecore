@@ -30,17 +30,30 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral" eSuperTypes="#//Literal">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="literal" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EEnumLiteral"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ePackageName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="eEnumName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="eEnumLiteralName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeLiteral" eSuperTypes="#//Literal">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//ObjectType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeLiteral" abstract="true" interface="true"
+      eSuperTypes="#//Literal"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EClassifierTypeLiteral" eSuperTypes="#//TypeLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ePackageName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="eClassifierName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeSetLiteral" eSuperTypes="#//TypeLiteral">
+  <eClassifiers xsi:type="ecore:EClass" name="ClassTypeLiteral" eSuperTypes="#//TypeLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//JavaClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeSetLiteral" eSuperTypes="#//ClassTypeLiteral">
     <eStructuralFeatures xsi:type="ecore:EReference" name="types" lowerBound="1" upperBound="-1"
         eType="#//TypeLiteral" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="ObjectType" instanceClassName="java.lang.Object"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CollectionTypeLiteral" eSuperTypes="#//TypeLiteral">
+  <eClassifiers xsi:type="ecore:EDataType" name="JavaClass" instanceClassName="java.lang.Class"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CollectionTypeLiteral" eSuperTypes="#//ClassTypeLiteral">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elementType" lowerBound="1"
         eType="#//TypeLiteral" containment="true"/>
   </eClassifiers>
@@ -69,16 +82,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"
       eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorExpression" eSuperTypes="#//Error"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ErrorTypeLiteral" eSuperTypes="#//Error #//TypeLiteral">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="segments" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorTypeLiteral" eSuperTypes="#//Error #//TypeLiteral"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorEClassifierTypeLiteral" eSuperTypes="#//Error #//EClassifierTypeLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingColon" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ErrorEClassifierTypeLiteral" eSuperTypes="#//ErrorTypeLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorEnumLiteral" eSuperTypes="#//Error #//EnumLiteral">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="segments" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingColon" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
@@ -91,7 +100,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ErrorStringLiteral" eSuperTypes="#//Error #//StringLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorConditional" eSuperTypes="#//Error #//Conditional"/>
   <eClassifiers xsi:type="ecore:EClass" name="Binding">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeLiteral"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Expression"

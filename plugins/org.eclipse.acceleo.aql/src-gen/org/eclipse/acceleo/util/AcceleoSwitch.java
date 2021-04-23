@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -62,38 +62,30 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Switch</b> for the model's inheritance hierarchy.
- * It supports the call {@link #doSwitch(EObject) doSwitch(object)}
- * to invoke the <code>caseXXX</code> method for each class of the model,
- * starting with the actual class of the object
- * and proceeding up the inheritance hierarchy
- * until a non-null result is returned,
- * which is the result of the switch.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
+ * {@link #doSwitch(EObject) doSwitch(object)} to invoke the <code>caseXXX</code> method for each class of the
+ * model, starting with the actual class of the object and proceeding up the inheritance hierarchy until a
+ * non-null result is returned, which is the result of the switch. <!-- end-user-doc -->
+ * 
  * @see org.eclipse.acceleo.AcceleoPackage
  * @generated
  */
 public class AcceleoSwitch<T> extends Switch<T> {
 	/**
-	 * The cached model package
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected static AcceleoPackage modelPackage;
 
 	/**
-	 * Creates an instance of the switch.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AcceleoSwitch() {
@@ -103,10 +95,10 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Checks whether this is a switch for the given package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param ePackage the package in question.
+	 * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param ePackage
+	 *            the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -116,9 +108,9 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields
+	 * that result. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */
@@ -831,12 +823,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Module</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -846,12 +838,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Module</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Module</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Module</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -861,12 +853,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Metamodel</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Metamodel</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Metamodel</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -876,12 +868,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Metamodel</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Metamodel</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Metamodel</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -891,12 +883,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Import</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Import</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Import</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -906,12 +898,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Import</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Import</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Import</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -921,12 +913,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module Reference</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Module Reference</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Module Reference</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -936,12 +928,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Module Reference</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Module Reference</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Module Reference</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -951,12 +943,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Module Element</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Module Element</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -966,12 +958,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Comment</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Comment</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Comment</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -981,12 +973,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Block Comment</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Block Comment</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Block Comment</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -996,12 +988,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Block Comment</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Block Comment</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Block Comment</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1011,12 +1003,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Comment</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Comment</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Comment</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1026,12 +1018,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Comment Body</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Comment Body</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Comment Body</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1041,12 +1033,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Documentation</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Documentation</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1056,12 +1048,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module Documentation</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Module Documentation</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Module Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1072,11 +1064,11 @@ public class AcceleoSwitch<T> extends Switch<T> {
 
 	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Error Module Documentation</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+	 * the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Module Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1086,13 +1078,14 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module Element Documentation</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Module Element Documentation</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Module Element
+	 * Documentation</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null
+	 * result will terminate the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Module Element
+	 *         Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1101,13 +1094,14 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Module Element Documentation</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Error Module Element Documentation</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Module Element
+	 * Documentation</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null
+	 * result will terminate the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Module Element
+	 *         Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1117,11 +1111,11 @@ public class AcceleoSwitch<T> extends Switch<T> {
 
 	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Parameter Documentation</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+	 * the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Parameter Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1131,12 +1125,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Documented Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Documented Element</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Documented Element</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1146,12 +1140,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1161,12 +1155,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>AST Node</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>AST Node</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>AST Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1176,12 +1170,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1191,12 +1185,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Block</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Block</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Block</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1206,12 +1200,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Typed Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Typed Element</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Typed Element</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1221,12 +1215,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Template</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Template</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Template</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1236,12 +1230,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Template</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Template</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Template</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1251,12 +1245,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Query</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Query</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1266,12 +1260,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Query</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Query</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1281,12 +1275,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Expression</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1296,12 +1290,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Expression</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Expression</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1311,12 +1305,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Variable</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Variable</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Variable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1326,12 +1320,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Variable</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Variable</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Variable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1341,12 +1335,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Binding</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Binding</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Binding</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1356,12 +1350,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Binding</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Binding</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Binding</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1371,12 +1365,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1386,12 +1380,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Leaf Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Leaf Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Leaf Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1401,12 +1395,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Expression Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Expression Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Expression Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1417,11 +1411,11 @@ public class AcceleoSwitch<T> extends Switch<T> {
 
 	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Error Expression Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+	 * the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Expression Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1431,12 +1425,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Protected Area</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Protected Area</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Protected Area</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1446,12 +1440,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Protected Area</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Protected Area</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Protected Area</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1461,12 +1455,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>For Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>For Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>For Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1476,12 +1470,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error For Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error For Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error For Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1491,12 +1485,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>If Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>If Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>If Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1506,12 +1500,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error If Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error If Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error If Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1521,12 +1515,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Let Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Let Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Let Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1536,12 +1530,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Let Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error Let Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error Let Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1551,12 +1545,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>File Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>File Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>File Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1566,12 +1560,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error File Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Error File Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Error File Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1581,12 +1575,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Text Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Text Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Text Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1596,12 +1590,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>New Line Statement</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>New Line Statement</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>New Line Statement</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
@@ -1611,12 +1605,12 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch, but this is the last case anyway.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch, but this
+	 * is the last case anyway. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
@@ -1626,4 +1620,4 @@ public class AcceleoSwitch<T> extends Switch<T> {
 		return null;
 	}
 
-} //AcceleoSwitch
+} // AcceleoSwitch

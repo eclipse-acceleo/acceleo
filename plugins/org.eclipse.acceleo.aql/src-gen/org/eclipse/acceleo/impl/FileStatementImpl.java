@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,37 +16,33 @@ import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.OpenModeKind;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>File Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>File Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getMode <em>Mode</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getUrl <em>Url</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getCharset <em>Charset</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getMode <em>Mode</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getUrl <em>Url</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getCharset <em>Charset</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FileStatementImpl extends MinimalEObjectImpl.Container implements FileStatement {
 	/**
-	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getMode()
 	 * @generated
 	 * @ordered
@@ -54,9 +50,9 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	protected static final OpenModeKind MODE_EDEFAULT = OpenModeKind.OVERWRITE;
 
 	/**
-	 * The cached value of the '{@link #getMode() <em>Mode</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMode() <em>Mode</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getMode()
 	 * @generated
 	 * @ordered
@@ -64,9 +60,9 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	protected OpenModeKind mode = MODE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getUrl() <em>Url</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getUrl() <em>Url</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getUrl()
 	 * @generated
 	 * @ordered
@@ -74,9 +70,9 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	protected Expression url;
 
 	/**
-	 * The cached value of the '{@link #getCharset() <em>Charset</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getCharset() <em>Charset</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getCharset()
 	 * @generated
 	 * @ordered
@@ -84,9 +80,9 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	protected Expression charset;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -94,8 +90,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	protected Block body;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected FileStatementImpl() {
@@ -103,8 +99,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -113,8 +109,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -123,8 +119,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -137,8 +133,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -147,8 +143,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetUrl(Expression newUrl, NotificationChain msgs) {
@@ -166,8 +162,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -189,8 +185,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -199,8 +195,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetCharset(Expression newCharset, NotificationChain msgs) {
@@ -218,8 +214,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -241,8 +237,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -251,8 +247,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -270,8 +266,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -293,8 +289,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -311,8 +307,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -331,8 +327,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -355,8 +351,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -379,8 +375,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -399,8 +395,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -415,4 +411,4 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 		return result.toString();
 	}
 
-} //FileStatementImpl
+} // FileStatementImpl

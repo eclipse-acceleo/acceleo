@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,6 +12,7 @@
 package org.eclipse.acceleo.impl;
 
 import java.util.Collection;
+
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
@@ -22,42 +23,39 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.Statement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error Module Element Documentation</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Module Element
+ * Documentation</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getDocumentedElement <em>Documented Element</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getParameterDocumentation <em>Parameter Documentation</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getDocumentedElement <em>Documented
+ * Element</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getParameterDocumentation
+ * <em>Parameter Documentation</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getMissingEndHeader <em>Missing End
+ * Header</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Container implements ErrorModuleElementDocumentation {
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -65,9 +63,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	protected CommentBody body;
 
 	/**
-	 * The cached value of the '{@link #getDocumentedElement() <em>Documented Element</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getDocumentedElement() <em>Documented Element</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getDocumentedElement()
 	 * @generated
 	 * @ordered
@@ -75,9 +73,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	protected DocumentedElement documentedElement;
 
 	/**
-	 * The cached value of the '{@link #getParameterDocumentation() <em>Parameter Documentation</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getParameterDocumentation() <em>Parameter Documentation</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getParameterDocumentation()
 	 * @generated
 	 * @ordered
@@ -85,9 +83,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	protected EList<ParameterDocumentation> parameterDocumentation;
 
 	/**
-	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -95,9 +93,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -105,8 +103,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ErrorModuleElementDocumentationImpl() {
@@ -114,8 +112,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -124,8 +122,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -134,8 +132,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(CommentBody newBody, NotificationChain msgs) {
@@ -153,8 +151,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -176,8 +174,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -196,8 +194,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public DocumentedElement basicGetDocumentedElement() {
@@ -205,8 +203,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetDocumentedElement(DocumentedElement newDocumentedElement,
@@ -226,8 +224,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -250,8 +248,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -265,8 +263,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -275,8 +273,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -290,8 +288,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -307,8 +305,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -325,8 +323,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -347,8 +345,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -373,8 +371,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -397,8 +395,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -417,8 +415,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -463,8 +461,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -509,8 +507,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -525,4 +523,4 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 		return result.toString();
 	}
 
-} //ErrorModuleElementDocumentationImpl
+} // ErrorModuleElementDocumentationImpl

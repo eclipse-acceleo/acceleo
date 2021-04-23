@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -133,7 +133,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 	@Override
 	public void compileQuery(Query query) {
-		IQueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
+		IQueryBuilderEngine builder = new QueryBuilderEngine();
 		// TODO test build.getErrors()
 		AstResult build = builder.build(expressionToEvaluate);
 		astResult = build;

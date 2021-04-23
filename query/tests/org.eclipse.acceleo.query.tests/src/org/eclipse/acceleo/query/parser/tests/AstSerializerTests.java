@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstSerializer;
-import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,8 +34,7 @@ public class AstSerializerTests {
 	/**
 	 * The {@link QueryBuilderEngine}.
 	 */
-	private static final QueryBuilderEngine ENGINE = new QueryBuilderEngine(Query
-			.newEnvironmentWithDefaultServices(null));
+	private static final QueryBuilderEngine ENGINE = new QueryBuilderEngine();
 
 	/**
 	 * The {@link AstSerializer} to test.

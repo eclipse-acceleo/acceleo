@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,15 +24,15 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl#getElementType <em>Element Type
- * </em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl#getElementType <em>Element
+ * Type</em>}</li>
+ * </ul>
  *
  * @generated
  */
-public class CollectionTypeLiteralImpl extends TypeLiteralImpl implements CollectionTypeLiteral {
+public class CollectionTypeLiteralImpl extends ClassTypeLiteralImpl implements CollectionTypeLiteral {
 	/**
 	 * The cached value of the '{@link #getElementType() <em>Element Type</em>}' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -67,6 +67,7 @@ public class CollectionTypeLiteralImpl extends TypeLiteralImpl implements Collec
 	 * 
 	 * @generated
 	 */
+	@Override
 	public TypeLiteral getElementType() {
 		return elementType;
 	}
@@ -95,6 +96,7 @@ public class CollectionTypeLiteralImpl extends TypeLiteralImpl implements Collec
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setElementType(TypeLiteral newElementType) {
 		if (newElementType != elementType) {
 			NotificationChain msgs = null;

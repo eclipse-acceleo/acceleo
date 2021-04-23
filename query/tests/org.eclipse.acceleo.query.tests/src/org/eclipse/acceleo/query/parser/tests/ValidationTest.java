@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1084,9 +1084,11 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
-		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"invalid type literal invalid::Type", 13, 26);
+		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.WARNING,
+				"EClassifier=EClass is incompatible with declaration [].", 37, 43);
 	}
 
 	@Test
@@ -1380,9 +1382,11 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SetType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
-		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"invalid type literal invalid::Type", 22, 35);
+		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.WARNING,
+				"EClassifier=EClass is incompatible with declaration [].", 38, 44);
 	}
 
 	@Test

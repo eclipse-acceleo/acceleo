@@ -50,7 +50,7 @@ public class QueryValidationEngine implements IQueryValidationEngine {
 	 */
 	@Override
 	public IValidationResult validate(String expression, Map<String, Set<IType>> variableTypes) {
-		IQueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
+		IQueryBuilderEngine builder = new QueryBuilderEngine();
 		AstResult build = builder.build(expression);
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		return validator.validate(variableTypes, build);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,12 +16,9 @@ import java.util.List;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.NamedElement;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -34,17 +31,18 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.acceleo.NamedElement} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a
+ * {@link org.eclipse.acceleo.NamedElement} object. <!-- begin-user-doc --> <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class NamedElementItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
 		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NamedElementItemProvider(AdapterFactory adapterFactory) {
@@ -52,9 +50,9 @@ public class NamedElementItemProvider extends ItemProviderAdapter implements IEd
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -68,9 +66,9 @@ public class NamedElementItemProvider extends ItemProviderAdapter implements IEd
 	}
 
 	/**
-	 * This adds a property descriptor for the Name feature.
-	 * <!-- begin-user-doc -->
+	 * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
@@ -84,9 +82,9 @@ public class NamedElementItemProvider extends ItemProviderAdapter implements IEd
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -97,10 +95,10 @@ public class NamedElementItemProvider extends ItemProviderAdapter implements IEd
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to update
+	 * any cached children and by creating a viewer notification, which it passes to
+	 * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -116,10 +114,10 @@ public class NamedElementItemProvider extends ItemProviderAdapter implements IEd
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
+	 * the children that can be created under this object. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -128,9 +126,9 @@ public class NamedElementItemProvider extends ItemProviderAdapter implements IEd
 	}
 
 	/**
-	 * Return the resource locator for this item provider's resources.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Return the resource locator for this item provider's resources. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

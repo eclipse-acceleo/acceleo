@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,36 +14,33 @@ package org.eclipse.acceleo.impl;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.ModuleDocumentation;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Module Documentation</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Module Documentation</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getDocumentedElement <em>Documented Element</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getAuthor <em>Author</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getVersion <em>Version</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getSince <em>Since</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getDocumentedElement <em>Documented
+ * Element</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getAuthor <em>Author</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getVersion <em>Version</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl#getSince <em>Since</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocumentation {
 	/**
-	 * The cached value of the '{@link #getDocumentedElement() <em>Documented Element</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getDocumentedElement() <em>Documented Element</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getDocumentedElement()
 	 * @generated
 	 * @ordered
@@ -51,9 +48,9 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	protected DocumentedElement documentedElement;
 
 	/**
-	 * The default value of the '{@link #getAuthor() <em>Author</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getAuthor() <em>Author</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getAuthor()
 	 * @generated
 	 * @ordered
@@ -61,9 +58,9 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	protected static final String AUTHOR_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getAuthor() <em>Author</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getAuthor() <em>Author</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getAuthor()
 	 * @generated
 	 * @ordered
@@ -71,9 +68,9 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	protected String author = AUTHOR_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getVersion()
 	 * @generated
 	 * @ordered
@@ -81,9 +78,9 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	protected static final String VERSION_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getVersion()
 	 * @generated
 	 * @ordered
@@ -91,9 +88,9 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	protected String version = VERSION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getSince() <em>Since</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getSince() <em>Since</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getSince()
 	 * @generated
 	 * @ordered
@@ -101,9 +98,9 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	protected static final String SINCE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getSince() <em>Since</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getSince() <em>Since</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getSince()
 	 * @generated
 	 * @ordered
@@ -111,8 +108,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	protected String since = SINCE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ModuleDocumentationImpl() {
@@ -120,8 +117,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -130,8 +127,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -150,8 +147,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public DocumentedElement basicGetDocumentedElement() {
@@ -159,8 +156,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetDocumentedElement(DocumentedElement newDocumentedElement,
@@ -180,8 +177,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -204,8 +201,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -214,8 +211,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -228,8 +225,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -238,8 +235,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -252,8 +249,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -262,8 +259,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -276,8 +273,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -293,8 +290,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -307,8 +304,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -329,8 +326,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -353,8 +350,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -377,8 +374,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -397,8 +394,8 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -417,4 +414,4 @@ public class ModuleDocumentationImpl extends CommentImpl implements ModuleDocume
 		return result.toString();
 	}
 
-} //ModuleDocumentationImpl
+} // ModuleDocumentationImpl

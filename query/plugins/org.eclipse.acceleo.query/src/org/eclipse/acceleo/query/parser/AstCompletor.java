@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,8 @@ import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * Gives {@link ICompletionProposal} for a given {@link IValidationResult}.
@@ -103,8 +105,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			result = doSwitch(errorToComplete);
 		} else {
 			// no need for variables here since "expression variable" can't be valid
-			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
-					.getAstResult().getAst());
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
+					.getAst());
 			result = getExpressionTextFollows(possibleTypes);
 		}
 
@@ -210,17 +212,14 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorTypeLiteral(ErrorTypeLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		if (object.getSegments().size() == 0) {
-			result.add(new TextCompletionProposal("String", 0));
-			result.add(new TextCompletionProposal("Integer", 0));
-			result.add(new TextCompletionProposal("Real", 0));
-			result.add(new TextCompletionProposal("Boolean", 0));
-			result.add(new TextCompletionProposal("Sequence()", 1));
-			result.add(new TextCompletionProposal("OrderedSet()", 1));
-			result.add(new TextCompletionProposal("{}", 1));
-		}
-
-		result.addAll(getEClassifierCompletion(object));
+		result.add(new TextCompletionProposal("String", 0));
+		result.add(new TextCompletionProposal("Integer", 0));
+		result.add(new TextCompletionProposal("Real", 0));
+		result.add(new TextCompletionProposal("Boolean", 0));
+		result.add(new TextCompletionProposal("Sequence()", 1));
+		result.add(new TextCompletionProposal("OrderedSet()", 1));
+		result.add(new TextCompletionProposal("{}", 1));
+		result.addAll(getEClassifierCompletion(null, null, null));
 
 		return result;
 	}
@@ -232,28 +231,32 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	 */
 	@Override
 	public List<ICompletionProposal> caseErrorEClassifierTypeLiteral(ErrorEClassifierTypeLiteral object) {
-		return getEClassifierCompletion(object);
+		return getEClassifierCompletion(object.getEPackageName(), object.getEClassifierName(), null);
 	}
 
 	/**
 	 * Gets the {@link List} of {@link ICompletionProposal} for the given {@link ErrorTypeLiteral}.
 	 * 
-	 * @param errorTypeLiteral
-	 *            the {@link ErrorTypeLiteral} to complete
+	 * @param ePackageName
+	 *            the {@link EPackage#getName() ePackageName}
+	 * @param eClassifierName
+	 *            the {@link EClassifier#getName() ePackageName}
+	 * @param eEnumLiteralName
+	 *            the {@link ErrorEnumLiteral#getName() ePackageName}
 	 * @return the {@link List} of {@link ICompletionProposal} for the given {@link ErrorTypeLiteral}
 	 */
-	protected List<ICompletionProposal> getEClassifierCompletion(ErrorTypeLiteral errorTypeLiteral) {
+	protected List<ICompletionProposal> getEClassifierCompletion(String ePackageName, String eClassifierName,
+			String eEnumLiteralName) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		if (errorTypeLiteral.getSegments().size() == 0) {
+		if (ePackageName == null) {
 			result.addAll(services.getEClassifierProposals());
 			result.addAll(services.getEEnumLiteralProposals());
-		} else if (errorTypeLiteral.getSegments().size() == 1) {
-			result.addAll(services.getEClassifierProposals(errorTypeLiteral.getSegments().get(0)));
-			result.addAll(services.getEEnumLiteralProposals(errorTypeLiteral.getSegments().get(0)));
-		} else if (errorTypeLiteral.getSegments().size() == 2) {
-			result.addAll(services.getEEnumLiteralProposals(errorTypeLiteral.getSegments().get(0),
-					errorTypeLiteral.getSegments().get(1)));
+		} else if (eClassifierName == null) {
+			result.addAll(services.getEClassifierProposals(ePackageName));
+			result.addAll(services.getEEnumLiteralProposals(ePackageName));
+		} else if (eEnumLiteralName == null) {
+			result.addAll(services.getEEnumLiteralProposals(ePackageName, eClassifierName));
 		}
 
 		return result;
@@ -268,8 +271,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments()
-				.get(1)));
+		result.addAll(services.getEEnumLiteralProposals(object.getEPackageName(), object.getEEnumName()));
 
 		return result;
 	}
@@ -467,8 +469,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	 * 
 	 * @param possibleTypes
 	 *            possible types of the {@link org.eclipse.acceleo.query.ast.Expression Expression}
-	 * @return the {@link TextCompletionProposal} following an
-	 *         {@link org.eclipse.acceleo.query.ast.Expression Expression}
+	 * @return the {@link TextCompletionProposal} following an {@link org.eclipse.acceleo.query.ast.Expression
+	 *         Expression}
 	 */
 	private List<ICompletionProposal> getExpressionTextFollows(Set<IType> possibleTypes) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();

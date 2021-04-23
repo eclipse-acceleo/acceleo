@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -101,7 +101,8 @@ public enum CallType implements Enumerator {
 	 * 
 	 * @generated
 	 */
-	private static final CallType[] VALUES_ARRAY = new CallType[] {CALLSERVICE, CALLORAPPLY, COLLECTIONCALL, };
+	private static final CallType[] VALUES_ARRAY = new CallType[] {CALLSERVICE, CALLORAPPLY,
+			COLLECTIONCALL, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Call Type</b></em>' enumerators. <!-- begin-user-doc -->
@@ -115,6 +116,9 @@ public enum CallType implements Enumerator {
 	 * Returns the '<em><b>Call Type</b></em>' literal with the specified literal value. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
+	 * @param literal
+	 *            the literal.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static CallType get(String literal) {
@@ -131,6 +135,9 @@ public enum CallType implements Enumerator {
 	 * Returns the '<em><b>Call Type</b></em>' literal with the specified name. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
+	 * @param name
+	 *            the name.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static CallType getByName(String name) {
@@ -147,6 +154,9 @@ public enum CallType implements Enumerator {
 	 * Returns the '<em><b>Call Type</b></em>' literal with the specified integer value. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
+	 * @param value
+	 *            the integer value.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static CallType get(int value) {
@@ -198,6 +208,7 @@ public enum CallType implements Enumerator {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public int getValue() {
 		return value;
 	}
@@ -207,6 +218,7 @@ public enum CallType implements Enumerator {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -216,6 +228,7 @@ public enum CallType implements Enumerator {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getLiteral() {
 		return literal;
 	}

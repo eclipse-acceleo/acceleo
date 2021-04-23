@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -2827,7 +2827,7 @@ public class CollectionServicesTest {
 		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 
-		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
+		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine();
 		AstResult query = queryBuilder.build("self.eContents()->filter(ecore::EClass)");
 
 		IQueryEvaluationEngine evaluationEngine = new QueryEvaluationEngine(queryEnvironment);
@@ -2855,7 +2855,7 @@ public class CollectionServicesTest {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 
-		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
+		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine();
 		AstResult query = queryBuilder.build("self.eContents()->filter(anydsl::Company)");
 
 		IQueryEvaluationEngine evaluationEngine = new QueryEvaluationEngine(queryEnvironment);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,35 +15,31 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.ModuleReference;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error Import</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Import</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getModule <em>Module</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getMissingEnd <em>Missing End</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getModule <em>Module</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ErrorImportImpl extends MinimalEObjectImpl.Container implements ErrorImport {
 	/**
-	 * The cached value of the '{@link #getModule() <em>Module</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getModule() <em>Module</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getModule()
 	 * @generated
 	 * @ordered
@@ -51,9 +47,9 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	protected ModuleReference module;
 
 	/**
-	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -61,9 +57,9 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -71,8 +67,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ErrorImportImpl() {
@@ -80,8 +76,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -90,8 +86,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -100,8 +96,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetModule(ModuleReference newModule, NotificationChain msgs) {
@@ -119,8 +115,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -142,8 +138,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -152,8 +148,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -166,8 +162,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -180,8 +176,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -196,8 +192,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -214,8 +210,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -232,8 +228,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -248,8 +244,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -266,8 +262,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -284,8 +280,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -300,4 +296,4 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 		return result.toString();
 	}
 
-} //ErrorImportImpl
+} // ErrorImportImpl

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,14 +17,10 @@ import java.util.List;
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.ErrorModule;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -37,17 +33,18 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.acceleo.ErrorModule} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a
+ * {@link org.eclipse.acceleo.ErrorModule} object. <!-- begin-user-doc --> <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
 		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ErrorModuleItemProvider(AdapterFactory adapterFactory) {
@@ -55,9 +52,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -82,9 +79,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Name feature.
-	 * <!-- begin-user-doc -->
+	 * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
@@ -98,9 +95,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Deprecated feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Deprecated feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addDeprecatedPropertyDescriptor(Object object) {
@@ -114,9 +111,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Metamodels feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Metamodels feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addMetamodelsPropertyDescriptor(Object object) {
@@ -129,9 +126,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Extends feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Extends feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addExtendsPropertyDescriptor(Object object) {
@@ -144,9 +141,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Imports feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Imports feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addImportsPropertyDescriptor(Object object) {
@@ -159,9 +156,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Start Header Position feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Start Header Position feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addStartHeaderPositionPropertyDescriptor(Object object) {
@@ -175,9 +172,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the End Header Position feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the End Header Position feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addEndHeaderPositionPropertyDescriptor(Object object) {
@@ -191,9 +188,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Ast feature.
-	 * <!-- begin-user-doc -->
+	 * This adds a property descriptor for the Ast feature. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addAstPropertyDescriptor(Object object) {
@@ -207,8 +204,8 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 
 	/**
 	 * This adds a property descriptor for the Missing Open Parenthesis feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addMissingOpenParenthesisPropertyDescriptor(Object object) {
@@ -222,9 +219,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Missing EPackage feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Missing EPackage feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addMissingEPackagePropertyDescriptor(Object object) {
@@ -239,8 +236,8 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 
 	/**
 	 * This adds a property descriptor for the Missing Close Parenthesis feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addMissingCloseParenthesisPropertyDescriptor(Object object) {
@@ -254,9 +251,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Missing End Header feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Missing End Header feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addMissingEndHeaderPropertyDescriptor(Object object) {
@@ -270,11 +267,12 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an
+	 * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
+	 * {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -288,22 +286,22 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
+		// Check the type of the specified child object and return the proper feature to
+		// use for
 		// adding (see {@link AddCommand}) it as a child.
 
 		return super.getChildFeature(object, child);
 	}
 
 	/**
-	 * This returns ErrorModule.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns ErrorModule.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -312,9 +310,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -325,10 +323,10 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to update
+	 * any cached children and by creating a viewer notification, which it passes to
+	 * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -358,10 +356,10 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
+	 * the children that can be created under this object. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -421,9 +419,10 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for
+	 * {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -442,9 +441,9 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * Return the resource locator for this item provider's resources.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Return the resource locator for this item provider's resources. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

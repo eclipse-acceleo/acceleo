@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -73,6 +73,7 @@ public class VarRefImpl extends ExpressionImpl implements VarRef {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getVariableName() {
 		return variableName;
 	}
@@ -82,6 +83,7 @@ public class VarRefImpl extends ExpressionImpl implements VarRef {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setVariableName(String newVariableName) {
 		String oldVariableName = variableName;
 		variableName = newVariableName;
@@ -143,8 +145,8 @@ public class VarRefImpl extends ExpressionImpl implements VarRef {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AstPackage.VAR_REF__VARIABLE_NAME:
-				return VARIABLE_NAME_EDEFAULT == null ? variableName != null : !VARIABLE_NAME_EDEFAULT
-						.equals(variableName);
+				return VARIABLE_NAME_EDEFAULT == null ? variableName != null
+						: !VARIABLE_NAME_EDEFAULT.equals(variableName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -159,7 +161,7 @@ public class VarRefImpl extends ExpressionImpl implements VarRef {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (variableName: ");
 		result.append(variableName);
 		result.append(')');

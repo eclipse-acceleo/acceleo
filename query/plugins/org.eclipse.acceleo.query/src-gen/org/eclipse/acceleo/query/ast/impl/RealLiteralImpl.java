@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.RealLiteralImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -73,6 +73,7 @@ public class RealLiteralImpl extends LiteralImpl implements RealLiteral {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public double getValue() {
 		return value;
 	}
@@ -82,6 +83,7 @@ public class RealLiteralImpl extends LiteralImpl implements RealLiteral {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setValue(double newValue) {
 		double oldValue = value;
 		value = newValue;
@@ -158,7 +160,7 @@ public class RealLiteralImpl extends LiteralImpl implements RealLiteral {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (value: ");
 		result.append(value);
 		result.append(')');

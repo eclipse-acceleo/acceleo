@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getServiceName <em>Service Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getType <em>Type</em>}</li>
@@ -38,7 +39,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#isMissingEndParenthesis <em>Missing End
  * Parenthesis</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -137,6 +137,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getServiceName() {
 		return serviceName;
 	}
@@ -146,6 +147,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setServiceName(String newServiceName) {
 		String oldServiceName = serviceName;
 		serviceName = newServiceName;
@@ -159,6 +161,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public CallType getType() {
 		return type;
 	}
@@ -168,11 +171,13 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setType(CallType newType) {
 		CallType oldType = type;
 		type = newType == null ? TYPE_EDEFAULT : newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_CALL__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_CALL__TYPE, oldType,
+					type));
 	}
 
 	/**
@@ -180,6 +185,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EList<Expression> getArguments() {
 		if (arguments == null) {
 			arguments = new EObjectContainmentEList<Expression>(Expression.class, this,
@@ -193,6 +199,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public boolean isMissingEndParenthesis() {
 		return missingEndParenthesis;
 	}
@@ -202,6 +209,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setMissingEndParenthesis(boolean newMissingEndParenthesis) {
 		boolean oldMissingEndParenthesis = missingEndParenthesis;
 		missingEndParenthesis = newMissingEndParenthesis;
@@ -304,8 +312,8 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AstPackage.ERROR_CALL__SERVICE_NAME:
-				return SERVICE_NAME_EDEFAULT == null ? serviceName != null : !SERVICE_NAME_EDEFAULT
-						.equals(serviceName);
+				return SERVICE_NAME_EDEFAULT == null ? serviceName != null
+						: !SERVICE_NAME_EDEFAULT.equals(serviceName);
 			case AstPackage.ERROR_CALL__TYPE:
 				return type != TYPE_EDEFAULT;
 			case AstPackage.ERROR_CALL__ARGUMENTS:
@@ -370,7 +378,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (serviceName: ");
 		result.append(serviceName);
 		result.append(", type: ");

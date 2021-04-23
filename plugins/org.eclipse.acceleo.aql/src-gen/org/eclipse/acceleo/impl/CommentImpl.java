@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,33 +14,29 @@ package org.eclipse.acceleo.impl;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Comment</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Comment</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.CommentImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.CommentImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class CommentImpl extends ModuleElementImpl implements Comment {
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -48,8 +44,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	protected CommentBody body;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected CommentImpl() {
@@ -57,8 +53,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -67,8 +63,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -77,8 +73,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(CommentBody newBody, NotificationChain msgs) {
@@ -96,8 +92,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -119,8 +115,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -133,8 +129,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -147,8 +143,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -162,8 +158,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -177,8 +173,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -190,4 +186,4 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 		return super.eIsSet(featureID);
 	}
 
-} //CommentImpl
+} // CommentImpl

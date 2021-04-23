@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,39 +17,38 @@ import org.eclipse.acceleo.ErrorProtectedArea;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Statement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error Protected Area</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Protected Area</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getId <em>Id</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEnd <em>Missing End</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getId <em>Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingOpenParenthesis <em>Missing Open
+ * Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingCloseParenthesis <em>Missing Close
+ * Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEndHeader <em>Missing End
+ * Header</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container implements ErrorProtectedArea {
 	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getId() <em>Id</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getId()
 	 * @generated
 	 * @ordered
@@ -57,9 +56,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected Expression id;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -67,9 +66,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected Block body;
 
 	/**
-	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -77,9 +76,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected static final int MISSING_OPEN_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -87,9 +86,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -97,9 +96,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected static final int MISSING_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -107,9 +106,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -117,9 +116,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -127,9 +126,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -137,9 +136,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -147,8 +146,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ErrorProtectedAreaImpl() {
@@ -156,8 +155,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -166,8 +165,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -176,8 +175,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetId(Expression newId, NotificationChain msgs) {
@@ -195,8 +194,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -218,8 +217,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -228,8 +227,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -247,8 +246,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -270,8 +269,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -280,8 +279,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -295,8 +294,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -305,8 +304,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -320,8 +319,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -330,8 +329,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -345,8 +344,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -355,8 +354,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -369,8 +368,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -385,8 +384,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -409,8 +408,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -439,8 +438,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -469,8 +468,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -493,8 +492,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -519,8 +518,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -545,8 +544,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -567,4 +566,4 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 		return result.toString();
 	}
 
-} //ErrorProtectedAreaImpl
+} // ErrorProtectedAreaImpl

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,32 +13,28 @@ package org.eclipse.acceleo.impl;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.ModuleReference;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Module Reference</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Module Reference</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleReferenceImpl#getQualifiedName <em>Qualified Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleReferenceImpl#getQualifiedName <em>Qualified Name</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements ModuleReference {
 	/**
-	 * The default value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getQualifiedName()
 	 * @generated
 	 * @ordered
@@ -46,9 +42,9 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	protected static final String QUALIFIED_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getQualifiedName()
 	 * @generated
 	 * @ordered
@@ -56,8 +52,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	protected String qualifiedName = QUALIFIED_NAME_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ModuleReferenceImpl() {
@@ -65,8 +61,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -75,8 +71,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -85,8 +81,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -99,8 +95,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -113,8 +109,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -128,8 +124,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -143,8 +139,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -158,8 +154,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -174,4 +170,4 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 		return result.toString();
 	}
 
-} //ModuleReferenceImpl
+} // ModuleReferenceImpl

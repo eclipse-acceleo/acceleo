@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,24 +33,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getType <em>Type</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getTypeAql <em>Type Aql</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getInitExpression <em>Init Expression</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingName <em>Missing Name</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingColon <em>Missing Colon</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingType <em>Missing Type</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbole <em>Missing Affectation Symbole</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbolePosition <em>Missing Affectation Symbole Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getTypeAql <em>Type Aql</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getInitExpression <em>Init Expression</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingName <em>Missing Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingColon <em>Missing Colon</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingType <em>Missing Type</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbole <em>Missing Affectation
+ * Symbole</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbolePosition <em>Missing
+ * Affectation Symbole Position</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements ErrorBinding {
 	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -58,9 +60,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected static final AstResult TYPE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -78,9 +80,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected org.eclipse.acceleo.query.ast.Expression typeAql;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -88,9 +90,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -100,6 +102,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	/**
 	 * The cached value of the '{@link #getInitExpression() <em>Init Expression</em>}' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getInitExpression()
 	 * @generated
 	 * @ordered
@@ -167,8 +170,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected int missingType = MISSING_TYPE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingAffectationSymbole() <em>Missing Affectation Symbole</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingAffectationSymbole() <em>Missing Affectation Symbole</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingAffectationSymbole()
 	 * @generated
 	 * @ordered
@@ -176,8 +180,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected static final String MISSING_AFFECTATION_SYMBOLE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getMissingAffectationSymbole() <em>Missing Affectation Symbole</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingAffectationSymbole() <em>Missing Affectation Symbole</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingAffectationSymbole()
 	 * @generated
 	 * @ordered
@@ -185,8 +190,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected String missingAffectationSymbole = MISSING_AFFECTATION_SYMBOLE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation Symbole Position</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation
+	 * Symbole Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingAffectationSymbolePosition()
 	 * @generated
 	 * @ordered
@@ -194,8 +200,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected static final int MISSING_AFFECTATION_SYMBOLE_POSITION_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation Symbole Position</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation Symbole
+	 * Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingAffectationSymbolePosition()
 	 * @generated
 	 * @ordered
@@ -204,6 +211,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ErrorBindingImpl() {
@@ -212,6 +220,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -221,6 +230,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -230,6 +240,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -243,6 +254,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -252,6 +264,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql,
@@ -271,6 +284,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -293,6 +307,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -302,6 +317,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -315,6 +331,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -324,6 +341,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetInitExpression(Expression newInitExpression, NotificationChain msgs) {
@@ -342,6 +360,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -364,6 +383,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -373,6 +393,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -386,6 +407,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -395,6 +417,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -408,6 +431,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -417,6 +441,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -430,6 +455,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -439,6 +465,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -453,6 +480,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -462,6 +490,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -476,6 +505,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -491,6 +521,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -520,6 +551,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -558,6 +590,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -596,6 +629,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -626,6 +660,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -667,6 +702,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -708,6 +744,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

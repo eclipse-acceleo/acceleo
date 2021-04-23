@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -88,8 +88,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					final IQualifiedNameResolver resolver = environment.getQueryEnvironment()
 							.getLookupEngine().getResolver();
 					resolver.clearLoaders();
-					resolver.addLoader(new ModuleLoader(new AcceleoParser(environment.getQueryEnvironment()),
-							evaluator));
+					resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 					resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 					AcceleoUtil.generate(evaluator, environment, module, model);
@@ -240,7 +239,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
 		}
-		resolver.addLoader(new ModuleLoader(new AcceleoParser(environment.getQueryEnvironment()), evaluator));
+		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 		try {
@@ -324,8 +323,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final IQualifiedNameResolver resolver = environment.getQueryEnvironment().getLookupEngine()
 				.getResolver();
 		resolver.clearLoaders();
-		resolver.addLoader(new ModuleLoader(new AcceleoParser(environment.getQueryEnvironment()),
-				noDebugEvaluator));
+		resolver.addLoader(new ModuleLoader(new AcceleoParser(), noDebugEvaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 		AcceleoUtil.generate(noDebugEvaluator, env, module, modelResource);

@@ -83,7 +83,6 @@ import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
@@ -396,11 +395,6 @@ public class AcceleoParser {
 	public static final int INDENTATION = 2;
 
 	/**
-	 * The {@link IReadOnlyQueryEnvironment}.
-	 */
-	private final IReadOnlyQueryEnvironment queryEnvironment;
-
-	/**
 	 * The {@link Positions}.
 	 */
 	private Positions positions;
@@ -429,16 +423,6 @@ public class AcceleoParser {
 	 * The {@link List} of {@link Error}.
 	 */
 	private List<Error> errors;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IReadOnlyQueryEnvironment}
-	 */
-	public AcceleoParser(IReadOnlyQueryEnvironment queryEnvironment) {
-		this.queryEnvironment = queryEnvironment;
-	}
 
 	/**
 	 * Parses the given {@link InputStream}.
@@ -2290,7 +2274,7 @@ public class AcceleoParser {
 		final AstResult result;
 
 		if (expression != null && expression.length() > 0) {
-			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+			AstBuilderListener astBuilder = new AstBuilderListener();
 			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
 			QueryLexer lexer = new QueryLexer(input);
 			lexer.setTokenFactory(new CommonTokenFactory(true));
@@ -2339,7 +2323,7 @@ public class AcceleoParser {
 		final AstResult result;
 
 		if (expression != null && expression.length() > 0) {
-			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+			AstBuilderListener astBuilder = new AstBuilderListener();
 			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
 			QueryLexer lexer = new QueryLexer(input);
 			lexer.setTokenFactory(new CommonTokenFactory(true));

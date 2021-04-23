@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2020 Obeo. 
+ *  Copyright (c) 2016, 2021 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -28,11 +28,6 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.migration.IModuleResolver;
 import org.eclipse.acceleo.aql.migration.ModuleMigrator;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
-import org.eclipse.acceleo.aql.parser.AcceleoParser;
-import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
-import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
@@ -125,14 +120,6 @@ public abstract class AbstractMigrationTestSuite {
 			stream.close();
 			assertEquals(expectedMtl, moduleContent);
 		}
-	}
-
-	protected AcceleoParser createParser() {
-		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
-				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
-		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		AcceleoParser parser = new AcceleoParser(queryEnvironment);
-		return parser;
 	}
 
 	/**

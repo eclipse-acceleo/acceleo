@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,35 +15,31 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ProtectedArea;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Protected Area</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Protected Area</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#getId <em>Id</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#getId <em>Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements ProtectedArea {
 	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getId() <em>Id</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getId()
 	 * @generated
 	 * @ordered
@@ -51,9 +47,9 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	protected Expression id;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -61,8 +57,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	protected Block body;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ProtectedAreaImpl() {
@@ -70,8 +66,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -80,8 +76,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -90,8 +86,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetId(Expression newId, NotificationChain msgs) {
@@ -109,8 +105,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,8 +128,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -142,8 +138,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -161,8 +157,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -184,8 +180,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -200,8 +196,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -216,8 +212,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -234,8 +230,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -252,8 +248,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -267,4 +263,4 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 		return super.eIsSet(featureID);
 	}
 
-} //ProtectedAreaImpl
+} // ProtectedAreaImpl

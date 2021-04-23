@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,48 +21,42 @@ import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
-
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Module</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Module</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getDocumentation <em>Documentation</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#isDeprecated <em>Deprecated</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getMetamodels <em>Metamodels</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getExtends <em>Extends</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getImports <em>Imports</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getModuleElements <em>Module Elements</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getStartHeaderPosition <em>Start Header Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getAst <em>Ast</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getDocumentation <em>Documentation</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#isDeprecated <em>Deprecated</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getMetamodels <em>Metamodels</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getExtends <em>Extends</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getImports <em>Imports</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getModuleElements <em>Module Elements</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getStartHeaderPosition <em>Start Header Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getAst <em>Ast</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.Module {
 	/**
-	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getDocumentation()
 	 * @generated
 	 * @ordered
@@ -70,9 +64,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected Documentation documentation;
 
 	/**
-	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -80,9 +74,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected static final boolean DEPRECATED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -90,9 +84,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected boolean deprecated = DEPRECATED_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getMetamodels() <em>Metamodels</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMetamodels() <em>Metamodels</em>}' reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMetamodels()
 	 * @generated
 	 * @ordered
@@ -100,9 +94,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected EList<Metamodel> metamodels;
 
 	/**
-	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getExtends()
 	 * @generated
 	 * @ordered
@@ -110,9 +104,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected ModuleReference extends_;
 
 	/**
-	 * The cached value of the '{@link #getImports() <em>Imports</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getImports() <em>Imports</em>}' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getImports()
 	 * @generated
 	 * @ordered
@@ -120,9 +114,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected EList<Import> imports;
 
 	/**
-	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference
+	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getModuleElements()
 	 * @generated
 	 * @ordered
@@ -131,8 +125,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 
 	/**
 	 * The default value of the '{@link #getStartHeaderPosition() <em>Start Header Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getStartHeaderPosition()
 	 * @generated
 	 * @ordered
@@ -141,8 +135,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 
 	/**
 	 * The cached value of the '{@link #getStartHeaderPosition() <em>Start Header Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getStartHeaderPosition()
 	 * @generated
 	 * @ordered
@@ -150,9 +144,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected int startHeaderPosition = START_HEADER_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getEndHeaderPosition() <em>End Header Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getEndHeaderPosition() <em>End Header Position</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getEndHeaderPosition()
 	 * @generated
 	 * @ordered
@@ -160,9 +154,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected static final int END_HEADER_POSITION_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getEndHeaderPosition() <em>End Header Position</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getEndHeaderPosition() <em>End Header Position</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getEndHeaderPosition()
 	 * @generated
 	 * @ordered
@@ -170,9 +164,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected int endHeaderPosition = END_HEADER_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getAst() <em>Ast</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getAst() <em>Ast</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getAst()
 	 * @generated
 	 * @ordered
@@ -180,9 +174,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected static final AcceleoAstResult AST_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getAst() <em>Ast</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getAst() <em>Ast</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getAst()
 	 * @generated
 	 * @ordered
@@ -190,8 +184,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	protected AcceleoAstResult ast = AST_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ModuleImpl() {
@@ -199,8 +193,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -209,8 +203,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -228,8 +222,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Documentation basicGetDocumentation() {
@@ -237,8 +231,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
@@ -256,8 +250,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -279,8 +273,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -289,8 +283,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -303,8 +297,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -317,8 +311,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -327,8 +321,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetExtends(ModuleReference newExtends, NotificationChain msgs) {
@@ -346,8 +340,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -369,8 +363,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -382,8 +376,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -396,8 +390,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -406,8 +400,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -421,8 +415,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -431,8 +425,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -445,8 +439,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -455,8 +449,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -468,8 +462,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -485,8 +479,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -505,8 +499,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -537,8 +531,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -580,8 +574,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -619,8 +613,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -649,8 +643,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -675,8 +669,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -701,8 +695,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -723,4 +717,4 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 		return result.toString();
 	}
 
-} //ModuleImpl
+} // ModuleImpl

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -16,12 +16,12 @@ package org.eclipse.acceleo.query.ast;
  * end-user-doc -->
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.Conditional#getPredicate <em>Predicate</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.Conditional#getTrueBranch <em>True Branch</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.Conditional#getFalseBranch <em>False Branch</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.query.ast.AstPackage#getConditional()
  * @model
@@ -72,8 +72,8 @@ public interface Conditional extends Expression {
 	Expression getTrueBranch();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.Conditional#getTrueBranch
-	 * <em>True Branch</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.Conditional#getTrueBranch <em>True
+	 * Branch</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>True Branch</em>' containment reference.
@@ -99,8 +99,8 @@ public interface Conditional extends Expression {
 	Expression getFalseBranch();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.Conditional#getFalseBranch
-	 * <em>False Branch</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.Conditional#getFalseBranch <em>False
+	 * Branch</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>False Branch</em>' containment reference.

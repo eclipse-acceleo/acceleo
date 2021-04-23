@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -16,8 +16,10 @@ import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
@@ -149,6 +151,16 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseTypeLiteral(TypeLiteral object) {
 			return createTypeLiteralAdapter();
+		}
+
+		@Override
+		public Adapter caseEClassifierTypeLiteral(EClassifierTypeLiteral object) {
+			return createEClassifierTypeLiteralAdapter();
+		}
+
+		@Override
+		public Adapter caseClassTypeLiteral(ClassTypeLiteral object) {
+			return createClassTypeLiteralAdapter();
 		}
 
 		@Override
@@ -300,10 +312,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.VarRef
-	 * <em>Var Ref</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.VarRef <em>Var
+	 * Ref</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.VarRef
@@ -314,9 +326,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Call <em>Call</em>}
-	 * '. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Call
+	 * <em>Call</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.Call
@@ -355,10 +368,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.RealLiteral
-	 * <em>Real Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
-	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.RealLiteral <em>Real
+	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.RealLiteral
@@ -397,10 +410,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.EnumLiteral
-	 * <em>Enum Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
-	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.EnumLiteral <em>Enum
+	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.EnumLiteral
@@ -411,16 +424,44 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.TypeLiteral
-	 * <em>Type Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
-	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.TypeLiteral <em>Type
+	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.TypeLiteral
 	 * @generated
 	 */
 	public Adapter createTypeLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.eclipse.acceleo.query.ast.EClassifierTypeLiteral <em>EClassifier Type Literal</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.EClassifierTypeLiteral
+	 * @generated
+	 */
+	public Adapter createEClassifierTypeLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ClassTypeLiteral
+	 * <em>Class Type Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.ClassTypeLiteral
+	 * @generated
+	 */
+	public Adapter createClassTypeLiteralAdapter() {
 		return null;
 	}
 
@@ -467,10 +508,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.NullLiteral
-	 * <em>Null Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
-	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.NullLiteral <em>Null
+	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.NullLiteral
@@ -495,10 +536,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '
-	 * {@link org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral <em>Sequence In Extension Literal</em>}
-	 * '. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral <em>Sequence In Extension
+	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral
@@ -524,9 +566,9 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Error <em>Error</em>
-	 * }'. <!--
-	 * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
-	 * useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * }'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+	 * -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.Error
@@ -565,11 +607,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '
-	 * {@link org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral
-	 * <em>Error EClassifier Type Literal</em>}'. <!-- begin-user-doc --> This default implementation returns
-	 * null so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all
-	 * the cases anyway. <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class
+	 * '{@link org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral <em>Error EClassifier Type
+	 * Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral
@@ -594,10 +636,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ErrorCall
-	 * <em>Error Call</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ErrorCall <em>Error
+	 * Call</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.ErrorCall
@@ -608,8 +650,8 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '
-	 * {@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration <em>Error Variable Declaration</em>}'.
+	 * Creates a new adapter for an object of class
+	 * '{@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration <em>Error Variable Declaration</em>}'.
 	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 

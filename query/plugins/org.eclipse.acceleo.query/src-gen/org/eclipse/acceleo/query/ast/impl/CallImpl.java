@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,12 +29,12 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Call</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.CallImpl#getServiceName <em>Service Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.CallImpl#getType <em>Type</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.CallImpl#getArguments <em>Arguments</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -113,6 +113,7 @@ public class CallImpl extends ExpressionImpl implements Call {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getServiceName() {
 		return serviceName;
 	}
@@ -122,6 +123,7 @@ public class CallImpl extends ExpressionImpl implements Call {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setServiceName(String newServiceName) {
 		String oldServiceName = serviceName;
 		serviceName = newServiceName;
@@ -135,6 +137,7 @@ public class CallImpl extends ExpressionImpl implements Call {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public CallType getType() {
 		return type;
 	}
@@ -144,6 +147,7 @@ public class CallImpl extends ExpressionImpl implements Call {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setType(CallType newType) {
 		CallType oldType = type;
 		type = newType == null ? TYPE_EDEFAULT : newType;
@@ -156,6 +160,7 @@ public class CallImpl extends ExpressionImpl implements Call {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EList<Expression> getArguments() {
 		if (arguments == null) {
 			arguments = new EObjectContainmentEList<Expression>(Expression.class, this,
@@ -249,8 +254,8 @@ public class CallImpl extends ExpressionImpl implements Call {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AstPackage.CALL__SERVICE_NAME:
-				return SERVICE_NAME_EDEFAULT == null ? serviceName != null : !SERVICE_NAME_EDEFAULT
-						.equals(serviceName);
+				return SERVICE_NAME_EDEFAULT == null ? serviceName != null
+						: !SERVICE_NAME_EDEFAULT.equals(serviceName);
 			case AstPackage.CALL__TYPE:
 				return type != TYPE_EDEFAULT;
 			case AstPackage.CALL__ARGUMENTS:
@@ -269,7 +274,7 @@ public class CallImpl extends ExpressionImpl implements Call {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (serviceName: ");
 		result.append(serviceName);
 		result.append(", type: ");

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -27,13 +27,13 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getType <em>Type</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getExpression <em>Expression
- * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getExpression
+ * <em>Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -102,6 +102,7 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -111,12 +112,13 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AstPackage.ERROR_VARIABLE_DECLARATION__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_VARIABLE_DECLARATION__NAME,
+					oldName, name));
 	}
 
 	/**
@@ -124,6 +126,7 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 * 
 	 * @generated
 	 */
+	@Override
 	public TypeLiteral getType() {
 		return type;
 	}
@@ -152,6 +155,7 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setType(TypeLiteral newType) {
 		if (newType != type) {
 			NotificationChain msgs = null;
@@ -165,8 +169,8 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AstPackage.ERROR_VARIABLE_DECLARATION__TYPE, newType, newType));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_VARIABLE_DECLARATION__TYPE,
+					newType, newType));
 	}
 
 	/**
@@ -174,6 +178,7 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getExpression() {
 		if (expression != null && expression.eIsProxy()) {
 			InternalEObject oldExpression = (InternalEObject)expression;
@@ -201,6 +206,7 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setExpression(Expression newExpression) {
 		Expression oldExpression = expression;
 		expression = newExpression;
@@ -357,7 +363,7 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');

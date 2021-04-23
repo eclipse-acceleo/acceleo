@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -142,11 +142,11 @@ class QueryAstSerializer extends AstSwitch<Void> {
 
 	@Override
 	public Void caseEnumLiteral(EnumLiteral enumLiteral) {
-		builder.append(enumLiteral.getLiteral().getEEnum().getEPackage().getName());
+		builder.append(enumLiteral.getEPackageName());
 		builder.append("::");
-		builder.append(enumLiteral.getLiteral().getEEnum().getName());
+		builder.append(enumLiteral.getEEnumName());
 		builder.append("::");
-		builder.append(enumLiteral.getLiteral().getName());
+		builder.append(enumLiteral.getEEnumLiteralName());
 		return null;
 	}
 

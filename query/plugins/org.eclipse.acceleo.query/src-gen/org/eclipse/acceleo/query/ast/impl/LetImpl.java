@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -30,11 +30,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Let</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.LetImpl#getBindings <em>Bindings</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.LetImpl#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -83,6 +83,7 @@ public class LetImpl extends ExpressionImpl implements Let {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EList<Binding> getBindings() {
 		if (bindings == null) {
 			bindings = new EObjectContainmentEList<Binding>(Binding.class, this, AstPackage.LET__BINDINGS);
@@ -95,6 +96,7 @@ public class LetImpl extends ExpressionImpl implements Let {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getBody() {
 		return body;
 	}
@@ -123,6 +125,7 @@ public class LetImpl extends ExpressionImpl implements Let {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setBody(Expression newBody) {
 		if (newBody != body) {
 			NotificationChain msgs = null;

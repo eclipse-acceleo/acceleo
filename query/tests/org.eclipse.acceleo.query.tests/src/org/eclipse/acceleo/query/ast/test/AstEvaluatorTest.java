@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -159,8 +159,8 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testTypeLiteral() {
 		Map<String, Object> varDefinitions = new HashMap<String, Object>();
-		assertOKResultEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions, typeLiteral(
-				EcorePackage.Literals.ECLASS)));
+		assertOKResultEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions,
+				eClassifierTypeLiteral(EcorePackage.eNAME, EcorePackage.Literals.ECLASS.getName())));
 		assertOKResultEquals(Integer.class, evaluator.eval(varDefinitions, typeLiteral(Integer.class)));
 	}
 
@@ -362,12 +362,15 @@ public class AstEvaluatorTest extends AstBuilder {
 	}
 
 	@Test
-	public void testTypeSetLiteral() {
+	public void testeClassifierTypeLiteral() {
 
 		final List<TypeLiteral> types = new ArrayList<TypeLiteral>();
-		types.add((TypeLiteral)typeLiteral(EcorePackage.eINSTANCE.getEClass()));
-		types.add((TypeLiteral)typeLiteral(EcorePackage.eINSTANCE.getEPackage()));
-		types.add((TypeLiteral)typeLiteral(EcorePackage.eINSTANCE.getEAttribute()));
+		types.add((TypeLiteral)eClassifierTypeLiteral(EcorePackage.eNAME, EcorePackage.eINSTANCE.getEClass()
+				.getName()));
+		types.add((TypeLiteral)eClassifierTypeLiteral(EcorePackage.eNAME, EcorePackage.eINSTANCE.getEPackage()
+				.getName()));
+		types.add((TypeLiteral)eClassifierTypeLiteral(EcorePackage.eNAME, EcorePackage.eINSTANCE
+				.getEAttribute().getName()));
 		Map<String, Object> varDefinitions = new HashMap<String, Object>();
 		final EvaluationResult result = evaluator.eval(varDefinitions, typeSetLiteral(types));
 		assertTrue(result.getResult() instanceof Set);

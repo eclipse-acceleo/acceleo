@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,10 @@ import org.eclipse.emf.common.util.EList;
  * end-user-doc -->
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral#getValues <em>Values</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.acceleo.query.ast.AstPackage#getSequenceInExtensionLiteral()
  * @model

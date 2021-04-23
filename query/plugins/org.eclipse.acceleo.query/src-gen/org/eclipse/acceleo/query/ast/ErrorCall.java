@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,11 @@ package org.eclipse.acceleo.query.ast;
  * end-user-doc -->
  * <p>
  * The following features are supported:
- * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis <em>Missing End Parenthesis
- * </em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ * <li>{@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis <em>Missing End
+ * Parenthesis</em>}</li>
+ * </ul>
  *
  * @see org.eclipse.acceleo.query.ast.AstPackage#getErrorCall()
  * @model

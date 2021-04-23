@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,7 +13,6 @@ package org.eclipse.acceleo.impl;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Import;
-
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -23,23 +22,22 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Import</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Import</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ImportImpl#getModule <em>Module</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ImportImpl#getModule <em>Module</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	/**
-	 * The cached value of the '{@link #getModule() <em>Module</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getModule() <em>Module</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getModule()
 	 * @generated
 	 * @ordered
@@ -47,8 +45,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	protected ModuleReference module;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ImportImpl() {
@@ -56,8 +54,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -66,8 +64,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -76,8 +74,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetModule(ModuleReference newModule, NotificationChain msgs) {
@@ -95,8 +93,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,8 +116,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,8 +130,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -146,8 +144,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -161,8 +159,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -176,8 +174,8 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -189,4 +187,4 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 		return super.eIsSet(featureID);
 	}
 
-} //ImportImpl
+} // ImportImpl

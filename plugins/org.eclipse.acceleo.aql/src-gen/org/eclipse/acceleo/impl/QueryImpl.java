@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -53,9 +53,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class QueryImpl extends ModuleElementImpl implements Query {
 	/**
-	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getDocumentation()
 	 * @generated
 	 * @ordered
@@ -63,9 +63,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected Documentation documentation;
 
 	/**
-	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -73,9 +73,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected static final boolean DEPRECATED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -83,9 +83,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected boolean deprecated = DEPRECATED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -93,9 +93,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -103,9 +103,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -113,9 +113,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected static final AstResult TYPE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
+	 * 
 	 * @see #getType()
 	 * @generated
 	 * @ordered
@@ -143,9 +143,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected EList<Variable> parameters;
 
 	/**
-	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-	 * <!-- begin-user-doc
+	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVisibility()
 	 * @generated
 	 * @ordered
@@ -153,9 +153,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PRIVATE;
 
 	/**
-	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-	 * <!-- begin-user-doc
+	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVisibility()
 	 * @generated
 	 * @ordered
@@ -163,9 +163,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -174,6 +174,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected QueryImpl() {
@@ -182,6 +183,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -191,6 +193,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -208,8 +211,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Documentation basicGetDocumentation() {
@@ -218,6 +221,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
@@ -236,6 +240,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -258,6 +263,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -267,6 +273,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -280,6 +287,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -289,6 +297,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -301,6 +310,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -310,6 +320,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -322,6 +333,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -331,6 +343,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetTypeAql(org.eclipse.acceleo.query.ast.Expression newTypeAql,
@@ -350,6 +363,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -372,6 +386,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -385,6 +400,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -394,6 +410,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -407,6 +424,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -416,6 +434,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Expression newBody, NotificationChain msgs) {
@@ -434,6 +453,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -456,6 +476,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -472,6 +493,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -491,6 +513,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -520,6 +543,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -557,6 +581,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -592,6 +617,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -619,6 +645,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -656,6 +683,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -693,6 +721,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

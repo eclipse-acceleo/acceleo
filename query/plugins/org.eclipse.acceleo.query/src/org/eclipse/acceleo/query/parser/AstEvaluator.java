@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,9 @@ import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Implies;
@@ -47,6 +49,8 @@ import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnumLiteral;
 
 /**
  * Evaluates the asts.
@@ -180,14 +184,27 @@ public class AstEvaluator extends AstSwitch<Object> {
 		return object.getValue();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseTypeLiteral(org.eclipse.acceleo.query.ast.TypeLiteral)
-	 */
 	@Override
-	public Object caseTypeLiteral(TypeLiteral object) {
+	public Object caseClassTypeLiteral(ClassTypeLiteral object) {
 		return object.getValue();
+	}
+
+	@Override
+	public Object caseEClassifierTypeLiteral(EClassifierTypeLiteral object) {
+		final Object result;
+
+		final EClassifier eClassifier = services.getEClassifier(object);
+		if (eClassifier != null) {
+			result = eClassifier;
+		} else {
+			final Nothing nothing = new Nothing("Invalid classifier.");
+			Diagnostic diag = new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0, nothing
+					.getMessage(), new Object[] {object });
+			((BasicDiagnostic)diagnostic).add(diag);
+			result = nothing;
+		}
+
+		return result;
 	}
 
 	/**
@@ -328,8 +345,9 @@ public class AstEvaluator extends AstSwitch<Object> {
 	public Object caseEnumLiteral(EnumLiteral object) {
 		final Object result;
 
-		if (object.getLiteral() != null) {
-			result = object.getLiteral().getInstance();
+		final EEnumLiteral literal = services.getEEnumLiteral(object);
+		if (literal != null) {
+			result = literal.getInstance();
 		} else {
 			final Nothing nothing = new Nothing("Invalid enum literal.");
 			Diagnostic diag = new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0, nothing

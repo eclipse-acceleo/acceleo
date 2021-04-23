@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,31 +13,28 @@ package org.eclipse.acceleo.impl;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.NewLineStatement;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>New Line Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>New Line Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.NewLineStatementImpl#isIndentationNeeded <em>Indentation Needed</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.NewLineStatementImpl#isIndentationNeeded <em>Indentation
+ * Needed</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class NewLineStatementImpl extends TextStatementImpl implements NewLineStatement {
 	/**
-	 * The default value of the '{@link #isIndentationNeeded() <em>Indentation Needed</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isIndentationNeeded() <em>Indentation Needed</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isIndentationNeeded()
 	 * @generated
 	 * @ordered
@@ -45,9 +42,9 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	protected static final boolean INDENTATION_NEEDED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isIndentationNeeded() <em>Indentation Needed</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isIndentationNeeded() <em>Indentation Needed</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isIndentationNeeded()
 	 * @generated
 	 * @ordered
@@ -55,8 +52,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	protected boolean indentationNeeded = INDENTATION_NEEDED_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected NewLineStatementImpl() {
@@ -64,8 +61,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -74,8 +71,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -84,8 +81,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -99,8 +96,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -113,8 +110,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -128,8 +125,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -143,8 +140,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -157,8 +154,8 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -173,4 +170,4 @@ public class NewLineStatementImpl extends TextStatementImpl implements NewLineSt
 		return result.toString();
 	}
 
-} //NewLineStatementImpl
+} // NewLineStatementImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.location.aql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -20,11 +21,12 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Literal;
-import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
@@ -39,6 +41,8 @@ import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnumLiteral;
 
 /**
  * An {@link AstSwitch AQL Switch} to provide, for an element from an AQL AST, the {@link List} of
@@ -143,13 +147,28 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 	}
 
 	@Override
-	public List<AbstractLocationLink<?, ?>> caseTypeLiteral(TypeLiteral typeLiteral) {
-		return Collections.singletonList(new AqlLocationLinkToAny(typeLiteral, typeLiteral.getValue()));
+	public List<AbstractLocationLink<?, ?>> caseClassTypeLiteral(ClassTypeLiteral classTypeLiteral) {
+		return Collections.singletonList(new AqlLocationLinkToAny(classTypeLiteral, classTypeLiteral
+				.getValue()));
+	}
+
+	@Override
+	public List<AbstractLocationLink<?, ?>> caseEClassifierTypeLiteral(
+			EClassifierTypeLiteral eClassifierTypeLiteral) {
+		final Collection<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(
+				eClassifierTypeLiteral.getEPackageName(), eClassifierTypeLiteral.getEClassifierName());
+
+		return eClassifiers.stream().map(eClassifier -> new AqlLocationLinkToAny(eClassifierTypeLiteral,
+				eClassifier)).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<AbstractLocationLink<?, ?>> caseEnumLiteral(EnumLiteral enumLiteral) {
-		return Collections.singletonList(new AqlLocationLinkToAny(enumLiteral, enumLiteral.getLiteral()));
+		final Collection<EEnumLiteral> eEnumLiterals = queryEnvironment.getEPackageProvider().getEnumLiterals(
+				enumLiteral.getEPackageName(), enumLiteral.getEEnumName(), enumLiteral.getEEnumLiteralName());
+
+		return eEnumLiterals.stream().map(eEnumLiteral -> new AqlLocationLinkToAny(enumLiteral, eEnumLiteral))
+				.collect(Collectors.toList());
 	}
 
 	@Override

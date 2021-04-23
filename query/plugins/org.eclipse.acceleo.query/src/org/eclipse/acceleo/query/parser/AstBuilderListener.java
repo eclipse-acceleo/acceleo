@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@ package org.eclipse.acceleo.query.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -112,8 +110,6 @@ import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -329,6 +325,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	public static final Set<String> OPERATOR_SERVICE_NAMES = initOperatorServiceNames();
 
 	/**
+	 * Invalid type literal.
+	 */
+	public static final String INVALID_TYPE_LITERAL = "invalid type literal %s";
+
+	/**
 	 * This should not happen.
 	 */
 	private static final String THIS_SHOULDN_T_HAPPEN = "This shouldn't happen.";
@@ -337,21 +338,6 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * Invalid enum literal message.
 	 */
 	private static final String INVALID_ENUM_LITERAL = "invalid enum literal: %s";
-
-	/**
-	 * Invalid type literal.
-	 */
-	private static final String INVALID_TYPE_LITERAL = "invalid type literal %s";
-
-	/**
-	 * Ambiguous {@link EEnumLiteral} message.
-	 */
-	private static final String AMBIGUOUS_ENUM_LITERAL = "several enumliterals are matching the literal name: %s, eenum : %s and package name : %s";
-
-	/**
-	 * Ambiguous {@link EClassifier} message.
-	 */
-	private static final String AMBIGUOUS_TYPE_LITERAL = "several types are matching the EClassifier name: %s , package name : %s";
 
 	/**
 	 * Number of children in {@link ConditionalContext}.
@@ -425,20 +411,20 @@ public class AstBuilderListener extends QueryBaseListener {
 			if (e.getCtx().getParent().getParent() instanceof VariableDefinitionContext) {
 				errorRule = QueryParser.RULE_expression;
 				final String variableName = e.getCtx().getParent().getChild(0).getText();
-				final ErrorTypeLiteral errorTypeLiteral;
+				final ErrorEClassifierTypeLiteral errorEClassifierTypeLiteral;
 				if (ctx.getChildCount() > 0) {
-					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {ctx.getChild(
-							0).getText(), });
+					errorEClassifierTypeLiteral = builder.errorEClassifierTypeLiteral(false, ctx.getChild(0)
+							.getText());
 				} else {
-					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {});
+					errorEClassifierTypeLiteral = builder.errorEClassifierTypeLiteral(false, null);
 				}
-				setPositions(errorTypeLiteral, ctx.start, (Token)offendingSymbol);
+				setPositions(errorEClassifierTypeLiteral, ctx.start, (Token)offendingSymbol);
 				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
-						INVALID_TYPE_LITERAL, ctx.getText()), new Object[] {errorTypeLiteral }));
-				errors.add(errorTypeLiteral);
+						INVALID_TYPE_LITERAL, ctx.getText()), new Object[] {errorEClassifierTypeLiteral }));
+				errors.add(errorEClassifierTypeLiteral);
 				final Expression variableExpression = popExpression();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
-						errorTypeLiteral, variableExpression);
+						errorEClassifierTypeLiteral, variableExpression);
 				setPositions(variableDeclaration, ctx.start, (Token)offendingSymbol);
 				push(variableDeclaration);
 				final ErrorExpression errorExpression = builder.errorExpression();
@@ -446,15 +432,15 @@ public class AstBuilderListener extends QueryBaseListener {
 				setPositions(errorExpression, (Token)offendingSymbol, (Token)offendingSymbol);
 			} else {
 				errorRule = QueryParser.RULE_classifierTypeRule;
-				final ErrorTypeLiteral errorTypeLiteral;
+				final ErrorEClassifierTypeLiteral errorEClassifierTypeLiteral;
 				if (ctx.getChildCount() > 0) {
-					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {ctx.getChild(
-							0).getText(), });
+					errorEClassifierTypeLiteral = builder.errorEClassifierTypeLiteral(false, ctx.getChild(0)
+							.getText());
 				} else {
-					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {});
+					errorEClassifierTypeLiteral = builder.errorEClassifierTypeLiteral(false, null);
 				}
-				setPositions(errorTypeLiteral, ctx.start, (Token)offendingSymbol);
-				pushError(errorTypeLiteral, "missing classifier literal");
+				setPositions(errorEClassifierTypeLiteral, ctx.start, (Token)offendingSymbol);
+				pushError(errorEClassifierTypeLiteral, "missing classifier literal");
 			}
 		}
 
@@ -490,7 +476,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			if (e.getCtx().getParent() instanceof VariableDefinitionContext) {
 				errorRule = QueryParser.RULE_expression;
 				final String variableName = e.getCtx().getParent().getChild(0).getText();
-				final ErrorTypeLiteral type = builder.errorTypeLiteral(false, new String[] {});
+				final ErrorTypeLiteral type = builder.errorTypeLiteral();
 				setPositions(type, ((TypeLiteralContext)e.getCtx()).start, (Token)offendingSymbol);
 				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
 						INVALID_TYPE_LITERAL, msg), new Object[] {type }));
@@ -506,7 +492,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				setPositions(errorExpression, ((TypeLiteralContext)e.getCtx()).start, (Token)offendingSymbol);
 			} else if (stack.isEmpty() || !(stack.peek() instanceof TypeLiteral)) {
 				errorRule = QueryParser.RULE_typeLiteral;
-				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
+				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral();
 				setPositions(errorTypeLiteral, ((TypeLiteralContext)e.getCtx()).start,
 						(Token)offendingSymbol);
 				pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
@@ -540,10 +526,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				setPositions(errorEnumLiteral, start, end);
 				pushError(errorEnumLiteral, String.format(INVALID_ENUM_LITERAL, msg));
 			} else {
-				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {
-						ePackage, });
-				setPositions(errorTypeLiteral, start, end);
-				pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
+				final ErrorEClassifierTypeLiteral errorEClassifierTypeLiteral = builder
+						.errorEClassifierTypeLiteral(false, ePackage);
+				setPositions(errorEClassifierTypeLiteral, start, end);
+				pushError(errorEClassifierTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
 			}
 		}
 
@@ -791,18 +777,20 @@ public class AstBuilderListener extends QueryBaseListener {
 	private final AstBuilder builder = new AstBuilder();
 
 	/**
-	 * The {@link IReadOnlyQueryEnvironment}.
-	 */
-	private final IReadOnlyQueryEnvironment environment;
-
-	/**
 	 * Creates a new {@link AstBuilderListener}.
 	 * 
 	 * @param environment
 	 *            the package provider
+	 * @deprecated see {@link #AstBuilderListener()}
 	 */
 	public AstBuilderListener(IReadOnlyQueryEnvironment environment) {
-		this.environment = environment;
+		this();
+	}
+
+	/**
+	 * Creates a new {@link AstBuilderListener}.
+	 */
+	public AstBuilderListener() {
 	}
 
 	/**
@@ -1457,32 +1445,12 @@ public class AstBuilderListener extends QueryBaseListener {
 			final String ePackageName = ctx.getChild(0).getText();
 			final String eEnumName = ctx.getChild(2).getText();
 			final String eEnumLiteralName = ctx.getChild(4).getText();
-			final Collection<EEnumLiteral> eEnumLiterals = environment.getEPackageProvider().getEnumLiterals(
-					ePackageName, eEnumName, eEnumLiteralName);
-			if (eEnumLiterals.size() == 0) {
-				List<String> segments = new ArrayList<String>(3);
-				segments.add(ePackageName);
-				segments.add(eEnumName);
-				if (!(ctx.getChild(4) instanceof ErrorNode)) {
-					segments.add(eEnumLiteralName);
-				}
-				toPush = builder.errorEnumLiteral(false, segments.toArray(new String[segments.size()]));
-				if (segments.size() == 3) {
-					pushError((Error)toPush, String.format(INVALID_ENUM_LITERAL,
-							"no literal registered with this name"));
-				} else {
-					pushError((Error)toPush, String.format(INVALID_ENUM_LITERAL, "missing literal name"));
-				}
+			if (ctx.getChild(4) instanceof ErrorNode) {
+				toPush = builder.errorEnumLiteral(false, ePackageName, eEnumName);
+				pushError((Error)toPush, String.format(INVALID_ENUM_LITERAL, "missing literal name"));
 			} else {
-				toPush = builder.enumLiteral(eEnumLiterals.iterator().next());
+				toPush = builder.enumLiteral(ePackageName, eEnumName, eEnumLiteralName);
 				push(toPush);
-				if (eEnumLiterals.size() > 1) {
-					final Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
-					final Integer stopPosition = Integer.valueOf(ctx.stop.getStopIndex() + 1);
-					diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
-							AMBIGUOUS_ENUM_LITERAL, eEnumLiteralName, eEnumName, ePackageName), new Object[] {
-									startPosition, stopPosition, }));
-				}
 			}
 			setPositions(toPush, ctx.start, ctx.stop);
 		}
@@ -1518,34 +1486,13 @@ public class AstBuilderListener extends QueryBaseListener {
 		if (errorRule == NO_ERROR) {
 			final Literal toPush;
 			final String ePackageName = ctx.getChild(0).getText();
-			final String eClassName;
-			Collection<EClassifier> type = Collections.emptySet();
 			if (ctx.getChild(2) == null || ctx.getChild(2) instanceof ErrorNode) {
-				eClassName = null;
-				type = Collections.emptySet();
-			} else {
-				eClassName = ctx.getChild(2).getText();
-				type = environment.getEPackageProvider().getTypes(ePackageName, eClassName);
-			}
-			if (type.size() == 0) {
-				List<String> segments = new ArrayList<String>(2);
-				segments.add(ePackageName);
-				if (eClassName != null) {
-					segments.add(eClassName);
-				}
-				toPush = builder.errorEClassifierTypeLiteral(false, segments.toArray(new String[segments
-						.size()]));
+				toPush = builder.errorEClassifierTypeLiteral(false, ePackageName);
 				pushError((Error)toPush, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
 			} else {
-				toPush = builder.typeLiteral(type);
+				final String eClassName = ctx.getChild(2).getText();
+				toPush = builder.eClassifierTypeLiteral(ePackageName, eClassName);
 				push(toPush);
-				if (type.size() > 1) {
-					final Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
-					final Integer stopPosition = Integer.valueOf(ctx.stop.getStopIndex() + 1);
-					diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
-							AMBIGUOUS_TYPE_LITERAL, eClassName, ePackageName), new Object[] {startPosition,
-									stopPosition, }));
-				}
 			}
 			setPositions(toPush, ctx.start, ctx.stop);
 		}

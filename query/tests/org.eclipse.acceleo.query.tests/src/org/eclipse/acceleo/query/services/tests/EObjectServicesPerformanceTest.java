@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -116,7 +116,7 @@ public class EObjectServicesPerformanceTest {
 	 * @return
 	 */
 	private EvaluationResult eval(EObject root, String expr) {
-		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
+		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine();
 		AstResult query = queryBuilder.build(expr);
 		IQueryEvaluationEngine evaluationEngine = new QueryEvaluationEngine(queryEnvironment);
 		Map<String, Object> variables = new HashMap<String, Object>();

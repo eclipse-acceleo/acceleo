@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +23,12 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -126,22 +128,28 @@ public final class AcceleoUtil {
 		// TODO more than one EClass type ?
 		final String parameterName = main.getParameters().get(0).getName();
 		// TODO use IType ?
-		final EClass parameterType = (EClass)((TypeLiteral)main.getParameters().get(0).getType().getAst())
-				.getValue();
-		final List<EObject> values = new ArrayList<EObject>();
-		for (Resource model : resources) {
-			for (EObject root : model.getContents()) {
-				if (parameterType.isInstance(root)) {
-					values.add(root);
+		// TODO this is really quick and dirty
+		final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)main.getParameters()
+				.get(0).getType().getAst();
+		final Collection<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(
+				eClassifierTypeLiteral.getEPackageName(), eClassifierTypeLiteral.getEClassifierName());
+		if (!eClassifiers.isEmpty()) {
+			final EClass parameterType = (EClass)eClassifiers.iterator().next();
+			final List<EObject> values = new ArrayList<EObject>();
+			for (Resource model : resources) {
+				for (EObject root : model.getContents()) {
+					if (parameterType.isInstance(root)) {
+						values.add(root);
+					}
+					values.addAll(services.eAllContents(root, parameterType));
 				}
-				values.addAll(services.eAllContents(root, parameterType));
 			}
-		}
 
-		final Map<String, Object> variables = new HashMap<String, Object>();
-		for (EObject value : values) {
-			variables.put(parameterName, value);
-			evaluator.generate(module, variables);
+			final Map<String, Object> variables = new HashMap<String, Object>();
+			for (EObject value : values) {
+				variables.put(parameterName, value);
+				evaluator.generate(module, variables);
+			}
 		}
 	}
 

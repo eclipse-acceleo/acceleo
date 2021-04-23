@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -556,7 +556,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 
 			final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 					.getLookupEngine());
-			resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
+			resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 			return acceleoEnvironment;

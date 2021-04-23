@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -84,6 +84,7 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EList<VariableDeclaration> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<VariableDeclaration>(VariableDeclaration.class, this,
@@ -97,6 +98,7 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getExpression() {
 		return expression;
 	}
@@ -125,6 +127,7 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setExpression(Expression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;

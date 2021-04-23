@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -28,14 +28,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.TypeSetLiteralImpl#getTypes <em>Types</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class TypeSetLiteralImpl extends TypeLiteralImpl implements TypeSetLiteral {
+public class TypeSetLiteralImpl extends ClassTypeLiteralImpl implements TypeSetLiteral {
 	/**
 	 * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -70,6 +70,7 @@ public class TypeSetLiteralImpl extends TypeLiteralImpl implements TypeSetLitera
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EList<TypeLiteral> getTypes() {
 		if (types == null) {
 			types = new EObjectContainmentEList<TypeLiteral>(TypeLiteral.class, this,

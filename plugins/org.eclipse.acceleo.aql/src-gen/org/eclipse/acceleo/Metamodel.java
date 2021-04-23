@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,15 +14,13 @@ package org.eclipse.acceleo;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Metamodel</b></em>'.
- * <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Metamodel</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.Metamodel#getReferencedPackage <em>Referenced Package</em>}</li>
+ * <li>{@link org.eclipse.acceleo.Metamodel#getReferencedPackage <em>Referenced Package</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getMetamodel()
@@ -31,13 +29,13 @@ import org.eclipse.emf.ecore.EPackage;
  */
 public interface Metamodel extends ASTNode {
 	/**
-	 * Returns the value of the '<em><b>Referenced Package</b></em>' reference.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Referenced Package</b></em>' reference. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Referenced Package</em>' reference isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Referenced Package</em>' reference isn't clear, there really should be more
+	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Referenced Package</em>' reference.
 	 * @see #setReferencedPackage(EPackage)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getMetamodel_ReferencedPackage()
@@ -47,10 +45,11 @@ public interface Metamodel extends ASTNode {
 	EPackage getReferencedPackage();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.Metamodel#getReferencedPackage <em>Referenced Package</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Referenced Package</em>' reference.
+	 * Sets the value of the '{@link org.eclipse.acceleo.Metamodel#getReferencedPackage <em>Referenced
+	 * Package</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Referenced Package</em>' reference.
 	 * @see #getReferencedPackage()
 	 * @generated
 	 */

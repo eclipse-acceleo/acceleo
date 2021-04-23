@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,40 +17,39 @@ import org.eclipse.acceleo.ErrorIfStatement;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Statement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Error If Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error If Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getCondition <em>Condition</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getThen <em>Then</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getElse <em>Else</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEnd <em>Missing End</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getCondition <em>Condition</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getThen <em>Then</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getElse <em>Else</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingOpenParenthesis <em>Missing Open
+ * Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingCloseParenthesis <em>Missing Close
+ * Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEndHeader <em>Missing End
+ * Header</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implements ErrorIfStatement {
 	/**
-	 * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getCondition()
 	 * @generated
 	 * @ordered
@@ -58,9 +57,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected Expression condition;
 
 	/**
-	 * The cached value of the '{@link #getThen() <em>Then</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getThen() <em>Then</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getThen()
 	 * @generated
 	 * @ordered
@@ -68,9 +67,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected Block then;
 
 	/**
-	 * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getElse()
 	 * @generated
 	 * @ordered
@@ -78,9 +77,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected Block else_;
 
 	/**
-	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -88,9 +87,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected static final int MISSING_OPEN_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
@@ -98,9 +97,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -108,9 +107,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected static final int MISSING_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
@@ -118,9 +117,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -128,9 +127,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
@@ -138,9 +137,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -148,9 +147,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
@@ -158,8 +157,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ErrorIfStatementImpl() {
@@ -167,8 +166,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -177,8 +176,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -187,8 +186,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetCondition(Expression newCondition, NotificationChain msgs) {
@@ -206,8 +205,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -229,8 +228,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -239,8 +238,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetThen(Block newThen, NotificationChain msgs) {
@@ -258,8 +257,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -281,8 +280,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -291,8 +290,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetElse(Block newElse, NotificationChain msgs) {
@@ -310,8 +309,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -333,8 +332,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -343,8 +342,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -358,8 +357,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -368,8 +367,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -383,8 +382,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -393,8 +392,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -408,8 +407,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -418,8 +417,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -432,8 +431,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -450,8 +449,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -476,8 +475,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -509,8 +508,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -542,8 +541,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -568,8 +567,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -596,8 +595,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -624,8 +623,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -646,4 +645,4 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 		return result.toString();
 	}
 
-} //ErrorIfStatementImpl
+} // ErrorIfStatementImpl

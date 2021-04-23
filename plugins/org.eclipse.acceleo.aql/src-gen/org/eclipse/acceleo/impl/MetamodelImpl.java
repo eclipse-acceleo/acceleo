@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,34 +13,30 @@ package org.eclipse.acceleo.impl;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Metamodel;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Metamodel</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Metamodel</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.MetamodelImpl#getReferencedPackage <em>Referenced Package</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.MetamodelImpl#getReferencedPackage <em>Referenced Package</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metamodel {
 	/**
-	 * The cached value of the '{@link #getReferencedPackage() <em>Referenced Package</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getReferencedPackage() <em>Referenced Package</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getReferencedPackage()
 	 * @generated
 	 * @ordered
@@ -48,8 +44,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	protected EPackage referencedPackage;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected MetamodelImpl() {
@@ -57,8 +53,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -67,8 +63,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -87,8 +83,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EPackage basicGetReferencedPackage() {
@@ -96,8 +92,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -110,8 +106,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -126,8 +122,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -141,8 +137,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -156,8 +152,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -169,4 +165,4 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 		return super.eIsSet(featureID);
 	}
 
-} //MetamodelImpl
+} // MetamodelImpl

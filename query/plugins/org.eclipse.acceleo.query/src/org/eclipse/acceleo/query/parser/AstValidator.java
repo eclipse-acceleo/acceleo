@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.parser;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
@@ -24,8 +25,10 @@ import java.util.Set;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
@@ -68,6 +71,7 @@ import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnumLiteral;
 
 /**
  * Validates an {@link org.eclipse.acceleo.query.ast.Expression Expression}.
@@ -95,6 +99,16 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * Should never happen message.
 	 */
 	private static final String SHOULD_NEVER_HAPPEN = "should never happen";
+
+	/**
+	 * Ambiguous {@link EEnumLiteral} message.
+	 */
+	private static final String AMBIGUOUS_ENUM_LITERAL = "several enumliterals are matching the literal name: %s, eenum : %s and package name : %s";
+
+	/**
+	 * Ambiguous {@link EClassifier} message.
+	 */
+	private static final String AMBIGUOUS_TYPE_LITERAL = "several types are matching the EClassifier name: %s , package name : %s";
 
 	/**
 	 * The {@link ValidationResult}.
@@ -265,11 +279,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return startPostion;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseBooleanLiteral(org.eclipse.acceleo.query.ast.BooleanLiteral)
-	 */
 	@Override
 	public Set<IType> caseBooleanLiteral(BooleanLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -279,11 +288,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseCall(org.eclipse.acceleo.query.ast.Call)
-	 */
 	@Override
 	public Set<IType> caseCall(Call call) {
 		final Set<IType> possibleTypes;
@@ -745,11 +749,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseCollectionTypeLiteral(org.eclipse.acceleo.query.ast.CollectionTypeLiteral)
-	 */
 	@Override
 	public Set<IType> caseCollectionTypeLiteral(CollectionTypeLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -767,24 +766,25 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseEnumLiteral(org.eclipse.acceleo.query.ast.EnumLiteral)
-	 */
 	@Override
 	public Set<IType> caseEnumLiteral(EnumLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
-		possibleTypes.add(new EClassifierType(services.getQueryEnvironment(), object.getLiteral()
-				.getEEnum()));
+		final IReadOnlyQueryEnvironment queryEnvironment = services.getQueryEnvironment();
+		final Collection<EEnumLiteral> literals = queryEnvironment.getEPackageProvider().getEnumLiterals(
+				object.getEPackageName(), object.getEEnumName(), object.getEEnumLiteralName());
+
+		if (literals.isEmpty()) {
+			possibleTypes.add(services.nothing("invalid enum literal: no literal registered with this name"));
+		} else if (literals.size() > 1) {
+			possibleTypes.add(services.nothing(AMBIGUOUS_ENUM_LITERAL, object.getEEnumLiteralName(), object
+					.getEEnumName(), object.getEPackageName()));
+		} else {
+			possibleTypes.add(new EClassifierType(queryEnvironment, literals.iterator().next().getEEnum()));
+		}
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseIntegerLiteral(org.eclipse.acceleo.query.ast.IntegerLiteral)
-	 */
 	@Override
 	public Set<IType> caseIntegerLiteral(IntegerLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -794,11 +794,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseLambda(org.eclipse.acceleo.query.ast.Lambda)
-	 */
 	@Override
 	public Set<IType> caseLambda(Lambda object) {
 		final Set<IType> lambdaExpressionTypes = new LinkedHashSet<IType>();
@@ -828,11 +823,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return lambdaExpressionTypes;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseRealLiteral(org.eclipse.acceleo.query.ast.RealLiteral)
-	 */
 	@Override
 	public Set<IType> caseRealLiteral(RealLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -842,11 +832,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseStringLiteral(org.eclipse.acceleo.query.ast.StringLiteral)
-	 */
 	@Override
 	public Set<IType> caseStringLiteral(StringLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -856,11 +841,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseVarRef(org.eclipse.acceleo.query.ast.VarRef)
-	 */
 	@Override
 	public Set<IType> caseVarRef(VarRef object) {
 		final Set<IType> variableTypes = services.getVariableTypes(peekVariableTypes(), object
@@ -889,35 +869,35 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return validationResult;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseTypeLiteral(org.eclipse.acceleo.query.ast.TypeLiteral)
-	 */
 	@Override
-	public Set<IType> caseTypeLiteral(TypeLiteral object) {
-		final Set<IType> possibleTypes;
+	public Set<IType> caseClassTypeLiteral(ClassTypeLiteral object) {
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
-		if (object.getValue() instanceof EClassifier) {
-			possibleTypes = new LinkedHashSet<IType>();
-			possibleTypes.add(new EClassifierLiteralType(services.getQueryEnvironment(), (EClassifier)object
-					.getValue()));
-		} else if (object.getValue() instanceof Class<?>) {
-			possibleTypes = new LinkedHashSet<IType>();
-			possibleTypes.add(new ClassLiteralType(services.getQueryEnvironment(), (Class<?>)object
-					.getValue()));
+		possibleTypes.add(new ClassLiteralType(services.getQueryEnvironment(), object.getValue()));
+
+		return checkWarningsAndErrors(object, possibleTypes);
+	}
+
+	@Override
+	public Set<IType> caseEClassifierTypeLiteral(EClassifierTypeLiteral object) {
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
+
+		final IReadOnlyQueryEnvironment queryEnvironment = services.getQueryEnvironment();
+		final Collection<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(object
+				.getEPackageName(), object.getEClassifierName());
+		if (eClassifiers.isEmpty()) {
+			possibleTypes.add(services.nothing(AstBuilderListener.INVALID_TYPE_LITERAL, object
+					.getEPackageName() + "::" + object.getEClassifierName()));
+		} else if (eClassifiers.size() > 1) {
+			possibleTypes.add(services.nothing(AMBIGUOUS_TYPE_LITERAL, object.getEClassifierName(), object
+					.getEPackageName()));
 		} else {
-			throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
+			possibleTypes.add(new EClassifierLiteralType(queryEnvironment, eClassifiers.iterator().next()));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseTypeSetLiteral(org.eclipse.acceleo.query.ast.TypeSetLiteral)
-	 */
 	@Override
 	public Set<IType> caseTypeSetLiteral(TypeSetLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -927,21 +907,22 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		possibleTypes.add(possibleType);
 
 		for (TypeLiteral type : object.getTypes()) {
-			if (!types.add((EClassifier)type.getValue())) {
-				possibleTypes.add(services.nothing(
-						"EClassifierLiteral=%s is duplicated in the type set literal.", ((EClassifier)type
-								.getValue()).getName()));
+			final Set<IType> childTypes = doSwitch(type);
+			for (IType childType : childTypes) {
+				if (childType.getType() instanceof EClassifier) {
+					final EClassifier eClassifier = (EClassifier)childType.getType();
+					if (!types.add(eClassifier)) {
+						possibleTypes.add(services.nothing(
+								"EClassifierLiteral=%s is duplicated in the type set literal.", eClassifier
+										.getName()));
+					}
+				}
 			}
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorCall(org.eclipse.acceleo.query.ast.ErrorCall)
-	 */
 	@Override
 	public Set<IType> caseErrorCall(ErrorCall object) {
 		for (Expression arg : object.getArguments()) {
@@ -950,51 +931,26 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorExpression(org.eclipse.acceleo.query.ast.ErrorExpression)
-	 */
 	@Override
 	public Set<IType> caseErrorExpression(ErrorExpression object) {
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorTypeLiteral(org.eclipse.acceleo.query.ast.ErrorTypeLiteral)
-	 */
 	@Override
 	public Set<IType> caseErrorTypeLiteral(ErrorTypeLiteral object) {
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEClassifierTypeLiteral(org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral)
-	 */
 	@Override
 	public Set<IType> caseErrorEClassifierTypeLiteral(ErrorEClassifierTypeLiteral object) {
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEnumLiteral(org.eclipse.acceleo.query.ast.ErrorEnumLiteral)
-	 */
 	@Override
 	public Set<IType> caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseNullLiteral(org.eclipse.acceleo.query.ast.NullLiteral)
-	 */
 	@Override
 	public Set<IType> caseNullLiteral(NullLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -1004,11 +960,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseSetInExtensionLiteral(org.eclipse.acceleo.query.ast.SetInExtensionLiteral)
-	 */
 	@Override
 	public Set<IType> caseSetInExtensionLiteral(SetInExtensionLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -1027,11 +978,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseSequenceInExtensionLiteral(org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral)
-	 */
 	@Override
 	public Set<IType> caseSequenceInExtensionLiteral(SequenceInExtensionLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
@@ -1050,11 +996,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseVariableDeclaration(org.eclipse.acceleo.query.ast.VariableDeclaration)
-	 */
 	@Override
 	public Set<IType> caseVariableDeclaration(VariableDeclaration variableDeclaration) {
 		final Set<IType> result = new LinkedHashSet<IType>();
@@ -1108,11 +1049,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseConditional(org.eclipse.acceleo.query.ast.Conditional)
-	 */
 	@Override
 	public Set<IType> caseConditional(Conditional object) {
 		Set<IType> result = new LinkedHashSet<IType>();
@@ -1184,11 +1120,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, result);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseLet(org.eclipse.acceleo.query.ast.Let)
-	 */
 	@Override
 	public Set<IType> caseLet(Let object) {
 		Set<IType> result = new LinkedHashSet<IType>();
@@ -1215,11 +1146,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return checkWarningsAndErrors(object, result);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseBinding(org.eclipse.acceleo.query.ast.Binding)
-	 */
 	@Override
 	public Set<IType> caseBinding(Binding binding) {
 		final Set<IType> expressionTypes = doSwitch(binding.getValue());
@@ -1296,11 +1222,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return res;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorBinding(org.eclipse.acceleo.query.ast.ErrorBinding)
-	 */
 	@Override
 	public Set<IType> caseErrorBinding(ErrorBinding object) {
 		final Set<IType> result;

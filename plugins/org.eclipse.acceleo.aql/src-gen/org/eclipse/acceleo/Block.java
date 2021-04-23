@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,16 +14,13 @@ package org.eclipse.acceleo;
 import org.eclipse.emf.common.util.EList;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Block</b></em>'.
- * <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Block</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.Block#getStatements <em>Statements</em>}</li>
- *   <li>{@link org.eclipse.acceleo.Block#isInlined <em>Inlined</em>}</li>
+ * <li>{@link org.eclipse.acceleo.Block#getStatements <em>Statements</em>}</li>
+ * <li>{@link org.eclipse.acceleo.Block#isInlined <em>Inlined</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getBlock()
@@ -32,14 +29,14 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Block extends ASTNode {
 	/**
-	 * Returns the value of the '<em><b>Statements</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.acceleo.Statement}.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Statements</b></em>' containment reference list. The list contents are
+	 * of type {@link org.eclipse.acceleo.Statement}. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Statements</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Statements</em>' containment reference list isn't clear, there really should
+	 * be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Statements</em>' containment reference list.
 	 * @see org.eclipse.acceleo.AcceleoPackage#getBlock_Statements()
 	 * @model containment="true"
@@ -48,9 +45,9 @@ public interface Block extends ASTNode {
 	EList<Statement> getStatements();
 
 	/**
-	 * Returns the value of the '<em><b>Inlined</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Inlined</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @return the value of the '<em>Inlined</em>' attribute.
 	 * @see #setInlined(boolean)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getBlock_Inlined()
@@ -60,10 +57,11 @@ public interface Block extends ASTNode {
 	boolean isInlined();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.Block#isInlined <em>Inlined</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Inlined</em>' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.Block#isInlined <em>Inlined</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Inlined</em>' attribute.
 	 * @see #isInlined()
 	 * @generated
 	 */

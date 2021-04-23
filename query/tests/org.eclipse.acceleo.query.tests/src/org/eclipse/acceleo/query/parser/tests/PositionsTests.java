@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ public class PositionsTests {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
-		engine = new QueryBuilderEngine(queryEnvironment);
+		engine = new QueryBuilderEngine();
 	}
 
 	@Test(expected = IllegalArgumentException.class)

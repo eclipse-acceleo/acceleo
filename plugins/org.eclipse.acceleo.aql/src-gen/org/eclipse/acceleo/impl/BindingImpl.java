@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,6 +36,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 	/**
 	 * The cached value of the '{@link #getInitExpression() <em>Init Expression</em>}' containment reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getInitExpression()
 	 * @generated
 	 * @ordered
@@ -44,6 +45,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BindingImpl() {
@@ -52,6 +54,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -61,6 +64,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,6 +74,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetInitExpression(Expression newInitExpression, NotificationChain msgs) {
@@ -88,6 +93,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -110,6 +116,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -123,6 +130,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -136,6 +144,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -150,6 +159,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -164,6 +174,7 @@ public class BindingImpl extends VariableImpl implements Binding {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,9 +31,19 @@ public final class QueryParsing {
 	 *            the query environment to use.
 	 * @return a new {@link IQueryBuilderEngine} suitable for parsing {@link String} instances into the given
 	 *         {@link IQueryEnvironment}.
+	 * @deprecated see {@link #newBuilder()}
 	 */
 	public static IQueryBuilderEngine newBuilder(IQueryEnvironment environment) {
-		return new QueryBuilderEngine(environment);
+		return newBuilder();
+	}
+
+	/**
+	 * Create a new {@link IQueryBuilderEngine} suitable for parsing {@link String} instances.
+	 * 
+	 * @return a new {@link IQueryBuilderEngine} suitable for parsing {@link String} instances.
+	 */
+	public static IQueryBuilderEngine newBuilder() {
+		return new QueryBuilderEngine();
 	}
 
 }

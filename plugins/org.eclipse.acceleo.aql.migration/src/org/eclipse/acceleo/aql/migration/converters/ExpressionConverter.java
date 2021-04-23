@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -223,7 +223,12 @@ public final class ExpressionConverter extends AbstractConverter {
 				break;
 			case EcorePackage.ENUM_LITERAL_EXP:
 				output = AstFactory.eINSTANCE.createEnumLiteral();
-				((EnumLiteral)output).setLiteral(((EnumLiteralExp)input).getReferredEnumLiteral());
+				((EnumLiteral)output).setEPackageName(((EnumLiteralExp)input).getReferredEnumLiteral()
+						.getEEnum().getEPackage().getName());
+				((EnumLiteral)output).setEEnumName(((EnumLiteralExp)input).getReferredEnumLiteral().getEEnum()
+						.getName());
+				((EnumLiteral)output).setEEnumLiteralName(((EnumLiteralExp)input).getReferredEnumLiteral()
+						.getName());
 				break;
 			case EcorePackage.NULL_LITERAL_EXP:
 				output = AstFactory.eINSTANCE.createNullLiteral();

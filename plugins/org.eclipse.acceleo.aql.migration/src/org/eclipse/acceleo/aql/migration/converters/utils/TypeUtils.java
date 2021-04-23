@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.AstFactory;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -81,14 +83,17 @@ public final class TypeUtils {
 			((CollectionTypeLiteral)typeLiteral).setElementType(createTypeLiteral(((CollectionType)inputType)
 					.getElementType()));
 		} else if (inputType instanceof PrimitiveType) {
-			typeLiteral = AstFactory.eINSTANCE.createTypeLiteral();
-			typeLiteral.setValue(inputType.getInstanceClass());
+			typeLiteral = AstFactory.eINSTANCE.createClassTypeLiteral();
+			((ClassTypeLiteral)typeLiteral).setValue(inputType.getInstanceClass());
 		} else if (inputType instanceof AnyType) {
-			typeLiteral = AstFactory.eINSTANCE.createTypeLiteral();
-			typeLiteral.setValue(EcorePackage.eINSTANCE.getEObject());
+			typeLiteral = AstFactory.eINSTANCE.createEClassifierTypeLiteral();
+			((EClassifierTypeLiteral)typeLiteral).setEPackageName(EcorePackage.eNAME);
+			((EClassifierTypeLiteral)typeLiteral).setEClassifierName(EcorePackage.eINSTANCE.getEObject()
+					.getName());
 		} else {
-			typeLiteral = AstFactory.eINSTANCE.createTypeLiteral();
-			typeLiteral.setValue(inputType);
+			typeLiteral = AstFactory.eINSTANCE.createEClassifierTypeLiteral();
+			((EClassifierTypeLiteral)typeLiteral).setEPackageName(inputType.getEPackage().getName());
+			((EClassifierTypeLiteral)typeLiteral).setEClassifierName(inputType.getName());
 		}
 		return typeLiteral;
 	}

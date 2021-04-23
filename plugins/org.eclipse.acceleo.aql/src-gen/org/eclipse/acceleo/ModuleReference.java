@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,15 +12,13 @@
 package org.eclipse.acceleo;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Module Reference</b></em>'.
- * <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Module Reference</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ModuleReference#getQualifiedName <em>Qualified Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.ModuleReference#getQualifiedName <em>Qualified Name</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getModuleReference()
@@ -29,13 +27,13 @@ package org.eclipse.acceleo;
  */
 public interface ModuleReference extends ASTNode {
 	/**
-	 * Returns the value of the '<em><b>Qualified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Qualified Name</b></em>' attribute. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Qualified Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Qualified Name</em>' attribute isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Qualified Name</em>' attribute.
 	 * @see #setQualifiedName(String)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getModuleReference_QualifiedName()
@@ -45,10 +43,11 @@ public interface ModuleReference extends ASTNode {
 	String getQualifiedName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ModuleReference#getQualifiedName <em>Qualified Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Qualified Name</em>' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ModuleReference#getQualifiedName <em>Qualified
+	 * Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Qualified Name</em>' attribute.
 	 * @see #getQualifiedName()
 	 * @generated
 	 */

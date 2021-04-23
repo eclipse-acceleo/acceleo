@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -27,12 +27,12 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl#getType <em>Type</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -101,6 +101,7 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -110,6 +111,7 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -123,6 +125,7 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public TypeLiteral getType() {
 		return type;
 	}
@@ -151,6 +154,7 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setType(TypeLiteral newType) {
 		if (newType != type) {
 			NotificationChain msgs = null;
@@ -173,6 +177,7 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getValue() {
 		return value;
 	}
@@ -201,6 +206,7 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setValue(Expression newValue) {
 		if (newValue != value) {
 			NotificationChain msgs = null;
@@ -366,7 +372,7 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');

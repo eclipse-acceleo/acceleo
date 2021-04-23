@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,40 +17,34 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.LetStatement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Let Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Let Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getVariables <em>Variables</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getVariables <em>Variables</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class LetStatementImpl extends MinimalEObjectImpl.Container implements LetStatement {
 	/**
-	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVariables()
 	 * @generated
 	 * @ordered
@@ -58,9 +52,9 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	protected EList<Binding> variables;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -68,8 +62,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	protected Block body;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected LetStatementImpl() {
@@ -77,8 +71,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -87,8 +81,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -101,8 +95,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -111,8 +105,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -130,8 +124,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -153,8 +147,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -169,8 +163,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -185,8 +179,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -205,8 +199,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -223,8 +217,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -238,4 +232,4 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 		return super.eIsSet(featureID);
 	}
 
-} //LetStatementImpl
+} // LetStatementImpl

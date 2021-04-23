@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -190,7 +190,7 @@ public class AcceleoTextDocument {
 		Objects.requireNonNull(documentContents);
 		Objects.requireNonNull(acceleoEnvironment);
 
-		AcceleoParser acceleoParser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
+		AcceleoParser acceleoParser = new AcceleoParser();
 		return acceleoParser.parse(documentContents, moduleQualifiedName);
 	}
 

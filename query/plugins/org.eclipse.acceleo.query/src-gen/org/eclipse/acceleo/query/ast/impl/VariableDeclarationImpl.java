@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,12 +26,13 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getType <em>Type</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getExpression <em>Expression</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getExpression
+ * <em>Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -100,6 +101,7 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -109,6 +111,7 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -122,6 +125,7 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@Override
 	public TypeLiteral getType() {
 		return type;
 	}
@@ -150,6 +154,7 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setType(TypeLiteral newType) {
 		if (newType != type) {
 			NotificationChain msgs = null;
@@ -172,6 +177,7 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getExpression() {
 		if (expression != null && expression.eIsProxy()) {
 			InternalEObject oldExpression = (InternalEObject)expression;
@@ -199,12 +205,13 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setExpression(Expression newExpression) {
 		Expression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AstPackage.VARIABLE_DECLARATION__EXPRESSION, oldExpression, expression));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.VARIABLE_DECLARATION__EXPRESSION,
+					oldExpression, expression));
 	}
 
 	/**
@@ -311,7 +318,7 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');

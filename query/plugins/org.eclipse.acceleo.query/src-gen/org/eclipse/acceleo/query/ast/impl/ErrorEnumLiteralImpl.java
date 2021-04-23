@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -11,54 +11,92 @@
  */
 package org.eclipse.acceleo.query.ast.impl;
 
-import java.util.Collection;
-
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Enum Literal</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are implemented:
- * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#getLiteral <em>Literal</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#getSegments <em>Segments</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#isMissingColon <em>Missing Colon</em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#getEPackageName <em>EPackage
+ * Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#getEEnumName <em>EEnum Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#getEEnumLiteralName <em>EEnum Literal
+ * Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#isMissingColon <em>Missing
+ * Colon</em>}</li>
+ * </ul>
  *
  * @generated
  */
 public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLiteral {
 	/**
-	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}' reference. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getEPackageName() <em>EPackage Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getLiteral()
+	 * @see #getEPackageName()
 	 * @generated
 	 * @ordered
 	 */
-	protected EEnumLiteral literal;
+	protected static final String EPACKAGE_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getSegments() <em>Segments</em>}' attribute list. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getEPackageName() <em>EPackage Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getSegments()
+	 * @see #getEPackageName()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<String> segments;
+	protected String ePackageName = EPACKAGE_NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEEnumName() <em>EEnum Name</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #getEEnumName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String EENUM_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getEEnumName() <em>EEnum Name</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #getEEnumName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String eEnumName = EENUM_NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEEnumLiteralName() <em>EEnum Literal Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getEEnumLiteralName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String EENUM_LITERAL_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getEEnumLiteralName() <em>EEnum Literal Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getEEnumLiteralName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String eEnumLiteralName = EENUM_LITERAL_NAME_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute. <!--
@@ -104,17 +142,9 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	 * 
 	 * @generated
 	 */
-	public EEnumLiteral getLiteral() {
-		if (literal != null && literal.eIsProxy()) {
-			InternalEObject oldLiteral = (InternalEObject)literal;
-			literal = (EEnumLiteral)eResolveProxy(oldLiteral);
-			if (literal != oldLiteral) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AstPackage.ERROR_ENUM_LITERAL__LITERAL, oldLiteral, literal));
-			}
-		}
-		return literal;
+	@Override
+	public String getEPackageName() {
+		return ePackageName;
 	}
 
 	/**
@@ -122,21 +152,13 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	 * 
 	 * @generated
 	 */
-	public EEnumLiteral basicGetLiteral() {
-		return literal;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public void setLiteral(EEnumLiteral newLiteral) {
-		EEnumLiteral oldLiteral = literal;
-		literal = newLiteral;
+	@Override
+	public void setEPackageName(String newEPackageName) {
+		String oldEPackageName = ePackageName;
+		ePackageName = newEPackageName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_ENUM_LITERAL__LITERAL,
-					oldLiteral, literal));
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AstPackage.ERROR_ENUM_LITERAL__EPACKAGE_NAME, oldEPackageName, ePackageName));
 	}
 
 	/**
@@ -144,12 +166,9 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	 * 
 	 * @generated
 	 */
-	public EList<String> getSegments() {
-		if (segments == null) {
-			segments = new EDataTypeUniqueEList<String>(String.class, this,
-					AstPackage.ERROR_ENUM_LITERAL__SEGMENTS);
-		}
-		return segments;
+	@Override
+	public String getEEnumName() {
+		return eEnumName;
 	}
 
 	/**
@@ -157,6 +176,46 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	 * 
 	 * @generated
 	 */
+	@Override
+	public void setEEnumName(String newEEnumName) {
+		String oldEEnumName = eEnumName;
+		eEnumName = newEEnumName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_ENUM_LITERAL__EENUM_NAME,
+					oldEEnumName, eEnumName));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String getEEnumLiteralName() {
+		return eEnumLiteralName;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setEEnumLiteralName(String newEEnumLiteralName) {
+		String oldEEnumLiteralName = eEnumLiteralName;
+		eEnumLiteralName = newEEnumLiteralName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AstPackage.ERROR_ENUM_LITERAL__EENUM_LITERAL_NAME, oldEEnumLiteralName,
+					eEnumLiteralName));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public boolean isMissingColon() {
 		return missingColon;
 	}
@@ -166,6 +225,7 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setMissingColon(boolean newMissingColon) {
 		boolean oldMissingColon = missingColon;
 		missingColon = newMissingColon;
@@ -182,12 +242,12 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AstPackage.ERROR_ENUM_LITERAL__LITERAL:
-				if (resolve)
-					return getLiteral();
-				return basicGetLiteral();
-			case AstPackage.ERROR_ENUM_LITERAL__SEGMENTS:
-				return getSegments();
+			case AstPackage.ERROR_ENUM_LITERAL__EPACKAGE_NAME:
+				return getEPackageName();
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_NAME:
+				return getEEnumName();
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_LITERAL_NAME:
+				return getEEnumLiteralName();
 			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
 				return isMissingColon();
 		}
@@ -203,12 +263,14 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AstPackage.ERROR_ENUM_LITERAL__LITERAL:
-				setLiteral((EEnumLiteral)newValue);
+			case AstPackage.ERROR_ENUM_LITERAL__EPACKAGE_NAME:
+				setEPackageName((String)newValue);
 				return;
-			case AstPackage.ERROR_ENUM_LITERAL__SEGMENTS:
-				getSegments().clear();
-				getSegments().addAll((Collection<? extends String>)newValue);
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_NAME:
+				setEEnumName((String)newValue);
+				return;
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_LITERAL_NAME:
+				setEEnumLiteralName((String)newValue);
 				return;
 			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
 				setMissingColon((Boolean)newValue);
@@ -225,11 +287,14 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AstPackage.ERROR_ENUM_LITERAL__LITERAL:
-				setLiteral((EEnumLiteral)null);
+			case AstPackage.ERROR_ENUM_LITERAL__EPACKAGE_NAME:
+				setEPackageName(EPACKAGE_NAME_EDEFAULT);
 				return;
-			case AstPackage.ERROR_ENUM_LITERAL__SEGMENTS:
-				getSegments().clear();
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_NAME:
+				setEEnumName(EENUM_NAME_EDEFAULT);
+				return;
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_LITERAL_NAME:
+				setEEnumLiteralName(EENUM_LITERAL_NAME_EDEFAULT);
 				return;
 			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
 				setMissingColon(MISSING_COLON_EDEFAULT);
@@ -246,10 +311,15 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AstPackage.ERROR_ENUM_LITERAL__LITERAL:
-				return literal != null;
-			case AstPackage.ERROR_ENUM_LITERAL__SEGMENTS:
-				return segments != null && !segments.isEmpty();
+			case AstPackage.ERROR_ENUM_LITERAL__EPACKAGE_NAME:
+				return EPACKAGE_NAME_EDEFAULT == null ? ePackageName != null
+						: !EPACKAGE_NAME_EDEFAULT.equals(ePackageName);
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_NAME:
+				return EENUM_NAME_EDEFAULT == null ? eEnumName != null
+						: !EENUM_NAME_EDEFAULT.equals(eEnumName);
+			case AstPackage.ERROR_ENUM_LITERAL__EENUM_LITERAL_NAME:
+				return EENUM_LITERAL_NAME_EDEFAULT == null ? eEnumLiteralName != null
+						: !EENUM_LITERAL_NAME_EDEFAULT.equals(eEnumLiteralName);
 			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
 				return missingColon != MISSING_COLON_EDEFAULT;
 		}
@@ -271,8 +341,12 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 		}
 		if (baseClass == EnumLiteral.class) {
 			switch (derivedFeatureID) {
-				case AstPackage.ERROR_ENUM_LITERAL__LITERAL:
-					return AstPackage.ENUM_LITERAL__LITERAL;
+				case AstPackage.ERROR_ENUM_LITERAL__EPACKAGE_NAME:
+					return AstPackage.ENUM_LITERAL__EPACKAGE_NAME;
+				case AstPackage.ERROR_ENUM_LITERAL__EENUM_NAME:
+					return AstPackage.ENUM_LITERAL__EENUM_NAME;
+				case AstPackage.ERROR_ENUM_LITERAL__EENUM_LITERAL_NAME:
+					return AstPackage.ENUM_LITERAL__EENUM_LITERAL_NAME;
 				default:
 					return -1;
 			}
@@ -295,8 +369,12 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 		}
 		if (baseClass == EnumLiteral.class) {
 			switch (baseFeatureID) {
-				case AstPackage.ENUM_LITERAL__LITERAL:
-					return AstPackage.ERROR_ENUM_LITERAL__LITERAL;
+				case AstPackage.ENUM_LITERAL__EPACKAGE_NAME:
+					return AstPackage.ERROR_ENUM_LITERAL__EPACKAGE_NAME;
+				case AstPackage.ENUM_LITERAL__EENUM_NAME:
+					return AstPackage.ERROR_ENUM_LITERAL__EENUM_NAME;
+				case AstPackage.ENUM_LITERAL__EENUM_LITERAL_NAME:
+					return AstPackage.ERROR_ENUM_LITERAL__EENUM_LITERAL_NAME;
 				default:
 					return -1;
 			}
@@ -314,9 +392,13 @@ public class ErrorEnumLiteralImpl extends ExpressionImpl implements ErrorEnumLit
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (segments: ");
-		result.append(segments);
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (ePackageName: ");
+		result.append(ePackageName);
+		result.append(", eEnumName: ");
+		result.append(eEnumName);
+		result.append(", eEnumLiteralName: ");
+		result.append(eEnumLiteralName);
 		result.append(", missingColon: ");
 		result.append(missingColon);
 		result.append(')');

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,18 +46,20 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 public class QueryBuilderEngine implements IQueryBuilderEngine {
 
 	/**
-	 * The environment containing all necessary information and used to execute query services.
-	 */
-	private IReadOnlyQueryEnvironment queryEnvironment;
-
-	/**
 	 * Constructor. It takes an IQueryEnvironment as parameter.
 	 * 
 	 * @param queryEnvironment
 	 *            The environment containing all necessary information and used to execute query services.
+	 * @deprecated see {@link #QueryBuilderEngine()}
 	 */
 	public QueryBuilderEngine(IReadOnlyQueryEnvironment queryEnvironment) {
-		this.queryEnvironment = queryEnvironment;
+		this();
+	}
+
+	/**
+	 * Constructor.
+	 */
+	public QueryBuilderEngine() {
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 		final AstResult result;
 
 		if (expression != null && expression.length() > 0) {
-			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+			AstBuilderListener astBuilder = new AstBuilderListener();
 			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
 			QueryLexer lexer = new QueryLexer(input);
 			lexer.setTokenFactory(new CommonTokenFactory(true));

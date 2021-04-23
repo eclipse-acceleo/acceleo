@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -16,8 +16,10 @@ import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
@@ -79,7 +81,8 @@ public class AstSwitch<T> extends Switch<T> {
 	/**
 	 * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @parameter ePackage the package in question.
+	 * @param ePackage
+	 *            the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -198,9 +201,37 @@ public class AstSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AstPackage.ECLASSIFIER_TYPE_LITERAL: {
+				EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)theEObject;
+				T result = caseEClassifierTypeLiteral(eClassifierTypeLiteral);
+				if (result == null)
+					result = caseTypeLiteral(eClassifierTypeLiteral);
+				if (result == null)
+					result = caseLiteral(eClassifierTypeLiteral);
+				if (result == null)
+					result = caseExpression(eClassifierTypeLiteral);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.CLASS_TYPE_LITERAL: {
+				ClassTypeLiteral classTypeLiteral = (ClassTypeLiteral)theEObject;
+				T result = caseClassTypeLiteral(classTypeLiteral);
+				if (result == null)
+					result = caseTypeLiteral(classTypeLiteral);
+				if (result == null)
+					result = caseLiteral(classTypeLiteral);
+				if (result == null)
+					result = caseExpression(classTypeLiteral);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AstPackage.TYPE_SET_LITERAL: {
 				TypeSetLiteral typeSetLiteral = (TypeSetLiteral)theEObject;
 				T result = caseTypeSetLiteral(typeSetLiteral);
+				if (result == null)
+					result = caseClassTypeLiteral(typeSetLiteral);
 				if (result == null)
 					result = caseTypeLiteral(typeSetLiteral);
 				if (result == null)
@@ -214,6 +245,8 @@ public class AstSwitch<T> extends Switch<T> {
 			case AstPackage.COLLECTION_TYPE_LITERAL: {
 				CollectionTypeLiteral collectionTypeLiteral = (CollectionTypeLiteral)theEObject;
 				T result = caseCollectionTypeLiteral(collectionTypeLiteral);
+				if (result == null)
+					result = caseClassTypeLiteral(collectionTypeLiteral);
 				if (result == null)
 					result = caseTypeLiteral(collectionTypeLiteral);
 				if (result == null)
@@ -314,9 +347,9 @@ public class AstSwitch<T> extends Switch<T> {
 				ErrorEClassifierTypeLiteral errorEClassifierTypeLiteral = (ErrorEClassifierTypeLiteral)theEObject;
 				T result = caseErrorEClassifierTypeLiteral(errorEClassifierTypeLiteral);
 				if (result == null)
-					result = caseErrorTypeLiteral(errorEClassifierTypeLiteral);
-				if (result == null)
 					result = caseError(errorEClassifierTypeLiteral);
+				if (result == null)
+					result = caseEClassifierTypeLiteral(errorEClassifierTypeLiteral);
 				if (result == null)
 					result = caseTypeLiteral(errorEClassifierTypeLiteral);
 				if (result == null)
@@ -623,6 +656,36 @@ public class AstSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EClassifier Type Literal</em>'.
+	 * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+	 * the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EClassifier Type Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEClassifierTypeLiteral(EClassifierTypeLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Class Type Literal</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Class Type Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClassTypeLiteral(ClassTypeLiteral object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Type Set Literal</em>'. <!--
 	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
 	 * switch. <!-- end-user-doc -->
@@ -698,14 +761,14 @@ public class AstSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Sequence In Extension Literal</em>
-	 * '. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
-	 * the switch. <!-- end-user-doc -->
+	 * Returns the result of interpreting the object as an instance of '<em>Sequence In Extension
+	 * Literal</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result
+	 * will terminate the switch. <!-- end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Sequence In Extension Literal</em>
-	 *         '.
+	 * @return the result of interpreting the object as an instance of '<em>Sequence In Extension
+	 *         Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -774,14 +837,14 @@ public class AstSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '
-	 * <em>Error EClassifier Type Literal</em>'. <!-- begin-user-doc --> This implementation returns null;
-	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * Returns the result of interpreting the object as an instance of '<em>Error EClassifier Type
+	 * Literal</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result
+	 * will terminate the switch. <!-- end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '
-	 *         <em>Error EClassifier Type Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Error EClassifier Type
+	 *         Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */

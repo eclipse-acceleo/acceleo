@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,15 +12,13 @@
 package org.eclipse.acceleo;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>New Line Statement</b></em>'.
- * <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>New Line Statement</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.NewLineStatement#isIndentationNeeded <em>Indentation Needed</em>}</li>
+ * <li>{@link org.eclipse.acceleo.NewLineStatement#isIndentationNeeded <em>Indentation Needed</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getNewLineStatement()
@@ -29,9 +27,9 @@ package org.eclipse.acceleo;
  */
 public interface NewLineStatement extends TextStatement {
 	/**
-	 * Returns the value of the '<em><b>Indentation Needed</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>Indentation Needed</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Indentation Needed</em>' attribute.
 	 * @see #setIndentationNeeded(boolean)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getNewLineStatement_IndentationNeeded()
@@ -41,10 +39,11 @@ public interface NewLineStatement extends TextStatement {
 	boolean isIndentationNeeded();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.NewLineStatement#isIndentationNeeded <em>Indentation Needed</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Indentation Needed</em>' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.NewLineStatement#isIndentationNeeded <em>Indentation
+	 * Needed</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Indentation Needed</em>' attribute.
 	 * @see #isIndentationNeeded()
 	 * @generated
 	 */

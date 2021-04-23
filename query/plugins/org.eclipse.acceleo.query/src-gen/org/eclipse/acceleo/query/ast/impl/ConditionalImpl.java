@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -25,12 +25,12 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getPredicate <em>Predicate</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getTrueBranch <em>True Branch</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getFalseBranch <em>False Branch</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -89,6 +89,7 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getPredicate() {
 		return predicate;
 	}
@@ -117,6 +118,7 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setPredicate(Expression newPredicate) {
 		if (newPredicate != predicate) {
 			NotificationChain msgs = null;
@@ -139,6 +141,7 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getTrueBranch() {
 		return trueBranch;
 	}
@@ -167,6 +170,7 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setTrueBranch(Expression newTrueBranch) {
 		if (newTrueBranch != trueBranch) {
 			NotificationChain msgs = null;
@@ -189,6 +193,7 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getFalseBranch() {
 		return falseBranch;
 	}
@@ -217,6 +222,7 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setFalseBranch(Expression newFalseBranch) {
 		if (newFalseBranch != falseBranch) {
 			NotificationChain msgs = null;

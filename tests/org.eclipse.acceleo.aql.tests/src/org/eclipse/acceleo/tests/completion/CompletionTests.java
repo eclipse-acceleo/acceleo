@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Obeo.
+ * Copyright (c) 2017, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -128,10 +128,10 @@ public class CompletionTests {
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 				.getLookupEngine());
-		resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
+		final AcceleoParser parser = new AcceleoParser();
+		resolver.addLoader(new ModuleLoader(parser, evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		final AcceleoParser parser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
 		final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
 		final Module module = parsingResult.getModule();
 		resolver.register("org::eclipse::acceleo::tests::" + module.getName(), module);

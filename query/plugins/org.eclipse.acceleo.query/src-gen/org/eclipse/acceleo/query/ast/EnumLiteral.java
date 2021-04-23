@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,17 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast;
 
-import org.eclipse.emf.ecore.EEnumLiteral;
-
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Enum Literal</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
- * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.EnumLiteral#getLiteral <em>Literal</em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ * <li>{@link org.eclipse.acceleo.query.ast.EnumLiteral#getEPackageName <em>EPackage Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.EnumLiteral#getEEnumName <em>EEnum Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.EnumLiteral#getEEnumLiteralName <em>EEnum Literal Name</em>}</li>
+ * </ul>
  *
  * @see org.eclipse.acceleo.query.ast.AstPackage#getEnumLiteral()
  * @model
@@ -28,30 +28,72 @@ import org.eclipse.emf.ecore.EEnumLiteral;
  */
 public interface EnumLiteral extends Literal {
 	/**
-	 * Returns the value of the '<em><b>Literal</b></em>' reference. <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Literal</em>' reference isn't clear, there really should be more of a
-	 * description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+	 * Returns the value of the '<em><b>EPackage Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Literal</em>' reference.
-	 * @see #setLiteral(EEnumLiteral)
-	 * @see org.eclipse.acceleo.query.ast.AstPackage#getEnumLiteral_Literal()
-	 * @model
+	 * @return the value of the '<em>EPackage Name</em>' attribute.
+	 * @see #setEPackageName(String)
+	 * @see org.eclipse.acceleo.query.ast.AstPackage#getEnumLiteral_EPackageName()
+	 * @model required="true"
 	 * @generated
 	 */
-	EEnumLiteral getLiteral();
+	String getEPackageName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.EnumLiteral#getLiteral <em>Literal</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.EnumLiteral#getEPackageName <em>EPackage
+	 * Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
-	 *            the new value of the '<em>Literal</em>' reference.
-	 * @see #getLiteral()
+	 *            the new value of the '<em>EPackage Name</em>' attribute.
+	 * @see #getEPackageName()
 	 * @generated
 	 */
-	void setLiteral(EEnumLiteral value);
+	void setEPackageName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>EEnum Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the value of the '<em>EEnum Name</em>' attribute.
+	 * @see #setEEnumName(String)
+	 * @see org.eclipse.acceleo.query.ast.AstPackage#getEnumLiteral_EEnumName()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getEEnumName();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.EnumLiteral#getEEnumName <em>EEnum
+	 * Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>EEnum Name</em>' attribute.
+	 * @see #getEEnumName()
+	 * @generated
+	 */
+	void setEEnumName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>EEnum Literal Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the value of the '<em>EEnum Literal Name</em>' attribute.
+	 * @see #setEEnumLiteralName(String)
+	 * @see org.eclipse.acceleo.query.ast.AstPackage#getEnumLiteral_EEnumLiteralName()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getEEnumLiteralName();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.EnumLiteral#getEEnumLiteralName <em>EEnum
+	 * Literal Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>EEnum Literal Name</em>' attribute.
+	 * @see #getEEnumLiteralName()
+	 * @generated
+	 */
+	void setEEnumLiteralName(String value);
 
 } // EnumLiteral

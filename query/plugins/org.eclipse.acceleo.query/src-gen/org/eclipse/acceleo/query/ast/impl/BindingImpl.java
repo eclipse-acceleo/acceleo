@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015 Obeo.
+ *  Copyright (c) 2015, 2021 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -100,6 +100,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -109,6 +110,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -121,6 +123,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 * 
 	 * @generated
 	 */
+	@Override
 	public TypeLiteral getType() {
 		return type;
 	}
@@ -149,6 +152,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setType(TypeLiteral newType) {
 		if (newType != type) {
 			NotificationChain msgs = null;
@@ -162,7 +166,8 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BINDING__TYPE, newType, newType));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BINDING__TYPE, newType,
+					newType));
 	}
 
 	/**
@@ -170,6 +175,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Expression getValue() {
 		return value;
 	}
@@ -198,6 +204,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setValue(Expression newValue) {
 		if (newValue != value) {
 			NotificationChain msgs = null;
@@ -319,7 +326,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');

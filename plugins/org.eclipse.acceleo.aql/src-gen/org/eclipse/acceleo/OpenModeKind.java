@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,19 +18,17 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Open Mode Kind</b></em>',
- * and utility methods for working with them.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Open Mode
+ * Kind</b></em>', and utility methods for working with them. <!-- end-user-doc -->
+ * 
  * @see org.eclipse.acceleo.AcceleoPackage#getOpenModeKind()
  * @model
  * @generated
  */
 public enum OpenModeKind implements Enumerator {
 	/**
-	 * The '<em><b>Overwrite</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>Overwrite</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #OVERWRITE_VALUE
 	 * @generated
 	 * @ordered
@@ -38,9 +36,8 @@ public enum OpenModeKind implements Enumerator {
 	OVERWRITE(0, "overwrite", "overwrite"), //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
-	 * The '<em><b>Append</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>Append</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #APPEND_VALUE
 	 * @generated
 	 * @ordered
@@ -48,9 +45,8 @@ public enum OpenModeKind implements Enumerator {
 	APPEND(1, "append", "append"), //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
-	 * The '<em><b>Create</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>Create</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #CREATE_VALUE
 	 * @generated
 	 * @ordered
@@ -58,13 +54,13 @@ public enum OpenModeKind implements Enumerator {
 	CREATE(2, "create", "create"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
-	 * The '<em><b>Overwrite</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>Overwrite</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Overwrite</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>Overwrite</b></em>' literal object isn't clear, there really should be more
+	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #OVERWRITE
 	 * @model name="overwrite"
 	 * @generated
@@ -73,13 +69,13 @@ public enum OpenModeKind implements Enumerator {
 	public static final int OVERWRITE_VALUE = 0;
 
 	/**
-	 * The '<em><b>Append</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>Append</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Append</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>Append</b></em>' literal object isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #APPEND
 	 * @model name="append"
 	 * @generated
@@ -88,13 +84,13 @@ public enum OpenModeKind implements Enumerator {
 	public static final int APPEND_VALUE = 1;
 
 	/**
-	 * The '<em><b>Create</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>Create</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Create</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>Create</b></em>' literal object isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #CREATE
 	 * @model name="create"
 	 * @generated
@@ -103,26 +99,27 @@ public enum OpenModeKind implements Enumerator {
 	public static final int CREATE_VALUE = 2;
 
 	/**
-	 * An array of all the '<em><b>Open Mode Kind</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * An array of all the '<em><b>Open Mode Kind</b></em>' enumerators. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static final OpenModeKind[] VALUES_ARRAY = new OpenModeKind[] {OVERWRITE, APPEND, CREATE, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Open Mode Kind</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * A public read-only list of all the '<em><b>Open Mode Kind</b></em>' enumerators. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static final List<OpenModeKind> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Open Mode Kind</b></em>' literal with the specified literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param literal the literal.
+	 * Returns the '<em><b>Open Mode Kind</b></em>' literal with the specified literal value. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param literal
+	 *            the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
@@ -137,10 +134,11 @@ public enum OpenModeKind implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Open Mode Kind</b></em>' literal with the specified name.
-	 * <!-- begin-user-doc -->
+	 * Returns the '<em><b>Open Mode Kind</b></em>' literal with the specified name. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param name the name.
+	 * 
+	 * @param name
+	 *            the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
@@ -155,10 +153,11 @@ public enum OpenModeKind implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Open Mode Kind</b></em>' literal with the specified integer value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the integer value.
+	 * Returns the '<em><b>Open Mode Kind</b></em>' literal with the specified integer value. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
@@ -175,30 +174,29 @@ public enum OpenModeKind implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private OpenModeKind(int value, String name, String literal) {
@@ -208,8 +206,8 @@ public enum OpenModeKind implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -218,8 +216,8 @@ public enum OpenModeKind implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -228,8 +226,8 @@ public enum OpenModeKind implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -238,9 +236,9 @@ public enum OpenModeKind implements Enumerator {
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string representation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -248,4 +246,4 @@ public enum OpenModeKind implements Enumerator {
 		return literal;
 	}
 
-} //OpenModeKind
+} // OpenModeKind

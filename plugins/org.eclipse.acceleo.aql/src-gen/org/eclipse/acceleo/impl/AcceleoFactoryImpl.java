@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -65,22 +65,18 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ * 
  * @generated
  */
 public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static AcceleoFactory init() {
@@ -97,9 +93,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AcceleoFactoryImpl() {
@@ -107,8 +102,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -211,8 +206,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -235,8 +230,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -259,8 +254,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -270,8 +265,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -281,8 +276,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -292,8 +287,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -303,8 +298,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -314,8 +309,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -325,8 +320,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -336,8 +331,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -347,8 +342,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -358,8 +353,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -369,8 +364,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -380,8 +375,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -391,8 +386,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -402,8 +397,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -413,8 +408,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -424,8 +419,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -435,8 +430,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -446,8 +441,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -457,8 +452,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -468,8 +463,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -479,8 +474,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -490,8 +485,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -501,8 +496,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -512,8 +507,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -523,8 +518,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -534,8 +529,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -545,8 +540,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -556,8 +551,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -567,8 +562,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -578,8 +573,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -589,8 +584,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -600,8 +595,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -611,8 +606,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -622,8 +617,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -633,8 +628,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -644,8 +639,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -655,8 +650,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -666,8 +661,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -677,8 +672,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -688,8 +683,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -699,8 +694,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -710,8 +705,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -721,8 +716,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -732,8 +727,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -743,8 +738,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -754,8 +749,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
@@ -767,8 +762,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertVisibilityKindToString(EDataType eDataType, Object instanceValue) {
@@ -776,8 +771,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public OpenModeKind createOpenModeKindFromString(EDataType eDataType, String initialValue) {
@@ -789,8 +784,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertOpenModeKindToString(EDataType eDataType, Object instanceValue) {
@@ -798,8 +793,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AstResult createASTResultFromString(EDataType eDataType, String initialValue) {
@@ -807,8 +802,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertASTResultToString(EDataType eDataType, Object instanceValue) {
@@ -816,8 +811,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String createModuleQualifiedNameFromString(EDataType eDataType, String initialValue) {
@@ -825,8 +820,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertModuleQualifiedNameToString(EDataType eDataType, Object instanceValue) {
@@ -834,8 +829,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AcceleoAstResult createAcceleoAstResultFromString(EDataType eDataType, String initialValue) {
@@ -843,8 +838,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertAcceleoAstResultToString(EDataType eDataType, Object instanceValue) {
@@ -852,8 +847,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -862,8 +857,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -872,4 +867,4 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 		return AcceleoPackage.eINSTANCE;
 	}
 
-} //AcceleoFactoryImpl
+} // AcceleoFactoryImpl

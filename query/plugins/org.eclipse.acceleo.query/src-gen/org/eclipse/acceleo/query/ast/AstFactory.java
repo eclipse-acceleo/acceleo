@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -92,12 +92,22 @@ public interface AstFactory extends EFactory {
 	EnumLiteral createEnumLiteral();
 
 	/**
-	 * Returns a new object of class '<em>Type Literal</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns a new object of class '<em>EClassifier Type Literal</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
-	 * @return a new object of class '<em>Type Literal</em>'.
+	 * @return a new object of class '<em>EClassifier Type Literal</em>'.
 	 * @generated
 	 */
-	TypeLiteral createTypeLiteral();
+	EClassifierTypeLiteral createEClassifierTypeLiteral();
+
+	/**
+	 * Returns a new object of class '<em>Class Type Literal</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @return a new object of class '<em>Class Type Literal</em>'.
+	 * @generated
+	 */
+	ClassTypeLiteral createClassTypeLiteral();
 
 	/**
 	 * Returns a new object of class '<em>Type Set Literal</em>'. <!-- begin-user-doc --> <!-- end-user-doc

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
+import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -27,6 +29,8 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -401,5 +405,48 @@ public class EvaluationServices extends AbstractLanguageServices {
 					.getMessage(), new Object[] {nothing.getCause(), });
 			((DiagnosticChain)chain).add(child);
 		}
+	}
+
+	/**
+	 * Gets the {@link EClassifier} for the given {@link EClassifierTypeLiteral}.
+	 * 
+	 * @param eClassifierTypeLiteral
+	 *            the {@link EClassifierTypeLiteral}
+	 * @return the {@link EClassifier} for the given {@link EClassifierTypeLiteral} if any, <code>null</code>
+	 *         otherwise
+	 */
+	public EClassifier getEClassifier(EClassifierTypeLiteral eClassifierTypeLiteral) {
+		final EClassifier result;
+
+		final Collection<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(
+				eClassifierTypeLiteral.getEPackageName(), eClassifierTypeLiteral.getEClassifierName());
+		if (eClassifiers.isEmpty()) {
+			result = null;
+		} else {
+			result = eClassifiers.iterator().next();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link EEnumLiteral} for the given {@link EnumLiteral}.
+	 * 
+	 * @param enumLiteral
+	 *            the {@link EnumLiteral}
+	 * @return the {@link EEnumLiteral} for the given {@link EnumLiteral} if any, <code>null</code> otherwise
+	 */
+	public EEnumLiteral getEEnumLiteral(EnumLiteral enumLiteral) {
+		final EEnumLiteral result;
+
+		final Collection<EEnumLiteral> literals = queryEnvironment.getEPackageProvider().getEnumLiterals(
+				enumLiteral.getEPackageName(), enumLiteral.getEEnumName(), enumLiteral.getEEnumLiteralName());
+		if (literals.isEmpty()) {
+			result = null;
+		} else {
+			result = literals.iterator().next();
+		}
+
+		return result;
 	}
 }

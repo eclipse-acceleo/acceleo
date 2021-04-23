@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2021 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -58,8 +58,10 @@ import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -77,7 +79,6 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.util.AcceleoSwitch;
-import org.eclipse.emf.ecore.EClassifier;
 
 /**
  * Serialize a {@link Template}.
@@ -214,11 +215,11 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 		@Override
 		public Void caseEnumLiteral(EnumLiteral enumLiteral) {
-			builder.append(enumLiteral.getLiteral().getEEnum().getEPackage().getName());
+			builder.append(enumLiteral.getEPackageName());
 			builder.append("::");
-			builder.append(enumLiteral.getLiteral().getEEnum().getName());
+			builder.append(enumLiteral.getEEnumName());
 			builder.append("::");
-			builder.append(enumLiteral.getLiteral().getName());
+			builder.append(enumLiteral.getEEnumLiteralName());
 			return null;
 		}
 
@@ -323,12 +324,14 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		}
 
 		@Override
-		public Void caseTypeLiteral(TypeLiteral object) {
-			if (object.getValue() instanceof Class) {
-				builder.append(((Class<?>)object.getValue()).getName());
-			} else if (object.getValue() instanceof EClassifier) {
-				builder.append(((EClassifier)object.getValue()).getName());
-			}
+		public Void caseClassTypeLiteral(ClassTypeLiteral object) {
+			builder.append(object.getValue().getName());
+			return null;
+		}
+
+		@Override
+		public Void caseEClassifierTypeLiteral(EClassifierTypeLiteral object) {
+			builder.append(object.getEClassifierName());
 			return null;
 		}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,6 @@ import java.util.List;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,9 +74,7 @@ public class AcceleoAstSerializerTests {
 	 */
 	public AcceleoAstSerializerTests(String modulePath) throws FileNotFoundException, IOException {
 		this.modulePath = modulePath;
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null,
-				null);
-		AcceleoParser parser = new AcceleoParser(queryEnvironment);
+		AcceleoParser parser = new AcceleoParser();
 		try (InputStream stream = new FileInputStream(ROOT + File.separator + modulePath)) {
 			source = AbstractLanguageTestSuite.getContent(stream, AbstractLanguageTestSuite.UTF_8);
 			ast = parser.parse(source, "org::eclipse::acceleo::tests::test");

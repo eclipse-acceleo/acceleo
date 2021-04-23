@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast.test;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
-import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
@@ -92,7 +90,7 @@ public class AstBuilderTest {
 		AstBuilder builder = new AstBuilder();
 		CollectionTypeLiteral literal = builder.collectionTypeLiteral(List.class, (TypeLiteral)builder
 				.typeLiteral(Integer.class));
-		assertEquals(Integer.class, literal.getElementType().getValue());
+		assertEquals(Integer.class, ((ClassTypeLiteral)literal.getElementType()).getValue());
 		assertEquals(List.class, literal.getValue());
 	}
 
@@ -101,20 +99,8 @@ public class AstBuilderTest {
 	 */
 	@Test
 	public void testTypeLiteral() {
-		assertEquals(Integer.class, ((TypeLiteral)new AstBuilder().typeLiteral(Integer.class)).getValue());
-	}
-
-	@Test
-	public void testTypeLiteralSet() {
-		Set<Class<?>> classeInSet = new LinkedHashSet<Class<?>>();
-		classeInSet.add(Integer.class);
-		assertEquals(Integer.class, ((TypeLiteral)new AstBuilder().typeLiteral(classeInSet)).getValue());
-
-		classeInSet.add(String.class);
-		assertEquals(Integer.class, ((TypeSetLiteral)new AstBuilder().typeLiteral(classeInSet)).getTypes()
-				.get(0).getValue());
-		assertEquals(String.class, ((TypeSetLiteral)new AstBuilder().typeLiteral(classeInSet)).getTypes().get(
-				1).getValue());
+		assertEquals(Integer.class, ((ClassTypeLiteral)new AstBuilder().typeLiteral(Integer.class))
+				.getValue());
 	}
 
 	/**

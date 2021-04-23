@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2020 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,46 +22,40 @@ import org.eclipse.acceleo.NamedElement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Template</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Template</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getDocumentation <em>Documentation</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#isDeprecated <em>Deprecated</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getParameters <em>Parameters</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getGuard <em>Guard</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getPost <em>Post</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#isMain <em>Main</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getVisibility <em>Visibility</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getDocumentation <em>Documentation</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#isDeprecated <em>Deprecated</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getParameters <em>Parameters</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getGuard <em>Guard</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getPost <em>Post</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#isMain <em>Main</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getVisibility <em>Visibility</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TemplateImpl extends ModuleElementImpl implements Template {
 	/**
-	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getDocumentation()
 	 * @generated
 	 * @ordered
@@ -69,9 +63,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected Documentation documentation;
 
 	/**
-	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -79,9 +73,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected static final boolean DEPRECATED_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #isDeprecated()
 	 * @generated
 	 * @ordered
@@ -89,9 +83,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected boolean deprecated = DEPRECATED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -99,9 +93,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -109,9 +103,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getParameters()
 	 * @generated
 	 * @ordered
@@ -119,9 +113,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected EList<Variable> parameters;
 
 	/**
-	 * The cached value of the '{@link #getGuard() <em>Guard</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getGuard() <em>Guard</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getGuard()
 	 * @generated
 	 * @ordered
@@ -129,9 +123,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected Expression guard;
 
 	/**
-	 * The cached value of the '{@link #getPost() <em>Post</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getPost() <em>Post</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getPost()
 	 * @generated
 	 * @ordered
@@ -139,9 +133,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected Expression post;
 
 	/**
-	 * The default value of the '{@link #isMain() <em>Main</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #isMain() <em>Main</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #isMain()
 	 * @generated
 	 * @ordered
@@ -149,9 +143,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected static final boolean MAIN_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isMain() <em>Main</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isMain() <em>Main</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #isMain()
 	 * @generated
 	 * @ordered
@@ -159,9 +153,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected boolean main = MAIN_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVisibility()
 	 * @generated
 	 * @ordered
@@ -169,9 +163,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PRIVATE;
 
 	/**
-	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVisibility()
 	 * @generated
 	 * @ordered
@@ -179,9 +173,9 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getBody()
 	 * @generated
 	 * @ordered
@@ -189,8 +183,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	protected Block body;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected TemplateImpl() {
@@ -198,8 +192,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -208,8 +202,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -227,8 +221,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Documentation basicGetDocumentation() {
@@ -236,8 +230,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
@@ -255,8 +249,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -278,8 +272,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -288,8 +282,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -302,8 +296,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -312,8 +306,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -326,8 +320,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -340,8 +334,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -350,8 +344,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetGuard(Expression newGuard, NotificationChain msgs) {
@@ -369,8 +363,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -392,8 +386,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -402,8 +396,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetPost(Expression newPost, NotificationChain msgs) {
@@ -421,8 +415,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -444,8 +438,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -454,8 +448,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -468,8 +462,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -478,8 +472,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -492,8 +486,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -502,8 +496,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
@@ -521,8 +515,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -544,8 +538,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -561,8 +555,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -583,8 +577,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -615,8 +609,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -656,8 +650,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -695,8 +689,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -725,8 +719,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -753,8 +747,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -781,8 +775,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -803,4 +797,4 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		return result.toString();
 	}
 
-} //TemplateImpl
+} // TemplateImpl
