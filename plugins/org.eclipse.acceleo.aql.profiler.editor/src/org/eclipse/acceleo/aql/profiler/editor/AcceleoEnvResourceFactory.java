@@ -66,8 +66,8 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		environment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(), URI
-				.createURI("TMP"));
+		environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy(), URI.createURI(
+				"TMP"));
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(environment, queryEnvironment
 				.getLookupEngine());
