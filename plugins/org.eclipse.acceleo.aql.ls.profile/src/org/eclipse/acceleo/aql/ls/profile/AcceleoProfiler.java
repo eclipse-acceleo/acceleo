@@ -62,7 +62,7 @@ public class AcceleoProfiler extends AcceleoDebugger {
 		final IQualifiedNameResolver resolver = environment.getQueryEnvironment().getLookupEngine()
 				.getResolver();
 		resolver.clearLoaders();
-		resolver.addLoader(new ModuleLoader(new AcceleoParser(environment.getQueryEnvironment()), evaluator));
+		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 		AcceleoUtil.generate(evaluator, environment, module, model);
