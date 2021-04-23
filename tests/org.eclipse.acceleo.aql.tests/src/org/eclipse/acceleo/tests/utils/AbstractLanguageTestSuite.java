@@ -144,7 +144,7 @@ public abstract class AbstractLanguageTestSuite {
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		this.environment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(),
+		this.environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy(),
 				memoryDestination);
 
 		evaluator = new AcceleoEvaluator(this.environment, queryEnvironment.getLookupEngine());

@@ -551,7 +551,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 					resolver);
 			final org.eclipse.emf.common.util.URI target = org.eclipse.emf.common.util.URI.createURI(
 					workspaceResource.getWorkspace().getRoot().getLocationURI().toString());
-			IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment,
+			IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
 					new DefaultGenerationStrategy(), target);
 
 			final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment

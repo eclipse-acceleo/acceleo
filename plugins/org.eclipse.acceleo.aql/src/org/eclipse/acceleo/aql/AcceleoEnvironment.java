@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Obeo.
+ * Copyright (c) 2016, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -52,8 +51,6 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	/**
 	 * Constructor.
 	 * 
-	 * @param resolver
-	 *            the {@link IQualifiedNameResolver}
 	 * @param aqlEnvironment
 	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param generationStrategy
@@ -61,7 +58,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * @param destination
 	 *            the destination {@link URI}
 	 */
-	public AcceleoEnvironment(IQualifiedNameResolver resolver, IQualifiedNameQueryEnvironment aqlEnvironment,
+	public AcceleoEnvironment(IQualifiedNameQueryEnvironment aqlEnvironment,
 			IAcceleoGenerationStrategy generationStrategy, URI destination) {
 		this.generationStrategy = generationStrategy;
 		this.destination = destination;

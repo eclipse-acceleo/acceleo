@@ -234,8 +234,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		environment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(),
-				destination);
+		environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy(), destination);
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
 		}

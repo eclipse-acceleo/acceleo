@@ -219,7 +219,7 @@ public class AcceleoLauncher implements IApplication {
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
 		// TODO generation strategy should be configurable
-		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment,
+		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
 				new DefaultGenerationStrategy(), URI.createURI(target));
 		AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 				.getLookupEngine());

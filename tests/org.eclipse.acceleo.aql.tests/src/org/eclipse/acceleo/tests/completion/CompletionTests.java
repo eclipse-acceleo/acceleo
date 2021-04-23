@@ -123,7 +123,7 @@ public class CompletionTests {
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
 				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment,
+		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
 				new DefaultGenerationStrategy(), URI.createURI(""));
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
