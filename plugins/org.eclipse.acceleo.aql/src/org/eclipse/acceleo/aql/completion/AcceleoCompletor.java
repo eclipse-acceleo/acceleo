@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.completion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,7 +89,7 @@ public class AcceleoCompletor {
 				lookupEngine.popContext(moduleQualifiedNameForCompletion);
 			}
 		} finally {
-			lookupEngine.getResolver().clear(moduleQualifiedNameForCompletion);
+			lookupEngine.getResolver().clear(Collections.singleton(moduleQualifiedNameForCompletion));
 			lookupEngine.clearContext(moduleQualifiedNameForCompletion);
 		}
 

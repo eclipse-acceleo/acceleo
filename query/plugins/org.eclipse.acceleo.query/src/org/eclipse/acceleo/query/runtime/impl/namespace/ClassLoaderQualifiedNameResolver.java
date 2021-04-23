@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -229,11 +229,13 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	}
 
 	@Override
-	public void clear(String qualifiedName) {
-		final Object object = qualifiedNameToObject.remove(qualifiedName);
-		objectToQualifiedName.remove(object);
-		qualifiedNameToImports.remove(qualifiedName);
-		qualifiedNameToExtend.remove(qualifiedName);
+	public void clear(Set<String> qualifiedNames) {
+		for (String qualifiedName : qualifiedNames) {
+			final Object object = qualifiedNameToObject.remove(qualifiedName);
+			objectToQualifiedName.remove(object);
+			qualifiedNameToImports.remove(qualifiedName);
+			qualifiedNameToExtend.remove(qualifiedName);
+		}
 	}
 
 	@Override

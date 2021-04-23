@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,12 +52,12 @@ public interface IQualifiedNameResolver {
 	URL getSourceURL(String qualifiedName);
 
 	/**
-	 * Clears the cache for the given qualified name.
+	 * Clears the cache for the given {@link Set} of qualified names.
 	 * 
-	 * @param qualifiedName
-	 *            the qualified name
+	 * @param qualifiedNames
+	 *            the {@link Set} of qualified names
 	 */
-	void clear(String qualifiedName);
+	void clear(Set<String> qualifiedNames);
 
 	/**
 	 * Gets the {@link Object} corresponding to the given qualified name.

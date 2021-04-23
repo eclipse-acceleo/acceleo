@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -216,7 +216,7 @@ public class AcceleoProject {
 
 		// First clear the environment for the document that was changed.
 		lookupEngine.clearContext(qualifiedNameOfSavedModule);
-		lookupEngine.getResolver().clear(qualifiedNameOfSavedModule);
+		lookupEngine.getResolver().clear(Collections.singleton(qualifiedNameOfSavedModule));
 
 		// Then update the environment with the new version of the module from the saved document.
 		lookupEngine.getResolver().register(qualifiedNameOfSavedModule, savedTextDocument
@@ -252,7 +252,7 @@ public class AcceleoProject {
 				.getUrl());
 
 		// First unregister it from the environment.
-		lookupEngine.getResolver().clear(removedModuleQualifiedName);
+		lookupEngine.getResolver().clear(Collections.singleton(removedModuleQualifiedName));
 		lookupEngine.clearContext(removedModuleQualifiedName);
 
 		// Re-validate all modules that depend on the changed module.
