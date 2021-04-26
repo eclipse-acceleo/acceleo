@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.acceleo.debug,
  org.eclipse.acceleo.aql,
  org.eclipse.acceleo.aql.ls.debug,
  org.eclipse.acceleo.aql.profiler,
- org.eclipse.acceleo.query
+ org.eclipse.acceleo.query,
+ org.eclipse.acceleo.query.ide
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.profile
 Export-Package: org.eclipse.acceleo.aql.ls.profile
