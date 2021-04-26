@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,11 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.container.Module;
 
+/**
+ * Eclipse JDT {@link ClassLoaderQualifiedNameResolver}.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
 public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameResolver {
 
 	/**
@@ -173,6 +178,15 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 		}
 
 		return res;
+	}
+
+	/**
+	 * Gets the {@link IProject}.
+	 * 
+	 * @return the {@link IProject}
+	 */
+	protected IJavaProject getProject() {
+		return project;
 	}
 
 }

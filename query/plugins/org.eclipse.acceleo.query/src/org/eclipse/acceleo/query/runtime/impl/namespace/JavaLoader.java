@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 
 /**
  * Load Java {@link Class}.
@@ -59,6 +60,11 @@ public class JavaLoader extends AbstractLoader {
 
 	@Override
 	public String getExtends(Object object) {
+		return null;
+	}
+
+	@Override
+	public ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, IService<?> service) {
 		return null;
 	}
 

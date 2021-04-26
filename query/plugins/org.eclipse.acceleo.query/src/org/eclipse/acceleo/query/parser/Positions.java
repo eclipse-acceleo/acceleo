@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,36 @@ import org.eclipse.emf.ecore.EObject;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class Positions {
+
+	/**
+	 * Mapping from an {@link EObject} to its identifier start position in the parsed text.
+	 */
+	private final Map<EObject, Integer> identifierStartPositions = new HashMap<EObject, Integer>();
+
+	/**
+	 * Mapping from an {@link EObject} to its identifier start line in the parsed text.
+	 */
+	private final Map<EObject, Integer> identifierStartLines = new HashMap<EObject, Integer>();
+
+	/**
+	 * Mapping from an {@link EObject} to its identifier start column in the parsed text.
+	 */
+	private final Map<EObject, Integer> identifierStartColumns = new HashMap<EObject, Integer>();
+
+	/**
+	 * Mapping from an {@link EObject} to its identifier end position in the parsed text.
+	 */
+	private final Map<EObject, Integer> identifierEndPositions = new HashMap<EObject, Integer>();
+
+	/**
+	 * Mapping from an {@link EObject} to its identifier end line in the parsed text.
+	 */
+	private final Map<EObject, Integer> identifierEndLines = new HashMap<EObject, Integer>();
+
+	/**
+	 * Mapping from an {@link EObject} to its identifier end column in the parsed text.
+	 */
+	private final Map<EObject, Integer> identifierEndColumns = new HashMap<EObject, Integer>();
 
 	/**
 	 * Mapping from an {@link EObject} to its start position in the parsed text.
@@ -52,6 +82,144 @@ public class Positions {
 	 * Mapping from an {@link EObject} to its end column in the parsed text.
 	 */
 	private final Map<EObject, Integer> endColumns = new HashMap<EObject, Integer>();
+
+	/**
+	 * Gets the identifier start position in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @return the identifier start position in the parsed text
+	 */
+	public Integer getIdentifierStartPositions(EObject node) {
+		return identifierStartPositions.get(node);
+	}
+
+	/**
+	 * Gets the identifier start line in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @return the identifier start line in the parsed text
+	 */
+	public Integer getIdentifierStartLines(EObject node) {
+		return identifierStartLines.get(node);
+	}
+
+	/**
+	 * Gets the identifier start column in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @return the identifier start column in the parsed text
+	 */
+	public Integer getIdentifierStartColumns(EObject node) {
+		return startColumns.get(node);
+	}
+
+	/**
+	 * Gets the identifier end position in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @return the identifier end position in the parsed text
+	 */
+	public Integer getIdentifierEndPositions(EObject node) {
+		return identifierEndPositions.get(node);
+	}
+
+	/**
+	 * Gets the end line in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @return the identifier end line in the parsed text
+	 */
+	public Integer getIdentifierEndLines(EObject node) {
+		return identifierEndLines.get(node);
+	}
+
+	/**
+	 * Gets the identifier end column in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @return the identifier end column in the parsed text
+	 */
+	public Integer getIdentifierEndColumns(EObject node) {
+		return identifierEndColumns.get(node);
+	}
+
+	/**
+	 * Sets the identifier start position in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @param position
+	 *            the position
+	 */
+	public void setIdentifierStartPositions(EObject node, Integer position) {
+		identifierStartPositions.put(node, position);
+	}
+
+	/**
+	 * Sets the identifier start line in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @param line
+	 *            the line
+	 */
+	public void setIdentifierStartLines(EObject node, Integer line) {
+		identifierStartLines.put(node, line);
+	}
+
+	/**
+	 * Sets the identifier start column in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @param column
+	 *            the column
+	 */
+	public void setIdentifierStartColumns(EObject node, Integer column) {
+		identifierStartColumns.put(node, column);
+	}
+
+	/**
+	 * Sets the identifier end position in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @param position
+	 *            the position
+	 */
+	public void setIdentifierEndPositions(EObject node, Integer position) {
+		identifierEndPositions.put(node, position);
+	}
+
+	/**
+	 * Sets the identifier end line in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @param line
+	 *            the line
+	 */
+	public void setIdentifierEndLines(EObject node, Integer line) {
+		identifierEndLines.put(node, line);
+	}
+
+	/**
+	 * Sets the identifier end column in the parsed text for the given {@link EObject}.
+	 * 
+	 * @param node
+	 *            the {@link EObject}
+	 * @param column
+	 *            the column
+	 */
+	public void setIdentifierEndColumns(EObject node, Integer column) {
+		identifierEndColumns.put(node, column);
+	}
 
 	/**
 	 * Gets the start position in the parsed text for the given {@link EObject}.
@@ -198,6 +366,13 @@ public class Positions {
 	 *            the {@link EObject}
 	 */
 	public void remove(EObject node) {
+		identifierStartPositions.remove(node);
+		identifierStartLines.remove(node);
+		identifierStartColumns.remove(node);
+		identifierEndPositions.remove(node);
+		identifierEndLines.remove(node);
+		identifierEndColumns.remove(node);
+
 		startPositions.remove(node);
 		startLines.remove(node);
 		startColumns.remove(node);
@@ -219,6 +394,25 @@ public class Positions {
 	 *            the offset column
 	 */
 	public void addAll(Positions others, int offsetPosition, int offsetLine, int offsetColumn) {
+		for (Entry<EObject, Integer> entry : others.identifierStartPositions.entrySet()) {
+			identifierStartPositions.put(entry.getKey(), entry.getValue() + offsetPosition);
+		}
+		for (Entry<EObject, Integer> entry : others.identifierStartLines.entrySet()) {
+			identifierStartLines.put(entry.getKey(), entry.getValue() + offsetLine);
+		}
+		for (Entry<EObject, Integer> entry : others.identifierStartColumns.entrySet()) {
+			identifierStartColumns.put(entry.getKey(), entry.getValue() + offsetColumn);
+		}
+		for (Entry<EObject, Integer> entry : others.identifierEndPositions.entrySet()) {
+			identifierEndPositions.put(entry.getKey(), entry.getValue() + offsetPosition);
+		}
+		for (Entry<EObject, Integer> entry : others.identifierEndLines.entrySet()) {
+			identifierEndLines.put(entry.getKey(), entry.getValue() + offsetLine);
+		}
+		for (Entry<EObject, Integer> entry : others.identifierEndColumns.entrySet()) {
+			identifierEndColumns.put(entry.getKey(), entry.getValue() + offsetColumn);
+		}
+
 		for (Entry<EObject, Integer> entry : others.startPositions.entrySet()) {
 			startPositions.put(entry.getKey(), entry.getValue() + offsetPosition);
 		}

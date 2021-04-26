@@ -29,7 +29,6 @@ import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
-import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
@@ -557,7 +556,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 			final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 					.getLookupEngine());
 			resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+			resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 			return acceleoEnvironment;
 		}

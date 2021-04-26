@@ -458,6 +458,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				final int position = ((IterationCallContext)e.getCtx()).start.getStartIndex();
 				final int line = ((IterationCallContext)e.getCtx()).start.getLine() - 1;
 				final int column = ((IterationCallContext)e.getCtx()).start.getCharPositionInLine();
+				setIdentifierPositions(errorExpression, position, line, column);
 				setPositions(errorExpression, position, line, column);
 			}
 		}
@@ -563,6 +564,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				final Expression variableExpression = popExpression();
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						variableName, type, variableExpression);
+				setIdentifierPositions(errorVariableDeclaration, (Token)e.getCtx().getChild(0).getPayload());
 				setPositions(errorVariableDeclaration, ((VariableDefinitionContext)e.getCtx()).start,
 						(Token)offendingSymbol);
 				pushError(errorVariableDeclaration, "incomplete variable definition");
@@ -571,6 +573,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				errorRule = QueryParser.RULE_variableDefinition;
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						null, null, variableExpression);
+				setIdentifierPositions(errorVariableDeclaration, ((VariableDefinitionContext)e
+						.getCtx()).start);
 				setPositions(errorVariableDeclaration, ((VariableDefinitionContext)e.getCtx()).start,
 						(Token)offendingSymbol);
 				pushError(errorVariableDeclaration, "missing variable declaration");
@@ -585,12 +589,14 @@ public class AstBuilderListener extends QueryBaseListener {
 					final int line = ((Token)offendingSymbol).getLine() - 1;
 					final int column = ((Token)offendingSymbol).getCharPositionInLine()
 							+ ((Token)offendingSymbol).getText().length() - 1;
+					setIdentifierPositions(errorExpression, position, line, column);
 					setPositions(errorExpression, position, line, column);
 				} else {
 					final int position = ((Token)offendingSymbol).getStopIndex() + 1;
 					final int line = ((Token)offendingSymbol).getLine() - 1;
 					final int column = ((Token)offendingSymbol).getCharPositionInLine()
 							+ ((Token)offendingSymbol).getText().length();
+					setIdentifierPositions(errorExpression, position, line, column);
 					setPositions(errorExpression, position, line, column);
 				}
 				pushError(errorExpression, MISSING_EXPRESSION);
@@ -627,6 +633,11 @@ public class AstBuilderListener extends QueryBaseListener {
 				receiver = popExpression();
 				errorCollectionCall = builder.errorCall(null, false, receiver);
 			}
+			if (e.getCtx().getChildCount() > 0) {
+				setIdentifierPositions(errorCollectionCall, (Token)e.getCtx().getChild(0).getPayload());
+			} else {
+				setIdentifierPositions(errorCollectionCall, (Token)offendingSymbol);
+			}
 			setPositions(errorCollectionCall, receiver, (Token)offendingSymbol);
 			pushError(errorCollectionCall, "missing collection service call");
 		}
@@ -641,6 +652,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Expression receiver = popExpression();
 			final ErrorCall errorCall = builder.errorCall(FEATURE_ACCESS_SERVICE_NAME, false, receiver);
 			errorCall.setType(CallType.CALLORAPPLY);
+			setIdentifierPositions(errorCall, (Token)offendingSymbol);
 			setPositions(errorCall, receiver, (Token)offendingSymbol);
 			pushError(errorCall, "missing feature access or service call");
 		}
@@ -673,6 +685,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final int line = ((Token)offendingSymbol).getLine() - 1;
 			final int column = ((Token)offendingSymbol).getCharPositionInLine() + ((Token)offendingSymbol)
 					.getText().length();
+			setIdentifierPositions(errorBinding, position, line, column);
 			setPositions(errorBinding, position, line, column);
 			pushError(errorBinding, "invalid variable declaration in let");
 		}
@@ -698,6 +711,7 @@ public class AstBuilderListener extends QueryBaseListener {
 						final int position = ((ParserRuleContext)e.getCtx()).start.getStartIndex();
 						final int line = ((ParserRuleContext)e.getCtx()).start.getLine() - 1;
 						final int column = ((ParserRuleContext)e.getCtx()).start.getCharPositionInLine();
+						setIdentifierPositions(errorExpression, position, line, column);
 						setPositions(errorExpression, position, line, column);
 						pushError(errorExpression, MISSING_EXPRESSION);
 						break;
@@ -822,6 +836,27 @@ public class AstBuilderListener extends QueryBaseListener {
 	}
 
 	/**
+	 * Sets the identifier positions of the given node.
+	 * 
+	 * @param node
+	 *            the node
+	 * @param position
+	 *            the position
+	 * @param line
+	 *            the line
+	 * @param column
+	 *            the column
+	 */
+	private void setIdentifierPositions(EObject node, int position, int line, int column) {
+		positions.setIdentifierStartPositions(node, position);
+		positions.setIdentifierStartLines(node, line);
+		positions.setIdentifierStartColumns(node, column);
+		positions.setIdentifierEndPositions(node, position);
+		positions.setIdentifierEndLines(node, line);
+		positions.setIdentifierEndColumns(node, column);
+	}
+
+	/**
 	 * Sets the positions of the given node.
 	 * 
 	 * @param node
@@ -840,6 +875,24 @@ public class AstBuilderListener extends QueryBaseListener {
 		positions.setEndPositions(node, position);
 		positions.setEndLines(node, line);
 		positions.setEndColumns(node, column);
+	}
+
+	/**
+	 * Sets the identifier positions of the given node.
+	 * 
+	 * @param node
+	 *            the node
+	 * @param identifierToken
+	 *            the identifierToken {@link Token}
+	 */
+	private void setIdentifierPositions(EObject node, Token identifierToken) {
+		positions.setStartPositions(node, Integer.valueOf(identifierToken.getStartIndex()));
+		positions.setStartLines(node, Integer.valueOf(identifierToken.getLine() - 1));
+		positions.setStartColumns(node, Integer.valueOf(identifierToken.getCharPositionInLine()));
+		positions.setEndPositions(node, Integer.valueOf(identifierToken.getStopIndex() + 1));
+		positions.setEndLines(node, Integer.valueOf(identifierToken.getLine() - 1));
+		positions.setEndColumns(node, Integer.valueOf(identifierToken.getCharPositionInLine()
+				+ identifierToken.getText().length()));
 	}
 
 	/**
@@ -1162,6 +1215,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		Expression op1 = popExpression();
 		final Or callService = builder.callOrService(op1, op2);
 
+		setIdentifierPositions(callService, (Token)ctx.getChild(1).getPayload());
 		setPositions(callService, op1, op2);
 
 		push(callService);
@@ -1169,7 +1223,15 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitXor(XorContext ctx) {
-		pushBinary(XOR_SERVICE_NAME, ctx);
+		Expression op2 = popExpression();
+		Expression op1 = popExpression();
+		final Call callService = builder.callService(XOR_SERVICE_NAME, op1, op2);
+
+		setIdentifierPositions(callService, (Token)ctx.getChild(1).getPayload());
+		setPositions(callService, op1, op2);
+
+		push(callService);
+
 	}
 
 	@Override
@@ -1178,6 +1240,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		Expression op1 = popExpression();
 		final Implies callService = builder.callImpliesService(op1, op2);
 
+		setIdentifierPositions(callService, (Token)ctx.getChild(1).getPayload());
 		setPositions(callService, op1, op2);
 
 		push(callService);
@@ -1207,6 +1270,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		Expression op1 = popExpression();
 		final And callService = builder.callAndService(op1, op2);
 
+		setIdentifierPositions(callService, (Token)ctx.getChild(1).getPayload());
 		setPositions(callService, op1, op2);
 
 		push(callService);
@@ -1216,6 +1280,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	public void exitVarRef(VarRefContext ctx) {
 		final VarRef varRef = builder.varRef(ctx.getText());
 
+		setIdentifierPositions(varRef, ctx.start);
 		setPositions(varRef, ctx.start, ctx.stop);
 
 		push(varRef);
@@ -1229,6 +1294,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		call.setType(CallType.CALLORAPPLY);
 
 		setPositions(featureName, ctx.stop, ctx.stop);
+		setIdentifierPositions(call, (Token)ctx.getChild(1).getPayload());
 		setPositions(call, receiver, featureName);
 
 		push(call);
@@ -1276,6 +1342,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				push(call);
 			}
 
+			setIdentifierPositions(call, (Token)ctx.getChild(0).getPayload());
 			setPositions(call, args[0], ctx.stop);
 		}
 	}
@@ -1389,6 +1456,7 @@ public class AstBuilderListener extends QueryBaseListener {
 						variableExpression);
 				stop = ((TerminalNode)ctx.getChild(0)).getSymbol();
 			}
+			setIdentifierPositions(variableDeclaration, (Token)ctx.getChild(0).getPayload());
 			setPositions(variableDeclaration, ctx.start, stop);
 
 			push(variableDeclaration);
@@ -1430,6 +1498,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			push(call);
 		}
 
+		setIdentifierPositions(call, (Token)ctx.getChild(0).getChild(0).getPayload());
 		setPositions(call, iterator.getExpression(), ctx.stop);
 	}
 
@@ -1648,6 +1717,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			}
 			final Binding binding = builder.binding(variable, type, expression);
 
+			setIdentifierPositions(binding, (Token)ctx.getChild(0).getPayload());
 			setPositions(binding, ctx.start, ctx.stop);
 
 			push(binding);

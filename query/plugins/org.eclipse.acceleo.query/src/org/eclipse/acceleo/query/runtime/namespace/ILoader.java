@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -102,5 +102,16 @@ public interface ILoader {
 	 * @return the super name space of the given {@link Object} if any, <code>null</code> otherwise
 	 */
 	String getExtends(Object object);
+
+	/**
+	 * Gets the {@link ISourceLocation} for the given {@link IService}.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param service
+	 *            the {@link IService}
+	 * @return the {@link ISourceLocation} for the given {@link IService} if any, <code>null</code> otherwise
+	 */
+	ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, IService<?> service);
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020 Obeo. 
+ *  Copyright (c) 2020, 2021 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import java.util.List;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.EclipseQualifiedNameResolver;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.ResolverFactoryRegistryListener;
 import org.eclipse.acceleo.query.ide.runtime.namespace.IResolverFactoryDescriptor;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -144,6 +146,30 @@ public class QueryPlugin extends EMFPlugin {
 			} else {
 				res = factoryDescriptors.get(0).getFactory().createResolver(classLoader, project,
 						qualifierSeparator);
+			}
+
+			return res;
+		}
+
+		/**
+		 * Creates a Java {@link ILoader} with the given qualified name separator.
+		 * 
+		 * @param qualifierSeparator
+		 *            the qualifier name separator
+		 * @return the created Java {@link ILoader}
+		 */
+		public ILoader createJavaLoader(String qualifierSeparator) {
+			final ILoader res;
+
+			final List<IResolverFactoryDescriptor> factoryDescriptors;
+			synchronized(RESOLVER_FACTORY_DESCRIPTORS) {
+				factoryDescriptors = new ArrayList<IResolverFactoryDescriptor>(RESOLVER_FACTORY_DESCRIPTORS);
+			}
+
+			if (factoryDescriptors.isEmpty()) {
+				res = new JavaLoader(qualifierSeparator);
+			} else {
+				res = factoryDescriptors.get(0).getFactory().createJavaLoader(qualifierSeparator);
 			}
 
 			return res;

@@ -32,6 +32,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 
 /**
  * Resolve from a {@link ClassLoader}.
@@ -139,6 +140,20 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	@Override
 	public URL getSourceURL(String qualifiedName) {
 		return getURL(qualifiedName);
+	}
+
+	@Override
+	public ISourceLocation getSourceLocation(IService<?> service) {
+		ISourceLocation res = null;
+
+		for (ILoader loader : loaders) {
+			res = loader.getSourceLocation(this, service);
+			if (res != null) {
+				break;
+			}
+		}
+
+		return res;
 	}
 
 	/**

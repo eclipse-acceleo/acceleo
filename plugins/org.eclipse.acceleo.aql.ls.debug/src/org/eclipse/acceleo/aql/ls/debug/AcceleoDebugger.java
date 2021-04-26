@@ -41,7 +41,6 @@ import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
-import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
@@ -89,7 +88,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 							.getLookupEngine().getResolver();
 					resolver.clearLoaders();
 					resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-					resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+					resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(
+							AcceleoParser.QUALIFIER_SEPARATOR));
 
 					AcceleoUtil.generate(evaluator, environment, module, model);
 				}
@@ -239,7 +239,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
 		}
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 		try {
 			final String moduleQualifiedName = resolver.getQualifiedName(java.net.URI.create(moduleURI
@@ -323,7 +323,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				.getResolver();
 		resolver.clearLoaders();
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), noDebugEvaluator));
-		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 		AcceleoUtil.generate(noDebugEvaluator, env, module, modelResource);
 	}

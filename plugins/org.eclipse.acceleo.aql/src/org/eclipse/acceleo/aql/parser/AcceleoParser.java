@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Obeo.
+ * Copyright (c) 2016, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -523,6 +523,35 @@ public class AcceleoParser {
 		columns[str.length()] = currentColumn;
 	}
 
+	/**
+	 * Sets the identifier start and identifer end positions for the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @param start
+	 *            the start position
+	 * @param end
+	 *            the end position
+	 */
+	private void setIdentifierPositions(ASTNode node, int start, int end) {
+		positions.setIdentifierStartPositions(node, start);
+		positions.setIdentifierStartLines(node, lines[start]);
+		positions.setIdentifierStartColumns(node, columns[start]);
+		positions.setIdentifierEndPositions(node, end);
+		positions.setIdentifierEndLines(node, lines[end]);
+		positions.setIdentifierEndColumns(node, columns[end]);
+	}
+
+	/**
+	 * Sets the start and end positions for the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @param start
+	 *            the start position
+	 * @param end
+	 *            the end position
+	 */
 	private void setPositions(ASTNode node, int start, int end) {
 		positions.setStartPositions(node, start);
 		positions.setStartLines(node, lines[start]);
@@ -821,7 +850,9 @@ public class AcceleoParser {
 			currentPosition += MODULE_HEADER_START.length();
 			skipSpaces();
 
+			final int identifierStartPosition = currentPosition;
 			final String name = parseIdentifier();
+			final int identifierEndPosition = currentPosition;
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
@@ -880,6 +911,7 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModule();
 			}
+			setIdentifierPositions(res, identifierStartPosition, identifierEndPosition);
 			setPositions(res, startPosition, endPosition);
 			res.setStartHeaderPosition(startHeaderPosition);
 			res.setEndHeaderPosition(endHeaderPosition);
@@ -1088,7 +1120,9 @@ public class AcceleoParser {
 				missingVisibility = -1;
 			}
 			skipSpaces();
+			final int identifierStartPosition = currentPosition;
 			final String name = parseIdentifier();
+			final int identifierEndPosition = currentPosition;
 			final int missingName;
 			if (name == null) {
 				missingName = currentPosition;
@@ -1157,6 +1191,7 @@ public class AcceleoParser {
 				res.setTypeAql(type.getAst());
 			}
 			res.setBody(body);
+			setIdentifierPositions(res, identifierStartPosition, identifierEndPosition);
 			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
@@ -1198,7 +1233,9 @@ public class AcceleoParser {
 		final Variable res;
 
 		final int startPosition = currentPosition;
+		final int identifierStartPosition = currentPosition;
 		final String name = parseIdentifier();
+		final int identifierEndPosition = currentPosition;
 		final int missingName;
 		if (name == null) {
 			missingName = currentPosition;
@@ -1234,6 +1271,7 @@ public class AcceleoParser {
 				res.setType(type);
 				res.setTypeAql(type.getAst());
 			}
+			setIdentifierPositions(res, identifierStartPosition, identifierEndPosition);
 			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
@@ -1270,7 +1308,9 @@ public class AcceleoParser {
 				missingVisibility = -1;
 			}
 			skipSpaces();
+			final int identifierStartPosition = currentPosition;
 			final String name = parseIdentifier();
+			final int identifierEndPosition = currentPosition;
 			final int missingName;
 			if (name == null) {
 				missingName = currentPosition;
@@ -1357,6 +1397,7 @@ public class AcceleoParser {
 			res.setGuard(guardExpression);
 			res.setPost(postExpression);
 			res.setBody(body);
+			setIdentifierPositions(res, identifierStartPosition, identifierEndPosition);
 			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;
@@ -1782,7 +1823,9 @@ public class AcceleoParser {
 		final Binding res;
 
 		final int startPosition = currentPosition;
+		final int identifierStartPosition = currentPosition;
 		final String name = parseIdentifier();
+		final int identifierEndPosition = currentPosition;
 		final int missingName;
 		if (name == null) {
 			missingName = currentPosition;
@@ -1860,6 +1903,7 @@ public class AcceleoParser {
 				res.setTypeAql(type.getAst());
 			}
 			res.setInitExpression(expression);
+			setIdentifierPositions(res, identifierStartPosition, identifierEndPosition);
 			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;

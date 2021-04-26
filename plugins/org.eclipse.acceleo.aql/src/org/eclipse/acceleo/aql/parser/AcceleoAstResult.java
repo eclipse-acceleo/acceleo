@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,6 +57,348 @@ public class AcceleoAstResult {
 		this.module.setAst(this);
 		this.positions = positions;
 		this.errors = errors;
+	}
+
+	/**
+	 * Gets the identifier start position of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the identifier start position of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartPosition(ASTNode node) {
+		return getInternalIdentifierStartPosition(node);
+	}
+
+	/**
+	 * Gets the identifier start position of the given {@link Expression} in the parsed text.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the identifier start position of the given {@link Expression} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartPosition(Expression expression) {
+		return getInternalIdentifierStartPosition(expression);
+	}
+
+	/**
+	 * Gets the identifier start position of the given {@link VariableDeclaration} in the parsed text.
+	 * 
+	 * @param declaration
+	 *            the {@link VariableDeclaration}
+	 * @return the identifier start position of the given {@link VariableDeclaration} in the parsed text if
+	 *         any, <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartPosition(VariableDeclaration declaration) {
+		return getInternalIdentifierStartPosition(declaration);
+	}
+
+	/**
+	 * Gets the identifier start position of the given {@link EObject} in the parsed text.
+	 * 
+	 * @param object
+	 *            the {@link EObject}
+	 * @return the identifier start position of the given {@link EObject} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	private int getInternalIdentifierStartPosition(EObject object) {
+		final int res;
+
+		final Integer position = positions.getIdentifierStartPositions(object);
+		if (position != null) {
+			res = position.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier start line of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the identifier start line of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartLine(ASTNode node) {
+		return getInternalIdentifierStartLine(node);
+	}
+
+	/**
+	 * Gets the identifier start line of the given {@link Expression} in the parsed text.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the identifier start line of the given {@link Expression} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartLine(Expression expression) {
+		return getInternalIdentifierStartLine(expression);
+	}
+
+	/**
+	 * Gets the identifier start line of the given {@link VariableDeclaration} in the parsed text.
+	 * 
+	 * @param declaration
+	 *            the {@link VariableDeclaration}
+	 * @return the identifier start line of the given {@link VariableDeclaration} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartLine(VariableDeclaration declaration) {
+		return getInternalIdentifierStartLine(declaration);
+	}
+
+	/**
+	 * Gets the identifier start line of the given {@link EObject} in the parsed text.
+	 * 
+	 * @param object
+	 *            the {@link EObject}
+	 * @return the identifier start line of the given {@link EObject} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	private int getInternalIdentifierStartLine(EObject object) {
+		final int res;
+
+		final Integer line = positions.getIdentifierStartLines(object);
+		if (line != null) {
+			res = line.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier start column of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the identifier start column of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartColumn(ASTNode node) {
+		return getInternalIdentifierStartColumn(node);
+	}
+
+	/**
+	 * Gets the identifier start column of the given {@link Expression} in the parsed text.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the identifier start column of the given {@link Expression} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartColumn(Expression expression) {
+		return getInternalIdentifierStartColumn(expression);
+	}
+
+	/**
+	 * Gets the identifier start column of the given {@link VariableDeclaration} in the parsed text.
+	 * 
+	 * @param declaration
+	 *            the {@link VariableDeclaration}
+	 * @return the identifier start column of the given {@link VariableDeclaration} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartColumn(VariableDeclaration declaration) {
+		return getInternalIdentifierStartColumn(declaration);
+	}
+
+	/**
+	 * Gets the identifier start column of the given {@link EObject} in the parsed text.
+	 * 
+	 * @param object
+	 *            the {@link EObject}
+	 * @return the identifier start column of the given {@link EObject} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	private int getInternalIdentifierStartColumn(EObject object) {
+		final int res;
+
+		final Integer column = positions.getIdentifierStartColumns(object);
+		if (column != null) {
+			res = column.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier end position of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the identifier end position of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndPosition(ASTNode node) {
+		return getInternalIdentifierEndPosition(node);
+	}
+
+	/**
+	 * Gets the identifier end position of the given {@link Expression} in the parsed text.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the identifier end position of the given {@link Expression} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndPosition(Expression expression) {
+		return getInternalIdentifierEndPosition(expression);
+	}
+
+	/**
+	 * Gets the identifier end position of the given {@link VariableDeclaration} in the parsed text.
+	 * 
+	 * @param declaration
+	 *            the {@link VariableDeclaration}
+	 * @return the identifier end position of the given {@link VariableDeclaration} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndPosition(VariableDeclaration declaration) {
+		return getInternalIdentifierEndPosition(declaration);
+	}
+
+	/**
+	 * Gets the identifier end position of the given {@link EObject} in the parsed text.
+	 * 
+	 * @param object
+	 *            the {@link EObject}
+	 * @return the identifier end position of the given {@link EObject} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	private int getInternalIdentifierEndPosition(EObject object) {
+		final int res;
+
+		final Integer position = positions.getIdentifierEndPositions(object);
+		if (position != null) {
+			res = position.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier end line of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the identifier end line of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getIdentifierEndLine(ASTNode node) {
+		return getInternalIdentifierEndLine(node);
+	}
+
+	/**
+	 * Gets the identifier end line of the given {@link Expression} in the parsed text.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the identifier end line of the given {@link Expression} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndLine(Expression expression) {
+		return getInternalIdentifierEndLine(expression);
+	}
+
+	/**
+	 * Gets the identifier end line of the given {@link VariableDeclaration} in the parsed text.
+	 * 
+	 * @param declaration
+	 *            the {@link VariableDeclaration}
+	 * @return the identifier end line of the given {@link VariableDeclaration} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndLine(VariableDeclaration declaration) {
+		return getInternalIdentifierEndLine(declaration);
+	}
+
+	/**
+	 * Gets the identifier end line of the given {@link EObject} in the parsed text.
+	 * 
+	 * @param object
+	 *            the {@link EObject}
+	 * @return the identifier end line of the given {@link EObject} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	private int getInternalIdentifierEndLine(EObject object) {
+		final int res;
+
+		final Integer line = positions.getIdentifierEndLines(object);
+		if (line != null) {
+			res = line.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier end column of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the identifier end column of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndColumn(ASTNode node) {
+		return getInternalIdentifierEndColumn(node);
+	}
+
+	/**
+	 * Gets the identifier end column of the given {@link Expression} in the parsed text.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the identifier end column of the given {@link Expression} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndColumn(Expression expression) {
+		return getInternalIdentifierEndColumn(expression);
+	}
+
+	/**
+	 * Gets the identifier end column of the given {@link VariableDeclaration} in the parsed text.
+	 * 
+	 * @param declaration
+	 *            the {@link VariableDeclaration}
+	 * @return the identifier end column of the given {@link VariableDeclaration} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndColumn(VariableDeclaration declaration) {
+		return getInternalIdentifierEndColumn(declaration);
+	}
+
+	/**
+	 * Gets the identifier end column of the given {@link EObject} in the parsed text.
+	 * 
+	 * @param object
+	 *            the {@link EObject}
+	 * @return the identifier end column of the given {@link EObject} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	private int getInternalIdentifierEndColumn(EObject object) {
+		final int res;
+
+		final Integer column = positions.getIdentifierEndColumns(object);
+		if (column != null) {
+			res = column.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
 	}
 
 	/**

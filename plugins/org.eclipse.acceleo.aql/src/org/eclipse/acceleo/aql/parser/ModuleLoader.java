@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.acceleo.aql.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -29,9 +30,20 @@ import org.eclipse.acceleo.aql.evaluation.QueryService;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.namespace.AbstractLoader;
+import org.eclipse.acceleo.query.runtime.impl.namespace.Position;
+import org.eclipse.acceleo.query.runtime.impl.namespace.Range;
+import org.eclipse.acceleo.query.runtime.impl.namespace.SourceLocation;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IPosition;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IRange;
 
+/**
+ * Loader for {@link Module}.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
 public class ModuleLoader extends AbstractLoader {
 
 	/**
@@ -124,6 +136,54 @@ public class ModuleLoader extends AbstractLoader {
 		final ModuleReference ext = module.getExtends();
 		if (ext != null) {
 			res = ext.getQualifiedName();
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	@Override
+	public ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, IService<?> service) {
+		final ISourceLocation res;
+
+		if (service.getOrigin() instanceof ModuleElement) {
+			final ModuleElement moduleElement = (ModuleElement)service.getOrigin();
+			if (moduleElement.eContainer() instanceof Module) {
+				final Module module = (Module)moduleElement.eContainer();
+				final String qualifiedName = resolver.getQualifiedName(module);
+				final URL sourceURL = resolver.getSourceURL(qualifiedName);
+
+				final int identifierStartLine = module.getAst().getIdentifierStartLine(moduleElement);
+				final int identifierStartColumn = module.getAst().getIdentifierStartColumn(moduleElement);
+				final int identifierStartPosition = module.getAst().getIdentifierStartPosition(moduleElement);
+				final IPosition identifierStart = new Position(identifierStartLine, identifierStartColumn,
+						identifierStartPosition);
+
+				final int identifierEndLine = module.getAst().getIdentifierEndLine(moduleElement);
+				final int identifierEndColumn = module.getAst().getIdentifierEndColumn(moduleElement);
+				final int identifierEndPosition = module.getAst().getIdentifierEndPosition(moduleElement);
+				final IPosition identifierEnd = new Position(identifierEndLine, identifierEndColumn,
+						identifierEndPosition);
+
+				final IRange identifierRange = new Range(identifierStart, identifierEnd);
+
+				final int startLine = module.getAst().getStartLine(moduleElement);
+				final int startColumn = module.getAst().getStartColumn(moduleElement);
+				final int startPosition = module.getAst().getStartPosition(moduleElement);
+				final IPosition start = new Position(startLine, startColumn, startPosition);
+
+				final int endLine = module.getAst().getEndLine(moduleElement);
+				final int endColumn = module.getAst().getEndColumn(moduleElement);
+				final int endPosition = module.getAst().getEndPosition(moduleElement);
+				final IPosition end = new Position(endLine, endColumn, endPosition);
+
+				final IRange range = new Range(start, end);
+
+				res = new SourceLocation(sourceURL, identifierRange, range);
+			} else {
+				res = null;
+			}
 		} else {
 			res = null;
 		}
