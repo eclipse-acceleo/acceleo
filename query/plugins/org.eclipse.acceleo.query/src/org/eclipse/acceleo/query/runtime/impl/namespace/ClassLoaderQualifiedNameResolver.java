@@ -87,6 +87,12 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private final Map<String, String> qualifiedNameToExtend = new HashMap<String, String>();
 
 	/**
+	 * Mapping from qualifiedName to qualified names depending on it. Opposite of {@link #getExtend(String)}
+	 * and {@link #getImports(String)}.
+	 */
+	private final Map<String, List<String>> qualifiedNameToDependOn = new HashMap<String, List<String>>();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param classLoader
@@ -213,8 +219,15 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private void register(ILoader loader, String qualifiedName, Object object) {
 		final List<String> imports = loader.getImports(object);
 		qualifiedNameToImports.put(qualifiedName, imports);
+		for (String imported : imports) {
+			qualifiedNameToDependOn.computeIfAbsent(imported, qn -> new ArrayList<String>()).add(
+					qualifiedName);
+		}
 		final String ext = loader.getExtends(object);
 		qualifiedNameToExtend.put(qualifiedName, ext);
+		if (ext != null) {
+			qualifiedNameToDependOn.computeIfAbsent(ext, qn -> new ArrayList<String>()).add(qualifiedName);
+		}
 		final Object removedObject = qualifiedNameToObject.put(qualifiedName, object);
 		if (removedObject != null) {
 			objectToQualifiedName.remove(removedObject);
@@ -248,8 +261,22 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		for (String qualifiedName : qualifiedNames) {
 			final Object object = qualifiedNameToObject.remove(qualifiedName);
 			objectToQualifiedName.remove(object);
-			qualifiedNameToImports.remove(qualifiedName);
-			qualifiedNameToExtend.remove(qualifiedName);
+			final List<String> imports = qualifiedNameToImports.remove(qualifiedName);
+			if (imports != null) {
+				for (String imported : imports) {
+					final List<String> dependendOn = qualifiedNameToDependOn.get(imported);
+					if (dependendOn != null) {
+						dependendOn.remove(qualifiedName);
+					}
+				}
+			}
+			final String extended = qualifiedNameToExtend.remove(qualifiedName);
+			if (extended != null) {
+				final List<String> dependendOn = qualifiedNameToDependOn.get(extended);
+				if (dependendOn != null) {
+					dependendOn.remove(qualifiedName);
+				}
+			}
 		}
 	}
 
@@ -290,6 +317,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		}
 
 		return qualifiedNameToImports.getOrDefault(qualifiedName, Collections.emptyList());
+	}
+
+	@Override
+	public List<String> getDependOn(String qualifiedName) {
+		return qualifiedNameToDependOn.getOrDefault(qualifiedName, Collections.emptyList());
 	}
 
 	@Override
