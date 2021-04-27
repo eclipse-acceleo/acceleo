@@ -18,10 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
-import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoProject;
@@ -29,8 +25,6 @@ import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
-import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -432,7 +426,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 			AcceleoProject acceleoProject = this.projectsTrace.get(workspaceProject);
 
 			acceleoProject.setLabel(getAcceleoProjectLabelFor(workspaceProject));
-			acceleoProject.setAcceleoEnvironment(this.createAcceleoEnvironmentFor(workspaceProject));
+			acceleoProject.setResolver(this.createResolver(workspaceProject));
 
 			// The contained documents are updated on their own.
 		}
@@ -530,35 +524,26 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 * @return the corresponding {@link AcceleoProject}.
 		 */
 		private AcceleoProject transform(IProject workspaceProject) {
-			return new AcceleoProject(getAcceleoProjectLabelFor(workspaceProject), this
-					.createAcceleoEnvironmentFor(workspaceProject));
+			return new AcceleoProject(getAcceleoProjectLabelFor(workspaceProject), this.createResolver(
+					workspaceProject));
 		}
 
 		/**
-		 * Creates a new {@link IAcceleoEnvironment} for the given {@link IResource}.
+		 * Creates a new {@link IQualifiedNameResolver} for the given {@link IProject}.
 		 * 
-		 * @param workspaceResource
-		 *            the (non-{@code null}) {@link IResource}.
-		 * @return the corresponding {@link IAcceleoEnvironment}.
+		 * @param project
+		 *            the (non-{@code null}) {@link IProject}.
+		 * @return the corresponding {@link IQualifiedNameResolver}.
 		 */
-		public IAcceleoEnvironment createAcceleoEnvironmentFor(IResource workspaceResource) {
-			final IProject project = workspaceResource.getProject();
+		public IQualifiedNameResolver createResolver(IProject project) {
+			Objects.nonNull(project);
 			final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 					AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 					AcceleoParser.QUALIFIER_SEPARATOR);
-			final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(
-					resolver);
-			final org.eclipse.emf.common.util.URI target = org.eclipse.emf.common.util.URI.createURI(
-					workspaceResource.getWorkspace().getRoot().getLocationURI().toString());
-			IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
-					new DefaultGenerationStrategy(), target);
-
-			final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
-					.getLookupEngine());
-			resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
+			resolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
 			resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-			return acceleoEnvironment;
+			return resolver;
 		}
 
 		/**

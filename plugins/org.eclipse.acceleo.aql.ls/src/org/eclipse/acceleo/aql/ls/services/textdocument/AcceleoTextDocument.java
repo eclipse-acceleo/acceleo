@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
@@ -29,7 +30,9 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
@@ -57,6 +60,11 @@ public class AcceleoTextDocument {
 	 * The {@link AcceleoProject} that contains this text document.
 	 */
 	private AcceleoProject ownerProject;
+
+	/**
+	 * The {@link IAcceleoEnvironment} for this text document.
+	 */
+	private IAcceleoEnvironment acceleoEnvironment;
 
 	/**
 	 * The {@link String} contents of the text document.
@@ -130,15 +138,15 @@ public class AcceleoTextDocument {
 		this.ownerProject = acceleoProject;
 		if ((acceleoProject == null && oldProject != null) || !acceleoProject.equals(oldProject)) {
 			// When the project changes, the environment changes.
-			this.environmentChanged();
+			this.resolverChanged();
 		}
 	}
 
 	/**
 	 * This is called to notify this {@link AcceleoTextDocument} that its contextual
-	 * {@link IAcceleoEnvironment} has changed. As a result, it needs to be re-parsed and re-validated.
+	 * {@link IQualifiedNameResolver} has changed. As a result, it needs to be re-parsed and re-validated.
 	 */
-	public void environmentChanged() {
+	public void resolverChanged() {
 		this.documentChanged();
 	}
 
@@ -166,9 +174,16 @@ public class AcceleoTextDocument {
 	 */
 	private void parseContents() {
 		AcceleoAstResult parsingResult = null;
-		if (this.getAcceleoEnvironment() != null) {
-			parsingResult = doParsing(this.getModuleQualifiedName(), this.contents, this
-					.getAcceleoEnvironment());
+		parsingResult = doParsing(this.getModuleQualifiedName(), this.contents);
+
+		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(getProject()
+				.getResolver());
+		acceleoEnvironment = new AcceleoEnvironment(queryEnvironment, null, null);
+
+		for (Metamodel metamodel : parsingResult.getModule().getMetamodels()) {
+			if (metamodel.getReferencedPackage() != null) {
+				queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
+			}
 		}
 		this.acceleoAstResult = parsingResult;
 	}
@@ -180,16 +195,11 @@ public class AcceleoTextDocument {
 	 *            the (non-{@code null}) qualified name of the document we are parsing.
 	 * @param documentContents
 	 *            the (non-{@code null}) contents of the document we are parsing.
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) {@link IAcceleoEnvironment} of the document we are parsing.
 	 * @return the resulting {@link AcceleoAstResult}.
 	 */
-	private static AcceleoAstResult doParsing(String moduleQualifiedName, String documentContents,
-			IAcceleoEnvironment acceleoEnvironment) {
+	private static AcceleoAstResult doParsing(String moduleQualifiedName, String documentContents) {
 		Objects.requireNonNull(moduleQualifiedName);
 		Objects.requireNonNull(documentContents);
-		Objects.requireNonNull(acceleoEnvironment);
-
 		AcceleoParser acceleoParser = new AcceleoParser();
 		return acceleoParser.parse(documentContents, moduleQualifiedName);
 	}
@@ -277,15 +287,10 @@ public class AcceleoTextDocument {
 	 *         {@link IAcceleoEnvironment}.
 	 */
 	public String getModuleQualifiedName() {
-		if (this.getAcceleoEnvironment() == null || this.getAcceleoEnvironment().getQueryEnvironment() == null
-				|| this.getAcceleoEnvironment().getQueryEnvironment().getLookupEngine() == null || this
-						.getAcceleoEnvironment().getQueryEnvironment().getLookupEngine()
-						.getResolver() == null) {
+		if (getProject() == null) {
 			return null;
 		} else {
-			final IQualifiedNameResolver resolver = this.getAcceleoEnvironment().getQueryEnvironment()
-					.getLookupEngine().getResolver();
-			return resolver.getQualifiedName(this.getUrl());
+			return getProject().getResolver().getQualifiedName(this.getUrl());
 		}
 	}
 
@@ -404,11 +409,7 @@ public class AcceleoTextDocument {
 	 *         {@link AcceleoTextDocument}.
 	 */
 	public IAcceleoEnvironment getAcceleoEnvironment() {
-		if (this.ownerProject != null) {
-			return this.ownerProject.getAcceleoEnvironment();
-		} else {
-			return null;
-		}
+		return acceleoEnvironment;
 	}
 
 	/**

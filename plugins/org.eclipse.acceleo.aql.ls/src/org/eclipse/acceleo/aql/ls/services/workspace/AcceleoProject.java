@@ -26,6 +26,7 @@ import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 
 /**
  * A representation, in the {@link AcceleoLanguageServer} of a container of {@link AcceleoTextDocument
@@ -52,21 +53,21 @@ public class AcceleoProject {
 	private String label;
 
 	/**
-	 * The {@link IAcceleoEnvironment} of this {@link AcceleoProject}.
+	 * The {@link IQualifiedNameResolver} of this {@link AcceleoProject}.
 	 */
-	private IAcceleoEnvironment acceleoEnvironment;
+	private IQualifiedNameResolver resolver;
 
 	/**
 	 * The constructor.
 	 *
 	 * @param label
 	 *            the (non-{@code null}) {@link String label} for the project.
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) {@link IAcceleoEnvironment} for the project.
+	 * @param resolver
+	 *            the (non-{@code null}) {@link IQualifiedNameResolver} for the project.
 	 */
-	public AcceleoProject(String label, IAcceleoEnvironment acceleoEnvironment) {
+	public AcceleoProject(String label, IQualifiedNameResolver resolver) {
 		this.label = Objects.requireNonNull(label);
-		this.acceleoEnvironment = Objects.requireNonNull(acceleoEnvironment);
+		this.resolver = Objects.requireNonNull(resolver);
 	}
 
 	/**
@@ -111,16 +112,16 @@ public class AcceleoProject {
 		this.workspace = acceleoWorkspace;
 
 		// The workspace has changed so the environment has implicitly changed.
-		this.getTextDocuments().forEach(textDocument -> textDocument.environmentChanged());
+		this.getTextDocuments().forEach(textDocument -> textDocument.resolverChanged());
 	}
 
 	/**
-	 * Provides the {@link IAcceleoEnvironment} of this {@link AcceleoProject}.
+	 * Provides the {@link IQualifiedNameResolver} of this {@link AcceleoProject}.
 	 * 
-	 * @return the (non-{@code null}) {@link IAcceleoEnvironment} of this {@link AcceleoProject}.
+	 * @return the (non-{@code null}) {@link IQualifiedNameResolver} of this {@link AcceleoProject}.
 	 */
-	public IAcceleoEnvironment getAcceleoEnvironment() {
-		return this.acceleoEnvironment;
+	public IQualifiedNameResolver getResolver() {
+		return this.resolver;
 	}
 
 	/**
@@ -134,16 +135,16 @@ public class AcceleoProject {
 	}
 
 	/**
-	 * Sets the {@link IAcceleoEnvironment} of this {@link AcceleoProject}.
+	 * Sets the {@link IQualifiedNameResolver} of this {@link AcceleoProject}.
 	 * 
-	 * @param newAcceleoEnvironment
-	 *            the new {@link IAcceleoEnvironment} of this {@link AcceleoProject}.
+	 * @param resolver
+	 *            the new {@link IQualifiedNameResolver} of this {@link AcceleoProject}.
 	 */
-	public void setAcceleoEnvironment(IAcceleoEnvironment newAcceleoEnvironment) {
-		this.acceleoEnvironment = newAcceleoEnvironment;
+	public void setResolver(IQualifiedNameResolver resolver) {
+		this.resolver = resolver;
 
-		// The environment has changed so we notify our documents.
-		this.getTextDocuments().forEach(textDocument -> textDocument.environmentChanged());
+		// The resolver has changed so we notify our documents.
+		this.getTextDocuments().forEach(textDocument -> textDocument.resolverChanged());
 	}
 
 	/**
@@ -211,8 +212,8 @@ public class AcceleoProject {
 	 */
 	public void documentSaved(AcceleoTextDocument savedTextDocument) {
 		final String qualifiedNameOfSavedModule = savedTextDocument.getModuleQualifiedName();
-		final IQualifiedNameLookupEngine lookupEngine = this.getAcceleoEnvironment().getQueryEnvironment()
-				.getLookupEngine();
+		final IQualifiedNameLookupEngine lookupEngine = savedTextDocument.getAcceleoEnvironment()
+				.getQueryEnvironment().getLookupEngine();
 
 		// First clear the environment for the document that was changed.
 		lookupEngine.clearContext(qualifiedNameOfSavedModule);
@@ -225,7 +226,7 @@ public class AcceleoProject {
 		// Re-validate all modules that depend on the changed module.
 		Set<AcceleoTextDocument> consumers = getTextDocumentsThatDependOn(qualifiedNameOfSavedModule);
 		for (AcceleoTextDocument consumer : consumers) {
-			consumer.environmentChanged();
+			consumer.resolverChanged();
 		}
 
 		// If the saved document belongs to us, we propagate the notification up to the workspace.
@@ -243,8 +244,8 @@ public class AcceleoProject {
 	 *            the (non-{@code null}) {@link AcceleoTextDocument} that has been removed.
 	 */
 	public void documentRemoved(AcceleoTextDocument removedTextDocument) {
-		final IQualifiedNameLookupEngine lookupEngine = this.getAcceleoEnvironment().getQueryEnvironment()
-				.getLookupEngine();
+		final IQualifiedNameLookupEngine lookupEngine = removedTextDocument.getAcceleoEnvironment()
+				.getQueryEnvironment().getLookupEngine();
 
 		// Since the qualified name of a module depends on its environment, we want the qualified name
 		// according to our environment.
@@ -258,7 +259,7 @@ public class AcceleoProject {
 		// Re-validate all modules that depend on the changed module.
 		Set<AcceleoTextDocument> consumers = getTextDocumentsThatDependOn(removedModuleQualifiedName);
 		for (AcceleoTextDocument consumer : consumers) {
-			consumer.environmentChanged();
+			consumer.resolverChanged();
 		}
 
 		// Unlike in documentSaved, we do not need to propagate the notification as it cannot come from the
