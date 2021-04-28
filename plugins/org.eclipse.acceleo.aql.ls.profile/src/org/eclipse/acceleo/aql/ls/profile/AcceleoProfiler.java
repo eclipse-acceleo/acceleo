@@ -65,7 +65,7 @@ public class AcceleoProfiler extends AcceleoDebugger {
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		AcceleoUtil.generate(evaluator, environment, module, model);
+		AcceleoUtil.generate(evaluator, environment, module, model, getDestination());
 		try {
 			profiler.save(modelURI);
 		} catch (IOException e) {
