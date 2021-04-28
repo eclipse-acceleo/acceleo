@@ -102,7 +102,8 @@ public class QueryService extends AbstractModuleElementService<Query> {
 		}
 
 		final AcceleoEvaluator evaluator = getEvaluator();
-		return evaluator.generate(getOrigin(), variables, evaluator.getDestination());
+		return evaluator.generate(getOrigin(), variables, evaluator.getGenerationStrategy(), evaluator
+				.getDestination());
 	}
 
 	@Override

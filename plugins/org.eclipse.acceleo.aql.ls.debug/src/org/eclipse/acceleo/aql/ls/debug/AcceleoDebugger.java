@@ -30,7 +30,6 @@ import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -234,7 +233,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy());
+		environment = new AcceleoEnvironment(queryEnvironment);
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
 		}

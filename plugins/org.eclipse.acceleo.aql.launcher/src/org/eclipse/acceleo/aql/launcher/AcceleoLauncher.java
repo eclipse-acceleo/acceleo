@@ -22,7 +22,6 @@ import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
@@ -219,8 +218,7 @@ public class AcceleoLauncher implements IApplication {
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
 		// TODO generation strategy should be configurable
-		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
-				new DefaultGenerationStrategy());
+		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment);
 		AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 				.getLookupEngine());
 

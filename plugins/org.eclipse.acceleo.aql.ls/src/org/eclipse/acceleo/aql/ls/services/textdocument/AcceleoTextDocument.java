@@ -178,7 +178,7 @@ public class AcceleoTextDocument {
 
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(getProject()
 				.getResolver());
-		acceleoEnvironment = new AcceleoEnvironment(queryEnvironment, null);
+		acceleoEnvironment = new AcceleoEnvironment(queryEnvironment);
 
 		for (Metamodel metamodel : parsingResult.getModule().getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {

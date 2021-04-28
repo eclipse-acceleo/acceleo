@@ -23,6 +23,7 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.services.EObjectServices;
@@ -153,7 +154,7 @@ public final class AcceleoUtil {
 			final Map<String, Object> variables = new HashMap<String, Object>();
 			for (EObject value : values) {
 				variables.put(parameterName, value);
-				evaluator.generate(module, variables, destination);
+				evaluator.generate(module, variables, new DefaultGenerationStrategy(), destination);
 			}
 		}
 	}

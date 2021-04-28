@@ -46,6 +46,8 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -119,6 +121,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	private URI destination;
 
+	/** This will hold the writer stack for the file blocks. */
+	private final Deque<IAcceleoWriter> writers = new ArrayDeque<IAcceleoWriter>();
+
+	/** The current generation strategy. */
+	private IAcceleoGenerationStrategy generationStrategy;
+
 	/**
 	 * Constructor.
 	 * 
@@ -128,6 +136,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public AcceleoEvaluator(AcceleoEvaluator other) {
 		this(other.environment, other.lookupEngine);
 		destination = other.destination;
+		generationStrategy = other.generationStrategy;
 	}
 
 	/**
@@ -152,15 +161,19 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 *            the {@link ASTNode} to generate
 	 * @param variables
 	 *            the variables
+	 * @param strategy
+	 *            the IAcceleoGenerationStrategy
 	 * @param destinationURI
 	 *            the destination {@link URI}
 	 * @return the generated {@link Object}, can be <code>null</code>
 	 */
-	public Object generate(ASTNode node, Map<String, Object> variables, URI destinationURI) {
+	public Object generate(ASTNode node, Map<String, Object> variables, IAcceleoGenerationStrategy strategy,
+			URI destinationURI) {
 
 		final Object res;
 
 		destination = destinationURI;
+		generationStrategy = strategy;
 		lastLineOfLastStatement = "";
 		pushVariables(variables);
 		try {
@@ -511,15 +524,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
 			try {
 				// FIXME line delimiter
-				environment.openWriter(uri, mode, charset, NEW_LINE);
+				openWriter(uri, mode, charset, NEW_LINE);
 				lastLineOfLastStatement = "";
 				pushIndentation(fileStatement.getBody(), lastLineOfLastStatement);
 				try {
 					final String content = (String)doSwitch(fileStatement.getBody());
-					environment.write(content);
+					write(content);
 				} finally {
 					popIndentation();
-					environment.closeWriter();
+					closeWriter();
 				}
 			} catch (IOException e) {
 				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0, e
@@ -532,6 +545,53 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Opens a writer for the given file uri.
+	 * 
+	 * @param uri
+	 *            The {@link URI} for which we need a writer.
+	 * @param openMode
+	 *            The mode in which to open the file.
+	 * @param charset
+	 *            The {@link Charset} for the target file.
+	 * @param lineDelimiter
+	 *            Line delimiter that should be used for that file.
+	 * @throws IOException
+	 *             if the writed can't be opened
+	 */
+	private void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
+			throws IOException {
+		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
+				lineDelimiter);
+		writers.addLast(writer);
+		environment.getGenerationResult().getGeneratedFiles().add(uri);
+	}
+
+	/**
+	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
+	 * 
+	 * @throws IOException
+	 *             if the writer can't be closed
+	 */
+	private void closeWriter() throws IOException {
+		final IAcceleoWriter writer = writers.removeLast();
+		writer.close();
+	}
+
+	/**
+	 * Writes the given {@link String} to the last {@link #openWriter(String, OpenModeKind, String, String)
+	 * opened} writer.
+	 * 
+	 * @param text
+	 *            the text to write
+	 * @throws IOException
+	 *             if the writer can't be written
+	 */
+	private void write(String text) throws IOException {
+		IAcceleoWriter writer = writers.peekLast();
+		writer.append(text);
 	}
 
 	/**
@@ -690,6 +750,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public URI getDestination() {
 		return destination;
+	}
+
+	/**
+	 * Gets the {@link IAcceleoGenerationStrategy}.
+	 * 
+	 * @return the {@link IAcceleoGenerationStrategy}
+	 */
+	public IAcceleoGenerationStrategy getGenerationStrategy() {
+		return generationStrategy;
 	}
 
 }

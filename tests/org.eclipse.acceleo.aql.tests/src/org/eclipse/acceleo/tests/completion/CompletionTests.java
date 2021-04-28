@@ -35,7 +35,6 @@ import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -122,8 +121,7 @@ public class CompletionTests {
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
 				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
-				new DefaultGenerationStrategy());
+		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment);
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 				.getLookupEngine());

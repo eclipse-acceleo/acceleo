@@ -37,7 +37,6 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -144,7 +143,7 @@ public abstract class AbstractLanguageTestSuite {
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		this.environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy());
+		this.environment = new AcceleoEnvironment(queryEnvironment);
 
 		evaluator = new AcceleoEvaluator(this.environment, queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
