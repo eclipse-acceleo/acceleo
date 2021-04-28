@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,11 +25,11 @@ import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.AcceleoAstCompletor;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposalsProvider;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -135,18 +135,18 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 			AcceleoCodeTemplates.NEW_COMMENT_MAIN, AcceleoPackage.Literals.COMMENT);
 
 	/**
-	 * The {@link IAcceleoEnvironment}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	private final IAcceleoEnvironment acceleoEnvironment;
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) contextual {@link IAcceleoEnvironment}.
+	 * @param queryEnvironment
+	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
 	 */
-	public AcceleoCodeTemplateCompletionProposalsProvider(IAcceleoEnvironment acceleoEnvironment) {
-		this.acceleoEnvironment = Objects.requireNonNull(acceleoEnvironment);
+	public AcceleoCodeTemplateCompletionProposalsProvider(IQualifiedNameQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
 	}
 
 	/**

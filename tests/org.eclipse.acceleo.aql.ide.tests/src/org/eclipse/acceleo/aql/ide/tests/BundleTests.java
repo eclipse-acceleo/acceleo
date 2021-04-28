@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.acceleo.aql.ide.tests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EPackage;
@@ -31,7 +31,7 @@ public class BundleTests {
 	@Before
 	public void setUp() {
 		// Make sure the org.eclipse.acceleo.aql is loaded
-		IAcceleoEnvironment.class.getClass();
+		AcceleoUtil.class.getClass();
 		// Make sure the org.eclipse.acceleo.aql.ide is loaded
 		AcceleoPlugin.getPlugin();
 	}

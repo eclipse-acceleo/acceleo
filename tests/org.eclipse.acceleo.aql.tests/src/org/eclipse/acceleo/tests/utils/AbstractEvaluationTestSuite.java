@@ -103,12 +103,12 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final URI generatedFolderURI = URI.createURI("generated/").resolve(model.getURI());
 		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
-		AcceleoUtil.generate(evaluator, environment, module, model, memoryDestination);
+		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, memoryDestination);
 
-		assertGenerationMessages(environment.getGenerationResult());
+		assertGenerationMessages(evaluator.getGenerationResult());
 
 		// assert generated content
-		final GenerationResult result = environment.getGenerationResult();
+		final GenerationResult result = evaluator.getGenerationResult();
 		for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
 			final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(
 					memoryDestinationString.length())).resolve(generatedFolderURI);

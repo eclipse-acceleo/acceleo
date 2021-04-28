@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,9 +23,9 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.location.aql.AqlVariablesLocalContext;
 import org.eclipse.acceleo.aql.validation.AcceleoValidationUtils;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
@@ -40,18 +40,18 @@ import org.eclipse.acceleo.util.AcceleoSwitch;
 public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<AqlVariablesLocalContext> {
 
 	/**
-	 * The {@link IAcceleoEnvironment}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	private final IAcceleoEnvironment acceleoEnvironment;
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) {@link IAcceleoEnvironment}.
+	 * @param queryEnvironment
+	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment}.
 	 */
-	public AcceleoExpressionVariablesContextProvider(IAcceleoEnvironment acceleoEnvironment) {
-		this.acceleoEnvironment = acceleoEnvironment;
+	public AcceleoExpressionVariablesContextProvider(IQualifiedNameQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
 	}
 
 	// Expression and TypedElement are the two entry points into this because these are the only ASTNodes that
@@ -102,8 +102,7 @@ public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<Aql
 		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
 
 		// Deal with the implicit "self" variable.
-		Set<IType> selfPossibleTypes = Collections.singleton(new ClassType(this.acceleoEnvironment
-				.getQueryEnvironment(), String.class));
+		Set<IType> selfPossibleTypes = Collections.singleton(new ClassType(queryEnvironment, String.class));
 		variablesContext.addVariable(AcceleoUtil.getTemplateImplicitVariableName(), template,
 				selfPossibleTypes);
 
@@ -143,7 +142,7 @@ public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<Aql
 		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
 
 		Set<IType> variablePossibleTypes = AcceleoValidationUtils.getPossibleTypes(variable,
-				this.acceleoEnvironment.getQueryEnvironment());
+				queryEnvironment);
 		variablesContext.addVariable(variable.getName(), variable, variablePossibleTypes);
 
 		return variablesContext;

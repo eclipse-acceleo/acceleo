@@ -34,8 +34,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -44,7 +42,6 @@ import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
-import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.common.util.URI;
@@ -87,9 +84,9 @@ public abstract class AbstractLanguageTestSuite {
 	protected final AcceleoAstResult astResult;
 
 	/**
-	 * The {@link IAcceleoEnvironment}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	protected final IAcceleoEnvironment environment;
+	protected final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * The {@link AcceleoEvaluator}.
@@ -142,10 +139,11 @@ public abstract class AbstractLanguageTestSuite {
 		final ClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
 				AcceleoParser.QUALIFIER_SEPARATOR);
-		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		this.environment = new AcceleoEnvironment(queryEnvironment);
+		/* FIXME we need a cross reference provider, and we need to make it configurable */
+		queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, null, null);
 
-		evaluator = new AcceleoEvaluator(this.environment, queryEnvironment.getLookupEngine());
+		evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
@@ -236,8 +234,7 @@ public abstract class AbstractLanguageTestSuite {
 	 */
 	@Test
 	public void validation() throws FileNotFoundException, IOException {
-		AcceleoValidator validator = new AcceleoValidator(environment, environment.getQueryEnvironment()
-				.getLookupEngine());
+		AcceleoValidator validator = new AcceleoValidator(queryEnvironment);
 		final List<IValidationMessage> messages = validator.validate(astResult, qualifiedName)
 				.getValidationMessages();
 		final String actualContent = getValidationContent(messages);

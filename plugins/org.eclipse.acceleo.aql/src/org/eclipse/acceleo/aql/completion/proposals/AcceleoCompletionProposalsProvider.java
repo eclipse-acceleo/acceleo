@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,11 +33,11 @@ import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.proposals.syntax.AcceleoSyntacticCompletionProposals;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposalsProvider;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplates;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -59,12 +59,12 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 	/**
 	 * The constructor.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) contextual {@link IAcceleoENvironment}.
+	 * @param queryEnvironment
+	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
 	 */
-	public AcceleoCompletionProposalsProvider(IAcceleoEnvironment acceleoEnvironment) {
+	public AcceleoCompletionProposalsProvider(IQualifiedNameQueryEnvironment queryEnvironment) {
 		this.acceleoCodeTemplatesProvider = new AcceleoCodeTemplateCompletionProposalsProvider(
-				acceleoEnvironment);
+				queryEnvironment);
 	}
 
 	/**

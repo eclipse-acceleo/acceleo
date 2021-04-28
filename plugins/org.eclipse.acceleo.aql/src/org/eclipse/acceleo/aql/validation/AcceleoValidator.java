@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Obeo.
+ * Copyright (c) 2017, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,6 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.parser.AstValidator;
@@ -68,7 +67,7 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -81,7 +80,6 @@ import org.eclipse.emf.ecore.EPackage;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	/**
@@ -100,9 +98,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private static final Object RETURN_VALUE = new Object();
 
 	/**
-	 * The {@link IAcceleoEnvironment}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	private final IAcceleoEnvironment environment;
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * The {@link AstValidator}.
@@ -140,25 +138,17 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final IType booleanObjectType;
 
 	/**
-	 * The {@link IQualifiedNameLookupEngine}.
-	 */
-	private final IQualifiedNameLookupEngine lookupEngine;
-
-	/**
 	 * Constructor.
 	 * 
-	 * @param environment
-	 *            the {@link IAcceleoEnvironment}
-	 * @param lookupEngine
-	 *            the {@link IQualifiedNameLookupEngine}
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
 	 */
-	public AcceleoValidator(IAcceleoEnvironment environment, IQualifiedNameLookupEngine lookupEngine) {
-		this.environment = environment;
-		this.lookupEngine = lookupEngine;
-		this.stringType = new ClassType(environment.getQueryEnvironment(), String.class);
-		this.booleanType = new ClassType(environment.getQueryEnvironment(), boolean.class);
-		this.booleanObjectType = new ClassType(environment.getQueryEnvironment(), Boolean.class);
-		validator = new AstValidator(new ValidationServices(environment.getQueryEnvironment()));
+	public AcceleoValidator(IQualifiedNameQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
+		this.stringType = new ClassType(queryEnvironment, String.class);
+		this.booleanType = new ClassType(queryEnvironment, boolean.class);
+		this.booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
+		validator = new AstValidator(new ValidationServices(queryEnvironment));
 	}
 
 	/**
@@ -204,11 +194,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		forceCollectionBinding = false;
 		result = new AcceleoValidationResult(astResult);
 
-		lookupEngine.pushImportsContext(moduleQualifiedName, moduleQualifiedName);
+		queryEnvironment.getLookupEngine().pushImportsContext(moduleQualifiedName, moduleQualifiedName);
 		try {
 			doSwitch(astResult.getModule());
 		} finally {
-			lookupEngine.popContext(moduleQualifiedName);
+			queryEnvironment.getLookupEngine().popContext(moduleQualifiedName);
 		}
 
 		return result;
@@ -366,8 +356,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModuleReference(ModuleReference moduleReference) {
-		if (moduleReference.getQualifiedName() != null && lookupEngine.getResolver().getURL(moduleReference
-				.getQualifiedName()) == null) {
+		if (moduleReference.getQualifiedName() != null && queryEnvironment.getLookupEngine().getResolver()
+				.getURL(moduleReference.getQualifiedName()) == null) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not resolve " + moduleReference
 					.getQualifiedName(), acceleoAstResult.getStartPosition(moduleReference), acceleoAstResult
@@ -413,7 +403,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			if (template.getPost() != null) {
 				pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 				Set<IType> possibleTypes = new LinkedHashSet<IType>();
-				possibleTypes.add(new ClassType(environment.getQueryEnvironment(), String.class));
+				possibleTypes.add(new ClassType(queryEnvironment, String.class));
 				peekVariableTypes().put(AcceleoUtil.getTemplateImplicitVariableName(), possibleTypes);
 				try {
 					doSwitch(template.getPost());
@@ -498,8 +488,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(),
 						query.getType());
 				result.getAqlValidationResults().put(query.getType(), typeValidationResult);
-				final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
-						typeValidationResult.getPossibleTypes(query.getType().getAst()));
+				final Set<IType> iTypes = validator.getDeclarationTypes(queryEnvironment, typeValidationResult
+						.getPossibleTypes(query.getType().getAst()));
 				checkTypesCompatibility(query, possibleTypes, iTypes);
 			}
 		} finally {
@@ -556,8 +546,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), variable
 				.getType());
 		result.getAqlValidationResults().put(variable.getType(), typeValidationResult);
-		final Set<IType> types = validator.getDeclarationTypes(environment.getQueryEnvironment(),
-				typeValidationResult.getPossibleTypes(variable.getType().getAst()));
+		final Set<IType> types = validator.getDeclarationTypes(queryEnvironment, typeValidationResult
+				.getPossibleTypes(variable.getType().getAst()));
 		peekVariableTypes().put(variable.getName(), types);
 
 		return RETURN_VALUE;
@@ -595,8 +585,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), binding
 					.getType());
 			result.getAqlValidationResults().put(binding.getType(), typeValidationResult);
-			final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
-					typeValidationResult.getPossibleTypes(binding.getType().getAst()));
+			final Set<IType> iTypes = validator.getDeclarationTypes(queryEnvironment, typeValidationResult
+					.getPossibleTypes(binding.getType().getAst()));
 			checkTypesCompatibility(binding, possibleTypes, iTypes);
 		}
 

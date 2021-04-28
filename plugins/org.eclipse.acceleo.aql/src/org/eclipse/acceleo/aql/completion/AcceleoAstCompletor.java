@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,6 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposalsProvider;
 import org.eclipse.acceleo.aql.completion.proposals.syntax.AcceleoSyntacticCompletionProposals;
@@ -73,7 +72,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionPropo
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
@@ -86,7 +85,6 @@ import org.eclipse.emf.ecore.EPackage;
  * 
  * @author Florent Latombe
  */
-@SuppressWarnings("restriction")
 public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionProposal>> {
 
 	/**
@@ -161,9 +159,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private static final String SPACE = " ";
 
 	/**
-	 * The {@link IAcceleoEnvironment}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	private final IAcceleoEnvironment acceleoEnvironment;
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * The {@link IAcceleoValidationResult}.
@@ -191,30 +189,21 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private String moduleSourceFragment;
 
 	/**
-	 * The {@link IQualifiedNameResolver}.
-	 */
-	private final IQualifiedNameResolver resolver;
-
-	/**
 	 * Constructor.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) contextual {@link IAcceleoEnvironment}.
+	 * @param queryEnvironment
+	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
 	 * @param acceleoValidationResult
 	 *            the (non-{@code null}) contextual {@link IAcceleoValidationResult}.
-	 * @param resolver
-	 *            the (non-{@code null}) contextual {@link IQualifiedNameResolver}.
 	 */
-	public AcceleoAstCompletor(IAcceleoEnvironment acceleoEnvironment,
-			IAcceleoValidationResult acceleoValidationResult, IQualifiedNameResolver resolver) {
-		this.acceleoEnvironment = Objects.requireNonNull(acceleoEnvironment);
+	public AcceleoAstCompletor(IQualifiedNameQueryEnvironment queryEnvironment,
+			IAcceleoValidationResult acceleoValidationResult) {
+		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
 		this.acceleoValidationResult = Objects.requireNonNull(acceleoValidationResult);
-		this.resolver = Objects.requireNonNull(resolver);
 
-		this.astCompletor = new AstCompletor(new CompletionServices(this.acceleoEnvironment
-				.getQueryEnvironment()));
-		this.aqlCompletionEngine = new QueryCompletionEngine(this.acceleoEnvironment.getQueryEnvironment());
-		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider(acceleoEnvironment);
+		this.astCompletor = new AstCompletor(new CompletionServices(this.queryEnvironment));
+		this.aqlCompletionEngine = new QueryCompletionEngine(queryEnvironment);
+		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider(queryEnvironment);
 	}
 
 	/**
@@ -372,8 +361,8 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			ErrorModuleReference errorModuleReference) {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<AcceleoCompletionProposal>();
 
-		final List<String> availableQualifiedNames = new ArrayList<String>(resolver
-				.getAvailableQualifiedNames());
+		final List<String> availableQualifiedNames = new ArrayList<String>(queryEnvironment.getLookupEngine()
+				.getResolver().getAvailableQualifiedNames());
 		Collections.sort(availableQualifiedNames);
 		for (String qualifiedName : availableQualifiedNames) {
 			completionProposals.add(new AcceleoCodeTemplateCompletionProposal(qualifiedName, qualifiedName,
@@ -415,8 +404,8 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		} else if (errorTemplate.getPost() != null && errorTemplate.getPost().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			final Map<String, Set<IType>> variables = new HashMap<String, Set<IType>>();
-			final Set<IType> possibleTypes = Collections.singleton(new ClassType(acceleoEnvironment
-					.getQueryEnvironment(), String.class));
+			final Set<IType> possibleTypes = Collections.singleton(new ClassType(queryEnvironment,
+					String.class));
 			variables.put("self", possibleTypes);
 			completionProposals.addAll(getAqlCompletionProposals(variables, acceleoValidationResult
 					.getValidationResult(errorTemplate.getPost().getAst())));

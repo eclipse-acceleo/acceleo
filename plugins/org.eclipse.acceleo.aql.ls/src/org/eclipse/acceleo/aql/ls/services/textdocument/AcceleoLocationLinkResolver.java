@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -343,8 +343,8 @@ public class AcceleoLocationLinkResolver {
 		// open source file whenever it's possible
 		java.net.URI targetDocumentUri;
 		try {
-			final IQualifiedNameResolver resolver = destinationTextDocument.getAcceleoEnvironment()
-					.getQueryEnvironment().getLookupEngine().getResolver();
+			final IQualifiedNameResolver resolver = destinationTextDocument.getQueryEnvironment()
+					.getLookupEngine().getResolver();
 			targetDocumentUri = resolver.getSourceURL(qualifiedName).toURI();
 		} catch (
 

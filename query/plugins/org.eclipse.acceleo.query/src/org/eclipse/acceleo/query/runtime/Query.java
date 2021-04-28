@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,9 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.services.BooleanServices;
 import org.eclipse.acceleo.query.services.CollectionServices;
@@ -136,6 +139,60 @@ public final class Query {
 	 */
 	public static IQueryEnvironment newEnvironment() {
 		return new QueryEnvironment();
+	}
+
+	/**
+	 * Create a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default with Acceleo
+	 * Query.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @return a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default with Acceleo
+	 *         Query
+	 * @since 9.0
+	 */
+	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
+			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider) {
+		return newQualifiedNameEnvironmentWithDefaultServices(resolver, xRefProvider, null);
+	}
+
+	/**
+	 * Create a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default with Acceleo
+	 * Query.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @param rootProvider
+	 *            an instance to search all instances at evaluation time
+	 * @return a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default with Acceleo
+	 *         Query
+	 * @since 9.0
+	 */
+	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
+			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider,
+			IRootEObjectProvider rootProvider) {
+		final IQualifiedNameQueryEnvironment env = newQualifiedNameEnvironment(resolver);
+
+		configureEnvironment(env, xRefProvider, rootProvider);
+
+		return env;
+	}
+
+	/**
+	 * Create a new {@link IQualifiedNameQueryEnvironment} with no services configured.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @return a new {@link IQualifiedNameQueryEnvironment} with no services configured.
+	 * @since 9.0
+	 */
+	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironment(
+			IQualifiedNameResolver resolver) {
+		return new QualifiedNameQueryEnvironment(resolver);
 	}
 
 }

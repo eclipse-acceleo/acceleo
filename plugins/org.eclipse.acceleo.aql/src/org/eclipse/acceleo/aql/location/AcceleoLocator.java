@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,14 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.ASTNode;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.location.aql.AqlLocator;
 import org.eclipse.acceleo.aql.location.aql.AqlVariablesLocalContext;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.query.parser.AstResult;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -33,9 +32,9 @@ import org.eclipse.emf.ecore.EObject;
 public class AcceleoLocator {
 
 	/**
-	 * The {@link IAcceleoEnvironment} of the Acceleo contents.
+	 * The {@link IQualifiedNameQueryEnvironment} of the Acceleo contents.
 	 */
-	private final IAcceleoEnvironment acceleoEnvironment;
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * The {@link AqlLocator} we delegate to in case we are inside an AQL expression.
@@ -43,23 +42,15 @@ public class AcceleoLocator {
 	private final AqlLocator aqlLocator;
 
 	/**
-	 * The {@link IQualifiedNameLookupEngine}.
-	 */
-	private IQualifiedNameLookupEngine lookupEngine;
-
-	/**
 	 * Creates a new {@link AcceleoLocator}.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) {@link IAcceleoEnvironment} of the Acceleo contents.
-	 * @param lookupEngine
-	 *            the {@link IQualifiedNameLookupEngine}
+	 * @param queryEnvironment
+	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment} of the Acceleo contents.
 	 */
-	public AcceleoLocator(IAcceleoEnvironment acceleoEnvironment, IQualifiedNameLookupEngine lookupEngine) {
-		this.acceleoEnvironment = acceleoEnvironment;
-		this.lookupEngine = lookupEngine;
+	public AcceleoLocator(IQualifiedNameQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
 
-		this.aqlLocator = new AqlLocator(this.acceleoEnvironment.getQueryEnvironment());
+		this.aqlLocator = new AqlLocator(queryEnvironment);
 	}
 
 	/**
@@ -134,8 +125,8 @@ public class AcceleoLocator {
 	 */
 	private AqlVariablesLocalContext getVariablesContext(EObject aqlAstElement) {
 		ASTNode acceleoContainerOfAqlElement = AcceleoAstUtils.getContainerOfAqlAstElement(aqlAstElement);
-		AqlVariablesLocalContext context = new AcceleoExpressionVariablesContextProvider(
-				this.acceleoEnvironment).doSwitch(acceleoContainerOfAqlElement);
+		AqlVariablesLocalContext context = new AcceleoExpressionVariablesContextProvider(queryEnvironment)
+				.doSwitch(acceleoContainerOfAqlElement);
 		return context;
 	}
 
@@ -145,8 +136,7 @@ public class AcceleoLocator {
 
 		// The definition locator needs the environment for resolving references to out-of-file elements, and
 		// the position so it can delegate to the AQL locator if we are inside an expression.
-		AcceleoDefinitionLocator definitionLocator = new AcceleoDefinitionLocator(this.acceleoEnvironment,
-				lookupEngine);
+		AcceleoDefinitionLocator definitionLocator = new AcceleoDefinitionLocator(queryEnvironment);
 
 		// Retrieve the links from our element to its definition location(s).
 		List<AbstractLocationLink<?, ?>> linksToDefinitionLocations = definitionLocator.doSwitch(

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
@@ -271,12 +270,11 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 
 			// Acceleo provides an API to access completion proposals.
 			final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
-			IAcceleoEnvironment acceleoEnvironment = acceleoTextDocument.getAcceleoEnvironment();
 			String source = acceleoTextDocument.getContents();
 			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position, source);
 			List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(
-					acceleoEnvironment, acceleoEnvironment.getQueryEnvironment().getLookupEngine(),
-					acceleoTextDocument.getFileNameWithoutExtension(), source, atIndex);
+					acceleoTextDocument.getQueryEnvironment(), acceleoTextDocument
+							.getFileNameWithoutExtension(), source, atIndex);
 
 			canceler.checkCanceled();
 			List<CompletionItem> completionItems = AcceleoLanguageServerServicesUtils.transform(

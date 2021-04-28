@@ -21,17 +21,16 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.eclipse.acceleo.Import;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 
 /**
  * A representation, in the {@link AcceleoLanguageServer} of a container of {@link AcceleoTextDocument
- * AcceleoTextDocuments} that share a same {@link IAcceleoEnvironment}. It may or may not correspond to a
- * physical element in the client.
+ * AcceleoTextDocuments} that share a same {@link IQualifiedNameQueryEnvironment}. It may or may not
+ * correspond to a physical element in the client.
  * 
  * @author Florent Latombe
  */
@@ -204,16 +203,17 @@ public class AcceleoProject {
 	}
 
 	/**
-	 * We receive this notification when an {@link AcceleoTextDocument} in our {@link AcceleoEnvironment} has
-	 * changed and saved. We want to re-validate any of our modules that depended on it.
+	 * We receive this notification when an {@link AcceleoTextDocument} in our
+	 * {@link IQualifiedNameQueryEnvironment} has changed and saved. We want to re-validate any of our modules
+	 * that depended on it.
 	 * 
 	 * @param savedTextDocument
 	 *            the (non-{@code null}) {@link AcceleoTextDocument} that was saved.
 	 */
 	public void documentSaved(AcceleoTextDocument savedTextDocument) {
 		final String qualifiedNameOfSavedModule = savedTextDocument.getModuleQualifiedName();
-		final IQualifiedNameLookupEngine lookupEngine = savedTextDocument.getAcceleoEnvironment()
-				.getQueryEnvironment().getLookupEngine();
+		final IQualifiedNameLookupEngine lookupEngine = savedTextDocument.getQueryEnvironment()
+				.getLookupEngine();
 
 		// First clear the environment for the document that was changed.
 		lookupEngine.clearContext(qualifiedNameOfSavedModule);
@@ -236,16 +236,16 @@ public class AcceleoProject {
 	}
 
 	/**
-	 * We receive this notification when an {@link AcceleoTextDocument} in our {@link AcceleoEnvironment} has
-	 * been removed. We want to unregister any services it has contributed and re-parse and re-validate any of
-	 * our modules that depended on it.
+	 * We receive this notification when an {@link AcceleoTextDocument} in our
+	 * {@link IQualifiedNameQueryEnvironment} has been removed. We want to unregister any services it has
+	 * contributed and re-parse and re-validate any of our modules that depended on it.
 	 * 
 	 * @param removedTextDocument
 	 *            the (non-{@code null}) {@link AcceleoTextDocument} that has been removed.
 	 */
 	public void documentRemoved(AcceleoTextDocument removedTextDocument) {
-		final IQualifiedNameLookupEngine lookupEngine = removedTextDocument.getAcceleoEnvironment()
-				.getQueryEnvironment().getLookupEngine();
+		final IQualifiedNameLookupEngine lookupEngine = removedTextDocument.getQueryEnvironment()
+				.getLookupEngine();
 
 		// Since the qualified name of a module depends on its environment, we want the qualified name
 		// according to our environment.

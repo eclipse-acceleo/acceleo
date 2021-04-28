@@ -26,6 +26,7 @@ import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.URI;
@@ -90,8 +91,8 @@ public final class AcceleoUtil {
 	 * 
 	 * @param evaluator
 	 *            the {@link AcceleoEvaluator}
-	 * @param acceleoEnvironment
-	 *            the {@link IAcceleoEnvironment}
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param module
 	 *            the {@link Module}
 	 * @param model
@@ -99,18 +100,18 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            destination {@link URI}
 	 */
-	public static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
+	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, Resource model, URI destination) {
-		generate(evaluator, acceleoEnvironment, module, Collections.singletonList(model), destination);
+		generate(evaluator, queryEnvironment, module, Collections.singletonList(model), destination);
 	}
 
 	/**
-	 * Generates with the given {@link AcceleoEvaluator} and {@link IAcceleoEnvironment}.
+	 * Generates with the given {@link AcceleoEvaluator} and {@link IQueryEnvironment}.
 	 * 
 	 * @param evaluator
 	 *            the {@link AcceleoEvaluator}
-	 * @param acceleoEnvironment
-	 *            the {@link IAcceleoEnvironment}
+	 * @param queryEnvironment
+	 *            the {@link IQueryEnvironment}
 	 * @param module
 	 *            the {@link Module}
 	 * @param resourceSet
@@ -118,14 +119,13 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            the destination {@link URI}
 	 */
-	public static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
+	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, ResourceSet resourceSet, URI destination) {
-		generate(evaluator, acceleoEnvironment, module, resourceSet.getResources(), destination);
+		generate(evaluator, queryEnvironment, module, resourceSet.getResources(), destination);
 	}
 
-	private static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
+	private static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, List<Resource> resources, URI destination) {
-		final IQueryEnvironment queryEnvironment = acceleoEnvironment.getQueryEnvironment();
 
 		final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
 		final Template main = getMainTemplate(module);

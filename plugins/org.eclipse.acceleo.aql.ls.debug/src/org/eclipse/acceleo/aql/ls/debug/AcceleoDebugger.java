@@ -26,9 +26,7 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
@@ -40,8 +38,6 @@ import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
-import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IContainer;
@@ -78,19 +74,17 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			spawnRunningThread(threadID, Thread.currentThread().getName(), module);
 			try {
 				if (isNoDebug()) {
-					generateNoDebug(environment, module, model);
+					generateNoDebug(queryEnvironment, module, model);
 				} else {
-					evaluator = new AcceleoDebugEvaluator(environment, environment.getQueryEnvironment()
-							.getLookupEngine());
+					evaluator = new AcceleoDebugEvaluator(queryEnvironment);
 
-					final IQualifiedNameResolver resolver = environment.getQueryEnvironment()
-							.getLookupEngine().getResolver();
+					final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 					resolver.clearLoaders();
 					resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 					resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(
 							AcceleoParser.QUALIFIER_SEPARATOR));
 
-					AcceleoUtil.generate(evaluator, environment, module, model, getDestination());
+					AcceleoUtil.generate(evaluator, queryEnvironment, module, model, getDestination());
 				}
 			} finally {
 				// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
@@ -133,13 +127,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		/**
 		 * Constructor.
 		 * 
-		 * @param environment
-		 *            the {@link IllegalAccessError}
-		 * @param lookupEngine
-		 *            the {@link IQualifiedNameLookupEngine}
+		 * @param queryEnvironment
+		 *            the {@link IQualifiedNameQueryEnvironment}
 		 */
-		AcceleoDebugEvaluator(IAcceleoEnvironment environment, IQualifiedNameLookupEngine lookupEngine) {
-			super(environment, lookupEngine);
+		AcceleoDebugEvaluator(IQualifiedNameQueryEnvironment queryEnvironment) {
+			super(queryEnvironment.getLookupEngine());
 		}
 
 		@Override
@@ -185,9 +177,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	public static final String DESTINATION = "destination";
 
 	/**
-	 * The {@link IAcceleoEnvironment}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	private IAcceleoEnvironment environment;
+	private IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * The destination {@link URI}.
@@ -232,8 +224,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
-		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		environment = new AcceleoEnvironment(queryEnvironment);
+		/* FIXME we need a cross reference provider, and we need to make it configurable */
+		queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, null, null);
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
 		}
@@ -259,15 +252,15 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	/**
 	 * Registers the given {@link EPackage} in the given {@link IQualifiedNameQueryEnvironment} recursively.
 	 * 
-	 * @param queryEnvironment
+	 * @param environment
 	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param ePackage
 	 *            the {@link EPackage}
 	 */
-	private void registerEPackage(IQualifiedNameQueryEnvironment queryEnvironment, EPackage ePackage) {
-		queryEnvironment.registerEPackage(ePackage);
+	private void registerEPackage(IQualifiedNameQueryEnvironment environment, EPackage ePackage) {
+		environment.registerEPackage(ePackage);
 		for (EPackage child : ePackage.getESubpackages()) {
-			registerEPackage(queryEnvironment, child);
+			registerEPackage(environment, child);
 		}
 	}
 
@@ -308,23 +301,22 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	/**
 	 * Generates without debug.
 	 * 
-	 * @param env
-	 *            the {@link IAcceleoEnvironment}
+	 * @param environment
+	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param module
 	 *            the {@link Module} to generate
 	 * @param modelResource
 	 *            the model {@link Resource}
 	 */
-	protected void generateNoDebug(IAcceleoEnvironment env, Module module, Resource modelResource) {
-		final AcceleoEvaluator noDebugEvaluator = new AcceleoEvaluator(env, env.getQueryEnvironment()
-				.getLookupEngine());
-		final IQualifiedNameResolver resolver = environment.getQueryEnvironment().getLookupEngine()
-				.getResolver();
+	protected void generateNoDebug(IQualifiedNameQueryEnvironment environment, Module module,
+			Resource modelResource) {
+		final AcceleoEvaluator noDebugEvaluator = new AcceleoEvaluator(environment.getLookupEngine());
+		final IQualifiedNameResolver resolver = environment.getLookupEngine().getResolver();
 		resolver.clearLoaders();
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), noDebugEvaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		AcceleoUtil.generate(noDebugEvaluator, env, module, modelResource, getDestination());
+		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, getDestination());
 	}
 
 	@Override
@@ -360,8 +352,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	public EObject getInstruction(String path, long line, long column) {
 		AcceleoAstResult moduleAstResult = null;
 		try {
-			final IQualifiedNameResolver resolver = environment.getQueryEnvironment().getLookupEngine()
-					.getResolver();
+			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 			final String moduleQualifiedName = resolver.getQualifiedName(new URL("file://" + path));
 			if (moduleQualifiedName != null) {
 				final Object resolved = resolver.resolve(moduleQualifiedName);
@@ -411,8 +402,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		Module module = getModule(instruction);
 		if (module != null) {
 			final AcceleoAstResult moduleAstResult = module.getAst();
-			final IQualifiedNameResolver resolver = environment.getQueryEnvironment().getLookupEngine()
-					.getResolver();
+			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 			final String moduleQualifiedName = resolver.getQualifiedName(moduleAstResult.getModule());
 			URL moduleSourceURL = resolver.getSourceURL(moduleQualifiedName);
 			try {

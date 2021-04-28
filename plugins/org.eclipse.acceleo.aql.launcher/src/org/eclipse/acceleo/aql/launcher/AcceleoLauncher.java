@@ -17,17 +17,15 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameResolver;
-import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -216,11 +214,10 @@ public class AcceleoLauncher implements IApplication {
 
 		IQualifiedNameResolver resolver = new OSGiQualifiedNameResolver(bundle,
 				AcceleoParser.QUALIFIER_SEPARATOR);
-		final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		// TODO generation strategy should be configurable
-		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment);
-		AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
-				.getLookupEngine());
+		/* FIXME we need a cross reference provider, and we need to make it configurable */
+		final IQualifiedNameQueryEnvironment queryEnvironment = Query
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, null, null);
+		AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
@@ -232,14 +229,14 @@ public class AcceleoLauncher implements IApplication {
 		} else {
 			mainModule = null;
 		}
-		evaluate(evaluator, acceleoEnvironment, queryEnvironment.getLookupEngine(), mainModule,
-				modelResourceSet);
-		return acceleoEnvironment.getGenerationResult();
+		evaluate(evaluator, queryEnvironment, mainModule, modelResourceSet);
+		return evaluator.getGenerationResult();
 	}
 
-	private void evaluate(AcceleoEvaluator evaluator, IAcceleoEnvironment environment,
-			IQualifiedNameLookupEngine lookupEngine, Module mainModule, ResourceSet modelResourceSet) {
-		AcceleoUtil.generate(evaluator, environment, mainModule, modelResourceSet, URI.createURI(target));
+	private void evaluate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
+			Module mainModule, ResourceSet modelResourceSet) {
+		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, URI.createURI(
+				target));
 	}
 
 	private void printDiagnostic(PrintStream stream, Diagnostic diagnostic, String indentation) {

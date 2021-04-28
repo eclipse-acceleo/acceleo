@@ -45,7 +45,6 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.query.parser.AstResult;
@@ -82,9 +81,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 * A new line.
 	 */
 	private static final String NEW_LINE = "\n";
-
-	/** The current evaluation environment. */
-	private final IAcceleoEnvironment environment;
 
 	/**
 	 * The {@link IQueryEvaluationEngine} used to evaluate AQL expressions.
@@ -128,29 +124,31 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private IAcceleoGenerationStrategy generationStrategy;
 
 	/**
+	 * The {@link GenerationResult}.
+	 */
+	private GenerationResult generationResult;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param other
 	 *            the other {@link AcceleoEvaluator}.
 	 */
 	public AcceleoEvaluator(AcceleoEvaluator other) {
-		this(other.environment, other.lookupEngine);
+		this(other.lookupEngine);
 		destination = other.destination;
 		generationStrategy = other.generationStrategy;
+		generationResult = other.generationResult;
 	}
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param environment
-	 *            the {@link IAcceleoEnvironment}
 	 * @param lookupEngine
 	 *            the {@link IQualifiedNameLookupEngine}
 	 */
-	public AcceleoEvaluator(IAcceleoEnvironment environment, IQualifiedNameLookupEngine lookupEngine) {
-		this.environment = environment;
-		final IQueryEnvironment queryEnvironment = environment.getQueryEnvironment();
-		this.aqlEngine = QueryEvaluation.newEngine(queryEnvironment);
+	public AcceleoEvaluator(IQualifiedNameLookupEngine lookupEngine) {
+		this.aqlEngine = QueryEvaluation.newEngine((IQueryEnvironment)lookupEngine.getQueryEnvironment());
 		this.lookupEngine = lookupEngine;
 	}
 
@@ -175,6 +173,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		destination = destinationURI;
 		generationStrategy = strategy;
 		lastLineOfLastStatement = "";
+		// TODO this is an issue for calling generate() multiple times
+		if (generationResult == null) {
+			generationResult = new GenerationResult();
+		}
+
 		pushVariables(variables);
 		try {
 			res = doSwitch(node);
@@ -268,15 +271,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Gets the {@link IAcceleoEnvironment}.
-	 * 
-	 * @return the {@link IAcceleoEnvironment}
-	 */
-	protected IAcceleoEnvironment getEnvironment() {
-		return environment;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.util.AcceleoSwitch#caseExpression(org.eclipse.acceleo.Expression)
@@ -288,7 +282,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
 					"AQL parsing issue", new Object[] {expression });
 			diagnostic.addAll(ast.getDiagnostic());
-			environment.getGenerationResult().addDiagnostic(diagnostic);
+			generationResult.addDiagnostic(diagnostic);
 		}
 
 		final EvaluationResult evalResult = aqlEngine.eval(ast, peekVariables());
@@ -297,7 +291,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					ID, 0, "AQL evaluation issue", new Object[] {expression, new HashMap<String, Object>(
 							peekVariables()) });
 			diagnostic.addAll(evalResult.getDiagnostic());
-			environment.getGenerationResult().addDiagnostic(diagnostic);
+			generationResult.addDiagnostic(diagnostic);
 		}
 
 		return evalResult.getResult();
@@ -515,7 +509,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
 					"The URL can't be null", new Object[] {fileStatement.getUrl(),
 							new HashMap<String, Object>(peekVariables()) });
-			environment.getGenerationResult().addDiagnostic(diagnostic);
+			generationResult.addDiagnostic(diagnostic);
 
 			res = EMPTY_RESULT;
 		} else {
@@ -538,7 +532,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0, e
 						.getMessage(), new Object[] {fileStatement, new HashMap<String, Object>(
 								peekVariables()) });
-				environment.getGenerationResult().addDiagnostic(diagnostic);
+				generationResult.addDiagnostic(diagnostic);
 			}
 
 			res = EMPTY_RESULT;
@@ -566,7 +560,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
 				lineDelimiter);
 		writers.addLast(writer);
-		environment.getGenerationResult().getGeneratedFiles().add(uri);
+		generationResult.getGeneratedFiles().add(uri);
 	}
 
 	/**
@@ -614,14 +608,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0, e
 							.getMessage() + " fallback to UTF-8", new Object[] {fileStatement.getUrl(),
 									new HashMap<String, Object>(peekVariables()) });
-					environment.getGenerationResult().addDiagnostic(diagnostic);
+					generationResult.addDiagnostic(diagnostic);
 				}
 				charset = defaultCharset;
 			} else {
 				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0,
 						"The Charset can't be null, fallback to UTF-8", new Object[] {fileStatement.getUrl(),
 								new HashMap<String, Object>(peekVariables()) });
-				environment.getGenerationResult().addDiagnostic(diagnostic);
+				generationResult.addDiagnostic(diagnostic);
 				charset = StandardCharsets.UTF_8;
 			}
 		} else {
@@ -657,7 +651,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
 					"The expression must be evaluated to a boolean not: " + toString(condition),
 					new Object[] {ifStatement.getCondition(), new HashMap<String, Object>(peekVariables()) });
-			environment.getGenerationResult().addDiagnostic(diagnostic);
+			generationResult.addDiagnostic(diagnostic);
 			res = EMPTY_RESULT;
 		}
 
@@ -678,7 +672,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0,
 					"The expression should not be null", new Object[] {forStatement.getBinding()
 							.getInitExpression(), new HashMap<String, Object>(peekVariables()) });
-			environment.getGenerationResult().addDiagnostic(diagnostic);
+			generationResult.addDiagnostic(diagnostic);
 		}
 		if (!iteration.isEmpty()) {
 			final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
@@ -717,7 +711,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public Object caseError(Error error) {
 		final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
 				"Acceleo parsing error see validation for more details", new Object[] {error });
-		environment.getGenerationResult().addDiagnostic(diagnostic);
+		generationResult.addDiagnostic(diagnostic);
 		return EMPTY_RESULT;
 	}
 
@@ -759,6 +753,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public IAcceleoGenerationStrategy getGenerationStrategy() {
 		return generationStrategy;
+	}
+
+	/**
+	 * Gets the {@link GenerationResult}.
+	 * 
+	 * @return the {@link GenerationResult}
+	 */
+	public GenerationResult getGenerationResult() {
+		return generationResult;
 	}
 
 }

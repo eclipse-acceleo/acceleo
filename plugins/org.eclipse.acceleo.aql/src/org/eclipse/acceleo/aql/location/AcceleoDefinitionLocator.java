@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,9 +26,8 @@ import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
 /**
@@ -40,28 +39,19 @@ import org.eclipse.acceleo.util.AcceleoSwitch;
 public class AcceleoDefinitionLocator extends AcceleoSwitch<List<AbstractLocationLink<?, ?>>> {
 
 	/**
-	 * The {@link IAcceleoEnvironment} in which this locator searches for definitions.
+	 * The {@link IQualifiedNameQueryEnvironment} in which this locator searches for definitions.
 	 */
-	private final IAcceleoEnvironment acceleoEnvironment;
-
-	/**
-	 * The {@link IQualifiedNameLookupEngine}.
-	 */
-	private IQualifiedNameLookupEngine lookupEngine;
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param acceleoEnvironment
-	 *            the (non-{@code null}) {@link IAcceleoEnvironment} of the {@link Module} to which the
-	 *            argument {@link ASTNode} belongs.
-	 * @param lookupEngine
-	 *            the {@link IQualifiedNameLookupEngine}
+	 * @param queryEnvironment
+	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment} of the {@link Module} to which
+	 *            the argument {@link ASTNode} belongs.
 	 */
-	public AcceleoDefinitionLocator(IAcceleoEnvironment acceleoEnvironment,
-			IQualifiedNameLookupEngine lookupEngine) {
-		this.acceleoEnvironment = acceleoEnvironment;
-		this.lookupEngine = lookupEngine;
+	public AcceleoDefinitionLocator(IQualifiedNameQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
 	}
 
 	// Simple cases where the argument element is its own definition.
@@ -113,7 +103,8 @@ public class AcceleoDefinitionLocator extends AcceleoSwitch<List<AbstractLocatio
 	 */
 	@Override
 	public List<AbstractLocationLink<?, ?>> caseModuleReference(ModuleReference moduleReference) {
-		final Object resolved = lookupEngine.getResolver().resolve(moduleReference.getQualifiedName());
+		final Object resolved = queryEnvironment.getLookupEngine().getResolver().resolve(moduleReference
+				.getQualifiedName());
 		if (resolved instanceof Module) {
 			return Collections.singletonList(new AcceleoLocationLinkToAcceleo(moduleReference,
 					(Module)resolved));
