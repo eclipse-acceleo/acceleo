@@ -13,7 +13,6 @@ import java.net.URL;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -65,7 +64,7 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy());
+		environment = new AcceleoEnvironment(queryEnvironment);
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(environment, queryEnvironment
 				.getLookupEngine());
