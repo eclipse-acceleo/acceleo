@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.util.AcceleoSwitch;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -94,10 +95,12 @@ public final class AcceleoUtil {
 	 *            the {@link Module}
 	 * @param model
 	 *            the {@link Resource} containing the model
+	 * @param destination
+	 *            destination {@link URI}
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
-			Module module, Resource model) {
-		generate(evaluator, acceleoEnvironment, module, Collections.singletonList(model));
+			Module module, Resource model, URI destination) {
+		generate(evaluator, acceleoEnvironment, module, Collections.singletonList(model), destination);
 	}
 
 	/**
@@ -111,14 +114,16 @@ public final class AcceleoUtil {
 	 *            the {@link Module}
 	 * @param resourceSet
 	 *            the {@link ResourceSet} containing the input model(s)
+	 * @param destination
+	 *            the destination {@link URI}
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
-			Module module, ResourceSet resourceSet) {
-		generate(evaluator, acceleoEnvironment, module, resourceSet.getResources());
+			Module module, ResourceSet resourceSet, URI destination) {
+		generate(evaluator, acceleoEnvironment, module, resourceSet.getResources(), destination);
 	}
 
 	private static void generate(AcceleoEvaluator evaluator, IAcceleoEnvironment acceleoEnvironment,
-			Module module, List<Resource> resources) {
+			Module module, List<Resource> resources, URI destination) {
 		final IQueryEnvironment queryEnvironment = acceleoEnvironment.getQueryEnvironment();
 
 		final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
@@ -148,7 +153,7 @@ public final class AcceleoUtil {
 			final Map<String, Object> variables = new HashMap<String, Object>();
 			for (EObject value : values) {
 				variables.put(parameterName, value);
-				evaluator.generate(module, variables);
+				evaluator.generate(module, variables, destination);
 			}
 		}
 	}

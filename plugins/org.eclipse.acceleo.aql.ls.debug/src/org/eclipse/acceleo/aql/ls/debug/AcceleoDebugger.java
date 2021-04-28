@@ -91,7 +91,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(
 							AcceleoParser.QUALIFIER_SEPARATOR));
 
-					AcceleoUtil.generate(evaluator, environment, module, model);
+					AcceleoUtil.generate(evaluator, environment, module, model, getDestination());
 				}
 			} finally {
 				// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
@@ -110,8 +110,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			if (workspace != null) {
-				IContainer container = workspace.getRoot().getContainerForLocation(new Path(environment
-						.getDestination().toFileString()));
+				IContainer container = workspace.getRoot().getContainerForLocation(new Path(destination
+						.toFileString()));
 				if (container != null) {
 					try {
 						container.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
@@ -141,11 +141,6 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		 */
 		AcceleoDebugEvaluator(IAcceleoEnvironment environment, IQualifiedNameLookupEngine lookupEngine) {
 			super(environment, lookupEngine);
-		}
-
-		@Override
-		public Object generate(ASTNode node, Map<String, Object> variables) {
-			return super.generate(node, variables);
 		}
 
 		@Override
@@ -196,6 +191,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	private IAcceleoEnvironment environment;
 
 	/**
+	 * The destination {@link URI}.
+	 */
+	private URI destination;
+
+	/**
 	 * The {@link AcceleoAstResult}.
 	 */
 	private AcceleoAstResult astResult;
@@ -227,14 +227,14 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		setNoDebug(noDebug);
 		final URI moduleURI = URI.createURI((String)arguments.get(MODULE));
 		final URI modelURI = URI.createURI((String)arguments.get(MODEL));
-		final URI destination = URI.createURI((String)arguments.get(DESTINATION));
+		destination = URI.createURI((String)arguments.get(DESTINATION));
 
 		final IProject project = LSPEclipseUtils.findResourceFor((String)arguments.get(MODULE)).getProject();
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-		environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy(), destination);
+		environment = new AcceleoEnvironment(queryEnvironment, new DefaultGenerationStrategy());
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
 		}
@@ -325,7 +325,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), noDebugEvaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		AcceleoUtil.generate(noDebugEvaluator, env, module, modelResource);
+		AcceleoUtil.generate(noDebugEvaluator, env, module, modelResource, getDestination());
 	}
 
 	@Override
@@ -470,4 +470,14 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		return res;
 	}
+
+	/**
+	 * Gets the destination {@link URI}.
+	 * 
+	 * @return the destination {@link URI}
+	 */
+	protected URI getDestination() {
+		return destination;
+	}
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Obeo.
+ * Copyright (c) 2016, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -103,7 +103,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final URI generatedFolderURI = URI.createURI("generated/").resolve(model.getURI());
 		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
-		AcceleoUtil.generate(evaluator, environment, module, model);
+		AcceleoUtil.generate(evaluator, environment, module, model, memoryDestination);
 
 		assertGenerationMessages(environment.getGenerationResult());
 

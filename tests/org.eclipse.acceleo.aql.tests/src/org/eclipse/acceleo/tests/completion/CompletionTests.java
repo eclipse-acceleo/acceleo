@@ -45,7 +45,6 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameQueryEnviro
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,7 +123,7 @@ public class CompletionTests {
 				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
 		final IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
-				new DefaultGenerationStrategy(), URI.createURI(""));
+				new DefaultGenerationStrategy());
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 				.getLookupEngine());

@@ -39,11 +39,6 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	private final IAcceleoGenerationStrategy generationStrategy;
 
 	/**
-	 * The destination {@link URI}.
-	 */
-	private final URI destination;
-
-	/**
 	 * The {@link GenerationResult}.
 	 */
 	private final GenerationResult generationResult = new GenerationResult();
@@ -55,13 +50,10 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param generationStrategy
 	 *            the {@link IAcceleoGenerationStrategy}
-	 * @param destination
-	 *            the destination {@link URI}
 	 */
 	public AcceleoEnvironment(IQualifiedNameQueryEnvironment aqlEnvironment,
-			IAcceleoGenerationStrategy generationStrategy, URI destination) {
+			IAcceleoGenerationStrategy generationStrategy) {
 		this.generationStrategy = generationStrategy;
-		this.destination = destination;
 
 		this.aqlEnvironment = aqlEnvironment;
 		/* FIXME we need a cross reference provider, and we need to make it configurable */
@@ -92,11 +84,6 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	public void write(String text) throws IOException {
 		IAcceleoWriter writer = writers.peekLast();
 		writer.append(text);
-	}
-
-	@Override
-	public URI getDestination() {
-		return destination;
 	}
 
 	@Override

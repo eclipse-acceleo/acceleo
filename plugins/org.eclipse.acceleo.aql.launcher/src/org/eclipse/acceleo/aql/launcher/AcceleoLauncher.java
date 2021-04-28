@@ -220,7 +220,7 @@ public class AcceleoLauncher implements IApplication {
 		final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
 		// TODO generation strategy should be configurable
 		IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(queryEnvironment,
-				new DefaultGenerationStrategy(), URI.createURI(target));
+				new DefaultGenerationStrategy());
 		AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment
 				.getLookupEngine());
 
@@ -241,7 +241,7 @@ public class AcceleoLauncher implements IApplication {
 
 	private void evaluate(AcceleoEvaluator evaluator, IAcceleoEnvironment environment,
 			IQualifiedNameLookupEngine lookupEngine, Module mainModule, ResourceSet modelResourceSet) {
-		AcceleoUtil.generate(evaluator, environment, mainModule, modelResourceSet);
+		AcceleoUtil.generate(evaluator, environment, mainModule, modelResourceSet, URI.createURI(target));
 	}
 
 	private void printDiagnostic(PrintStream stream, Diagnostic diagnostic, String indentation) {

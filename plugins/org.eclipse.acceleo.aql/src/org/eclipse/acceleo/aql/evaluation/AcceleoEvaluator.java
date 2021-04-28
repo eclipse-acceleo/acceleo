@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020  Obeo.
+ * Copyright (c) 2016, 2021  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -115,6 +115,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private boolean inlinedBlock;
 
 	/**
+	 * The destination {@link URI}.
+	 */
+	private URI destination;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param other
@@ -122,6 +127,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public AcceleoEvaluator(AcceleoEvaluator other) {
 		this(other.environment, other.lookupEngine);
+		destination = other.destination;
 	}
 
 	/**
@@ -146,12 +152,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 *            the {@link ASTNode} to generate
 	 * @param variables
 	 *            the variables
+	 * @param destinationURI
+	 *            the destination {@link URI}
 	 * @return the generated {@link Object}, can be <code>null</code>
 	 */
-	public Object generate(ASTNode node, Map<String, Object> variables) {
+	public Object generate(ASTNode node, Map<String, Object> variables, URI destinationURI) {
 
 		final Object res;
 
+		destination = destinationURI;
 		lastLineOfLastStatement = "";
 		pushVariables(variables);
 		try {
@@ -499,7 +508,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		} else {
 			final OpenModeKind mode = fileStatement.getMode();
 			final Charset charset = getCharset(fileStatement);
-			final URI uri = URI.createURI(toString(uriObject), true).resolve(environment.getDestination());
+			final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
 			try {
 				// FIXME line delimiter
 				environment.openWriter(uri, mode, charset, NEW_LINE);
@@ -672,6 +681,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		return buffer.toString();
+	}
+
+	/**
+	 * Gets the destination {@link URI}.
+	 * 
+	 * @return the destination {@link URI}
+	 */
+	public URI getDestination() {
+		return destination;
 	}
 
 }
