@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Huawei.
+ * Copyright (c) 2020, 2021 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -7,9 +7,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.profile;
 
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.profiler.Profiler;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -27,13 +27,13 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	/**
 	 * Constructor.
 	 * 
-	 * @param environment
-	 *            the acceleo environment.
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param profiler
 	 *            the profiler
 	 */
-	public AcceleoProfilerEvaluator(IAcceleoEnvironment environment, Profiler profiler) {
-		super(environment, environment.getQueryEnvironment().getLookupEngine());
+	public AcceleoProfilerEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, Profiler profiler) {
+		super(queryEnvironment.getLookupEngine());
 		this.profiler = profiler;
 	}
 
