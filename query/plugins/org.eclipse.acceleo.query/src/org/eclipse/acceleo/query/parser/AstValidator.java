@@ -294,25 +294,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		final List<Set<IType>> argTypes = inferArgTypes(call);
 
-		final String serviceName = call.getServiceName();
-		final ServicesValidationResult servicesValidationResult;
-		switch (call.getType()) {
-			case CALLSERVICE:
-				servicesValidationResult = services.callType(call, validationResult, serviceName, argTypes);
-				break;
-			case CALLORAPPLY:
-				servicesValidationResult = services.callOrApplyTypes(call, validationResult, serviceName,
-						argTypes);
-				break;
-			case COLLECTIONCALL:
-				servicesValidationResult = services.collectionServiceCallTypes(call, validationResult,
-						serviceName, argTypes);
-				break;
-			default:
-				throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
-		}
-
+		final ServicesValidationResult servicesValidationResult = services.call(call, validationResult,
+				argTypes);
 		possibleTypes = servicesValidationResult.getResultingTypes();
+
 		return checkWarningsAndErrors(call, possibleTypes);
 	}
 

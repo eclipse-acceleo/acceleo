@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,11 @@ public class ValidationServices extends AbstractLanguageServices {
 	private static final String VARIABLE_HAS_NO_TYPES = "The %s variable has no types";
 
 	/**
+	 * Should never happen message.
+	 */
+	private static final String SHOULD_NEVER_HAPPEN = "should never happen";
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnv
@@ -109,6 +114,38 @@ public class ValidationServices extends AbstractLanguageServices {
 		} catch (NullPointerException e) {
 			throw new AcceleoQueryValidationException(INTERNAL_ERROR_MSG, e);
 		}
+	}
+
+	/**
+	 * Gets the {@link ServicesValidationResult} for the given {@link Call} and {@link IType} of parameters.
+	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult}
+	 * @param argTypes
+	 *            the {@link IType} of parameters
+	 * @return the {@link ServicesValidationResult} for the given {@link Call} and {@link IType} of parameters
+	 */
+	public ServicesValidationResult call(Call call, IValidationResult validationResult,
+			final List<Set<IType>> argTypes) {
+		final ServicesValidationResult servicesValidationResult;
+		final String serviceName = call.getServiceName();
+		switch (call.getType()) {
+			case CALLSERVICE:
+				servicesValidationResult = callType(call, validationResult, serviceName, argTypes);
+				break;
+			case CALLORAPPLY:
+				servicesValidationResult = callOrApplyTypes(call, validationResult, serviceName, argTypes);
+				break;
+			case COLLECTIONCALL:
+				servicesValidationResult = collectionServiceCallTypes(call, validationResult, serviceName,
+						argTypes);
+				break;
+			default:
+				throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
+		}
+		return servicesValidationResult;
 	}
 
 	/**
@@ -508,9 +545,9 @@ public class ValidationServices extends AbstractLanguageServices {
 
 	/**
 	 * Gets the {@link Set} of {@link EClass} form the given {@link IType}.
+	 * 
 	 * @param type
 	 *            the {@link IType}
-	 * 
 	 * @return the {@link Set} of {@link EClass} form the given {@link IType}
 	 */
 	public Set<EClass> getEClasses(IType type) {
