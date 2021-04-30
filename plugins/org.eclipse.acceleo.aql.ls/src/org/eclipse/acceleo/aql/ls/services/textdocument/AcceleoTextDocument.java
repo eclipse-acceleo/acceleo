@@ -13,12 +13,12 @@ package org.eclipse.acceleo.aql.ls.services.textdocument;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.aql.location.AcceleoLocator;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
@@ -81,6 +81,11 @@ public class AcceleoTextDocument {
 	private IAcceleoValidationResult acceleoValidationResult;
 
 	/**
+	 * The module qualified name.
+	 */
+	private String qualifiedName;
+
+	/**
 	 * Creates a new {@link AcceleoTextDocument} corresponding to the given URI and with the given initial
 	 * contents.
 	 * 
@@ -96,6 +101,7 @@ public class AcceleoTextDocument {
 		Objects.requireNonNull(textDocumentContents);
 		this.ownerProject = project;
 		this.uri = textDocumentUri;
+		qualifiedName = getProject().getResolver().getQualifiedName(this.getUrl());
 
 		this.setContents(textDocumentContents);
 	}
@@ -134,6 +140,7 @@ public class AcceleoTextDocument {
 	public void setProject(AcceleoProject acceleoProject) {
 		AcceleoProject oldProject = ownerProject;
 		this.ownerProject = acceleoProject;
+		qualifiedName = getProject().getResolver().getQualifiedName(getUrl());
 		if ((acceleoProject == null && oldProject != null) || !acceleoProject.equals(oldProject)) {
 			// When the project changes, the environment changes.
 			this.resolverChanged();
@@ -208,7 +215,8 @@ public class AcceleoTextDocument {
 	public void validateContents() {
 		IAcceleoValidationResult validationResults = null;
 		if (this.acceleoAstResult != null && this.getQueryEnvironment() != null) {
-			validationResults = doValidation(this.acceleoAstResult, this.getQueryEnvironment());
+			validationResults = doValidation(this.acceleoAstResult, this.getQueryEnvironment(),
+					getModuleQualifiedName());
 		}
 		this.acceleoValidationResult = validationResults;
 	}
@@ -222,14 +230,16 @@ public class AcceleoTextDocument {
 	 * @param queryEnvironment
 	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment} of the document being
 	 *            validated.
+	 * @param qualifiedName
+	 *            the context qualified name
 	 * @return the {@link IAcceleoValidationResult}.
 	 */
 	private static IAcceleoValidationResult doValidation(AcceleoAstResult acceleoAstResult,
-			IQualifiedNameQueryEnvironment queryEnvironment) {
+			IQualifiedNameQueryEnvironment queryEnvironment, String qualifiedName) {
 		Objects.requireNonNull(acceleoAstResult);
 		Objects.requireNonNull(queryEnvironment);
 
-		return validate(queryEnvironment, acceleoAstResult);
+		return validate(queryEnvironment, acceleoAstResult, qualifiedName);
 	}
 
 	/**
@@ -285,11 +295,7 @@ public class AcceleoTextDocument {
 	 *         {@link IQualifiedNameResolver}.
 	 */
 	public String getModuleQualifiedName() {
-		if (getProject() == null) {
-			return null;
-		} else {
-			return getProject().getResolver().getQualifiedName(this.getUrl());
-		}
+		return qualifiedName;
 	}
 
 	/**
@@ -316,12 +322,11 @@ public class AcceleoTextDocument {
 	 *         the Acceleo element found at the given position in the source contents.
 	 */
 	public List<AbstractLocationLink<?, ?>> getDefinitionLocations(int position) {
-		// FIXME we need any module element
-		ModuleElement moduleElement = acceleoAstResult.getModule().getModuleElements().get(0);
 		final IQualifiedNameLookupEngine lookupEngine = getQueryEnvironment().getLookupEngine();
 		lookupEngine.pushImportsContext(getModuleQualifiedName(), getModuleQualifiedName());
-		List<AbstractLocationLink<?, ?>> definitionLocations = new AcceleoLocator(getQueryEnvironment())
-				.getDefinitionLocations(this.acceleoAstResult, position);
+		List<AbstractLocationLink<?, ?>> definitionLocations = new AcceleoLocator(getQueryEnvironment(),
+				getModuleQualifiedName(), acceleoValidationResult).getDefinitionLocations(
+						this.acceleoAstResult, position);
 		lookupEngine.popContext(getModuleQualifiedName());
 		return definitionLocations;
 	}
@@ -336,8 +341,8 @@ public class AcceleoTextDocument {
 	 *         of the Acceleo element found at the given position in the source contents.
 	 */
 	public List<AbstractLocationLink<?, ?>> getDeclarationLocations(int position) {
-		return new AcceleoLocator(getQueryEnvironment()).getDeclarationLocations(this.acceleoAstResult,
-				position);
+		return new AcceleoLocator(getQueryEnvironment(), getModuleQualifiedName(), acceleoValidationResult)
+				.getDeclarationLocations(this.acceleoAstResult, position);
 	}
 
 	/**
@@ -423,22 +428,28 @@ public class AcceleoTextDocument {
 	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment}.
 	 * @param acceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @param qualifiedName
+	 *            the context qualified name
 	 * @return the {@link IAcceleoValidationResult}.
 	 */
 	// FIXME the "synchronized" here is an ugly but convenient way to ensure that a validation finishes before
 	// any other is triggered. Otherwise a validation can push imports which invalidates the services lookup
 	// for another validation
 	private static synchronized IAcceleoValidationResult validate(
-			IQualifiedNameQueryEnvironment queryEnvironment, AcceleoAstResult acceleoAstResult) {
+			IQualifiedNameQueryEnvironment queryEnvironment, AcceleoAstResult acceleoAstResult,
+			String qualifiedName) {
 		String moduleQualifiedNameForValidation = VALIDATION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR
-				+ acceleoAstResult.getModule().getName();
+				+ qualifiedName;
 		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 		resolver.register(moduleQualifiedNameForValidation, acceleoAstResult.getModule());
-
-		final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
-		final IAcceleoValidationResult validationResults = acceleoValidator.validate(acceleoAstResult,
-				moduleQualifiedNameForValidation);
-		return validationResults;
+		try {
+			final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
+			final IAcceleoValidationResult validationResults = acceleoValidator.validate(acceleoAstResult,
+					moduleQualifiedNameForValidation);
+			return validationResults;
+		} finally {
+			resolver.clear(Collections.singleton(moduleQualifiedNameForValidation));
+		}
 	}
 
 	/**

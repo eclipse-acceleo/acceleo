@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.location;
 
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ForStatement;
@@ -22,11 +23,10 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
-import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.location.aql.AqlVariablesLocalContext;
-import org.eclipse.acceleo.aql.validation.AcceleoValidationUtils;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
@@ -40,18 +40,18 @@ import org.eclipse.acceleo.util.AcceleoSwitch;
 public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<AqlVariablesLocalContext> {
 
 	/**
-	 * The {@link IQualifiedNameQueryEnvironment}.
+	 * The {@link IAcceleoValidationResult}.
 	 */
-	private final IQualifiedNameQueryEnvironment queryEnvironment;
+	private final IAcceleoValidationResult acceleoValidationResult;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param queryEnvironment
-	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment}.
+	 * @param acceleoValidationResult
+	 *            the (non-{@code null}) {@link IAcceleoValidationResult}.
 	 */
-	public AcceleoExpressionVariablesContextProvider(IQualifiedNameQueryEnvironment queryEnvironment) {
-		this.queryEnvironment = queryEnvironment;
+	public AcceleoExpressionVariablesContextProvider(IAcceleoValidationResult acceleoValidationResult) {
+		this.acceleoValidationResult = acceleoValidationResult;
 	}
 
 	// Expression and TypedElement are the two entry points into this because these are the only ASTNodes that
@@ -101,11 +101,6 @@ public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<Aql
 	public AqlVariablesLocalContext caseTemplate(Template template) {
 		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
 
-		// Deal with the implicit "self" variable.
-		Set<IType> selfPossibleTypes = Collections.singleton(new ClassType(queryEnvironment, String.class));
-		variablesContext.addVariable(AcceleoUtil.getTemplateImplicitVariableName(), template,
-				selfPossibleTypes);
-
 		for (Variable parameter : template.getParameters()) {
 			variablesContext.addAllVariables(this.getVariableStandaloneContext(parameter));
 		}
@@ -129,6 +124,18 @@ public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<Aql
 		return variablesContext;
 	}
 
+	@Override
+	public AqlVariablesLocalContext caseBinding(Binding binding) {
+		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
+
+		// Order matters probably.
+		variablesContext.addAllVariables(this.getBindingStandaloneContext(binding, binding
+				.eContainer() instanceof ForStatement));
+		variablesContext.addAllVariables(this.doSwitch(binding.eContainer()));
+
+		return variablesContext;
+	}
+
 	/**
 	 * Provides the {@link AqlVariablesLocalContext} corresponding to the given {@link Variable}. If the
 	 * {@link Variable} is supposed to be in the containment hierarchy of the initial argument, use
@@ -141,9 +148,45 @@ public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<Aql
 	private AqlVariablesLocalContext getVariableStandaloneContext(Variable variable) {
 		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
 
-		Set<IType> variablePossibleTypes = AcceleoValidationUtils.getPossibleTypes(variable,
-				queryEnvironment);
-		variablesContext.addVariable(variable.getName(), variable, variablePossibleTypes);
+		final AstResult type = variable.getType();
+		final Set<IType> possibleTypes = acceleoValidationResult.getValidationResult(type).getPossibleTypes(
+				type.getAst());
+		variablesContext.addVariable(variable.getName(), variable, possibleTypes);
+
+		return variablesContext;
+	}
+
+	/**
+	 * Provides the {@link AqlVariablesLocalContext} corresponding to the given {@link Binding}. If the
+	 * {@link Binding} is supposed to be in the containment hierarchy of the initial argument, use
+	 * {@link #caseBinding(Binding)} instead.
+	 * 
+	 * @param binding
+	 *            the (non-{@code null}) {@link Binding}.
+	 * @param extractCollectionTypes
+	 *            <code>true</code> if collection types should be extracted, <code>false</code> otherwise
+	 * @return the {@link AqlVariablesLocalContext} containing the variable defined by {@code variable}.
+	 */
+	private AqlVariablesLocalContext getBindingStandaloneContext(Binding binding,
+			boolean extractCollectionTypes) {
+		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
+
+		final AstResult expression = binding.getInitExpression().getAst();
+		final Set<IType> possibleTypes = acceleoValidationResult.getValidationResult(expression)
+				.getPossibleTypes(expression.getAst());
+		if (extractCollectionTypes) {
+			final Set<IType> extractedPossibleTypes = new LinkedHashSet<IType>();
+			for (IType type : possibleTypes) {
+				if (type instanceof ICollectionType) {
+					extractedPossibleTypes.add(((ICollectionType)type).getCollectionType());
+				} else {
+					extractedPossibleTypes.add(type);
+				}
+			}
+			variablesContext.addVariable(binding.getName(), binding, extractedPossibleTypes);
+		} else {
+			variablesContext.addVariable(binding.getName(), binding, possibleTypes);
+		}
 
 		return variablesContext;
 	}
@@ -152,7 +195,7 @@ public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<Aql
 	public AqlVariablesLocalContext caseForStatement(ForStatement forStatement) {
 		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
 		variablesContext.addAllVariables(this.doSwitch(forStatement.eContainer()));
-		variablesContext.addAllVariables(this.getVariableStandaloneContext(forStatement.getBinding()));
+		variablesContext.addAllVariables(this.getBindingStandaloneContext(forStatement.getBinding(), true));
 		return variablesContext;
 	}
 
@@ -161,7 +204,7 @@ public class AcceleoExpressionVariablesContextProvider extends AcceleoSwitch<Aql
 		AqlVariablesLocalContext variablesContext = new AqlVariablesLocalContext();
 		variablesContext.addAllVariables(this.doSwitch(letStatement.eContainer()));
 		letStatement.getVariables().forEach(variableBinding -> variablesContext.addAllVariables(this
-				.getVariableStandaloneContext(variableBinding)));
+				.getBindingStandaloneContext(variableBinding, false)));
 		return variablesContext;
 	}
 	////

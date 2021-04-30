@@ -19,6 +19,7 @@ import org.eclipse.acceleo.aql.location.aql.AqlVariablesLocalContext;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
+import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
@@ -42,15 +43,26 @@ public class AcceleoLocator {
 	private final AqlLocator aqlLocator;
 
 	/**
+	 * The {@link IAcceleoValidationResult}.
+	 */
+	private IAcceleoValidationResult acceleoValidationResult;
+
+	/**
 	 * Creates a new {@link AcceleoLocator}.
 	 * 
 	 * @param queryEnvironment
 	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment} of the Acceleo contents.
+	 * @param qualifiedName
+	 *            the context qualified name
+	 * @param acceleoValidationResult
+	 *            the {@link IAcceleoValidationResult}
 	 */
-	public AcceleoLocator(IQualifiedNameQueryEnvironment queryEnvironment) {
+	public AcceleoLocator(IQualifiedNameQueryEnvironment queryEnvironment, String qualifiedName,
+			IAcceleoValidationResult acceleoValidationResult) {
 		this.queryEnvironment = queryEnvironment;
+		this.acceleoValidationResult = acceleoValidationResult;
 
-		this.aqlLocator = new AqlLocator(queryEnvironment);
+		this.aqlLocator = new AqlLocator(queryEnvironment, qualifiedName);
 	}
 
 	/**
@@ -125,8 +137,8 @@ public class AcceleoLocator {
 	 */
 	private AqlVariablesLocalContext getVariablesContext(EObject aqlAstElement) {
 		ASTNode acceleoContainerOfAqlElement = AcceleoAstUtils.getContainerOfAqlAstElement(aqlAstElement);
-		AqlVariablesLocalContext context = new AcceleoExpressionVariablesContextProvider(queryEnvironment)
-				.doSwitch(acceleoContainerOfAqlElement);
+		AqlVariablesLocalContext context = new AcceleoExpressionVariablesContextProvider(
+				acceleoValidationResult).doSwitch(acceleoContainerOfAqlElement);
 		return context;
 	}
 

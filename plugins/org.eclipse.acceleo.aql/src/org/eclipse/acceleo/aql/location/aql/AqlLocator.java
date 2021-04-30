@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.query.parser.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -27,18 +27,26 @@ import org.eclipse.emf.ecore.EObject;
 public class AqlLocator {
 
 	/**
-	 * The {@link IQueryEnvironment}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	private final IQueryEnvironment queryEnvironment;
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
+
+	/**
+	 * The context qualified name.
+	 */
+	private String qualifiedName;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
-	 *            the (non-{@code null}) {@link IQueryEnvironment}.
+	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment}.
+	 * @param qualifiedName
+	 *            the context qualified name
 	 */
-	public AqlLocator(IQueryEnvironment queryEnvironment) {
+	public AqlLocator(IQualifiedNameQueryEnvironment queryEnvironment, String qualifiedName) {
 		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
+		this.qualifiedName = qualifiedName;
 	}
 
 	/**
@@ -79,7 +87,7 @@ public class AqlLocator {
 		final List<AbstractLocationLink<?, ?>> definitionLocations = new ArrayList<>();
 
 		AqlDefinitionLocator definitionLocator = new AqlDefinitionLocator(this.queryEnvironment, aqlAstResult,
-				aqlVariablesContext);
+				aqlVariablesContext, qualifiedName);
 
 		List<AbstractLocationLink<?, ?>> definitionLocationsOfAqlElement = definitionLocator.doSwitch(
 				aqlAstElement);

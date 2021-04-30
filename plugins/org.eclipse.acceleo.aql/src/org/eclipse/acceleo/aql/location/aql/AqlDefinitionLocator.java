@@ -18,8 +18,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
@@ -34,12 +36,12 @@ import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -53,9 +55,14 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?, ?>>> {
 
 	/**
-	 * The {@link IQueryEnvironment}.
+	 * FIXME: move somewhere else.
 	 */
-	private final IQueryEnvironment queryEnvironment;
+	private static final String LOCATION_NAMESPACE = "_reserved_::to::locate";
+
+	/**
+	 * The {@link IQualifiedNameQueryEnvironment}.
+	 */
+	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
 	 * The {@link EvaluationServices}. It is able to lookup services and variables.
@@ -85,18 +92,25 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 	private final AstResult aqlAstResult;
 
 	/**
+	 * The context qualified name.
+	 */
+	private String qualifiedName;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
-	 *            the (non-{@code null}) {@link IQueryEnvironment}.
+	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment}.
 	 * @param aqlAstResult
 	 *            the (non-{@code null}) {@link AstResult} containing the element(s) that will be passed as
 	 *            argument to this.
 	 * @param aqlVariablesContext
 	 *            the (non-{@code null}) {@link AqlVariablesLocalContext.
+	 * @param qualifiedName
+	 *            the context qualified name
 	 */
-	public AqlDefinitionLocator(IQueryEnvironment queryEnvironment, AstResult aqlAstResult,
-			AqlVariablesLocalContext aqlVariablesContext) {
+	public AqlDefinitionLocator(IQualifiedNameQueryEnvironment queryEnvironment, AstResult aqlAstResult,
+			AqlVariablesLocalContext aqlVariablesContext, String qualifiedName) {
 		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
 		this.aqlAstResult = Objects.requireNonNull(aqlAstResult);
 
@@ -106,6 +120,7 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 		this.aqlVariablesContext = Objects.requireNonNull(aqlVariablesContext);
 
 		this.aqlValidator = new AstValidator(new ValidationServices(this.queryEnvironment));
+		this.qualifiedName = qualifiedName;
 	}
 
 	/**
@@ -173,36 +188,50 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 
 	@Override
 	public List<AbstractLocationLink<?, ?>> caseCall(Call call) {
-		this.aqlValidator.validate(this.aqlVariablesContext.getVariableTypes(), this.aqlAstResult);
+		final String contextQualifiedName = LOCATION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR
+				+ qualifiedName;
 
-		// Retrieve all the IServices which fit the name and argument types.
-		List<IService<?>> candidateServices = new ArrayList<>();
+		final Module module = AcceleoAstUtils.getContainerModule(AcceleoAstUtils.getContainerOfAqlAstElement(
+				call));
+		queryEnvironment.getLookupEngine().getResolver().register(contextQualifiedName, module);
+		queryEnvironment.getLookupEngine().pushContext(contextQualifiedName);
+		try {
+			this.aqlValidator.validate(this.aqlVariablesContext.getVariableTypes(), this.aqlAstResult);
 
-		// Name
-		String serviceName = call.getServiceName();
+			// Retrieve all the IServices which fit the name and argument types.
+			List<IService<?>> candidateServices = new ArrayList<>();
 
-		// Argument Types - which are expressions whose type must first be evaluated.
-		List<Set<IType>> argumentTypes = call.getArguments().stream().map(argument -> {
-			AstResult aqlAstOfArgument = AcceleoAstUtils.getAqlAstResultOfAqlAstElement(argument);
-			IValidationResult aqlValidationResultOfArgument = this.aqlValidator.validate(
-					this.aqlVariablesContext.getVariableTypes(), aqlAstOfArgument);
-			Set<IType> argumentPossibleTypes = aqlValidationResultOfArgument.getPossibleTypes(argument);
-			return argumentPossibleTypes;
-		}).collect(Collectors.toList());
+			// Name
+			String serviceName = call.getServiceName();
 
-		CombineIterator<IType> it = new CombineIterator<IType>(argumentTypes);
-		while (it.hasNext()) {
-			List<IType> currentArgTypes = it.next();
-			IService<?> service = this.queryEnvironment.getLookupEngine().lookup(serviceName, currentArgTypes
-					.toArray(new IType[currentArgTypes.size()]));
-			if (service != null) {
-				candidateServices.add(service);
+			// Argument Types - which are expressions whose type must first be evaluated.
+			List<Set<IType>> argumentTypes = call.getArguments().stream().map(argument -> {
+				AstResult aqlAstOfArgument = AcceleoAstUtils.getAqlAstResultOfAqlAstElement(argument);
+				IValidationResult aqlValidationResultOfArgument = this.aqlValidator.validate(
+						this.aqlVariablesContext.getVariableTypes(), aqlAstOfArgument);
+				Set<IType> argumentPossibleTypes = aqlValidationResultOfArgument.getPossibleTypes(argument);
+				return argumentPossibleTypes;
+			}).collect(Collectors.toList());
+
+			CombineIterator<IType> it = new CombineIterator<IType>(argumentTypes);
+			while (it.hasNext()) {
+				List<IType> currentArgTypes = it.next();
+				IService<?> service = this.queryEnvironment.getLookupEngine().lookup(serviceName,
+						currentArgTypes.toArray(new IType[currentArgTypes.size()]));
+				if (service != null) {
+					candidateServices.add(service);
+				}
 			}
-		}
 
-		// Return links to all the candidates.
-		return candidateServices.stream().map(service -> new AqlLocationLinkToAny(call, service.getOrigin()))
-				.collect(Collectors.toList());
+			// Return links to all the candidates.
+			return candidateServices.stream().map(service -> new AqlLocationLinkToAny(call, service
+					.getOrigin())).collect(Collectors.toList());
+		} finally {
+			queryEnvironment.getLookupEngine().popContext(contextQualifiedName);
+			queryEnvironment.getLookupEngine().getResolver().clear(Collections.singleton(
+					contextQualifiedName));
+			queryEnvironment.getLookupEngine().clearContext(contextQualifiedName);
+		}
 	}
 
 	@Override
