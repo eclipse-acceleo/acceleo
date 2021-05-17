@@ -21,6 +21,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 
@@ -120,8 +121,10 @@ public class AcceleoLocator {
 						acceleoOrAqlNodeUnderCursor);
 				AstResult astResultOfAqlNode = AcceleoAstUtils.getAqlAstResultOfAqlAstElement(
 						acceleoOrAqlNodeUnderCursor);
+				IValidationResult validationResult = acceleoValidationResult.getValidationResult(
+						astResultOfAqlNode);
 				definitionLocations.addAll(this.aqlLocator.getDefinitionLocations(acceleoOrAqlNodeUnderCursor,
-						astResultOfAqlNode, acceleoLocalVariablesContext));
+						validationResult, acceleoLocalVariablesContext));
 			}
 		}
 		return definitionLocations;

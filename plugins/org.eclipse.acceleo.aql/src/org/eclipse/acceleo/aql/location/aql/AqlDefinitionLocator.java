@@ -32,14 +32,12 @@ import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
-import org.eclipse.acceleo.query.parser.AstResult;
-import org.eclipse.acceleo.query.parser.AstValidator;
-import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
+import org.eclipse.acceleo.query.runtime.impl.ServicesValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -76,20 +74,14 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 	private final AstEvaluator aqlEvaluator;
 
 	/**
-	 * The {@link AstValidator}, which we need to retrieve the types of the expressions passed as arguments to
-	 * service calls.
-	 */
-	private final AstValidator aqlValidator;
-
-	/**
 	 * The {@link AqlVariablesLocalContext} that holds information about the variables.
 	 */
 	private final AqlVariablesLocalContext aqlVariablesContext;
 
 	/**
-	 * The contextual {@link AstResult}.
+	 * The contextual {@link IValidationResult}.
 	 */
-	private final AstResult aqlAstResult;
+	private final IValidationResult validationResult;
 
 	/**
 	 * The context qualified name.
@@ -101,25 +93,25 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 	 * 
 	 * @param queryEnvironment
 	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment}.
-	 * @param aqlAstResult
-	 *            the (non-{@code null}) {@link AstResult} containing the element(s) that will be passed as
-	 *            argument to this.
+	 * @param validationResult
+	 *            the (non-{@code null}) {@link IValidationResult} containing the element(s) that will be
+	 *            passed as argument to this.
 	 * @param aqlVariablesContext
 	 *            the (non-{@code null}) {@link AqlVariablesLocalContext.
 	 * @param qualifiedName
 	 *            the context qualified name
 	 */
-	public AqlDefinitionLocator(IQualifiedNameQueryEnvironment queryEnvironment, AstResult aqlAstResult,
-			AqlVariablesLocalContext aqlVariablesContext, String qualifiedName) {
+	public AqlDefinitionLocator(IQualifiedNameQueryEnvironment queryEnvironment,
+			IValidationResult validationResult, AqlVariablesLocalContext aqlVariablesContext,
+			String qualifiedName) {
 		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
-		this.aqlAstResult = Objects.requireNonNull(aqlAstResult);
+		this.validationResult = Objects.requireNonNull(validationResult);
 
 		this.aqlEvaluationServices = new EvaluationServices(this.queryEnvironment);
 		this.aqlEvaluator = new AstEvaluator(aqlEvaluationServices);
 
 		this.aqlVariablesContext = Objects.requireNonNull(aqlVariablesContext);
 
-		this.aqlValidator = new AstValidator(new ValidationServices(this.queryEnvironment));
 		this.qualifiedName = qualifiedName;
 	}
 
@@ -196,32 +188,18 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 		queryEnvironment.getLookupEngine().getResolver().register(contextQualifiedName, module);
 		queryEnvironment.getLookupEngine().pushContext(contextQualifiedName);
 		try {
-			this.aqlValidator.validate(this.aqlVariablesContext.getVariableTypes(), this.aqlAstResult);
-
-			// Retrieve all the IServices which fit the name and argument types.
-			List<IService<?>> candidateServices = new ArrayList<>();
-
-			// Name
-			String serviceName = call.getServiceName();
+			final ValidationServices validationServices = new ValidationServices(queryEnvironment);
 
 			// Argument Types - which are expressions whose type must first be evaluated.
-			List<Set<IType>> argumentTypes = call.getArguments().stream().map(argument -> {
-				AstResult aqlAstOfArgument = AcceleoAstUtils.getAqlAstResultOfAqlAstElement(argument);
-				IValidationResult aqlValidationResultOfArgument = this.aqlValidator.validate(
-						this.aqlVariablesContext.getVariableTypes(), aqlAstOfArgument);
-				Set<IType> argumentPossibleTypes = aqlValidationResultOfArgument.getPossibleTypes(argument);
+			final List<Set<IType>> argumentTypes = call.getArguments().stream().map(argument -> {
+				Set<IType> argumentPossibleTypes = validationResult.getPossibleTypes(argument);
 				return argumentPossibleTypes;
 			}).collect(Collectors.toList());
 
-			CombineIterator<IType> it = new CombineIterator<IType>(argumentTypes);
-			while (it.hasNext()) {
-				List<IType> currentArgTypes = it.next();
-				IService<?> service = this.queryEnvironment.getLookupEngine().lookup(serviceName,
-						currentArgTypes.toArray(new IType[currentArgTypes.size()]));
-				if (service != null) {
-					candidateServices.add(service);
-				}
-			}
+			final ServicesValidationResult servicesValidationResult = validationServices.call(call,
+					validationResult, argumentTypes);
+			// Retrieve all the IServices which fit the name and argument types.
+			final Set<IService<?>> candidateServices = servicesValidationResult.getResolvedServices();
 
 			// Return links to all the candidates.
 			return candidateServices.stream().map(service -> new AqlLocationLinkToAny(call, service

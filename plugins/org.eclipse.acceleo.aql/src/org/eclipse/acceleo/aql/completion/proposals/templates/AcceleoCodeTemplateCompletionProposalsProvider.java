@@ -12,7 +12,6 @@ package org.eclipse.acceleo.aql.completion.proposals.templates;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.BlockComment;
@@ -29,7 +28,6 @@ import org.eclipse.acceleo.aql.completion.AcceleoAstCompletor;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposalsProvider;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -133,21 +131,6 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 			"@Main Annotation Comment", "Inserts the following Comment:" + NEWLINE + CODE_OPEN
 					+ AcceleoCodeTemplates.NEW_COMMENT_MAIN + CODE_CLOSE,
 			AcceleoCodeTemplates.NEW_COMMENT_MAIN, AcceleoPackage.Literals.COMMENT);
-
-	/**
-	 * The {@link IQualifiedNameQueryEnvironment}.
-	 */
-	private final IQualifiedNameQueryEnvironment queryEnvironment;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param queryEnvironment
-	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
-	 */
-	public AcceleoCodeTemplateCompletionProposalsProvider(IQualifiedNameQueryEnvironment queryEnvironment) {
-		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
-	}
 
 	/**
 	 * Provides the code template completion proposals for a position where the given Acceleo type is

@@ -203,7 +203,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 
 		this.astCompletor = new AstCompletor(new CompletionServices(this.queryEnvironment));
 		this.aqlCompletionEngine = new QueryCompletionEngine(queryEnvironment);
-		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider(queryEnvironment);
+		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider();
 	}
 
 	/**

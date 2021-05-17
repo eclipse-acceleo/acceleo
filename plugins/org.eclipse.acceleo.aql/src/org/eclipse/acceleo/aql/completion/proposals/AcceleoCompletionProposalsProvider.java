@@ -37,7 +37,6 @@ import org.eclipse.acceleo.aql.completion.proposals.syntax.AcceleoSyntacticCompl
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposalsProvider;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplates;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -54,18 +53,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 	 * The {@link AcceleoCodeTemplateCompletionProposalsProvider} that provides code template completion
 	 * proposals.
 	 */
-	private final AcceleoCodeTemplateCompletionProposalsProvider acceleoCodeTemplatesProvider;
-
-	/**
-	 * The constructor.
-	 * 
-	 * @param queryEnvironment
-	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
-	 */
-	public AcceleoCompletionProposalsProvider(IQualifiedNameQueryEnvironment queryEnvironment) {
-		this.acceleoCodeTemplatesProvider = new AcceleoCodeTemplateCompletionProposalsProvider(
-				queryEnvironment);
-	}
+	private final AcceleoCodeTemplateCompletionProposalsProvider acceleoCodeTemplatesProvider = new AcceleoCodeTemplateCompletionProposalsProvider();
 
 	/**
 	 * Provides the syntactic and code template completion proposals for a position where the given Acceleo

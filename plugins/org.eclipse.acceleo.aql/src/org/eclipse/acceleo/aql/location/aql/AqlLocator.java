@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
-import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 
@@ -55,18 +55,18 @@ public class AqlLocator {
 	 * 
 	 * @param aqlAstElement
 	 *            the (non-{@code null}) AQL {@link EObject AST element}.
-	 * @param aqlAstResult
-	 *            the (non-{@code null}) {@link AstResult} containing {@code aqlAstElement}.
+	 * @param validationResult
+	 *            the (non-{@code null}) {@link IValidationResult} containing {@code aqlAstElement}.
 	 * @param aqlVariablesContext
 	 *            the (non-{@code null}) {@link AqlVariablesLocalContext}.
 	 * @return the {@link List} of {@link AbstractAqlLocationLink} corresponding to the declaration
 	 *         location(s) of the element at the given position of the source.
 	 */
 	public List<AbstractLocationLink<?, ?>> getDeclarationLocations(EObject aqlAstElement,
-			AstResult aqlAstResult, AqlVariablesLocalContext aqlVariablesContext) {
+			IValidationResult validationResult, AqlVariablesLocalContext aqlVariablesContext) {
 		// FIXME: LSP4E does not support "go-to declaration" so we simply dispatch to "go-to definition".
 		// Also, not sure we have a clear difference in Acceleo between declaration and definition.
-		return this.getDefinitionLocations(aqlAstElement, aqlAstResult, aqlVariablesContext);
+		return this.getDefinitionLocations(aqlAstElement, validationResult, aqlVariablesContext);
 	}
 
 	/**
@@ -75,19 +75,19 @@ public class AqlLocator {
 	 * 
 	 * @param aqlAstElement
 	 *            the (non-{@code null}) AQL {@link EObject AST element}.
-	 * @param aqlAstResult
-	 *            the (non-{@code null}) {@link AstResult} containing {@code aqlAstElement}.
+	 * @param validationResult
+	 *            the (non-{@code null}) {@link IValidationResult} containing {@code aqlAstElement}.
 	 * @param aqlVariablesContext
 	 *            the (non-{@code null}) {@link AqlVariablesLocalContext}.
 	 * @return the {@link List} of {@link AbstractAqlLocationLink} corresponding to the definition location(s)
 	 *         of the element at the given position of the source.
 	 */
 	public List<AbstractLocationLink<?, ?>> getDefinitionLocations(EObject aqlAstElement,
-			AstResult aqlAstResult, AqlVariablesLocalContext aqlVariablesContext) {
+			IValidationResult validationResult, AqlVariablesLocalContext aqlVariablesContext) {
 		final List<AbstractLocationLink<?, ?>> definitionLocations = new ArrayList<>();
 
-		AqlDefinitionLocator definitionLocator = new AqlDefinitionLocator(this.queryEnvironment, aqlAstResult,
-				aqlVariablesContext, qualifiedName);
+		AqlDefinitionLocator definitionLocator = new AqlDefinitionLocator(this.queryEnvironment,
+				validationResult, aqlVariablesContext, qualifiedName);
 
 		List<AbstractLocationLink<?, ?>> definitionLocationsOfAqlElement = definitionLocator.doSwitch(
 				aqlAstElement);
