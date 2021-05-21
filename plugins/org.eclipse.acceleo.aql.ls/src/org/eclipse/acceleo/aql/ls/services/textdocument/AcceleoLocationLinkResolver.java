@@ -171,14 +171,14 @@ public class AcceleoLocationLinkResolver {
 			org.eclipse.acceleo.query.ast.Expression originAqlExpression = (org.eclipse.acceleo.query.ast.Expression)aqlAstElement;
 			org.eclipse.acceleo.query.ast.Expression originAqlExpressionEquivalent = AcceleoAstUtils
 					.getSelfOrEquivalentOf(originAqlExpression, originTextDocument.getAcceleoAstResult());
-			originSelectionRange = AcceleoLanguageServerPositionUtils.getRangeOf(
+			originSelectionRange = AcceleoLanguageServerPositionUtils.getIdentifierRangeOf(
 					originAqlExpressionEquivalent, originTextDocument.getAcceleoAstResult());
 		} else if (aqlAstElement instanceof org.eclipse.acceleo.query.ast.VariableDeclaration) {
 			org.eclipse.acceleo.query.ast.VariableDeclaration originAqlVariableDeclaration = (org.eclipse.acceleo.query.ast.VariableDeclaration)aqlAstElement;
 			org.eclipse.acceleo.query.ast.VariableDeclaration originAqlVariableDeclarationEquivalent = AcceleoAstUtils
 					.getSelfOrEquivalentOf(originAqlVariableDeclaration, originTextDocument
 							.getAcceleoAstResult());
-			originSelectionRange = AcceleoLanguageServerPositionUtils.getRangeOf(
+			originSelectionRange = AcceleoLanguageServerPositionUtils.getIdentifierRangeOf(
 					originAqlVariableDeclarationEquivalent, originTextDocument.getAcceleoAstResult());
 		} else {
 			// This should never happen.
@@ -337,7 +337,8 @@ public class AcceleoLocationLinkResolver {
 		Range targetRange = AcceleoLanguageServerPositionUtils.getRangeOf(
 				destinationNodeInDestinationTextDocument, destinationAcceleoAstResult);
 		// FIXME: we probably only want to select part of the target.
-		Range targetSelectionRange = targetRange;
+		Range targetSelectionRange = AcceleoLanguageServerPositionUtils.getIdentifierRangeOf(
+				destinationNodeInDestinationTextDocument, destinationTextDocument.getAcceleoAstResult());
 
 		// Link target parameters.
 		Module destinationModule = destinationTextDocument.getAcceleoAstResult().getModule();

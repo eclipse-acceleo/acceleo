@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2021 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,28 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
+	 * Provides the identifier start {@link Position} of an {@link ASTNode} in the given
+	 * {@link AcceleoAstResult}.
+	 * 
+	 * @param astNode
+	 *            the (non-{@code null}) {@link ASTNode} we want the start {@link Position} of.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the identifier {@link Position} corresponding to the start of {@code astNode} in
+	 *         {@code inAcceleoAstResult}.
+	 */
+	public static Position getIDentifierStartPositionOf(ASTNode astNode,
+			AcceleoAstResult inAcceleoAstResult) {
+		int nodeStartLine = inAcceleoAstResult.getIdentifierStartLine(astNode);
+		int nodeStartColumn = inAcceleoAstResult.getIdentifierStartColumn(astNode);
+		if (nodeStartLine == -1 || nodeStartColumn == -1) {
+			return null;
+		} else {
+			return new Position(nodeStartLine, nodeStartColumn);
+		}
+	}
+
+	/**
 	 * Provides the end {@link Position} of an {@link ASTNode} in the given {@link AcceleoAstResult}.
 	 * 
 	 * @param astNode
@@ -61,6 +83,27 @@ public final class AcceleoLanguageServerPositionUtils {
 	public static Position getEndPositionOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
 		int nodeEndLine = inAcceleoAstResult.getEndLine(astNode);
 		int nodeEndColumn = inAcceleoAstResult.getEndColumn(astNode);
+		if (nodeEndLine == -1 || nodeEndColumn == -1) {
+			return null;
+		} else {
+			return new Position(nodeEndLine, nodeEndColumn);
+		}
+	}
+
+	/**
+	 * Provides the identifier end {@link Position} of an {@link ASTNode} in the given
+	 * {@link AcceleoAstResult}.
+	 * 
+	 * @param astNode
+	 *            the (non-{@code null}) {@link ASTNode} we want the end {@link Position} of.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the identifier {@link Position} corresponding to the end of {@code astNode} in
+	 *         {@code inAcceleoAstResult}.
+	 */
+	public static Position getIdentifierEndPositionOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
+		int nodeEndLine = inAcceleoAstResult.getIdentifierEndLine(astNode);
+		int nodeEndColumn = inAcceleoAstResult.getIdentifierEndColumn(astNode);
 		if (nodeEndLine == -1 || nodeEndColumn == -1) {
 			return null;
 		} else {
@@ -84,6 +127,22 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
+	 * Provides the identifier {@link Range} corresponding to an {@link ASTNode} in the given
+	 * {@link AcceleoAstResult}.
+	 * 
+	 * @param astNode
+	 *            the (non-{@code null}) {@link ASTNode}.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the identifier {@link Range} corresponding to the position in the source contents of
+	 *         {@code inAcceleoAstResult} corresponding to {@code astNode}.
+	 */
+	public static Range getIdentifierRangeOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
+		return new Range(getIDentifierStartPositionOf(astNode, inAcceleoAstResult),
+				getIdentifierEndPositionOf(astNode, inAcceleoAstResult));
+	}
+
+	/**
 	 * Provides the start {@link Position} of an {@link org.eclipse.acceleo.query.ast.Expression AQL
 	 * Expression} in the given {@link AcceleoAstResult}.
 	 * 
@@ -97,12 +156,27 @@ public final class AcceleoLanguageServerPositionUtils {
 	 */
 	public static Position getStartPositionOf(org.eclipse.acceleo.query.ast.Expression aqlExpression,
 			AcceleoAstResult inAcceleoAstResult) {
-		// FIXME: this provides the Position of the whole expression (including its contained expressions like
-		// the arguments of a query call), whereas we probably want only the Position of the specific
-		// expression term passed.
-		// This is due to how AQL stores the positions of an Expression.
 		int nodeStartLine = inAcceleoAstResult.getStartLine(aqlExpression);
 		int nodeStartColumn = inAcceleoAstResult.getStartColumn(aqlExpression);
+		return new Position(nodeStartLine, nodeStartColumn);
+	}
+
+	/**
+	 * Provides the identifier start {@link Position} of an {@link org.eclipse.acceleo.query.ast.Expression
+	 * AQL Expression} in the given {@link AcceleoAstResult}.
+	 * 
+	 * @param aqlExpression
+	 *            the (non-{@code null}) {@link org.eclipse.acceleo.query.ast.Expression} we want the start
+	 *            {@link Position} of.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the {@link Position} corresponding to the identifier start of {@code aqlExpression} in
+	 *         {@code inAcceleoAstResult}.
+	 */
+	public static Position getIdentifierStartPositionOf(
+			org.eclipse.acceleo.query.ast.Expression aqlExpression, AcceleoAstResult inAcceleoAstResult) {
+		int nodeStartLine = inAcceleoAstResult.getIdentifierStartLine(aqlExpression);
+		int nodeStartColumn = inAcceleoAstResult.getIdentifierStartColumn(aqlExpression);
 		return new Position(nodeStartLine, nodeStartColumn);
 	}
 
@@ -120,12 +194,27 @@ public final class AcceleoLanguageServerPositionUtils {
 	 */
 	public static Position getEndPositionOf(org.eclipse.acceleo.query.ast.Expression aqlExpression,
 			AcceleoAstResult inAcceleoAstResult) {
-		// FIXME: this provides the Position of the whole expression (including its contained expressions like
-		// the arguments of a query call), whereas we probably want only the Position of the specific
-		// expression term passed.
-		// This is due to how AQL stores the positions of an Expression.
 		int nodeEndLine = inAcceleoAstResult.getEndLine(aqlExpression);
 		int nodeEndColumn = inAcceleoAstResult.getEndColumn(aqlExpression);
+		return new Position(nodeEndLine, nodeEndColumn);
+	}
+
+	/**
+	 * Provides the identifier end {@link Position} of an {@link org.eclipse.acceleo.query.ast.Expression AQL
+	 * Expression} in the given {@link AcceleoAstResult}.
+	 * 
+	 * @param aqlExpression
+	 *            the (non-{@code null}) {@link org.eclipse.acceleo.query.ast.Expression} we want the end
+	 *            {@link Position} of.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the {@link Position} corresponding to the identifier end of {@code aqlExpression} in
+	 *         {@code inAcceleoAstResult}.
+	 */
+	public static Position getIdentifierEndPositionOf(org.eclipse.acceleo.query.ast.Expression aqlExpression,
+			AcceleoAstResult inAcceleoAstResult) {
+		int nodeEndLine = inAcceleoAstResult.getIdentifierEndLine(aqlExpression);
+		int nodeEndColumn = inAcceleoAstResult.getIdentifierEndColumn(aqlExpression);
 		return new Position(nodeEndLine, nodeEndColumn);
 	}
 
@@ -147,6 +236,23 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
+	 * Provides the {@link Range} corresponding to the identifier of an
+	 * {@link org.eclipse.acceleo.query.ast.Expression AQL Expression} in the given {@link AcceleoAstResult}.
+	 * 
+	 * @param aqlExpression
+	 *            the (non-{@code null}) {@link org.eclipse.acceleo.query.ast.Expression}.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the {@link Range} corresponding to the position in the source contents of
+	 *         {@code inAcceleoAstResult} corresponding to the identifier of an {@code aqlExpression}.
+	 */
+	public static Range getIdentifierRangeOf(org.eclipse.acceleo.query.ast.Expression aqlExpression,
+			AcceleoAstResult inAcceleoAstResult) {
+		return new Range(getIdentifierStartPositionOf(aqlExpression, inAcceleoAstResult),
+				getIdentifierEndPositionOf(aqlExpression, inAcceleoAstResult));
+	}
+
+	/**
 	 * Provides the start {@link Position} of an {@link org.eclipse.acceleo.query.ast.VariableDeclaration} in
 	 * the given {@link AcceleoAstResult}.
 	 * 
@@ -163,6 +269,26 @@ public final class AcceleoLanguageServerPositionUtils {
 			AcceleoAstResult inAcceleoAstResult) {
 		int nodeStartLine = inAcceleoAstResult.getStartLine(aqlVariableDeclaration);
 		int nodeStartColumn = inAcceleoAstResult.getStartColumn(aqlVariableDeclaration);
+		return new Position(nodeStartLine, nodeStartColumn);
+	}
+
+	/**
+	 * Provides the identifier start {@link Position} of an
+	 * {@link org.eclipse.acceleo.query.ast.VariableDeclaration} in the given {@link AcceleoAstResult}.
+	 * 
+	 * @param aqlVariableDeclaration
+	 *            the (non-{@code null}) {@link org.eclipse.acceleo.query.ast.VariableDeclaration} we want the
+	 *            start {@link Position} of.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the {@link Position} corresponding to the identifier start of {@code aqlVariableDeclaration} in
+	 *         {@code inAcceleoAstResult}.
+	 */
+	public static Position getIdentifierStartPositionOf(
+			org.eclipse.acceleo.query.ast.VariableDeclaration aqlVariableDeclaration,
+			AcceleoAstResult inAcceleoAstResult) {
+		int nodeStartLine = inAcceleoAstResult.getIdentifierStartLine(aqlVariableDeclaration);
+		int nodeStartColumn = inAcceleoAstResult.getIdentifierStartColumn(aqlVariableDeclaration);
 		return new Position(nodeStartLine, nodeStartColumn);
 	}
 
@@ -187,6 +313,27 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
+	 * Provides the identifier end {@link Position} of an
+	 * {@link org.eclipse.acceleo.query.ast.VariableDeclaration AQL Expression} in the given
+	 * {@link AcceleoAstResult}.
+	 * 
+	 * @param aqlVariableDeclaration
+	 *            the (non-{@code null}) {@link org.eclipse.acceleo.query.ast.VariableDeclaration} we want the
+	 *            end {@link Position} of.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the {@link Position} corresponding to the identifier end of {@code aqlVariableDeclaration} in
+	 *         {@code inAcceleoAstResult}.
+	 */
+	public static Position getIdentifierEndPositionOf(
+			org.eclipse.acceleo.query.ast.VariableDeclaration aqlVariableDeclaration,
+			AcceleoAstResult inAcceleoAstResult) {
+		int nodeEndLine = inAcceleoAstResult.getIdentifierEndLine(aqlVariableDeclaration);
+		int nodeEndColumn = inAcceleoAstResult.getIdentifierEndColumn(aqlVariableDeclaration);
+		return new Position(nodeEndLine, nodeEndColumn);
+	}
+
+	/**
 	 * Provides the {@link Range} corresponding to an {@link org.eclipse.acceleo.query.ast.VariableDeclaration
 	 * AQL Expression} in the given {@link AcceleoAstResult}.
 	 * 
@@ -201,6 +348,25 @@ public final class AcceleoLanguageServerPositionUtils {
 			AcceleoAstResult inAcceleoAstResult) {
 		return new Range(getStartPositionOf(aqlVariableDeclaration, inAcceleoAstResult), getEndPositionOf(
 				aqlVariableDeclaration, inAcceleoAstResult));
+	}
+
+	/**
+	 * Provides the {@link Range} corresponding to the identifier of an
+	 * {@link org.eclipse.acceleo.query.ast.VariableDeclaration AQL Expression} in the given
+	 * {@link AcceleoAstResult}.
+	 * 
+	 * @param aqlVariableDeclaration
+	 *            the (non-{@code null}) {@link org.eclipse.acceleo.query.ast.VariableDeclaration}.
+	 * @param inAcceleoAstResult
+	 *            the (non-{@code null}) {@link AcceleoAstResult}.
+	 * @return the {@link Range} corresponding to the identifier position in the source contents of
+	 *         {@code inAcceleoAstResult} corresponding to {@code aqlVariableDeclaration}.
+	 */
+	public static Range getIdentifierRangeOf(
+			org.eclipse.acceleo.query.ast.VariableDeclaration aqlVariableDeclaration,
+			AcceleoAstResult inAcceleoAstResult) {
+		return new Range(getIdentifierStartPositionOf(aqlVariableDeclaration, inAcceleoAstResult),
+				getIdentifierEndPositionOf(aqlVariableDeclaration, inAcceleoAstResult));
 	}
 
 	/**
