@@ -61,7 +61,7 @@ public interface ISourceLocation {
 		 * 
 		 * @return the start {@link IPosition}
 		 */
-		IPosition getStar();
+		IPosition getStart();
 
 		/**
 		 * Gets the end {@link IPosition}.

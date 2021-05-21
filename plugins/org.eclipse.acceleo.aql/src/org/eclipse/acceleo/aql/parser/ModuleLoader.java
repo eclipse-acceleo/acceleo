@@ -151,36 +151,43 @@ public class ModuleLoader extends AbstractLoader {
 			final ModuleElement moduleElement = (ModuleElement)service.getOrigin();
 			if (moduleElement.eContainer() instanceof Module) {
 				final Module module = (Module)moduleElement.eContainer();
-				final String qualifiedName = resolver.getQualifiedName(module);
-				final URL sourceURL = resolver.getSourceURL(qualifiedName);
+				if (module.eResource().getURI() != null) {
+					final String qualifiedName = module.eResource().getURI().toString().substring(
+							AcceleoParser.ACCELEOENV_URI_PROTOCOL.length());
 
-				final int identifierStartLine = module.getAst().getIdentifierStartLine(moduleElement);
-				final int identifierStartColumn = module.getAst().getIdentifierStartColumn(moduleElement);
-				final int identifierStartPosition = module.getAst().getIdentifierStartPosition(moduleElement);
-				final IPosition identifierStart = new Position(identifierStartLine, identifierStartColumn,
-						identifierStartPosition);
+					final URL sourceURL = resolver.getSourceURL(qualifiedName);
 
-				final int identifierEndLine = module.getAst().getIdentifierEndLine(moduleElement);
-				final int identifierEndColumn = module.getAst().getIdentifierEndColumn(moduleElement);
-				final int identifierEndPosition = module.getAst().getIdentifierEndPosition(moduleElement);
-				final IPosition identifierEnd = new Position(identifierEndLine, identifierEndColumn,
-						identifierEndPosition);
+					final int identifierStartLine = module.getAst().getIdentifierStartLine(moduleElement);
+					final int identifierStartColumn = module.getAst().getIdentifierStartColumn(moduleElement);
+					final int identifierStartPosition = module.getAst().getIdentifierStartPosition(
+							moduleElement);
+					final IPosition identifierStart = new Position(identifierStartLine, identifierStartColumn,
+							identifierStartPosition);
 
-				final IRange identifierRange = new Range(identifierStart, identifierEnd);
+					final int identifierEndLine = module.getAst().getIdentifierEndLine(moduleElement);
+					final int identifierEndColumn = module.getAst().getIdentifierEndColumn(moduleElement);
+					final int identifierEndPosition = module.getAst().getIdentifierEndPosition(moduleElement);
+					final IPosition identifierEnd = new Position(identifierEndLine, identifierEndColumn,
+							identifierEndPosition);
 
-				final int startLine = module.getAst().getStartLine(moduleElement);
-				final int startColumn = module.getAst().getStartColumn(moduleElement);
-				final int startPosition = module.getAst().getStartPosition(moduleElement);
-				final IPosition start = new Position(startLine, startColumn, startPosition);
+					final IRange identifierRange = new Range(identifierStart, identifierEnd);
 
-				final int endLine = module.getAst().getEndLine(moduleElement);
-				final int endColumn = module.getAst().getEndColumn(moduleElement);
-				final int endPosition = module.getAst().getEndPosition(moduleElement);
-				final IPosition end = new Position(endLine, endColumn, endPosition);
+					final int startLine = module.getAst().getStartLine(moduleElement);
+					final int startColumn = module.getAst().getStartColumn(moduleElement);
+					final int startPosition = module.getAst().getStartPosition(moduleElement);
+					final IPosition start = new Position(startLine, startColumn, startPosition);
 
-				final IRange range = new Range(start, end);
+					final int endLine = module.getAst().getEndLine(moduleElement);
+					final int endColumn = module.getAst().getEndColumn(moduleElement);
+					final int endPosition = module.getAst().getEndPosition(moduleElement);
+					final IPosition end = new Position(endLine, endColumn, endPosition);
 
-				res = new SourceLocation(sourceURL, identifierRange, range);
+					final IRange range = new Range(start, end);
+
+					res = new SourceLocation(sourceURL, identifierRange, range);
+				} else {
+					res = null;
+				}
 			} else {
 				res = null;
 			}

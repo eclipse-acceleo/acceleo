@@ -24,7 +24,7 @@ public class SourceLocation implements ISourceLocation {
 	/**
 	 * The source {@link URL}.
 	 */
-	private static URL sourceURL;
+	private final URL sourceURL;
 
 	/**
 	 * The identifier {@link IRange}.
@@ -47,6 +47,7 @@ public class SourceLocation implements ISourceLocation {
 	 *            the total {@link IRange}
 	 */
 	public SourceLocation(URL sourceURL, IRange identifierRange, IRange range) {
+		this.sourceURL = sourceURL;
 		this.identifierRange = identifierRange;
 		this.range = range;
 	}

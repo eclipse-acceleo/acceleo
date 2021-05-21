@@ -27,7 +27,9 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -256,6 +258,9 @@ public class AcceleoLocationLinkResolver {
 			// Still, support it just in case...
 			locationLink = createLocationLinkFromRangeToAqlDestination(originSelectionRange,
 					(EObject)destination);
+		} else if (destination instanceof IService<?>) {
+			locationLink = createLocationLinkFromRangeToServiceDestination(linkOrigin, originSelectionRange,
+					(IService<?>)destination);
 		} else if (destination instanceof java.lang.Class<?>) {
 			locationLink = createLocationLinkFromRangeToJavaClassDestination(linkOrigin, originSelectionRange,
 					(Class<?>)destination);
@@ -394,6 +399,50 @@ public class AcceleoLocationLinkResolver {
 
 		LocationLink locationLink = new LocationLink(targetUri, targetRange, targetSelectionRange,
 				originSelectionRange);
+		return locationLink;
+	}
+
+	/**
+	 * Creates a {@link LocationLink} from the given {@link Range} to the given {@link IService} destination.
+	 * 
+	 * @param linkOrigin
+	 *            the (non-{@code null}) origin {@link EObject} of the link.
+	 * @param originSelectionRange
+	 *            the (non-{@code null}) origin selection {@link Range}.
+	 * @param destinationService
+	 *            the (non-{@code null}) destination {@link IService}.
+	 * @return the {@link LocationLink} from {@code originSelectionRange} to {@code destinationService}.
+	 */
+	private LocationLink createLocationLinkFromRangeToServiceDestination(EObject linkOrigin,
+			Range originSelectionRange, IService<?> destinationService) {
+		ASTNode acceleoAstNode = getAcceleoAstNodeContainingAqlElement(linkOrigin);
+		AcceleoTextDocument acceleoTextDocument = this.getAcceleoTextDocumentContaining(acceleoAstNode);
+
+		final IQualifiedNameResolver resolver = acceleoTextDocument.getQueryEnvironment().getLookupEngine()
+				.getResolver();
+
+		final ISourceLocation sourceLocation = resolver.getSourceLocation(destinationService);
+		final LocationLink locationLink;
+		if (sourceLocation != null) {
+			Position targetRangeStart = new Position(sourceLocation.getRange().getStart().getLine(),
+					sourceLocation.getRange().getStart().getColumn());
+			Position targetRangeEnd = new Position(sourceLocation.getRange().getEnd().getLine(),
+					sourceLocation.getRange().getEnd().getColumn());
+			Range targetRange = new Range(targetRangeStart, targetRangeEnd);
+
+			Position targetSelectionRangeStart = new Position(sourceLocation.getIdentifierRange().getStart()
+					.getLine(), sourceLocation.getIdentifierRange().getStart().getColumn());
+			Position targetSelectionRangeEnd = new Position(sourceLocation.getIdentifierRange().getEnd()
+					.getLine(), sourceLocation.getIdentifierRange().getEnd().getColumn());
+			Range targetSelectionRange = new Range(targetSelectionRangeStart, targetSelectionRangeEnd);
+
+			locationLink = new LocationLink(sourceLocation.getSourceURL().toString(), targetRange,
+					targetSelectionRange, originSelectionRange);
+		} else {
+			locationLink = createLocationLinkFromRangeToAnyDestination(linkOrigin, originSelectionRange,
+					destinationService.getOrigin());
+		}
+
 		return locationLink;
 	}
 

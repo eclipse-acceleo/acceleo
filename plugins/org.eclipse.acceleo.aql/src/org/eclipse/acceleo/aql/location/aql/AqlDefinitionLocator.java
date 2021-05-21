@@ -202,8 +202,8 @@ public class AqlDefinitionLocator extends AstSwitch<List<AbstractLocationLink<?,
 			final Set<IService<?>> candidateServices = servicesValidationResult.getResolvedServices();
 
 			// Return links to all the candidates.
-			return candidateServices.stream().map(service -> new AqlLocationLinkToAny(call, service
-					.getOrigin())).collect(Collectors.toList());
+			return candidateServices.stream().map(service -> new AqlLocationLinkToAny(call, service)).collect(
+					Collectors.toList());
 		} finally {
 			queryEnvironment.getLookupEngine().popContext(contextQualifiedName);
 			queryEnvironment.getLookupEngine().getResolver().clear(Collections.singleton(

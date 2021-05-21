@@ -113,7 +113,7 @@ public class Positions {
 	 * @return the identifier start column in the parsed text
 	 */
 	public Integer getIdentifierStartColumns(EObject node) {
-		return startColumns.get(node);
+		return identifierStartColumns.get(node);
 	}
 
 	/**

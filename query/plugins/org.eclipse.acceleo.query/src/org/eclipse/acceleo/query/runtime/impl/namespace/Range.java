@@ -40,7 +40,7 @@ public class Range implements IRange {
 	}
 
 	@Override
-	public IPosition getStar() {
+	public IPosition getStart() {
 		return start;
 	}
 

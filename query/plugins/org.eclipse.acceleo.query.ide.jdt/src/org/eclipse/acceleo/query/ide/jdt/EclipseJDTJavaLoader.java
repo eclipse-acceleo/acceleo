@@ -25,11 +25,13 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IPosition;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IRange;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -53,7 +55,7 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 
 	@Override
 	public ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, IService<?> service) {
-		final ISourceLocation res;
+		ISourceLocation res = null;
 
 		IPosition identifierStart = new Position(0, 0, 0);
 		IPosition identifierEnd = new Position(0, 0, 0);
@@ -63,7 +65,6 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 		IPosition end = new Position(0, 0, 0);
 		final IRange range;
 
-		// TODO double check all of this
 		if (service.getOrigin() instanceof Method) {
 			final Method method = (Method)service.getOrigin();
 			URL sourceURL = null;
@@ -71,37 +72,44 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 				final IJavaProject project = ((EclipseJDTQualifiedNameResolver)resolver).getProject();
 				try {
 					final IType type = project.findType(method.getDeclaringClass().getCanonicalName());
-					// TODO might be null and also not reference the source file
-					sourceURL = type.getResource().getLocationURI().toURL();
-					final IMethod javaMethod = type.getMethod(method.getName(), getParamterTypes(method));
-					final ISourceRange methodIdentifierRange = javaMethod.getNameRange();
-					final ISourceRange sourceRange = javaMethod.getSourceRange();
+					if (type != null) {
+						type.getOpenable().open(new NullProgressMonitor());
+						sourceURL = type.getResource().getLocationURI().toURL();
+						final IMethod javaMethod = type.getMethod(method.getName(), getParamterTypes(method));
+						javaMethod.getOpenable().open(new NullProgressMonitor());
+						final ISourceRange methodIdentifierRange = javaMethod.getNameRange();
+						final ISourceRange sourceRange = javaMethod.getSourceRange();
 
-					final ASTParser parser = ASTParser.newParser(AST.JLS10);
-					parser.setSource(type.getCompilationUnit());
-					final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
-					final int identifierStartOffset = methodIdentifierRange.getOffset();
-					identifierStart = new Position(cu.getLineNumber(identifierStartOffset), cu
-							.getColumnNumber(identifierStartOffset), identifierStartOffset);
-					final int identifierEndOffset = identifierStartOffset + methodIdentifierRange.getLength();
-					identifierEnd = new Position(cu.getLineNumber(identifierEndOffset), cu.getColumnNumber(
-							identifierEndOffset), identifierEndOffset);
+						final ASTParser parser = ASTParser.newParser(AST.JLS10);
+						parser.setSource(type.getCompilationUnit());
+						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
+						final int identifierStartOffset = methodIdentifierRange.getOffset();
+						identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
+								.getColumnNumber(identifierStartOffset), identifierStartOffset);
+						final int identifierEndOffset = identifierStartOffset + methodIdentifierRange
+								.getLength();
+						identifierEnd = new Position(cu.getLineNumber(identifierEndOffset) - 1, cu
+								.getColumnNumber(identifierEndOffset), identifierEndOffset);
 
-					final int startOffset = sourceRange.getOffset();
-					start = new Position(cu.getLineNumber(startOffset), cu.getColumnNumber(startOffset),
-							startOffset);
-					final int endOffset = startOffset + sourceRange.getLength();
-					end = new Position(cu.getLineNumber(endOffset), cu.getColumnNumber(endOffset), endOffset);
+						final int startOffset = sourceRange.getOffset();
+						start = new Position(cu.getLineNumber(startOffset) - 1, cu.getColumnNumber(
+								startOffset), startOffset);
+						final int endOffset = startOffset + sourceRange.getLength();
+						end = new Position(cu.getLineNumber(endOffset) - 1, cu.getColumnNumber(endOffset),
+								endOffset);
+
+						identifierRange = new Range(identifierStart, identifierEnd);
+						range = new Range(start, end);
+						res = new SourceLocation(sourceURL, identifierRange, range);
+					} else {
+						res = null;
+					}
 				} catch (JavaModelException | MalformedURLException e) {
 					sourceURL = getDefaultSourceURL(resolver, method);
 				}
 			} else {
 				sourceURL = getDefaultSourceURL(resolver, method);
 			}
-
-			identifierRange = new Range(identifierStart, identifierEnd);
-			range = new Range(start, end);
-			res = new SourceLocation(sourceURL, identifierRange, range);
 		} else {
 			res = null;
 		}
@@ -113,7 +121,7 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 		final List<String> res = new ArrayList<String>();
 
 		for (Class<?> type : method.getParameterTypes()) {
-			res.add(type.getTypeName());
+			res.add(Signature.createTypeSignature(type.getSimpleName(), false));
 		}
 
 		return res.toArray(new String[res.size()]);
