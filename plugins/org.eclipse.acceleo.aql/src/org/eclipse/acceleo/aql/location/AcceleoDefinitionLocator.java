@@ -28,6 +28,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
 /**
@@ -103,16 +104,20 @@ public class AcceleoDefinitionLocator extends AcceleoSwitch<List<AbstractLocatio
 	 */
 	@Override
 	public List<AbstractLocationLink<?, ?>> caseModuleReference(ModuleReference moduleReference) {
-		final Object resolved = queryEnvironment.getLookupEngine().getResolver().resolve(moduleReference
-				.getQualifiedName());
-		if (resolved instanceof Module) {
-			return Collections.singletonList(new AcceleoLocationLinkToAcceleo(moduleReference,
-					(Module)resolved));
+		final List<AbstractLocationLink<?, ?>> res;
+
+		final ISourceLocation sourceLocation = queryEnvironment.getLookupEngine().getResolver()
+				.getSourceLocation(moduleReference.getQualifiedName());
+		if (sourceLocation != null) {
+			res = Collections.singletonList(new AcceleoLocationLinkToSourceLocation(moduleReference,
+					sourceLocation));
 		} else {
 			// Could not resolve the module reference, which means that we will not be able to find the
 			// definition of the referenced module.
-			return null;
+			res = null;
 		}
+
+		return res;
 	}
 
 	@Override

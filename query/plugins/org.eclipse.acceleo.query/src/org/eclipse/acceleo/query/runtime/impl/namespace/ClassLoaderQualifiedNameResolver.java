@@ -162,6 +162,20 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		return res;
 	}
 
+	@Override
+	public ISourceLocation getSourceLocation(String qualifiedName) {
+		ISourceLocation res = null;
+
+		for (ILoader loader : loaders) {
+			res = loader.getSourceLocation(this, qualifiedName);
+			if (res != null) {
+				break;
+			}
+		}
+
+		return res;
+	}
+
 	/**
 	 * Loads the {@link Object} from the given qualified name.
 	 * 

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.location.AcceleoLocationLinkToAcceleo;
+import org.eclipse.acceleo.aql.location.AcceleoLocationLinkToSourceLocation;
 import org.eclipse.acceleo.aql.location.aql.AqlLocationLinkToAny;
 import org.eclipse.acceleo.aql.location.aql.AqlLocationLinkToAql;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
@@ -81,6 +82,8 @@ public class AcceleoLocationLinkResolver {
 			locationLink = this.transform((AqlLocationLinkToAql)locationLinkToTransform);
 		} else if (locationLinkToTransform instanceof AqlLocationLinkToAny) {
 			locationLink = this.transform((AqlLocationLinkToAny)locationLinkToTransform);
+		} else if (locationLinkToTransform instanceof AcceleoLocationLinkToSourceLocation) {
+			locationLink = this.transform((AcceleoLocationLinkToSourceLocation)locationLinkToTransform);
 		} else {
 			throw new UnsupportedOperationException("Unsupported " + AbstractLocationLink.class
 					.getCanonicalName() + " implementation: " + locationLinkToTransform.toString());
@@ -108,6 +111,27 @@ public class AcceleoLocationLinkResolver {
 		ASTNode destinationAcceleoNode = acceleoLocationLinkToAcceleo.getDestination();
 		return this.createLocationLinkFromRangeToAcceleoDestination(originSelectionRange,
 				destinationAcceleoNode);
+	}
+
+	/**
+	 * Transforms an {@link AcceleoLocationLinkToSourceLocation} from Acceleo into a corresponding
+	 * {@link LocationLink} for LSP4J.
+	 * 
+	 * @param acceleoLocationLinkToSourceLocation
+	 *            the (non-{@code null}) {@link AcceleoLocationLinkToSourceLocation} to transform.
+	 * @return the {@link LocationLink} corresponding to {@code acceleoLocationLinkToSourceLocation}.
+	 */
+	private LocationLink transform(AcceleoLocationLinkToSourceLocation acceleoLocationLinkToSourceLocation) {
+		ASTNode linkOrigin = acceleoLocationLinkToSourceLocation.getOrigin();
+		AcceleoTextDocument originTextDocument = getAcceleoTextDocumentContaining(linkOrigin);
+		ASTNode linkOriginEquivalent = AcceleoAstUtils.getSelfOrEquivalentOf(linkOrigin, originTextDocument
+				.getAcceleoAstResult());
+
+		Range originSelectionRange = AcceleoLanguageServerPositionUtils.getRangeOf(linkOriginEquivalent,
+				originTextDocument.getAcceleoAstResult());
+
+		ISourceLocation targetSourceLocation = acceleoLocationLinkToSourceLocation.getDestination();
+		return this.createLocationLinkFromRangeToSourceLocation(originSelectionRange, targetSourceLocation);
 	}
 
 	/**
@@ -336,7 +360,6 @@ public class AcceleoLocationLinkResolver {
 				destinationNode, destinationAcceleoAstResult);
 		Range targetRange = AcceleoLanguageServerPositionUtils.getRangeOf(
 				destinationNodeInDestinationTextDocument, destinationAcceleoAstResult);
-		// FIXME: we probably only want to select part of the target.
 		Range targetSelectionRange = AcceleoLanguageServerPositionUtils.getIdentifierRangeOf(
 				destinationNodeInDestinationTextDocument, destinationTextDocument.getAcceleoAstResult());
 
@@ -363,6 +386,36 @@ public class AcceleoLocationLinkResolver {
 
 		LocationLink locationLink = new LocationLink(targetDocumentUri.toString(), targetRange,
 				targetSelectionRange, originSelectionRange);
+		return locationLink;
+	}
+
+	/**
+	 * Creates a {@link LocationLink} from the given {@link Range} to the given Acceleo
+	 * {@link ISourceLocation} destination.
+	 * 
+	 * @param originSelectionRange
+	 *            the (non-{@code null}) origin selection {@link Range}.
+	 * @param targetSourceLocation
+	 *            the (non-{@code null}) destination {@link ISourceLocation}.
+	 * @return the {@link LocationLink} from {@code originSelectionRange} to {@code targetSourceLocation}.
+	 */
+	private LocationLink createLocationLinkFromRangeToSourceLocation(Range originSelectionRange,
+			ISourceLocation targetSourceLocation) {
+
+		final Position rangeStart = new Position(targetSourceLocation.getRange().getStart().getLine(),
+				targetSourceLocation.getRange().getStart().getColumn());
+		final Position rangeEnd = new Position(targetSourceLocation.getRange().getEnd().getLine(),
+				targetSourceLocation.getRange().getEnd().getColumn());
+		final Range targetRange = new Range(rangeStart, rangeEnd);
+
+		final Position identifierStart = new Position(targetSourceLocation.getIdentifierRange().getStart()
+				.getLine(), targetSourceLocation.getIdentifierRange().getStart().getColumn());
+		final Position identifierEnd = new Position(targetSourceLocation.getIdentifierRange().getEnd()
+				.getLine(), targetSourceLocation.getIdentifierRange().getEnd().getColumn());
+		final Range targetSelectionRange = new Range(identifierStart, identifierEnd);
+
+		final LocationLink locationLink = new LocationLink(targetSourceLocation.getSourceURL().toString(),
+				targetRange, targetSelectionRange, originSelectionRange);
 		return locationLink;
 	}
 

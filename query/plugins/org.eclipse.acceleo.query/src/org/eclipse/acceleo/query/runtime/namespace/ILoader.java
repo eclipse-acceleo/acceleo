@@ -114,4 +114,15 @@ public interface ILoader {
 	 */
 	ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, IService<?> service);
 
+	/**
+	 * Gets the {@link ISourceLocation} for the given qualified name.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @return the {@link ISourceLocation} for the given qualified name if any, <code>null</code> otherwise
+	 */
+	ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, String qualifiedName);
+
 }

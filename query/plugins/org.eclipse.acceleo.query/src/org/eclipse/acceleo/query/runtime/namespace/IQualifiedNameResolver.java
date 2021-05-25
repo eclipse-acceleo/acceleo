@@ -61,6 +61,15 @@ public interface IQualifiedNameResolver {
 	ISourceLocation getSourceLocation(IService<?> service);
 
 	/**
+	 * Gets the {@link ISourceLocation} for the given qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @return the {@link ISourceLocation} for the given qualified name if any, <code>null</code> otherwise
+	 */
+	ISourceLocation getSourceLocation(String qualifiedName);
+
+	/**
 	 * Clears the cache for the given {@link Set} of qualified names.
 	 * 
 	 * @param qualifiedNames

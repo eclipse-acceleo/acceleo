@@ -68,4 +68,9 @@ public class JavaLoader extends AbstractLoader {
 		return null;
 	}
 
+	@Override
+	public ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, String qualifiedName) {
+		return null;
+	}
+
 }
