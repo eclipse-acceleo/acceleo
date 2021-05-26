@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _Omj4UMElEeqjcPTfvO5d8Q
-Save-Time: 7/8/20 4:18 PM
+Save-Time: 5/26/21 2:46 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -20,9 +20,7 @@ with [get-editor "test.mtl" | get-text-viewer] {
     open-declaration
 }
 get-editor "otherModule.mtl" | get-text-viewer | get-property "getSelectionText()" 
-    | equals "[template public myOtherTemplate(myParam : ecore::EClassifier)]\n"
-    + "  [myParam.name/].\n"
-    + "[/template]" | verify-true
+    | equals "myOtherTemplate" | verify-true
 get-view "Package Explorer" | get-button "Link with Editor" | click -metaKeys ""
 with [get-view "Package Explorer" | get-tree] {
     get-property "selection[0].path[0]" | equals test | verify-true
