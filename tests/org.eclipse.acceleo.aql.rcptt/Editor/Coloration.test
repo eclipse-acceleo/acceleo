@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _TvdmcMESEeqbE8RLfnn0fg
-Save-Time: 7/8/20 2:08 PM
+Save-Time: 5/26/21 4:47 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -14,6 +14,7 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | double-click
+
 with [get-editor "test.mtl" | get-text-viewer] {
     get-property "styles[0].text" | equals "[module" | verify-true
     get-property "styles[0].fontStyle" | equals bold | verify-true
@@ -55,7 +56,6 @@ with [get-editor "test.mtl" | get-text-viewer] {
     get-property "styles[12].foregroundColor" | equals "#3F7F5F" | verify-true
     get-property "styles[13].text" | equals "@main" | verify-true
     get-property "styles[13].fontStyle" | equals bold | verify-true
-    get-property "styles[13].foregroundColor" | equals "#3F7F5F" | verify-true
     get-property "styles[14].text" | equals "/]" | verify-true
     get-property "styles[14].fontStyle" | equals normal | verify-true
     get-property "styles[14].foregroundColor" | equals "#3F7F5F" | verify-true
@@ -145,20 +145,42 @@ with [get-editor "test.mtl" | get-text-viewer] {
     get-property "styles[46].text" | equals "/]" | verify-true
     get-property "styles[46].fontStyle" | equals bold | verify-true
     get-property "styles[46].foregroundColor" | equals "#7F0055" | verify-true
-    get-property "styles[47].text" | equals "" | verify-true
+    get-property "styles[47].text" | equals "some text" | verify-true
     get-property "styles[47].fontStyle" | equals normal | verify-true
-    get-property "styles[48].text" | equals "[/for]" | verify-true
+    get-property "styles[48].text" | equals "[" | verify-true
     get-property "styles[48].fontStyle" | equals bold | verify-true
     get-property "styles[48].foregroundColor" | equals "#7F0055" | verify-true
-    get-property "styles[49].text" | equals "" | verify-true
+    get-property "styles[49].text" | equals "myVariable1.name.getMessage()" | verify-true
     get-property "styles[49].fontStyle" | equals normal | verify-true
-    get-property "styles[50].text" | equals "[/file]" | verify-true
+    get-property "styles[49].foregroundColor" | equals "#006BD7" | verify-true
+    get-property "styles[50].text" | equals "/]" | verify-true
     get-property "styles[50].fontStyle" | equals bold | verify-true
     get-property "styles[50].foregroundColor" | equals "#7F0055" | verify-true
-    get-property "styles[51].text" | equals "[/template]" | verify-true
-    get-property "styles[51].fontStyle" | equals bold | verify-true
-    get-property "styles[51].foregroundColor" | equals "#910000" | verify-true
-    get-property "styles[52].text" | equals "" | verify-true
-    get-property "styles[52].fontStyle" | equals normal | verify-true
+    get-property "styles[51].text" | equals "" | verify-true
+    get-property "styles[51].fontStyle" | equals normal | verify-true
+    get-property "styles[52].text" | equals "[/for]" | verify-true
+    get-property "styles[52].fontStyle" | equals bold | verify-true
+    get-property "styles[52].foregroundColor" | equals "#7F0055" | verify-true
+    get-property "styles[53].text" | equals "" | verify-true
+    get-property "styles[53].fontStyle" | equals normal | verify-true
+    get-property "styles[54].text" | equals "[" | verify-true
+    get-property "styles[54].fontStyle" | equals bold | verify-true
+    get-property "styles[54].foregroundColor" | equals "#7F0055" | verify-true
+    get-property "styles[55].text" | equals "myParam.eClassifiers.name.getMessage()" | verify-true
+    get-property "styles[55].fontStyle" | equals normal | verify-true
+    get-property "styles[55].foregroundColor" | equals "#006BD7" | verify-true
+    get-property "styles[56].text" | equals "/]" | verify-true
+    get-property "styles[56].fontStyle" | equals bold | verify-true
+    get-property "styles[56].foregroundColor" | equals "#7F0055" | verify-true
+    get-property "styles[57].text" | equals "" | verify-true
+    get-property "styles[57].fontStyle" | equals normal | verify-true
+    get-property "styles[58].text" | equals "[/file]" | verify-true
+    get-property "styles[58].fontStyle" | equals bold | verify-true
+    get-property "styles[58].foregroundColor" | equals "#7F0055" | verify-true
+    get-property "styles[59].text" | equals "[/template]" | verify-true
+    get-property "styles[59].fontStyle" | equals bold | verify-true
+    get-property "styles[59].foregroundColor" | equals "#910000" | verify-true
+    get-property "styles[60].text" | equals "" | verify-true
+    get-property "styles[60].fontStyle" | equals normal | verify-true
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
