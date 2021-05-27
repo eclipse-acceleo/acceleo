@@ -35,7 +35,7 @@ public class AcceleoAstResult {
 	/**
 	 * {@link Positions}.
 	 */
-	private Positions positions;
+	private final Positions positions;
 
 	/**
 	 * The {@link List} of {@link Error}.

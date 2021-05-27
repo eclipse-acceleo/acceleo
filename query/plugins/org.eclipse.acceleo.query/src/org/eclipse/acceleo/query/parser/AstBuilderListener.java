@@ -886,12 +886,12 @@ public class AstBuilderListener extends QueryBaseListener {
 	 *            the identifierToken {@link Token}
 	 */
 	private void setIdentifierPositions(EObject node, Token identifierToken) {
-		positions.setStartPositions(node, Integer.valueOf(identifierToken.getStartIndex()));
-		positions.setStartLines(node, Integer.valueOf(identifierToken.getLine() - 1));
-		positions.setStartColumns(node, Integer.valueOf(identifierToken.getCharPositionInLine()));
-		positions.setEndPositions(node, Integer.valueOf(identifierToken.getStopIndex() + 1));
-		positions.setEndLines(node, Integer.valueOf(identifierToken.getLine() - 1));
-		positions.setEndColumns(node, Integer.valueOf(identifierToken.getCharPositionInLine()
+		positions.setIdentifierStartPositions(node, Integer.valueOf(identifierToken.getStartIndex()));
+		positions.setIdentifierStartLines(node, Integer.valueOf(identifierToken.getLine() - 1));
+		positions.setIdentifierStartColumns(node, Integer.valueOf(identifierToken.getCharPositionInLine()));
+		positions.setIdentifierEndPositions(node, Integer.valueOf(identifierToken.getStopIndex() + 1));
+		positions.setIdentifierEndLines(node, Integer.valueOf(identifierToken.getLine() - 1));
+		positions.setIdentifierEndColumns(node, Integer.valueOf(identifierToken.getCharPositionInLine()
 				+ identifierToken.getText().length()));
 	}
 
@@ -915,6 +915,26 @@ public class AstBuilderListener extends QueryBaseListener {
 	}
 
 	/**
+	 * Sets the identifier positions of the given node.
+	 * 
+	 * @param node
+	 *            the node
+	 * @param start
+	 *            the start {@link Token}
+	 * @param end
+	 *            the end {@link Token}
+	 */
+	private void setIdentifierPositions(EObject node, Token start, Token end) {
+		positions.setIdentifierStartPositions(node, Integer.valueOf(start.getStartIndex()));
+		positions.setIdentifierStartLines(node, Integer.valueOf(start.getLine() - 1));
+		positions.setIdentifierStartColumns(node, Integer.valueOf(start.getCharPositionInLine()));
+		positions.setIdentifierEndPositions(node, Integer.valueOf(end.getStopIndex() + 1));
+		positions.setIdentifierEndLines(node, Integer.valueOf(end.getLine() - 1));
+		positions.setIdentifierEndColumns(node, Integer.valueOf(end.getCharPositionInLine() + end.getText()
+				.length()));
+	}
+
+	/**
 	 * Sets the positions of the given node.
 	 * 
 	 * @param node
@@ -931,6 +951,25 @@ public class AstBuilderListener extends QueryBaseListener {
 		positions.setEndPositions(node, positions.getEndPositions(expressionEnd));
 		positions.setEndLines(node, positions.getEndLines(expressionEnd));
 		positions.setEndColumns(node, positions.getEndColumns(expressionEnd));
+	}
+
+	/**
+	 * Sets the identifier positions of the given node.
+	 * 
+	 * @param node
+	 *            the node
+	 * @param expressionStart
+	 *            the start {@link Expression}
+	 * @param expressionEnd
+	 *            the end {@link Expression}
+	 */
+	private void setIdentifierPositions(EObject node, Expression expressionStart, Expression expressionEnd) {
+		positions.setIdentifierStartPositions(node, positions.getStartPositions(expressionStart));
+		positions.setIdentifierStartLines(node, positions.getStartLines(expressionStart));
+		positions.setIdentifierStartColumns(node, positions.getStartColumns(expressionStart));
+		positions.setIdentifierEndPositions(node, positions.getEndPositions(expressionEnd));
+		positions.setIdentifierEndLines(node, positions.getEndLines(expressionEnd));
+		positions.setIdentifierEndColumns(node, positions.getEndColumns(expressionEnd));
 	}
 
 	/**
@@ -1160,6 +1199,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	public void exitNot(NotContext ctx) {
 		final Call callService = builder.callService(NOT_SERVICE_NAME, popExpression());
 
+		setIdentifierPositions(callService, ctx.start, ctx.stop);
 		setPositions(callService, ctx.start, ctx.stop);
 
 		push(callService);
@@ -1240,7 +1280,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		Expression op1 = popExpression();
 		final Implies callService = builder.callImpliesService(op1, op2);
 
-		setIdentifierPositions(callService, (Token)ctx.getChild(1).getPayload());
+		setIdentifierPositions(callService, op1, op2);
 		setPositions(callService, op1, op2);
 
 		push(callService);
@@ -1270,7 +1310,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		Expression op1 = popExpression();
 		final And callService = builder.callAndService(op1, op2);
 
-		setIdentifierPositions(callService, (Token)ctx.getChild(1).getPayload());
+		setIdentifierPositions(callService, op1, op2);
 		setPositions(callService, op1, op2);
 
 		push(callService);
@@ -1313,6 +1353,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		Expression op1 = popExpression();
 		final Call callService = builder.callService(service, op1, op2);
 
+		setIdentifierPositions(callService, op1, op2);
 		setPositions(callService, op1, op2);
 
 		push(callService);
@@ -1370,6 +1411,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	public void exitMin(MinContext ctx) {
 		final Call callService = builder.callService(UNARY_MIN_SERVICE_NAME, popExpression());
 
+		setIdentifierPositions(callService, ctx.start, ctx.stop);
 		setPositions(callService, ctx.start, ctx.stop);
 
 		push(callService);
@@ -1521,6 +1563,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				toPush = builder.enumLiteral(ePackageName, eEnumName, eEnumLiteralName);
 				push(toPush);
 			}
+			setIdentifierPositions(toPush, ctx.start, ctx.stop);
 			setPositions(toPush, ctx.start, ctx.stop);
 		}
 	}
@@ -1539,6 +1582,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final ErrorEnumLiteral errorEnumLiteral = builder.errorEnumLiteral(true, ePackageName, eEnumName);
 
 			pushError(errorEnumLiteral, String.format(INVALID_ENUM_LITERAL, "':' instead of '::'"));
+			setIdentifierPositions(errorEnumLiteral, ctx.start, ctx.stop);
 			setPositions(errorEnumLiteral, ctx.start, ctx.stop);
 		} else {
 			errorRule = NO_ERROR;
@@ -1563,6 +1607,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				toPush = builder.eClassifierTypeLiteral(ePackageName, eClassName);
 				push(toPush);
 			}
+			setIdentifierPositions(toPush, ctx.start, ctx.stop);
 			setPositions(toPush, ctx.start, ctx.stop);
 		}
 	}
@@ -1580,6 +1625,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				ePackageName);
 
 		pushError((Error)errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
+		setIdentifierPositions(errorTypeLiteral, ctx.start, ctx.stop);
 		setPositions(errorTypeLiteral, ctx.start, ctx.stop);
 	}
 

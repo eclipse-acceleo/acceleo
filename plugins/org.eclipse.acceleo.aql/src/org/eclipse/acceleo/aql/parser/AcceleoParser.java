@@ -2340,6 +2340,12 @@ public class AcceleoParser {
 			aqlErrors.add(errorExpression);
 			final Positions aqlPositions = new Positions();
 			if (expression != null) {
+				aqlPositions.setIdentifierStartPositions(errorExpression, Integer.valueOf(0));
+				aqlPositions.setIdentifierStartLines(errorExpression, Integer.valueOf(0));
+				aqlPositions.setIdentifierStartColumns(errorExpression, Integer.valueOf(0));
+				aqlPositions.setIdentifierEndPositions(errorExpression, Integer.valueOf(0));
+				aqlPositions.setIdentifierEndLines(errorExpression, Integer.valueOf(0));
+				aqlPositions.setIdentifierEndColumns(errorExpression, Integer.valueOf(0));
 				aqlPositions.setStartPositions(errorExpression, Integer.valueOf(0));
 				aqlPositions.setStartLines(errorExpression, Integer.valueOf(0));
 				aqlPositions.setStartColumns(errorExpression, Integer.valueOf(0));
@@ -2389,6 +2395,12 @@ public class AcceleoParser {
 			errs.add(errorTypeLiteral);
 			final Positions aqlPositions = new Positions();
 			if (expression != null) {
+				aqlPositions.setIdentifierStartPositions(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setIdentifierStartLines(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setIdentifierStartColumns(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setIdentifierEndPositions(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setIdentifierEndLines(errorTypeLiteral, Integer.valueOf(0));
+				aqlPositions.setIdentifierEndColumns(errorTypeLiteral, Integer.valueOf(0));
 				aqlPositions.setStartPositions(errorTypeLiteral, Integer.valueOf(0));
 				aqlPositions.setStartLines(errorTypeLiteral, Integer.valueOf(0));
 				aqlPositions.setStartColumns(errorTypeLiteral, Integer.valueOf(0));
