@@ -172,8 +172,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		destination = destinationURI;
 		generationStrategy = strategy;
+
+		final String savedLastLineOfLastStatement = lastLineOfLastStatement;
+		final boolean savedInlinedBlock = inlinedBlock;
 		lastLineOfLastStatement = "";
-		// TODO this is an issue for calling generate() multiple times
+		inlinedBlock = false;
 		if (generationResult == null) {
 			generationResult = new GenerationResult();
 		}
@@ -183,6 +186,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			res = doSwitch(node);
 		} finally {
 			popVariables();
+			lastLineOfLastStatement = savedLastLineOfLastStatement;
+			inlinedBlock = savedInlinedBlock;
 		}
 
 		return res;
