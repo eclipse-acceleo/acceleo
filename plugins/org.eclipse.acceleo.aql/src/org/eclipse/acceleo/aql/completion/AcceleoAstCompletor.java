@@ -544,8 +544,8 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 				}
 			} else if (currentScope instanceof LetStatement) {
 				final LetStatement let = (LetStatement)currentScope;
-				for (Variable variable : let.getVariables()) {
-					res.put(variable.getName(), getPossibleTypes(variable));
+				for (Binding binding : let.getVariables()) {
+					res.put(binding.getName(), getPossibleTypes(binding));
 				}
 			} else if (currentScope instanceof ForStatement) {
 				final ForStatement forStatement = (ForStatement)currentScope;
@@ -595,9 +595,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			final IValidationResult validationResult = acceleoValidationResult.getValidationResult(binding
 					.getInitExpression().getAst());
 			res = new LinkedHashSet<IType>();
-			if (binding.getType() != null) {
-				res.addAll(validationResult.getPossibleTypes(binding.getInitExpression().getAst().getAst()));
-			}
+			res.addAll(validationResult.getPossibleTypes(binding.getInitExpression().getAst().getAst()));
 		} else {
 			res = getPossibleTypes((Variable)binding);
 		}

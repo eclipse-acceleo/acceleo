@@ -31,6 +31,7 @@
   [/for]
   [for (myVariable | myParam.eClassifiers) <<forStatementSeparator>>separator(<<forStatementSeparatorExpression>>myVariable.name<<forStatementSeparatorCloseParenthesis>>)<<forStatementAfterSeparator>>]
     <<statementInForStatement>>
+    [<<nestedQueryStatementExpressionInFor>>myVariable.<<nestedQueryStatementExpressionInForAfterDot>>name + '.txt'<<nestedQueryStatementExpressionInForEnd>> <<nestedQueryStatementExpressionInForEndAfterSpace>>/]
     some static text.
   [/for]
   [if <<ifStatementOpenParenthesis>>(<<ifStatementExpression>>myParam.<<ifStatementExpressionAfterDot>>eClassifiers->size() = 0<<ifStatementCloseParenthesis>> <<ifStatementCloseParenthesisAfterSpace>>)<<ifStatementEndHeader>>]
@@ -45,6 +46,7 @@
   [/if]
   [let <<letStatementBindingName>>myVariable <<letStatementBindingColon>>: <<letStatementBindingType>>ecore::EClassifier <<letStatementBindingEqual>>= <<letStatementBindingExpression>>myParam.<<letStatementBindingExpressionAfterDot>>eClassifiers->first()<<letStatementEndHeader>> <<letStatementEndHeaderAfterSpace>>]
     <<statementInLetStatement>>
+    [<<nestedQueryStatementExpressionInLet>>myVariable.<<nestedQueryStatementExpressionInLetAfterDot>>name + '.txt'<<nestedQueryStatementExpressionInLetEnd>> <<nestedQueryStatementExpressionInLetEndAfterSpace>>/]
     some static text.
   [/let]
   [protected <<protectedAreaOpenParenthesis>>(<<protectedAreaExpression>>myParam.name<<protectedAreaCloseParenthesis>> <<protectedAreaCloseParenthesisAfterSpace>>)<<protectedAreaEndHeader>>]
