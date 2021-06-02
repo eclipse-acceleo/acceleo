@@ -143,7 +143,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	/**
 	 * Mapping from a frame ID to its variables.
 	 */
-	private final Map<Long, Map<String, Object>> frameIDToVariables = new HashMap<Long, Map<String, Object>>();
+	private final Map<Integer, Map<String, Object>> frameIDToVariables = new HashMap<Integer, Map<String, Object>>();
 
 	/**
 	 * The EMF {@link ILabelProvider}.
@@ -270,10 +270,10 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 					source.setPath(dslSource.getPath());
 					responseBreakpoint.setVerified(true);
 					responseBreakpoint.setSource(source);
-					responseBreakpoint.setLine(dslSource.getStartLine());
-					responseBreakpoint.setColumn(dslSource.getStartColumn());
-					responseBreakpoint.setEndLine(dslSource.getEndLine());
-					responseBreakpoint.setEndColumn(dslSource.getEndColumn());
+					responseBreakpoint.setLine((int)dslSource.getStartLine());
+					responseBreakpoint.setColumn((int)dslSource.getStartColumn());
+					responseBreakpoint.setEndLine((int)dslSource.getEndLine());
+					responseBreakpoint.setEndColumn((int)dslSource.getEndColumn());
 					responseBreakpoints.add(responseBreakpoint);
 				}
 			}
@@ -397,7 +397,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
-				debugger.suspend(args.getThreadId());
+				debugger.suspend((long)args.getThreadId());
 			}
 		});
 	}
@@ -416,7 +416,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 			public ContinueResponse get() {
 				final ContinueResponse res = new ContinueResponse();
 
-				debugger.resume(args.getThreadId());
+				debugger.resume((long)args.getThreadId());
 				res.setAllThreadsContinued(false);
 
 				return res;
@@ -434,7 +434,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
-				debugger.stepOver(args.getThreadId());
+				debugger.stepOver((long)args.getThreadId());
 			}
 		});
 	}
@@ -449,7 +449,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
-				debugger.stepInto(args.getThreadId());
+				debugger.stepInto((long)args.getThreadId());
 			}
 		});
 	}
@@ -485,8 +485,8 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
-				for (Long threadId : args.getThreadIds()) {
-					debugger.terminate(threadId);
+				for (Integer threadId : args.getThreadIds()) {
+					debugger.terminate((long)threadId);
 				}
 			}
 		});
@@ -774,10 +774,10 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		final StackTraceResponse res = new StackTraceResponse();
 
 		final List<StackFrame> resFrames = new ArrayList<StackFrame>();
-		Deque<org.eclipse.acceleo.debug.util.StackFrame> stackFrames = debugger.getStackFrame(args
+		Deque<org.eclipse.acceleo.debug.util.StackFrame> stackFrames = debugger.getStackFrame((long)args
 				.getThreadId());
 		final Iterator<org.eclipse.acceleo.debug.util.StackFrame> it = stackFrames.descendingIterator();
-		long id = 0;
+		int id = 0;
 		while (it.hasNext()) {
 			final org.eclipse.acceleo.debug.util.StackFrame currentFrame = it.next();
 			final StackFrame resFrame = new StackFrame();
@@ -789,10 +789,10 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 			// TODO ? resFrame.setModuleId(moduleId);
 			final DSLSource dslSource = debugger.getSource(currentFrame.getInstruction());
 			if (dslSource != null) {
-				resFrame.setLine(dslSource.getStartLine());
-				resFrame.setColumn(dslSource.getStartColumn());
-				resFrame.setEndLine(dslSource.getEndLine());
-				resFrame.setEndColumn(dslSource.getEndColumn());
+				resFrame.setLine((int)dslSource.getStartLine());
+				resFrame.setColumn((int)dslSource.getStartColumn());
+				resFrame.setEndLine((int)dslSource.getEndLine());
+				resFrame.setEndColumn((int)dslSource.getEndColumn());
 				final Source source = new Source();
 				source.setName(dslSource.getPath());
 				source.setPath(dslSource.getPath());
@@ -801,7 +801,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 				id++; // TODO id
 			}
 		}
-		res.setTotalFrames((long)resFrames.size());
+		res.setTotalFrames(resFrames.size());
 		res.setStackFrames(resFrames.toArray(new StackFrame[resFrames.size()]));
 
 		return res;
@@ -822,7 +822,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 				final List<Thread> threads = new ArrayList<Thread>();
 				for (Entry<Long, String> entry : debugger.getThreads().entrySet()) {
 					final Thread thread = new Thread();
-					thread.setId(entry.getKey());
+					thread.setId(entry.getKey().intValue());
 					thread.setName(entry.getValue());
 					threads.add(thread);
 				}
@@ -866,7 +866,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
-				debugger.stepReturn(args.getThreadId());
+				debugger.stepReturn((long)args.getThreadId());
 			}
 		});
 	}
@@ -944,7 +944,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientStepIntoResumingReply(StepIntoResumingReply resumingReply) {
 		final ContinuedEventArguments eventArguments = new ContinuedEventArguments();
 
-		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
+		eventArguments.setThreadId(resumingReply.getThreadID().intValue());
 		eventArguments.setAllThreadsContinued(false);
 
 		// client.continued(eventArguments);
@@ -954,7 +954,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientStepOverResumingReply(StepOverResumingReply resumingReply) {
 		final ContinuedEventArguments eventArguments = new ContinuedEventArguments();
 
-		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
+		eventArguments.setThreadId(resumingReply.getThreadID().intValue());
 		eventArguments.setAllThreadsContinued(false);
 
 		// client.continued(eventArguments);
@@ -964,7 +964,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientStepReturnResumingReply(StepReturnResumingReply resumingReply) {
 		final ContinuedEventArguments eventArguments = new ContinuedEventArguments();
 
-		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
+		eventArguments.setThreadId(resumingReply.getThreadID().intValue());
 		eventArguments.setAllThreadsContinued(false);
 
 		// client.continued(eventArguments);
@@ -974,7 +974,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientResumedReply(ResumingReply resumingReply) {
 		final ContinuedEventArguments eventArguments = new ContinuedEventArguments();
 
-		eventArguments.setThreadId(Long.valueOf(resumingReply.getThreadID()));
+		eventArguments.setThreadId(resumingReply.getThreadID().intValue());
 		eventArguments.setAllThreadsContinued(false);
 
 		// client.continued(eventArguments);
@@ -984,7 +984,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientSpawnRunningThreadReply(SpawnRunningThreadReply spawnThreadReply) {
 		final ThreadEventArguments eventArguments = new ThreadEventArguments();
 
-		eventArguments.setThreadId(Long.valueOf(spawnThreadReply.getThreadID()));
+		eventArguments.setThreadId(spawnThreadReply.getThreadID().intValue());
 		eventArguments.setReason(ThreadEventArgumentsReason.STARTED);
 
 		client.thread(eventArguments);
@@ -995,7 +995,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		if (terminatedReply.getThreadID() != null) {
 			final ThreadEventArguments eventArguments = new ThreadEventArguments();
 
-			eventArguments.setThreadId(Long.valueOf(terminatedReply.getThreadID()));
+			eventArguments.setThreadId(terminatedReply.getThreadID().intValue());
 			eventArguments.setReason(ThreadEventArgumentsReason.EXITED);
 
 			client.thread(eventArguments);
@@ -1012,7 +1012,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientSteppedReply(SteppedReply suspendReply) {
 		final StoppedEventArguments argument = new StoppedEventArguments();
 
-		argument.setThreadId(Long.valueOf(suspendReply.getThreadID()));
+		argument.setThreadId(suspendReply.getThreadID().intValue());
 		argument.setDescription("Paused after a step.");
 		argument.setPreserveFocusHint(true);
 		argument.setReason(StoppedEventArgumentsReason.STEP);
@@ -1025,7 +1025,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientBreakpointReply(BreakpointReply suspendReply) {
 		final StoppedEventArguments argument = new StoppedEventArguments();
 
-		argument.setThreadId(Long.valueOf(suspendReply.getThreadID()));
+		argument.setThreadId(suspendReply.getThreadID().intValue());
 		argument.setDescription("Paused after hitting a breakpoint.");
 		argument.setPreserveFocusHint(true);
 		argument.setReason(StoppedEventArgumentsReason.BREAKPOINT);
@@ -1038,7 +1038,7 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	protected void notifyClientSuspendedReply(SuspendedReply suspendReply) {
 		final StoppedEventArguments argument = new StoppedEventArguments();
 
-		argument.setThreadId(Long.valueOf(suspendReply.getThreadID()));
+		argument.setThreadId(suspendReply.getThreadID().intValue());
 		argument.setDescription("Paused after a client request.");
 		argument.setPreserveFocusHint(true);
 		argument.setReason(StoppedEventArgumentsReason.PAUSE);

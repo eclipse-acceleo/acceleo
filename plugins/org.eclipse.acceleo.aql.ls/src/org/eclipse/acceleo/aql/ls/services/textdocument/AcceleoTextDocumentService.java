@@ -34,6 +34,8 @@ import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.CompletionParams;
+import org.eclipse.lsp4j.DeclarationParams;
+import org.eclipse.lsp4j.DefinitionParams;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidCloseTextDocumentParams;
@@ -47,7 +49,6 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.services.LanguageClient;
@@ -296,7 +297,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 
 	@Override
 	public CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> declaration(
-			TextDocumentPositionParams params) {
+			DeclarationParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
@@ -335,7 +336,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 
 	@Override
 	public CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> definition(
-			TextDocumentPositionParams params) {
+			DefinitionParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
