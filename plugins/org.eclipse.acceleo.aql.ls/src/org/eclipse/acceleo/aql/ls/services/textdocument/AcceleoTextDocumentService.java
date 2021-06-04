@@ -113,6 +113,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 					+ openedDocumentUri);
 		} else {
 			this.openedDocumentsIndex.put(openedDocumentUri, openedAcceleoTextDocument);
+			openedAcceleoTextDocument.setOpened(true);
 		}
 	}
 
@@ -131,6 +132,14 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	public void didClose(DidCloseTextDocumentParams params) {
 		URI closedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument().getUri());
 		checkDocumentIsOpened(closedDocumentUri);
+		AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
+				closedDocumentUri);
+		if (openedAcceleoTextDocument == null) {
+			throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
+					+ closedDocumentUri);
+		} else {
+			openedAcceleoTextDocument.setOpened(false);
+		}
 		this.openedDocumentsIndex.remove(closedDocumentUri);
 	}
 
@@ -169,34 +178,6 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	 */
 	public AcceleoTextDocument findTextDocumentDefining(Module definedModule) {
 		AcceleoTextDocument definingTextDocument = null;
-
-		// // First look in the already loaded documents.
-		// for (AcceleoTextDocument candidate : this.loadedDocumentsIndex.values()) {
-		// if (documentDefinesModule(candidate, definedModule)) {
-		// definingTextDocument = candidate;
-		// break;
-		// }
-		// }
-		//
-		// if (definingTextDocument == null) {
-		// // Otherwise, search in the workspace.
-		// CompletableFuture<List<WorkspaceFolder>> futureWorkspaceFolders = this.languageClient
-		// .workspaceFolders();
-		// try {
-		// List<WorkspaceFolder> workspaceFolders = futureWorkspaceFolders.get();
-		// for (WorkspaceFolder workspaceFolder : workspaceFolders) {
-		// List<AcceleoTextDocument> acceleoTextDocuments = this.server.loadAllAcceleoDocumentsIn(
-		// workspaceFolder.getUri());
-		// for (AcceleoTextDocument candidateAcceleoDocument : acceleoTextDocuments) {
-		// if (documentDefinesModule(candidateAcceleoDocument, definedModule)) {
-		// definingTextDocument = candidateAcceleoDocument;
-		// }
-		// }
-		// }
-		// } catch (InterruptedException | ExecutionException exception) {
-		// throw new RuntimeException(exception);
-		// }
-		// }
 
 		List<AcceleoTextDocument> allTextDocuments = this.server.getWorkspace().getAllTextDocuments();
 		for (AcceleoTextDocument candidate : allTextDocuments) {

@@ -34,6 +34,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironmen
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
+import org.eclipse.lsp4j.services.TextDocumentService;
 
 /**
  * Represents an Acceleo Text Document as known by the Language Server. It is maintained consistent with the
@@ -84,6 +85,12 @@ public class AcceleoTextDocument {
 	 * The module qualified name.
 	 */
 	private String qualifiedName;
+
+	/**
+	 * Tells if the document is
+	 * {@link TextDocumentService#didOpen(org.eclipse.lsp4j.DidOpenTextDocumentParams) opened}.
+	 */
+	private boolean isOpened;
 
 	/**
 	 * Creates a new {@link AcceleoTextDocument} corresponding to the given URI and with the given initial
@@ -202,11 +209,19 @@ public class AcceleoTextDocument {
 	 *            the (non-{@code null}) contents of the document we are parsing.
 	 * @return the resulting {@link AcceleoAstResult}.
 	 */
-	private static AcceleoAstResult doParsing(String moduleQualifiedName, String documentContents) {
-		Objects.requireNonNull(moduleQualifiedName);
-		Objects.requireNonNull(documentContents);
-		AcceleoParser acceleoParser = new AcceleoParser();
-		return acceleoParser.parse(documentContents, moduleQualifiedName);
+	private AcceleoAstResult doParsing(String moduleQualifiedName, String documentContents) {
+		final AcceleoAstResult res;
+
+		if (isOpened()) {
+			Objects.requireNonNull(moduleQualifiedName);
+			Objects.requireNonNull(documentContents);
+			AcceleoParser acceleoParser = new AcceleoParser();
+			res = acceleoParser.parse(documentContents, moduleQualifiedName);
+		} else {
+			res = ((Module)ownerProject.getResolver().resolve(moduleQualifiedName)).getAst();
+		}
+
+		return res;
 	}
 
 	/**
@@ -477,4 +492,28 @@ public class AcceleoTextDocument {
 					.getEnd(), newTextExcerpt);
 		}
 	}
+
+	/**
+	 * Tells if the document is
+	 * {@link TextDocumentService#didOpen(org.eclipse.lsp4j.DidOpenTextDocumentParams) opened}.
+	 * 
+	 * @return <code>true</code> if the document is
+	 *         {@link TextDocumentService#didOpen(org.eclipse.lsp4j.DidOpenTextDocumentParams) opened},
+	 *         <code>false</code> otherwise
+	 */
+	public boolean isOpened() {
+		return isOpened;
+	}
+
+	/**
+	 * Sets if the document is {@link TextDocumentService#didOpen(org.eclipse.lsp4j.DidOpenTextDocumentParams)
+	 * opened}.
+	 * 
+	 * @param opened
+	 *            the new value
+	 */
+	public void setOpened(boolean opened) {
+		this.isOpened = opened;
+	}
+
 }
