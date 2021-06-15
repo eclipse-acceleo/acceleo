@@ -20,7 +20,7 @@ set -e
 # The SSH account to use
 export SSH_ACCOUNT="genie.acceleo@projects-storage.eclipse.org"
 
-NIGHTLIES_FOLDER="/home/data/httpd/download.eclipse.org/accleeo/updates/nightly"
+NIGHTLIES_FOLDER="/home/data/httpd/download.eclipse.org/acceleo/updates/nightly"
 GROUP="acceleo"
 
 UPDATE_FOLDER=${WORKSPACE}/releng/org.eclipse.acceleo.aql.update/target
