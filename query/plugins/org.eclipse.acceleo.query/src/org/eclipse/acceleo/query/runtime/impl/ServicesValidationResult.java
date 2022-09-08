@@ -35,7 +35,7 @@ public class ServicesValidationResult {
 	/**
 	 * The current line separator which will be used by the tooling in order to compute the description.
 	 */
-	private static final String LS = System.getProperty("line.separator");
+	private static final String LS = "\n";
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
