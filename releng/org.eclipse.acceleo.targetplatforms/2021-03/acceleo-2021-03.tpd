@@ -6,7 +6,7 @@ include "../common/swtbot.tpd"
 
 with source requirements
 
-location "http://download.eclipse.org/releases/2021-03" {
+location "https://download.eclipse.org/releases/2021-03" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	
@@ -19,7 +19,7 @@ location "http://download.eclipse.org/releases/2021-03" {
 	org.eclipse.sirius.specifier.feature.group lazy
 }
 
-location "http://download.eclipse.org/releases/2021-03" {
+location "https://download.eclipse.org/releases/2021-03" {
 	lpg.runtime.java lazy
 	
 	org.eclipse.ocl lazy

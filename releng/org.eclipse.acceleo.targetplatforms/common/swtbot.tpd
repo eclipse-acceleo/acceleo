@@ -2,6 +2,6 @@ target "Orbit"
 
 with source, requirements
 
-location "http://download.eclipse.org/technology/swtbot/releases/latest/" {
+location "https://download.eclipse.org/technology/swtbot/releases/latest/" {
 	org.eclipse.swtbot.eclipse.feature.group lazy
 }

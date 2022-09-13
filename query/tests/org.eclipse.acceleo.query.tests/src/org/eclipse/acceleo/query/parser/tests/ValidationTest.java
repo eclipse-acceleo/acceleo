@@ -197,9 +197,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final IType type = possibleTypes.iterator().next();
 		assertTrue(type instanceof SequenceType);
-		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
-		assertEquals("Feature notExisting not found in EClass EClass", ((NothingType)((SequenceType)type)
-				.getCollectionType()).getMessage());
+		assertNothingType("Feature notExisting not found in EClass EClass", ((SequenceType)type)
+				.getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
@@ -208,8 +207,8 @@ public class ValidationTest {
 
 	@Test
 	public void flattenSetNothingFeatureNotExistingAccessTest() {
-		final IValidationResult validationResult = engine
-				.validate("self->asSet().notExisting", variableTypes);
+		final IValidationResult validationResult = engine.validate("self->asSet().notExisting",
+				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -217,9 +216,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final IType type = possibleTypes.iterator().next();
 		assertTrue(type instanceof SetType);
-		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
-		assertEquals("Feature notExisting not found in EClass EClass", ((NothingType)((SetType)type)
-				.getCollectionType()).getMessage());
+		assertNothingType("Feature notExisting not found in EClass EClass", ((SetType)type)
+				.getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
@@ -237,15 +235,12 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final IType type = possibleTypes.iterator().next();
 		assertTrue(type instanceof SequenceType);
-		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
-		assertEquals(
+		assertNothingType(
 				"Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
-				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+				((SequenceType)type).getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
 				18, 45);
 	}
@@ -261,15 +256,12 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final IType type = possibleTypes.iterator().next();
 		assertTrue(type instanceof SequenceType);
-		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
-		assertEquals(
+		assertNothingType(
 				"Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
-				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+				((SequenceType)type).getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
 				18, 45);
 	}
@@ -290,15 +282,12 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final IType type = possibleTypes.iterator().next();
 		assertTrue(type instanceof SequenceType);
-		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
-		assertEquals(
+		assertNothingType(
 				"Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
-				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+				((SequenceType)type).getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
 				23, 35);
 	}
@@ -319,15 +308,12 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final IType type = possibleTypes.iterator().next();
 		assertTrue(type instanceof SetType);
-		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
-		assertEquals(
+		assertNothingType(
 				"Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
-				((NothingType)((SetType)type).getCollectionType()).getMessage());
+				((SetType)type).getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
 				"Empty collection: Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
 				18, 30);
 	}
@@ -354,9 +340,8 @@ public class ValidationTest {
 				.getCollectionType()).getType());
 		type = it.next();
 		assertTrue(type instanceof SequenceType);
-		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
-		assertEquals("Feature eClassifiers not found in EClass EClass", ((NothingType)((SequenceType)type)
-				.getCollectionType()).getMessage());
+		assertNothingType("Feature eClassifiers not found in EClass EClass", ((SequenceType)type)
+				.getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
@@ -385,9 +370,8 @@ public class ValidationTest {
 				.getCollectionType()).getType());
 		type = it.next();
 		assertTrue(type instanceof SetType);
-		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
-		assertEquals("Feature eClassifiers not found in EClass EClass", ((NothingType)((SetType)type)
-				.getCollectionType()).getMessage());
+		assertNothingType("Feature eClassifiers not found in EClass EClass", ((SetType)type)
+				.getCollectionType());
 
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
@@ -646,8 +630,8 @@ public class ValidationTest {
 
 	@Test
 	public void enumLiteralError() {
-		final IValidationResult validationResult = engine
-				.validate("anydsl::Part::NotExisting", variableTypes);
+		final IValidationResult validationResult = engine.validate("anydsl::Part::NotExisting",
+				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -714,9 +698,8 @@ public class ValidationTest {
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
-		assertTrue(((SetType)possibleType).getCollectionType() instanceof NothingType);
-		assertEquals("Empty OrderedSet defined in extension", ((NothingType)((SetType)possibleType)
-				.getCollectionType()).getMessage());
+		assertNothingType("Empty OrderedSet defined in extension", ((SetType)possibleType)
+				.getCollectionType());
 	}
 
 	@Test
@@ -749,9 +732,8 @@ public class ValidationTest {
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof SequenceType);
-		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof NothingType);
-		assertEquals("Empty Sequence defined in extension", ((NothingType)((SequenceType)possibleType)
-				.getCollectionType()).getMessage());
+		assertNothingType("Empty Sequence defined in extension", ((SequenceType)possibleType)
+				.getCollectionType());
 	}
 
 	@Test
@@ -862,9 +844,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"The predicate may evaluate to a value that is not a boolean type ([java.lang.Boolean, java.lang.Object]).",
 				0, 38);
 		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
@@ -873,8 +853,8 @@ public class ValidationTest {
 
 	@Test
 	public void testLetMaskingVariable() {
-		final IValidationResult validationResult = engine
-				.validate("let stuff = self in stuff", variableTypes);
+		final IValidationResult validationResult = engine.validate("let stuff = self in stuff",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 
@@ -1051,9 +1031,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage, EClassifier=EReference].",
 				61, 67);
 	}
@@ -1090,8 +1068,8 @@ public class ValidationTest {
 
 	@Test
 	public void eInverseFeatureNameStringLiteral() {
-		final IValidationResult validationResult = engine
-				.validate("self.eInverse('ePackage')", variableTypes);
+		final IValidationResult validationResult = engine.validate("self.eInverse('ePackage')",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1135,8 +1113,8 @@ public class ValidationTest {
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
-				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
@@ -1188,8 +1166,8 @@ public class ValidationTest {
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
-				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
@@ -1216,8 +1194,8 @@ public class ValidationTest {
 
 	@Test
 	public void eInverseFiltered() {
-		final IValidationResult validationResult = engine.validate(
-				"self.eInverse(ecore::EStructuralFeature)", variableTypes);
+		final IValidationResult validationResult = engine.validate("self.eInverse(ecore::EStructuralFeature)",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1232,8 +1210,8 @@ public class ValidationTest {
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
 		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
-				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -1351,9 +1329,7 @@ public class ValidationTest {
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage, EClassifier=EReference].",
 				62, 68);
 	}
@@ -1435,9 +1411,7 @@ public class ValidationTest {
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"Couldn't find the 'triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query)' service",
 				4, 36);
 	}
@@ -1478,8 +1452,8 @@ public class ValidationTest {
 
 	@Test
 	public void oclAsTypeManyTypesNoneMatching() {
-		final IValidationResult validationResult = engine.validate(
-				"self.eContainer().oclAsType(ecore::EInt)", variableTypes);
+		final IValidationResult validationResult = engine.validate("self.eContainer().oclAsType(ecore::EInt)",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1487,17 +1461,18 @@ public class ValidationTest {
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertEquals(1, possibleTypes.size());
-		assertTrue(possibleType instanceof NothingType);
-		assertEquals(
-				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
-				((NothingType)possibleType).getMessage());
+
+		assertNothingType("Nothing will be left after calling oclAsType:\n"
+				+ "EClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\n"
+				+ "EClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
+				possibleType);
 
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
-				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
-				17, 40);
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"Nothing will be left after calling oclAsType:\n"
+						+ "EClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\n"
+						+ "EClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt", 17,
+				40);
 	}
 
 	@Test
@@ -1568,10 +1543,9 @@ public class ValidationTest {
 
 	@Test
 	public void eOperationNoReflectionListParameterTest() {
-		final IValidationResult validationResult = engine
-				.validate(
-						"noReflexion.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})",
-						variableTypes);
+		final IValidationResult validationResult = engine.validate(
+				"noReflexion.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1643,7 +1617,7 @@ public class ValidationTest {
 			ValidationMessageLevel expectedLevel, String expectedMessage, int expectedStartPosition,
 			int expectedEndPosition) {
 		assertEquals(expectedLevel, message.getLevel());
-		assertEquals(expectedMessage, message.getMessage());
+		assertEquals(expectedMessage, unifiedLines(message.getMessage()));
 		assertEquals(expectedStartPosition, message.getStartPosition());
 		assertEquals(expectedEndPosition, message.getEndPosition());
 	}
@@ -1666,5 +1640,33 @@ public class ValidationTest {
 			}
 		}
 		return nothings;
+	}
+
+	/**
+	 * Asserts that a provided type is Nothing Type with expected message.
+	 * 
+	 * @param expectedMessage
+	 *            to assert
+	 * @param evaluated
+	 *            element to test
+	 */
+	public static void assertNothingType(String expectedMessage, IType evaluated) {
+		assertTrue(evaluated instanceof NothingType);
+		assertEquals("Unexpected NothingType message", expectedMessage, unifiedLines(((NothingType)evaluated)
+				.getMessage()));
+	}
+
+	/**
+	 * Clean message from specific line separator, always using '\n'.
+	 * 
+	 * @param text
+	 *            to clean
+	 * @return cleaned text
+	 */
+	public static String unifiedLines(String text) {
+		if (text == null || text.length() == 0) {
+			return null;
+		}
+		return text.replace(System.lineSeparator(), "\n");
 	}
 }
