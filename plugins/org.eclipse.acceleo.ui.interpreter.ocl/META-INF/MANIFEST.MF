@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Version: 3.7.11.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-SymbolicName: org.eclipse.acceleo.ui.interpreter.ocl;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.ui.interpreter.ocl.OCLInterpreterActivator
 Bundle-ActivationPolicy: lazy

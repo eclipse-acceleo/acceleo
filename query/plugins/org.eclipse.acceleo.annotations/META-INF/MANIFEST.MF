@@ -4,6 +4,6 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.acceleo.annotations
 Bundle-Version: 7.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.eclipse.acceleo.annotations.api.documentation
 Bundle-Localization: plugin

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Version: 3.7.11.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Activator: org.eclipse.acceleo.profiler.presentation.ProfilerEditorPlugin$Implementation
 Bundle-SymbolicName: org.eclipse.acceleo.profiler.editor;singleton:=true
 Bundle-ActivationPolicy: lazy

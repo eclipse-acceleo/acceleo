@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Version: 3.7.11.qualifier
 Bundle-SymbolicName: org.eclipse.acceleo.equinox.launcher;singleton:=true
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.kohsuke.args4j;bundle-version="2.0.21",
  org.eclipse.emf.common,
  org.eclipse.emf.codegen.ecore,

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
 Bundle-Version: 3.7.11.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Activator: org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin
 Bundle-SymbolicName: org.eclipse.acceleo.engine.tests;singleton:=true
 Bundle-ActivationPolicy: lazy

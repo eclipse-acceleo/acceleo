@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.acceleo.query.doc;singleton:=true
 Bundle-Version: 7.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.acceleo.annotations;bundle-version="3.6.0",
  org.eclipse.acceleo.query;bundle-version="3.6.0",

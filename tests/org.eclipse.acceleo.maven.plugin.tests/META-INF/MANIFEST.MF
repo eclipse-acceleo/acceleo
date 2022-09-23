@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: org.eclipse.acceleo.maven.plugin.tests
 Bundle-Version: 3.6.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.obeonetwork.pim.uml2.gen.java;bundle-version="1.0.0"
