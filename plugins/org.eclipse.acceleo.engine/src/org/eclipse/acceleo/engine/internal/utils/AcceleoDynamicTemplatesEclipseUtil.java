@@ -117,6 +117,16 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	}
 
 	/**
+	 * Returns all registered modules. The returned set is a copy of this instance's.
+	 * 
+	 * @return A copy of the registered modules set.
+	 */
+	public static Set<DynamicModuleContribution> getRegisteredModules() {
+		refreshModules(null);
+		return new CompactLinkedHashSet<DynamicModuleContribution>(REGISTERED_MODULES);
+	}
+
+	/**
 	 * This will be called prior to all invocations of getRegisteredModules so as to be aware of new additions
 	 * or removals of dynamic templates.
 	 * 
@@ -183,22 +193,14 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					return;
 				}
 				try {
-					List<File> modules = new ArrayList<File>();
+					List<URL> modules = new ArrayList<URL>();
 					while (emtlFiles.hasMoreElements()) {
 						final URL next = emtlFiles.nextElement();
 						if (actualPath == pathSeparator) {
 							final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
-							if (!moduleFile.isDirectory() && moduleFile.exists() && moduleFile.canRead()) {
-								modules.add(moduleFile);
-							}
+							modules.add(next);
 						} else {
-							String emtlPath = next.getPath();
-							if (emtlPath.substring(0, emtlPath.lastIndexOf('/')).contains(actualPath)) {
-								final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
-								if (!moduleFile.isDirectory() && moduleFile.exists() && moduleFile.canRead()) {
-									modules.add(moduleFile);
-								}
-							}
+							modules.add(next);
 						}
 					}
 					REGISTERED_MODULES.add(new DynamicModuleContribution(descriptor.getGeneratorIDs(),
@@ -212,4 +214,5 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 			EXTENDING_BUNDLES.remove(uninstalledBundle);
 		}
 	}
+
 }
