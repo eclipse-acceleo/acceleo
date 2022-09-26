@@ -12,6 +12,8 @@ package org.eclipse.acceleo.engine.service;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +22,6 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
 import org.eclipse.acceleo.engine.internal.utils.DynamicModuleContribution;
-import org.eclipse.emf.common.EMFPlugin;
 
 /**
  * This will allow Acceleo to dynamically resolve template overrides within the modules registered by this
@@ -38,7 +39,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	public static final AcceleoDynamicTemplatesRegistry INSTANCE = new AcceleoDynamicTemplatesRegistry();
 
 	/** This will contain references to the modules added to this registry. */
-	private final Set<File> registeredModules = new CompactLinkedHashSet<File>();
+	private final Set<URL> registeredModules = new CompactLinkedHashSet<URL>();
 
 	/**
 	 * This class is a singleton. Access the instance through {@link #INSTANCE}.
@@ -55,7 +56,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * @return <code>true</code> if the set didn't already contain <code>module</code>.
 	 * @since 0.8
 	 */
-	public boolean addModule(File module) {
+	public boolean addModule(URL module) {
 		return registeredModules.add(module);
 	}
 
@@ -67,7 +68,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * @return <code>true</code> if the set didn't already contain one of the modules contained by
 	 *         <code>modules</code>.
 	 */
-	public boolean addModules(Collection<File> modules) {
+	public boolean addModules(Collection<URL> modules) {
 		return registeredModules.addAll(modules);
 	}
 
@@ -100,9 +101,13 @@ public final class AcceleoDynamicTemplatesRegistry {
 				for (File child : children) {
 					addModulesFrom(child);
 				}
-			} else if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(file.getPath().substring(
-					file.getPath().lastIndexOf('.') + 1))) {
-				addModule(file);
+			} else if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(file.getPath().substring(file.getPath()
+					.lastIndexOf('.') + 1))) {
+				try {
+					addModule(file.toURL());
+				} catch (MalformedURLException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}
@@ -120,14 +125,11 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * 
 	 * @return A copy of the registered modules set.
 	 */
-	public Set<File> getRegisteredModules() {
-		final Set<File> compound = new CompactLinkedHashSet<File>();
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil
-					.getRegisteredModules(null);
-			for (DynamicModuleContribution dynamicModuleContribution : modules) {
-				compound.addAll(dynamicModuleContribution.getFiles());
-			}
+	public Set<URL> getRegisteredModules() {
+		final Set<URL> compound = new CompactLinkedHashSet<URL>();
+		Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil.getRegisteredModules();
+		for (DynamicModuleContribution dynamicModuleContribution : modules) {
+			compound.addAll(dynamicModuleContribution.getFiles());
 		}
 		compound.addAll(registeredModules);
 		return compound;
@@ -142,22 +144,20 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * @return A copy of the registered modules set.
 	 * @since 3.1
 	 */
-	public Set<File> getRegisteredModules(String generatorID) {
-		final Set<File> compound = new CompactLinkedHashSet<File>();
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil
-					.getRegisteredModules(generatorID);
-			for (DynamicModuleContribution dynamicModuleContribution : modules) {
-				List<String> generatorIDs = dynamicModuleContribution.getGeneratorIDs();
-				if (generatorIDs.size() > 0) {
-					for (String genID : generatorIDs) {
-						if (genID.equals(generatorID)) {
-							compound.addAll(dynamicModuleContribution.getFiles());
-						}
+	public Set<URL> getRegisteredModules(String generatorID) {
+		final Set<URL> compound = new CompactLinkedHashSet<URL>();
+		Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil.getRegisteredModules(
+				generatorID);
+		for (DynamicModuleContribution dynamicModuleContribution : modules) {
+			List<String> generatorIDs = dynamicModuleContribution.getGeneratorIDs();
+			if (generatorIDs.size() > 0) {
+				for (String genID : generatorIDs) {
+					if (genID.equals(generatorID)) {
+						compound.addAll(dynamicModuleContribution.getFiles());
 					}
-				} else {
-					compound.addAll(dynamicModuleContribution.getFiles());
 				}
+			} else {
+				compound.addAll(dynamicModuleContribution.getFiles());
 			}
 		}
 		compound.addAll(registeredModules);
