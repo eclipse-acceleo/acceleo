@@ -13,6 +13,7 @@ package org.eclipse.acceleo.engine.service;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -52,6 +53,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.emf.ecore.plugin.EcorePlugin.ExtensionProcessor;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -460,6 +462,13 @@ public abstract class AbstractAcceleoGenerator {
 
 		// make sure that metamodel projects in the workspace override those in plugins
 		modelResourceSet.getURIConverter().getURIMap().putAll(uriMap);
+
+		if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+			URLClassLoader classLoader = (URLClassLoader)(Thread.currentThread().getContextClassLoader());
+			ExtensionProcessor.process(classLoader);
+			new AcceleoEnginePlugin().parseExtensionPoints();
+			// processStandaloneClassPath(modulesResourceSet);
+		}
 
 		registerResourceFactories(modelResourceSet);
 		registerPackages(modelResourceSet);
