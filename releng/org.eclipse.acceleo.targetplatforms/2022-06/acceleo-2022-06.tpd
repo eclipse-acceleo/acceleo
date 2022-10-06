@@ -1,4 +1,4 @@
-target "Acceleo Neon Target Platform"
+target "Acceleo 2022-06 Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"
@@ -6,7 +6,7 @@ include "../common/swtbot.tpd"
 
 with source requirements
 
-location "http://download.eclipse.org/releases/neon" {
+location "https://download.eclipse.org/releases/2022-06" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	
@@ -17,9 +17,7 @@ location "http://download.eclipse.org/releases/neon" {
 	
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius.specifier.feature.group lazy
-}
 
-location "http://download.eclipse.org/releases/neon" {
 	lpg.runtime.java lazy
 	
 	org.eclipse.ocl lazy
@@ -27,8 +25,8 @@ location "http://download.eclipse.org/releases/neon" {
 	org.eclipse.ocl.common lazy
 	
 	org.eclipse.ocl.examples.xtext.console lazy
-	org.eclipse.ocl.examples.xtext.completeocl lazy
-	org.eclipse.ocl.examples.xtext.completeocl.ui lazy
+	org.eclipse.ocl.xtext.completeocl lazy
+	org.eclipse.ocl.xtext.completeocl.ui lazy
 	
 	org.eclipse.ocl.pivot.uml lazy
 	org.eclipse.ocl.pivot.ui lazy
