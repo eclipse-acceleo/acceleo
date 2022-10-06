@@ -10,7 +10,7 @@ pipeline {
 	
 	tools {
 		maven 'apache-maven-latest'
-		jdk 'adoptopenjdk-hotspot-jdk12-latest'
+		jdk 'adoptopenjdk-hotspot-jdk11-latest'
 	}
 	
 	environment {
