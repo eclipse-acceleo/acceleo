@@ -829,9 +829,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 * @return the corresponding {@link AcceleoCompletionProposal}.
 	 */
 	private static AcceleoCompletionProposal transform(ICompletionProposal aqlCompletionProposal) {
-		return new AcceleoCompletionProposal(aqlCompletionProposal.getProposal(), aqlCompletionProposal
-				.getDescription().replace("\n", "<br>"), aqlCompletionProposal.getProposal(),
-				AcceleoPackage.Literals.EXPRESSION);
+		String description = aqlCompletionProposal.getDescription().replaceAll("(\\r\\n)|\\r|\\n", "<br>");
+		return new AcceleoCompletionProposal(aqlCompletionProposal.getProposal(), description,
+				aqlCompletionProposal.getProposal(), AcceleoPackage.Literals.EXPRESSION);
 	}
 
 }

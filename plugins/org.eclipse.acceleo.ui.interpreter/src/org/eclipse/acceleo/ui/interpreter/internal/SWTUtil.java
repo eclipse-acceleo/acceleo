@@ -142,7 +142,7 @@ public final class SWTUtil {
 	 * @return The actual size of the {@link Text} widget's content.
 	 */
 	protected static Point computeTextSize(Control widget, String text) {
-		String[] lines = text.split("\r\n|\n|\r"); //$NON-NLS-1$
+		String[] lines = text.split("(\r\n)|\n|\r"); //$NON-NLS-1$
 
 		String longestLine = ""; //$NON-NLS-1$
 		if (lines.length > 0) {
