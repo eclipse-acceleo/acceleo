@@ -181,7 +181,7 @@ public class CompletionTests {
 			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 		}
 
-		return builder.toString().replaceAll("\\r\\n|\\r|\\n", Character.toString(
+		return builder.toString().replaceAll("(\\r\\n)|\\r|\\n", Character.toString(
 				AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER));
 	}
 
