@@ -24,32 +24,44 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD })
 public @interface Documentation {
 	/**
-	 * The documentation of the method.
+	 * Gets the documentation of the method.
+	 * 
+	 * @return the documentation of the method
 	 */
 	String value();
 
 	/**
-	 * The input parameters of the method.
+	 * Gets the input parameters of the method.
+	 * 
+	 * @return the input parameters of the method
 	 */
 	Param[] params() default {};
 
 	/**
-	 * The documentation of the result.
+	 * Gets the documentation of the result.
+	 * 
+	 * @return the documentation of the result
 	 */
 	String result() default "";
 
 	/**
-	 * The exceptions that can be thrown.
+	 * Gets the exceptions that can be thrown.
+	 * 
+	 * @return the exceptions that can be thrown
 	 */
 	Throw[] exceptions() default {};
 
 	/**
-	 * The examples for this service.
+	 * Gets the examples for this service.
+	 * 
+	 * @return the examples for this service
 	 */
 	Example[] examples() default {};
 
 	/**
-	 * Additional comments for the example of this service.
+	 * Gets additional comments for the example of this service.
+	 * 
+	 * @return additional comments for the example of this service
 	 */
 	String comment() default "";
 }

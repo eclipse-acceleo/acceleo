@@ -25,7 +25,9 @@ import java.lang.annotation.Target;
 public @interface ServiceProvider {
 
 	/**
-	 * The description of the type.
+	 * Gets the description of the type.
+	 * 
+	 * @return the description of the type
 	 */
 	String value();
 }
