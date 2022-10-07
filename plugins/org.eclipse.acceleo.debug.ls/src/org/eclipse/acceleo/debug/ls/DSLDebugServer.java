@@ -85,6 +85,7 @@ import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetDataBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetDataBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
+import org.eclipse.lsp4j.debug.SetExceptionBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExpressionArguments;
 import org.eclipse.lsp4j.debug.SetExpressionResponse;
 import org.eclipse.lsp4j.debug.SetFunctionBreakpointsArguments;
@@ -317,12 +318,13 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 *
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#setExceptionBreakpoints(org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments)
 	 */
-	public CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
+	public CompletableFuture<SetExceptionBreakpointsResponse> setExceptionBreakpoints(
+			SetExceptionBreakpointsArguments args) {
 		System.out.println("setExceptionBreakpoints");
-		return CompletableFuture.runAsync(new Runnable() {
-
-			public void run() {
+		return CompletableFuture.supplyAsync(new Supplier<SetExceptionBreakpointsResponse>() {
+			public SetExceptionBreakpointsResponse get() {
 				// TODO ?
+				return null;
 			}
 		});
 	}
