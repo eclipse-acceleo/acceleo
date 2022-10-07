@@ -37,8 +37,8 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -179,21 +179,21 @@ public class ProposalLabelProviderTests {
 	/**
 	 * The {@link ProposalLabelProvider} to test.
 	 */
-	private static TestProposalLabelProvider labelProvider;
+	private TestProposalLabelProvider labelProvider;
 
 	/**
 	 * Initializes the {@link TestProposalLabelProvider}.
 	 */
-	@BeforeClass
-	public static void beforeClass() {
+	@Before
+	public void before() {
 		labelProvider = new TestProposalLabelProvider();
 	}
 
 	/**
 	 * Disposes the {@link TestProposalLabelProvider}.
 	 */
-	@AfterClass
-	public static void afterClass() {
+	@After
+	public void after() {
 		labelProvider.dispose();
 	}
 
@@ -220,8 +220,8 @@ public class ProposalLabelProviderTests {
 				.getCountryData());
 
 		assertEquals("anydsl::CountryData", labelProvider.getText(completionProposal));
-		assertImagesEquals(labelProvider.getELabelProvider().getImage(
-				AnydslPackage.eINSTANCE.getCountryData()), labelProvider.getImage(completionProposal));
+		assertImagesEquals(labelProvider.getELabelProvider().getImage(AnydslPackage.eINSTANCE
+				.getCountryData()), labelProvider.getImage(completionProposal));
 	}
 
 	/**
@@ -246,9 +246,8 @@ public class ProposalLabelProviderTests {
 				.getColor().getEEnumLiteral(0));
 
 		assertEquals("anydsl::Color::black", labelProvider.getText(completionProposal));
-		assertImagesEquals(labelProvider.getELabelProvider().getImage(
-				AnydslPackage.eINSTANCE.getColor().getEEnumLiteral(0)), labelProvider
-				.getImage(completionProposal));
+		assertImagesEquals(labelProvider.getELabelProvider().getImage(AnydslPackage.eINSTANCE.getColor()
+				.getEEnumLiteral(0)), labelProvider.getImage(completionProposal));
 	}
 
 	/**
@@ -260,9 +259,8 @@ public class ProposalLabelProviderTests {
 				.getCompany().getEAllStructuralFeatures().get(0));
 
 		assertEquals("name", labelProvider.getText(completionProposal));
-		assertImagesEquals(labelProvider.getELabelProvider().getImage(
-				AnydslPackage.eINSTANCE.getCompany().getEAllStructuralFeatures().get(0)), labelProvider
-				.getImage(completionProposal));
+		assertImagesEquals(labelProvider.getELabelProvider().getImage(AnydslPackage.eINSTANCE.getCompany()
+				.getEAllStructuralFeatures().get(0)), labelProvider.getImage(completionProposal));
 	}
 
 	/**
@@ -277,8 +275,8 @@ public class ProposalLabelProviderTests {
 	public void serviceCompletionProposal() throws NoSuchMethodException, SecurityException {
 		ICompletionProposal completionProposal = new JavaMethodServiceCompletionProposal(new TestService());
 
-		assertEquals("testService(java.lang.String,java.lang.String)", labelProvider
-				.getText(completionProposal));
+		assertEquals("testService(java.lang.String,java.lang.String)", labelProvider.getText(
+				completionProposal));
 		assertImagesEquals(labelProvider.getServiceImage(), labelProvider.getImage(completionProposal));
 	}
 
