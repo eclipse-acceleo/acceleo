@@ -34,17 +34,23 @@ public @interface Other {
 	String ACCELEO_2 = "Acceleo 2"; //$NON-NLS-1$
 
 	/**
-	 * The name of the language.
+	 * Gets the name of the language.
+	 * 
+	 * @return the name of the language
 	 */
 	String language();
 
 	/**
-	 * The expression.
+	 * Gets the expression.
+	 * 
+	 * @return the expression
 	 */
 	String expression();
 
 	/**
-	 * The result.
+	 * Gets the result.
+	 * 
+	 * @return the result
 	 */
 	String result();
 }

@@ -24,17 +24,23 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD })
 public @interface Example {
 	/**
-	 * The expression used in this example.
+	 * Gets the expression used in this example.
+	 * 
+	 * @return the expression used in this example
 	 */
 	String expression();
 
 	/**
-	 * The result of the expression.
+	 * Gets the result of the expression.
+	 * 
+	 * @return the result of the expression
 	 */
 	String result();
 
 	/**
-	 * Examples in other languages.
+	 * Gets examples in other languages.
+	 * 
+	 * @return examples in other languages
 	 */
 	Other[] others() default {};
 }

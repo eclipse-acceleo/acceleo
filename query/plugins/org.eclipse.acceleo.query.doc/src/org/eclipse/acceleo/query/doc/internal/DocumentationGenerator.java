@@ -42,8 +42,9 @@ import org.eclipse.acceleo.query.services.XPathServices;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 public final class DocumentationGenerator {
+
 	/**
-	 * 
+	 * Replacement marker.
 	 */
 	private static final String TRIGGER_TO_APPEND_STD_DOC = "<p>These sections are listing all the services of the standard library of AQL.</p>";
 

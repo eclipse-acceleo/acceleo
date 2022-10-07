@@ -37,14 +37,182 @@ import org.eclipse.emf.ecore.EClass;
 public final class AQLHelpContentUtils {
 
 	/**
+	 * 2016 method signature generator.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class MethodSignatureGenerator2016 implements Function<Method, StringBuffer> {
+		@Override
+		public StringBuffer apply(Method method) {
+			Map<String, String> methodnamesToOperator = new LinkedHashMap<String, String>();
+			methodnamesToOperator.put("add", " + ");
+			methodnamesToOperator.put("sub", " - ");
+			methodnamesToOperator.put("equals", " = ");
+			methodnamesToOperator.put("differs", " <> ");
+
+			methodnamesToOperator.put("greaterThan", " > ");
+			methodnamesToOperator.put("greaterThanEqual", " >= ");
+			methodnamesToOperator.put("lessThan", " < ");
+			methodnamesToOperator.put("lessThanEqual", " <= ");
+
+			StringBuffer result = new StringBuffer();
+			boolean isOperator = false;
+
+			boolean first = true;
+
+			List<String> parameterNames = new ArrayList<String>();
+			Documentation documentation = method.getAnnotation(Documentation.class);
+			Param[] params = documentation.params();
+			if (params != null) {
+				for (Param param : params) {
+					parameterNames.add(param.name());
+				}
+			}
+
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			Type[] genericParameterTypes = method.getGenericParameterTypes();
+			for (int i = 0; i < parameterTypes.length; i = i + 1) {
+				Object argType = parameterTypes[i];
+
+				String typeName = "";
+				if (argType instanceof Class<?>) {
+					typeName = getPrettyGenericTypename(genericParameterTypes[i], (Class<?>)argType);
+
+				} else if (argType instanceof EClass) {
+					typeName = "EClass=" + ((EClass)argType).getName();
+				} else {
+					typeName = "Object=" + argType.toString();
+				}
+
+				if (first) {
+					String methodName = method.getName();
+					/*
+					 * check for operator names
+					 */
+					if (methodnamesToOperator.get(methodName) != null) {
+						isOperator = true;
+						methodName = methodnamesToOperator.get(methodName);
+					}
+
+					result.append(typeName);
+
+					if (!isOperator) {
+						if (isCollection((Class<?>)argType)) {
+							result.append("->");
+						} else {
+							result.append(".");
+						}
+					}
+
+					result.append(methodName);
+					if (!isOperator) {
+						result.append('(');
+					}
+				}
+
+				if (!first) {
+					if (i > 1) {
+						result.append(", ");
+					}
+					result.append(typeName);
+				} else {
+					first = false;
+				}
+
+			}
+			if (!isOperator) {
+				result.append(')');
+			}
+
+			Type returnType = method.getGenericReturnType();
+			if (Void.class.equals(returnType)) {
+				result.append(" : void");
+			} else {
+				result.append(" : ");
+				result.append(getPrettyGenericTypename(returnType, method.getReturnType()));
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * Old method signature generator.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class MethodSignatureOldGenerator implements Function<Method, StringBuffer> {
+		@Override
+		public StringBuffer apply(Method method) {
+			StringBuffer result = new StringBuffer();
+			result.append(method.getName()).append('(');
+			boolean first = true;
+
+			List<String> parameterNames = new ArrayList<String>();
+			Documentation documentation = method.getAnnotation(Documentation.class);
+			Param[] params = documentation.params();
+			if (params != null) {
+				for (Param param : params) {
+					parameterNames.add(param.name());
+				}
+			}
+
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			for (int i = 0; i < parameterTypes.length; i = i + 1) {
+				Object argType = parameterTypes[i];
+				if (!first) {
+					result.append(", ");
+				} else {
+					first = false;
+				}
+
+				if (parameterNames.size() >= i + 1) {
+					String paramName = parameterNames.get(i);
+					if (paramName.trim().length() > 0) {
+						result.append(paramName);
+						result.append(": ");
+					}
+				}
+
+				if (argType instanceof Class<?>) {
+					result.append(((Class<?>)argType).getCanonicalName());
+				} else if (argType instanceof EClass) {
+					result.append("EClass=" + ((EClass)argType).getName());
+				} else {
+					result.append("Object=" + argType.toString());
+				}
+			}
+			result.append(')');
+
+			Class<?> returnType = method.getReturnType();
+			if (Void.class.equals(returnType)) {
+				result.append(" = void");
+			} else {
+				result.append(" = ");
+				result.append(returnType.getSimpleName());
+			}
+			return result;
+		}
+	}
+
+	/**
 	 * The prefix to use to create internal links.
 	 */
 	public static final String AQL_HREF_PREFIX = "aql_service_";
 
 	/**
+	 * 2016 method signature generator.
+	 */
+	public static final Function<Method, StringBuffer> METHOD_SIGNATURE_GENERATOR_2016 = new MethodSignatureGenerator2016();
+
+	/**
 	 * The line separator.
 	 */
 	private static final String LS = System.getProperty("line.separator");
+
+	/**
+	 * Old method signature generator.
+	 */
+	private static final Function<Method, StringBuffer> METHODE_SIGNATURE_OLD_GENERATOR = new MethodSignatureOldGenerator();
 
 	/**
 	 * The constructor.
@@ -240,69 +408,18 @@ public final class AQLHelpContentUtils {
 	 * @return The sections to display in the HTML page
 	 */
 	public static List<StringBuffer> computeServiceSections(Class<?> serviceProviderClass) {
-		return computeServiceSections(serviceProviderClass, 1, methodSignatureOldGenerator);
+		return computeServiceSections(serviceProviderClass, 1, METHODE_SIGNATURE_OLD_GENERATOR);
 	}
-
-	private static final Function<Method, StringBuffer> methodSignatureOldGenerator = new Function<Method, StringBuffer>() {
-
-		@Override
-		public StringBuffer apply(Method method) {
-			StringBuffer result = new StringBuffer();
-			result.append(method.getName()).append('(');
-			boolean first = true;
-
-			List<String> parameterNames = new ArrayList<String>();
-			Documentation documentation = method.getAnnotation(Documentation.class);
-			Param[] params = documentation.params();
-			if (params != null) {
-				for (Param param : params) {
-					parameterNames.add(param.name());
-				}
-			}
-
-			Class<?>[] parameterTypes = method.getParameterTypes();
-			for (int i = 0; i < parameterTypes.length; i = i + 1) {
-				Object argType = parameterTypes[i];
-				if (!first) {
-					result.append(", ");
-				} else {
-					first = false;
-				}
-
-				if (parameterNames.size() >= i + 1) {
-					String paramName = parameterNames.get(i);
-					if (paramName.trim().length() > 0) {
-						result.append(paramName);
-						result.append(": ");
-					}
-				}
-
-				if (argType instanceof Class<?>) {
-					result.append(((Class<?>)argType).getCanonicalName());
-				} else if (argType instanceof EClass) {
-					result.append("EClass=" + ((EClass)argType).getName());
-				} else {
-					result.append("Object=" + argType.toString());
-				}
-			}
-			result.append(')');
-
-			Class<?> returnType = method.getReturnType();
-			if (Void.class.equals(returnType)) {
-				result.append(" = void");
-			} else {
-				result.append(" = ");
-				result.append(returnType.getSimpleName());
-			}
-			return result;
-		}
-	};
 
 	/**
 	 * Computes the sections for a service provider.
 	 * 
 	 * @param serviceProviderClass
 	 *            The service provider
+	 * @param titleLevel
+	 *            the title level
+	 * @param signatureGenerator
+	 *            the signature generator {@link Function}
 	 * @return The sections to display in the HTML page
 	 */
 	public static List<StringBuffer> computeServiceSections(Class<?> serviceProviderClass, int titleLevel,
@@ -314,7 +431,7 @@ public final class AQLHelpContentUtils {
 			return buffers;
 		}
 
-		// @formatter:off
+	// @formatter:off
 		StringBuffer servicesSection = new StringBuffer();
 		servicesSection.append("  <section id=\"services\">").append(LS);
 		servicesSection.append("    <div class=\"page-header\">").append(LS);
@@ -325,6 +442,7 @@ public final class AQLHelpContentUtils {
 		Method[] methods = serviceProviderClass.getMethods();
 
 		Method[] sortedMethods = Arrays.copyOf(methods, methods.length);
+
 		Comparator<Method> comparator = new Comparator<Method>() {
 			@Override
 			public int compare(Method o1, Method o2) {
@@ -333,11 +451,13 @@ public final class AQLHelpContentUtils {
 		};
 		Arrays.sort(sortedMethods, 0, sortedMethods.length, comparator);
 
-		for (Method method : sortedMethods) {
+		for (
+
+		Method method : sortedMethods) {
 			if (method.isAnnotationPresent(Documentation.class)) {
 				Documentation serviceDocumentation = method.getAnnotation(Documentation.class);
 
-				// @formatter:off
+			// @formatter:off
 				servicesSection.append(LS);
 
 				servicesSection.append("        <h3>").append(signatureGenerator.apply(method)).append("</h3>").append(LS);
@@ -404,7 +524,7 @@ public final class AQLHelpContentUtils {
 			}
 		}
 
-		// @formatter:off
+	// @formatter:off
 		servicesSection.append("  </section>").append(LS);
 		// @formatter:on
 
@@ -413,118 +533,37 @@ public final class AQLHelpContentUtils {
 		return buffers;
 	}
 
-	public static final Function<Method, StringBuffer> METHOD_SIGNATURE_GENERATOR_2016 = new Function<Method, StringBuffer>() {
-
-		@Override
-		public StringBuffer apply(Method method) {
-			Map<String, String> methodnamesToOperator = new LinkedHashMap<String, String>();
-			methodnamesToOperator.put("add", " + ");
-			methodnamesToOperator.put("sub", " - ");
-			methodnamesToOperator.put("equals", " = ");
-			methodnamesToOperator.put("differs", " <> ");
-
-			methodnamesToOperator.put("greaterThan", " > ");
-			methodnamesToOperator.put("greaterThanEqual", " >= ");
-			methodnamesToOperator.put("lessThan", " < ");
-			methodnamesToOperator.put("lessThanEqual", " <= ");
-
-			StringBuffer result = new StringBuffer();
-			boolean isOperator = false;
-
-			boolean first = true;
-
-			List<String> parameterNames = new ArrayList<String>();
-			Documentation documentation = method.getAnnotation(Documentation.class);
-			Param[] params = documentation.params();
-			if (params != null) {
-				for (Param param : params) {
-					parameterNames.add(param.name());
-				}
-			}
-
-			Class<?>[] parameterTypes = method.getParameterTypes();
-			Type[] genericParameterTypes = method.getGenericParameterTypes();
-			for (int i = 0; i < parameterTypes.length; i = i + 1) {
-				Object argType = parameterTypes[i];
-
-				String typeName = "";
-				if (argType instanceof Class<?>) {
-					typeName = getPrettyGenericTypename(genericParameterTypes[i], (Class<?>)argType);
-
-				} else if (argType instanceof EClass) {
-					typeName = "EClass=" + ((EClass)argType).getName();
-				} else {
-					typeName = "Object=" + argType.toString();
-				}
-
-				if (first) {
-					String methodName = method.getName();
-					/*
-					 * check for operator names
-					 */
-					if (methodnamesToOperator.get(methodName) != null) {
-						isOperator = true;
-						methodName = methodnamesToOperator.get(methodName);
-					}
-
-					result.append(typeName);
-
-					if (!isOperator) {
-						if (isCollection(((Class<?>)argType))) {
-							result.append("->");
-						} else {
-							result.append(".");
-						}
-					}
-
-					result.append(methodName);
-					if (!isOperator) {
-						result.append('(');
-					}
-
-				} else {
-				}
-
-				if (!first) {
-					if (i > 1) {
-						result.append(", ");
-					}
-					result.append(typeName);
-				} else {
-					first = false;
-				}
-
-			}
-			if (!isOperator) {
-				result.append(')');
-			}
-
-			Type returnType = method.getGenericReturnType();
-			if (Void.class.equals(returnType)) {
-				result.append(" : void");
-			} else {
-				result.append(" : ");
-				result.append(getPrettyGenericTypename(returnType, method.getReturnType()));
-			}
-			return result;
-		}
-	};
-
 	/**
-	 * @param class1
-	 * @return
+	 * Tells if the given {@link Class argument type} is a collection.
+	 * 
+	 * @param argType
+	 *            the argument type
+	 * @return <code>true</code> if the given {@link Class argument type} is a collection, <code>false</code>
+	 *         otherwise
 	 */
 	private static boolean isCollection(Class<?> argType) {
+		final boolean res;
+
 		String typeName = ((Class<?>)argType).getCanonicalName();
 		if ("java.util.Set".equals(typeName)) {
-			return true;
+			res = true;
 		} else if ("java.util.List".equals(typeName) || "java.util.Collection".equals(typeName)) {
-			return true;
+			res = true;
+		} else {
+			res = false;
 		}
-		return false;
+
+		return res;
 
 	}
 
+	/**
+	 * Gets the pretty simple name of the given {@link Class argument type}.
+	 * 
+	 * @param argType
+	 *            the argument type
+	 * @return the pretty simple name of the given {@link Class argument type}
+	 */
 	public static String prettySimpleName(Class<?> argType) {
 		String typeName = argType.getCanonicalName();
 		if ("org.eclipse.acceleo.query.runtime.impl.LambdaValue".equals(typeName)) {
@@ -545,6 +584,15 @@ public final class AQLHelpContentUtils {
 		return typeName;
 	}
 
+	/**
+	 * Gets the pretty generic name of the given {@link Class argument type}.
+	 * 
+	 * @param type
+	 *            the {@link Type}
+	 * @param argType
+	 *            the argument type
+	 * @return the pretty generic name of the given {@link Class argument type}
+	 */
 	public static String getPrettyGenericTypename(Type type, Class<?> argType) {
 		String typename = prettySimpleName(argType);
 		if (type instanceof Class<?>) {
@@ -554,11 +602,11 @@ public final class AQLHelpContentUtils {
 			Type t = ((ParameterizedType)type).getActualTypeArguments()[0];
 			if (t instanceof Class<?>) {
 				if ("java.util.Set".equals(canonical)) {
-					typename = "OrderedSet{" + prettySimpleName(((Class<?>)t)) + "}";
+					typename = "OrderedSet{" + prettySimpleName((Class<?>)t) + "}";
 				} else if ("java.util.List".equals(canonical) || "java.util.Collection".equals(canonical)) {
-					typename = "Sequence{" + prettySimpleName(((Class<?>)t)) + "}";
+					typename = "Sequence{" + prettySimpleName((Class<?>)t) + "}";
 				} else {
-					typename = "{" + prettySimpleName(((Class<?>)t)) + "}";
+					typename = "{" + prettySimpleName((Class<?>)t) + "}";
 				}
 
 			}

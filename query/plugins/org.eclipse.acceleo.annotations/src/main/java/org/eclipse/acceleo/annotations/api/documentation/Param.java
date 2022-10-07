@@ -24,12 +24,16 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD })
 public @interface Param {
 	/**
-	 * The documentation of the parameter.
+	 * Gets the documentation of the parameter.
+	 * 
+	 * @return the documentation of the parameter
 	 */
 	String value();
 
 	/**
-	 * The name of the parameter.
+	 * Gets the name of the parameter.
+	 * 
+	 * @return the name of the parameter
 	 */
 	String name();
 }

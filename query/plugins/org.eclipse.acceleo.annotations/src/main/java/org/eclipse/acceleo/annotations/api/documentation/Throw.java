@@ -24,12 +24,16 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD })
 public @interface Throw {
 	/**
-	 * The documentation detailling why this exception can be thrown.
+	 * Gets the documentation detailing why this exception can be thrown.
+	 * 
+	 * @return the documentation detailing why this exception can be thrown
 	 */
 	String value();
 
 	/**
-	 * The type of the exception.
+	 * Gets the type of the exception.
+	 * 
+	 * @return the type of the exception
 	 */
 	Class<? extends Throwable> type();
 }
