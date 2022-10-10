@@ -1519,26 +1519,34 @@ public class AstBuilderListener extends QueryBaseListener {
 		final String serviceName = ctx.getChild(0).getText();
 		final Expression ast = popExpression();
 		popErrorExpression();
-		final VariableDeclaration iterator = popVariableDeclaration();
-		final Lambda lambda = builder.lambda(ast, iterator);
-		setPositions(lambda, ast, ast);
+		final VariableDeclaration iterator;
 		final Call call;
-		if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
-			// at this point ANTLR can report a missing ')' even is the closing parenthesis is present
-			// so we check by hand
-			final ParserRuleContext parenthesisNode = (ParserRuleContext)ctx.getChild(ctx.getChildCount() - 2)
-					.getChild(0);
-			final boolean missingParenthesis = parenthesisNode != null && !")".equals(parenthesisNode.stop
-					.getText());
-			call = builder.errorCall(serviceName, missingParenthesis, iterator.getExpression(), lambda);
-			if (missingParenthesis) {
-				pushError((Error)call, "missing ')'");
-			} else {
-				pushError((Error)call, "invalid iteration call");
-			}
-		} else {
+		if (ast instanceof ErrorVariableDeclaration) {
+			iterator = (VariableDeclaration)ast;
+			final Lambda lambda = builder.lambda(ast, iterator);
 			call = builder.callService(serviceName, iterator.getExpression(), lambda);
 			push(call);
+		} else {
+			iterator = popVariableDeclaration();
+			final Lambda lambda = builder.lambda(ast, iterator);
+			setPositions(lambda, ast, ast);
+			if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
+				// at this point ANTLR can report a missing ')' even is the closing parenthesis is present
+				// so we check by hand
+				final ParserRuleContext parenthesisNode = (ParserRuleContext)ctx.getChild(ctx.getChildCount()
+						- 2).getChild(0);
+				final boolean missingParenthesis = parenthesisNode != null && !")".equals(parenthesisNode.stop
+						.getText());
+				call = builder.errorCall(serviceName, missingParenthesis, iterator.getExpression(), lambda);
+				if (missingParenthesis) {
+					pushError((Error)call, "missing ')'");
+				} else {
+					pushError((Error)call, "invalid iteration call");
+				}
+			} else {
+				call = builder.callService(serviceName, iterator.getExpression(), lambda);
+				push(call);
+			}
 		}
 
 		setIdentifierPositions(call, (Token)ctx.getChild(0).getChild(0).getPayload());

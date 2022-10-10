@@ -3297,4 +3297,48 @@ public class BuildTest {
 		assertExpression(build, StringLiteral.class, 5, 0, 5, 14, 0, 14, ((Call)ast).getArguments().get(1));
 		assertEquals("isUnique", ((StringLiteral)((Call)ast).getArguments().get(1)).getValue());
 	}
+
+	@Test
+	public void missingvariableCall() {
+		AstResult build = engine.build(".someService(a, b)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorExpression.class, 0, 0, 0, 0, 0, 0, ast);
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+	}
+
+	@Test
+	public void missingvariableCollectionCall() {
+		AstResult build = engine.build("->select(e | e)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorExpression.class, 0, 0, 0, 0, 0, 0, ast);
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+	}
+
+	@Test
+	public void missingLambdaVariableWithExpression() {
+		AstResult build = engine.build("self->select(a.startsWith(' '))");
+
+		// TODO the returned AST is the startWith call. It should not be a problem since and error is
+		// reported.
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("incomplete variable definition", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertExpression(build, ErrorVariableDeclaration.class, 13, 0, 13, 15, 0, 15, build.getErrors().get(
+				0));
+	}
+
 }
