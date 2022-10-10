@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.parser;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,6 +63,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 public class AstBuilder {
 
 	/**
+	 * The {@link Set} of keywords.
+	 */
+	private static final Set<String> KEYWORDS = initKeywords();
+
+	/**
 	 * Escape \x01 sequence.
 	 */
 	private static final String ESCAPE_X = "\\x";
@@ -75,6 +81,48 @@ public class AstBuilder {
 	 * Invalid escape sequence message.
 	 */
 	private static final String INVALID_ESCAPE_SEQUENCE = "Invalid escape sequence : ";
+
+	private static Set<String> initKeywords() {
+		final Set<String> res = new HashSet<String>();
+
+		for (int i = 0; i <= QueryLexer.VOCABULARY.getMaxTokenType(); i++) {
+			final String literalName = QueryLexer.VOCABULARY.getLiteralName(i);
+			if (literalName != null) {
+				res.add(literalName.substring(1, literalName.length() - 1));
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given identifier is a keyword.
+	 * 
+	 * @param identifier
+	 * @return <code>true</code> if the given identifier is a keyword, <code>false</code> otherwise
+	 */
+	public static boolean isKeyword(String identifier) {
+		return KEYWORDS.contains(identifier);
+	}
+
+	/**
+	 * Protects the given identifier by prefixing it with an undersocre if its a {@link #KEYWORDS}.
+	 * 
+	 * @param identifier
+	 *            the identifier
+	 * @return the protected identifier
+	 */
+	public static String protectWithUnderscore(String identifier) {
+		final String res;
+
+		if (isKeyword(identifier)) {
+			res = "_" + identifier;
+		} else {
+			res = identifier;
+		}
+
+		return res;
+	}
 
 	/**
 	 * Creates a new {@link EnumLiteral} instance.
@@ -90,9 +138,9 @@ public class AstBuilder {
 	public EnumLiteral enumLiteral(String ePackageName, String eEnumName, String eEnumLiteralName) {
 		final EnumLiteral result = (EnumLiteral)EcoreUtil.create(AstPackage.Literals.ENUM_LITERAL);
 
-		result.setEPackageName(ePackageName);
-		result.setEEnumName(eEnumName);
-		result.setEEnumLiteralName(eEnumLiteralName);
+		result.setEPackageName(stripUnderscore(ePackageName));
+		result.setEEnumName(stripUnderscore(eEnumName));
+		result.setEEnumLiteralName(stripUnderscore(eEnumLiteralName));
 
 		return result;
 	}
@@ -148,6 +196,25 @@ public class AstBuilder {
 				AstPackage.Literals.ERROR_STRING_LITERAL);
 		errorStringLiteral.setValue(str);
 		return errorStringLiteral;
+	}
+
+	/**
+	 * Strips the underscore prefix of an identifier.
+	 * 
+	 * @param identifier
+	 *            the identifier
+	 * @return identifier without the leading undersocre
+	 */
+	public static String stripUnderscore(String identifier) {
+		final String res;
+
+		if (identifier != null && identifier.startsWith("_")) {
+			res = identifier.substring(1);
+		} else {
+			res = identifier;
+		}
+
+		return res;
 	}
 
 	/**
@@ -356,8 +423,8 @@ public class AstBuilder {
 		final EClassifierTypeLiteral result = (EClassifierTypeLiteral)EcoreUtil.create(
 				AstPackage.Literals.ECLASSIFIER_TYPE_LITERAL);
 
-		result.setEPackageName(ePackageName);
-		result.setEClassifierName(eClassifierName);
+		result.setEPackageName(stripUnderscore(ePackageName));
+		result.setEClassifierName(stripUnderscore(eClassifierName));
 
 		return result;
 	}
@@ -390,7 +457,7 @@ public class AstBuilder {
 	public Call callService(String serviceName, Expression... args) {
 		final Call call = (Call)EcoreUtil.create(AstPackage.Literals.CALL);
 
-		call.setServiceName(serviceName);
+		call.setServiceName(stripUnderscore(serviceName));
 		call.getArguments().addAll(Arrays.asList(args));
 
 		return call;
@@ -511,7 +578,7 @@ public class AstBuilder {
 				AstPackage.Literals.ERROR_ECLASSIFIER_TYPE_LITERAL);
 
 		result.setMissingColon(missingColon);
-		result.setEPackageName(ePackageName);
+		result.setEPackageName(stripUnderscore(ePackageName));
 
 		return result;
 	}
@@ -532,8 +599,8 @@ public class AstBuilder {
 				AstPackage.Literals.ERROR_ENUM_LITERAL);
 
 		result.setMissingColon(missingColon);
-		result.setEPackageName(ePackageName);
-		result.setEEnumName(eEnumName);
+		result.setEPackageName(stripUnderscore(ePackageName));
+		result.setEEnumName(stripUnderscore(eEnumName));
 
 		return result;
 	}
@@ -552,7 +619,7 @@ public class AstBuilder {
 	public ErrorCall errorCall(String serviceName, boolean isMissingEndParenthesis, Expression... args) {
 		final ErrorCall result = (ErrorCall)EcoreUtil.create(AstPackage.Literals.ERROR_CALL);
 
-		result.setServiceName(serviceName);
+		result.setServiceName(stripUnderscore(serviceName));
 		result.setMissingEndParenthesis(isMissingEndParenthesis);
 		result.getArguments().addAll(Arrays.asList(args));
 

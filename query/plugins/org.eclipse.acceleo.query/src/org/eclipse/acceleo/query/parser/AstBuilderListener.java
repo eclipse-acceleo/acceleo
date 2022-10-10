@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1329,13 +1329,14 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitFeature(FeatureContext ctx) {
 		final Expression receiver = popExpression();
-		final StringLiteral featureName = builder.stringLiteral(ctx.getChild(1).getText());
-		final Call call = builder.callService(FEATURE_ACCESS_SERVICE_NAME, receiver, featureName);
+		final String featureName = AstBuilder.stripUnderscore(ctx.getChild(1).getText());
+		final StringLiteral featureNameLiteral = builder.stringLiteral(featureName);
+		final Call call = builder.callService(FEATURE_ACCESS_SERVICE_NAME, receiver, featureNameLiteral);
 		call.setType(CallType.CALLORAPPLY);
 
-		setPositions(featureName, ctx.stop, ctx.stop);
+		setPositions(featureNameLiteral, ctx.stop, ctx.stop);
 		setIdentifierPositions(call, (Token)ctx.getChild(1).getPayload());
-		setPositions(call, receiver, featureName);
+		setPositions(call, receiver, featureNameLiteral);
 
 		push(call);
 	}

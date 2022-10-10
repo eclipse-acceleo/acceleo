@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import Real.RealPackage;
 
 public class CompletionTest {
 
@@ -1236,6 +1238,17 @@ public class CompletionTest {
 	}
 
 	@Test
+	public void partialEPackageNameKeywordWithUnderscore() {
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		final ICompletionResult completionResult = engine.getCompletion("_Re::", 5, variableTypes);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertCompletion(completionResult, 6, "_Re::", "", 0, 5, "_Real::Keyword", "_Real::_String");
+	}
+
+	@Test
 	public void partialEPackageNameAndEClassName() {
 		final ICompletionResult completionResult = engine.getCompletion("eco::ECl", 8, variableTypes);
 
@@ -1257,6 +1270,17 @@ public class CompletionTest {
 	}
 
 	@Test
+	public void partialEPackageNameAndEClassNameAndEnumNameKeywordWithUnderscore() {
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		final ICompletionResult completionResult = engine.getCompletion("_Real::St::in", 13, variableTypes);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertCompletion(completionResult, 1, "_Real::St::in", "", 0, 13, "_Real::_String::_Integer");
+	}
+
+	@Test
 	public void eObjectFeatureAccessCompletionOnJavaType() {
 		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
 		final Set<IType> selfType = new LinkedHashSet<IType>();
@@ -1266,6 +1290,74 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eClass().nam", 17, types);
 
 		assertCompletion(completionResult, 1, "nam", "", 14, 3, "name");
+	}
+
+	@Test
+	public void eObjectFeatureAccessKeyword() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		selfType.add(new EClassifierType(queryEnvironment, RealPackage.eINSTANCE.getKeyword()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.isUni", 10, types);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertCompletion(completionResult, 1, "isUni", "", 5, 5, "_isUnique");
+	}
+
+	@Test
+	public void eObjectFeatureAccessKeywordWithUnderscore() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		selfType.add(new EClassifierType(queryEnvironment, RealPackage.eINSTANCE.getKeyword()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self._isUni", 11, types);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertCompletion(completionResult, 1, "_isUni", "", 5, 6, "_isUnique");
+	}
+
+	@Test
+	public void eObjectEOperationKeywordWith() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		selfType.add(new EClassifierType(queryEnvironment, RealPackage.eINSTANCE.getKeyword()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.selec", 10, types);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertCompletion(completionResult, 1, "selec", "", 5, 5, "_select()");
+	}
+
+	@Test
+	public void eObjectEOperationKeywordWithUnderscore() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		selfType.add(new EClassifierType(queryEnvironment, RealPackage.eINSTANCE.getKeyword()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self._selec", 11, types);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertCompletion(completionResult, 1, "_selec", "", 5, 6, "_select()");
 	}
 
 	public static void assertCompletion(ICompletionResult completionResult, int size, String prefix,

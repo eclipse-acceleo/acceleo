@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ grammar Query;
 
 @header {
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -113,7 +113,7 @@ ErrorString : '\'' (Escape|~'\'')*?
 ;
 fragment Escape : '\\\\' | '\\\''
 ;
-Ident : (Letter | '_') (Letter | [0-9] | '_')*
+Ident : '_'? Letter (Letter | [0-9] | '_')*
 ;
 fragment Letter : [a-zA-Z]
 ;

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
+import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -44,7 +45,7 @@ public class EFeatureCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String getProposal() {
-		return feature.getName();
+		return AstBuilder.protectWithUnderscore(feature.getName());
 	}
 
 	/**
@@ -54,7 +55,7 @@ public class EFeatureCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public int getCursorOffset() {
-		return feature.getName().length();
+		return getProposal().length();
 	}
 
 	/**

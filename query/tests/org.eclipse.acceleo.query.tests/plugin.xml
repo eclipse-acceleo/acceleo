@@ -22,4 +22,12 @@
             genModel="model/inference.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated keyword -->
+      <package
+            uri="http://www.eclipse.org/acceleo/Real"
+            class="Real.RealPackage"
+            genModel="model/Real.genmodel"/>
+   </extension>
+
 </plugin>
