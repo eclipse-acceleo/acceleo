@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 
 /**
- * Serialize a {@link Expression}.
+ * Serialize an {@link Expression}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
@@ -654,7 +654,9 @@ public class AstSerializer extends AstSwitch<Object> {
 		doSwitch(receiver);
 		builder.append('.');
 		if (!arguments.isEmpty()) {
-			builder.append(((StringLiteral)arguments.get(0)).getValue());
+			final StringLiteral featureNameLiteral = (StringLiteral)arguments.get(0);
+			final String featureName = AstBuilder.protectWithUnderscore(featureNameLiteral.getValue());
+			builder.append(featureName);
 		}
 	}
 
@@ -662,12 +664,19 @@ public class AstSerializer extends AstSwitch<Object> {
 		final List<Expression> arguments = new ArrayList<Expression>(call.getArguments());
 		final Expression receiver = arguments.remove(0);
 		doSwitch(receiver);
+		final String serviceName;
 		if (call.getType() == CallType.COLLECTIONCALL) {
 			builder.append("->");
+			if (!arguments.isEmpty() && arguments.get(0) instanceof Lambda) {
+				serviceName = call.getServiceName();
+			} else {
+				serviceName = AstBuilder.protectWithUnderscore(call.getServiceName());
+			}
 		} else {
 			builder.append('.');
+			serviceName = AstBuilder.protectWithUnderscore(call.getServiceName());
 		}
-		builder.append(call.getServiceName());
+		builder.append(serviceName);
 		builder.append('(');
 		if (!arguments.isEmpty()) {
 			final StringBuilder previousBuilder = builder;
@@ -713,11 +722,11 @@ public class AstSerializer extends AstSwitch<Object> {
 
 	@Override
 	public Object caseEnumLiteral(EnumLiteral enumLiteral) {
-		builder.append(enumLiteral.getEPackageName());
+		builder.append(AstBuilder.protectWithUnderscore(enumLiteral.getEPackageName()));
 		builder.append(ECORE_SEPARATOR);
-		builder.append(enumLiteral.getEEnumName());
+		builder.append(AstBuilder.protectWithUnderscore(enumLiteral.getEEnumName()));
 		builder.append(ECORE_SEPARATOR);
-		builder.append(enumLiteral.getEEnumLiteralName());
+		builder.append(AstBuilder.protectWithUnderscore(enumLiteral.getEEnumLiteralName()));
 
 		return DUMMY;
 	}
@@ -894,9 +903,9 @@ public class AstSerializer extends AstSwitch<Object> {
 
 	@Override
 	public Object caseEClassifierTypeLiteral(EClassifierTypeLiteral object) {
-		builder.append(object.getEPackageName());
+		builder.append(AstBuilder.protectWithUnderscore(object.getEPackageName()));
 		builder.append(ECORE_SEPARATOR);
-		builder.append(object.getEClassifierName());
+		builder.append(AstBuilder.protectWithUnderscore(object.getEClassifierName()));
 
 		return DUMMY;
 	}

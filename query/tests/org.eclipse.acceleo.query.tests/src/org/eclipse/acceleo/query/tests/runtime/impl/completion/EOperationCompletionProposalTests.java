@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,8 @@ public class EOperationCompletionProposalTests {
 		EOperationServiceCompletionProposal eOperationCompletionProposal = new EOperationServiceCompletionProposal(
 				createEClassEOperation);
 
-		assertEquals("create(eClass: ecore::EClass): ecore::EObject", eOperationCompletionProposal.toString());
+		assertEquals("create(eClass: ecore::EClass): ecore::EObject", eOperationCompletionProposal
+				.toString());
 	}
 
 	@Test
@@ -38,7 +39,7 @@ public class EOperationCompletionProposalTests {
 		EOperationServiceCompletionProposal eOperationCompletionProposal = new EOperationServiceCompletionProposal(
 				createEClassEOperation);
 
-		assertEquals(7, eOperationCompletionProposal.getCursorOffset());
+		assertEquals(8, eOperationCompletionProposal.getCursorOffset());
 	}
 
 	@Test

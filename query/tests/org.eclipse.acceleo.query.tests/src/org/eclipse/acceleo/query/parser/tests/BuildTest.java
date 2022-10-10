@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -144,6 +144,18 @@ public class BuildTest {
 	}
 
 	@Test
+	public void variableTestWithUnderscore() {
+		AstResult build = engine.build("_x");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 2, 0, 2, ast);
+		assertEquals("_x", ((VarRef)ast).getVariableName());
+	}
+
+	@Test
 	public void featureAccessTest() {
 		AstResult build = engine.build("self.name");
 		Expression ast = build.getAst();
@@ -157,6 +169,23 @@ public class BuildTest {
 		VarRef varRef = (VarRef)((Call)ast).getArguments().get(0);
 		assertEquals("self", varRef.getVariableName());
 		assertExpression(build, StringLiteral.class, 5, 0, 5, 9, 0, 9, ((Call)ast).getArguments().get(1));
+		assertEquals("name", ((StringLiteral)((Call)ast).getArguments().get(1)).getValue());
+	}
+
+	@Test
+	public void featureAccessTestWithUnderscore() {
+		AstResult build = engine.build("self._name");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+		assertExpression(build, Call.class, 0, 0, 0, 10, 0, 10, ast);
+		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)ast).getServiceName());
+		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
+		VarRef varRef = (VarRef)((Call)ast).getArguments().get(0);
+		assertEquals("self", varRef.getVariableName());
+		assertExpression(build, StringLiteral.class, 5, 0, 5, 10, 0, 10, ((Call)ast).getArguments().get(1));
 		assertEquals("name", ((StringLiteral)((Call)ast).getArguments().get(1)).getValue());
 	}
 
@@ -740,6 +769,29 @@ public class BuildTest {
 	}
 
 	@Test
+	public void selectWithVariableNameTestWithUnderscore() {
+		AstResult build = engine.build("self->select(_var | true)");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+		assertExpression(build, Call.class, 0, 0, 0, 25, 0, 25, ast);
+		assertEquals("select", ((Call)ast).getServiceName());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
+		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
+		assertExpression(build, Lambda.class, 20, 0, 20, 24, 0, 24, ((Call)ast).getArguments().get(1));
+		assertEquals("_var", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0)).getName());
+		assertEquals(null, ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0)).getType());
+		assertExpression(build, BooleanLiteral.class, 20, 0, 20, 24, 0, 24, ((Lambda)((Call)ast)
+				.getArguments().get(1)).getExpression());
+	}
+
+	@Test
 	public void selectWithVariableNameAndTypeTest() {
 		AstResult build = engine.build("self->select(var : ecore::EClass | true)");
 		Expression ast = build.getAst();
@@ -966,6 +1018,30 @@ public class BuildTest {
 	}
 
 	@Test
+	public void classifier() {
+		AstResult build = engine.build("anydsl::Part");
+		Expression ast = build.getAst();
+
+		assertExpression(build, EClassifierTypeLiteral.class, 0, 0, 0, 12, 0, 12, ast);
+		assertEquals("anydsl", ((EClassifierTypeLiteral)ast).getEPackageName());
+		assertEquals("Part", ((EClassifierTypeLiteral)ast).getEClassifierName());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+	}
+
+	@Test
+	public void classifierWithUnderscore() {
+		AstResult build = engine.build("_anydsl::_Part");
+		Expression ast = build.getAst();
+
+		assertExpression(build, EClassifierTypeLiteral.class, 0, 0, 0, 14, 0, 14, ast);
+		assertEquals("anydsl", ((EClassifierTypeLiteral)ast).getEPackageName());
+		assertEquals("Part", ((EClassifierTypeLiteral)ast).getEClassifierName());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+	}
+
+	@Test
 	public void classifierError() {
 		AstResult build = engine.build("anydsl::EClass");
 		Expression ast = build.getAst();
@@ -983,6 +1059,19 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, EnumLiteral.class, 0, 0, 0, 19, 0, 19, ast);
+		assertEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other").getName(), ((EnumLiteral)ast)
+				.getEEnumLiteralName());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void enumLiteralWithUnderscore() {
+		AstResult build = engine.build("_anydsl::_Part::_Other");
+		Expression ast = build.getAst();
+
+		assertExpression(build, EnumLiteral.class, 0, 0, 0, 22, 0, 22, ast);
 		assertEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other").getName(), ((EnumLiteral)ast)
 				.getEEnumLiteralName());
 		assertEquals(0, build.getErrors().size());
@@ -1128,6 +1217,20 @@ public class BuildTest {
 		assertExpression(build, StringLiteral.class, 8, 0, 8, 11, 0, 11, ((Let)ast).getBindings().get(0)
 				.getValue());
 		assertExpression(build, VarRef.class, 15, 0, 15, 16, 0, 16, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void letOneBindingWithUnderscore() {
+		AstResult build = engine.build("let _a = 'a' in _a");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 0, 0, 18, 0, 18, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertEquals("_a", ((Let)ast).getBindings().get(0).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(0).getType());
+		assertExpression(build, StringLiteral.class, 9, 0, 9, 12, 0, 12, ((Let)ast).getBindings().get(0)
+				.getValue());
+		assertExpression(build, VarRef.class, 16, 0, 16, 18, 0, 18, ((Let)ast).getBody());
 	}
 
 	@Test
@@ -1803,11 +1906,51 @@ public class BuildTest {
 	}
 
 	@Test
+	public void incompletClassifierTypeTestWithUnderscore() {
+		AstResult build = engine.build("_toto::");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 0, 0, 0, 7, 0, 7, ast);
+		assertFalse(((ErrorEClassifierTypeLiteral)ast).isMissingColon());
+		assertEquals("toto", ((ErrorEClassifierTypeLiteral)ast).getEPackageName());
+		assertEquals(null, ((ErrorEClassifierTypeLiteral)ast).getEClassifierName());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal no viable alternative at input '_toto::'", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+	}
+
+	@Test
 	public void incompletEnumLitWithPackageTest() {
 		AstResult build = engine.build("toto::tata::");
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorEnumLiteral.class, 0, 0, 0, 12, 0, 12, ast);
+		assertFalse(((ErrorEnumLiteral)ast).isMissingColon());
+		assertEquals("toto", ((ErrorEnumLiteral)ast).getEPackageName());
+		assertEquals("tata", ((ErrorEnumLiteral)ast).getEEnumName());
+		assertEquals(null, ((ErrorEnumLiteral)ast).getEEnumLiteralName());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid enum literal: missing literal name", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing Ident at ''", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(1).getData().get(0));
+	}
+
+	@Test
+	public void incompletEnumLitWithPackageTestWithUnderscore() {
+		AstResult build = engine.build("_toto::_tata::");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorEnumLiteral.class, 0, 0, 0, 14, 0, 14, ast);
 		assertFalse(((ErrorEnumLiteral)ast).isMissingColon());
 		assertEquals("toto", ((ErrorEnumLiteral)ast).getEPackageName());
 		assertEquals("tata", ((ErrorEnumLiteral)ast).getEEnumName());
@@ -2073,11 +2216,57 @@ public class BuildTest {
 	}
 
 	@Test
+	public void serviceCallNoParameterTest() {
+		AstResult build = engine.build("self.service()");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
+		assertEquals("service", ((Call)ast).getServiceName());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
+	}
+
+	@Test
+	public void serviceCallNoParameterTestWithUnderscore() {
+		AstResult build = engine.build("self._service()");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertExpression(build, Call.class, 0, 0, 0, 15, 0, 15, ast);
+		assertEquals("service", ((Call)ast).getServiceName());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
+	}
+
+	@Test
 	public void incompletServiceCallNoParameterTest() {
 		AstResult build = engine.build("self.service(");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 13, 0, 13, ast);
+		assertEquals("service", ((Call)ast).getServiceName());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+	}
+
+	@Test
+	public void incompletServiceCallNoParameterTestWithUnderscore() {
+		AstResult build = engine.build("self._service(");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -2751,6 +2940,48 @@ public class BuildTest {
 	}
 
 	@Test
+	public void incompletEnumLiteralSeparatorInSelectWithUnderscore() {
+		AstResult build = engine.build("self.packagedElement->select(e | e.oclIsTypeOf(_anydsl::_Color:");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 0, 0, 63, 0, 63, ast);
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
+				.getServiceName());
+		assertExpression(build, StringLiteral.class, 5, 0, 5, 20, 0, 20, ((Call)((Call)ast).getArguments()
+				.get(0)).getArguments().get(1));
+		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
+				.getArguments().get(1);
+		assertEquals("packagedElement", featureName.getValue());
+		assertExpression(build, Lambda.class, 33, 0, 33, 63, 0, 63, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, ErrorCall.class, 33, 0, 33, 63, 0, 63, lambda.getExpression());
+		final ErrorCall call = (ErrorCall)lambda.getExpression();
+		assertEquals(2, call.getArguments().size());
+		assertExpression(build, VarRef.class, 33, 0, 33, 34, 0, 34, call.getArguments().get(0));
+		assertExpression(build, ErrorEnumLiteral.class, 47, 0, 47, 63, 0, 63, call.getArguments().get(1));
+		assertTrue(((ErrorEnumLiteral)call.getArguments().get(1)).isMissingColon());
+		assertEquals("anydsl", ((ErrorEnumLiteral)call.getArguments().get(1)).getEPackageName());
+		assertEquals("Color", ((ErrorEnumLiteral)call.getArguments().get(1)).getEEnumName());
+		assertEquals(null, ((ErrorEnumLiteral)call.getArguments().get(1)).getEEnumLiteralName());
+
+		assertEquals(3, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid enum literal: ':' instead of '::'", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
+				.getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
+	}
+
+	@Test
 	public void incompletTypeLiteralInSelect() {
 		AstResult build = engine.build("self.eAllContents(ecore::EClass)->select(a: ecore::");
 		Expression ast = build.getAst();
@@ -2769,6 +3000,35 @@ public class BuildTest {
 		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal ecore::", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
+	}
+
+	@Test
+	public void incompletTypeLiteralInSelectWithUndersocre() {
+		AstResult build = engine.build("self.eAllContents(ecore::EClass)->select(a: _ecore::");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 0, 0, 52, 0, 52, ast);
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, Call.class, 0, 0, 0, 32, 0, 32, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 52, 0, 52, 52, 0, 52, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, ErrorExpression.class, 52, 0, 52, 52, 0, 52, lambda.getExpression());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 44, 0, 44, 52, 0, 52, lambda
+				.getParameters().get(0).getType());
+
+		assertEquals(3, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal _ecore::", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
@@ -2996,4 +3256,45 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 	}
 
+	@Test
+	public void classifierWithKeyword() {
+		AstResult build = engine.build("_Real::_String");
+		Expression ast = build.getAst();
+
+		assertExpression(build, EClassifierTypeLiteral.class, 0, 0, 0, 14, 0, 14, ast);
+		assertEquals("Real", ((EClassifierTypeLiteral)ast).getEPackageName());
+		assertEquals("String", ((EClassifierTypeLiteral)ast).getEClassifierName());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+	}
+
+	@Test
+	public void enumLiteralWithKeyword() {
+		AstResult build = engine.build("_Real::_Integer::_String");
+		Expression ast = build.getAst();
+
+		assertExpression(build, EnumLiteral.class, 0, 0, 0, 24, 0, 24, ast);
+		assertEquals("Real", ((EnumLiteral)ast).getEPackageName());
+		assertEquals("Integer", ((EnumLiteral)ast).getEEnumName());
+		assertEquals("String", ((EnumLiteral)ast).getEEnumLiteralName());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+	}
+
+	@Test
+	public void featureAccessWithKeyword() {
+		AstResult build = engine.build("self._isUnique");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
+		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)ast).getServiceName());
+		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
+		VarRef varRef = (VarRef)((Call)ast).getArguments().get(0);
+		assertEquals("self", varRef.getVariableName());
+		assertExpression(build, StringLiteral.class, 5, 0, 5, 14, 0, 14, ((Call)ast).getArguments().get(1));
+		assertEquals("isUnique", ((StringLiteral)((Call)ast).getArguments().get(1)).getValue());
+	}
 }

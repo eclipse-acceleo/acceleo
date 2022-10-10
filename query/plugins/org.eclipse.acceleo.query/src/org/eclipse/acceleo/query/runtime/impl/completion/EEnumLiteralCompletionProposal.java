@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
+import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -43,8 +44,11 @@ public class EEnumLiteralCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String getProposal() {
-		return literal.getEEnum().getEPackage().getName() + "::" + literal.getEEnum().getName() + "::"
-				+ literal.getName();
+		final String packageName = AstBuilder.protectWithUnderscore(literal.getEEnum().getEPackage()
+				.getName());
+		final String enumName = AstBuilder.protectWithUnderscore(literal.getEEnum().getName());
+		final String literalName = AstBuilder.protectWithUnderscore(literal.getName());
+		return packageName + "::" + enumName + "::" + literalName;
 	}
 
 	/**

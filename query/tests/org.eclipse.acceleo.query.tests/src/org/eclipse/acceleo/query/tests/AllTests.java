@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.tests;
 import org.eclipse.acceleo.query.ast.test.AstBuilderTest;
 import org.eclipse.acceleo.query.ast.test.AstEvaluatorTest;
 import org.eclipse.acceleo.query.ast.test.delegates.DelegateTests;
+import org.eclipse.acceleo.query.parser.tests.AstSerializerSimplifiedTests;
 import org.eclipse.acceleo.query.parser.tests.AstSerializerTests;
 import org.eclipse.acceleo.query.parser.tests.BuildTest;
 import org.eclipse.acceleo.query.parser.tests.CombineIteratorTest;
@@ -102,7 +103,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ValidationInferenceTest.class, TypeTests.class, QueryEnvironmentTests.class,
 		EPackageProviderTests.class, CompletionCheck.class, FilterCamelCaseTest.class,
 		CollectionServicesAstValidationTest.class, DelegateTests.class, CombineIteratorTest.class,
-		PositionsTests.class, AstSerializerTests.class, })
+		PositionsTests.class, AstSerializerTests.class, AstSerializerSimplifiedTests.class, })
 public class AllTests {
 
 }

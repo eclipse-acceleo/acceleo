@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -130,12 +130,26 @@ public class BasicFilter implements IProposalFilter {
 	public static boolean startsWithOrMatchCamelCase(String candidate, String query) {
 		final boolean result;
 
-		if (startsWithIgnoreCase(candidate, query)) {
+		final String localCandidate;
+		if (candidate != null && candidate.startsWith("_")) {
+			localCandidate = candidate.substring(1);
+		} else {
+			localCandidate = candidate;
+		}
+
+		final String localquery;
+		if (candidate != null && query.startsWith("_")) {
+			localquery = query.substring(1);
+		} else {
+			localquery = query;
+		}
+
+		if (startsWithIgnoreCase(localCandidate, localquery)) {
 			result = true;
-		} else if (candidate != null) {
+		} else if (localCandidate != null) {
 			// transform the query into a camelCase regex
-			String regex = CAMEL_CASE_PATTERN.matcher(query).replaceAll("$1[^A-Z]*") + ".*";
-			result = candidate.matches(regex);
+			String regex = CAMEL_CASE_PATTERN.matcher(localquery).replaceAll("$1[^A-Z]*") + ".*";
+			result = localCandidate.matches(regex);
 		} else {
 			result = false;
 		}

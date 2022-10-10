@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
+import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -43,7 +44,9 @@ public class EClassifierCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String getProposal() {
-		return eClassifier.getEPackage().getName() + "::" + eClassifier.getName();
+		final String packageName = AstBuilder.protectWithUnderscore(eClassifier.getEPackage().getName());
+		final String classifierName = AstBuilder.protectWithUnderscore(eClassifier.getName());
+		return packageName + "::" + classifierName;
 	}
 
 	/**

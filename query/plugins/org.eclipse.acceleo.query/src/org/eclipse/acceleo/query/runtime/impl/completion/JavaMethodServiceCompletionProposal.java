@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,11 @@ import java.util.List;
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.Throw;
+import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -61,7 +63,15 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 	 */
 	@Override
 	public String getProposal() {
-		return service.getName() + "()";
+		final String res;
+
+		if (service.getOrigin().getDeclaringClass() == CollectionServices.class) {
+			res = service.getName() + "()";
+		} else {
+			res = AstBuilder.protectWithUnderscore(service.getName()) + "()";
+		}
+
+		return res;
 	}
 
 	/**
@@ -71,17 +81,17 @@ public class JavaMethodServiceCompletionProposal implements IServiceCompletionPr
 	 */
 	@Override
 	public int getCursorOffset() {
-		final int namelength = service.getName().length();
+		final int length = getProposal().length();
 		if (service.getNumberOfParameters() == 1) {
 			/*
 			 * if we have only one parameter we return the offset: self.serviceCall()^
 			 */
-			return namelength + 2;
+			return length;
 		} else {
 			/*
 			 * if we more than one parameter we return the offset: self.serviceCall(^)
 			 */
-			return namelength + 1;
+			return length - 1;
 		}
 	}
 

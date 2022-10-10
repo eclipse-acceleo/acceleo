@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl.completion;
 
 import java.util.List;
 
+import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
@@ -48,7 +49,7 @@ public class EOperationServiceCompletionProposal implements ICompletionProposal 
 	 */
 	@Override
 	public String getProposal() {
-		return eOperation.getName() + "()";
+		return AstBuilder.protectWithUnderscore(eOperation.getName()) + "()";
 	}
 
 	/**
@@ -58,7 +59,18 @@ public class EOperationServiceCompletionProposal implements ICompletionProposal 
 	 */
 	@Override
 	public int getCursorOffset() {
-		return getProposal().length() - 1;
+		final int length = getProposal().length();
+		if (eOperation.getEParameters().size() > 0) {
+			/*
+			 * if we don't have parameter we return the offset: self.serviceCall()^
+			 */
+			return length;
+		} else {
+			/*
+			 * if we one or more parameters we return the offset: self.serviceCall(^)
+			 */
+			return length - 1;
+		}
 	}
 
 	/**

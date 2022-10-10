@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2022 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import Real.Keyword;
+import Real.RealPackage;
 import nooperationreflection.NoOperationReflection;
 import nooperationreflection.NooperationreflectionPackage;
 
@@ -682,6 +684,65 @@ public class EvaluationTest {
 		EvaluationResult result = engine.eval(builder.build("self.arg('arg')"), variables);
 
 		assertEquals("argResultarg", result.getResult());
+	}
+
+	@Test
+	public void eClassifierWithKeyword() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		EvaluationResult result = engine.eval(builder.build("_Real::_String"), variables);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertEquals(RealPackage.eINSTANCE.getString(), result.getResult());
+	}
+
+	@Test
+	public void eEnumLiteralWithKeyword() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		EvaluationResult result = engine.eval(builder.build("_Real::_String::_Integer"), variables);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertEquals(Real.String.INTEGER, result.getResult());
+	}
+
+	@Test
+	public void eAttributeWithKeyword() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		Keyword self = RealPackage.eINSTANCE.getRealFactory().createKeyword();
+		self.setIsUnique("is unique value");
+
+		variables.put("self", self);
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		EvaluationResult result = engine.eval(builder.build("self._isUnique"), variables);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertEquals("is unique value", result.getResult());
+	}
+
+	@Test
+	public void eOperationWithKeyword() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		Keyword self = RealPackage.eINSTANCE.getRealFactory().createKeyword();
+
+		variables.put("self", self);
+
+		queryEnvironment.registerEPackage(RealPackage.eINSTANCE);
+
+		EvaluationResult result = engine.eval(builder.build("self._select()"), variables);
+
+		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
+
+		assertEquals("Select EOperation called successfully", result.getResult());
 	}
 
 }
