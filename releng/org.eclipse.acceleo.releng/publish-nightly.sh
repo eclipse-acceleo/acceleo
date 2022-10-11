@@ -19,7 +19,7 @@ export SSH_ACCOUNT="genie.acceleo@projects-storage.eclipse.org"
 NIGHTLIES_FOLDER="/home/data/httpd/download.eclipse.org/acceleo/updates/nightly"
 GROUP="modeling.acceleo"
 
-UPDATE_FOLDER=${WORKSPACE}/releng/org.eclipse.acceleo-updatesite/target
+UPDATE_FOLDER=${WORKSPACE}/releng/org.eclipse.acceleo.aql.update/target
 UPDATE_ZIP="$(ls ${UPDATE_FOLDER}/org.eclipse.acceleo-*.zip | sort -V | tail -n1)"
 
 ZIP_NAME=$(echo ${UPDATE_ZIP} | sed 's/.*\(org.eclipse.acceleo-.*.zip\)$/\1/')
