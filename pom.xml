@@ -54,12 +54,13 @@
     <jruby.version>9.2.8.0</jruby.version>
     <asciidoctorj.version>2.1.0</asciidoctorj.version>
 
+	<maven-checkstyle-version>2.0</maven-checkstyle-version>
     <maven-enforcer-version>3.0.0-M3</maven-enforcer-version>
     <checkstyle-version>3.1.1</checkstyle-version>
     <maven-antrun-version>1.7</maven-antrun-version>
     <findbugs-maven-version>3.0.0</findbugs-maven-version>
     <maven-pmd-version>3.1</maven-pmd-version>
-    <eclipse-jarsigner-version>1.1.3</eclipse-jarsigner-version>
+    <eclipse-jarsigner-version>1.3.4</eclipse-jarsigner-version>
     <maven-jxr-version>2.3</maven-jxr-version>
     <jacoco-maven-version>0.7.1.201405082137</jacoco-maven-version>
 
