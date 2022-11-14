@@ -1,4 +1,4 @@
-target "Acceleo 2022-06 Target Platform"
+target "Acceleo 2022-09 Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"
@@ -6,7 +6,7 @@ include "../common/swtbot.tpd"
 
 with source requirements
 
-location "https://download.eclipse.org/releases/2022-06" {
+location "https://download.eclipse.org/releases/2022-09" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	
