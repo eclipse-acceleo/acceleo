@@ -175,6 +175,10 @@
           <archive>
             <addMavenDescriptor>false</addMavenDescriptor>
           </archive>
+          <excludes>
+            <plugin id="org.eclipse.acceleo.aql.doc"/>
+            <plugin id="org.eclipse.acceleo.aql.tm"/>
+          </excludes>
         </configuration>
         <executions>
           <execution>
@@ -183,28 +187,10 @@
               <goal>plugin-source</goal>
             </goals>
           </execution>
-        </executions>
-      </plugin>
-      <!-- enable source feature generation -->
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
-        <version>${tycho-extras-version}</version>
-        <configuration>
-          <excludes>
-            <plugin id="org.eclipse.acceleo.aql.doc"/>
-            <plugin id="org.eclipse.acceleo.aql.tm"/>
-          </excludes>
-          <archive>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-        </configuration>
-        <executions>
           <execution>
-            <id>source-feature</id>
-            <phase>package</phase>
+            <id>feature-source</id>
             <goals>
-              <goal>source-feature</goal>
+              <goal>feature-source</goal>
             </goals>
           </execution>
         </executions>
