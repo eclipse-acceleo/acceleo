@@ -75,8 +75,8 @@ ssh ${SSH_ACCOUNT} << EOSSH
   ## Create the p2.index file for this milestone
 cat <<EOF >${MILESTONES_FOLDER}/${VERSION_SHORT}/S${TIMESTAMP}/p2.index
 version = 1
-metadata.repository.factory.order = compositeContent.xml,\!
-artifact.repository.factory.order = compositeArtifacts.xml,\!
+metadata.repository.factory.order=content.xml.xz,content.xml,\!
+artifact.repository.factory.order=artifacts.xml.xz,artifacts.xml,\!
 EOF
   chgrp -R ${GROUP} ${MILESTONES_FOLDER}/${VERSION_SHORT}/S${TIMESTAMP}/p2.index
 EOSSH
