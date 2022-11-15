@@ -124,8 +124,10 @@
     
     <module>features/org.eclipse.acceleo.aql.feature</module>
 
+<!--
     <module>tests/org.eclipse.acceleo.aql.rcpttproduct</module>
     <module>tests/org.eclipse.acceleo.aql.rcptt</module>
+-->
     <module>releng/org.eclipse.acceleo.aql.update</module>
   </modules>
 
