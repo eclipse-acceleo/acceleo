@@ -71,14 +71,6 @@ ssh ${SSH_ACCOUNT} << EOSSH
   popd
   md5sum ${DROPS_FOLDER}/${VERSION}/S${TIMESTAMP}/${ZIP_PREFIX}${ALIAS}.zip > ${DROPS_FOLDER}/${VERSION}/S${TIMESTAMP}/${ZIP_PREFIX}${ALIAS}.zip.md5
   chgrp -R ${GROUP} ${DROPS_FOLDER}/${VERSION}/S${TIMESTAMP}
-
-  ## Create the p2.index file for this milestone
-cat <<EOF >${MILESTONES_FOLDER}/${VERSION_SHORT}/S${TIMESTAMP}/p2.index
-version = 1
-metadata.repository.factory.order=content.xml.xz,content.xml,\!
-artifact.repository.factory.order=artifacts.xml.xz,artifacts.xml,\!
-EOF
-  chgrp -R ${GROUP} ${MILESTONES_FOLDER}/${VERSION_SHORT}/S${TIMESTAMP}/p2.index
 EOSSH
 
 ## Update the composite update site with this new child
