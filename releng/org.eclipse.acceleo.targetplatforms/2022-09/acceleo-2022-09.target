@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Acceleo 2022-09 Target Platform" sequenceNumber="1668512360">
+<target name="Acceleo 2022-09 Target Platform" sequenceNumber="1668515128">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="com.google.guava" version="30.1.0.v20221112-0806"/>
@@ -33,7 +33,7 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.rcptt.platform.feature.group" version="0.0.0"/>
       <unit id="org.antlr.runtime" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/rcptt/release/2.5.1/repository"/>
+      <repository location="https://download.eclipse.org/rcptt/release/2.5.4/repository"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.platform.sdk" version="0.0.0"/>

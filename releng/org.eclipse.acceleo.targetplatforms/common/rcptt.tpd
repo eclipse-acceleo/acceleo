@@ -2,7 +2,7 @@ target "RCPTT"
 
 with source, requirements
 
-location "https://download.eclipse.org/rcptt/release/2.5.1/repository" {
+location "https://download.eclipse.org/rcptt/release/2.5.4/repository" {
 	org.eclipse.rcptt.platform.feature.group lazy
 	org.antlr.runtime lazy
 }
