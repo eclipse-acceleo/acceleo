@@ -2,7 +2,7 @@ target "Orbit"
 
 with source, requirements
 
-location "https://download.eclipse.org/tools/orbit/downloads/drops/S20221109014815/repository" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/I20221112145035/repository" {
 	com.google.guava [27.0.0,30.2.0)
 	org.junit [4,5)
 	org.antlr.runtime [4.7.2,4.7.3)
