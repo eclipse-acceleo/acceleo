@@ -15,7 +15,7 @@ pipeline {
 	
 	environment {
 		// Target platform to build against (must correspond to a profile in the parent pom.xml)
-		PLATFORM = 'platform-2022-06'
+		PLATFORM = 'platform-2022-09'
 	}
 	
 	stages {
