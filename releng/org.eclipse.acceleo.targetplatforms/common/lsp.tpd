@@ -17,6 +17,6 @@ location "https://download.eclipse.org/lsp4e/releases/0.20.5/" {
 	a.jre.javase lazy
 }
 
-location "https://download.eclipse.org/mylyn/docs/releases/3.0.42/" {
+location "https://download.eclipse.org/mylyn/docs/releases/3.0.45/" {
 	org.eclipse.mylyn.wikitext.markdown lazy
 }
