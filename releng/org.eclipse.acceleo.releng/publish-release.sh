@@ -62,20 +62,21 @@ ssh ${SSH_ACCOUNT} << EOSSH
   fi
   cp -r ${MILESTONES_FOLDER}/${VERSION_SHORT}/S${TIMESTAMP} ${RELEASES_FOLDER}/${VERSION_SHORT}/R${TIMESTAMP}
   chgrp -R ${GROUP} ${RELEASES_FOLDER}/${VERSION_SHORT}/R${TIMESTAMP}
-
-  ## update the releases composite
-
-  #cd ${RELEASES_FOLDER}/${VERSION_SHORT}
-  #/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml add -Dchild.repository=R${TIMESTAMP} -Dcomposite.name="${PROJECT_NAME} ${VERSION_SHORT} releases"
-
-  #if [ "$UPDATE_ROOT_COMPOSITE" = true ]
-  #then
-    #cd ${RELEASES_FOLDER}
-    #/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml add -Dchild.repository=${VERSION_SHORT} -Dcomposite.name="${PROJECT_NAME} releases"
-  #fi
-
+  
   ## update the "latest" update site
 
   rm -r ${RELEASES_FOLDER}/latest/*
   cp -r ${RELEASES_FOLDER}/${VERSION_SHORT}/R${TIMESTAMP}/* ${RELEASES_FOLDER}/latest/
+
+  ## update the releases composite
+  ## The ant script we're using requires Java 8
+  export JAVA_HOME=/shared/common/jdk1.8.0_x64-latest
+  cd ${RELEASES_FOLDER}/${VERSION_SHORT}
+  /shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml add -Dchild.repository=R${TIMESTAMP} -Dcomposite.name="${PROJECT_NAME} ${VERSION_SHORT} releases"
+
+  if [ "$UPDATE_ROOT_COMPOSITE" = true ]
+  then
+    cd ${RELEASES_FOLDER}
+    /shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml add -Dchild.repository=${VERSION_SHORT} -Dcomposite.name="${PROJECT_NAME} releases"
+  fi
 EOSSH
