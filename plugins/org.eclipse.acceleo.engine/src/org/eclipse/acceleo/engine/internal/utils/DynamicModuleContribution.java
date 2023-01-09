@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.utils;
 
-import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class DynamicModuleContribution {
 	/**
 	 * The module files.
 	 */
-	private List<File> files = new ArrayList<File>();
+	private List<URL> files = new ArrayList<URL>();
 
 	/**
 	 * The constructor.
@@ -38,7 +38,7 @@ public class DynamicModuleContribution {
 	 * @param files
 	 *            The files of the dynamic modules.
 	 */
-	public DynamicModuleContribution(List<String> generatorIDs, List<File> files) {
+	public DynamicModuleContribution(List<String> generatorIDs, List<URL> files) {
 		this.generatorIDs = generatorIDs;
 		this.files = files;
 	}
@@ -57,7 +57,7 @@ public class DynamicModuleContribution {
 	 * 
 	 * @return The files of the dynamic modules.
 	 */
-	public List<File> getFiles() {
+	public List<URL> getFiles() {
 		return files;
 	}
 }
