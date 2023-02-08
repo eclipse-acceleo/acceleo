@@ -12,13 +12,13 @@
 
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
-    <artifactId>acceleo-test-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../test-parent</relativePath>
+    <artifactId>org.eclipse.acceleo-parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+    <relativePath>../../..</relativePath>
   </parent>
 
-  <artifactId>org.eclipse.acceleo.aql.rcptt</artifactId>
-  <version>4.0.0-SNAPSHOT</version>
+  <artifactId>org.eclipse.acceleo.query.ide.ui.tests.rcptt</artifactId>
+  <version>8.0.1-SNAPSHOT</version>
 
   <packaging>rcpttTest</packaging>
 
@@ -46,7 +46,7 @@
             <version>${rcptt-maven-version}</version>
           </runner>
           <aut>
-            <explicit>${project.basedir}/../org.eclipse.acceleo.aql.rcpttproduct/target/products/Acceleo-linux.gtk.x86_64.tar.gz</explicit>
+            <explicit>${project.basedir}/../../../tests/org.eclipse.acceleo.aql.rcpttproduct/target/products/Acceleo-linux.gtk.x86_64.tar.gz</explicit>
           </aut>
           <skipTags>
             <skipTag>fail</skipTag>

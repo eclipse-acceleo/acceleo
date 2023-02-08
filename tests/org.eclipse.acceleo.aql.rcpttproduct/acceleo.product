@@ -18,9 +18,10 @@ Version  4.0.0
       <programArgs>--launcher.XXMaxPermSize
 256m
       </programArgs>
-      <vmArgs>-Xms256m
--Xmx1024m
--XX:MaxPermSize=256m
+      <vmArgs>--illegal-access=permit
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-modules=ALL-SYSTEM
+-Djava.security.manager=allow
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
@@ -105,26 +106,27 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </license>
 
    <features>
+      <feature id="org.eclipse.acceleo.query"/>
+      <feature id="org.eclipse.acceleo.query.ui"/>
+      <feature id="org.eclipse.acceleo.query.ui.tests"/>
       <feature id="org.eclipse.acceleo.aql.feature"/>
       <feature id="org.eclipse.acceleo.query.jdt"/>
+      <feature id="org.eclipse.acceleo.query"/>
       <feature id="org.eclipse.jdt"/>
       <feature id="org.eclipse.equinox.core.feature"/>
       <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.eclipse.pde"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.epp.mpc"/>
-      <feature id="org.eclipse.acceleo.query"/>
       <feature id="org.eclipse.rcptt.platform"/>
    </features>
 
    <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
       <property name="osgi.instance.area.default" value="@user.home/acceleows" os="macosx" />
    </configurations>
 
