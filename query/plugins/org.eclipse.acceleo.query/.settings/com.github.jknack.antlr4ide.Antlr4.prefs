@@ -1,5 +1,5 @@
-antlr4.antlrRegisteredTools=4.2.2@/tmp/antlr-4.2.2-complete.jar\:4.3@D\:\\work\\antlr4\\antlr-4.3-complete.jar\:4.7.2@/home/development/bin/eclipse-2019-12-Acceleo-query/antlr-4.7.2-complete.jar
-antlr4.antlrToolPath=/home/development/bin/eclipse-2019-12-Acceleo-query/antlr-4.7.2-complete.jar
+antlr4.antlrRegisteredTools=4.2.2@/tmp/antlr-4.2.2-complete.jar\:4.3@D\:\\work\\antlr4\\antlr-4.3-complete.jar\:4.10.1@/home/development/bin/eclipse-2019-12-Acceleo-query/antlr-4.10.1-complete.jar
+antlr4.antlrToolPath=/home/development/bin/eclipse-2019-12-Acceleo-query/antlr-4.10.1-complete.jar
 antlr4.encoding=UTF-8
 antlr4.listener=true
 antlr4.visitor=false
