@@ -2,12 +2,40 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Acceleo Documentation">
- <topic href="doc/Acceleo/index.html" label="User Guide">
- </topic>
- <topic href="doc/Acceleo/language.html" label="Language">
- </topic>
- <topic href="doc/Acceleo/syntax.html" label="Syntax">
- </topic>
- <topic href="doc/Acceleo/migration.html" label="Migration">
- </topic>
+    <topic href="doc/Acceleo/install.html" label="Installation">
+    </topic>
+    <topic href="doc/Acceleo/start.html" label="Getting Started">
+    </topic>
+    <topic href="doc/Acceleo/tool.html" label="The Acceleo Tooling">
+	<topic href="doc/Acceleo/tool.html#_the_acceleo_editor" label="The Acceleo Editor">
+		<topic href="doc/Acceleo/tool.html#_syntax_highlighting" label="Syntax Highlighting"></topic>
+		<topic href="doc/Acceleo/tool.html#_content_assist" label="Content assist"></topic>
+		<topic href="doc/Acceleo/tool.html#_real_time_errors_detection" label="Real Time Errors Detection"></topic>
+		<topic href="doc/Acceleo/tool.html#_outlines" label="Outlines">
+			<topic href="doc/Acceleo/tool.html#_the_dynamic_outline" label="The dynamic outline"></topic>
+			<topic href="doc/Acceleo/tool.html#_the_quick_outline" label="The quick outline"></topic>
+		</topic>
+		<topic href="doc/Acceleo/tool.html#_open_declaration" label="Open Declaration"></topic>
+		<topic href="doc/Acceleo/tool.html#_white_spaces" label="White spaces"></topic>
+	</topic>
+	<topic href="doc/Acceleo/tool.html#_the_acceleo_debugger" label="The Acceleo Debugger">
+		<topic href="doc/Acceleo/tool.html#_breakpoints" label="Breakpoints"></topic>
+		<topic href="doc/Acceleo/tool.html#_step_by_step_execution" label="Step by step execution"></topic>
+	</topic>
+	<topic href="doc/Acceleo/tool.html#_acceleo_profiler" label="Acceleo Profiler">
+		<topic href="doc/Acceleo/tool.html#_launching_a_generation_with_the_profiler" label="Launching a generation with the profiler"></topic>
+		<topic href="doc/Acceleo/tool.html#_acceleo_profile_files" label="Acceleo Profile Files"></topic>
+		<topic href="doc/Acceleo/tool.html#_coverage_informations" label="Coverage informations"></topic>
+	</topic>
+    </topic>
+	<topic href="doc/Acceleo/language.html" label="Language">
+	</topic>
+	<topic href="doc/Acceleo/generate.html" label="Launching an Acceleo generation">
+	</topic>
+	<topic href="doc/Acceleo/syntax.html" label="Syntax">
+	</topic>
+	<topic href="doc/Acceleo/use.html" label="Using Acceleo 4 programmatically">
+	</topic>
+	<topic href="doc/Acceleo/migration.html" label="Migration">
+	</topic>
 </toc>

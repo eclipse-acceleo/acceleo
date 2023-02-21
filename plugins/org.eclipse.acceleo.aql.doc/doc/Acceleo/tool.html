@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_the_acceleo_editor">The Acceleo Editor</a></li>
 <li><a href="#_the_acceleo_debugger">The Acceleo Debugger</a></li>
+<li><a href="#_acceleo_profiler">Acceleo Profiler</a></li>
 </ul>
 </div>
 </div>
@@ -763,10 +764,76 @@ Here is an example of a deactivated breakpoint in this view:</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_acceleo_profiler">Acceleo Profiler</h3>
+<div class="paragraph">
+<p>The Acceleo 4 Profiler allows you to keep track of executions and see where time is consumed during a generation, thus making it easier to identify (and hopefully fix) bottlenecks.</p>
+</div>
+<div class="sect3">
+<h4 id="_launching_a_generation_with_the_profiler">Launching a generation with the profiler</h4>
+<div class="paragraph">
+<p>The first thing to do to profile an Acceleo generation is to create a Profile Configuration, which is as we will see very similar to a Launch Configuration. To create a Profile Configuration, right-click on an Acceleo module file, and select Profile As &gt; Profile Configurations&#8230;&#8203;.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/ProfileAs.png" alt="Profile As">
+</div>
+</div>
+<div class="paragraph">
+<p>A configuration page appears, which looks very much like the traditional launch configuration page.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/ProfileLaunchConfiguration.png" alt="Profiler Launch Configuration">
+</div>
+</div>
+<div class="paragraph">
+<p>There is just one additional information to enter, which is the path to the profiling result file where Acceleo will store the profiling information of subsequent executions. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
+You can simply select a folder in this dialog, in which the profile file will be created.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_acceleo_profile_files">Acceleo Profile Files</h4>
+<div class="paragraph">
+<p>Acceleo stores the result of a profiled execution in a file which extension is .mtlp. This file is actually just a serialized EMF model. Let&#8217;s take a closer look at it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/ProfileFile.png" alt="Profile File">
+</div>
+</div>
+<div class="paragraph">
+<p>The above image shows the content of an mtlp file, and correspondances between the profiled data and the Acceleo template elements.</p>
+</div>
+<div class="paragraph">
+<p>For each generated file, there is one entry in the root node of the profile.</p>
+</div>
+<div class="paragraph">
+<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a [for &#8230;&#8203; ] instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_coverage_informations">Coverage informations</h4>
+<div class="paragraph">
+<p>The profile editor also provides coverage informations based on the profiling result. For each used module it shows what percentage of it has been actually used.</p>
+</div>
+<div class="paragraph">
+<p>You can double-click on the module in the profile editor (or on any module element in the profile model) to accurately see what has been used in a given module. It shows in green what has been covered by the execution and in red what has been ignored.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Coverage.png" alt="Coverage">
+</div>
+</div>
+<div class="paragraph">
+<p>To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-24 10:27:31 +0200
+Last updated 2023-02-21 11:36:40 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

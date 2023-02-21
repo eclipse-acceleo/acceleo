@@ -42,6 +42,10 @@ You just have to select:
 
 image::images/LaunchConfig.png[Launch Configuration]
 
-INFO: Check that your generation is finished by opening the *Console* view.
+.After launching the generation
+[IMPORTANT]
+====
+Check that your generation is finished by opening the *Console* view.
 You should see a message like this `<terminated> generate.mtl[Acceleo4]`.
+====
  

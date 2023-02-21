@@ -42,12 +42,6 @@
    <feature id="org.eclipse.acceleo.ui.interpreter.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
-   <feature id="org.eclipse.acceleo.aql.profiler.feature">
-      <category name="org.eclipse.acceleo"/>
-   </feature>
-   <feature id="org.eclipse.acceleo.aql.profiler.feature.source">
-      <category name="org.eclipse.acceleo"/>
-   </feature>
    <bundle id="org.antlr.runtime"/>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
