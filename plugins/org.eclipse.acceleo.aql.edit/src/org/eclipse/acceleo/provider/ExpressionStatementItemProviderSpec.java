@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,9 +32,14 @@ public class ExpressionStatementItemProviderSpec extends ExpressionStatementItem
 
 	@Override
 	public String getText(Object object) {
+		final String res;
+
 		if (((ExpressionStatement) object).getExpression() != null) {
-			return ASTUtils.serialize(((ExpressionStatement) object).getExpression());
+			res = ASTUtils.serialize(((ExpressionStatement) object).getExpression());
+		} else {
+			res = super.getText(object);
 		}
-		return super.getText(object);
+
+		return res;
 	}
 }

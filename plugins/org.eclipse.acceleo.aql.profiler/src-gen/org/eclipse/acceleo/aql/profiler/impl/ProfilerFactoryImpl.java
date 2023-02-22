@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.profiler.impl;
 
-import org.eclipse.acceleo.aql.profiler.LoopProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileResource;
 import org.eclipse.acceleo.aql.profiler.ProfilerFactory;
 import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
-import org.eclipse.acceleo.aql.profiler.impl.spec.LoopProfileEntrySpec;
 import org.eclipse.acceleo.aql.profiler.impl.spec.ProfileEntrySpec;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -66,13 +64,11 @@ public class ProfilerFactoryImpl extends EFactoryImpl implements ProfilerFactory
 		switch (eClass.getClassifierID()) {
 			case ProfilerPackage.PROFILE_ENTRY:
 				return createProfileEntry();
-			case ProfilerPackage.LOOP_PROFILE_ENTRY:
-				return createLoopProfileEntry();
 			case ProfilerPackage.PROFILE_RESOURCE:
 				return createProfileResource();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
-						+ "' is not a valid classifier"); //$NON-NLS-1$
+				throw new IllegalArgumentException("The class '" + eClass.getName()
+						+ "' is not a valid classifier");
 		}
 	}
 
@@ -81,19 +77,10 @@ public class ProfilerFactoryImpl extends EFactoryImpl implements ProfilerFactory
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public ProfileEntry createProfileEntry() {
 		ProfileEntryImpl profileEntry = new ProfileEntrySpec();
 		return profileEntry;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
-	public LoopProfileEntry createLoopProfileEntry() {
-		LoopProfileEntryImpl loopProfileEntry = new LoopProfileEntrySpec();
-		return loopProfileEntry;
 	}
 
 	/**
@@ -111,6 +98,7 @@ public class ProfilerFactoryImpl extends EFactoryImpl implements ProfilerFactory
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ProfilerPackage getProfilerPackage() {
 		return (ProfilerPackage)getEPackage();
 	}

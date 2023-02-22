@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,41 +10,38 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.profiler.impl;
 
-import java.util.Collection;
-
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileResource;
 import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Profile Resource</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are implemented:
- * <ul>
- * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileResourceImpl#getEntries <em>Entries</em>}</li>
- * </ul>
  * </p>
- * 
+ * <ul>
+ * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileResourceImpl#getEntry <em>Entry</em>}</li>
+ * </ul>
+ *
  * @generated
  */
 public class ProfileResourceImpl extends EObjectImpl implements ProfileResource {
 	/**
-	 * The cached value of the '{@link #getEntries() <em>Entries</em>}' containment reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getEntry() <em>Entry</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
-	 * @see #getEntries()
+	 * @see #getEntry()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ProfileEntry> entries;
+	protected ProfileEntry entry;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -70,12 +67,51 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	 * 
 	 * @generated
 	 */
-	public EList<ProfileEntry> getEntries() {
-		if (entries == null) {
-			entries = new EObjectContainmentEList<ProfileEntry>(ProfileEntry.class, this,
-					ProfilerPackage.PROFILE_RESOURCE__ENTRIES);
+	@Override
+	public ProfileEntry getEntry() {
+		return entry;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetEntry(ProfileEntry newEntry, NotificationChain msgs) {
+		ProfileEntry oldEntry = entry;
+		entry = newEntry;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					ProfilerPackage.PROFILE_RESOURCE__ENTRY, oldEntry, newEntry);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
-		return entries;
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setEntry(ProfileEntry newEntry) {
+		if (newEntry != entry) {
+			NotificationChain msgs = null;
+			if (entry != null)
+				msgs = ((InternalEObject)entry).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- ProfilerPackage.PROFILE_RESOURCE__ENTRY, null, msgs);
+			if (newEntry != null)
+				msgs = ((InternalEObject)newEntry).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- ProfilerPackage.PROFILE_RESOURCE__ENTRY, null, msgs);
+			msgs = basicSetEntry(newEntry, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_RESOURCE__ENTRY,
+					newEntry, newEntry));
 	}
 
 	/**
@@ -86,8 +122,8 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ProfilerPackage.PROFILE_RESOURCE__ENTRIES:
-				return ((InternalEList<?>)getEntries()).basicRemove(otherEnd, msgs);
+			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
+				return basicSetEntry(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -100,8 +136,8 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ProfilerPackage.PROFILE_RESOURCE__ENTRIES:
-				return getEntries();
+			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
+				return getEntry();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -111,13 +147,11 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	 * 
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ProfilerPackage.PROFILE_RESOURCE__ENTRIES:
-				getEntries().clear();
-				getEntries().addAll((Collection<? extends ProfileEntry>)newValue);
+			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
+				setEntry((ProfileEntry)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -131,8 +165,8 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ProfilerPackage.PROFILE_RESOURCE__ENTRIES:
-				getEntries().clear();
+			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
+				setEntry((ProfileEntry)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -146,8 +180,8 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ProfilerPackage.PROFILE_RESOURCE__ENTRIES:
-				return entries != null && !entries.isEmpty();
+			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
+				return entry != null;
 		}
 		return super.eIsSet(featureID);
 	}

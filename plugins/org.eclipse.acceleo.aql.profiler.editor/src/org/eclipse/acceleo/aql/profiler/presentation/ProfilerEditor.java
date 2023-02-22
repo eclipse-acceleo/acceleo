@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 public final class ProfilerEditor extends EcoreEditor {
 
 	/**
-	 * Initialize the Profiler metamodele.
+	 * Initialize the Profiler metamodel.
 	 */
 	@SuppressWarnings("unused")
 	private static final ProfilerPackage PKG = ProfilerPackage.eINSTANCE;
@@ -137,7 +137,7 @@ public final class ProfilerEditor extends EcoreEditor {
 					ProfileEntry entry2 = (ProfileEntry)e2;
 					switch (sortStatus.getSortOrder()) {
 						case ProfilerSortStatus.SORT_BY_CREATION_TIME:
-							ret = (int)(entry1.getCreateTime() - entry2.getCreateTime());
+							ret = (int)(entry1.getCreationTime() - entry2.getCreationTime());
 							break;
 						case ProfilerSortStatus.SORT_BY_TIME:
 							ret = (int)(entry2.getDuration() - entry1.getDuration());

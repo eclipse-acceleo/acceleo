@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,16 +38,20 @@ public class ForStatementItemProviderSpec extends ForStatementItemProvider {
 	@Override
 	public String getText(Object object) {
 		StringBuilder res = new StringBuilder();
+
 		ForStatement forStatement = (ForStatement) object;
 		if (forStatement.getBinding() != null) {
 			res.append(forStatement.getBinding().getName());
-			res.append(" : "); //$NON-NLS-1$
-			res.append(ASTUtils.serialize(forStatement.getBinding().getType()));
+			if (forStatement.getBinding().getType() != null) {
+				res.append(" : "); //$NON-NLS-1$
+				res.append(ASTUtils.serialize(forStatement.getBinding().getType()));
+			}
 			if (forStatement.getBinding().getInitExpression() != null) {
 				res.append(" | "); //$NON-NLS-1$
 				res.append(ASTUtils.serialize(forStatement.getBinding().getInitExpression()));
 			}
 		}
+
 		return res.toString();
 	}
 }

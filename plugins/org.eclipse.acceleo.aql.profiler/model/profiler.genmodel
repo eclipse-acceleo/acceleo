@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.acceleo.aql.profiler/src-gen" editDirectory="/org.eclipse.acceleo.aql.profiler.edit/src-gen"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=" Copyright (c) 2016, 2023 Obeo.&#xA; All rights reserved. This program and the accompanying materials&#xA; are made available under the terms of the Eclipse Public License v1.0&#xA; which accompanies this distribution, and is available at&#xA; http://www.eclipse.org/legal/epl-v10.html&#xA; &#xA; Contributors:&#xA;     Obeo - initial API and implementation&#xA;"
+    modelDirectory="/org.eclipse.acceleo.aql.profiler/src-gen" editDirectory="/org.eclipse.acceleo.aql.profiler.edit/src-gen"
     editorDirectory="/org.eclipse.acceleo.aql.profiler.editor/src-gen" modelPluginID="org.eclipse.acceleo.aql.profiler"
     modelName="Profiler" editPluginClass="org.eclipse.acceleo.aql.profiler.provider.ProfilerEditPlugin"
     editorPluginClass="org.eclipse.acceleo.aql.profiler.presentation.ProfilerEditorPlugin"
     testsDirectory="/org.eclipse.acceleo.aql.profiler.tests/src-gen" testSuiteClass="org.eclipse.acceleo.aql.profiler.tests.ProfilerAllTests"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false">
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false">
   <foreignModel>profiler.ecore</foreignModel>
   <genPackages prefix="Profiler" basePackage="org.eclipse.acceleo.aql" disposableProviderFactory="true"
       fileExtensions="mtlp" ecorePackage="profiler.ecore#/">
@@ -14,18 +15,14 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference profiler.ecore#//ProfileEntry/callees"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference profiler.ecore#//ProfileEntry/caller"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute profiler.ecore#//ProfileEntry/count"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute profiler.ecore#//ProfileEntry/percentage"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute profiler.ecore#//ProfileEntry/createTime"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference profiler.ecore#//ProfileEntry/monitored"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute profiler.ecore#//ProfileEntry/percentage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute profiler.ecore#//ProfileEntry/creationTime"/>
       <genOperations ecoreOperation="profiler.ecore#//ProfileEntry/start"/>
       <genOperations ecoreOperation="profiler.ecore#//ProfileEntry/stop"/>
     </genClasses>
-    <genClasses ecoreClass="profiler.ecore#//LoopProfileEntry">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference profiler.ecore#//LoopProfileEntry/loopElements"/>
-    </genClasses>
     <genClasses ecoreClass="profiler.ecore#//ProfileResource">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference profiler.ecore#//ProfileResource/entries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference profiler.ecore#//ProfileResource/entry"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="profiler.ecore#//Internal"/>
   </genPackages>
 </genmodel:GenModel>

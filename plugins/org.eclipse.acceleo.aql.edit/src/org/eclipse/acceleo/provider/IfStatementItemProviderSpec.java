@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,7 @@ public class IfStatementItemProviderSpec extends IfStatementItemProvider {
 	/**
 	 * Constructor.
 	 * 
-	 * @param adapterFactory
-	 *            the adapter factory
+	 * @param adapterFactory the adapter factory
 	 */
 	public IfStatementItemProviderSpec(AdapterFactory adapterFactory) {
 		super(adapterFactory);
@@ -38,9 +37,13 @@ public class IfStatementItemProviderSpec extends IfStatementItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		if (((IfStatement)object).getCondition() != null) {
-			return "[if/] " + ASTUtils.serialize(((IfStatement)object).getCondition()); //$NON-NLS-1$
+		final String res;
+
+		if (((IfStatement) object).getCondition() != null) {
+			res = "[if/] " + ASTUtils.serialize(((IfStatement) object).getCondition()); //$NON-NLS-1$
+		} else {
+			res = super.getText(object);
 		}
-		return super.getText(object);
+		return res;
 	}
 }

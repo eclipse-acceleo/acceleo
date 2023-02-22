@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.profiler.util;
 
-import org.eclipse.acceleo.aql.profiler.Internal;
-import org.eclipse.acceleo.aql.profiler.LoopProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileResource;
 import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
@@ -26,7 +24,6 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @see org.eclipse.acceleo.aql.profiler.ProfilerPackage
  * @generated
- * @since 4.0
  */
 public class ProfilerAdapterFactory extends AdapterFactoryImpl {
 	/**
@@ -79,18 +76,8 @@ public class ProfilerAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseLoopProfileEntry(LoopProfileEntry object) {
-			return createLoopProfileEntryAdapter();
-		}
-
-		@Override
 		public Adapter caseProfileResource(ProfileResource object) {
 			return createProfileResourceAdapter();
-		}
-
-		@Override
-		public Adapter caseInternal(Internal object) {
-			return createInternalAdapter();
 		}
 
 		@Override
@@ -127,20 +114,6 @@ public class ProfilerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.aql.profiler.LoopProfileEntry
-	 * <em>Loop Profile Entry</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
-	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
-	 * anyway. <!-- end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.eclipse.acceleo.aql.profiler.LoopProfileEntry
-	 * @generated
-	 */
-	public Adapter createLoopProfileEntryAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.aql.profiler.ProfileResource
 	 * <em>Profile Resource</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
 	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
@@ -151,20 +124,6 @@ public class ProfilerAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createProfileResourceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.aql.profiler.Internal
-	 * <em>Internal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.eclipse.acceleo.aql.profiler.Internal
-	 * @generated
-	 */
-	public Adapter createInternalAdapter() {
 		return null;
 	}
 

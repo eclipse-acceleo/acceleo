@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,8 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class ProfileEntryItemProviderSpec extends ProfileEntryItemProvider {
 
+	private static final NumberFormat FORMAT = initFormat();
+
 	/**
 	 * Constructor.
 	 * 
@@ -32,6 +34,15 @@ public class ProfileEntryItemProviderSpec extends ProfileEntryItemProvider {
 	 */
 	public ProfileEntryItemProviderSpec(AdapterFactory adapterFactory) {
 		super(adapterFactory);
+	}
+
+	private static NumberFormat initFormat() {
+		final NumberFormat res = new DecimalFormat();
+
+		res.setMaximumIntegerDigits(3);
+		res.setMaximumFractionDigits(2);
+
+		return res;
 	}
 
 	/**
@@ -43,7 +54,14 @@ public class ProfileEntryItemProviderSpec extends ProfileEntryItemProvider {
 	public Object getImage(Object object) {
 		EObject monitored = ((ProfileEntry)object).getMonitored();
 
-		return ProfilerEditPlugin.LABEL_PROVIDER.getImage(monitored);
+		final Object res;
+		if (monitored != null) {
+			res = ProfilerEditPlugin.LABEL_PROVIDER.getImage(monitored);
+		} else {
+			res = super.getImage(object);
+		}
+
+		return res;
 	}
 
 	/**
@@ -55,12 +73,19 @@ public class ProfileEntryItemProviderSpec extends ProfileEntryItemProvider {
 	public String getText(Object object) {
 		final ProfileEntry profileEntry = (ProfileEntry)object;
 		final EObject monitored = profileEntry.getMonitored();
-		final NumberFormat format = new DecimalFormat();
-		format.setMaximumIntegerDigits(3);
-		format.setMaximumFractionDigits(2);
 
-		return format.format(profileEntry.getPercentage()) + "% / " + profileEntry.getDuration() + "ms / " //$NON-NLS-1$ //$NON-NLS-2$
-				+ profileEntry.getCount() + " times " + monitored.eClass().getName() + " [" //$NON-NLS-1$ //$NON-NLS-2$
-				+ ProfilerEditPlugin.LABEL_PROVIDER.getText(monitored) + "]"; //$NON-NLS-1$
+		final String text;
+		final String eClass;
+		if (monitored != null) {
+			text = ProfilerEditPlugin.LABEL_PROVIDER.getText(monitored);
+			eClass = monitored.eClass().getName();
+		} else {
+			text = "INTERNAL";
+			eClass = "";
+		}
+
+		return FORMAT.format(profileEntry.getPercentage()) + "% / " + profileEntry.getDuration() + "ms / " //$NON-NLS-1$ //$NON-NLS-2$
+				+ profileEntry.getCount() + " times " + eClass + " [" //$NON-NLS-1$ //$NON-NLS-2$
+				+ text + "]"; //$NON-NLS-1$
 	}
 }

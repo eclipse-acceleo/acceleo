@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Huawei.
+ * Copyright (c) 2020, 2023 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -8,7 +8,7 @@
 package org.eclipse.acceleo.aql.ls.profile;
 
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.profiler.Profiler;
+import org.eclipse.acceleo.aql.profiler.IProfiler;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 
@@ -22,7 +22,7 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	/**
 	 * The Acceleo Profiler.
 	 */
-	private Profiler profiler;
+	private IProfiler profiler;
 
 	/**
 	 * Constructor.
@@ -30,9 +30,9 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	 * @param queryEnvironment
 	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param profiler
-	 *            the profiler
+	 *            the {@link IProfiler}
 	 */
-	public AcceleoProfilerEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, Profiler profiler) {
+	public AcceleoProfilerEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, IProfiler profiler) {
 		super(queryEnvironment.getLookupEngine());
 		this.profiler = profiler;
 	}
@@ -45,8 +45,6 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	@Override
 	public Object doSwitch(EObject eObject) {
 		profiler.start(eObject);
-		// TODO loop elements are not used, so we ignore them
-		// profiler.loop(loopElement);
 		Object res = super.doSwitch(eObject);
 		profiler.stop();
 		return res;

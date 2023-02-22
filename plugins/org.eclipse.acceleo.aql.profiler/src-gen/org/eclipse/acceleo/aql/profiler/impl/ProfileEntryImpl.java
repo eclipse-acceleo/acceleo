@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,17 +31,18 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getDuration <em>Duration</em>}</li>
  * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getCallees <em>Callees</em>}</li>
  * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getCaller <em>Caller</em>}</li>
  * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getCount <em>Count</em>}</li>
- * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getPercentage <em>Percentage</em>}</li>
- * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getCreateTime <em>Create Time</em>}</li>
  * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getMonitored <em>Monitored</em>}</li>
+ * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getPercentage <em>Percentage</em>}</li>
+ * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileEntryImpl#getCreationTime <em>Creation
+ * Time</em>}</li>
  * </ul>
- * </p>
- * 
+ *
  * @generated
  */
 public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
@@ -83,7 +84,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final long COUNT_EDEFAULT = 0L;
+	protected static final int COUNT_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getCount() <em>Count</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -93,47 +94,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * @generated
 	 * @ordered
 	 */
-	protected long count = COUNT_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getPercentage() <em>Percentage</em>}' attribute. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @see #getPercentage()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final double PERCENTAGE_EDEFAULT = 0.0;
-
-	/**
-	 * The cached value of the '{@link #getPercentage() <em>Percentage</em>}' attribute. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @see #getPercentage()
-	 * @generated
-	 * @ordered
-	 */
-	protected double percentage = PERCENTAGE_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getCreateTime() <em>Create Time</em>}' attribute. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @see #getCreateTime()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final long CREATE_TIME_EDEFAULT = 0L;
-
-	/**
-	 * The cached value of the '{@link #getCreateTime() <em>Create Time</em>}' attribute. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @see #getCreateTime()
-	 * @generated
-	 * @ordered
-	 */
-	protected long createTime = CREATE_TIME_EDEFAULT;
+	protected int count = COUNT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getMonitored() <em>Monitored</em>}' reference. <!-- begin-user-doc -->
@@ -144,6 +105,46 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * @ordered
 	 */
 	protected EObject monitored;
+
+	/**
+	 * The default value of the '{@link #getPercentage() <em>Percentage</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #getPercentage()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final float PERCENTAGE_EDEFAULT = 0.0F;
+
+	/**
+	 * The cached value of the '{@link #getPercentage() <em>Percentage</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #getPercentage()
+	 * @generated
+	 * @ordered
+	 */
+	protected float percentage = PERCENTAGE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getCreationTime() <em>Creation Time</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getCreationTime()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final long CREATION_TIME_EDEFAULT = 0L;
+
+	/**
+	 * The cached value of the '{@link #getCreationTime() <em>Creation Time</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getCreationTime()
+	 * @generated
+	 * @ordered
+	 */
+	protected long creationTime = CREATION_TIME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -169,6 +170,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public long getDuration() {
 		return duration;
 	}
@@ -178,13 +180,13 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setDuration(long newDuration) {
 		long oldDuration = duration;
 		duration = newDuration;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__DURATION,
 					oldDuration, duration));
-		}
 	}
 
 	/**
@@ -192,6 +194,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EList<ProfileEntry> getCallees() {
 		if (callees == null) {
 			callees = new EObjectContainmentWithInverseEList<ProfileEntry>(ProfileEntry.class, this,
@@ -205,11 +208,11 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public ProfileEntry getCaller() {
-		if (eContainerFeatureID != ProfilerPackage.PROFILE_ENTRY__CALLER) {
+		if (eContainerFeatureID() != ProfilerPackage.PROFILE_ENTRY__CALLER)
 			return null;
-		}
-		return (ProfileEntry)eContainer();
+		return (ProfileEntry)eInternalContainer();
 	}
 
 	/**
@@ -227,28 +230,24 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setCaller(ProfileEntry newCaller) {
 		if (newCaller != eInternalContainer()
-				|| (eContainerFeatureID != ProfilerPackage.PROFILE_ENTRY__CALLER && newCaller != null)) {
-			if (EcoreUtil.isAncestor(this, newCaller)) {
-				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
-			}
+				|| (eContainerFeatureID() != ProfilerPackage.PROFILE_ENTRY__CALLER && newCaller != null)) {
+			if (EcoreUtil.isAncestor(this, newCaller))
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
 			NotificationChain msgs = null;
-			if (eInternalContainer() != null) {
+			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
-			}
-			if (newCaller != null) {
+			if (newCaller != null)
 				msgs = ((InternalEObject)newCaller).eInverseAdd(this, ProfilerPackage.PROFILE_ENTRY__CALLEES,
 						ProfileEntry.class, msgs);
-			}
 			msgs = basicSetCaller(newCaller, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__CALLER,
 					newCaller, newCaller));
-		}
 	}
 
 	/**
@@ -256,7 +255,8 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
-	public long getCount() {
+	@Override
+	public int getCount() {
 		return count;
 	}
 
@@ -265,13 +265,13 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
-	public void setCount(long newCount) {
-		long oldCount = count;
+	@Override
+	public void setCount(int newCount) {
+		int oldCount = count;
 		count = newCount;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__COUNT,
 					oldCount, count));
-		}
 	}
 
 	/**
@@ -279,61 +279,15 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
-	public double getPercentage() {
-		return percentage;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public void setPercentage(double newPercentage) {
-		double oldPercentage = percentage;
-		percentage = newPercentage;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__PERCENTAGE,
-					oldPercentage, percentage));
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public long getCreateTime() {
-		return createTime;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public void setCreateTime(long newCreateTime) {
-		long oldCreateTime = createTime;
-		createTime = newCreateTime;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__CREATE_TIME,
-					oldCreateTime, createTime));
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
+	@Override
 	public EObject getMonitored() {
 		if (monitored != null && monitored.eIsProxy()) {
 			InternalEObject oldMonitored = (InternalEObject)monitored;
 			monitored = eResolveProxy(oldMonitored);
 			if (monitored != oldMonitored) {
-				if (eNotificationRequired()) {
+				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
 							ProfilerPackage.PROFILE_ENTRY__MONITORED, oldMonitored, monitored));
-				}
 			}
 		}
 		return monitored;
@@ -353,13 +307,13 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setMonitored(EObject newMonitored) {
 		EObject oldMonitored = monitored;
 		monitored = newMonitored;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__MONITORED,
 					oldMonitored, monitored));
-		}
 	}
 
 	/**
@@ -367,6 +321,55 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
+	public float getPercentage() {
+		return percentage;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setPercentage(float newPercentage) {
+		float oldPercentage = percentage;
+		percentage = newPercentage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__PERCENTAGE,
+					oldPercentage, percentage));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public long getCreationTime() {
+		return creationTime;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setCreationTime(long newCreationTime) {
+		long oldCreationTime = creationTime;
+		creationTime = newCreationTime;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					ProfilerPackage.PROFILE_ENTRY__CREATION_TIME, oldCreationTime, creationTime));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public void start() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -378,6 +381,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void stop() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -397,9 +401,8 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCallees()).basicAdd(otherEnd,
 						msgs);
 			case ProfilerPackage.PROFILE_ENTRY__CALLER:
-				if (eInternalContainer() != null) {
+				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
-				}
 				return basicSetCaller((ProfileEntry)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -428,7 +431,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 */
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-		switch (eContainerFeatureID) {
+		switch (eContainerFeatureID()) {
 			case ProfilerPackage.PROFILE_ENTRY__CALLER:
 				return eInternalContainer().eInverseRemove(this, ProfilerPackage.PROFILE_ENTRY__CALLEES,
 						ProfileEntry.class, msgs);
@@ -445,22 +448,21 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case ProfilerPackage.PROFILE_ENTRY__DURATION:
-				return new Long(getDuration());
+				return getDuration();
 			case ProfilerPackage.PROFILE_ENTRY__CALLEES:
 				return getCallees();
 			case ProfilerPackage.PROFILE_ENTRY__CALLER:
 				return getCaller();
 			case ProfilerPackage.PROFILE_ENTRY__COUNT:
-				return new Long(getCount());
-			case ProfilerPackage.PROFILE_ENTRY__PERCENTAGE:
-				return new Double(getPercentage());
-			case ProfilerPackage.PROFILE_ENTRY__CREATE_TIME:
-				return new Long(getCreateTime());
+				return getCount();
 			case ProfilerPackage.PROFILE_ENTRY__MONITORED:
-				if (resolve) {
+				if (resolve)
 					return getMonitored();
-				}
 				return basicGetMonitored();
+			case ProfilerPackage.PROFILE_ENTRY__PERCENTAGE:
+				return getPercentage();
+			case ProfilerPackage.PROFILE_ENTRY__CREATION_TIME:
+				return getCreationTime();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -475,7 +477,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case ProfilerPackage.PROFILE_ENTRY__DURATION:
-				setDuration(((Long)newValue).longValue());
+				setDuration((Long)newValue);
 				return;
 			case ProfilerPackage.PROFILE_ENTRY__CALLEES:
 				getCallees().clear();
@@ -485,16 +487,16 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 				setCaller((ProfileEntry)newValue);
 				return;
 			case ProfilerPackage.PROFILE_ENTRY__COUNT:
-				setCount(((Long)newValue).longValue());
-				return;
-			case ProfilerPackage.PROFILE_ENTRY__PERCENTAGE:
-				setPercentage(((Double)newValue).doubleValue());
-				return;
-			case ProfilerPackage.PROFILE_ENTRY__CREATE_TIME:
-				setCreateTime(((Long)newValue).longValue());
+				setCount((Integer)newValue);
 				return;
 			case ProfilerPackage.PROFILE_ENTRY__MONITORED:
 				setMonitored((EObject)newValue);
+				return;
+			case ProfilerPackage.PROFILE_ENTRY__PERCENTAGE:
+				setPercentage((Float)newValue);
+				return;
+			case ProfilerPackage.PROFILE_ENTRY__CREATION_TIME:
+				setCreationTime((Long)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -520,14 +522,14 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 			case ProfilerPackage.PROFILE_ENTRY__COUNT:
 				setCount(COUNT_EDEFAULT);
 				return;
+			case ProfilerPackage.PROFILE_ENTRY__MONITORED:
+				setMonitored((EObject)null);
+				return;
 			case ProfilerPackage.PROFILE_ENTRY__PERCENTAGE:
 				setPercentage(PERCENTAGE_EDEFAULT);
 				return;
-			case ProfilerPackage.PROFILE_ENTRY__CREATE_TIME:
-				setCreateTime(CREATE_TIME_EDEFAULT);
-				return;
-			case ProfilerPackage.PROFILE_ENTRY__MONITORED:
-				setMonitored((EObject)null);
+			case ProfilerPackage.PROFILE_ENTRY__CREATION_TIME:
+				setCreationTime(CREATION_TIME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -549,12 +551,12 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 				return getCaller() != null;
 			case ProfilerPackage.PROFILE_ENTRY__COUNT:
 				return count != COUNT_EDEFAULT;
-			case ProfilerPackage.PROFILE_ENTRY__PERCENTAGE:
-				return percentage != PERCENTAGE_EDEFAULT;
-			case ProfilerPackage.PROFILE_ENTRY__CREATE_TIME:
-				return createTime != CREATE_TIME_EDEFAULT;
 			case ProfilerPackage.PROFILE_ENTRY__MONITORED:
 				return monitored != null;
+			case ProfilerPackage.PROFILE_ENTRY__PERCENTAGE:
+				return percentage != PERCENTAGE_EDEFAULT;
+			case ProfilerPackage.PROFILE_ENTRY__CREATION_TIME:
+				return creationTime != CREATION_TIME_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -566,19 +568,18 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (duration: "); //$NON-NLS-1$
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (duration: ");
 		result.append(duration);
-		result.append(", count: "); //$NON-NLS-1$
+		result.append(", count: ");
 		result.append(count);
-		result.append(", percentage: "); //$NON-NLS-1$
+		result.append(", percentage: ");
 		result.append(percentage);
-		result.append(", createTime: "); //$NON-NLS-1$
-		result.append(createTime);
+		result.append(", creationTime: ");
+		result.append(creationTime);
 		result.append(')');
 		return result.toString();
 	}

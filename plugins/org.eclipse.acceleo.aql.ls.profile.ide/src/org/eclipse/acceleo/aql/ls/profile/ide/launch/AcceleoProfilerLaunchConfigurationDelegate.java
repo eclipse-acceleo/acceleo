@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Huawei.
+ * Copyright (c) 2020, 2023 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -17,7 +17,6 @@ import org.eclipse.acceleo.aql.ls.debug.ide.launch.AcceleoLaunchConfigurationDel
 import org.eclipse.acceleo.aql.ls.profile.AcceleoProfiler;
 import org.eclipse.acceleo.aql.ls.profile.ide.AcceleoProfilePlugin;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -77,6 +76,10 @@ public class AcceleoProfilerLaunchConfigurationDelegate extends DSPLaunchDelegat
 					(String)null)));
 			param.addProperty(AcceleoProfiler.PROFILE_MODEL, profileModel.getLocation().toFile()
 					.getAbsoluteFile().toString());
+		}
+		if (wc.hasAttribute(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION)) {
+			param.addProperty(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION, wc.getAttribute(
+					AcceleoProfiler.PROFILE_MODEL_REPRESENTATION, (String)null));
 		}
 
 		wc.setAttribute(DSPPlugin.ATTR_CUSTOM_LAUNCH_PARAMS, true);

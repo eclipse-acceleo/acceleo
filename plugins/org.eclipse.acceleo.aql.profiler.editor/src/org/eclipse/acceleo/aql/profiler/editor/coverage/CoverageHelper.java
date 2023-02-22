@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Huawei.
+ * Copyright (c) 2020, 2023 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -25,7 +25,6 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileResource;
 import org.eclipse.acceleo.aql.profiler.editor.AcceleoEnvResourceFactory;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -63,11 +62,6 @@ public class CoverageHelper {
 	private Map<Module, CoverageReport> cache;
 
 	/**
-	 * A cache of related modules.
-	 */
-	private Map<Module, IFile> allModules;
-
-	/**
 	 * The currently annotated modules.
 	 */
 	private Set<ITextEditor> textEditors;
@@ -94,14 +88,6 @@ public class CoverageHelper {
 		this.profileResource = profileResource;
 		this.textEditors = new HashSet<>();
 		this.cache = new HashMap<Module, CoverageHelper.CoverageReport>();
-		this.allModules = new HashMap<Module, IFile>();
-		for (ProfileEntry entry : profileResource.getEntries()) {
-			if (entry.getMonitored() instanceof Module) {
-				Module module = (Module)entry.getMonitored();
-				IFile sourceFile = resourceFactory.getSourceFile(module);
-				allModules.put(module, sourceFile);
-			}
-		}
 	}
 
 	/**

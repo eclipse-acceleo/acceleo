@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.profiler.presentation;
 
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.eclipse.acceleo.aql.profiler.LoopProfileEntry;
-import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 
@@ -43,20 +37,6 @@ public class ProfilerOutlineContentProvider extends AdapterFactoryContentProvide
 	 */
 	@Override
 	public Object[] getChildren(Object object) {
-		if (object instanceof LoopProfileEntry) {
-			final Set<ProfileEntry> sorted = new TreeSet<ProfileEntry>(new Comparator<ProfileEntry>() {
-				public int compare(ProfileEntry o1, ProfileEntry o2) {
-					long diff = o2.getDuration() - o1.getDuration();
-					if (diff != 0) {
-						return (int)diff;
-					}
-					return o1.getMonitored().toString().compareTo(o2.getMonitored().toString());
-				}
-			});
-
-			sorted.addAll(((LoopProfileEntry)object).getLoopElements());
-			return sorted.toArray();
-		}
 		return new Object[] {};
 	}
 
@@ -67,7 +47,7 @@ public class ProfilerOutlineContentProvider extends AdapterFactoryContentProvide
 	 */
 	@Override
 	public boolean hasChildren(Object object) {
-		return object instanceof LoopProfileEntry && ((LoopProfileEntry)object).getLoopElements().size() > 0;
+		return false;
 	}
 
 	/**

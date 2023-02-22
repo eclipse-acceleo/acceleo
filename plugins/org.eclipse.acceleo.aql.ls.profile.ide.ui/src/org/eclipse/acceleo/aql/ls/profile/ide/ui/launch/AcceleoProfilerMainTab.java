@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Huawei.
+ * Copyright (c) 2020, 2023 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -12,6 +12,8 @@ import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FileSelectionDialog;
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.AcceleoMainTab;
 import org.eclipse.acceleo.aql.ls.profile.AcceleoProfiler;
 import org.eclipse.acceleo.aql.ls.profile.ide.AcceleoProfilePlugin;
+import org.eclipse.acceleo.aql.profiler.ProfilerUtils;
+import org.eclipse.acceleo.aql.profiler.ProfilerUtils.Representation;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -24,6 +26,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -38,11 +41,6 @@ import org.eclipse.swt.widgets.Text;
 public class AcceleoProfilerMainTab extends AcceleoMainTab {
 
 	/**
-	 * Profile model extension.
-	 */
-	private static final String PROFILE_EXTENSION = "mtlp"; //$NON-NLS-1$
-
-	/**
 	 * The profile model.
 	 */
 	private String profileModel;
@@ -53,9 +51,24 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	private String initialProfileModel;
 
 	/**
+	 * The profile model {@link Representation}.
+	 */
+	private String profileModelRepresentation;
+
+	/**
+	 * The initial profile model {@link Representation}.
+	 */
+	private String initialProfileModelRepresentation;
+
+	/**
 	 * The profile model {@link Text}.
 	 */
 	private Text profileModelText;
+
+	/**
+	 * The profiler model {@link Representation} {@link Combo}.
+	 */
+	private Combo profileModelRepresentationCombo;
 
 	/**
 	 * {@inheritDoc}
@@ -66,6 +79,7 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		super.setDefaults(configuration);
 		configuration.setAttribute(AcceleoProfiler.PROFILE_MODEL, profileModel);
+		configuration.setAttribute(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION, profileModelRepresentation);
 	}
 
 	/**
@@ -80,6 +94,11 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 			if (configuration.hasAttribute(AcceleoProfiler.PROFILE_MODEL)) {
 				profileModelText.setText(configuration.getAttribute(AcceleoProfiler.PROFILE_MODEL, ""));
 				initialProfileModel = profileModel;
+			}
+			if (configuration.hasAttribute(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION)) {
+				profileModelRepresentationCombo.setText(configuration.getAttribute(
+						AcceleoProfiler.PROFILE_MODEL_REPRESENTATION, Representation.TREE.name()));
+				initialProfileModelRepresentation = profileModelRepresentation;
 			}
 		} catch (CoreException e) {
 			AcceleoProfilePlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoProfilePlugin.ID,
@@ -96,6 +115,7 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		super.performApply(configuration);
 		initialProfileModel = profileModel;
+		initialProfileModelRepresentation = profileModelRepresentation;
 		setDirty(isDirty());
 	}
 
@@ -111,6 +131,9 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 			if (res) {
 				if (!launchConfig.hasAttribute(AcceleoProfiler.PROFILE_MODEL)) {
 					setErrorMessage("Select a profile model");
+					res = false;
+				} else if (!launchConfig.hasAttribute(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION)) {
+					setErrorMessage("Select a profile model representation");
 					res = false;
 				}
 			}
@@ -131,13 +154,15 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	 */
 	@Override
 	protected boolean isDirty() {
-		return super.isDirty() || profileModel != initialProfileModel;
+		return super.isDirty() || profileModel != initialProfileModel
+				|| profileModelRepresentation != initialProfileModelRepresentation;
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		profileModelText = createProfileModelEditor((Composite)getControl());
+		profileModelRepresentationCombo = createProfileModelRepresentationEditor((Composite)getControl());
 	}
 
 	/**
@@ -173,20 +198,48 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	}
 
 	/**
+	 * Creates the profile model {@link Combo}.
+	 * 
+	 * @param parent
+	 *            the parent
+	 * @return the created {@link Combo}
+	 */
+	private Combo createProfileModelRepresentationEditor(final Composite parent) {
+		final Group group = new Group(parent, parent.getStyle());
+		group.setLayout(new GridLayout(2, false));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		group.setText("Profile model:");
+		final Combo res = new Combo(group, SWT.BORDER);
+		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		res.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				profileModelRepresentation = res.getText();
+				setDirty(isDirty());
+				updateLaunchConfigurationDialog();
+			}
+		});
+		for (Representation value : Representation.values()) {
+			res.add(value.name());
+		}
+		return res;
+	}
+
+	/**
 	 * Show a dialog that lists all the models.
 	 */
 	private void handleBrowseProfileModelButton() {
 		final AbstractResourceSelectionDialog dialog = new FileSelectionDialog(getShell(),
-				"Select the profile model", profileModel, PROFILE_EXTENSION, false);
+				"Select the profile model", profileModel, ProfilerUtils.PROFILE_EXTENSION, false);
 		final int dialogResult = dialog.open();
 		if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
 			String path = dialog.getFileName();
-			if (path.endsWith(PROFILE_EXTENSION)) {
+			if (path.endsWith(ProfilerUtils.PROFILE_EXTENSION)) {
 				profileModelText.setText(path);
 			} else if (path.endsWith("/")) { //$NON-NLS-1$
-				profileModelText.setText(path + "profiling.mtlp"); //$NON-NLS-1$
+				profileModelText.setText(path + "profiling." + ProfilerUtils.PROFILE_EXTENSION); //$NON-NLS-1$
 			} else {
-				profileModelText.setText(path + "/profiling.mtlp"); //$NON-NLS-1$
+				profileModelText.setText(path + "/profiling." + ProfilerUtils.PROFILE_EXTENSION); //$NON-NLS-1$
 			}
 			setDirty(isDirty());
 		}

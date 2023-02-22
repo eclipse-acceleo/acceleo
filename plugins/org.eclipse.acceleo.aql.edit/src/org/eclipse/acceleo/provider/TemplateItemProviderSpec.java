@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,22 +41,24 @@ public class TemplateItemProviderSpec extends TemplateItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
+		final StringBuffer res = new StringBuffer();
+
 		Template eTemplate = (Template)object;
-		StringBuffer text = new StringBuffer();
-		text.append("template "); //$NON-NLS-1$
-		text.append(eTemplate.getName());
-		text.append("("); //$NON-NLS-1$
-		Iterator<Variable> eParameters = eTemplate.getParameters().iterator();
+		res.append("template "); //$NON-NLS-1$
+		res.append(eTemplate.getName());
+		res.append("("); //$NON-NLS-1$
+		final Iterator<Variable> eParameters = eTemplate.getParameters().iterator();
 		while (eParameters.hasNext()) {
 			Variable eVariable = eParameters.next();
 			if (eVariable.getType() != null) {
-				text.append(ASTUtils.serialize(eVariable.getType()));
+				res.append(ASTUtils.serialize(eVariable.getType()));
 			}
 			if (eParameters.hasNext()) {
-				text.append(", "); //$NON-NLS-1$
+				res.append(", "); //$NON-NLS-1$
 			}
 		}
-		text.append(")"); //$NON-NLS-1$
-		return text.toString();
+		res.append(")"); //$NON-NLS-1$
+
+		return res.toString();
 	}
 }

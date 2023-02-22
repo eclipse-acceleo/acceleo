@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.profiler.provider;
 
-import org.eclipse.acceleo.aql.profiler.provider.ProfilerItemProviderAdapterFactory;
 import org.eclipse.emf.common.notify.Adapter;
 
 /**
@@ -41,17 +40,4 @@ public class ProfilerItemProviderAdapterFactorySpec extends ProfilerItemProvider
 		return profileEntryItemProvider;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.aql.profiler.provider.ProfilerItemProviderAdapterFactory#createLoopProfileEntryAdapter()
-	 */
-	@Override
-	public Adapter createLoopProfileEntryAdapter() {
-		if (loopProfileEntryItemProvider == null) {
-			loopProfileEntryItemProvider = new LoopProfileEntryItemProviderSpec(this);
-		}
-
-		return loopProfileEntryItemProvider;
-	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,10 +38,19 @@ public class LetStatementItemProviderSpec extends LetStatementItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
+		final String res;
+
 		if (!((LetStatement) object).getVariables().isEmpty()) {
 			Binding binding = ((LetStatement) object).getVariables().get(0);
-			return binding.getName() + " : " + ASTUtils.serialize(binding.getInitExpression());
+			if (binding.getInitExpression() != null) {
+				res = binding.getName() + " : " + ASTUtils.serialize(binding.getInitExpression());
+			} else {
+				res = binding.getName();
+			}
+		} else {
+			res = super.getText(object);
 		}
-		return super.getText(object);
+
+		return res;
 	}
 }

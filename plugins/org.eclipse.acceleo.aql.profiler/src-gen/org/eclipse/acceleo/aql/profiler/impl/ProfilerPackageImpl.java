@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.profiler.impl;
 
-import org.eclipse.acceleo.aql.profiler.Internal;
-import org.eclipse.acceleo.aql.profiler.LoopProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileResource;
 import org.eclipse.acceleo.aql.profiler.ProfilerFactory;
@@ -40,21 +38,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
-	private EClass loopProfileEntryEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	private EClass profileResourceEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EClass internalEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -82,17 +66,11 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it
-	 * depends. Simple dependencies are satisfied by calling this method on all dependent packages before
-	 * doing anything else. This method drives initialization for interdependent packages directly, in
-	 * parallel with this package, itself.
+	 * depends.
 	 * <p>
-	 * Of this package and its interdependencies, all packages which have not yet been registered by their URI
-	 * values are first created and registered. The packages are then initialized in two steps: meta-model
-	 * objects for all of the packages are created before any are initialized, since one package's meta-model
-	 * objects may refer to those of another.
-	 * <p>
-	 * Invocation of this method will not affect any packages that have already been initialized. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This method is used to initialize {@link ProfilerPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the
+	 * package. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
@@ -100,14 +78,14 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * @generated
 	 */
 	public static ProfilerPackage init() {
-		if (isInited) {
+		if (isInited)
 			return (ProfilerPackage)EPackage.Registry.INSTANCE.getEPackage(ProfilerPackage.eNS_URI);
-		}
 
 		// Obtain or create and register package
-		ProfilerPackageImpl theProfilerPackage = (ProfilerPackageImpl)(EPackage.Registry.INSTANCE
-				.getEPackage(eNS_URI) instanceof ProfilerPackageImpl ? EPackage.Registry.INSTANCE
-				.getEPackage(eNS_URI) : new ProfilerPackageImpl());
+		Object registeredProfilerPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		ProfilerPackageImpl theProfilerPackage = registeredProfilerPackage instanceof ProfilerPackageImpl
+				? (ProfilerPackageImpl)registeredProfilerPackage
+				: new ProfilerPackageImpl();
 
 		isInited = true;
 
@@ -120,6 +98,8 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 		// Mark meta-data to indicate it can't be changed
 		theProfilerPackage.freeze();
 
+		// Update the registry and return the package
+		EPackage.Registry.INSTANCE.put(ProfilerPackage.eNS_URI, theProfilerPackage);
 		return theProfilerPackage;
 	}
 
@@ -128,6 +108,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EClass getProfileEntry() {
 		return profileEntryEClass;
 	}
@@ -137,6 +118,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getProfileEntry_Duration() {
 		return (EAttribute)profileEntryEClass.getEStructuralFeatures().get(0);
 	}
@@ -146,6 +128,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EReference getProfileEntry_Callees() {
 		return (EReference)profileEntryEClass.getEStructuralFeatures().get(1);
 	}
@@ -155,6 +138,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EReference getProfileEntry_Caller() {
 		return (EReference)profileEntryEClass.getEStructuralFeatures().get(2);
 	}
@@ -164,6 +148,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getProfileEntry_Count() {
 		return (EAttribute)profileEntryEClass.getEStructuralFeatures().get(3);
 	}
@@ -173,8 +158,9 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
-	public EAttribute getProfileEntry_Percentage() {
-		return (EAttribute)profileEntryEClass.getEStructuralFeatures().get(4);
+	@Override
+	public EReference getProfileEntry_Monitored() {
+		return (EReference)profileEntryEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -182,7 +168,8 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
-	public EAttribute getProfileEntry_CreateTime() {
+	@Override
+	public EAttribute getProfileEntry_Percentage() {
 		return (EAttribute)profileEntryEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -191,8 +178,9 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
-	public EReference getProfileEntry_Monitored() {
-		return (EReference)profileEntryEClass.getEStructuralFeatures().get(6);
+	@Override
+	public EAttribute getProfileEntry_CreationTime() {
+		return (EAttribute)profileEntryEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -200,24 +188,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
-	public EClass getLoopProfileEntry() {
-		return loopProfileEntryEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getLoopProfileEntry_LoopElements() {
-		return (EReference)loopProfileEntryEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
+	@Override
 	public EClass getProfileResource() {
 		return profileResourceEClass;
 	}
@@ -227,7 +198,8 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
-	public EReference getProfileResource_Entries() {
+	@Override
+	public EReference getProfileResource_Entry() {
 		return (EReference)profileResourceEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -236,15 +208,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * 
 	 * @generated
 	 */
-	public EClass getInternal() {
-		return internalEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
+	@Override
 	public ProfilerFactory getProfilerFactory() {
 		return (ProfilerFactory)getEFactoryInstance();
 	}
@@ -263,9 +227,8 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) {
+		if (isCreated)
 			return;
-		}
 		isCreated = true;
 
 		// Create classes and their features
@@ -274,17 +237,12 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 		createEReference(profileEntryEClass, PROFILE_ENTRY__CALLEES);
 		createEReference(profileEntryEClass, PROFILE_ENTRY__CALLER);
 		createEAttribute(profileEntryEClass, PROFILE_ENTRY__COUNT);
-		createEAttribute(profileEntryEClass, PROFILE_ENTRY__PERCENTAGE);
-		createEAttribute(profileEntryEClass, PROFILE_ENTRY__CREATE_TIME);
 		createEReference(profileEntryEClass, PROFILE_ENTRY__MONITORED);
-
-		loopProfileEntryEClass = createEClass(LOOP_PROFILE_ENTRY);
-		createEReference(loopProfileEntryEClass, LOOP_PROFILE_ENTRY__LOOP_ELEMENTS);
+		createEAttribute(profileEntryEClass, PROFILE_ENTRY__PERCENTAGE);
+		createEAttribute(profileEntryEClass, PROFILE_ENTRY__CREATION_TIME);
 
 		profileResourceEClass = createEClass(PROFILE_RESOURCE);
-		createEReference(profileResourceEClass, PROFILE_RESOURCE__ENTRIES);
-
-		internalEClass = createEClass(INTERNAL);
+		createEReference(profileResourceEClass, PROFILE_RESOURCE__ENTRY);
 	}
 
 	/**
@@ -301,9 +259,8 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) {
+		if (isInitialized)
 			return;
-		}
 		isInitialized = true;
 
 		// Initialize package
@@ -316,52 +273,41 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		loopProfileEntryEClass.getESuperTypes().add(this.getProfileEntry());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(profileEntryEClass, ProfileEntry.class, "ProfileEntry", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
+		initEClass(profileEntryEClass, ProfileEntry.class, "ProfileEntry", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getProfileEntry_Duration(), ecorePackage.getELong(), "duration", "0", 0, 1, //$NON-NLS-1$ //$NON-NLS-2$
+		initEAttribute(getProfileEntry_Duration(), ecorePackage.getELong(), "duration", "0", 0, 1,
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProfileEntry_Callees(), this.getProfileEntry(), this.getProfileEntry_Caller(),
-				"callees", null, 0, -1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+				"callees", null, 0, -1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProfileEntry_Caller(), this.getProfileEntry(), this.getProfileEntry_Callees(),
-				"caller", null, 0, 1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
+				"caller", null, 0, 1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				!IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProfileEntry_Count(), ecorePackage.getELong(), "count", "0", 0, 1, //$NON-NLS-1$ //$NON-NLS-2$
+		initEAttribute(getProfileEntry_Count(), ecorePackage.getEInt(), "count", "0", 0, 1,
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProfileEntry_Percentage(), ecorePackage.getEDouble(), "percentage", "0", 0, 1, //$NON-NLS-1$ //$NON-NLS-2$
-				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProfileEntry_CreateTime(), ecorePackage.getELong(), "createTime", null, 0, 1, //$NON-NLS-1$
-				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProfileEntry_Monitored(), ecorePackage.getEObject(), null, "monitored", null, 0, 1, //$NON-NLS-1$
+		initEReference(getProfileEntry_Monitored(), ecorePackage.getEObject(), null, "monitored", null, 1, 1,
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProfileEntry_Percentage(), ecorePackage.getEFloat(), "percentage", "0", 0, 1,
+				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProfileEntry_CreationTime(), ecorePackage.getELong(), "creationTime", null, 0, 1,
+				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(profileEntryEClass, null, "start", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		addEOperation(profileEntryEClass, null, "start", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		addEOperation(profileEntryEClass, null, "stop", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		addEOperation(profileEntryEClass, null, "stop", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(loopProfileEntryEClass, LoopProfileEntry.class, "LoopProfileEntry", !IS_ABSTRACT, //$NON-NLS-1$
+		initEClass(profileResourceEClass, ProfileResource.class, "ProfileResource", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getLoopProfileEntry_LoopElements(), this.getProfileEntry(), null,
-				"loopElements", //$NON-NLS-1$
-				null, 0, -1, LoopProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(profileResourceEClass, ProfileResource.class, "ProfileResource", !IS_ABSTRACT, //$NON-NLS-1$
-				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getProfileResource_Entries(), this.getProfileEntry(), null, "entries", null, 0, -1, //$NON-NLS-1$
+		initEReference(getProfileResource_Entry(), this.getProfileEntry(), null, "entry", null, 0, 1,
 				ProfileResource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(internalEClass, Internal.class, "Internal", IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
-				IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
