@@ -8,7 +8,7 @@
             delegateDescription="The Acceleo 4 Launcher supports launching and debugging Acceleo 4 modules"
             delegateName="Acceleo 4 Launcher"
             id="org.eclipse.acceleo.aql.ls.debug.ide.launchConfigurationType"
-            modes="run, debug"
+            modes="run, debug, profile"
             name="Acceleo 4"
             public="true"
             sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"

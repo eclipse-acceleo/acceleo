@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,10 @@ import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.aql.profiler.IProfiler;
+import org.eclipse.acceleo.aql.profiler.ProfilerPackage;
+import org.eclipse.acceleo.aql.profiler.ProfilerUtils;
+import org.eclipse.acceleo.aql.profiler.ProfilerUtils.Representation;
 import org.eclipse.acceleo.debug.AbstractDSLDebugger;
 import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
@@ -177,6 +181,16 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	public static final String DESTINATION = "destination";
 
 	/**
+	 * The profile model
+	 */
+	public static final String PROFILE_MODEL = "profileModel";
+
+	/**
+	 * The profile model {@link Representation}.
+	 */
+	public static final String PROFILE_MODEL_REPRESENTATION = "modelRepresentation";
+
+	/**
 	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
 	private IQualifiedNameQueryEnvironment queryEnvironment;
@@ -185,6 +199,16 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	 * The destination {@link URI}.
 	 */
 	private URI destination;
+
+	/**
+	 * The profile model {@link URI}.
+	 */
+	private URI profileModelURI;
+
+	/**
+	 * The profiler model {@link Representation}.
+	 */
+	private Representation profilerModelRepresentation;
 
 	/**
 	 * The {@link AcceleoAstResult}.
@@ -219,6 +243,15 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final URI moduleURI = URI.createURI((String)arguments.get(MODULE));
 		final URI modelURI = URI.createURI((String)arguments.get(MODEL));
 		destination = URI.createURI((String)arguments.get(DESTINATION));
+
+		final String profileModel = (String)arguments.get(PROFILE_MODEL);
+		if (profileModel != null) {
+			profileModelURI = URI.createFileURI(URI.decode(profileModel));
+		}
+		final String profilerModelRepresentationString = (String)arguments.get(PROFILE_MODEL_REPRESENTATION);
+		if (profilerModelRepresentationString != null) {
+			profilerModelRepresentation = Representation.valueOf(profilerModelRepresentationString);
+		}
 
 		final IProject project = LSPEclipseUtils.findResourceFor((String)arguments.get(MODULE)).getProject();
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
@@ -310,13 +343,32 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	 */
 	protected void generateNoDebug(IQualifiedNameQueryEnvironment environment, Module module,
 			Resource modelResource) {
-		final AcceleoEvaluator noDebugEvaluator = new AcceleoEvaluator(environment.getLookupEngine());
+		final AcceleoEvaluator noDebugEvaluator;
+		final IProfiler profiler;
+		if (profileModelURI != null && profilerModelRepresentation != null) {
+			profiler = ProfilerUtils.getProfiler(profilerModelRepresentation, ProfilerPackage.eINSTANCE
+					.getProfilerFactory());
+			noDebugEvaluator = new AcceleoProfilerEvaluator(queryEnvironment, profiler);
+		} else {
+			noDebugEvaluator = new AcceleoEvaluator(environment.getLookupEngine());
+			profiler = null;
+		}
+
 		final IQualifiedNameResolver resolver = environment.getLookupEngine().getResolver();
 		resolver.clearLoaders();
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), noDebugEvaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
 		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, getDestination());
+
+		if (profiler != null) {
+			try {
+				profiler.save(profileModelURI);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override

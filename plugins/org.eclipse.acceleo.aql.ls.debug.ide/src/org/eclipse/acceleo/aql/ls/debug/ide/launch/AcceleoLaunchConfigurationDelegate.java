@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.lsp4e.debug.DSPPlugin;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate;
 
@@ -71,6 +72,18 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 			final URI destinationUri = destination.getLocation().toFile().getAbsoluteFile().toURI();
 			param.addProperty(AcceleoDebugger.DESTINATION, destinationUri.toString());
 		}
+		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
+			if (wc.hasAttribute(AcceleoDebugger.PROFILE_MODEL)) {
+				final IFile profileModel = root.getFile(new Path(wc.getAttribute(
+						AcceleoDebugger.PROFILE_MODEL, (String)null)));
+				param.addProperty(AcceleoDebugger.PROFILE_MODEL, profileModel.getLocation().toFile()
+						.getAbsoluteFile().toString());
+			}
+			if (wc.hasAttribute(AcceleoDebugger.PROFILE_MODEL_REPRESENTATION)) {
+				param.addProperty(AcceleoDebugger.PROFILE_MODEL_REPRESENTATION, wc.getAttribute(
+						AcceleoDebugger.PROFILE_MODEL_REPRESENTATION, (String)null));
+			}
+		}
 
 		wc.setAttribute(DSPPlugin.ATTR_CUSTOM_LAUNCH_PARAMS, true);
 		wc.setAttribute(DSPPlugin.ATTR_DSP_PARAM, new Gson().toJson(param));
@@ -79,7 +92,12 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 		wc.setAttribute(DSPPlugin.ATTR_DSP_SERVER_HOST, "localhost"); // TODO configure
 		wc.setAttribute(DSPPlugin.ATTR_DSP_SERVER_PORT, AcceleoDebugPlugin.PORT); // TODO configure
 
-		super.launch(wc.doSave(), mode, launch, monitor);
+		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
+			// FIXME lsp4e doesn't profile mode at the moment.
+			super.launch(wc.doSave(), ILaunchManager.RUN_MODE, launch, monitor);
+		} else {
+			super.launch(wc.doSave(), mode, launch, monitor);
+		}
 	}
 
 }

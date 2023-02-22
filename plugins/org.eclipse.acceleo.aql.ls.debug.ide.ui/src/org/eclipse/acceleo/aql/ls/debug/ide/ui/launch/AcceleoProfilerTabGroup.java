@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2020 Huawei.
+ * Copyright (c) 2020, 2023 Huawei.
  * All rights reserved.
  * 
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ls.profile.ide.ui.launch;
+package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;

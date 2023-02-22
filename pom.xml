@@ -128,9 +128,6 @@
     <module>plugins/org.eclipse.acceleo.aql.profiler</module>
     <module>plugins/org.eclipse.acceleo.aql.profiler.edit</module>
     <module>plugins/org.eclipse.acceleo.aql.profiler.editor</module>
-    <module>plugins/org.eclipse.acceleo.aql.ls.profile</module>
-    <module>plugins/org.eclipse.acceleo.aql.ls.profile.ide</module>
-    <module>plugins/org.eclipse.acceleo.aql.ls.profile.ide.ui</module>
 
     <module>tests/org.eclipse.acceleo.aql.rcpttproduct</module>
     <module>query/tests/org.eclipse.acceleo.query.ide.ui.tests.rcptt</module>

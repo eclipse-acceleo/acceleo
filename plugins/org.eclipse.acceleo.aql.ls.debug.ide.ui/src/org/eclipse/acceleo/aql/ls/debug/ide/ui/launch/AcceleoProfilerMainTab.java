@@ -5,13 +5,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ls.profile.ide.ui.launch;
+package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 
+import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
+import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog;
 import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FileSelectionDialog;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.AcceleoMainTab;
-import org.eclipse.acceleo.aql.ls.profile.AcceleoProfiler;
-import org.eclipse.acceleo.aql.ls.profile.ide.AcceleoProfilePlugin;
 import org.eclipse.acceleo.aql.profiler.ProfilerUtils;
 import org.eclipse.acceleo.aql.profiler.ProfilerUtils.Representation;
 import org.eclipse.core.runtime.CoreException;
@@ -78,8 +77,8 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		super.setDefaults(configuration);
-		configuration.setAttribute(AcceleoProfiler.PROFILE_MODEL, profileModel);
-		configuration.setAttribute(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION, profileModelRepresentation);
+		configuration.setAttribute(AcceleoDebugger.PROFILE_MODEL, profileModel);
+		configuration.setAttribute(AcceleoDebugger.PROFILE_MODEL_REPRESENTATION, profileModelRepresentation);
 	}
 
 	/**
@@ -91,17 +90,17 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		super.initializeFrom(configuration);
 		try {
-			if (configuration.hasAttribute(AcceleoProfiler.PROFILE_MODEL)) {
-				profileModelText.setText(configuration.getAttribute(AcceleoProfiler.PROFILE_MODEL, ""));
+			if (configuration.hasAttribute(AcceleoDebugger.PROFILE_MODEL)) {
+				profileModelText.setText(configuration.getAttribute(AcceleoDebugger.PROFILE_MODEL, ""));
 				initialProfileModel = profileModel;
 			}
-			if (configuration.hasAttribute(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION)) {
+			if (configuration.hasAttribute(AcceleoDebugger.PROFILE_MODEL_REPRESENTATION)) {
 				profileModelRepresentationCombo.setText(configuration.getAttribute(
-						AcceleoProfiler.PROFILE_MODEL_REPRESENTATION, Representation.TREE.name()));
+						AcceleoDebugger.PROFILE_MODEL_REPRESENTATION, Representation.TREE.name()));
 				initialProfileModelRepresentation = profileModelRepresentation;
 			}
 		} catch (CoreException e) {
-			AcceleoProfilePlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoProfilePlugin.ID,
+			AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
 					"couldn't initialize from launch configuration", e));
 		}
 	}
@@ -129,16 +128,16 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 		boolean res = super.isValid(launchConfig);
 		try {
 			if (res) {
-				if (!launchConfig.hasAttribute(AcceleoProfiler.PROFILE_MODEL)) {
+				if (!launchConfig.hasAttribute(AcceleoDebugger.PROFILE_MODEL)) {
 					setErrorMessage("Select a profile model");
 					res = false;
-				} else if (!launchConfig.hasAttribute(AcceleoProfiler.PROFILE_MODEL_REPRESENTATION)) {
+				} else if (!launchConfig.hasAttribute(AcceleoDebugger.PROFILE_MODEL_REPRESENTATION)) {
 					setErrorMessage("Select a profile model representation");
 					res = false;
 				}
 			}
 		} catch (CoreException e) {
-			AcceleoProfilePlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoProfilePlugin.ID,
+			AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
 					"couldn't validate launch configuration", e));
 		}
 		if (res) {

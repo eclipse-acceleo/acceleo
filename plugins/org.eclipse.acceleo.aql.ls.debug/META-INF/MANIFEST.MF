@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.equinox.common,
  org.eclipse.lsp4e,
  org.eclipse.swt,
- org.eclipse.acceleo.query.ide
+ org.eclipse.acceleo.query.ide,
+ org.eclipse.acceleo.aql.profiler
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.debug
 Export-Package: org.eclipse.acceleo.aql.ls.debug
