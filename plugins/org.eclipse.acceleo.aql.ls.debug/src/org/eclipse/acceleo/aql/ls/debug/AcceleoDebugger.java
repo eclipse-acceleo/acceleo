@@ -351,6 +351,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	@Override
 	public EObject getInstruction(String path, long line, long column) {
 		AcceleoAstResult moduleAstResult = null;
+
 		try {
 			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 			final String moduleQualifiedName = resolver.getQualifiedName(new URL("file://" + path));

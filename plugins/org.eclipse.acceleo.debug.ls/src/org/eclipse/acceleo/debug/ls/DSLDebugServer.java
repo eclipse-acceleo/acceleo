@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Supplier;
 
 import org.eclipse.acceleo.debug.DSLSource;
@@ -152,6 +153,11 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	private final ILabelProvider eLabelProvider;
 
 	/**
+	 * The {@link CountDownLatch} released after initialization.
+	 */
+	private final CountDownLatch intialiaztionCountDownLatch = new CountDownLatch(1);
+
+	/**
 	 * Constructor.
 	 */
 	public DSLDebugServer() {
@@ -176,7 +182,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#initialize(org.eclipse.lsp4j.debug.InitializeRequestArguments)
 	 */
 	public CompletableFuture<Capabilities> initialize(InitializeRequestArguments args) {
-		System.out.println("initialize");
 		return CompletableFuture.supplyAsync(new Supplier<Capabilities>() {
 
 			public Capabilities get() {
@@ -232,7 +237,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#setBreakpoints(org.eclipse.lsp4j.debug.SetBreakpointsArguments)
 	 */
 	public CompletableFuture<SetBreakpointsResponse> setBreakpoints(final SetBreakpointsArguments args) {
-		System.out.println("setBreakpoints");
 		return CompletableFuture.supplyAsync(new Supplier<SetBreakpointsResponse>() {
 
 			public SetBreakpointsResponse get() {
@@ -253,6 +257,12 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		final SetBreakpointsResponse res = new SetBreakpointsResponse();
 		List<Breakpoint> responseBreakpoints = new ArrayList<Breakpoint>();
 		debugger.clearBreakPoints();
+		try {
+			intialiaztionCountDownLatch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (SourceBreakpoint requestedBreakpoint : args.getBreakpoints()) {
 			final long column;
 			if (requestedBreakpoint.getColumn() != null) {
@@ -291,7 +301,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 */
 	public CompletableFuture<SetFunctionBreakpointsResponse> setFunctionBreakpoints(
 			final SetFunctionBreakpointsArguments args) {
-		System.out.println("setFunctionBreakpoints");
 		return CompletableFuture.supplyAsync(new Supplier<SetFunctionBreakpointsResponse>() {
 
 			public SetFunctionBreakpointsResponse get() {
@@ -320,7 +329,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 */
 	public CompletableFuture<SetExceptionBreakpointsResponse> setExceptionBreakpoints(
 			SetExceptionBreakpointsArguments args) {
-		System.out.println("setExceptionBreakpoints");
 		return CompletableFuture.supplyAsync(new Supplier<SetExceptionBreakpointsResponse>() {
 			public SetExceptionBreakpointsResponse get() {
 				// TODO ?
@@ -335,7 +343,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#configurationDone(org.eclipse.lsp4j.debug.ConfigurationDoneArguments)
 	 */
 	public CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
-		System.out.println("configurationDone");
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -352,7 +359,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#launch(java.util.Map)
 	 */
 	public CompletableFuture<Void> launch(final Map<String, Object> args) {
-		System.out.println("launch");
 		launched = true;
 		arguments = args;
 		return CompletableFuture.runAsync(new Runnable() {
@@ -361,8 +367,10 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 				final Object noDebug = arguments.get("noDebug");
 				if (noDebug instanceof Boolean && (Boolean)noDebug) {
 					debugger.initialize(true, args);
+					debugger.start();
 				} else {
 					debugger.initialize(false, args);
+					intialiaztionCountDownLatch.countDown();
 				}
 				// Opens & focus the console
 				OutputEventArguments args = new OutputEventArguments();
@@ -378,7 +386,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#attach(java.util.Map)
 	 */
 	public CompletableFuture<Void> attach(final Map<String, Object> args) {
-		System.out.println("attach");
 		arguments = args;
 		return CompletableFuture.runAsync(new Runnable() {
 
@@ -395,7 +402,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#pause(org.eclipse.lsp4j.debug.PauseArguments)
 	 */
 	public CompletableFuture<Void> pause(final PauseArguments args) {
-		System.out.println("pause");
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -412,7 +418,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	// CHECKSTYLE:OFF inherited
 	public CompletableFuture<ContinueResponse> continue_(final ContinueArguments args) {
 		// CHECKSTYLE:ON inherited
-		System.out.println("continue_");
 		return CompletableFuture.supplyAsync(new Supplier<ContinueResponse>() {
 
 			public ContinueResponse get() {
@@ -432,7 +437,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#next(org.eclipse.lsp4j.debug.NextArguments)
 	 */
 	public CompletableFuture<Void> next(final NextArguments args) {
-		System.out.println("next");
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -447,7 +451,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#stepIn(org.eclipse.lsp4j.debug.StepInArguments)
 	 */
 	public CompletableFuture<Void> stepIn(final StepInArguments args) {
-		System.out.println("stepIn");
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -462,7 +465,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#setVariable(org.eclipse.lsp4j.debug.SetVariableArguments)
 	 */
 	public CompletableFuture<SetVariableResponse> setVariable(final SetVariableArguments args) {
-		System.out.println("setVariable");
 		return CompletableFuture.supplyAsync(new Supplier<SetVariableResponse>() {
 
 			public SetVariableResponse get() {
@@ -483,7 +485,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#terminateThreads(org.eclipse.lsp4j.debug.TerminateThreadsArguments)
 	 */
 	public CompletableFuture<Void> terminateThreads(final TerminateThreadsArguments args) {
-		System.out.println("terminateThreads");
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -500,7 +501,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#terminate(org.eclipse.lsp4j.debug.TerminateArguments)
 	 */
 	public CompletableFuture<Void> terminate(final TerminateArguments args) {
-		System.out.println("terminate");
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -515,7 +515,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#disconnect(org.eclipse.lsp4j.debug.DisconnectArguments)
 	 */
 	public CompletableFuture<Void> disconnect(final DisconnectArguments args) {
-		System.out.println("disconnect");
 		eLabelProvider.dispose();
 		return CompletableFuture.runAsync(new Runnable() {
 
@@ -534,7 +533,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#completions(org.eclipse.lsp4j.debug.CompletionsArguments)
 	 */
 	public CompletableFuture<CompletionsResponse> completions(CompletionsArguments args) {
-		System.out.println("completions");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -546,7 +544,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 */
 	public CompletableFuture<DataBreakpointInfoResponse> dataBreakpointInfo(
 			DataBreakpointInfoArguments args) {
-		System.out.println("dataBreakpointInfo");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -557,7 +554,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#disassemble(org.eclipse.lsp4j.debug.DisassembleArguments)
 	 */
 	public CompletableFuture<DisassembleResponse> disassemble(DisassembleArguments args) {
-		System.out.println("disassemble");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -568,7 +564,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#evaluate(org.eclipse.lsp4j.debug.EvaluateArguments)
 	 */
 	public CompletableFuture<EvaluateResponse> evaluate(EvaluateArguments args) {
-		System.out.println("evaluate");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -579,7 +574,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#exceptionInfo(org.eclipse.lsp4j.debug.ExceptionInfoArguments)
 	 */
 	public CompletableFuture<ExceptionInfoResponse> exceptionInfo(ExceptionInfoArguments args) {
-		System.out.println("exceptionInfo");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -587,7 +581,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	// CHECKSTYLE:OFF inherited
 	public CompletableFuture<Void> goto_(GotoArguments args) {
 		// CHECKSTYLE:ON inherited
-		System.out.println("goto_");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -598,7 +591,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#gotoTargets(org.eclipse.lsp4j.debug.GotoTargetsArguments)
 	 */
 	public CompletableFuture<GotoTargetsResponse> gotoTargets(GotoTargetsArguments args) {
-		System.out.println("gotoTargets");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -609,7 +601,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#loadedSources(org.eclipse.lsp4j.debug.LoadedSourcesArguments)
 	 */
 	public CompletableFuture<LoadedSourcesResponse> loadedSources(LoadedSourcesArguments args) {
-		System.out.println("loadedSources");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -620,7 +611,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#modules(org.eclipse.lsp4j.debug.ModulesArguments)
 	 */
 	public CompletableFuture<ModulesResponse> modules(ModulesArguments args) {
-		System.out.println("modules");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -631,7 +621,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#readMemory(org.eclipse.lsp4j.debug.ReadMemoryArguments)
 	 */
 	public CompletableFuture<ReadMemoryResponse> readMemory(ReadMemoryArguments args) {
-		System.out.println("readMemory");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -642,7 +631,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#restart(org.eclipse.lsp4j.debug.RestartArguments)
 	 */
 	public CompletableFuture<Void> restart(RestartArguments args) {
-		System.out.println("restart");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -653,7 +641,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#restartFrame(org.eclipse.lsp4j.debug.RestartFrameArguments)
 	 */
 	public CompletableFuture<Void> restartFrame(RestartFrameArguments args) {
-		System.out.println("restartFrame");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -664,7 +651,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#reverseContinue(org.eclipse.lsp4j.debug.ReverseContinueArguments)
 	 */
 	public CompletableFuture<Void> reverseContinue(ReverseContinueArguments args) {
-		System.out.println("reverseContinue");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -675,7 +661,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#runInTerminal(org.eclipse.lsp4j.debug.RunInTerminalRequestArguments)
 	 */
 	public CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
-		System.out.println("runInTerminal");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -686,7 +671,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#scopes(org.eclipse.lsp4j.debug.ScopesArguments)
 	 */
 	public CompletableFuture<ScopesResponse> scopes(final ScopesArguments args) {
-		System.out.println("scope");
 		return CompletableFuture.supplyAsync(new Supplier<ScopesResponse>() {
 
 			public ScopesResponse get() {
@@ -722,7 +706,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 */
 	public CompletableFuture<SetDataBreakpointsResponse> setDataBreakpoints(
 			SetDataBreakpointsArguments args) {
-		System.out.println("setDataBreakpoints");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -733,7 +716,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#setExpression(org.eclipse.lsp4j.debug.SetExpressionArguments)
 	 */
 	public CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args) {
-		System.out.println("setExpression");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -744,7 +726,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#source(org.eclipse.lsp4j.debug.SourceArguments)
 	 */
 	public CompletableFuture<SourceResponse> source(SourceArguments args) {
-		System.out.println("source");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -755,7 +736,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#stackTrace(org.eclipse.lsp4j.debug.StackTraceArguments)
 	 */
 	public CompletableFuture<StackTraceResponse> stackTrace(final StackTraceArguments args) {
-		System.out.println("stackTrace");
 		return CompletableFuture.supplyAsync(new Supplier<StackTraceResponse>() {
 
 			public StackTraceResponse get() {
@@ -815,7 +795,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#threads()
 	 */
 	public CompletableFuture<ThreadsResponse> threads() {
-		System.out.println("threads");
 		return CompletableFuture.supplyAsync(new Supplier<ThreadsResponse>() {
 
 			public ThreadsResponse get() {
@@ -842,7 +821,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#stepBack(org.eclipse.lsp4j.debug.StepBackArguments)
 	 */
 	public CompletableFuture<Void> stepBack(StepBackArguments args) {
-		System.out.println("stepBack");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -853,7 +831,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#stepInTargets(org.eclipse.lsp4j.debug.StepInTargetsArguments)
 	 */
 	public CompletableFuture<StepInTargetsResponse> stepInTargets(StepInTargetsArguments args) {
-		System.out.println("stepInTargets");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -864,7 +841,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#stepOut(org.eclipse.lsp4j.debug.StepOutArguments)
 	 */
 	public CompletableFuture<Void> stepOut(final StepOutArguments args) {
-		System.out.println("stepOut");
 		return CompletableFuture.runAsync(new Runnable() {
 
 			public void run() {
@@ -879,7 +855,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @see org.eclipse.lsp4j.debug.services.IDebugProtocolServer#variables(org.eclipse.lsp4j.debug.VariablesArguments)
 	 */
 	public CompletableFuture<VariablesResponse> variables(final VariablesArguments args) {
-		System.out.println("variables");
 		return CompletableFuture.supplyAsync(new Supplier<VariablesResponse>() {
 
 			public VariablesResponse get() {
