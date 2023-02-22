@@ -58,7 +58,7 @@ pipeline {
 				subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
 				body: """FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
 				Check console output at ${env.BUILD_URL}""",
-				to: 'laurent.goubet@obeo.fr'
+				to: 'laurent.goubet@obeo.fr, yvan.lussaud@obeo.fr'
 			)
 		}
 	}
