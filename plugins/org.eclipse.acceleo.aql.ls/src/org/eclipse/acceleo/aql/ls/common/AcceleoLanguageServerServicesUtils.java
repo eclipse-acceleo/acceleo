@@ -143,9 +143,9 @@ public final class AcceleoLanguageServerServicesUtils {
 				acceleoSourceContents);
 		String symbolName = acceleoSymbol.getName();
 
-		// FIXME: workaround to lsp4e not supporting the display of a symbol's details.
+		// FIXME: workaround to lsp4e not adding separator between symbol and details.
 		if (acceleoSymbol.getDetails() != null) {
-			symbolName += " : " + acceleoSymbol.getDetails();
+			symbolName += " : ";
 		}
 
 		// FIXME: for now we don't make a difference between range and selectionRange.
