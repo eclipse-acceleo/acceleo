@@ -48,11 +48,11 @@
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="org.eclipse.acceleo.aql.ls.debug.ide.ui.launch.AcceleoLaunchShortcut"
-            description="Run and Debug Acceleo 4 generation"
+            description="Launch Acceleo 4 generation"
             icon="icons/AcceleoLaunch.gif"
             id="org.eclipse.acceleo.aql.ls.debug.ide.ui.shortcut"
             label="Acceleo 4"
-            modes="run, debug">
+            modes="run, debug, profile">
          <configurationType
                id="org.eclipse.acceleo.aql.ls.debug.ide.launchConfigurationType">
          </configurationType>
@@ -64,6 +64,10 @@
             <contextLabel
                   label="Debug Acceleo 4 generation"
                   mode="debug">
+            </contextLabel>
+            <contextLabel
+                  label="Profile Acceleo 4 generation"
+                  mode="profile">
             </contextLabel>
             <enablement>
                <with

@@ -1,0 +1,9 @@
+[module otherModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myOtherTemplate(myParam : ecore::EClassifier)]
+  [myParam.name/].
+[/template]
+
+[template public myOtherTemplateNotCalled(myParam : ecore::EClassifier)]
+  [myParam.name/].
+[/template]

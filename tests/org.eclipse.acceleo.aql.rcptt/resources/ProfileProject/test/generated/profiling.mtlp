@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ASCII"?>
+<profiler:ProfileResource xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:profiler="http://www.eclipse.org/acceleo/profiler/4.0">
+  <entry duration="8" count="1" percentage="100.0">
+    <callees duration="8" count="1" percentage="100.0">
+      <callees duration="8" count="1" percentage="100.0">
+        <callees duration="8" count="1" percentage="100.0">
+          <callees duration="2" count="1" percentage="25.0">
+            <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@url"/>
+          </callees>
+          <callees duration="6" count="1" percentage="75.0">
+            <callees count="1">
+              <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.0"/>
+            </callees>
+            <callees duration="6" count="1" percentage="75.0">
+              <callees count="1">
+                <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@binding/@initExpression"/>
+              </callees>
+              <callees duration="6" count="23" percentage="75.0">
+                <callees count="23">
+                  <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.0"/>
+                </callees>
+                <callees duration="1" count="23" percentage="12.5">
+                  <callees count="23">
+                    <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.1/@expression"/>
+                  </callees>
+                  <callees duration="1" percentage="12.5" creationTime="1677157649663"/>
+                  <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.1"/>
+                </callees>
+                <callees duration="5" count="23" percentage="62.5">
+                  <callees duration="5" count="23" percentage="62.5">
+                    <callees duration="2" count="23" percentage="25.0">
+                      <callees duration="2" count="23" percentage="25.0">
+                        <callees duration="2" count="23" percentage="25.0">
+                          <callees duration="2" count="23" percentage="25.0">
+                            <monitored href="acceleoenv::test::otherModule#//@moduleElements.0/@body/@statements.0/@expression"/>
+                          </callees>
+                          <monitored href="acceleoenv::test::otherModule#//@moduleElements.0/@body/@statements.0"/>
+                        </callees>
+                        <callees count="23">
+                          <monitored href="acceleoenv::test::otherModule#//@moduleElements.0/@body/@statements.1"/>
+                        </callees>
+                        <monitored href="acceleoenv::test::otherModule#//@moduleElements.0/@body"/>
+                      </callees>
+                      <monitored href="acceleoenv::test::otherModule#//@moduleElements.0"/>
+                    </callees>
+                    <callees duration="3" percentage="37.5" creationTime="1677157649663"/>
+                    <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.2/@expression"/>
+                  </callees>
+                  <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.2"/>
+                </callees>
+                <callees count="23">
+                  <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.3"/>
+                </callees>
+                <callees count="23">
+                  <callees count="23">
+                    <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.4/@expression"/>
+                  </callees>
+                  <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body/@statements.4"/>
+                </callees>
+                <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1/@body"/>
+              </callees>
+              <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.1"/>
+            </callees>
+            <callees count="1">
+              <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.2"/>
+            </callees>
+            <callees count="1">
+              <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.3"/>
+            </callees>
+            <callees count="1">
+              <callees count="1">
+                <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.4/@expression"/>
+              </callees>
+              <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body/@statements.4"/>
+            </callees>
+            <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0/@body"/>
+          </callees>
+          <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.0"/>
+        </callees>
+        <callees count="1">
+          <monitored href="acceleoenv::test::test#//@moduleElements.1/@body/@statements.1"/>
+        </callees>
+        <monitored href="acceleoenv::test::test#//@moduleElements.1/@body"/>
+      </callees>
+      <monitored href="acceleoenv::test::test#//@moduleElements.1"/>
+    </callees>
+    <monitored href="acceleoenv::test::test#/"/>
+  </entry>
+</profiler:ProfileResource>

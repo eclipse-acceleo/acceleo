@@ -1,0 +1,57 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _d8d2kKyFEeqylZAj0d4Xnw,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: LaunchShortcutProfile
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _3uMVELNrEe2kZdZD_a54_g
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 2/23/23, 4:03 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select test | get-menu -path "New/Folder" | click -metaKeys ""
+with [get-window "New Folder"] {
+    get-editbox -after [get-label "Folder name:"] | set-text generated
+    get-button Finish | click
+}
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
+    -path "Profile As/1 Profile Acceleo 4 generation" | click -metaKeys ""
+with [get-window "Profile Configurations"] {
+    get-group "Model file:" | get-button "Browse..." | click -metaKeys ""
+    get-window "Select the model file" | get-table | select "test.xmi - test" | double-click
+    get-group "Destination folder:" | get-button "Browse..." | click -metaKeys ""
+    get-window "Select the destination folder" | get-tree | select "test/generated" | double-click
+    with [get-group "Profile model:"] {
+        get-editbox | click-text
+        get-button "Browse..." | click -metaKeys ""
+    }
+    with [get-window "Select the profile model"] {
+        get-tree | select "test/generated"
+        get-editbox -after [get-label "File:"] | click-text 1
+        get-button OK | click -metaKeys ""
+    }
+    get-group "Profile model:" -after [get-label "Name:"] -index 1 | get-combo | select TREE
+    get-button Apply | click -metaKeys ""
+    get-button Profile | click -metaKeys ""
+}
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
+    -path "Profile As/Profile Configurations..." | click -metaKeys ""
+with [get-window "Profile Configurations"] {
+    get-tree | select "Acceleo 4/test.mtl" | get-menu -path Delete | click -metaKeys ""
+    get-window "Confirm Launch Configuration Deletion" | get-button Delete | click -metaKeys ""
+    get-button Close | click -metaKeys ""
+}
+with [get-view "Package Explorer" | get-tree] {
+    select "test/generated-expected/anydsl.txt" "test/generated/anydsl.txt"
+    get-menu -path "Compare With/Each Other" | click -metaKeys ""
+}
+get-label "Left: 1 : 1, Right: 1 : 1, no diff" | get-property caption | equals "Left: 1 : 1, Right: 1 : 1, no diff" 
+    | verify-true
+get-view "Package Explorer" | get-tree | get-item -path "test/generated/profiling.mtlp" | get-property caption 
+    | equals "profiling.mtlp" | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
