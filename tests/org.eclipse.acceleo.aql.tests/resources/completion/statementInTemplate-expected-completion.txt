@@ -8,6 +8,71 @@ Inserts the end of an Acceleo Template:<br/><pre>[/template]</pre>
 http://www.eclipse.org/acceleo/4.0#//Template
 
 * Label:
+New For
+* Description:
+Inserts the following For Statement:<br/><pre>[for  (myVariable | expression)]
+  
+[/for]</pre>
+* Text:
+[for  (myVariable | expression)]
+    
+  [/for]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ForStatement
+
+* Label:
+New If
+* Description:
+Inserts the following If Statement:<br/><pre>[if  (expression)]
+  
+[/if]</pre>
+* Text:
+[if  (expression)]
+    
+  [/if]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//IfStatement
+
+* Label:
+New Let
+* Description:
+Inserts the following Let Statement:<br/><pre>[let  myVariable = expression]
+  
+[/let]</pre>
+* Text:
+[let  myVariable = expression]
+    
+  [/let]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//LetStatement
+
+* Label:
+New File
+* Description:
+Inserts the following File Statement:<br/><pre>[file  (expression, overwrite, 'UTF-8')]
+  
+[/file]</pre>
+* Text:
+[file  (expression, overwrite, 'UTF-8')]
+    
+  [/file]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//FileStatement
+
+* Label:
+New Protected Area
+* Description:
+Inserts the following Protected Area Statement:<br/><pre>[protected  (expression)]
+  
+[/protected]</pre>
+* Text:
+[protected  (expression)]
+    
+  [/protected]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ProtectedArea
+
+* Label:
 [if (
 * Description:
 Inserts the start of an If Statement header:<br/><pre>[if (</pre>

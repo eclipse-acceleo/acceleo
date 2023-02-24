@@ -11,7 +11,12 @@
 package org.eclipse.acceleo.aql.completion.proposals.templates;
 
 import org.eclipse.acceleo.BlockComment;
+import org.eclipse.acceleo.FileStatement;
+import org.eclipse.acceleo.ForStatement;
+import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 
@@ -44,6 +49,11 @@ public final class AcceleoCodeTemplates {
 	 * An asterisk.
 	 */
 	public static final String STAR = "*";
+
+	/**
+	 * Default expression.
+	 */
+	public static final String DEFAULT_EXPRESSION = "expression";
 
 	// New ModuleElement
 	/**
@@ -245,6 +255,85 @@ public final class AcceleoCodeTemplates {
 	 */
 	public static final String NEW_COMMENT_MAIN = AcceleoParser.COMMENT_START + AcceleoParser.MAIN_TAG
 			+ AcceleoParser.COMMENT_END;
+
+	/**
+	 * Code template for creating a new Acceleo {@link ForStatement}.<br/>
+	 * 
+	 * <pre>
+	 * <code>
+	 * [for (myVariable | expression)]
+	 *   
+	 * [/for]
+	 * </code>
+	 * </pre>
+	 */
+	public static final String NEW_FOR_STATEMENT = AcceleoParser.FOR_HEADER_START + SPACE
+			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE + AcceleoParser.PIPE
+			+ SPACE + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END
+			+ NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.FOR_END;
+
+	/**
+	 * Code template for creating a new Acceleo {@link IfStatement}.<br/>
+	 * 
+	 * <pre>
+	 * <code>
+	 * [if (expression)]
+	 *   
+	 * [/if]
+	 * </code>
+	 * </pre>
+	 */
+	public static final String NEW_IF_STATEMENT = AcceleoParser.IF_HEADER_START + SPACE
+			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS
+			+ AcceleoParser.IF_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.IF_END;
+
+	/**
+	 * Code template for creating a new Acceleo {@link FileStatement}.<br/>
+	 * 
+	 * <pre>
+	 * <code>
+	 * [file (expression, overwrite, 'UTF-8')]
+	 *   
+	 * [/file]
+	 * </code>
+	 * </pre>
+	 */
+	public static final String NEW_FILE_STATEMENT = AcceleoParser.FILE_HEADER_START + SPACE
+			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.COMMA + SPACE
+			+ OpenModeKind.OVERWRITE.getName() + AcceleoParser.COMMA + SPACE + "'UTF-8'"
+			+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FILE_HEADER_END + NEWLINE + SPACE + SPACE
+			+ NEWLINE + AcceleoParser.FILE_END;
+
+	/**
+	 * Code template for creating a new Acceleo {@link ProtectedArea}.<br/>
+	 * 
+	 * <pre>
+	 * <code>
+	 * [protected (expression)]
+	 *   
+	 * [/protected]
+	 * </code>
+	 * </pre>
+	 */
+	public static final String NEW_PROTECTED_AREA_STATEMENT = AcceleoParser.PROTECTED_AREA_HEADER_START
+			+ SPACE + AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS
+			+ AcceleoParser.PROTECTED_AREA_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE
+			+ AcceleoParser.PROTECTED_AREA_END;
+
+	/**
+	 * Code template for creating a new Acceleo {@link ForStatement}.<br/>
+	 * 
+	 * <pre>
+	 * <code>
+	 * [let myVariable = expression]
+	 *   
+	 * [/let]
+	 * </code>
+	 * </pre>
+	 */
+	public static final String NEW_LET_STATEMENT = AcceleoParser.LET_HEADER_START + SPACE
+			+ DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE + AcceleoParser.EQUAL + SPACE + DEFAULT_EXPRESSION
+			+ AcceleoParser.LET_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.LET_END;
 
 	/**
 	 * Code template for creating a new Acceleo module documentation.<br/>
