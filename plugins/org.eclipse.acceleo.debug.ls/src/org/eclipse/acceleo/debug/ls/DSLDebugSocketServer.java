@@ -97,4 +97,13 @@ public class DSLDebugSocketServer {
 		serverSocket.close();
 	}
 
+	/**
+	 * Gets the local port.
+	 * 
+	 * @return the local port
+	 */
+	public int getLocalPort() {
+		return serverSocket.getLocalPort();
+	}
+
 }

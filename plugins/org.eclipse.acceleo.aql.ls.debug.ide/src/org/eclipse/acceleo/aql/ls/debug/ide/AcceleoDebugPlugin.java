@@ -28,11 +28,6 @@ public final class AcceleoDebugPlugin extends EMFPlugin {
 	public static final AcceleoDebugPlugin INSTANCE = new AcceleoDebugPlugin();
 
 	/**
-	 * The server port. TODO should be a property.
-	 */
-	public static final int PORT = 4711;
-
-	/**
 	 * The plug-ing ID.
 	 */
 	public static final String ID = "org.eclipse.acceleo.aql.ls.debug.ide";
@@ -85,6 +80,11 @@ public final class AcceleoDebugPlugin extends EMFPlugin {
 		private DSLDebugSocketServer server;
 
 		/**
+		 * The host to listen from.
+		 */
+		private static final String HOST = "127.0.0.1";
+
+		/**
 		 * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
@@ -102,7 +102,25 @@ public final class AcceleoDebugPlugin extends EMFPlugin {
 			super.start(context);
 
 			server = new DSLDebugSocketServer();
-			server.start(new AcceleoDebugFactory(), "Acceleo", "0.0.0.0", PORT);
+			server.start(new AcceleoDebugFactory(), "Acceleo", HOST, 0);
+		}
+
+		/**
+		 * Gets the port the server is listening on.
+		 * 
+		 * @return the port the server is listening on
+		 */
+		public int getPort() {
+			return server.getLocalPort();
+		}
+
+		/**
+		 * Gets the host the server is listening from.
+		 * 
+		 * @return the host the server is listening from
+		 */
+		public String getHost() {
+			return HOST;
 		}
 
 		@Override

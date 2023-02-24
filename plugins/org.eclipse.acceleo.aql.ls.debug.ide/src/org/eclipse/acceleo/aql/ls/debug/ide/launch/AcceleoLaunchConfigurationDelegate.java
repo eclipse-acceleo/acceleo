@@ -89,8 +89,8 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 		wc.setAttribute(DSPPlugin.ATTR_DSP_PARAM, new Gson().toJson(param));
 		wc.setAttribute(DSPPlugin.ATTR_DSP_MODE, DSPPlugin.DSP_MODE_CONNECT);
 		wc.setAttribute(DSPPlugin.ATTR_DSP_MONITOR_DEBUG_ADAPTER, true);
-		wc.setAttribute(DSPPlugin.ATTR_DSP_SERVER_HOST, "localhost"); // TODO configure
-		wc.setAttribute(DSPPlugin.ATTR_DSP_SERVER_PORT, AcceleoDebugPlugin.PORT); // TODO configure
+		wc.setAttribute(DSPPlugin.ATTR_DSP_SERVER_HOST, AcceleoDebugPlugin.getPlugin().getHost());
+		wc.setAttribute(DSPPlugin.ATTR_DSP_SERVER_PORT, AcceleoDebugPlugin.getPlugin().getPort());
 
 		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
 			// FIXME lsp4e doesn't profile mode at the moment.
