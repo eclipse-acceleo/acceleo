@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Obeo.
+ * Copyright (c) 2016, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -128,6 +128,11 @@ public class AcceleoParser {
 	 * End of {@link TextStatement}.
 	 */
 	public static final String TEXT_END = "[";
+
+	/**
+	 * Empty {@link ExpressionStatement}.
+	 */
+	public static final String EMPTY_EXPRESSION_STATEMENT = TEXT_END + SLASH_END;
 
 	/**
 	 * Start of {@link BlockComment}.
@@ -2027,8 +2032,9 @@ public class AcceleoParser {
 	protected ExpressionStatement parseExpressionStatement(boolean inlined) {
 		final ExpressionStatement res;
 
-		if (!text.startsWith(END_BLOCK_PREFIX, currentPosition) && !text.startsWith(IF_ELSE, currentPosition)
-				&& text.startsWith(EXPRESSION_STATEMENT_START, currentPosition)) {
+		if (text.startsWith(EMPTY_EXPRESSION_STATEMENT, currentPosition) || !text.startsWith(END_BLOCK_PREFIX,
+				currentPosition) && !text.startsWith(IF_ELSE, currentPosition) && text.startsWith(
+						EXPRESSION_STATEMENT_START, currentPosition)) {
 			final int startPosition = currentPosition;
 			currentPosition += EXPRESSION_STATEMENT_START.length();
 			skipSpaces();
