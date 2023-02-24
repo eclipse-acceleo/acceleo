@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -80,7 +80,7 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 						final ISourceRange methodIdentifierRange = javaMethod.getNameRange();
 						final ISourceRange sourceRange = javaMethod.getSourceRange();
 
-						final ASTParser parser = ASTParser.newParser(AST.JLS10);
+						final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 						parser.setSource(type.getCompilationUnit());
 						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
 						final int identifierStartOffset = methodIdentifierRange.getOffset();
@@ -142,7 +142,7 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 						final ISourceRange classIdentifierRange = type.getNameRange();
 						final ISourceRange sourceRange = type.getSourceRange();
 
-						final ASTParser parser = ASTParser.newParser(AST.JLS10);
+						final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 						parser.setSource(type.getCompilationUnit());
 						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
 						final int identifierStartOffset = classIdentifierRange.getOffset();
@@ -191,7 +191,7 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 
 	private URL getDefaultSourceURL(IQualifiedNameResolver resolver, final Method method) {
 		final URL sourceURL;
-		// TODO this will not work is the method is in a super class of the registered class
+		// TODO this will not work if the method is in a super class of the registered class
 		final String qualifiedName = resolver.getQualifiedName(method.getDeclaringClass());
 		sourceURL = resolver.getSourceURL(qualifiedName);
 		return sourceURL;

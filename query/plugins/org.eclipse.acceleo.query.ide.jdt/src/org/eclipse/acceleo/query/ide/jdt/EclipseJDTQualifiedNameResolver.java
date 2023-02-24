@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.acceleo.query.ide.jdt;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import java.util.List;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.EclipseQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -146,26 +146,21 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 		URL res = null;
 		found: for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
 			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-				try {
-					final File workspaceRoot = ResourcesPlugin.getWorkspace().getRoot().getLocation()
-							.toFile();
-					final URI srcFolderURI = new URI(workspaceRoot.toURI().toString().substring(0,
-							workspaceRoot.toURI().toString().length() - 1) + entry.getPath().toString());
-					final List<String> relativePathes = getPossibleResourceNames(qualifiedName);
-					for (String relativePath : relativePathes) {
-						final URI uri = new URI(srcFolderURI.toString() + "/" + relativePath);
-						final File file = new File(uri);
-						if (file.isFile() && file.exists()) {
-							try {
-								res = file.toURI().toURL();
-								break found;
-							} catch (MalformedURLException e) {
-								// nothing to do here
-							}
+				final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+				final String srcFolder = entry.getPath().toString();
+				final List<String> relativePathes = getPossibleResourceNames(qualifiedName);
+				for (String relativePath : relativePathes) {
+					final URI uri = workspaceRoot.getFile(new Path(srcFolder + "/" + relativePath))
+							.getLocationURI();
+					final File file = new File(uri);
+					if (file.isFile() && file.exists()) {
+						try {
+							res = file.toURI().toURL();
+							break found;
+						} catch (MalformedURLException e) {
+							// nothing to do here
 						}
 					}
-				} catch (URISyntaxException e) {
-					// nothing to do here
 				}
 			} else if (entry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
 				final IProject childProject = ResourcesPlugin.getWorkspace().getRoot().getProject(entry
