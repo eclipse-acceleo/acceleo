@@ -65,8 +65,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 	protected AbstractEvaluationTestSuite(String testFolder) throws IOException {
 		super(testFolder);
 		final File modelFile = getModelFile(new File(getTestFolderPath()));
-		final ResourceSet rs = getResourceSet();
-		model = getModel(modelFile, rs);
+		model = getModel(modelFile, resourceSetForModels);
 	}
 
 	/**

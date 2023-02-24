@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,8 @@ import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.runtime.Platform;
@@ -32,6 +34,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.kohsuke.args4j.CmdLineException;
@@ -207,16 +210,22 @@ public class AcceleoLauncher implements IApplication {
 	private GenerationResult launchGeneration() {
 		// TODO allow users to either provide their own resource set or configure this one as we might need
 		// urimaps, resourcefactories, EPackages... to load the input models.
-		ResourceSet modelResourceSet = new ResourceSetImpl();
+		ResourceSet resourceSetForModels = new ResourceSetImpl();
 		for (URI modelURI : modelURIs) {
-			modelResourceSet.getResource(modelURI, true);
+			resourceSetForModels.getResource(modelURI, true);
 		}
 
 		IQualifiedNameResolver resolver = new OSGiQualifiedNameResolver(bundle,
 				AcceleoParser.QUALIFIER_SEPARATOR);
-		/* FIXME we need a cross reference provider, and we need to make it configurable */
+
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				resourceSetForModels);
 		final IQualifiedNameQueryEnvironment queryEnvironment = Query
-				.newQualifiedNameEnvironmentWithDefaultServices(resolver, null, null);
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
+						rootProvider);
+
 		AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
@@ -229,7 +238,7 @@ public class AcceleoLauncher implements IApplication {
 		} else {
 			mainModule = null;
 		}
-		evaluate(evaluator, queryEnvironment, mainModule, modelResourceSet);
+		evaluate(evaluator, queryEnvironment, mainModule, resourceSetForModels);
 		return evaluator.getGenerationResult();
 	}
 

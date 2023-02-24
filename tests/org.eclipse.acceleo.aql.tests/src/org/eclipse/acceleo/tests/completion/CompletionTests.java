@@ -36,11 +36,16 @@ import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -116,9 +121,15 @@ public class CompletionTests {
 
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
 				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
-		/* FIXME we need a cross reference provider, and we need to make it configurable */
+
+		final ResourceSet resourceSetForModels = new ResourceSetImpl(); // this will not be used
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				resourceSetForModels);
 		final IQualifiedNameQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newQualifiedNameEnvironmentWithDefaultServices(resolver, null, null);
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
+						rootProvider);
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		final AcceleoParser parser = new AcceleoParser();

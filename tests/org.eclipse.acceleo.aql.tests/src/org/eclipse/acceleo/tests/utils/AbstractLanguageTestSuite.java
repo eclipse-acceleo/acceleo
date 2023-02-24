@@ -40,6 +40,8 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
+import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
@@ -48,6 +50,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -119,6 +122,11 @@ public abstract class AbstractLanguageTestSuite {
 	private final String qualifiedName;
 
 	/**
+	 * The {@link ResourceSet} for models.
+	 */
+	protected final ResourceSet resourceSetForModels = getResourceSet();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param testFolder
@@ -139,9 +147,14 @@ public abstract class AbstractLanguageTestSuite {
 		final ClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
 				AcceleoParser.QUALIFIER_SEPARATOR);
-		/* FIXME we need a cross reference provider, and we need to make it configurable */
+
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				resourceSetForModels);
 		queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newQualifiedNameEnvironmentWithDefaultServices(resolver, null, null);
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
+						rootProvider);
 
 		evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));

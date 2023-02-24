@@ -17,6 +17,8 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.aql.profiler.presentation.ProfilerEditorPlugin;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
@@ -24,7 +26,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 
 /**
  * A resource factory able to resolve acceleoenv URIs.
@@ -61,9 +66,15 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
-		/* FIXME we need a cross reference provider, and we need to make it configurable */
+
+		final ResourceSet resourceSetForModels = new ResourceSetImpl(); // this will not be used
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				resourceSetForModels);
 		queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newQualifiedNameEnvironmentWithDefaultServices(resolver, null, null);
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
+						rootProvider);
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));

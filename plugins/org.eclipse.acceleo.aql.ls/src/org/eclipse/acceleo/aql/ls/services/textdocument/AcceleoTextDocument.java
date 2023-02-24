@@ -29,9 +29,14 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.services.TextDocumentService;
@@ -188,9 +193,13 @@ public class AcceleoTextDocument {
 		AcceleoAstResult parsingResult = null;
 		parsingResult = doParsing(this.getModuleQualifiedName(), this.contents);
 
-		/* FIXME we need a cross reference provider, and we need to make it configurable */
+		final ResourceSet resourceSetForModels = new ResourceSetImpl(); // this will not be used
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				resourceSetForModels);
 		queryEnvironment = Query.newQualifiedNameEnvironmentWithDefaultServices(getProject().getResolver(),
-				null, null);
+				crossReferenceProvider, rootProvider);
 
 		for (Metamodel metamodel : parsingResult.getModule().getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {
