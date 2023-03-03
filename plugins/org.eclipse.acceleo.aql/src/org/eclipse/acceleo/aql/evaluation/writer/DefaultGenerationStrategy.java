@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
+
 	/** Used to call URIConverter methods with no options. */
 	private static final Map<String, Object> EMPTY_OPTION_MAP = new HashMap<>();
 
@@ -116,8 +117,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 	public IAcceleoWriter createWriterForLostContent(URI uri, String protectedAreaID, Charset charset,
 			String lineDelimiter) throws IOException {
 		final URI lostURI = URI.createURI(uri.toString() + "-lost.txt");
-		// FIXME use OpenModeKind.APPEND
-		return createWriterFor(lostURI, OpenModeKind.OVERWRITE, charset, lineDelimiter);
+		return createWriterFor(lostURI, OpenModeKind.APPEND, charset, lineDelimiter);
 	}
 
 	@Override
