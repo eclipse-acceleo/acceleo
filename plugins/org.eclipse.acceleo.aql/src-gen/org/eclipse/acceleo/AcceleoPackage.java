@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -2555,13 +2555,31 @@ public interface AcceleoPackage extends EPackage {
 	int PROTECTED_AREA__BODY = STATEMENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Start Tag Prefix</b></em>' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PROTECTED_AREA__START_TAG_PREFIX = STATEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>End Tag Prefix</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PROTECTED_AREA__END_TAG_PREFIX = STATEMENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Protected Area</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int PROTECTED_AREA_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
+	int PROTECTED_AREA_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Protected Area</em>' class. <!-- begin-user-doc --> <!--
@@ -2601,13 +2619,31 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_PROTECTED_AREA__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Start Tag Prefix</b></em>' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_PROTECTED_AREA__START_TAG_PREFIX = ERROR_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>End Tag Prefix</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_PROTECTED_AREA__END_TAG_PREFIX = ERROR_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 2;
+	int ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -2616,7 +2652,25 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
+	int ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Missing Start Tag Prefix Close Parenthesis</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Missing End Tag Prefix Close Parenthesis</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2625,7 +2679,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 4;
+	int ERROR_PROTECTED_AREA__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2634,7 +2688,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_END = ERROR_FEATURE_COUNT + 5;
+	int ERROR_PROTECTED_AREA__MISSING_END = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Error Protected Area</em>' class. <!-- begin-user-doc -->
@@ -2643,7 +2697,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
+	int ERROR_PROTECTED_AREA_FEATURE_COUNT = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Error Protected Area</em>' class. <!-- begin-user-doc --> <!--
@@ -4708,6 +4762,30 @@ public interface AcceleoPackage extends EPackage {
 	EReference getProtectedArea_Body();
 
 	/**
+	 * Returns the meta object for the containment reference
+	 * '{@link org.eclipse.acceleo.ProtectedArea#getStartTagPrefix <em>Start Tag Prefix</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Start Tag Prefix</em>'.
+	 * @see org.eclipse.acceleo.ProtectedArea#getStartTagPrefix()
+	 * @see #getProtectedArea()
+	 * @generated
+	 */
+	EReference getProtectedArea_StartTagPrefix();
+
+	/**
+	 * Returns the meta object for the containment reference
+	 * '{@link org.eclipse.acceleo.ProtectedArea#getEndTagPrefix <em>End Tag Prefix</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>End Tag Prefix</em>'.
+	 * @see org.eclipse.acceleo.ProtectedArea#getEndTagPrefix()
+	 * @see #getProtectedArea()
+	 * @generated
+	 */
+	EReference getProtectedArea_EndTagPrefix();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorProtectedArea <em>Error Protected
 	 * Area</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -4740,6 +4818,30 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getErrorProtectedArea_MissingCloseParenthesis();
+
+	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingStartTagPrefixCloseParenthesis <em>Missing
+	 * Start Tag Prefix Close Parenthesis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Missing Start Tag Prefix Close Parenthesis</em>'.
+	 * @see org.eclipse.acceleo.ErrorProtectedArea#getMissingStartTagPrefixCloseParenthesis()
+	 * @see #getErrorProtectedArea()
+	 * @generated
+	 */
+	EAttribute getErrorProtectedArea_MissingStartTagPrefixCloseParenthesis();
+
+	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingEndTagPrefixCloseParenthesis <em>Missing End
+	 * Tag Prefix Close Parenthesis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Missing End Tag Prefix Close Parenthesis</em>'.
+	 * @see org.eclipse.acceleo.ErrorProtectedArea#getMissingEndTagPrefixCloseParenthesis()
+	 * @see #getErrorProtectedArea()
+	 * @generated
+	 */
+	EAttribute getErrorProtectedArea_MissingEndTagPrefixCloseParenthesis();
 
 	/**
 	 * Returns the meta object for the attribute
@@ -6372,6 +6474,22 @@ public interface AcceleoPackage extends EPackage {
 		EReference PROTECTED_AREA__BODY = eINSTANCE.getProtectedArea_Body();
 
 		/**
+		 * The meta object literal for the '<em><b>Start Tag Prefix</b></em>' containment reference feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference PROTECTED_AREA__START_TAG_PREFIX = eINSTANCE.getProtectedArea_StartTagPrefix();
+
+		/**
+		 * The meta object literal for the '<em><b>End Tag Prefix</b></em>' containment reference feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference PROTECTED_AREA__END_TAG_PREFIX = eINSTANCE.getProtectedArea_EndTagPrefix();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl <em>Error
 		 * Protected Area</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
@@ -6398,6 +6516,24 @@ public interface AcceleoPackage extends EPackage {
 		 */
 		EAttribute ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS = eINSTANCE
 				.getErrorProtectedArea_MissingCloseParenthesis();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Start Tag Prefix Close Parenthesis</b></em>'
+		 * attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS = eINSTANCE
+				.getErrorProtectedArea_MissingStartTagPrefixCloseParenthesis();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing End Tag Prefix Close Parenthesis</b></em>'
+		 * attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS = eINSTANCE
+				.getErrorProtectedArea_MissingEndTagPrefixCloseParenthesis();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing End Header</b></em>' attribute feature. <!--

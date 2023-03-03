@@ -668,7 +668,23 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.addAll(this.getAqlCompletionProposals(getVariables(errorProtectedArea),
 					acceleoValidationResult.getValidationResult(errorProtectedArea.getId().getAst())));
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_HEADER_CLOSE_PARENTHESIS_AND_END);
+		} else if (errorProtectedArea.getMissingStartTagPrefixCloseParenthesis() != -1) {
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorProtectedArea),
+					acceleoValidationResult.getValidationResult(errorProtectedArea.getId().getAst())));
+			res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
+			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_HEADER_CLOSE_PARENTHESIS_AND_END);
+		} else if (errorProtectedArea.getMissingEndTagPrefixCloseParenthesis() != -1) {
+			res.addAll(this.getAqlCompletionProposals(getVariables(errorProtectedArea),
+					acceleoValidationResult.getValidationResult(errorProtectedArea.getId().getAst())));
+			res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
+			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_HEADER_CLOSE_PARENTHESIS_AND_END);
 		} else if (errorProtectedArea.getMissingEndHeader() != -1) {
+			if (errorProtectedArea.getEndTagPrefix() == null) {
+				if (errorProtectedArea.getStartTagPrefix() == null) {
+					res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_START_TAG_PREFIX);
+				}
+				res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_END_TAG_PREFIX);
+			}
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_HEADER_END);
 		} else if (errorProtectedArea.getMissingEnd() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_END);

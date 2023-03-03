@@ -1,1 +1,2 @@
 ERROR Couldn't find the 'notExisting' variable - 131 142
+ERROR The expression never evaluates to a String type ([]). - 131 147

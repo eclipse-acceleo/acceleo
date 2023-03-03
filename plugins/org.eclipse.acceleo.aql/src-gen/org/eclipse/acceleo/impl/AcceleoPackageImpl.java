@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -1730,6 +1730,26 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
+	public EReference getProtectedArea_StartTagPrefix() {
+		return (EReference)protectedAreaEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EReference getProtectedArea_EndTagPrefix() {
+		return (EReference)protectedAreaEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public EClass getErrorProtectedArea() {
 		return errorProtectedAreaEClass;
 	}
@@ -1760,7 +1780,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorProtectedArea_MissingEndHeader() {
+	public EAttribute getErrorProtectedArea_MissingStartTagPrefixCloseParenthesis() {
 		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1770,8 +1790,28 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorProtectedArea_MissingEnd() {
+	public EAttribute getErrorProtectedArea_MissingEndTagPrefixCloseParenthesis() {
 		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getErrorProtectedArea_MissingEndHeader() {
+		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getErrorProtectedArea_MissingEnd() {
+		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -2434,10 +2474,16 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		protectedAreaEClass = createEClass(PROTECTED_AREA);
 		createEReference(protectedAreaEClass, PROTECTED_AREA__ID);
 		createEReference(protectedAreaEClass, PROTECTED_AREA__BODY);
+		createEReference(protectedAreaEClass, PROTECTED_AREA__START_TAG_PREFIX);
+		createEReference(protectedAreaEClass, PROTECTED_AREA__END_TAG_PREFIX);
 
 		errorProtectedAreaEClass = createEClass(ERROR_PROTECTED_AREA);
 		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS);
 		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorProtectedAreaEClass,
+				ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS);
+		createEAttribute(errorProtectedAreaEClass,
+				ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS);
 		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_END_HEADER);
 		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_END);
 
@@ -2971,6 +3017,12 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEReference(getProtectedArea_Body(), this.getBlock(), null, "body", null, 1, 1, //$NON-NLS-1$
 				ProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProtectedArea_StartTagPrefix(), this.getExpression(), null, "startTagPrefix", null, //$NON-NLS-1$
+				0, 1, ProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProtectedArea_EndTagPrefix(), this.getExpression(), null, "endTagPrefix", null, 0, //$NON-NLS-1$
+				1, ProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorProtectedAreaEClass, ErrorProtectedArea.class, "ErrorProtectedArea", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2980,6 +3032,12 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEAttribute(getErrorProtectedArea_MissingCloseParenthesis(), ecorePackage.getEInt(),
 				"missingCloseParenthesis", "-1", 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$//$NON-NLS-2$
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getErrorProtectedArea_MissingStartTagPrefixCloseParenthesis(), ecorePackage.getEInt(),
+				"missingStartTagPrefixCloseParenthesis", "-1", 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, //$NON-NLS-1$//$NON-NLS-2$
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getErrorProtectedArea_MissingEndTagPrefixCloseParenthesis(), ecorePackage.getEInt(),
+				"missingEndTagPrefixCloseParenthesis", "-1", 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, //$NON-NLS-1$//$NON-NLS-2$
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getErrorProtectedArea_MissingEndHeader(), ecorePackage.getEInt(), "missingEndHeader", //$NON-NLS-1$
 				"-1", 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
 				!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

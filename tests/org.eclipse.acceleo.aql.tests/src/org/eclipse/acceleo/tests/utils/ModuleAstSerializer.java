@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2021 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -100,6 +100,12 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	/** Prefix we'll use for the error messages on a missing closing parenthesis. */
 	private static final String MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX = "missing close parenthesis: ";
+
+	/** Prefix we'll use for the error messages on a missing start tag prefix closing parenthesis. */
+	private static final String MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS_MESSAGE_PREFIX = "missing start tag prefix close parenthesis: ";
+
+	/** Prefix we'll use for the error messages on a missing end tag prefix closing parenthesis. */
+	private static final String MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS_MESSAGE_PREFIX = "missing end tag prefix close parenthesis: ";
 
 	/** Prefix we'll use for the error messages on a missing separator closing parenthesis. */
 	private static final String MISSING_SEPARATOR_CLOSE_PARENTHESIS_MESSAGE_PREFIX = "missing separator close parenthesis: ";
@@ -939,6 +945,14 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append("[protected ");
 		doSwitch(protectedArea.getId());
 		doSwitch(protectedArea.getBody());
+		if (protectedArea.getStartTagPrefix() != null) {
+			builder.append(" startTagPrefix ");
+			doSwitch(protectedArea.getStartTagPrefix());
+		}
+		if (protectedArea.getEndTagPrefix() != null) {
+			builder.append(" endTagPrefix ");
+			doSwitch(protectedArea.getEndTagPrefix());
+		}
 		newLine();
 		builder.append("[/protected]");
 
@@ -954,6 +968,12 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		newLine();
 		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorProtectedArea
 				.getMissingCloseParenthesis());
+		newLine();
+		builder.append(MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorProtectedArea
+				.getMissingStartTagPrefixCloseParenthesis());
+		newLine();
+		builder.append(MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorProtectedArea
+				.getMissingEndTagPrefixCloseParenthesis());
 		newLine();
 		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorProtectedArea.getMissingEndHeader());
 		newLine();

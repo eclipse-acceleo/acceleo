@@ -53,6 +53,14 @@
     <<statementInProtectedArea>>
     some static text.
   [/protected]
+  [protected <<protectedAreaOpenParenthesis>>(<<protectedAreaExpression>>myParam.name<<protectedAreaCloseParenthesis>> <<protectedAreaCloseParenthesisAfterSpace>>) startTagPrefix(<<protectedAreaStartTagPrefixExpression>>myVariable.name<<protectedAreaStartTagPrefixCloseParenthesis>>)<<protectedAreaAfterStartTagPrefix>> endTagPrefix(<<protectedAreaEndTagPrefixExpression>>myVariable.name<<protectedAreaEndTagPrefixCloseParenthesis>>)<<protectedAreaAfterEndTagPrefix>>]
+    <<statementInProtectedArea>>
+    some static text.
+  [/protected]
+  [protected <<protectedAreaOpenParenthesis>>(<<protectedAreaExpression>>myParam.name<<protectedAreaCloseParenthesis>> <<protectedAreaCloseParenthesisAfterSpace>>) endTagPrefix(<<protectedAreaEndTagPrefixExpression>>myVariable.name<<protectedAreaEndTagPrefixCloseParenthesis>>)<<protectedAreaAfterEndTagPrefix>>]
+    <<statementInProtectedArea>>
+    some static text.
+  [/protected]
   [let myVariable1 : ecore::EClassifier = myParam.eClassifiers->first()]
     [let myVariable2 : ecore::EClassifier = myParam.eClassifiers->first()]
       [for (myVariable3 : ecore::EClassifier | myParam.eClassifiers)]

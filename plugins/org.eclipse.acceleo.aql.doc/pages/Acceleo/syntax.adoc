@@ -190,7 +190,7 @@ This statement loops over a list of values and return the concatenation of all r
 ----
 <<For Statement>> =
 
-'[for ' '(' <<Identifier>> (':' <<AQL Type Literal>>)? '|' <<AQL Expression>> ')' ['separator(' <<AQL Expression>> ')'] ']'
+'[for ' '(' <<Identifier>> (':' <<AQL Type Literal>>)? '|' <<AQL Expression>> ')' ('separator(' <<AQL Expression>> ')')? ']'
 
 (<<Statement>>)*
 
@@ -243,12 +243,15 @@ This statement declares an identified area in the generated file. If the generat
 ----
 <<Protected Area>> =
 
-'[protected ' '(' <<AQL Expression>> ')' ']'
+'[protected ' '(' <<AQL Expression>> ')'  ('startTagPrefix(' <<AQL Expression>> ')')?  ('endTagPrefix(' <<AQL Expression>> ')')? ']'
 
 (<<Statement>>)*)?
 
 '[/protected]'
 ----
+
+The start tag prefix and end tag prefix expressions allows to add a prefix to the intserted start and end tag to delimit the protected area in the generated document.
+If an unkown protected area id is encountered in a pre-existing generated document, a lost file is created to save its content.
 
 ==== Expression Statement
 

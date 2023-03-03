@@ -1,0 +1,18 @@
+* Label:
+)
+* Description:
+Inserts the following text: <pre>)</pre>
+* Text:
+)
+* Type (optional):
+null
+
+* Label:
+)]
+* Description:
+Inserts a closing parenthesis and the end of a Protected Area Statement header:<br/><pre>)]</pre>
+* Text:
+)]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ProtectedArea
+

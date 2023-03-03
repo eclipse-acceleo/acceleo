@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,11 @@ public class GenerationResult {
 	private Set<URI> generatedFiles = new LinkedHashSet<URI>();
 
 	/**
+	 * The {@link Set} of lost files.
+	 */
+	private Set<URI> lostFiles = new LinkedHashSet<URI>();
+
+	/**
 	 * The {@link Diagnostic} of the generation.
 	 */
 	private BasicDiagnostic diagnostic = new BasicDiagnostic();
@@ -44,6 +49,15 @@ public class GenerationResult {
 	 */
 	public Set<URI> getGeneratedFiles() {
 		return generatedFiles;
+	}
+
+	/**
+	 * Gets the {@link Set} of lost files.
+	 * 
+	 * @return the {@link Set} of lost files
+	 */
+	public Set<URI> getLostFiles() {
+		return lostFiles;
 	}
 
 	/**

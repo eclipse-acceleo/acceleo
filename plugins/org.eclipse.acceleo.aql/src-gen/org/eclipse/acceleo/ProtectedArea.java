@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,6 +20,8 @@ package org.eclipse.acceleo;
  * <ul>
  * <li>{@link org.eclipse.acceleo.ProtectedArea#getId <em>Id</em>}</li>
  * <li>{@link org.eclipse.acceleo.ProtectedArea#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.ProtectedArea#getStartTagPrefix <em>Start Tag Prefix</em>}</li>
+ * <li>{@link org.eclipse.acceleo.ProtectedArea#getEndTagPrefix <em>End Tag Prefix</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getProtectedArea()
@@ -80,5 +82,51 @@ public interface ProtectedArea extends Statement {
 	 * @generated
 	 */
 	void setBody(Block value);
+
+	/**
+	 * Returns the value of the '<em><b>Start Tag Prefix</b></em>' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Start Tag Prefix</em>' containment reference.
+	 * @see #setStartTagPrefix(Expression)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getProtectedArea_StartTagPrefix()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Expression getStartTagPrefix();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ProtectedArea#getStartTagPrefix <em>Start Tag
+	 * Prefix</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Start Tag Prefix</em>' containment reference.
+	 * @see #getStartTagPrefix()
+	 * @generated
+	 */
+	void setStartTagPrefix(Expression value);
+
+	/**
+	 * Returns the value of the '<em><b>End Tag Prefix</b></em>' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>End Tag Prefix</em>' containment reference.
+	 * @see #setEndTagPrefix(Expression)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getProtectedArea_EndTagPrefix()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Expression getEndTagPrefix();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ProtectedArea#getEndTagPrefix <em>End Tag
+	 * Prefix</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>End Tag Prefix</em>' containment reference.
+	 * @see #getEndTagPrefix()
+	 * @generated
+	 */
+	void setEndTagPrefix(Expression value);
 
 } // ProtectedArea

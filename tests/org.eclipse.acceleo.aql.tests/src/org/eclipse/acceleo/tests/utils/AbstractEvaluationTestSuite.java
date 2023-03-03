@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Obeo.
+ * Copyright (c) 2016, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,12 @@ import org.junit.Test;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSuite {
+
+	private static final String ACTUAL_SUFFIT = "-actual.txt";
+
+	private static final String EXPECTED_SUFFIX = "-expected.txt";
+
+	private static final String PROTECTED_AREA_SUFFIX = "-protectedArea.txt";
 
 	/**
 	 * Copy buffer size.
@@ -100,6 +106,16 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 	public void evaluation() throws IOException {
 		final Module module = astResult.getModule();
 		final URI generatedFolderURI = URI.createURI("generated/").resolve(model.getURI());
+
+		// copy protected areas to memory destination
+		final URI protectedAreaFolderURI = URI.createURI("protected-area/").resolve(model.getURI());
+		for (URI protectedAreaURI : getProtectedAreaFiles(protectedAreaFolderURI)) {
+			final URI relativeURI = protectedAreaURI.deresolve(protectedAreaFolderURI);
+			final URI destinationURI = URI.createURI(relativeURI.resolve(memoryDestination).toString()
+					.replaceAll(PROTECTED_AREA_SUFFIX, ""));
+			copy(protectedAreaURI, destinationURI);
+		}
+
 		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, memoryDestination);
@@ -108,12 +124,15 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 
 		// assert generated content
 		final GenerationResult result = evaluator.getGenerationResult();
-		for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
+		final List<URI> generatedAndLost = new ArrayList<>();
+		generatedAndLost.addAll(result.getGeneratedFiles());
+		generatedAndLost.addAll(result.getLostFiles());
+		for (URI memoryGeneratedURI : generatedAndLost) {
 			final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(
 					memoryDestinationString.length())).resolve(generatedFolderURI);
-			final URI expectedURI = URI.createURI(generatedURI.toString() + "-expected.txt");
+			final URI expectedURI = URI.createURI(generatedURI.toString() + EXPECTED_SUFFIX);
 			expectedGeneratedFiles.remove(expectedURI);
-			final URI actualURI = URI.createURI(generatedURI.toString() + "-actual.txt");
+			final URI actualURI = URI.createURI(generatedURI.toString() + ACTUAL_SUFFIT);
 			if (URIConverter.INSTANCE.exists(expectedURI, null)) {
 				final String expectedContent;
 				try (InputStream expectedStream = URIConverter.INSTANCE.createInputStream(expectedURI)) {
@@ -123,7 +142,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 				try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(memoryGeneratedURI)) {
 					actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
 				}
-				assertEquals(expectedContent, actualContent);
+				assertEquals(getPortableString(expectedContent), getPortableString(actualContent));
 			} else {
 				copy(memoryGeneratedURI, actualURI);
 				unexpectedGeneratedFiles.add(actualURI);
@@ -148,13 +167,35 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.endsWith("-expected.txt");
+				return name.endsWith(EXPECTED_SUFFIX);
 			}
 		});
 
 		if (expectedFileNames != null) {
 			for (String expectedFileName : expectedFileNames) {
 				res.add(URI.createURI(expectedFileName).resolve(generatedFolderURI));
+			}
+		}
+
+		return res;
+	}
+
+	private List<URI> getProtectedAreaFiles(URI protectedAreaFolderURI) {
+		final List<URI> res = new ArrayList<URI>();
+
+		final File generatedFolder = new File(protectedAreaFolderURI.toFileString());
+
+		final String[] expectedFileNames = generatedFolder.list(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(PROTECTED_AREA_SUFFIX);
+			}
+		});
+
+		if (expectedFileNames != null) {
+			for (String expectedFileName : expectedFileNames) {
+				res.add(URI.createURI(expectedFileName).resolve(protectedAreaFolderURI));
 			}
 		}
 

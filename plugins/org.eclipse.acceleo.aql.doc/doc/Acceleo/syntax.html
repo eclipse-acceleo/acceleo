@@ -691,7 +691,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_for_statement">For Statement</a> =
 
-'[for ' '(' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '|' <a href="#_aql_expression">AQL Expression</a> ')' ['separator(' <a href="#_aql_expression">AQL Expression</a> ')'] ']'
+'[for ' '(' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '|' <a href="#_aql_expression">AQL Expression</a> ')' ('separator(' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
 
 (<a href="#_statement">Statement</a>)*
 
@@ -750,12 +750,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_protected_area">Protected Area</a> =
 
-'[protected ' '(' <a href="#_aql_expression">AQL Expression</a> ')' ']'
+'[protected ' '(' <a href="#_aql_expression">AQL Expression</a> ')'  ('startTagPrefix(' <a href="#_aql_expression">AQL Expression</a> ')')?  ('endTagPrefix(' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
 
 (<a href="#_statement">Statement</a>)*)?
 
 '[/protected]'</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The start tag prefix and end tag prefix expressions allows to add a prefix to the intserted start and end tag to delimit the protected area in the generated document.
+If an unkown protected area id is encountered in a pre-existing generated document, a lost file is created to save its content.</p>
 </div>
 </div>
 <div class="sect3">
@@ -830,7 +834,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-24 10:27:31 +0200
+Last updated 2023-03-02 11:39:28 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

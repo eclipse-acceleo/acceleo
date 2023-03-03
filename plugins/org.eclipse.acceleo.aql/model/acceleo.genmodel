@@ -175,10 +175,14 @@
     <genClasses ecoreClass="acceleo.ecore#//ProtectedArea">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ProtectedArea/id"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ProtectedArea/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ProtectedArea/startTagPrefix"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ProtectedArea/endTagPrefix"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorProtectedArea">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorProtectedArea/missingOpenParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorProtectedArea/missingCloseParenthesis"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorProtectedArea/missingStartTagPrefixCloseParenthesis"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorProtectedArea/missingEndTagPrefixCloseParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorProtectedArea/missingEndHeader"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorProtectedArea/missingEnd"/>
     </genClasses>

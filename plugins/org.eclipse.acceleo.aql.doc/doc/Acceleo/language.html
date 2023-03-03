@@ -604,12 +604,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @main
 /]
 [template public generate(class : ecore::EClass)]
-[file (class.name + '.txt', overwrite)]
-Class [class.name/] structural features:
-[for (feature | class.eStructuralFeatures)]
-[feature.name/]
-[/for]
-[/file]
+  [file (class.name + '.txt', overwrite)]
+    Class [class.name/] structural features:
+    [for (feature | class.eStructuralFeatures)]
+      [feature.name/]
+    [/for]
+  [/file]
 [/template]</pre>
 </div>
 </div>
@@ -659,8 +659,8 @@ Class [class.name/] structural features:
 <div class="listingblock">
 <div class="content">
 <pre>[template public generate(class : ecore::EClass)]
-[file (class.name + '.java', append, 'UTF-8')]
-[/file]
+  [file (class.name + '.java', append, 'UTF-8')]
+  [/file]
 [/template]</pre>
 </div>
 </div>
@@ -703,8 +703,8 @@ Class [class.name/] structural features:
 <div class="listingblock">
 <div class="content">
 <pre>[template public generate(class : ecore::EClass)]
-[for (feature | class.eStructuralFeatures)]
-[/for]
+  [for (feature | class.eStructuralFeatures)]
+  [/for]
 [/template]</pre>
 </div>
 </div>
@@ -759,7 +759,10 @@ Class [class.name/] structural features:
 <div class="sect3">
 <h4 id="_protected_area">Protected Area</h4>
 <div class="paragraph">
-<p>A protected area defines a set of statements that should only be generated if the file doesn&#8217;t exist on disk or it does not contain an area with the specified protected area&#8217;s identifier.</p>
+<p>The purpose of protected areas is incremental generation.</p>
+</div>
+<div class="paragraph">
+<p>A protected area defines a set of statements that should only be generated if the generated file doesn&#8217;t exist on disk or it does not contain an area with the specified protected area&#8217;s identifier.</p>
 </div>
 <div class="paragraph">
 <p>Protected areas allow module writers to create a "safe" part of the generated file that can be modified directly in the generated file, without fear of these manual modifications to be lost during subsequent generations.</p>
@@ -768,15 +771,15 @@ Class [class.name/] structural features:
 <div class="content">
 <pre>[comment @main/]
 [template public generate(class : ecore::EClass)]
-[file (class.name + '.java', overwrite, 'UTF-8')/]
-// [protected (class.name + ' imports')]
-imports java.util.List;
-// [/protected]
+  [file (class.name + '.java', overwrite, 'UTF-8')/]
+    [protected (class.name + ' imports') startTagPrefix('// ') endTagPrefix('// ')]
+      imports java.util.List;
+    [/protected]
 
-public class [class.name.toUpperFirst()/] {
+    public class [class.name.toUpperFirst()/] {
 
-}
-[/file]
+    }
+  [/file]
 [/template]</pre>
 </div>
 </div>
@@ -787,7 +790,7 @@ public class [class.name.toUpperFirst()/] {
 <p><strong>There must be nothing present on the line after the protected area&#8217;s signature.</strong> Otherwise, everything following said signature will be considered to be part of the area&#8217;s identifier by the engine and the code will not be properly protected.</p>
 </div>
 <div class="paragraph">
-<p>Please also note that the protected area&#8217;s first and last line are marked as comments in the generated code (by generating <code>//</code> at the start of their respective line, since this is Java code). This is to avoid generating invalid Java code as the markers will be present in the generated file&#8217;s contents.</p>
+<p>Please also note that the protected area&#8217;s first and last line are marked as comments in the generated code (<code>'// '</code>) using the start and end tag prefixes. This is to avoid generating invalid Java code as the markers will be present in the generated file&#8217;s contents.</p>
 </div>
 </div>
 <div class="sect3">
@@ -889,7 +892,7 @@ public class [class.name.toUpperFirst()/] {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-24 10:27:31 +0200
+Last updated 2023-03-02 14:40:33 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

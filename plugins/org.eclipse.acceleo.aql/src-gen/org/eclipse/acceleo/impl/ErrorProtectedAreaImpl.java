@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,10 +33,17 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getId <em>Id</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getStartTagPrefix <em>Start Tag
+ * Prefix</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getEndTagPrefix <em>End Tag Prefix</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingOpenParenthesis <em>Missing Open
  * Parenthesis</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingCloseParenthesis <em>Missing Close
  * Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingStartTagPrefixCloseParenthesis
+ * <em>Missing Start Tag Prefix Close Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEndTagPrefixCloseParenthesis
+ * <em>Missing End Tag Prefix Close Parenthesis</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEndHeader <em>Missing End
  * Header</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getMissingEnd <em>Missing End</em>}</li>
@@ -64,6 +71,26 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * @ordered
 	 */
 	protected Block body;
+
+	/**
+	 * The cached value of the '{@link #getStartTagPrefix() <em>Start Tag Prefix</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getStartTagPrefix()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression startTagPrefix;
+
+	/**
+	 * The cached value of the '{@link #getEndTagPrefix() <em>End Tag Prefix</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getEndTagPrefix()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression endTagPrefix;
 
 	/**
 	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
@@ -104,6 +131,46 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * @ordered
 	 */
 	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingStartTagPrefixCloseParenthesis() <em>Missing Start Tag
+	 * Prefix Close Parenthesis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingStartTagPrefixCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingStartTagPrefixCloseParenthesis() <em>Missing Start Tag
+	 * Prefix Close Parenthesis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingStartTagPrefixCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingStartTagPrefixCloseParenthesis = MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingEndTagPrefixCloseParenthesis() <em>Missing End Tag Prefix
+	 * Close Parenthesis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingEndTagPrefixCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingEndTagPrefixCloseParenthesis() <em>Missing End Tag Prefix
+	 * Close Parenthesis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingEndTagPrefixCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingEndTagPrefixCloseParenthesis = MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
@@ -274,6 +341,112 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 */
 	@Override
+	public Expression getStartTagPrefix() {
+		return startTagPrefix;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetStartTagPrefix(Expression newStartTagPrefix, NotificationChain msgs) {
+		Expression oldStartTagPrefix = startTagPrefix;
+		startTagPrefix = newStartTagPrefix;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX, oldStartTagPrefix,
+					newStartTagPrefix);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setStartTagPrefix(Expression newStartTagPrefix) {
+		if (newStartTagPrefix != startTagPrefix) {
+			NotificationChain msgs = null;
+			if (startTagPrefix != null)
+				msgs = ((InternalEObject)startTagPrefix).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX, null, msgs);
+			if (newStartTagPrefix != null)
+				msgs = ((InternalEObject)newStartTagPrefix).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX, null, msgs);
+			msgs = basicSetStartTagPrefix(newStartTagPrefix, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX, newStartTagPrefix,
+					newStartTagPrefix));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Expression getEndTagPrefix() {
+		return endTagPrefix;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetEndTagPrefix(Expression newEndTagPrefix, NotificationChain msgs) {
+		Expression oldEndTagPrefix = endTagPrefix;
+		endTagPrefix = newEndTagPrefix;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX, oldEndTagPrefix, newEndTagPrefix);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setEndTagPrefix(Expression newEndTagPrefix) {
+		if (newEndTagPrefix != endTagPrefix) {
+			NotificationChain msgs = null;
+			if (endTagPrefix != null)
+				msgs = ((InternalEObject)endTagPrefix).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX, null, msgs);
+			if (newEndTagPrefix != null)
+				msgs = ((InternalEObject)newEndTagPrefix).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX, null, msgs);
+			msgs = basicSetEndTagPrefix(newEndTagPrefix, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX, newEndTagPrefix, newEndTagPrefix));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -316,6 +489,56 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS,
 					oldMissingCloseParenthesis, missingCloseParenthesis));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public int getMissingStartTagPrefixCloseParenthesis() {
+		return missingStartTagPrefixCloseParenthesis;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMissingStartTagPrefixCloseParenthesis(int newMissingStartTagPrefixCloseParenthesis) {
+		int oldMissingStartTagPrefixCloseParenthesis = missingStartTagPrefixCloseParenthesis;
+		missingStartTagPrefixCloseParenthesis = newMissingStartTagPrefixCloseParenthesis;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS,
+					oldMissingStartTagPrefixCloseParenthesis, missingStartTagPrefixCloseParenthesis));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public int getMissingEndTagPrefixCloseParenthesis() {
+		return missingEndTagPrefixCloseParenthesis;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMissingEndTagPrefixCloseParenthesis(int newMissingEndTagPrefixCloseParenthesis) {
+		int oldMissingEndTagPrefixCloseParenthesis = missingEndTagPrefixCloseParenthesis;
+		missingEndTagPrefixCloseParenthesis = newMissingEndTagPrefixCloseParenthesis;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS,
+					oldMissingEndTagPrefixCloseParenthesis, missingEndTagPrefixCloseParenthesis));
 	}
 
 	/**
@@ -379,6 +602,10 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 				return basicSetId(null, msgs);
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
 				return basicSetBody(null, msgs);
+			case AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX:
+				return basicSetStartTagPrefix(null, msgs);
+			case AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX:
+				return basicSetEndTagPrefix(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -395,10 +622,18 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 				return getId();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
 				return getBody();
+			case AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX:
+				return getStartTagPrefix();
+			case AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX:
+				return getEndTagPrefix();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS:
 				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS:
 				return getMissingCloseParenthesis();
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS:
+				return getMissingStartTagPrefixCloseParenthesis();
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS:
+				return getMissingEndTagPrefixCloseParenthesis();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_HEADER:
 				return getMissingEndHeader();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END:
@@ -421,11 +656,23 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
 				setBody((Block)newValue);
 				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX:
+				setStartTagPrefix((Expression)newValue);
+				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX:
+				setEndTagPrefix((Expression)newValue);
+				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS:
+				setMissingStartTagPrefixCloseParenthesis((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS:
+				setMissingEndTagPrefixCloseParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_HEADER:
 				setMissingEndHeader((Integer)newValue);
@@ -451,11 +698,23 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
 				setBody((Block)null);
 				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX:
+				setStartTagPrefix((Expression)null);
+				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX:
+				setEndTagPrefix((Expression)null);
+				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis(MISSING_CLOSE_PARENTHESIS_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS:
+				setMissingStartTagPrefixCloseParenthesis(MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS:
+				setMissingEndTagPrefixCloseParenthesis(MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_HEADER:
 				setMissingEndHeader(MISSING_END_HEADER_EDEFAULT);
@@ -479,10 +738,18 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 				return id != null;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
 				return body != null;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX:
+				return startTagPrefix != null;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX:
+				return endTagPrefix != null;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS:
 				return missingCloseParenthesis != MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS:
+				return missingStartTagPrefixCloseParenthesis != MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS:
+				return missingEndTagPrefixCloseParenthesis != MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_HEADER:
 				return missingEndHeader != MISSING_END_HEADER_EDEFAULT;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END:
@@ -510,6 +777,10 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 					return AcceleoPackage.PROTECTED_AREA__ID;
 				case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
 					return AcceleoPackage.PROTECTED_AREA__BODY;
+				case AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX:
+					return AcceleoPackage.PROTECTED_AREA__START_TAG_PREFIX;
+				case AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX:
+					return AcceleoPackage.PROTECTED_AREA__END_TAG_PREFIX;
 				default:
 					return -1;
 			}
@@ -536,6 +807,10 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 					return AcceleoPackage.ERROR_PROTECTED_AREA__ID;
 				case AcceleoPackage.PROTECTED_AREA__BODY:
 					return AcceleoPackage.ERROR_PROTECTED_AREA__BODY;
+				case AcceleoPackage.PROTECTED_AREA__START_TAG_PREFIX:
+					return AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX;
+				case AcceleoPackage.PROTECTED_AREA__END_TAG_PREFIX:
+					return AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX;
 				default:
 					return -1;
 			}
@@ -558,6 +833,10 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 		result.append(missingOpenParenthesis);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
 		result.append(missingCloseParenthesis);
+		result.append(", missingStartTagPrefixCloseParenthesis: "); //$NON-NLS-1$
+		result.append(missingStartTagPrefixCloseParenthesis);
+		result.append(", missingEndTagPrefixCloseParenthesis: "); //$NON-NLS-1$
+		result.append(missingEndTagPrefixCloseParenthesis);
 		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);
 		result.append(", missingEnd: "); //$NON-NLS-1$

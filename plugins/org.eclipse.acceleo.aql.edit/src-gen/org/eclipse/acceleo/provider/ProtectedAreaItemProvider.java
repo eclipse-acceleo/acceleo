@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -79,6 +79,8 @@ public class ProtectedAreaItemProvider extends ItemProviderAdapter implements IE
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__ID);
 			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__BODY);
+			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX);
+			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX);
 		}
 		return childrenFeatures;
 	}
@@ -132,6 +134,8 @@ public class ProtectedAreaItemProvider extends ItemProviderAdapter implements IE
 		switch (notification.getFeatureID(ProtectedArea.class)) {
 		case AcceleoPackage.PROTECTED_AREA__ID:
 		case AcceleoPackage.PROTECTED_AREA__BODY:
+		case AcceleoPackage.PROTECTED_AREA__START_TAG_PREFIX:
+		case AcceleoPackage.PROTECTED_AREA__END_TAG_PREFIX:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -157,6 +161,41 @@ public class ProtectedAreaItemProvider extends ItemProviderAdapter implements IE
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__BODY,
 				AcceleoFactory.eINSTANCE.createBlock()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createExpression()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createErrorExpression()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createExpression()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createErrorExpression()));
+	}
+
+	/**
+	 * This returns the label text for
+	 * {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+		Object childFeature = feature;
+		Object childObject = child;
+
+		boolean qualify = childFeature == AcceleoPackage.Literals.PROTECTED_AREA__ID
+				|| childFeature == AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX
+				|| childFeature == AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX;
+
+		if (qualify) {
+			return getString("_UI_CreateChild_text2", //$NON-NLS-1$
+					new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+		}
+		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 	/**

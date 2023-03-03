@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -413,6 +413,22 @@ public final class AcceleoSyntacticCompletionProposals {
 	public static final AcceleoCompletionProposal STATEMENT_PROTECTED_AREA_HEADER_START = createSyntacticCompletionProposal(
 			AcceleoParser.PROTECTED_AREA_HEADER_START + AcceleoParser.OPEN_PARENTHESIS,
 			"Inserts the start of a Protected Area Statement header:",
+			AcceleoPackage.Literals.PROTECTED_AREA);
+
+	/**
+	 * The start of the start tag prefix in a {@link ProtectedArea}.
+	 */
+	public static final AcceleoCompletionProposal STATEMENT_PROTECTED_AREA_START_TAG_PREFIX = createSyntacticCompletionProposal(
+			AcceleoParser.PROTECTED_AREA_START_TAG_PREFIX,
+			"Inserts the Protected Area Statement start tag prefix expression:",
+			AcceleoPackage.Literals.PROTECTED_AREA);
+
+	/**
+	 * The start of the start tag prefix in a {@link ProtectedArea}.
+	 */
+	public static final AcceleoCompletionProposal STATEMENT_PROTECTED_AREA_END_TAG_PREFIX = createSyntacticCompletionProposal(
+			AcceleoParser.PROTECTED_AREA_END_TAG_PREFIX,
+			"Inserts the Protected Area Statement end tag prefix expression:",
 			AcceleoPackage.Literals.PROTECTED_AREA);
 
 	/**

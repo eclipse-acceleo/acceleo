@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -64,6 +64,8 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 
 			addMissingOpenParenthesisPropertyDescriptor(object);
 			addMissingCloseParenthesisPropertyDescriptor(object);
+			addMissingStartTagPrefixCloseParenthesisPropertyDescriptor(object);
+			addMissingEndTagPrefixCloseParenthesisPropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
 			addMissingEndPropertyDescriptor(object);
 		}
@@ -100,6 +102,40 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 						"_UI_ErrorProtectedArea_missingCloseParenthesis_feature", "_UI_ErrorProtectedArea_type"), //$NON-NLS-1$ //$NON-NLS-2$
 				AcceleoPackage.Literals.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS, true, false, false,
 				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Missing Start Tag Prefix Close
+	 * Parenthesis feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMissingStartTagPrefixCloseParenthesisPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_ErrorProtectedArea_missingStartTagPrefixCloseParenthesis_feature"), //$NON-NLS-1$
+				getString("_UI_PropertyDescriptor_description", //$NON-NLS-1$
+						"_UI_ErrorProtectedArea_missingStartTagPrefixCloseParenthesis_feature", //$NON-NLS-1$
+						"_UI_ErrorProtectedArea_type"), //$NON-NLS-1$
+				AcceleoPackage.Literals.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS, true, false,
+				false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Missing End Tag Prefix Close
+	 * Parenthesis feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMissingEndTagPrefixCloseParenthesisPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_ErrorProtectedArea_missingEndTagPrefixCloseParenthesis_feature"), //$NON-NLS-1$
+				getString("_UI_PropertyDescriptor_description", //$NON-NLS-1$
+						"_UI_ErrorProtectedArea_missingEndTagPrefixCloseParenthesis_feature", //$NON-NLS-1$
+						"_UI_ErrorProtectedArea_type"), //$NON-NLS-1$
+				AcceleoPackage.Literals.ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS, true, false,
+				false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -149,6 +185,8 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__ID);
 			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__BODY);
+			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX);
+			childrenFeatures.add(AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX);
 		}
 		return childrenFeatures;
 	}
@@ -204,12 +242,16 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 		switch (notification.getFeatureID(ErrorProtectedArea.class)) {
 		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS:
 		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS:
+		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS:
+		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS:
 		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END_HEADER:
 		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_END:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 		case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
+		case AcceleoPackage.ERROR_PROTECTED_AREA__START_TAG_PREFIX:
+		case AcceleoPackage.ERROR_PROTECTED_AREA__END_TAG_PREFIX:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -235,6 +277,41 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__BODY,
 				AcceleoFactory.eINSTANCE.createBlock()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createExpression()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createErrorExpression()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createExpression()));
+
+		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX,
+				AcceleoFactory.eINSTANCE.createErrorExpression()));
+	}
+
+	/**
+	 * This returns the label text for
+	 * {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+		Object childFeature = feature;
+		Object childObject = child;
+
+		boolean qualify = childFeature == AcceleoPackage.Literals.PROTECTED_AREA__ID
+				|| childFeature == AcceleoPackage.Literals.PROTECTED_AREA__START_TAG_PREFIX
+				|| childFeature == AcceleoPackage.Literals.PROTECTED_AREA__END_TAG_PREFIX;
+
+		if (qualify) {
+			return getString("_UI_CreateChild_text2", //$NON-NLS-1$
+					new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+		}
+		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 	/**

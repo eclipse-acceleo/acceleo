@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,9 @@ package org.eclipse.acceleo.aql.evaluation.writer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.emf.common.util.URI;
@@ -28,15 +31,26 @@ public class NullGenerationStrategy implements IAcceleoGenerationStrategy {
 	}
 
 	@Override
-	public String getProtectedAreaContent(URI uri, String protectedAreaID) {
+	public String consumeProtectedAreaContent(URI uri, String protectedAreaID) {
 		// Do nothing
 		return null;
 	}
 
 	@Override
+	public Map<String, List<String>> consumeAllProtectedAreas(URI uri) {
+		return Collections.emptyMap();
+	}
+
+	@Override
+	public IAcceleoWriter createWriterForLostContent(URI uri, String protectedAreaID, Charset charset,
+			String lineDelimiter) throws IOException {
+		return new NullWriter(uri, charset);
+	}
+
+	@Override
 	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
 			String lineDelimiter) throws IOException {
-		return new NullWriter(uri);
+		return new NullWriter(uri, charset);
 	}
 
 	@Override

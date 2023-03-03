@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {ForStatementTests.class, IfStatementTrueTests.class, IfStatementFalseTests.class,
-		LetStatementTests.class, })
+		LetStatementTests.class, ProtectedAreaTests.class, })
 public class IndentationTests {
 
 }

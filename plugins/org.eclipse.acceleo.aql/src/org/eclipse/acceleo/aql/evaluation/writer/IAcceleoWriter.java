@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.evaluation.writer;
 
 import java.io.Closeable;
+import java.nio.charset.Charset;
 
 import org.eclipse.emf.common.util.URI;
 
@@ -27,4 +28,11 @@ public interface IAcceleoWriter extends Closeable, Appendable {
 	 * @return The URI for which this writer was created.
 	 */
 	URI getTargetURI();
+
+	/**
+	 * Gets the {@link Charset} of this writer.
+	 * 
+	 * @return the {@link Charset} of this writer
+	 */
+	Charset getCharset();
 }

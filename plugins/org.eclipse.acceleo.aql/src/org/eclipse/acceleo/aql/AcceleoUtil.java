@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -151,11 +151,13 @@ public final class AcceleoUtil {
 				}
 			}
 
+			final DefaultGenerationStrategy generationStrategy = new DefaultGenerationStrategy();
 			final Map<String, Object> variables = new HashMap<String, Object>();
 			for (EObject value : values) {
 				variables.put(parameterName, value);
-				evaluator.generate(module, variables, new DefaultGenerationStrategy(), destination);
+				evaluator.generate(module, variables, generationStrategy, destination);
 			}
+			generationStrategy.terminate();
 		}
 	}
 

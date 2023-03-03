@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021  Obeo.
+ * Copyright (c) 2016, 2023  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,20 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Binding;
@@ -83,6 +89,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private static final String NEW_LINE = "\n";
 
 	/**
+	 * The {@link DateFormat} used to log lost {@link UserContent}.
+	 */
+	private static final DateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+	/**
 	 * The {@link IQueryEvaluationEngine} used to evaluate AQL expressions.
 	 */
 	private final IQueryEvaluationEngine aqlEngine;
@@ -119,6 +130,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 	/** This will hold the writer stack for the file blocks. */
 	private final Deque<IAcceleoWriter> writers = new ArrayDeque<IAcceleoWriter>();
+
+	/** This will hold the {@link Set} of encountered {@link ProtectedArea} IDs. */
+	private final Deque<Set<String>> protectedAreaIDs = new ArrayDeque<Set<String>>();
 
 	/** The current generation strategy. */
 	private IAcceleoGenerationStrategy generationStrategy;
@@ -531,7 +545,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					write(content);
 				} finally {
 					popIndentation();
-					closeWriter();
+					closeWriter(fileStatement);
 				}
 			} catch (IOException e) {
 				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0, e
@@ -547,36 +561,81 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Opens a writer for the given file uri.
+	 * Opens a writer for the given file {@link URI}.
 	 * 
 	 * @param uri
 	 *            The {@link URI} for which we need a writer.
 	 * @param openMode
-	 *            The mode in which to open the file.
+	 *            The {@link OpenModeKind} in which to open the file.
 	 * @param charset
 	 *            The {@link Charset} for the target file.
 	 * @param lineDelimiter
 	 *            Line delimiter that should be used for that file.
 	 * @throws IOException
-	 *             if the writed can't be opened
+	 *             if the {@link IAcceleoWriter} can't be opened
 	 */
 	private void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
 			throws IOException {
 		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
 				lineDelimiter);
 		writers.addLast(writer);
-		generationResult.getGeneratedFiles().add(uri);
+		protectedAreaIDs.addLast(new HashSet<>());
+		generationResult.getGeneratedFiles().add(writer.getTargetURI());
 	}
 
 	/**
 	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
 	 * 
+	 * @param fileStatement
+	 *            the {@link FileStatement} closing the current {@link IAcceleoWriter}
 	 * @throws IOException
-	 *             if the writer can't be closed
+	 *             if an {@link IAcceleoWriter} open, write, or close can't be performed
 	 */
-	private void closeWriter() throws IOException {
+	private void closeWriter(FileStatement fileStatement) throws IOException {
+		final IAcceleoGenerationStrategy strategy = getGenerationStrategy();
+		writeLostFiles(fileStatement, strategy);
+
 		final IAcceleoWriter writer = writers.removeLast();
-		writer.close();
+		strategy.closeWriter(writer);
+		protectedAreaIDs.removeLast();
+	}
+
+	/**
+	 * Writes lost files for the given {@link FileStatement} using the given
+	 * {@link IAcceleoGenerationStrategy}.
+	 * 
+	 * @param fileStatement
+	 *            the {@link FileStatement} that ended
+	 * @param strategy
+	 *            the {@link IAcceleoGenerationStrategy}
+	 * @throws IOException
+	 *             if the {@link IAcceleoWriter} open, write, or close can't be performed
+	 */
+	private void writeLostFiles(FileStatement fileStatement, IAcceleoGenerationStrategy strategy)
+			throws IOException {
+		final URI targetURI = getTargetURI();
+		final Charset targetCharset = getTargetCharset();
+		final Map<String, List<String>> remainingProtectedAreas = strategy.consumeAllProtectedAreas(
+				targetURI);
+		for (Entry<String, List<String>> entry : remainingProtectedAreas.entrySet()) {
+			String lostID = entry.getKey();
+			final IAcceleoWriter lostWriter = strategy.createWriterForLostContent(targetURI, lostID,
+					targetCharset, NEW_LINE);
+			try {
+				for (String lostContent : entry.getValue()) {
+					final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0,
+							"Lost file generated: " + lostWriter.getTargetURI(), new Object[] {fileStatement,
+									new HashMap<String, Object>(peekVariables()) });
+					generationResult.addDiagnostic(diagnostic);
+					lostWriter.append(FORMAT.format(new Date()) + " - Lost user content " + lostID
+							+ NEW_LINE);
+					lostWriter.append(lostContent + NEW_LINE);
+					generationResult.getLostFiles().add(lostWriter.getTargetURI());
+				}
+			} finally {
+				strategy.closeWriter(lostWriter);
+			}
+		}
 	}
 
 	/**
@@ -706,10 +765,112 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		return builder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.util.AcceleoSwitch#caseProtectedArea(org.eclipse.acceleo.ProtectedArea)
+	 */
 	@Override
-	public Object caseProtectedArea(ProtectedArea object) {
-		// TODO Auto-generated method stub
-		return super.caseProtectedArea(object);
+	public Object caseProtectedArea(ProtectedArea protectedArea) {
+		final String res;
+
+		final Object idObject = doSwitch(protectedArea.getId());
+		final String id = toString(idObject);
+		if (id.isEmpty()) {
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
+					"The protected area id can't be empty.", new Object[] {protectedArea.getId(),
+							new HashMap<String, Object>(peekVariables()) });
+			generationResult.addDiagnostic(diagnostic);
+			res = EMPTY_RESULT;
+		} else {
+			res = getProtectedAreaContent(protectedArea, id);
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link ProtectedArea} contents.
+	 * 
+	 * @param protectedArea
+	 *            the {@link ProtectedArea}
+	 * @param id
+	 *            the ID of the {@link ProtectedArea}
+	 * @return the {@link ProtectedArea} contents
+	 */
+	private String getProtectedAreaContent(ProtectedArea protectedArea, String id) {
+		final StringBuilder res = new StringBuilder();
+
+		checkProtectedAreaIdUniqueness(protectedArea, id);
+
+		if (protectedArea.getStartTagPrefix() != null) {
+			Object startTagPrefixObject = doSwitch(protectedArea.getStartTagPrefix());
+			res.append(toString(startTagPrefixObject));
+		}
+
+		final URI uri = getTargetURI();
+		final String protectedAreaContent = generationStrategy.consumeProtectedAreaContent(uri, id);
+		if (protectedAreaContent != null) {
+			res.append(protectedAreaContent);
+		} else {
+			pushIndentation(protectedArea.getBody(), lastLineOfLastStatement);
+			try {
+				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + NEW_LINE
+						+ peekIndentation());
+
+				res.append(doSwitch(protectedArea.getBody()));
+
+				if (lastLineOfLastStatement.isEmpty()) {
+					res.append(peekIndentation());
+				}
+				if (protectedArea.getEndTagPrefix() != null) {
+					Object endTagPrefixObject = doSwitch(protectedArea.getEndTagPrefix());
+					res.append(toString(endTagPrefixObject));
+				}
+				res.append(IAcceleoGenerationStrategy.USER_CODE_END + NEW_LINE);
+			} finally {
+				popIndentation();
+			}
+		}
+		lastLineOfLastStatement = "";
+
+		return res.toString();
+	}
+
+	/**
+	 * Gets the current target {@link URI}.
+	 * 
+	 * @return the current target {@link URI}
+	 */
+	private URI getTargetURI() {
+		return writers.peekLast().getTargetURI();
+	}
+
+	/**
+	 * Gets the current target {@link Charset}.
+	 * 
+	 * @return the current target {@link Charset}
+	 */
+	private Charset getTargetCharset() {
+		return writers.peekLast().getCharset();
+	}
+
+	/**
+	 * Checks the given {@link ProtectedArea} generated ID uniqueness. It logs an error is uniqueness is not
+	 * preserved.
+	 * 
+	 * @param protectedArea
+	 *            the {@link ProtectedArea}
+	 * @param id
+	 *            the generated ID
+	 */
+	private void checkProtectedAreaIdUniqueness(ProtectedArea protectedArea, String id) {
+		if (!protectedAreaIDs.peekLast().add(id)) {
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
+					"Duplicated protected area ID: " + id, new Object[] {protectedArea.getId(),
+							new HashMap<String, Object>(peekVariables()) });
+			generationResult.addDiagnostic(diagnostic);
+		}
 	}
 
 	@Override

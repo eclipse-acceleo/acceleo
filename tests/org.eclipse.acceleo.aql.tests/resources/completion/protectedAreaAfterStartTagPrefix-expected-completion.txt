@@ -1,0 +1,18 @@
+* Label:
+endTagPrefix(
+* Description:
+Inserts the Protected Area Statement end tag prefix expression:<br/><pre>endTagPrefix(</pre>
+* Text:
+endTagPrefix(
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ProtectedArea
+
+* Label:
+]
+* Description:
+Inserts the end of a Protected Area Statement header:<br/><pre>]</pre>
+* Text:
+]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ProtectedArea
+

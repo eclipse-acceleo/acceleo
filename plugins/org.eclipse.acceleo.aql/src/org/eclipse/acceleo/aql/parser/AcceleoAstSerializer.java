@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -448,6 +448,18 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		doSwitch(protectedArea.getId());
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
+		if (protectedArea.getStartTagPrefix() != null) {
+			builder.append(SPACE);
+			builder.append(AcceleoParser.PROTECTED_AREA_START_TAG_PREFIX);
+			doSwitch(protectedArea.getStartTagPrefix());
+			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
+		}
+		if (protectedArea.getEndTagPrefix() != null) {
+			builder.append(SPACE);
+			builder.append(AcceleoParser.PROTECTED_AREA_END_TAG_PREFIX);
+			doSwitch(protectedArea.getEndTagPrefix());
+			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
+		}
 		builder.append(AcceleoParser.PROTECTED_AREA_HEADER_END);
 		doSwitch(protectedArea.getBody());
 		builder.append(AcceleoParser.PROTECTED_AREA_END);

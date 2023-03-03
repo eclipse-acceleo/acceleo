@@ -1,0 +1,5 @@
+first line
+BEFORE_TEXT Start of user code anydsl
+BEFORE_TEXT anydsl
+BEFORE_TEXT End of user code
+last line

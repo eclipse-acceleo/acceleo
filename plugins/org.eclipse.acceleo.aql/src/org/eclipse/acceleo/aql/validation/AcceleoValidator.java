@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -716,7 +716,24 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseProtectedArea(ProtectedArea protectedArea) {
-		doSwitch(protectedArea.getId());
+		final IValidationResult idValidationResult = (IValidationResult)doSwitch(protectedArea.getId());
+		Set<IType> idPossibleTypes = idValidationResult.getPossibleTypes(idValidationResult.getAstResult()
+				.getAst());
+		checkStringType(protectedArea.getId(), idPossibleTypes);
+		if (protectedArea.getStartTagPrefix() != null) {
+			final IValidationResult startTagPrefixValidationResult = (IValidationResult)doSwitch(protectedArea
+					.getStartTagPrefix());
+			Set<IType> startTagPrefixPossibleTypes = startTagPrefixValidationResult.getPossibleTypes(
+					startTagPrefixValidationResult.getAstResult().getAst());
+			checkStringType(protectedArea.getStartTagPrefix(), startTagPrefixPossibleTypes);
+		}
+		if (protectedArea.getEndTagPrefix() != null) {
+			final IValidationResult endTagPrefixValidationResult = (IValidationResult)doSwitch(protectedArea
+					.getEndTagPrefix());
+			Set<IType> endTagPrefixPossibleTypes = endTagPrefixValidationResult.getPossibleTypes(
+					endTagPrefixValidationResult.getAstResult().getAst());
+			checkStringType(protectedArea.getEndTagPrefix(), endTagPrefixPossibleTypes);
+		}
 		doSwitch(protectedArea.getBody());
 
 		return RETURN_VALUE;
@@ -728,6 +745,16 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
 					AcceleoParser.OPEN_PARENTHESIS), errorProtectedArea.getMissingOpenParenthesis(),
 					errorProtectedArea.getMissingOpenParenthesis());
+		} else if (errorProtectedArea.getMissingStartTagPrefixCloseParenthesis() != -1) {
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorProtectedArea
+							.getMissingStartTagPrefixCloseParenthesis(), errorProtectedArea
+									.getMissingStartTagPrefixCloseParenthesis());
+		} else if (errorProtectedArea.getMissingEndTagPrefixCloseParenthesis() != -1) {
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorProtectedArea
+							.getMissingEndTagPrefixCloseParenthesis(), errorProtectedArea
+									.getMissingEndTagPrefixCloseParenthesis());
 		} else if (errorProtectedArea.getMissingCloseParenthesis() != -1) {
 			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
 					AcceleoParser.CLOSE_PARENTHESIS), errorProtectedArea.getMissingCloseParenthesis(),
@@ -940,15 +967,15 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseFileStatement(FileStatement fileStatement) {
 		final IValidationResult urlValidationResult = (IValidationResult)doSwitch(fileStatement.getUrl());
-		Set<IType> urlpossibleTypes = urlValidationResult.getPossibleTypes(urlValidationResult.getAstResult()
+		Set<IType> urlPossibleTypes = urlValidationResult.getPossibleTypes(urlValidationResult.getAstResult()
 				.getAst());
-		checkStringType(fileStatement.getUrl(), urlpossibleTypes);
+		checkStringType(fileStatement.getUrl(), urlPossibleTypes);
 		if (fileStatement.getCharset() != null) {
 			final IValidationResult charsetValidationResult = (IValidationResult)doSwitch(fileStatement
 					.getCharset());
-			Set<IType> charsetpossibleTypes = charsetValidationResult.getPossibleTypes(charsetValidationResult
+			Set<IType> charsetPossibleTypes = charsetValidationResult.getPossibleTypes(charsetValidationResult
 					.getAstResult().getAst());
-			checkStringType(fileStatement.getCharset(), charsetpossibleTypes);
+			checkStringType(fileStatement.getCharset(), charsetPossibleTypes);
 		}
 		doSwitch(fileStatement.getBody());
 

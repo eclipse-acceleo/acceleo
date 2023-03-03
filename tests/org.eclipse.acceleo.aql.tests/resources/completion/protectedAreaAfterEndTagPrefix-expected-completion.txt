@@ -1,0 +1,9 @@
+* Label:
+]
+* Description:
+Inserts the end of a Protected Area Statement header:<br/><pre>]</pre>
+* Text:
+]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ProtectedArea
+

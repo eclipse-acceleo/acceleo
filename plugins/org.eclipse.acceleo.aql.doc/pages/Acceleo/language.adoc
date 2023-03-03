@@ -97,12 +97,12 @@ Example:
 @main
 /]
 [template public generate(class : ecore::EClass)]
-[file (class.name + '.txt', overwrite)]
-Class [class.name/] structural features:
-[for (feature | class.eStructuralFeatures)]
-[feature.name/]
-[/for]
-[/file]
+  [file (class.name + '.txt', overwrite)]
+    Class [class.name/] structural features:
+    [for (feature | class.eStructuralFeatures)]
+      [feature.name/]
+    [/for]
+  [/file]
 [/template]
 ----
 
@@ -129,8 +129,8 @@ Example:
 
 ----
 [template public generate(class : ecore::EClass)]
-[file (class.name + '.java', append, 'UTF-8')]
-[/file]
+  [file (class.name + '.java', append, 'UTF-8')]
+  [/file]
 [/template]
 ----
 
@@ -157,8 +157,8 @@ Example:
 
 ----
 [template public generate(class : ecore::EClass)]
-[for (feature | class.eStructuralFeatures)]
-[/for]
+  [for (feature | class.eStructuralFeatures)]
+  [/for]
 [/template]
 ----
 
@@ -198,22 +198,24 @@ See also the <<syntax#_let_statemnet,Let Statement syntax documentation>>.
 
 ==== Protected Area
 
-A protected area defines a set of statements that should only be generated if the file doesn't exist on disk or it does not contain an area with the specified protected area's identifier.
+The purpose of protected areas is incremental generation.
+
+A protected area defines a set of statements that should only be generated if the generated file doesn't exist on disk or it does not contain an area with the specified protected area's identifier.
 
 Protected areas allow module writers to create a "safe" part of the generated file that can be modified directly in the generated file, without fear of these manual modifications to be lost during subsequent generations.
 
 ----
 [comment @main/]
 [template public generate(class : ecore::EClass)]
-[file (class.name + '.java', overwrite, 'UTF-8')/]
-// [protected (class.name + ' imports')]
-imports java.util.List;
-// [/protected]
+  [file (class.name + '.java', overwrite, 'UTF-8')/]
+    [protected (class.name + ' imports') startTagPrefix('// ') endTagPrefix('// ')]
+      imports java.util.List;
+    [/protected]
 
-public class [class.name.toUpperFirst()/] {
+    public class [class.name.toUpperFirst()/] {
 
-}
-[/file]
+    }
+  [/file]
 [/template]
 ----
 
@@ -221,7 +223,7 @@ The expression within the protected block's signature serves as the protected ar
 
 *There must be nothing present on the line after the protected area's signature.* Otherwise, everything following said signature will be considered to be part of the area's identifier by the engine and the code will not be properly protected.
 
-Please also note that the protected area's first and last line are marked as comments in the generated code (by generating `//` at the start of their respective line, since this is Java code). This is to avoid generating invalid Java code as the markers will be present in the generated file's contents.
+Please also note that the protected area's first and last line are marked as comments in the generated code (`'// '`) using the start and end tag prefixes. This is to avoid generating invalid Java code as the markers will be present in the generated file's contents.
 
 ==== Variable
 

@@ -255,6 +255,16 @@ public class AcceleoParser {
 	public static final String PROTECTED_AREA_HEADER_END = NO_SLASH_END;
 
 	/**
+	 * {@link ProtectedArea} start tag prefix.
+	 */
+	public static final String PROTECTED_AREA_START_TAG_PREFIX = "startTagPrefix(";
+
+	/**
+	 * {@link ProtectedArea} end tag prefix.
+	 */
+	public static final String PROTECTED_AREA_END_TAG_PREFIX = "endTagPrefix(";
+
+	/**
 	 * End of {@link ProtectedArea}.
 	 */
 	public static final String PROTECTED_AREA_END = END_BLOCK_PREFIX + "protected]";
@@ -1646,6 +1656,7 @@ public class AcceleoParser {
 				separator = parseExpression(separatorEndLimit);
 				skipSpaces();
 				missingSeparatorCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
+				skipSpaces();
 			} else {
 				separator = null;
 				missingSeparatorCloseParenthesis = -1;
@@ -1998,20 +2009,57 @@ public class AcceleoParser {
 			skipSpaces();
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
+			final Expression startTagPrefix;
+			final int missingStartTagPrefixCloseParenthesis;
+			if (readString(PROTECTED_AREA_START_TAG_PREFIX)) {
+				skipSpaces();
+				final int startTagPrefixEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
+						PROTECTED_AREA_HEADER_END);
+				startTagPrefix = parseExpression(startTagPrefixEndLimit);
+				skipSpaces();
+				missingStartTagPrefixCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
+				skipSpaces();
+			} else {
+				startTagPrefix = null;
+				missingStartTagPrefixCloseParenthesis = -1;
+			}
+			final Expression endTagPrefix;
+			final int missingEndTagPrefixCloseParenthesis;
+			if (readString(PROTECTED_AREA_END_TAG_PREFIX)) {
+				skipSpaces();
+				final int startTagPrefixEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
+						PROTECTED_AREA_HEADER_END);
+				endTagPrefix = parseExpression(startTagPrefixEndLimit);
+				skipSpaces();
+				missingEndTagPrefixCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
+				skipSpaces();
+			} else {
+				endTagPrefix = null;
+				missingEndTagPrefixCloseParenthesis = -1;
+			}
 			final int missingEndHeader = readMissingString(PROTECTED_AREA_HEADER_END);
 			final Block body = parseBlock(headerStartLine, significantTextColumn, PROTECTED_AREA_END);
 			final int missingEnd = readMissingString(PROTECTED_AREA_END);
-			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1 || missingEndHeader != -1
+			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1
+					|| missingStartTagPrefixCloseParenthesis != -1
+					|| missingEndTagPrefixCloseParenthesis != -1 || missingEndHeader != -1
 					|| missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorProtectedArea();
 				((ErrorProtectedArea)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorProtectedArea)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorProtectedArea)res).setMissingStartTagPrefixCloseParenthesis(
+						missingStartTagPrefixCloseParenthesis);
+				((ErrorProtectedArea)res).setMissingEndTagPrefixCloseParenthesis(
+						missingEndTagPrefixCloseParenthesis);
 				((ErrorProtectedArea)res).setMissingEndHeader(missingEndHeader);
 				((ErrorProtectedArea)res).setMissingEnd(missingEnd);
 				errors.add((ErrorProtectedArea)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createProtectedArea();
 			}
+			res.setId(id);
+			res.setStartTagPrefix(startTagPrefix);
+			res.setEndTagPrefix(endTagPrefix);
 			res.setId(id);
 			res.setBody(body);
 			setPositions(res, startPosition, currentPosition);

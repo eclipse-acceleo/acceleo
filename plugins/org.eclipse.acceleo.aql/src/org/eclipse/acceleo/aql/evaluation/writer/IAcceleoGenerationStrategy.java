@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2017 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@ package org.eclipse.acceleo.aql.evaluation.writer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.aql.internal.AcceleoMessages;
@@ -47,9 +49,9 @@ public interface IAcceleoGenerationStrategy {
 	void closeWriter(IAcceleoWriter writer) throws IOException;
 
 	/**
-	 * This will be called by the engine when it encounters a protected area. This should return the content
-	 * of the specified protected area if any, <code>null</code> if none. An empty String will be considered
-	 * to be the protected area's contents.
+	 * This will be called by the engine when it encounters a protected area. This should consume (return and
+	 * remove) the content of the specified protected area if any, <code>null</code> if none. An empty String
+	 * will be considered to be the protected area's contents.
 	 * 
 	 * @param uri
 	 *            URI from which user code has been lost by this generation.
@@ -57,7 +59,36 @@ public interface IAcceleoGenerationStrategy {
 	 *            ID of the protected area which content we're seeking.
 	 * @return Content of that protected area if any, <code>null</code> if none.
 	 */
-	String getProtectedAreaContent(URI uri, String protectedAreaID);
+	String consumeProtectedAreaContent(URI uri, String protectedAreaID);
+
+	/**
+	 * This will be called by the engine when it ends the generation of the given {@link URI}. This should
+	 * consume (return and remove) all the remaining content. An empty String will be considered to be the
+	 * protected area's contents.
+	 * 
+	 * @param uri
+	 *            the ended generation URI.
+	 * @return a mapping from remaining protected area ID to its content
+	 */
+	Map<String, List<String>> consumeAllProtectedAreas(URI uri);
+
+	/**
+	 * Creates an {@link IAcceleoWriter} for the lost content for the given generated {@link URI} with the
+	 * given protected area ID.
+	 * 
+	 * @param uri
+	 *            the generated {@link URI}
+	 * @param protectedAreaID
+	 *            the lost protected area ID.
+	 * @param charset
+	 *            the {@link Charset} of the stream that's to be saved
+	 * @param lineDelimiter
+	 * @throws IOException
+	 *             if the writer can't be created
+	 * @return the created writer. It can't be <code>null</code> use {@link NullWriter} instead.
+	 */
+	IAcceleoWriter createWriterForLostContent(URI uri, String protectedAreaID, Charset charset,
+			String lineDelimiter) throws IOException;
 
 	/**
 	 * This will be called internally by the engine whenever a [file/] block is encountered so that the
