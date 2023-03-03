@@ -136,11 +136,12 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 			if (URIConverter.INSTANCE.exists(expectedURI, null)) {
 				final String expectedContent;
 				try (InputStream expectedStream = URIConverter.INSTANCE.createInputStream(expectedURI)) {
-					expectedContent = getContent(expectedStream, UTF_8); // TODO test other encoding
+					expectedContent = AcceleoUtil.getContent(expectedStream, UTF_8); // TODO test other
+																						// encoding
 				}
 				final String actualContent;
 				try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(memoryGeneratedURI)) {
-					actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
+					actualContent = AcceleoUtil.getContent(actualStream, UTF_8); // TODO test other encoding
 				}
 				assertEquals(getPortableString(expectedContent), getPortableString(actualContent));
 			} else {
@@ -226,7 +227,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		} else {
 			String expectedContent = "";
 			try (FileInputStream stream = new FileInputStream(expectedFile);) {
-				expectedContent = getContent(stream, UTF_8);
+				expectedContent = AcceleoUtil.getContent(stream, UTF_8);
 			}
 			assertEquals(expectedContent, actualContent);
 		}

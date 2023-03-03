@@ -10,16 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation.writer;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
- * The default File writer used by Acceleo.
+ * The default {@link URI} writer used by Acceleo.
  * <p>
  * Data will be written to the disk without any verification about the workspace or VCS. Do not use with
  * pessimistic locking VCS or if JMerge is needed.
@@ -27,36 +26,29 @@ import org.eclipse.emf.common.util.URI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoFileWriter extends AbstractAcceleoWriter {
+public class AcceleoURIWriter extends AbstractAcceleoWriter {
 
-	/** The target {@link File}. */
-	private final File target;
-
-	/** Tells if the {@link FileOutputStream} should be opened in append mode. */
-	private final boolean append;
+	/** {@link URIConverter} to use for this writer's target. */
+	protected final URIConverter uriConverter;
 
 	/**
 	 * Creates a writer for the given target {@link URI}.
 	 * 
-	 * @param target
-	 *            the target {@link File}.
+	 * @param targetURI
+	 *            URI of the target {@link URI}.
 	 * @param uriConverter
 	 *            URI Converter to use for this writer's target.
 	 * @param charset
 	 *            The charset for our written content.
-	 * @param append
-	 *            <code>true</code> if the {@link FileOutputStream} should be opened in append mode,
-	 *            <code>false</code> otherwise
 	 */
-	public AcceleoFileWriter(File target, Charset charset, boolean append) {
-		super(URI.createFileURI(target.getAbsolutePath()), charset);
-		this.target = target;
-		this.append = append;
+	public AcceleoURIWriter(URI targetURI, URIConverter uriConverter, Charset charset) {
+		super(targetURI, charset);
+		this.uriConverter = uriConverter;
 	}
 
 	@Override
 	public void close() throws IOException {
-		try (final OutputStream output = new FileOutputStream(target, append)) {
+		try (final OutputStream output = uriConverter.createOutputStream(getTargetURI())) {
 			output.write(getBuilder().toString().getBytes(getCharset()));
 		}
 	}

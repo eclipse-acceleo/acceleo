@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.evaluation.writer;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ProtectedArea;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
@@ -62,7 +64,8 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 	 */
 	public DefaultGenerationStrategy() {
 		protectedAreaContents = new LinkedHashMap<URI, Map<String, List<String>>>();
-		uriConverter = URIConverter.INSTANCE; // FIXME pass the instance ?
+		uriConverter = URIConverter.INSTANCE; // FIXME pass the instance ? Yes we should pass the URIConverter
+												// from the ResourceSet for models
 	}
 
 	@Override
@@ -127,9 +130,10 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 			case CREATE:
 				if (exists) {
 					writer = new NullWriter(uri, charset);
-					break;
+				} else {
+					writer = new AcceleoURIWriter(uri, uriConverter, charset);
 				}
-				// fall through: same behavior as "OVERWRITE" if the file doesn't exist
+				break;
 			case OVERWRITE:
 				if (exists) {
 					try (InputStream input = uriConverter.createInputStream(uri);) {
@@ -142,12 +146,22 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 					}
 				}
 
-				writer = new AcceleoFileWriter(uri, uriConverter, charset);
+				writer = new AcceleoURIWriter(uri, uriConverter, charset);
 				break;
 			case APPEND:
-				// FIXME we can't create a stream to "append" to a file with the URIConverter. We probably
-				// need to fall back to a regular FileWriter here. For now, we'll fall through to the
-				// "default" case and use a null writer.
+				final String fileString = uri.toFileString();
+				if (fileString != null) {
+					writer = new AcceleoFileWriter(new File(fileString), charset, true);
+				} else {
+					writer = new AcceleoURIWriter(uri, uriConverter, charset);
+					if (exists) {
+						try (InputStream contentInputStream = uriConverter.createInputStream(uri)) {
+							final String content = AcceleoUtil.getContent(contentInputStream, charset.name());
+							writer.append(content);
+						}
+					}
+				}
+				break;
 			default:
 				// TODO shouldn't happen, fall back to a null writer and log
 				writer = new NullWriter(uri, charset);

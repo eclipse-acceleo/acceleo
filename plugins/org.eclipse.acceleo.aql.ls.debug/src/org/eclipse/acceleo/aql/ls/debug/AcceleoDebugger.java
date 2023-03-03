@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -305,35 +302,6 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		for (EPackage child : ePackage.getESubpackages()) {
 			registerEPackage(environment, child);
 		}
-	}
-
-	/**
-	 * Gets the content of the given {@link InputStream}.
-	 * 
-	 * @param stream
-	 *            the {@link InputStream}
-	 * @param charsetName
-	 *            The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
-	 * @return a {@link CharSequence} of the content of the given {@link InputStream}
-	 * @throws IOException
-	 *             if the {@link InputStream} can't be read
-	 */
-	public String getContent(InputStream stream, String charsetName) throws IOException {
-		final int len = 8192;
-		StringBuilder res = new StringBuilder(len);
-		if (len != 0) {
-			try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream),
-					charsetName)) {
-				char[] buffer = new char[len];
-				int length = input.read(buffer);
-				while (length != -1) {
-					res.append(buffer, 0, length);
-					length = input.read(buffer);
-				}
-				input.close();
-			}
-		}
-		return res.toString();
 	}
 
 	@Override

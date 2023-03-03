@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.parser;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -76,6 +74,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
@@ -454,33 +453,7 @@ public class AcceleoParser {
 	 */
 	public AcceleoAstResult parse(InputStream source, Charset charset, String moduleQualifiedName)
 			throws IOException {
-		return parse(getContent(source, charset), moduleQualifiedName);
-	}
-
-	/**
-	 * Gets the content of the given {@link InputStream}.
-	 * 
-	 * @param stream
-	 *            the {@link InputStream}
-	 * @param charset
-	 *            the {@link Charset}
-	 * @return a {@link CharSequence} of the content of the given {@link InputStream}
-	 * @throws IOException
-	 *             if the {@link InputStream} can't be read
-	 */
-	private String getContent(InputStream stream, Charset charset) throws IOException {
-		final int len = 8192;
-		StringBuilder res = new StringBuilder(len);
-		try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream), charset)) {
-			char[] buffer = new char[len];
-			int length = input.read(buffer);
-			while (length != -1) {
-				res.append(buffer, 0, length);
-				length = input.read(buffer);
-			}
-			input.close();
-		}
-		return res.toString();
+		return parse(AcceleoUtil.getContent(source, charset.name()), moduleQualifiedName);
 	}
 
 	/**

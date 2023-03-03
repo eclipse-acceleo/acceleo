@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
@@ -156,8 +157,7 @@ public class CompletionTests {
 		}
 
 		try (InputStream stream = new FileInputStream(expectedCompletionFile)) {
-			String expectedCompletion = AbstractLanguageTestSuite.getContent(stream,
-					AbstractLanguageTestSuite.UTF_8);
+			String expectedCompletion = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);
 			assertEquals(expectedCompletion, actualCompletion);
 		}
 	}
@@ -230,7 +230,7 @@ public class CompletionTests {
 		final Map<String, Integer> testToPosition = new TreeMap<String, Integer>();
 		final StringBuilder builder = new StringBuilder();
 		try (InputStream stream = new FileInputStream(MODULE)) {
-			String content = AbstractLanguageTestSuite.getContent(stream, AbstractLanguageTestSuite.UTF_8);
+			String content = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);
 			final Matcher matcher = TEST_PATTERN.matcher(content);
 			int lastMatchEnd = 0;
 			while (matcher.find()) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2021 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -14,15 +14,12 @@ package org.eclipse.acceleo.tests.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -34,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -231,7 +229,7 @@ public abstract class AbstractLanguageTestSuite {
 			fail("file doesn't exist.");
 		}
 		try (FileInputStream stream = new FileInputStream(expectedASTFile)) {
-			final String expectedAst = getContent(stream, UTF_8);
+			final String expectedAst = AcceleoUtil.getContent(stream, UTF_8);
 			assertEquals(expectedAst, actualAst);
 			stream.close();
 		}
@@ -265,7 +263,7 @@ public abstract class AbstractLanguageTestSuite {
 		} else {
 			String expectedContent = "";
 			try (FileInputStream stream = new FileInputStream(expectedFile);) {
-				expectedContent = getContent(stream, UTF_8);
+				expectedContent = AcceleoUtil.getContent(stream, UTF_8);
 			}
 			assertEquals(expectedContent, actualContent);
 		}
@@ -466,35 +464,6 @@ public abstract class AbstractLanguageTestSuite {
 		}
 
 		return parameters;
-	}
-
-	/**
-	 * Gets the content of the given {@link InputStream}.
-	 * 
-	 * @param stream
-	 *            the {@link InputStream}
-	 * @param charsetName
-	 *            The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
-	 * @return a {@link CharSequence} of the content of the given {@link InputStream}
-	 * @throws IOException
-	 *             if the {@link InputStream} can't be read
-	 */
-	public static String getContent(InputStream stream, String charsetName) throws IOException {
-		final int len = 8192;
-		StringBuilder res = new StringBuilder(len);
-		if (len != 0) {
-			try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream),
-					charsetName)) {
-				char[] buffer = new char[len];
-				int length = input.read(buffer);
-				while (length != -1) {
-					res.append(buffer, 0, length);
-					length = input.read(buffer);
-				}
-				input.close();
-			}
-		}
-		return res.toString();
 	}
 
 	/**

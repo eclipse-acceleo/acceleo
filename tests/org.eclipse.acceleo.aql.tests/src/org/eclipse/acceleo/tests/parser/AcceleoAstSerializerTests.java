@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -76,7 +77,7 @@ public class AcceleoAstSerializerTests {
 		this.modulePath = modulePath;
 		AcceleoParser parser = new AcceleoParser();
 		try (InputStream stream = new FileInputStream(ROOT + File.separator + modulePath)) {
-			source = AbstractLanguageTestSuite.getContent(stream, AbstractLanguageTestSuite.UTF_8);
+			source = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);
 			ast = parser.parse(source, "org::eclipse::acceleo::tests::test");
 		}
 	}
@@ -99,7 +100,7 @@ public class AcceleoAstSerializerTests {
 
 		createActualFileIfNeeded(actualSerializedModule, expectedSerializedFile);
 		try (FileInputStream stream = new FileInputStream(expectedSerializedFile)) {
-			final String expectedSerializedModule = AbstractLanguageTestSuite.getContent(stream,
+			final String expectedSerializedModule = AcceleoUtil.getContent(stream,
 					AbstractLanguageTestSuite.UTF_8);
 			assertEquals(expectedSerializedModule, actualSerializedModule);
 			stream.close();

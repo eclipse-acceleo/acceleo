@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation.writer;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import org.eclipse.emf.common.util.URI;
@@ -27,38 +23,61 @@ import org.eclipse.emf.common.util.URI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoFileWriter extends AbstractAcceleoWriter {
+public abstract class AbstractAcceleoWriter implements IAcceleoWriter {
 
-	/** The target {@link File}. */
-	private final File target;
+	/**
+	 * The {@link StringBuilder} initial size.
+	 */
+	private static final int INITIAL_SIZE = 1024;
 
-	/** Tells if the {@link FileOutputStream} should be opened in append mode. */
-	private final boolean append;
+	/** {@link URI} of the target. */
+	private final URI targetURI;
+
+	/** The charset for our written content. */
+	private final Charset charset;
+
+	/**
+	 * The {@link StringBuilder} used as buffer.
+	 */
+	private final StringBuilder builder = new StringBuilder(INITIAL_SIZE);
 
 	/**
 	 * Creates a writer for the given target {@link URI}.
 	 * 
-	 * @param target
-	 *            the target {@link File}.
+	 * @param targetURI
+	 *            the target {@link URI}
 	 * @param uriConverter
 	 *            URI Converter to use for this writer's target.
 	 * @param charset
 	 *            The charset for our written content.
-	 * @param append
-	 *            <code>true</code> if the {@link FileOutputStream} should be opened in append mode,
-	 *            <code>false</code> otherwise
 	 */
-	public AcceleoFileWriter(File target, Charset charset, boolean append) {
-		super(URI.createFileURI(target.getAbsolutePath()), charset);
-		this.target = target;
-		this.append = append;
+	public AbstractAcceleoWriter(URI targetURI, Charset charset) {
+		this.targetURI = targetURI;
+		this.charset = charset;
 	}
 
 	@Override
-	public void close() throws IOException {
-		try (final OutputStream output = new FileOutputStream(target, append)) {
-			output.write(getBuilder().toString().getBytes(getCharset()));
-		}
+	public void append(String content) {
+		builder.append(content);
+	}
+
+	@Override
+	public URI getTargetURI() {
+		return targetURI;
+	}
+
+	@Override
+	public Charset getCharset() {
+		return charset;
+	}
+
+	/**
+	 * Gets the {@link StringBuilder}.
+	 * 
+	 * @return the {@link StringBuilder}
+	 */
+	protected StringBuilder getBuilder() {
+		return builder;
 	}
 
 }
