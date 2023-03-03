@@ -12,20 +12,13 @@ package org.eclipse.acceleo.aql.evaluation.writer;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
- * The default file writer used by Acceleo.
- * <p>
- * It will write generated text as it comes to a temporary file, then, on close, transfer the content to the
- * final destination.
- * </p>
+ * The default {@link URI} writer used by Acceleo.
  * <p>
  * Data will be written to the disk without any verification about the workspace or VCS. Do not use with
  * pessimistic locking VCS or if JMerge is needed.
@@ -34,48 +27,47 @@ import org.eclipse.emf.ecore.resource.URIConverter;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoFileWriter implements IAcceleoWriter {
-	/** Path towards the temporary file we're using as a buffer. */
-	protected final Path temporaryFilePath;
 
-	/** Writer opened for the temporary file we're using as a buffer for the "final" content. */
-	protected final Writer buffer;
+	/**
+	 * The {@link StringBuilder} initial size.
+	 */
+	private static final int INITIAL_SIZE = 1024;
 
 	/** The charset for our written content. */
 	protected final Charset charset;
 
-	/** URI Converter to use for this writer's target. */
+	/** {@link URIConverter} to use for this writer's target. */
 	protected final URIConverter uriConverter;
 
-	/** URI of the target file. */
-	private final URI fileURI;
+	/** {@link URI} of the target. */
+	private final URI targetURI;
+
+	private final StringBuilder builder = new StringBuilder(INITIAL_SIZE);
 
 	/**
-	 * Creates a writer for the given file.
+	 * Creates a writer for the given target {@link URI}.
 	 * 
-	 * @param fileURI
-	 *            URI of the target file.
+	 * @param targetURI
+	 *            URI of the target {@link URI}.
 	 * @param uriConverter
 	 *            URI Converter to use for this writer's target.
 	 * @param charset
 	 *            The charset for our written content.
-	 * @throws IOException
-	 *             thrown if we cannot open a writer to a temporary file as a buffer.
 	 */
-	public AcceleoFileWriter(URI fileURI, URIConverter uriConverter, Charset charset) throws IOException {
-		this.fileURI = fileURI;
+	public AcceleoFileWriter(URI targetURI, URIConverter uriConverter, Charset charset) {
+		this.targetURI = targetURI;
 		this.uriConverter = uriConverter;
 		this.charset = charset;
+	}
 
-		// FIXME use memory instead of temp file and copy
-		// With the current implementation of AcceleoEvaluator it doesn't make sens to buffer anyway
-		temporaryFilePath = Files.createTempFile("acceleo_", "_generated");
-		// Opens a file for writing, truncating existing if any.
-		buffer = Files.newBufferedWriter(temporaryFilePath, charset);
+	@Override
+	public void append(String content) {
+		builder.append(content);
 	}
 
 	@Override
 	public URI getTargetURI() {
-		return fileURI;
+		return targetURI;
 	}
 
 	@Override
@@ -85,25 +77,18 @@ public class AcceleoFileWriter implements IAcceleoWriter {
 
 	@Override
 	public void close() throws IOException {
-		buffer.close();
-
-		OutputStream output = uriConverter.createOutputStream(fileURI);
-		Files.copy(temporaryFilePath, output);
-		output.close();
+		try (final OutputStream output = uriConverter.createOutputStream(targetURI)) {
+			output.write(builder.toString().getBytes(charset));
+		}
 	}
 
-	@Override
-	public Appendable append(CharSequence csq) throws IOException {
-		return buffer.append(csq);
+	/**
+	 * Gets the {@link StringBuilder}.
+	 * 
+	 * @return the {@link StringBuilder}
+	 */
+	protected StringBuilder getBuilder() {
+		return builder;
 	}
 
-	@Override
-	public Appendable append(CharSequence csq, int start, int end) throws IOException {
-		return buffer.append(csq, start, end);
-	}
-
-	@Override
-	public Appendable append(char c) throws IOException {
-		return buffer.append(c);
-	}
 }

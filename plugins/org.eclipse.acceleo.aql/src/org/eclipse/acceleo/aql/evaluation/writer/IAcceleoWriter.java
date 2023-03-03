@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.URI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public interface IAcceleoWriter extends Closeable, Appendable {
+public interface IAcceleoWriter extends Closeable {
 	/**
 	 * Returns the URI for which this writer was created.
 	 * 
@@ -35,4 +35,6 @@ public interface IAcceleoWriter extends Closeable, Appendable {
 	 * @return the {@link Charset} of this writer
 	 */
 	Charset getCharset();
+
+	void append(String content);
 }

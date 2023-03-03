@@ -44,22 +44,12 @@ public class NullWriter implements IAcceleoWriter {
 
 	@Override
 	public void close() throws IOException {
-
+		// nothing to do here
 	}
 
 	@Override
-	public Appendable append(CharSequence csq) throws IOException {
-		return null;
-	}
-
-	@Override
-	public Appendable append(CharSequence csq, int start, int end) throws IOException {
-		return null;
-	}
-
-	@Override
-	public Appendable append(char c) throws IOException {
-		return null;
+	public void append(String content) {
+		// nothing to do here
 	}
 
 	@Override

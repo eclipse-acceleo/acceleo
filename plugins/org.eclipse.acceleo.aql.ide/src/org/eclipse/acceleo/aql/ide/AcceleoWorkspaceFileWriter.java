@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
 import org.eclipse.acceleo.aql.evaluation.writer.AcceleoFileWriter;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoWorkspaceFileWriter extends AcceleoFileWriter {
+
 	/** Size to use for our buffers. */
 	private static final int BUFFER_SIZE = 8192;
 
@@ -45,86 +46,93 @@ public class AcceleoWorkspaceFileWriter extends AcceleoFileWriter {
 
 	@Override
 	public void close() throws IOException {
-		if (!EMFPlugin.IS_ECLIPSE_RUNNING || !"java".equals(getTargetURI().fileExtension())
-				|| !uriConverter.exists(getTargetURI(), new LinkedHashMap<>())) {
+		if (!EMFPlugin.IS_ECLIPSE_RUNNING || !"java".equals(getTargetURI().fileExtension()) || !uriConverter
+				.exists(getTargetURI(), new LinkedHashMap<>())) {
 			super.close();
 		} else {
 			try {
 				Class.forName("org.eclipse.emf.codegen.merge.java.JMerger"); //$NON-NLS-1$
-				// close the temporary file so that we can read its full content
-				buffer.close();
 
-				final String mergedContent = mergeFileContent(getTargetURI(), temporaryFilePath, charset);
+				final String mergedContent = mergeFileContent(getTargetURI(), getBuilder(), charset);
 				OutputStream output = uriConverter.createOutputStream(getTargetURI());
 				if (mergedContent != null) {
 					OutputStreamWriter writer = new OutputStreamWriter(output, charset);
 					writer.append(mergedContent);
 					writer.close();
 				} else {
-					Files.copy(temporaryFilePath, output);
+					super.close();
 				}
 			} catch (ClassNotFoundException e) {
-				// JMerge is not in our classpath
-				// FIXME log?
+				AcceleoPlugin.getPlugin().log(new Status(IStatus.WARNING, AcceleoPlugin.PLUGIN_ID,
+						"Cannot find org.eclipse.emf.codegen.merge.java.JMerger in the classpath.", e));
 				super.close();
 			}
 		}
 	}
 
-	private String mergeFileContent(URI targetURI, Path tempFile, Charset contentCharset) throws IOException {
+	private String mergeFileContent(URI targetURI, StringBuilder stringBuilder, Charset contentCharset)
+			throws IOException {
 		String jmergeFile = URI.createPlatformPluginURI(
 				"org.eclipse.emf.codegen.ecore/templates/emf-merge.xml", false).toString(); //$NON-NLS-1$
 		JControlModel model = new JControlModel();
 		model.initialize(new ASTFacadeHelper(), jmergeFile);
-		InputStream existingContent = uriConverter.createInputStream(targetURI);
 		if (model.canMerge()) {
-			InputStream source = Files.newInputStream(tempFile);
+			try (final InputStream existingContent = uriConverter.createInputStream(targetURI)) {
+				final String source = stringBuilder.toString();
 
-			try {
-				JMerger jMerger = new JMerger(model);
-				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForInputStream(source,
-						contentCharset.toString()));
-				jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(existingContent,
-						contentCharset.toString()));
-				jMerger.merge();
-				return jMerger.getTargetCompilationUnit().getContents();
-			} catch (WrappedException e) {
-				// The Java file contains errors. We'll copy the old file as a ".lost"
 				try {
-					createLostFile(targetURI);
-				} catch (IOException ee) {
-					// FIXME log Couldn't create the lost file.
+					JMerger jMerger = new JMerger(model);
+					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(source));
+					jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(
+							existingContent, contentCharset.toString()));
+					jMerger.merge();
+					return jMerger.getTargetCompilationUnit().getContents();
+				} catch (WrappedException e) {
+					// The Java file contains errors. We'll copy the old file as a ".lost"
+					final URI lostURI = targetURI.appendFileExtension("lost");
+					try {
+						createLostFile(targetURI, lostURI);
+					} catch (IOException ee) {
+						AcceleoPlugin.getPlugin().log(new Status(IStatus.WARNING, AcceleoPlugin.PLUGIN_ID,
+								"Cannot createlost file " + lostURI, e));
+					}
+					AcceleoPlugin.getPlugin().log(new Status(IStatus.WARNING, AcceleoPlugin.PLUGIN_ID,
+							"Cannot use JMerge on " + getTargetURI().toString(), e));
 				}
-				AcceleoPlugin.log("Cannot use JMerge on " + getTargetURI().toString(), false);
 			}
 		} else {
-			// FIXME log, couldn't find emf-merge.xml
+			AcceleoPlugin.getPlugin().log(new Status(IStatus.WARNING, AcceleoPlugin.PLUGIN_ID,
+					"Cannot find JMerge configuration " + jmergeFile));
 		}
 		return null;
 	}
 
 	/**
-	 * This will copy the given file as a ".lost" file in the same folder with the same name.
+	 * This will copy lost content from the given target {@link URI} to the given lost {@link URI}.
 	 * 
-	 * @param fileURI
-	 *            URI of the file we are to copy as a lost file.
+	 * @param targetURI
+	 *            the target {@link URI}
+	 * @param lostURI
+	 *            {@link URI} of the lost file.
 	 * @throws IOException
 	 *             Thrown if we couldn't read the source file or create its ".lost" sibling.
 	 */
-	private void createLostFile(URI fileURI) throws IOException {
-		InputStream source = uriConverter.createInputStream(fileURI);
-		OutputStream destination = uriConverter.createOutputStream(fileURI.appendFileExtension("lost"));
+	private void createLostFile(URI targetURI, URI lostURI) throws IOException {
+		try (InputStream source = uriConverter.createInputStream(targetURI);
+				OutputStream destination = uriConverter.createOutputStream(lostURI)) {
 
-		// Print a time stamp of the current copy
-		// FIXME use delimiter specified by file block
-		StringBuilder timestamp = new StringBuilder();
-		timestamp.append('\n').append(Calendar.getInstance().getTime().toString()).append('\n');
-		timestamp.append("================================================================================"); //$NON-NLS-1$
-		timestamp.append('\n');
+			// Print a time stamp of the current copy
+			// FIXME use delimiter specified by file block
+			StringBuilder timestamp = new StringBuilder();
+			timestamp.append('\n').append(Calendar.getInstance().getTime().toString()).append('\n');
+			timestamp.append(
+					"================================================================================"); //$NON-NLS-1$
+			timestamp.append('\n');
 
-		destination.write(timestamp.toString().getBytes());
+			destination.write(timestamp.toString().getBytes(getCharset()));
 
-		copy(source, destination);
+			copy(source, destination);
+		}
 	}
 
 	/**
