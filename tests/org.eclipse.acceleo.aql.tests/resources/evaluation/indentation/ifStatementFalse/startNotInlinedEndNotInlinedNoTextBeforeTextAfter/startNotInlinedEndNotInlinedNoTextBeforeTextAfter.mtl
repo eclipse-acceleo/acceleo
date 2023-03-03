@@ -5,7 +5,8 @@
   [file (myParam.name + '.txt', overwrite)]
     first line
     [if (myParam.name.startsWith('z'))]
-      [myParam.name/][/if] AFTER_TEXT
+      [myParam.name/]
+    [/if] AFTER_TEXT
     last line
   [/file]
 [/template]

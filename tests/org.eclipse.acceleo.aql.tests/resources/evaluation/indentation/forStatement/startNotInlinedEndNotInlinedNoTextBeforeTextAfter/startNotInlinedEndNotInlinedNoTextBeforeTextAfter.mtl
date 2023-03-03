@@ -5,7 +5,8 @@
   [file (myParam.name + '.txt', overwrite)]
     first line
     [for (myVariable : ecore::EClassifier | myParam.eClassifiers)]
-      [myVariable.name/][/for] AFTER_TEXT
+      [myVariable.name/]
+    [/for] AFTER_TEXT
     last line
   [/file]
 [/template]

@@ -1,3 +1,26 @@
 first line
-WorldMultiNamedElementNamedElementProducerAdressCompanyProductionCompanyRestaurantChefRecipeFoodSourcePlantAnimalColorCaliberGroupContinentKindPartCountryDataSingleStringEStringToRecipeMap AFTER_TEXT
+World
+MultiNamedElement
+NamedElement
+Producer
+Adress
+Company
+ProductionCompany
+Restaurant
+Chef
+Recipe
+Food
+Source
+Plant
+Animal
+Color
+Caliber
+Group
+Continent
+Kind
+Part
+CountryData
+SingleString
+EStringToRecipeMap
+ AFTER_TEXT
 last line

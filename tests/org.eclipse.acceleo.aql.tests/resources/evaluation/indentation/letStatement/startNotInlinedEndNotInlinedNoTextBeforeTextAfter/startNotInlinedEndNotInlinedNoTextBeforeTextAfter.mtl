@@ -5,7 +5,8 @@
   [file (myParam.name + '.txt', overwrite)]
     first line
     [let name = myParam.name]
-      [name/][/let] AFTER_TEXT
+      [name/]
+    [/let] AFTER_TEXT
     last line
   [/file]
 [/template]

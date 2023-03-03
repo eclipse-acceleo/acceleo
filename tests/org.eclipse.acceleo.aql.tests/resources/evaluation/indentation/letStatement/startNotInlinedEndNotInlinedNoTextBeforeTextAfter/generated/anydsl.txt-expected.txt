@@ -1,3 +1,4 @@
 first line
-anydsl AFTER_TEXT
+anydsl
+ AFTER_TEXT
 last line
