@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -826,6 +826,37 @@ public class EvaluationServicesTest {
 		final Object result = services.call("isSuperTypeOf", new Object[] {EcorePackage.eINSTANCE.getEClass(),
 				EcorePackage.eINSTANCE.getEPackage(), }, status);
 		assertEquals(false, result);
+	}
+
+	@Test
+	public void testEAttributeDynamicClass() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("dynamic");
+		ePkg.setNsURI("dynamic");
+		ePkg.setNsPrefix("dynamic");
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("DynamicEClass");
+		ePkg.getEClassifiers().add(eCls);
+		final EAttribute eAttribute = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		eAttribute.setName("dynamicEAttribute");
+		eAttribute.setEType(EcorePackage.eINSTANCE.getEString());
+		eAttribute.setChangeable(true);
+		eCls.getEStructuralFeatures().add(eAttribute);
+		eAttribute.setDefaultValue("SomeValue");
+
+		queryEnvironment.registerEPackage(ePkg);
+
+		queryEnvironment.registerEPackage(ePkg);
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		final EObject receiver = EcoreUtil.create(eCls);
+
+		Diagnostic status = new BasicDiagnostic();
+		final Object result = services.call("aqlFeatureAccess", new Object[] {receiver,
+				"dynamicEAttribute", }, status);
+
+		queryEnvironment.removeEPackage(ePkg);
+
+		assertEquals("SomeValue", result);
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
 package org.eclipse.acceleo.query.validation.type;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * Abstract implementation of {@link IJavaType}.
@@ -51,7 +53,10 @@ public abstract class AbstractJavaType extends AbstractType implements IJavaType
 			if (otherClass != null) {
 				result = isAssignableFrom(getType(), otherClass);
 			} else {
-				result = false;
+				// instances will be dynamic DynamicEObjectImpl
+				// this suppose All dynamic instances of EClass are EObjects
+				result = getType() == EObject.class && ((EClassifierType)otherType)
+						.getType() instanceof EClass;
 			}
 		} else {
 			result = false;
