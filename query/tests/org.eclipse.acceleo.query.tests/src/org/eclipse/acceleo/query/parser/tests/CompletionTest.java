@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,9 +36,13 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
@@ -1358,6 +1362,68 @@ public class CompletionTest {
 		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
 
 		assertCompletion(completionResult, 1, "_selec", "", 5, 6, "_select()");
+	}
+
+	@Test
+	public void dynamicEAttribute() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("dynamic");
+		ePkg.setNsURI("dynamic");
+		ePkg.setNsPrefix("dynamic");
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("DynamicEClass");
+		ePkg.getEClassifiers().add(eCls);
+		final EAttribute eAttribute = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		eAttribute.setName("dynamicEAttribute");
+		eAttribute.setEType(EcorePackage.eINSTANCE.getEString());
+		eCls.getEStructuralFeatures().add(eAttribute);
+
+		queryEnvironment.registerEPackage(ePkg);
+
+		selfType.add(new EClassifierType(queryEnvironment, eCls));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.dynamicEAttr", 17, types);
+
+		queryEnvironment.removeEPackage(ePkg);
+
+		assertCompletion(completionResult, 1, "dynamicEAttr", "", 5, 12, "dynamicEAttribute");
+	}
+
+	@Test
+	public void dynamicEOperation() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("dynamic");
+		ePkg.setNsURI("dynamic");
+		ePkg.setNsPrefix("dynamic");
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("DynamicEClass");
+		ePkg.getEClassifiers().add(eCls);
+		final EOperation eOperation = EcorePackage.eINSTANCE.getEcoreFactory().createEOperation();
+		eOperation.setName("dynamicEOperation");
+		eOperation.setEType(EcorePackage.eINSTANCE.getEcoreFactory().createEClass());
+		final EParameter eParameter = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
+		eParameter.setName("dynamicParameter");
+		eParameter.setEType(eCls);
+		eOperation.getEParameters().add(eParameter);
+		eCls.getEOperations().add(eOperation);
+
+		queryEnvironment.registerEPackage(ePkg);
+
+		selfType.add(new EClassifierType(queryEnvironment, eCls));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.dynamicEOper", 17, types);
+
+		queryEnvironment.removeEPackage(ePkg);
+
+		assertCompletion(completionResult, 1, "dynamicEOper", "", 5, 12, "dynamicEOperation()");
 	}
 
 	public static void assertCompletion(ICompletionResult completionResult, int size, String prefix,

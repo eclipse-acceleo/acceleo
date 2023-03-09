@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,11 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
@@ -1600,6 +1604,123 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof ClassType);
 		assertEquals(String.class, possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void dynamicEClass() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("dynamic");
+		ePkg.setNsURI("dynamic");
+		ePkg.setNsPrefix("dynamic");
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("DynamicEClass");
+		ePkg.getEClassifiers().add(eCls);
+		final EAttribute eAttribute = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		eAttribute.setName("dynamicEAttribute");
+		eAttribute.setEType(EcorePackage.eINSTANCE.getEString());
+		eCls.getEStructuralFeatures().add(eAttribute);
+
+		queryEnvironment.registerEPackage(ePkg);
+
+		selfType.add(new EClassifierType(queryEnvironment, eCls));
+		types.put("self", selfType);
+
+		final Set<IType> oldSelfType = variableTypes.put("self", selfType);
+
+		final IValidationResult validationResult = engine.validate("self", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		queryEnvironment.removeEPackage(ePkg);
+		variableTypes.put("self", oldSelfType);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(eCls, possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void dynamicEAttribute() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("dynamic");
+		ePkg.setNsURI("dynamic");
+		ePkg.setNsPrefix("dynamic");
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("DynamicEClass");
+		ePkg.getEClassifiers().add(eCls);
+		final EAttribute eAttribute = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		eAttribute.setName("dynamicEAttribute");
+		eAttribute.setEType(EcorePackage.eINSTANCE.getEString());
+		eCls.getEStructuralFeatures().add(eAttribute);
+
+		queryEnvironment.registerEPackage(ePkg);
+
+		selfType.add(new EClassifierType(queryEnvironment, eCls));
+		types.put("self", selfType);
+
+		final Set<IType> oldSelfType = variableTypes.put("self", selfType);
+
+		final IValidationResult validationResult = engine.validate("self.dynamicEAttribute", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		queryEnvironment.removeEPackage(ePkg);
+		variableTypes.put("self", oldSelfType);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void dynamicEOperation() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("dynamic");
+		ePkg.setNsURI("dynamic");
+		ePkg.setNsPrefix("dynamic");
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("DynamicEClass");
+		ePkg.getEClassifiers().add(eCls);
+		final EOperation eOperation = EcorePackage.eINSTANCE.getEcoreFactory().createEOperation();
+		eOperation.setName("dynamicEOperation");
+		eOperation.setEType(EcorePackage.eINSTANCE.getEString());
+		eCls.getEOperations().add(eOperation);
+
+		queryEnvironment.registerEPackage(ePkg);
+
+		selfType.add(new EClassifierType(queryEnvironment, eCls));
+		types.put("self", selfType);
+
+		final Set<IType> oldSelfType = variableTypes.put("self", selfType);
+
+		final IValidationResult validationResult = engine.validate("self.dynamicEOperation()", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		queryEnvironment.removeEPackage(ePkg);
+		variableTypes.put("self", oldSelfType);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
