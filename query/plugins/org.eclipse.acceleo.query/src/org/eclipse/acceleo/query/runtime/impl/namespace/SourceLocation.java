@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.namespace;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 
@@ -22,9 +22,9 @@ import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 public class SourceLocation implements ISourceLocation {
 
 	/**
-	 * The source {@link URL}.
+	 * The source {@link URI}.
 	 */
-	private final URL sourceURL;
+	private final URI sourceURI;
 
 	/**
 	 * The identifier {@link IRange}.
@@ -39,22 +39,22 @@ public class SourceLocation implements ISourceLocation {
 	/**
 	 * Constructor.
 	 * 
-	 * @param sourceURL
-	 *            the source {@link URL}
+	 * @param sourceURI
+	 *            the source {@link URI}
 	 * @param identifierRange
 	 *            the identifier {@link IRange}
 	 * @param range
 	 *            the total {@link IRange}
 	 */
-	public SourceLocation(URL sourceURL, IRange identifierRange, IRange range) {
-		this.sourceURL = sourceURL;
+	public SourceLocation(URI sourceURI, IRange identifierRange, IRange range) {
+		this.sourceURI = sourceURI;
 		this.identifierRange = identifierRange;
 		this.range = range;
 	}
 
 	@Override
-	public URL getSourceURL() {
-		return sourceURL;
+	public URI getSourceURI() {
+		return sourceURI;
 	}
 
 	@Override

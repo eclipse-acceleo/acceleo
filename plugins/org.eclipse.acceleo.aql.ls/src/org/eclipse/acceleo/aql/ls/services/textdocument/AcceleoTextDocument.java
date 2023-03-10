@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.services.textdocument;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -113,7 +111,7 @@ public class AcceleoTextDocument {
 		Objects.requireNonNull(textDocumentContents);
 		this.ownerProject = project;
 		this.uri = textDocumentUri;
-		qualifiedName = getProject().getResolver().getQualifiedName(this.getUrl());
+		qualifiedName = getProject().getResolver().getQualifiedName(getUri());
 
 		this.setContents(textDocumentContents);
 	}
@@ -152,7 +150,7 @@ public class AcceleoTextDocument {
 	public void setProject(AcceleoProject acceleoProject) {
 		AcceleoProject oldProject = ownerProject;
 		this.ownerProject = acceleoProject;
-		qualifiedName = getProject().getResolver().getQualifiedName(getUrl());
+		qualifiedName = getProject().getResolver().getQualifiedName(getUri());
 		if ((acceleoProject == null && oldProject != null) || !acceleoProject.equals(oldProject)) {
 			// When the project changes, the environment changes.
 			this.resolverChanged();
@@ -320,20 +318,6 @@ public class AcceleoTextDocument {
 	 */
 	public String getModuleQualifiedName() {
 		return qualifiedName;
-	}
-
-	/**
-	 * Provides the {@link URL} version of this document's {@link URI}.
-	 * 
-	 * @return the corresponding {@link URI}.
-	 */
-	public URL getUrl() {
-		try {
-			return this.getUri().toURL();
-		} catch (MalformedURLException urlException) {
-			throw new RuntimeException("Could not convert into a URL the URI of document " + this.getUri()
-					.toString(), urlException);
-		}
 	}
 
 	/**

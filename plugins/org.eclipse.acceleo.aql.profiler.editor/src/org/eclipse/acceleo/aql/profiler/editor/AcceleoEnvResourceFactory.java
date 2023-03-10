@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Huawei.
+ * Copyright (c) 2020, 2023 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -8,14 +8,12 @@
 package org.eclipse.acceleo.aql.profiler.editor;
 
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
-import org.eclipse.acceleo.aql.profiler.presentation.ProfilerEditorPlugin;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
@@ -110,16 +108,11 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 	public IFile getSourceFile(Module module) {
 		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 		final String moduleQualifiedName = resolver.getQualifiedName(module);
-		URL sourceURL = resolver.getSourceURL(moduleQualifiedName);
-		if (sourceURL != null) {
-			try {
-				IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(sourceURL
-						.toURI());
-				if (files.length > 0) {
-					return files[0];
-				}
-			} catch (URISyntaxException e) {
-				ProfilerEditorPlugin.getPlugin().log(e);
+		java.net.URI sourceURI = resolver.getSourceURI(moduleQualifiedName);
+		if (sourceURI != null) {
+			IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(sourceURI);
+			if (files.length > 0) {
+				return files[0];
 			}
 		}
 		return null;

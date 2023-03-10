@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.namespace;
 
-import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IService;
 
 /**
- * Loads an {@link Object} from an {@link URL}.
+ * Loads an {@link Object} from a qualified name.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */

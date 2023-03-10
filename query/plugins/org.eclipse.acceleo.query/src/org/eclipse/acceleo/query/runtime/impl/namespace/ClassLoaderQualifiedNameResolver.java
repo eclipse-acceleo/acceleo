@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@ package org.eclipse.acceleo.query.runtime.impl.namespace;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -106,35 +108,46 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	}
 
 	@Override
-	public String getQualifiedName(URL url) {
+	public String getQualifiedName(URI uri) {
 		String res = null;
 
-		final String filePath = url.getFile();
-		int pathEnd = filePath.lastIndexOf(DOT);
-		if (pathEnd < 0) {
-			pathEnd = filePath.length();
+		String filePath;
+		try {
+			filePath = uri.toURL().getFile();
+		} catch (MalformedURLException e) {
+			filePath = null;
 		}
-		final String[] segments = filePath.substring(0, pathEnd).split(SLASH);
-
-		final StringBuilder moduleQualifiedNameBuilder = new StringBuilder();
-		for (int i = segments.length - 1; i >= 0; i--) {
-			moduleQualifiedNameBuilder.insert(0, segments[i]);
-			final String qualifiedName = moduleQualifiedNameBuilder.toString();
-			if (getURL(qualifiedName) != null) {
-				res = qualifiedName;
+		if (filePath != null) {
+			int pathEnd = filePath.lastIndexOf(DOT);
+			if (pathEnd < 0) {
+				pathEnd = filePath.length();
 			}
-			moduleQualifiedNameBuilder.insert(0, qualifierSeparator);
+			final String[] segments = filePath.substring(0, pathEnd).split(SLASH);
+
+			final StringBuilder moduleQualifiedNameBuilder = new StringBuilder();
+			for (int i = segments.length - 1; i >= 0; i--) {
+				moduleQualifiedNameBuilder.insert(0, segments[i]);
+				final String qualifiedName = moduleQualifiedNameBuilder.toString();
+				if (getURI(qualifiedName) != null) {
+					res = qualifiedName;
+				}
+				moduleQualifiedNameBuilder.insert(0, qualifierSeparator);
+			}
 		}
 
 		return res;
 	}
 
 	@Override
-	public URL getURL(String qualifiedName) {
-		URL res = null;
+	public URI getURI(String qualifiedName) {
+		URI res = null;
 
 		for (ILoader loader : loaders) {
-			res = classLoader.getResource(loader.resourceName(qualifiedName));
+			try {
+				res = classLoader.getResource(loader.resourceName(qualifiedName)).toURI();
+			} catch (Exception e) {
+				res = null;
+			}
 			if (res != null) {
 				break;
 			}
@@ -144,8 +157,8 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	}
 
 	@Override
-	public URL getSourceURL(String qualifiedName) {
-		return getURL(qualifiedName);
+	public URI getSourceURI(String qualifiedName) {
+		return getURI(qualifiedName);
 	}
 
 	@Override

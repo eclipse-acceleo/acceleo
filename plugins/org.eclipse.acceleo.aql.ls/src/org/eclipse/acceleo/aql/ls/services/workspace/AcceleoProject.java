@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -250,7 +250,7 @@ public class AcceleoProject {
 		// Since the qualified name of a module depends on its environment, we want the qualified name
 		// according to our environment.
 		String removedModuleQualifiedName = lookupEngine.getResolver().getQualifiedName(removedTextDocument
-				.getUrl());
+				.getUri());
 
 		// First unregister it from the environment.
 		lookupEngine.getResolver().clear(Collections.singleton(removedModuleQualifiedName));

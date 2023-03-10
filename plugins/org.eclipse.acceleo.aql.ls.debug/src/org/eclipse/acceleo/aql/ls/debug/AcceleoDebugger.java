@@ -11,9 +11,7 @@
 package org.eclipse.acceleo.aql.ls.debug;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -275,18 +273,12 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		try {
-			final String moduleQualifiedName = resolver.getQualifiedName(java.net.URI.create(moduleURI
-					.toString()).toURL());
-			final Object resolved = resolver.resolve(moduleQualifiedName);
-			if (resolved instanceof Module) {
-				astResult = ((Module)resolved).getAst();
-			}
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		final String moduleQualifiedName = resolver.getQualifiedName(java.net.URI.create(moduleURI
+				.toString()));
+		final Object resolved = resolver.resolve(moduleQualifiedName);
+		if (resolved instanceof Module) {
+			astResult = ((Module)resolved).getAst();
 		}
-
 	}
 
 	/**
@@ -384,14 +376,14 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		try {
 			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
-			final String moduleQualifiedName = resolver.getQualifiedName(new URL("file://" + path));
+			final String moduleQualifiedName = resolver.getQualifiedName(new java.net.URI("file://" + path));
 			if (moduleQualifiedName != null) {
 				final Object resolved = resolver.resolve(moduleQualifiedName);
 				if (resolved instanceof Module) {
 					moduleAstResult = ((Module)resolved).getAst();
 				}
 			}
-		} catch (MalformedURLException e) {
+		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -435,13 +427,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			final AcceleoAstResult moduleAstResult = module.getAst();
 			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 			final String moduleQualifiedName = resolver.getQualifiedName(moduleAstResult.getModule());
-			URL moduleSourceURL = resolver.getSourceURL(moduleQualifiedName);
-			try {
-				path = URIUtil.toFile(moduleSourceURL.toURI()).toString();
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			java.net.URI moduleSourceURI = resolver.getSourceURI(moduleQualifiedName);
+			path = URIUtil.toFile(moduleSourceURI).toString();
 
 			if (instruction instanceof ASTNode) {
 				final int startLine = moduleAstResult.getStartLine((ASTNode)instruction);

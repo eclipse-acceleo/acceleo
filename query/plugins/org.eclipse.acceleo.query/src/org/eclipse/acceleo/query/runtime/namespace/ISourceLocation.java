@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.namespace;
 
-import java.net.URL;
+import java.net.URI;
 
 /**
  * Source location.
@@ -72,11 +72,11 @@ public interface ISourceLocation {
 	}
 
 	/**
-	 * Gets the source {@link URL}.
+	 * Gets the source {@link URI}.
 	 * 
-	 * @return the source {@link URL}
+	 * @return the source {@link URI}
 	 */
-	URL getSourceURL();
+	URI getSourceURI();
 
 	/**
 	 * Gets the identifier {@link IRange}.

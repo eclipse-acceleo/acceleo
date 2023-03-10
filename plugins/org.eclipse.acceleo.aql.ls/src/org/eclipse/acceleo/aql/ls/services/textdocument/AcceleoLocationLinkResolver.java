@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.aql.ls.services.textdocument;
 
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -371,15 +370,9 @@ public class AcceleoLocationLinkResolver {
 		// TODO this is a more general matter, it should be performed in the AcceleoWorkspace
 		// open source file whenever it's possible
 		java.net.URI targetDocumentUri;
-		try {
-			final IQualifiedNameResolver resolver = destinationTextDocument.getQueryEnvironment()
-					.getLookupEngine().getResolver();
-			targetDocumentUri = resolver.getSourceURL(qualifiedName).toURI();
-		} catch (
-
-		URISyntaxException e) {
-			targetDocumentUri = null;
-		}
+		final IQualifiedNameResolver resolver = destinationTextDocument.getQueryEnvironment()
+				.getLookupEngine().getResolver();
+		targetDocumentUri = resolver.getSourceURI(qualifiedName);
 		if (targetDocumentUri == null) {
 			targetDocumentUri = destinationTextDocument.getUri();
 		}
@@ -414,7 +407,7 @@ public class AcceleoLocationLinkResolver {
 				.getLine(), targetSourceLocation.getIdentifierRange().getEnd().getColumn());
 		final Range targetSelectionRange = new Range(identifierStart, identifierEnd);
 
-		final LocationLink locationLink = new LocationLink(targetSourceLocation.getSourceURL().toString(),
+		final LocationLink locationLink = new LocationLink(targetSourceLocation.getSourceURI().toString(),
 				targetRange, targetSelectionRange, originSelectionRange);
 		return locationLink;
 	}
@@ -490,7 +483,7 @@ public class AcceleoLocationLinkResolver {
 					.getLine(), sourceLocation.getIdentifierRange().getEnd().getColumn());
 			Range targetSelectionRange = new Range(targetSelectionRangeStart, targetSelectionRangeEnd);
 
-			locationLink = new LocationLink(sourceLocation.getSourceURL().toString(), targetRange,
+			locationLink = new LocationLink(sourceLocation.getSourceURI().toString(), targetRange,
 					targetSelectionRange, originSelectionRange);
 		} else {
 			locationLink = createLocationLinkFromRangeToAnyDestination(linkOrigin, originSelectionRange,

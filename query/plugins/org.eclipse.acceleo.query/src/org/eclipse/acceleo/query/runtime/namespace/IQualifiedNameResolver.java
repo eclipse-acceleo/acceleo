@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.query.runtime.namespace;
 
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
@@ -25,31 +25,31 @@ import org.eclipse.acceleo.query.runtime.IService;
 public interface IQualifiedNameResolver {
 
 	/**
-	 * Gets the qualified name from the given {@link URL}.
+	 * Gets the qualified name from the given {@link URI}.
 	 * 
-	 * @param url
-	 *            the {@link URL}
-	 * @return the qualified name from the given {@link URL} if any, <code>null</code> otherwise
+	 * @param uri
+	 *            the {@link URI}
+	 * @return the qualified name from the given {@link URI} if any, <code>null</code> otherwise
 	 */
-	String getQualifiedName(URL url);
+	String getQualifiedName(URI uri);
 
 	/**
-	 * Gets the {@link URL} from the given qualified name.
+	 * Gets the {@link URI} from the given qualified name.
 	 * 
 	 * @param qualifiedName
 	 *            the qualified name
-	 * @return the {@link URL} from the given qualified name if any, <code>null</code> otherwise
+	 * @return the {@link URI} from the given qualified name if any, <code>null</code> otherwise
 	 */
-	URL getURL(String qualifiedName);
+	URI getURI(String qualifiedName);
 
 	/**
-	 * Gets the source {@link URL} from the given qualified name.
+	 * Gets the source {@link URI} from the given qualified name.
 	 * 
 	 * @param qualifiedName
 	 *            the qualified name
-	 * @return the source {@link URL} from the given qualified name if any, <code>null</code> otherwise
+	 * @return the source {@link URI} from the given qualified name if any, <code>null</code> otherwise
 	 */
-	URL getSourceURL(String qualifiedName);
+	URI getSourceURI(String qualifiedName);
 
 	/**
 	 * Gets the {@link ISourceLocation} for the given {@link IService}.

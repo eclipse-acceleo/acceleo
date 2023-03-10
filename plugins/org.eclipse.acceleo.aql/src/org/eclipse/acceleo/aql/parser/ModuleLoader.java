@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.acceleo.aql.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -155,7 +155,7 @@ public class ModuleLoader extends AbstractLoader {
 					final String qualifiedName = module.eResource().getURI().toString().substring(
 							AcceleoParser.ACCELEOENV_URI_PROTOCOL.length());
 
-					final URL sourceURL = resolver.getSourceURL(qualifiedName);
+					final URI sourceURI = resolver.getSourceURI(qualifiedName);
 
 					final int identifierStartLine = module.getAst().getIdentifierStartLine(moduleElement);
 					final int identifierStartColumn = module.getAst().getIdentifierStartColumn(moduleElement);
@@ -184,7 +184,7 @@ public class ModuleLoader extends AbstractLoader {
 
 					final IRange range = new Range(start, end);
 
-					res = new SourceLocation(sourceURL, identifierRange, range);
+					res = new SourceLocation(sourceURI, identifierRange, range);
 				} else {
 					res = null;
 				}
@@ -205,7 +205,7 @@ public class ModuleLoader extends AbstractLoader {
 		final Object resolved = resolver.resolve(qualifiedName);
 		if (resolved instanceof Module) {
 			final Module module = (Module)resolved;
-			final URL sourceURL = resolver.getSourceURL(qualifiedName);
+			final URI sourceURI = resolver.getSourceURI(qualifiedName);
 
 			final int identifierStartLine = module.getAst().getIdentifierStartLine(module);
 			final int identifierStartColumn = module.getAst().getIdentifierStartColumn(module);
@@ -233,7 +233,7 @@ public class ModuleLoader extends AbstractLoader {
 
 			final IRange range = new Range(start, end);
 
-			res = new SourceLocation(sourceURL, identifierRange, range);
+			res = new SourceLocation(sourceURI, identifierRange, range);
 		} else {
 			res = null;
 		}

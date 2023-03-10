@@ -11,8 +11,7 @@
 package org.eclipse.acceleo.query.ide.jdt;
 
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,14 +66,14 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 
 		if (service.getOrigin() instanceof Method) {
 			final Method method = (Method)service.getOrigin();
-			URL sourceURL = null;
+			URI sourceURI = null;
 			if (resolver instanceof EclipseJDTQualifiedNameResolver) {
 				final IJavaProject project = ((EclipseJDTQualifiedNameResolver)resolver).getProject();
 				try {
 					final IType type = project.findType(method.getDeclaringClass().getCanonicalName());
 					if (type != null) {
 						type.getOpenable().open(new NullProgressMonitor());
-						sourceURL = type.getResource().getLocationURI().toURL();
+						sourceURI = type.getResource().getLocationURI();
 						final IMethod javaMethod = type.getMethod(method.getName(), getParamterTypes(method));
 						javaMethod.getOpenable().open(new NullProgressMonitor());
 						final ISourceRange methodIdentifierRange = javaMethod.getNameRange();
@@ -100,15 +99,15 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 
 						identifierRange = new Range(identifierStart, identifierEnd);
 						range = new Range(start, end);
-						res = new SourceLocation(sourceURL, identifierRange, range);
+						res = new SourceLocation(sourceURI, identifierRange, range);
 					} else {
 						res = null;
 					}
-				} catch (JavaModelException | MalformedURLException e) {
-					sourceURL = getDefaultSourceURL(resolver, method);
+				} catch (JavaModelException e) {
+					sourceURI = getDefaultSourceURI(resolver, method);
 				}
 			} else {
-				sourceURL = getDefaultSourceURL(resolver, method);
+				sourceURI = getDefaultSourceURI(resolver, method);
 			}
 		} else {
 			res = null;
@@ -131,14 +130,14 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 
 		final Object resolved = resolver.resolve(qualifiedName);
 		if (resolved instanceof Class<?>) {
-			URL sourceURL = null;
+			URI sourceURI = null;
 			if (resolver instanceof EclipseJDTQualifiedNameResolver) {
 				final IJavaProject project = ((EclipseJDTQualifiedNameResolver)resolver).getProject();
 				try {
 					final IType type = project.findType(((Class<?>)resolved).getCanonicalName());
 					if (type != null) {
 						type.getOpenable().open(new NullProgressMonitor());
-						sourceURL = type.getResource().getLocationURI().toURL();
+						sourceURI = type.getResource().getLocationURI();
 						final ISourceRange classIdentifierRange = type.getNameRange();
 						final ISourceRange sourceRange = type.getSourceRange();
 
@@ -162,11 +161,11 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 
 						identifierRange = new Range(identifierStart, identifierEnd);
 						range = new Range(start, end);
-						res = new SourceLocation(sourceURL, identifierRange, range);
+						res = new SourceLocation(sourceURI, identifierRange, range);
 					} else {
 						res = null;
 					}
-				} catch (JavaModelException | MalformedURLException e) {
+				} catch (JavaModelException e) {
 					// nothing to do here
 				}
 			} else {
@@ -189,12 +188,12 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 		return res.toArray(new String[res.size()]);
 	}
 
-	private URL getDefaultSourceURL(IQualifiedNameResolver resolver, final Method method) {
-		final URL sourceURL;
+	private URI getDefaultSourceURI(IQualifiedNameResolver resolver, final Method method) {
+		final URI sourceURI;
 		// TODO this will not work if the method is in a super class of the registered class
 		final String qualifiedName = resolver.getQualifiedName(method.getDeclaringClass());
-		sourceURL = resolver.getSourceURL(qualifiedName);
-		return sourceURL;
+		sourceURI = resolver.getSourceURI(qualifiedName);
+		return sourceURI;
 	}
 
 }
