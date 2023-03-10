@@ -12,8 +12,10 @@ package org.eclipse.acceleo.query.ide.jdt;
 
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
@@ -24,7 +26,11 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IPosition;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IRange;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.URIUtil;
+import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ISourceRange;
@@ -41,6 +47,16 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class EclipseJDTJavaLoader extends JavaLoader {
+
+	public static final String PATH_SEPARATOR = "/";
+
+	public static final String PERIOD = ".";
+
+	public static final String SRC = "src";
+
+	private static final String JDT_SCHEME = "jdt";
+
+	public static final String SYNTAX_SERVER_ID = "syntaxserver";
 
 	/**
 	 * Constructor.
@@ -73,14 +89,24 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 					final IType type = project.findType(method.getDeclaringClass().getCanonicalName());
 					if (type != null) {
 						type.getOpenable().open(new NullProgressMonitor());
-						sourceURI = type.getResource().getLocationURI();
+						final IResource typeResource = type.getResource();
+						final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+						if (typeResource != null) {
+							sourceURI = typeResource.getLocationURI();
+							parser.setSource(type.getCompilationUnit());
+						} else {
+							try {
+								sourceURI = new URI(replaceUriFragment(toJDTUri(type.getClassFile())
+										.toASCIIString(), SYNTAX_SERVER_ID));
+								parser.setSource(type.getSource().toCharArray());
+							} catch (Exception e) {
+								// TODO: handle exception
+							}
+						}
 						final IMethod javaMethod = type.getMethod(method.getName(), getParamterTypes(method));
 						javaMethod.getOpenable().open(new NullProgressMonitor());
 						final ISourceRange methodIdentifierRange = javaMethod.getNameRange();
 						final ISourceRange sourceRange = javaMethod.getSourceRange();
-
-						final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-						parser.setSource(type.getCompilationUnit());
 						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
 						final int identifierStartOffset = methodIdentifierRange.getOffset();
 						identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
@@ -116,6 +142,51 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 		return res;
 	}
 
+	private URI toJDTUri(IClassFile classFile) {
+		URI res;
+
+		final String packageName = classFile.getParent().getElementName();
+		final String jarName = classFile.getParent().getParent().getElementName();
+		try {
+			res = new URI(JDT_SCHEME, "contents", PATH_SEPARATOR + jarName + PATH_SEPARATOR + packageName
+					+ PATH_SEPARATOR + classFile.getElementName(), classFile.getHandleIdentifier(), null);
+		} catch (URISyntaxException e) {
+			res = null;
+		}
+		return res;
+	}
+
+	public static String replaceUriFragment(String uriString, String fragment) {
+		if (uriString != null) {
+			URI uri = toURI(uriString);
+			if (uri != null && Objects.equals(JDT_SCHEME, uri.getScheme())) {
+				try {
+					return new URI(JDT_SCHEME, uri.getAuthority(), uri.getPath(), uri.getQuery(), fragment)
+							.toASCIIString();
+				} catch (URISyntaxException e) {
+					// do nothing
+				}
+			}
+		}
+
+		return uriString;
+	}
+
+	public static URI toURI(String uriString) {
+		if (uriString == null || uriString.isEmpty()) {
+			return null;
+		}
+		try {
+			URI uri = new URI(uriString);
+			if (Platform.OS_WIN32.equals(Platform.getOS()) && URIUtil.isFileURI(uri)) {
+				uri = URIUtil.toFile(uri).toURI();
+			}
+			return uri;
+		} catch (URISyntaxException e) {
+			return null;
+		}
+	}
+
 	@Override
 	public ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, String qualifiedName) {
 		ISourceLocation res = null;
@@ -137,12 +208,18 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 					final IType type = project.findType(((Class<?>)resolved).getCanonicalName());
 					if (type != null) {
 						type.getOpenable().open(new NullProgressMonitor());
-						sourceURI = type.getResource().getLocationURI();
+						final IResource typeResource = type.getResource();
+						final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+						if (typeResource != null) {
+							sourceURI = typeResource.getLocationURI();
+							parser.setSource(type.getCompilationUnit());
+						} else {
+							sourceURI = toJDTUri(type.getClassFile());
+							parser.setSource(type.getSource().toCharArray());
+						}
 						final ISourceRange classIdentifierRange = type.getNameRange();
 						final ISourceRange sourceRange = type.getSourceRange();
 
-						final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-						parser.setSource(type.getCompilationUnit());
 						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
 						final int identifierStartOffset = classIdentifierRange.getOffset();
 						identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
