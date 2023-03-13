@@ -834,9 +834,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 				.length());
 		final ICompletionResult completionResult = aqlCompletionEngine.getCompletion(expression, expression
 				.length(), variables);
+		completionResult.sort(COMPLETION_PROPOSAL_COMPARATOR);
 		final List<ICompletionProposal> aqlProposals = completionResult.getProposals(new BasicFilter(
 				completionResult));
-		Collections.sort(aqlProposals, COMPLETION_PROPOSAL_COMPARATOR);
 		final List<AcceleoCompletionProposal> aqlProposalsAsAcceleoProposals = aqlProposals.stream().map(
 				AcceleoAstCompletor::transform).collect(Collectors.toList());
 		return aqlProposalsAsAcceleoProposals;
