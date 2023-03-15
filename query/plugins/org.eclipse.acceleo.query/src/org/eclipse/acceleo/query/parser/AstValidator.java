@@ -215,8 +215,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			for (VarRef varRef : unresolved) {
 				validationResult.putBindingResolvedVarRef(binding, varRef);
 			}
+			unresolvedVarRef.removeAll(unresolved);
 		}
-		unresolvedVarRef.removeAll(unresolved);
 	}
 
 	/**
@@ -231,8 +231,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			for (VarRef varRef : unresolved) {
 				validationResult.putVariableDeclarationResolvedVarRef(variableDeclaration, varRef);
 			}
+			unresolvedVarRef.removeAll(unresolved);
 		}
-		unresolvedVarRef.removeAll(unresolved);
 	}
 
 	/**
