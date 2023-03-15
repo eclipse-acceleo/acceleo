@@ -95,6 +95,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private final Map<String, List<String>> qualifiedNameToDependOn = new HashMap<String, List<String>>();
 
 	/**
+	 * The mapping from services to its contextual qualified name (class, module, ... qualified name).
+	 */
+	private final Map<IService<?>, String> contextQualifiedNames = new HashMap<>();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param classLoader
@@ -323,9 +328,22 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		final ILoader loader = getLoaderFor(object);
 		if (loader != null) {
 			res.addAll(loader.getServices(lookupEngine, object, contextQualifiedName));
+			for (IService<?> serivce : res) {
+				contextQualifiedNames.put(serivce, contextQualifiedName);
+			}
 		}
 
 		return res;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver#getContextQualifiedName(org.eclipse.acceleo.query.runtime.IService)
+	 */
+	@Override
+	public String getContextQualifiedName(IService<?> service) {
+		return contextQualifiedNames.get(service);
 	}
 
 	@Override

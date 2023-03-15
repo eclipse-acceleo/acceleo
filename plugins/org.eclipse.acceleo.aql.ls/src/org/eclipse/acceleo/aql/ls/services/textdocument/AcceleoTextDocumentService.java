@@ -48,6 +48,7 @@ import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
+import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.TextEdit;
@@ -399,6 +400,39 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		});
 	}
 	////
+
+	@Override
+	public CompletableFuture<List<? extends Location>> references(ReferenceParams params) {
+		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
+		checkDocumentIsOpened(textDocumentUri);
+		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		Position position = params.getPosition();
+		return references(acceleoTextDocument, position);
+	}
+
+	/**
+	 * Provides the "go to definition" results for a {@link Position} in a {@link AcceleoTextDocument}.
+	 * 
+	 * @param acceleoTextDocument
+	 *            the (non-{@code null}) {@link AcceleoTextDocument}.
+	 * @param position
+	 *            the (non-{@code null}) {@link Position}.
+	 * @return the asynchronous computation of the "go to definition" proposals.
+	 */
+	private CompletableFuture<List<? extends Location>> references(AcceleoTextDocument acceleoTextDocument,
+			Position position) {
+		return CompletableFutures.computeAsync(canceler -> {
+			canceler.checkCanceled();
+
+			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+					acceleoTextDocument.getContents());
+			final List<Location> locations = acceleoTextDocument.getReferencesLocations(atIndex);
+
+			canceler.checkCanceled();
+			return locations;
+		});
+	}
 
 	@Override
 	public CompletableFuture<List<TextEdit>> willSaveWaitUntil(WillSaveTextDocumentParams params) {

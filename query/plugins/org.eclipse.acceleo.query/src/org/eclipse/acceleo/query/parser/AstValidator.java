@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
@@ -131,6 +132,17 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	private Set<IValidationMessage> messages = new LinkedHashSet<IValidationMessage>();
 
 	/**
+	 * The mapping from a {@link VarRef#getVariableName() variable name} to its {@link List} of unresolved
+	 * {@link VarRef}.
+	 */
+	private final Map<String, List<VarRef>> unresolvedVarRefsMapping = new HashMap<>();
+
+	/**
+	 * The {@link Set} of unresolved {@link VarRef}.
+	 */
+	private final Set<VarRef> unresolvedVarRef = new LinkedHashSet<>();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param environment
@@ -177,6 +189,50 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	protected Map<String, Set<IType>> popVariableTypes() {
 		return variableTypesStack.removeLast();
+	}
+
+	/**
+	 * Adds an unresolved {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 */
+	private void addUnresolvedVarRef(VarRef varRef) {
+		unresolvedVarRefsMapping.computeIfAbsent(varRef.getVariableName(), n -> new ArrayList<>()).add(
+				varRef);
+		unresolvedVarRef.add(varRef);
+	}
+
+	/**
+	 * Resolves unresolved {@link VarRef} for the given {@link Binding}.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 */
+	private void resolveVarRefBinding(Binding binding) {
+		final List<VarRef> unresolved = unresolvedVarRefsMapping.remove(binding.getName());
+		if (unresolved != null) {
+			for (VarRef varRef : unresolved) {
+				validationResult.putBindingResolvedVarRef(binding, varRef);
+			}
+		}
+		unresolvedVarRef.removeAll(unresolved);
+	}
+
+	/**
+	 * Resolves unresolved {@link VarRef} for the given {@link VariableDeclaration}.
+	 * 
+	 * @param variableDeclaration
+	 *            the {@link VariableDeclaration}
+	 */
+	private void resolveVarRefVariableDeclaration(VariableDeclaration variableDeclaration) {
+		final List<VarRef> unresolved = unresolvedVarRefsMapping.remove(variableDeclaration.getName());
+		if (unresolved != null) {
+			for (VarRef varRef : unresolved) {
+				validationResult.putVariableDeclarationResolvedVarRef(variableDeclaration, varRef);
+			}
+		}
+		unresolvedVarRef.removeAll(unresolved);
 	}
 
 	/**
@@ -296,6 +352,9 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		final ServicesValidationResult servicesValidationResult = services.call(call, validationResult,
 				argTypes);
+		for (IService<?> resolvedService : servicesValidationResult.getResolvedServices()) {
+			validationResult.putResolvedCall(resolvedService, call);
+		}
 		possibleTypes = servicesValidationResult.getResultingTypes();
 
 		return checkWarningsAndErrors(call, possibleTypes);
@@ -794,16 +853,22 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		}
 
 		pushVariableTypes(newVariableTypes);
-		final Set<IType> lambdaExpressionPossibleTypes = doSwitch(object.getExpression());
-		final String evaluatorName = object.getParameters().get(0).getName();
-		final Set<IType> lambdaEvaluatorPossibleTypes = newVariableTypes.get(evaluatorName);
-		for (IType lambdaEvaluatorPossibleType : lambdaEvaluatorPossibleTypes) {
-			for (IType lambdaExpressionType : lambdaExpressionPossibleTypes) {
-				lambdaExpressionTypes.add(new LambdaType(services.getQueryEnvironment(), evaluatorName,
-						lambdaEvaluatorPossibleType, lambdaExpressionType));
+		try {
+			final Set<IType> lambdaExpressionPossibleTypes = doSwitch(object.getExpression());
+			final String evaluatorName = object.getParameters().get(0).getName();
+			final Set<IType> lambdaEvaluatorPossibleTypes = newVariableTypes.get(evaluatorName);
+			for (IType lambdaEvaluatorPossibleType : lambdaEvaluatorPossibleTypes) {
+				for (IType lambdaExpressionType : lambdaExpressionPossibleTypes) {
+					lambdaExpressionTypes.add(new LambdaType(services.getQueryEnvironment(), evaluatorName,
+							lambdaEvaluatorPossibleType, lambdaExpressionType));
+				}
 			}
+		} finally {
+			for (VariableDeclaration variableDeclaration : object.getParameters()) {
+				resolveVarRefVariableDeclaration(variableDeclaration);
+			}
+			popVariableTypes();
 		}
-		popVariableTypes();
 
 		return lambdaExpressionTypes;
 	}
@@ -830,6 +895,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseVarRef(VarRef object) {
 		final Set<IType> variableTypes = services.getVariableTypes(peekVariableTypes(), object
 				.getVariableName());
+		addUnresolvedVarRef(object);
 		return checkWarningsAndErrors(object, variableTypes);
 	}
 
@@ -845,10 +911,12 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public IValidationResult validate(Map<String, Set<IType>> variableTypes, AstResult astResult) {
 		validationResult = new ValidationResult(astResult);
 
+		unresolvedVarRef.clear();
 		pushVariableTypes(variableTypes);
 		doSwitch(astResult.getAst());
 		popVariableTypes();
 		validationResult.getMessages().addAll(messages);
+		validationResult.getUnresolvedVarRef().addAll(unresolvedVarRef);
 		messages = new LinkedHashSet<IValidationMessage>();
 
 		return validationResult;
@@ -1125,6 +1193,9 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final Set<IType> bodyTypes = doSwitch(object.getBody());
 			result.addAll(bodyTypes);
 		} finally {
+			for (Binding binding : object.getBindings()) {
+				resolveVarRefBinding(binding);
+			}
 			popVariableTypes();
 		}
 

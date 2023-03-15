@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -139,6 +139,8 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 
 		// FIXME: Maybe at some point we will need to set hierarchicalDocumentSymbolSupport to true?
 		capabilities.setDocumentSymbolProvider(true);
+
+		capabilities.setReferencesProvider(true);
 
 		final InitializeResult res = new InitializeResult(capabilities);
 		return CompletableFuture.completedFuture(res);

@@ -122,6 +122,15 @@ public interface IQualifiedNameResolver {
 			String contextQualifiedName);
 
 	/**
+	 * Gets the context qualified name for the given {@link IService}.
+	 * 
+	 * @param service
+	 *            the {@link IService}
+	 * @return the context qualified name for the given {@link IService} if nay, <code>null</code> otherwise
+	 */
+	String getContextQualifiedName(IService<?> service);
+
+	/**
 	 * Gets the super qualified name of the given qualified name.
 	 * 
 	 * @param qualifiedName

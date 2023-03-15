@@ -61,6 +61,7 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -138,6 +139,12 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final IType booleanObjectType;
 
 	/**
+	 * The mapping from a {@link VarRef#getVariableName() variable name} to its {@link List} of unresolved
+	 * {@link VarRef}.
+	 */
+	private final Map<String, List<VarRef>> unresolvedVarRefsMapping = new HashMap<>();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
@@ -177,6 +184,35 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 */
 	protected Map<String, Set<IType>> popVariableTypes() {
 		return variableTypesStack.removeLast();
+	}
+
+	/**
+	 * Adds an unresolved {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 */
+	private void addUnresolvedVarRef(IValidationResult validationResult) {
+		for (VarRef unresolved : validationResult.getUnresolvedVarRef()) {
+			unresolvedVarRefsMapping.computeIfAbsent(unresolved.getVariableName(), n -> new ArrayList<>())
+					.add(unresolved);
+		}
+	}
+
+	/**
+	 * Resolves unresolved {@link VarRef} for the given {@link Variable}.
+	 * 
+	 * @param variable
+	 *            the {@link Variable}
+	 */
+	private void resolveVarRefVariable(Variable variable) {
+		final List<VarRef> unresolved = unresolvedVarRefsMapping.remove(variable.getName());
+		if (unresolved != null) {
+			for (VarRef varRef : unresolved) {
+				result.putBindingResolvedVarRef(variable, varRef);
+				System.out.println(variable.getName() + " " + varRef.eContainer().toString());
+			}
+		}
 	}
 
 	/**
@@ -413,6 +449,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 			doSwitch(template.getBody());
 		} finally {
+			for (Variable parameter : template.getParameters()) {
+				resolveVarRefVariable(parameter);
+			}
 			popVariableTypes();
 		}
 
@@ -487,12 +526,16 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			if (query.getType() != null) {
 				final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(),
 						query.getType());
+				addUnresolvedVarRef(typeValidationResult);
 				result.getAqlValidationResults().put(query.getType(), typeValidationResult);
 				final Set<IType> iTypes = validator.getDeclarationTypes(queryEnvironment, typeValidationResult
 						.getPossibleTypes(query.getType().getAst()));
 				checkTypesCompatibility(query, possibleTypes, iTypes);
 			}
 		} finally {
+			for (Variable parameter : query.getParameters()) {
+				resolveVarRefVariable(parameter);
+			}
 			popVariableTypes();
 		}
 
@@ -545,6 +588,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		}
 		final IValidationResult typeValidationResult = validator.validate(Collections.emptyMap(), variable
 				.getType());
+		addUnresolvedVarRef(typeValidationResult);
 		result.getAqlValidationResults().put(variable.getType(), typeValidationResult);
 		final Set<IType> types = validator.getDeclarationTypes(queryEnvironment, typeValidationResult
 				.getPossibleTypes(variable.getType().getAst()));
@@ -775,6 +819,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseExpression(Expression expression) {
 		final IValidationResult res = validator.validate(peekVariableTypes(), expression.getAst());
+		addUnresolvedVarRef(res);
 
 		result.getAqlValidationResults().put(expression.getAst(), res);
 		final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
@@ -940,6 +985,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 			doSwitch(letStatement.getBody());
 		} finally {
+			for (Binding binding : letStatement.getVariables()) {
+				resolveVarRefVariable(binding);
+			}
 			popVariableTypes();
 		}
 

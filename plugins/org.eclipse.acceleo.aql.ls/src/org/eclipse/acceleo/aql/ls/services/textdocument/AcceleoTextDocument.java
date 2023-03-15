@@ -11,21 +11,32 @@
 package org.eclipse.acceleo.aql.ls.services.textdocument;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.location.AcceleoLocator;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
+import org.eclipse.acceleo.aql.ls.common.LocationUtils;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoProject;
+import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.ast.Binding;
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.VarRef;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
@@ -35,6 +46,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.services.TextDocumentService;
@@ -351,6 +363,84 @@ public class AcceleoTextDocument {
 	public List<AbstractLocationLink<?, ?>> getDeclarationLocations(int position) {
 		return new AcceleoLocator(getQueryEnvironment(), getModuleQualifiedName(), acceleoValidationResult)
 				.getDeclarationLocations(this.acceleoAstResult, position);
+	}
+
+	/**
+	 * Provides the links from the location(s) defining the element at the given position to its references.
+	 * 
+	 * @param position
+	 *            the (positive) position in the source contents.
+	 * @return the {@link List} of {@link AbstractLocationLink} corresponding to the references to the
+	 *         definition location(s) of the Acceleo element found at the given position in the source
+	 *         contents.
+	 */
+	public List<Location> getReferencesLocations(int position) {
+		final List<Location> referencesLocations = new ArrayList<>();
+
+		final List<AbstractLocationLink<?, ?>> definitionLocations = getDefinitionLocations(position);
+		for (AbstractLocationLink<?, ?> declarationLocation : definitionLocations) {
+			final Object declaration = declarationLocation.getDestination();
+			if (declaration instanceof Binding) {
+				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef((Binding)declaration)) {
+					final Location location = LocationUtils.identifierLocation(queryEnvironment,
+							getModuleQualifiedName(), acceleoValidationResult, varRef);
+					referencesLocations.add(location);
+				}
+			} else if (declaration instanceof VariableDeclaration) {
+				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef(
+						(VariableDeclaration)declaration)) {
+					final Location location = LocationUtils.identifierLocation(queryEnvironment,
+							getModuleQualifiedName(), acceleoValidationResult, varRef);
+					referencesLocations.add(location);
+				}
+			} else if (declaration instanceof Variable) {
+				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef((Variable)declaration)) {
+					final Location location = LocationUtils.identifierLocation(queryEnvironment,
+							getModuleQualifiedName(), acceleoValidationResult, varRef);
+					referencesLocations.add(location);
+				}
+			} else if (declaration instanceof IService<?>) {
+				final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+				final Set<String> qualifiedNames = new LinkedHashSet<>();
+				final String serviceContextQualifiedName = resolver.getContextQualifiedName(
+						(IService<?>)declaration);
+				qualifiedNames.add(serviceContextQualifiedName);
+				qualifiedNames.addAll(resolver.getDependOn(serviceContextQualifiedName));
+				final AcceleoWorkspace workspace = getProject().getWorkspace();
+				for (String dependentQualifiedName : qualifiedNames) {
+					final URI sourceURI = resolver.getSourceURI(dependentQualifiedName);
+					final AcceleoTextDocument document = workspace.getTextDocument(sourceURI);
+					if (document != null) {
+						final List<Call> resolvedCalls = document.getAcceleoValidationResults()
+								.getResolvedCalls((IService<?>)declaration);
+						for (Call call : resolvedCalls) {
+							final Location location = LocationUtils.identifierLocation(queryEnvironment,
+									dependentQualifiedName, document.getAcceleoValidationResults(), call);
+							referencesLocations.add(location);
+						}
+					} else {
+						// TODO not a module but a class or something else
+					}
+				}
+			} else if (declaration instanceof Module) {
+				final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+				final AcceleoWorkspace workspace = getProject().getWorkspace();
+				for (String dependentQualifiedName : resolver.getDependOn(getModuleQualifiedName())) {
+					final URI sourceURI = resolver.getSourceURI(dependentQualifiedName);
+					final AcceleoTextDocument document = workspace.getTextDocument(sourceURI);
+					final Module module = document.getAcceleoAstResult().getModule();
+					final Location location = LocationUtils.identifierLocation(queryEnvironment,
+							dependentQualifiedName, document.getAcceleoValidationResults(), module);
+					referencesLocations.add(location);
+				}
+
+			} else {
+				// TODO metamodel ?
+				// nothing to do here
+			}
+		}
+
+		return referencesLocations;
 	}
 
 	/**
