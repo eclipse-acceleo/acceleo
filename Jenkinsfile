@@ -10,12 +10,12 @@ pipeline {
 	
 	tools {
 		maven 'apache-maven-latest'
-		jdk 'adoptopenjdk-hotspot-jdk11-latest'
+		jdk 'temurin-jdk17-latest'
 	}
 	
 	environment {
 		// Target platform to build against (must correspond to a profile in the parent pom.xml)
-		PLATFORM = 'platform-2022-09'
+		PLATFORM = 'platform-2023-03'
 	}
 	
 	stages {
