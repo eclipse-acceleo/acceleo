@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -49,9 +49,9 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	private final AcceleoAstResult astResult;
 
 	/**
-	 * Mapping of {@link ASTNode} to {@link IValidationMessage}.
+	 * Mapping of {@link AcceleoASTNode} to {@link IValidationMessage}.
 	 */
-	private final Map<ASTNode, List<IValidationMessage>> messages = new LinkedHashMap<>();
+	private final Map<AcceleoASTNode, List<IValidationMessage>> messages = new LinkedHashMap<>();
 
 	/**
 	 * Mapping of AQL AST to AQL validation result.
@@ -89,7 +89,7 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	}
 
 	@Override
-	public List<IValidationMessage> getValidationMessages(ASTNode node) {
+	public List<IValidationMessage> getValidationMessages(AcceleoASTNode node) {
 		return new ArrayList<IValidationMessage>(messages.getOrDefault(node, new LinkedList<>()));
 	}
 
@@ -98,11 +98,11 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 		return aqlValidationResults.get(aqlAst);
 	}
 
-	/* visible to the validator only */void addMessage(ASTNode node, IValidationMessage newMessage) {
+	/* visible to the validator only */void addMessage(AcceleoASTNode node, IValidationMessage newMessage) {
 		messages.computeIfAbsent(node, key -> new LinkedList<>()).add(newMessage);
 	}
 
-	/* visible to the validator only */void addMessages(ASTNode node,
+	/* visible to the validator only */void addMessages(AcceleoASTNode node,
 			Collection<IValidationMessage> newMessages) {
 		messages.computeIfAbsent(node, key -> new LinkedList<>()).addAll(newMessages);
 	}

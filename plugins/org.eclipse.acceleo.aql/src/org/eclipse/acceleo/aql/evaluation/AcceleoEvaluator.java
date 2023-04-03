@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
@@ -167,10 +167,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Generates the given {@link ASTNode} with the given variables.
+	 * Generates the given {@link AcceleoASTNode} with the given variables.
 	 * 
 	 * @param node
-	 *            the {@link ASTNode} to generate
+	 *            the {@link AcceleoASTNode} to generate
 	 * @param variables
 	 *            the variables
 	 * @param strategy
@@ -179,8 +179,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 *            the destination {@link URI}
 	 * @return the generated {@link Object}, can be <code>null</code>
 	 */
-	public Object generate(ASTNode node, Map<String, Object> variables, IAcceleoGenerationStrategy strategy,
-			URI destinationURI) {
+	public Object generate(AcceleoASTNode node, Map<String, Object> variables,
+			IAcceleoGenerationStrategy strategy, URI destinationURI) {
 
 		final Object res;
 

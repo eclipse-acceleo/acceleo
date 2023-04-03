@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.ErrorBinding;
@@ -521,17 +521,17 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 
 	/**
 	 * Gets the mapping of {@link String variable name} to its possible {@link IType} in the scope of the
-	 * given {@link ASTNode}.
+	 * given {@link AcceleoASTNode}.
 	 * 
 	 * @param scope
-	 *            the {@link ASTNode} scope
+	 *            the {@link AcceleoASTNode} scope
 	 * @return the mapping of {@link String variable name} to its possible {@link IType} in the scope of the
-	 *         given {@link ASTNode}
+	 *         given {@link AcceleoASTNode}
 	 */
-	private Map<String, Set<IType>> getVariables(ASTNode scope) {
+	private Map<String, Set<IType>> getVariables(AcceleoASTNode scope) {
 		final Map<String, Set<IType>> res = new HashMap<String, Set<IType>>();
 
-		ASTNode currentScope = scope;
+		AcceleoASTNode currentScope = scope;
 		while (currentScope != null) {
 			if (currentScope instanceof Template) {
 				final Template template = (Template)currentScope;
@@ -553,8 +553,8 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 				res.put(forStatement.getBinding().getName(), getPossibleTypes(forStatement.getBinding()));
 			}
 
-			if (currentScope.eContainer() instanceof ASTNode) {
-				currentScope = (ASTNode)currentScope.eContainer();
+			if (currentScope.eContainer() instanceof AcceleoASTNode) {
+				currentScope = (AcceleoASTNode)currentScope.eContainer();
 			} else {
 				currentScope = null;
 			}

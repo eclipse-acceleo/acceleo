@@ -24,7 +24,7 @@ import org.antlr.v4.runtime.CommonTokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
@@ -75,6 +75,7 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoUtil;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
@@ -411,7 +412,7 @@ public class AcceleoParser {
 	/**
 	 * The {@link Positions}.
 	 */
-	private Positions positions;
+	private Positions<ASTNode> positions;
 
 	/**
 	 * The parser currentPosition.
@@ -469,7 +470,7 @@ public class AcceleoParser {
 		this.currentPosition = 0;
 		this.lines = new int[source.length() + 1];
 		this.columns = new int[source.length() + 1];
-		this.positions = new Positions();
+		this.positions = new Positions<>();
 		this.text = source;
 		computeLinesAndColumns(text);
 		this.errors = new ArrayList<Error>();
@@ -512,16 +513,16 @@ public class AcceleoParser {
 	}
 
 	/**
-	 * Sets the identifier start and identifer end positions for the given {@link ASTNode}.
+	 * Sets the identifier start and identifer end positions for the given {@link AcceleoASTNode}.
 	 * 
 	 * @param node
-	 *            the {@link ASTNode}
+	 *            the {@link AcceleoASTNode}
 	 * @param start
 	 *            the start position
 	 * @param end
 	 *            the end position
 	 */
-	private void setIdentifierPositions(ASTNode node, int start, int end) {
+	private void setIdentifierPositions(AcceleoASTNode node, int start, int end) {
 		positions.setIdentifierStartPositions(node, start);
 		positions.setIdentifierStartLines(node, lines[start]);
 		positions.setIdentifierStartColumns(node, columns[start]);
@@ -531,16 +532,16 @@ public class AcceleoParser {
 	}
 
 	/**
-	 * Sets the start and end positions for the given {@link ASTNode}.
+	 * Sets the start and end positions for the given {@link AcceleoASTNode}.
 	 * 
 	 * @param node
-	 *            the {@link ASTNode}
+	 *            the {@link AcceleoASTNode}
 	 * @param start
 	 *            the start position
 	 * @param end
 	 *            the end position
 	 */
-	private void setPositions(ASTNode node, int start, int end) {
+	private void setPositions(AcceleoASTNode node, int start, int end) {
 		positions.setStartPositions(node, start);
 		positions.setStartLines(node, lines[start]);
 		positions.setStartColumns(node, columns[start]);
@@ -2365,7 +2366,7 @@ public class AcceleoParser {
 			List<org.eclipse.acceleo.query.ast.Error> aqlErrors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
 			aqlErrors.add(errorExpression);
-			final Positions aqlPositions = new Positions();
+			final Positions<ASTNode> aqlPositions = new Positions<>();
 			if (expression != null) {
 				aqlPositions.setIdentifierStartPositions(errorExpression, Integer.valueOf(0));
 				aqlPositions.setIdentifierStartLines(errorExpression, Integer.valueOf(0));
@@ -2420,7 +2421,7 @@ public class AcceleoParser {
 			List<org.eclipse.acceleo.query.ast.Error> errs = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
 			errs.add(errorTypeLiteral);
-			final Positions aqlPositions = new Positions();
+			final Positions<ASTNode> aqlPositions = new Positions<>();
 			if (expression != null) {
 				aqlPositions.setIdentifierStartPositions(errorTypeLiteral, Integer.valueOf(0));
 				aqlPositions.setIdentifierStartLines(errorTypeLiteral, Integer.valueOf(0));

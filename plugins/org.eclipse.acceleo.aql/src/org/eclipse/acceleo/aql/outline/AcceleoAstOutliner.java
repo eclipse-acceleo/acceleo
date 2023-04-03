@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.outline;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
@@ -47,14 +47,15 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 	 * Creates a new {@link AcceleoSymbol} based on the known {@link IAcceleoValidationResult}.
 	 * 
 	 * @param semanticElement
-	 *            the (non-{@code null}) {@link ASTNode} represented by the created symbol.
+	 *            the (non-{@code null}) {@link AcceleoASTNode} represented by the created symbol.
 	 * @param symbolName
 	 *            the (non-{@code null}) name of the created symbol.
 	 * @param symbolDetails
 	 *            the (maybe-{@code null}) additional details of the symbol.
 	 * @return the newly-created non-{@code null} {@link AcceleoSymbol}.
 	 */
-	private AcceleoSymbol createSymbol(ASTNode semanticElement, String symbolName, String symbolDetails) {
+	private AcceleoSymbol createSymbol(AcceleoASTNode semanticElement, String symbolName,
+			String symbolDetails) {
 		return new AcceleoSymbol(semanticElement, this.acceleoValidationResult, symbolName, symbolDetails);
 	}
 

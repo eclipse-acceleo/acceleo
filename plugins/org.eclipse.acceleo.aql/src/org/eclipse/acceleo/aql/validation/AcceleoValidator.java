@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
@@ -240,10 +240,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Adds a {@link IValidationMessage} to the given {@link ASTNode}.
+	 * Adds a {@link IValidationMessage} to the given {@link AcceleoASTNode}.
 	 * 
 	 * @param node
-	 *            the {@link ASTNode}
+	 *            the {@link AcceleoASTNode}
 	 * @param level
 	 *            the {@link ValidationMessageLevel}
 	 * @param messageString
@@ -253,7 +253,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * @param endPosition
 	 *            the end position
 	 */
-	protected void addMessage(ASTNode node, ValidationMessageLevel level, String messageString,
+	protected void addMessage(AcceleoASTNode node, ValidationMessageLevel level, String messageString,
 			int startPosition, int endPosition) {
 		final IValidationMessage message = new ValidationMessage(level, messageString, startPosition,
 				endPosition);
@@ -661,7 +661,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * @param declaredTypes
 	 *            the {@link Set} of {@link Binding#getType() declared} {@link IType}
 	 */
-	protected void checkTypesCompatibility(ASTNode binding, final Set<IType> possibleTypes,
+	protected void checkTypesCompatibility(AcceleoASTNode binding, final Set<IType> possibleTypes,
 			final Set<IType> declaredTypes) {
 		for (IType possibleType : possibleTypes) {
 			List<IValidationMessage> messages = new ArrayList<IValidationMessage>();
@@ -690,7 +690,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * Validates the given {@link Binding} type.
 	 * 
 	 * @param node
-	 *            the {@link ASTNode}
+	 *            the {@link AcceleoASTNode}
 	 * @param iType
 	 *            the {@link IType} corresponding to the given {@link Binding#getType() binding type}
 	 * @param possibleType
@@ -698,8 +698,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 *            expression}
 	 * @return the {@link List} of {@link IValidationMessage} is something doesn't validate
 	 */
-	protected List<IValidationMessage> validateBindingTypeForceCollection(ASTNode node, final IType iType,
-			IType possibleType) {
+	protected List<IValidationMessage> validateBindingTypeForceCollection(AcceleoASTNode node,
+			final IType iType, IType possibleType) {
 		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
 
 		if (possibleType instanceof ICollectionType) {
@@ -914,7 +914,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		return RETURN_VALUE;
 	}
 
-	private void checkBooleanType(ASTNode node, final Set<IType> possibleTypes) {
+	private void checkBooleanType(AcceleoASTNode node, final Set<IType> possibleTypes) {
 		if (!possibleTypes.isEmpty()) {
 			boolean onlyBoolean = true;
 			boolean onlyNotBoolean = true;
@@ -1033,11 +1033,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * Checks given possible {@link IType} against the {@link String} {@link IType}.
 	 * 
 	 * @param node
-	 *            the {@link ASTNode}
+	 *            the {@link AcceleoASTNode}
 	 * @param possibleTypes
 	 *            the {@link Set} of possible {@link IType}
 	 */
-	private void checkStringType(ASTNode node, Set<IType> possibleTypes) {
+	private void checkStringType(AcceleoASTNode node, Set<IType> possibleTypes) {
 		if (!possibleTypes.isEmpty()) {
 			boolean onlyString = true;
 			boolean onlyNotString = true;

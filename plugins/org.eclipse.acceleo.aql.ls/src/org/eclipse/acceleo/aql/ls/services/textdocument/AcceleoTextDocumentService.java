@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
-import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerServicesUtils;
@@ -70,13 +69,6 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	 * {@link Map} of the opened documents, uniquely identified by their {@link URI}.
 	 */
 	private final Map<URI, AcceleoTextDocument> openedDocumentsIndex = new HashMap<>();
-
-	/**
-	 * The {@link AcceleoLocationLinkResolver} helps dealing with {@link AbstractLocationLink} provided by the
-	 * Acceleo API.
-	 */
-	private final AcceleoLocationLinkResolver acceleoLocationLinkResolver = new AcceleoLocationLinkResolver(
-			this);
 
 	/**
 	 * The owner {@link AcceleoLanguageServer} of this service.

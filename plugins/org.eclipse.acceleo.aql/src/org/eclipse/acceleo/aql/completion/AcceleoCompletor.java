@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -92,29 +91,6 @@ public class AcceleoCompletor {
 		}
 
 		return proposals;
-	}
-
-	/**
-	 * Gets the containing {@link ModuleElement} for the given {@link EObject}.
-	 * 
-	 * @param eObj
-	 *            the {@link EObject}
-	 * @return the containing {@link ModuleElement} for the given {@link EObject} if any, <code>null</code>
-	 *         otherwise
-	 */
-	private ModuleElement getContainingModuleElement(EObject eObj) {
-		ModuleElement res = null;
-
-		EObject current = eObj;
-		while (current != null) {
-			if (current instanceof ModuleElement) {
-				res = (ModuleElement)current;
-				break;
-			}
-			current = current.eContainer();
-		}
-
-		return res;
 	}
 
 	/**

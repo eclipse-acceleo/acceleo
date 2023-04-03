@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Query;
@@ -430,11 +430,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			java.net.URI moduleSourceURI = resolver.getSourceURI(moduleQualifiedName);
 			path = URIUtil.toFile(moduleSourceURI).toString();
 
-			if (instruction instanceof ASTNode) {
-				final int startLine = moduleAstResult.getStartLine((ASTNode)instruction);
-				final int startColumn = moduleAstResult.getStartColumn((ASTNode)instruction);
-				final int endLine = moduleAstResult.getEndLine((ASTNode)instruction);
-				final int endColumn = moduleAstResult.getEndColumn((ASTNode)instruction);
+			if (instruction instanceof AcceleoASTNode) {
+				final int startLine = moduleAstResult.getStartLine((AcceleoASTNode)instruction);
+				final int startColumn = moduleAstResult.getStartColumn((AcceleoASTNode)instruction);
+				final int endLine = moduleAstResult.getEndLine((AcceleoASTNode)instruction);
+				final int endColumn = moduleAstResult.getEndColumn((AcceleoASTNode)instruction);
 				res = new DSLSource(path, startLine + 1, startColumn + 1, endLine + 1, endColumn + 1);
 			} else if (instruction instanceof Expression) {
 				final int startLine = moduleAstResult.getStartLine((Expression)instruction);

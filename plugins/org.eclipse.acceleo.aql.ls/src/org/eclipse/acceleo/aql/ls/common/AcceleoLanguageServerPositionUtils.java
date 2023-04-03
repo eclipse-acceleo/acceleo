@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.acceleo.aql.ls.common;
 
 import java.util.Objects;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
@@ -30,16 +30,16 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
-	 * Provides the start {@link Position} of an {@link ASTNode} in the given {@link AcceleoAstResult}.
+	 * Provides the start {@link Position} of an {@link AcceleoASTNode} in the given {@link AcceleoAstResult}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode} we want the start {@link Position} of.
+	 *            the (non-{@code null}) {@link AcceleoASTNode} we want the start {@link Position} of.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @return the {@link Position} corresponding to the start of {@code astNode} in
 	 *         {@code inAcceleoAstResult}.
 	 */
-	public static Position getStartPositionOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
+	public static Position getStartPositionOf(AcceleoASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
 		int nodeStartLine = inAcceleoAstResult.getStartLine(astNode);
 		int nodeStartColumn = inAcceleoAstResult.getStartColumn(astNode);
 		if (nodeStartLine == -1 || nodeStartColumn == -1) {
@@ -50,17 +50,17 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
-	 * Provides the identifier start {@link Position} of an {@link ASTNode} in the given
+	 * Provides the identifier start {@link Position} of an {@link AcceleoASTNode} in the given
 	 * {@link AcceleoAstResult}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode} we want the start {@link Position} of.
+	 *            the (non-{@code null}) {@link AcceleoASTNode} we want the start {@link Position} of.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @return the identifier {@link Position} corresponding to the start of {@code astNode} in
 	 *         {@code inAcceleoAstResult}.
 	 */
-	public static Position getIDentifierStartPositionOf(ASTNode astNode,
+	public static Position getIDentifierStartPositionOf(AcceleoASTNode astNode,
 			AcceleoAstResult inAcceleoAstResult) {
 		int nodeStartLine = inAcceleoAstResult.getIdentifierStartLine(astNode);
 		int nodeStartColumn = inAcceleoAstResult.getIdentifierStartColumn(astNode);
@@ -72,15 +72,15 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
-	 * Provides the end {@link Position} of an {@link ASTNode} in the given {@link AcceleoAstResult}.
+	 * Provides the end {@link Position} of an {@link AcceleoASTNode} in the given {@link AcceleoAstResult}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode} we want the end {@link Position} of.
+	 *            the (non-{@code null}) {@link AcceleoASTNode} we want the end {@link Position} of.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @return the {@link Position} corresponding to the end of {@code astNode} in {@code inAcceleoAstResult}.
 	 */
-	public static Position getEndPositionOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
+	public static Position getEndPositionOf(AcceleoASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
 		int nodeEndLine = inAcceleoAstResult.getEndLine(astNode);
 		int nodeEndColumn = inAcceleoAstResult.getEndColumn(astNode);
 		if (nodeEndLine == -1 || nodeEndColumn == -1) {
@@ -91,17 +91,18 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
-	 * Provides the identifier end {@link Position} of an {@link ASTNode} in the given
+	 * Provides the identifier end {@link Position} of an {@link AcceleoASTNode} in the given
 	 * {@link AcceleoAstResult}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode} we want the end {@link Position} of.
+	 *            the (non-{@code null}) {@link AcceleoASTNode} we want the end {@link Position} of.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @return the identifier {@link Position} corresponding to the end of {@code astNode} in
 	 *         {@code inAcceleoAstResult}.
 	 */
-	public static Position getIdentifierEndPositionOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
+	public static Position getIdentifierEndPositionOf(AcceleoASTNode astNode,
+			AcceleoAstResult inAcceleoAstResult) {
 		int nodeEndLine = inAcceleoAstResult.getIdentifierEndLine(astNode);
 		int nodeEndColumn = inAcceleoAstResult.getIdentifierEndColumn(astNode);
 		if (nodeEndLine == -1 || nodeEndColumn == -1) {
@@ -112,32 +113,33 @@ public final class AcceleoLanguageServerPositionUtils {
 	}
 
 	/**
-	 * Provides the {@link Range} corresponding to an {@link ASTNode} in the given {@link AcceleoAstResult}.
+	 * Provides the {@link Range} corresponding to an {@link AcceleoASTNode} in the given
+	 * {@link AcceleoAstResult}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode}.
+	 *            the (non-{@code null}) {@link AcceleoASTNode}.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @return the {@link Range} corresponding to the position in the source contents of
 	 *         {@code inAcceleoAstResult} corresponding to {@code astNode}.
 	 */
-	public static Range getRangeOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
+	public static Range getRangeOf(AcceleoASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
 		return new Range(getStartPositionOf(astNode, inAcceleoAstResult), getEndPositionOf(astNode,
 				inAcceleoAstResult));
 	}
 
 	/**
-	 * Provides the identifier {@link Range} corresponding to an {@link ASTNode} in the given
+	 * Provides the identifier {@link Range} corresponding to an {@link AcceleoASTNode} in the given
 	 * {@link AcceleoAstResult}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode}.
+	 *            the (non-{@code null}) {@link AcceleoASTNode}.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @return the identifier {@link Range} corresponding to the position in the source contents of
 	 *         {@code inAcceleoAstResult} corresponding to {@code astNode}.
 	 */
-	public static Range getIdentifierRangeOf(ASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
+	public static Range getIdentifierRangeOf(AcceleoASTNode astNode, AcceleoAstResult inAcceleoAstResult) {
 		return new Range(getIDentifierStartPositionOf(astNode, inAcceleoAstResult),
 				getIdentifierEndPositionOf(astNode, inAcceleoAstResult));
 	}

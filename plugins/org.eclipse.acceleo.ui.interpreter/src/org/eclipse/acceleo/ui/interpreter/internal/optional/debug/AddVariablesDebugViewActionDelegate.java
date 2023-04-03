@@ -108,8 +108,8 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 				// The interpreter view is not open, let's activate it!
 
 				try {
-					interpreterViewPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage().showView("org.eclipse.acceleo.ui.interpreter.view"); //$NON-NLS-1$
+					interpreterViewPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+							.showView("org.eclipse.acceleo.ui.interpreter.view"); //$NON-NLS-1$
 				} catch (PartInitException e) {
 					InterpreterPlugin.getDefault().getLog()
 							.log(new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, e.getMessage()));
@@ -125,11 +125,9 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 			if (interpreterViewPart != null) {
 				interpreterViewPart.setFocus();
 			} else {
-				InterpreterPlugin
-						.getDefault()
-						.getLog()
-						.log(new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, InterpreterMessages
-								.getString("AddVariablesDebug.InterpreterViewNotFound"))); //$NON-NLS-1$
+				InterpreterPlugin.getDefault().getLog()
+						.log(new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID,
+								InterpreterMessages.getString("AddVariablesDebug.InterpreterViewNotFound"))); //$NON-NLS-1$
 			}
 
 			// Let's add the variables

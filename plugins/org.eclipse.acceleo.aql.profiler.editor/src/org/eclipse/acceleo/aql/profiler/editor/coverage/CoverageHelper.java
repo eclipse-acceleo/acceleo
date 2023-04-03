@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
@@ -145,7 +145,7 @@ public class CoverageHelper {
 	 * @return <true> if the element is involved in the coverage
 	 */
 	private static boolean isRelevant(EObject moduleElement) {
-		return moduleElement instanceof ASTNode && !(moduleElement instanceof Comment
+		return moduleElement instanceof AcceleoASTNode && !(moduleElement instanceof Comment
 				|| moduleElement instanceof CommentBody || moduleElement instanceof Import
 				|| moduleElement instanceof ModuleReference || moduleElement instanceof Block
 				|| moduleElement instanceof Variable);
@@ -186,8 +186,8 @@ public class CoverageHelper {
 		AcceleoAstResult astResult = module.getAst();
 		CoverageReport report = getCoverageReport(module);
 		for (EObject element : report.allElements) {
-			if (element instanceof ASTNode) {
-				ASTNode astNode = (ASTNode)element;
+			if (element instanceof AcceleoASTNode) {
+				AcceleoASTNode astNode = (AcceleoASTNode)element;
 				int offset = astResult.getStartPosition(astNode);
 				int length = astResult.getEndPosition(astNode) - offset;
 				if (offset > 0 && length > 0) {

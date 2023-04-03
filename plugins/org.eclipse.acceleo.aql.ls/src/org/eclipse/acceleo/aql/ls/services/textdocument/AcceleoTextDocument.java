@@ -24,7 +24,6 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.Variable;
-import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
 import org.eclipse.acceleo.aql.ls.common.LocationUtils;
@@ -501,9 +500,8 @@ public class AcceleoTextDocument {
 	 * 
 	 * @param position
 	 *            the (positive) position in the source contents.
-	 * @return the {@link List} of {@link AbstractLocationLink} corresponding to the references to the
-	 *         definition location(s) of the Acceleo element found at the given position in the source
-	 *         contents.
+	 * @return the {@link List} of {@link Location} corresponding to the references to the definition
+	 *         location(s) of the Acceleo element found at the given position in the source contents.
 	 */
 	public List<Location> getReferencesLocations(int position) {
 		final List<Location> referencesLocations = new ArrayList<>();

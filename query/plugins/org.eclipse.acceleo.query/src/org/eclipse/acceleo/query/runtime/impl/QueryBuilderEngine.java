@@ -23,6 +23,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -99,7 +100,7 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 					.getErrorExpression());
 			List<Error> errors = new ArrayList<Error>(1);
 			errors.add(errorExpression);
-			final Positions positions = new Positions();
+			final Positions<ASTNode> positions = new Positions<>();
 			if (expression != null) {
 				positions.setStartPositions(errorExpression, Integer.valueOf(0));
 				positions.setStartLines(errorExpression, Integer.valueOf(0));

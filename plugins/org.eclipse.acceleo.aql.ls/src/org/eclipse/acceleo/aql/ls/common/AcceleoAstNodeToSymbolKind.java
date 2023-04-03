@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.Set;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.lsp4j.SymbolKind;
 
 /**
- * An {@link AcceleoSwitch} to determine, from an {@link ASTNode} element, its corresponding
+ * An {@link AcceleoSwitch} to determine, from an {@link AcceleoASTNode} element, its corresponding
  * {@link SymbolKind}.
  * 
  * @author Florent Latombe
@@ -46,8 +46,8 @@ import org.eclipse.lsp4j.SymbolKind;
 public class AcceleoAstNodeToSymbolKind extends AcceleoSwitch<SymbolKind> {
 
 	/**
-	 * The {@link IAcceleoValidationResult} that accompanies the Acceleo {@link ASTNode} being switched on. It
-	 * can be used to retrieve additional information such as types.
+	 * The {@link IAcceleoValidationResult} that accompanies the Acceleo {@link AcceleoASTNode} being switched
+	 * on. It can be used to retrieve additional information such as types.
 	 */
 	private final IAcceleoValidationResult acceleoValidationResult;
 

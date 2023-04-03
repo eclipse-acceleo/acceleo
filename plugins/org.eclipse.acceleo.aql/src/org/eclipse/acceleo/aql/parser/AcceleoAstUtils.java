@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.Metamodel;
@@ -46,14 +46,14 @@ public final class AcceleoAstUtils {
 	 *            ({@link org.eclipse.acceleo.query.ast.Expression} or {@link VariableDeclaration}).
 	 * @return the Acceleo {@link Expression} or {@link TypedElement} that contains the given AQL AST element.
 	 */
-	public static ASTNode getContainerOfAqlAstElement(EObject aqlAstElement) {
+	public static AcceleoASTNode getContainerOfAqlAstElement(EObject aqlAstElement) {
 		Expression containerAcceleoExpression = AcceleoAstUtils.getContainerAcceleoExpression(aqlAstElement);
 		if (containerAcceleoExpression == null) {
 			// If the AQL element is not in an Acceleo Expression, it is in a TypedElement.
 			TypedElement containerAcceleoTypedElement = AcceleoAstUtils.getContainerTypedElement(
 					aqlAstElement);
 			// In practice, all TypedElements are also ASTNodes so this cast should be safe.
-			return (ASTNode)containerAcceleoTypedElement;
+			return (AcceleoASTNode)containerAcceleoTypedElement;
 		} else {
 			return containerAcceleoExpression;
 		}
@@ -68,19 +68,20 @@ public final class AcceleoAstUtils {
 	 * @return the AQL {@link AstResult} corresponding to {@code aqlAstElement}.
 	 */
 	public static AstResult getAqlAstResultOfAqlAstElement(EObject aqlAstElement) {
-		ASTNode acceleoContainerOfAqlAstElement = getContainerOfAqlAstElement(aqlAstElement);
+		AcceleoASTNode acceleoContainerOfAqlAstElement = getContainerOfAqlAstElement(aqlAstElement);
 		return getContainedAqlAstResultOf(acceleoContainerOfAqlAstElement);
 	}
 
 	/**
-	 * Provides the {@link AstResult} contained by an {@link ASTNode Acceleo AST Element}.
+	 * Provides the {@link AstResult} contained by an {@link AcceleoASTNode Acceleo AST Element}.
 	 * 
 	 * @param acceleoAstElementContainingAqlAstElement
-	 *            the (non-{@code null}) {@link ASTNode}. Most of the times it should be either an
+	 *            the (non-{@code null}) {@link AcceleoASTNode}. Most of the times it should be either an
 	 *            {@link Expression} or a {@link TypedElement}.
 	 * @return the contained {@link AstResult AQL AST}, or {@code null} otherwise.
 	 */
-	public static AstResult getContainedAqlAstResultOf(ASTNode acceleoAstElementContainingAqlAstElement) {
+	public static AstResult getContainedAqlAstResultOf(
+			AcceleoASTNode acceleoAstElementContainingAqlAstElement) {
 		AstResult containedAstResult = null;
 		if (acceleoAstElementContainingAqlAstElement instanceof Expression) {
 			Expression acceleoContainerExpression = (Expression)acceleoAstElementContainingAqlAstElement;
@@ -95,14 +96,15 @@ public final class AcceleoAstUtils {
 	}
 
 	/**
-	 * Provides the containing {@link Module} of an {@link ASTNode}.
+	 * Provides the containing {@link Module} of an {@link AcceleoASTNode}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode}.
+	 *            the (non-{@code null}) {@link AcceleoASTNode}.
 	 * @return {@code astNode} if it is a {@link Module}, or the first non-{@code null}
-	 *         {@link ASTNode#eContainer() container} of {@code astNode} that is instance of {@link Module}.
+	 *         {@link AcceleoASTNode#eContainer() container} of {@code astNode} that is instance of
+	 *         {@link Module}.
 	 */
-	public static Module getContainerModule(ASTNode astNode) {
+	public static Module getContainerModule(AcceleoASTNode astNode) {
 		return getSelfOrFirstContainerOfType(astNode, Module.class);
 	}
 
@@ -171,19 +173,20 @@ public final class AcceleoAstUtils {
 	}
 
 	/**
-	 * Provides the {@link ASTNode} in the given {@link AcceleoAstResult} corresponding to the given
-	 * {@link ASTNode}. That is, either the {@link ASTNode} itself, or its equivalent {@link ASTNode}, if the
-	 * {@link ASTNode} and the {@link AcceleoAstResult} come from two different parsings.
+	 * Provides the {@link AcceleoASTNode} in the given {@link AcceleoAstResult} corresponding to the given
+	 * {@link AcceleoASTNode}. That is, either the {@link AcceleoASTNode} itself, or its equivalent
+	 * {@link AcceleoASTNode}, if the {@link AcceleoASTNode} and the {@link AcceleoAstResult} come from two
+	 * different parsings.
 	 * 
 	 * @param acceleoAstNode
-	 *            the (non-{@code null}) {@link ASTNode}.
+	 *            the (non-{@code null}) {@link AcceleoASTNode}.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @return {@code astNode} or its equivalent in {@code acceleoAstResult}.
 	 * @param <T>
-	 *            the specific type of {@link ASTNode}.
+	 *            the specific type of {@link AcceleoASTNode}.
 	 */
-	public static <T extends ASTNode> T getSelfOrEquivalentOf(T acceleoAstNode,
+	public static <T extends AcceleoASTNode> T getSelfOrEquivalentOf(T acceleoAstNode,
 			AcceleoAstResult inAcceleoAstResult) {
 		if (inAcceleoAstResult.getStartPosition(acceleoAstNode) == -1 && inAcceleoAstResult.getEndPosition(
 				acceleoAstNode) == -1) {
@@ -208,10 +211,10 @@ public final class AcceleoAstUtils {
 	public static <T extends EObject> T getSelfOrEquivalentOf(T aqlAstElement,
 			AcceleoAstResult inAcceleoAstResult) {
 		// Step 1: navigate from the AQL AST element up to the container Acceleo AST element.
-		ASTNode acceleoContainerOfAqlAstElement = getContainerOfAqlAstElement(aqlAstElement);
+		AcceleoASTNode acceleoContainerOfAqlAstElement = getContainerOfAqlAstElement(aqlAstElement);
 
 		// Step 2: find the equivalent of the container Acceleo AST element.
-		ASTNode equivalentOfAcceleoContainerOfAqlAstElement = getSelfOrEquivalentOf(
+		AcceleoASTNode equivalentOfAcceleoContainerOfAqlAstElement = getSelfOrEquivalentOf(
 				acceleoContainerOfAqlAstElement, inAcceleoAstResult);
 
 		// Step 3: find AQL AST in the container equivalent.
@@ -247,24 +250,24 @@ public final class AcceleoAstUtils {
 				}
 			}
 		}
-		throw new IllegalArgumentException("Equivalent of AQL ASTNode \"" + aqlAstElement.toString()
+		throw new IllegalArgumentException("Equivalent of AQL AcceleoASTNode \"" + aqlAstElement.toString()
 				+ "\" could not be found in AQL AST: " + inAqlAstResult);
 	}
 
 	/**
-	 * Provides the {@link ASTNode} in the given {@link AcceleoAstResult} that is structurally equal to the
-	 * given {@link ASTNode}.
+	 * Provides the {@link AcceleoASTNode} in the given {@link AcceleoAstResult} that is structurally equal to
+	 * the given {@link AcceleoASTNode}.
 	 * 
 	 * @param astNode
-	 *            the (non-{@code null}) {@link ASTNode} whose equivalent we are looking for.
+	 *            the (non-{@code null}) {@link AcceleoASTNode} whose equivalent we are looking for.
 	 * @param inAcceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult} in which to search.
-	 * @return the {@link ASTNode} of {@code inAcceleoAstResult} that is structurally equal to
+	 * @return the {@link AcceleoASTNode} of {@code inAcceleoAstResult} that is structurally equal to
 	 *         {@code astNode}. If there is none, an exception is thrown.
 	 * @param <T>
-	 *            the specific type of {@link ASTNode}.
+	 *            the specific type of {@link AcceleoASTNode}.
 	 */
-	private static <T extends ASTNode> T getStructuralEqualOf(T astNode,
+	private static <T extends AcceleoASTNode> T getStructuralEqualOf(T astNode,
 			AcceleoAstResult inAcceleoAstResult) {
 		Module inAcceleoModule = inAcceleoAstResult.getModule();
 		if (isEqualStructurally(astNode, inAcceleoModule)) {
@@ -273,15 +276,15 @@ public final class AcceleoAstUtils {
 			Iterator<EObject> candidatesIterator = inAcceleoModule.eAllContents();
 			while (candidatesIterator.hasNext()) {
 				EObject candidate = candidatesIterator.next();
-				if (candidate instanceof ASTNode) {
-					ASTNode candidateAstNode = (ASTNode)candidate;
+				if (candidate instanceof AcceleoASTNode) {
+					AcceleoASTNode candidateAstNode = (AcceleoASTNode)candidate;
 					if (isEqualStructurally(candidateAstNode, astNode)) {
 						return (T)candidateAstNode;
 					}
 				}
 			}
 		}
-		throw new IllegalArgumentException("Equivalent of Acceleo ASTNode \"" + astNode.toString()
+		throw new IllegalArgumentException("Equivalent of Acceleo AcceleoASTNode \"" + astNode.toString()
 				+ "\" could not be found in Acceleo AST: " + inAcceleoAstResult);
 	}
 
@@ -290,13 +293,13 @@ public final class AcceleoAstUtils {
 	 * objects ASTResult and AcceleoAstResult we use via EDataTypes.
 	 * 
 	 * @param left
-	 *            an {@link ASTNode}.
+	 *            an {@link AcceleoASTNode}.
 	 * @param right
-	 *            an {@link ASTNode}.
+	 *            an {@link AcceleoASTNode}.
 	 * @return {@code true} if {@code left} and {@code right} are structurally equal.
 	 * @see EqualityHelper#equals(EObject, EObject)
 	 */
-	public static boolean isEqualStructurally(ASTNode left, ASTNode right) {
+	public static boolean isEqualStructurally(AcceleoASTNode left, AcceleoASTNode right) {
 		return new EqualityHelper() {
 			private static final long serialVersionUID = 1L;
 

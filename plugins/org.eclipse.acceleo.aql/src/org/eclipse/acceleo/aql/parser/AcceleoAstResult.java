@@ -12,14 +12,10 @@ package org.eclipse.acceleo.aql.parser;
 
 import java.util.List;
 
-import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.query.ast.Binding;
-import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.parser.Positions;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * AcceleoAST result.
@@ -36,7 +32,7 @@ public class AcceleoAstResult {
 	/**
 	 * {@link Positions}.
 	 */
-	private final Positions positions;
+	private final Positions<ASTNode> positions;
 
 	/**
 	 * The {@link List} of {@link Error}.
@@ -53,7 +49,7 @@ public class AcceleoAstResult {
 	 * @param errors
 	 *            the {@link List} of {@link Error}
 	 */
-	public AcceleoAstResult(Module module, Positions positions, List<Error> errors) {
+	public AcceleoAstResult(Module module, Positions<ASTNode> positions, List<Error> errors) {
 		this.module = module;
 		this.module.setAst(this);
 		this.positions = positions;
@@ -63,63 +59,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the identifier start position of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param binding
 	 *            the {@link ASTNode}
 	 * @return the identifier start position of the given {@link ASTNode} in the parsed text if any,
 	 *         <code>-1</code> otherwise
 	 */
-	public int getIdentifierStartPosition(ASTNode node) {
-		return getInternalIdentifierStartPosition(node);
-	}
-
-	/**
-	 * Gets the identifier start position of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the identifier start position of the given {@link Expression} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartPosition(Expression expression) {
-		return getInternalIdentifierStartPosition(expression);
-	}
-
-	/**
-	 * Gets the identifier start position of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the identifier start position of the given {@link VariableDeclaration} in the parsed text if
-	 *         any, <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartPosition(VariableDeclaration declaration) {
-		return getInternalIdentifierStartPosition(declaration);
-	}
-
-	/**
-	 * Gets the identifier start position of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the identifier start position of the given {@link Binding} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartPosition(Binding binding) {
-		return getInternalIdentifierStartPosition(binding);
-	}
-
-	/**
-	 * Gets the identifier start position of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the identifier start position of the given {@link EObject} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	private int getInternalIdentifierStartPosition(EObject object) {
+	public int getIdentifierStartPosition(ASTNode astNode) {
 		final int res;
 
-		final Integer position = positions.getIdentifierStartPositions(object);
+		final Integer position = positions.getIdentifierStartPositions(astNode);
 		if (position != null) {
 			res = position.intValue();
 		} else {
@@ -132,63 +80,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the identifier start line of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param binding
 	 *            the {@link ASTNode}
 	 * @return the identifier start line of the given {@link ASTNode} in the parsed text if any,
 	 *         <code>-1</code> otherwise
 	 */
-	public int getIdentifierStartLine(ASTNode node) {
-		return getInternalIdentifierStartLine(node);
-	}
-
-	/**
-	 * Gets the identifier start line of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the identifier start line of the given {@link Expression} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartLine(Expression expression) {
-		return getInternalIdentifierStartLine(expression);
-	}
-
-	/**
-	 * Gets the identifier start line of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the identifier start line of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartLine(VariableDeclaration declaration) {
-		return getInternalIdentifierStartLine(declaration);
-	}
-
-	/**
-	 * Gets the identifier start line of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the identifier start line of the given {@link Binding} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartLine(Binding binding) {
-		return getInternalIdentifierStartLine(binding);
-	}
-
-	/**
-	 * Gets the identifier start line of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the identifier start line of the given {@link EObject} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	private int getInternalIdentifierStartLine(EObject object) {
+	public int getIdentifierStartLine(ASTNode astNode) {
 		final int res;
 
-		final Integer line = positions.getIdentifierStartLines(object);
+		final Integer line = positions.getIdentifierStartLines(astNode);
 		if (line != null) {
 			res = line.intValue();
 		} else {
@@ -201,63 +101,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the identifier start column of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param binding
 	 *            the {@link ASTNode}
 	 * @return the identifier start column of the given {@link ASTNode} in the parsed text if any,
 	 *         <code>-1</code> otherwise
 	 */
-	public int getIdentifierStartColumn(ASTNode node) {
-		return getInternalIdentifierStartColumn(node);
-	}
-
-	/**
-	 * Gets the identifier start column of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the identifier start column of the given {@link Expression} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartColumn(Expression expression) {
-		return getInternalIdentifierStartColumn(expression);
-	}
-
-	/**
-	 * Gets the identifier start column of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the identifier start column of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartColumn(VariableDeclaration declaration) {
-		return getInternalIdentifierStartColumn(declaration);
-	}
-
-	/**
-	 * Gets the identifier start column of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the identifier start column of the given {@link Binding} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierStartColumn(Binding binding) {
-		return getInternalIdentifierStartColumn(binding);
-	}
-
-	/**
-	 * Gets the identifier start column of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the identifier start column of the given {@link EObject} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	private int getInternalIdentifierStartColumn(EObject object) {
+	public int getIdentifierStartColumn(ASTNode astNode) {
 		final int res;
 
-		final Integer column = positions.getIdentifierStartColumns(object);
+		final Integer column = positions.getIdentifierStartColumns(astNode);
 		if (column != null) {
 			res = column.intValue();
 		} else {
@@ -270,63 +122,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the identifier end position of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param binding
 	 *            the {@link ASTNode}
 	 * @return the identifier end position of the given {@link ASTNode} in the parsed text if any,
 	 *         <code>-1</code> otherwise
 	 */
-	public int getIdentifierEndPosition(ASTNode node) {
-		return getInternalIdentifierEndPosition(node);
-	}
-
-	/**
-	 * Gets the identifier end position of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the identifier end position of the given {@link Expression} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndPosition(Expression expression) {
-		return getInternalIdentifierEndPosition(expression);
-	}
-
-	/**
-	 * Gets the identifier end position of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the identifier end position of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndPosition(VariableDeclaration declaration) {
-		return getInternalIdentifierEndPosition(declaration);
-	}
-
-	/**
-	 * Gets the identifier end position of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the identifier end position of the given {@link Binding} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndPosition(Binding binding) {
-		return getInternalIdentifierEndPosition(binding);
-	}
-
-	/**
-	 * Gets the identifier end position of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the identifier end position of the given {@link EObject} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	private int getInternalIdentifierEndPosition(EObject object) {
+	public int getIdentifierEndPosition(ASTNode astNode) {
 		final int res;
 
-		final Integer position = positions.getIdentifierEndPositions(object);
+		final Integer position = positions.getIdentifierEndPositions(astNode);
 		if (position != null) {
 			res = position.intValue();
 		} else {
@@ -339,63 +143,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the identifier end line of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the identifier end line of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getIdentifierEndLine(ASTNode node) {
-		return getInternalIdentifierEndLine(node);
-	}
-
-	/**
-	 * Gets the identifier end line of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the identifier end line of the given {@link Expression} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndLine(Expression expression) {
-		return getInternalIdentifierEndLine(expression);
-	}
-
-	/**
-	 * Gets the identifier end line of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the identifier end line of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndLine(VariableDeclaration declaration) {
-		return getInternalIdentifierEndLine(declaration);
-	}
-
-	/**
-	 * Gets the identifier end line of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the identifier end line of the given {@link Binding} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getIdentifierEndLine(Binding binding) {
-		return getInternalIdentifierEndLine(binding);
-	}
-
-	/**
-	 * Gets the identifier end line of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the identifier end line of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	private int getInternalIdentifierEndLine(EObject object) {
+	public int getIdentifierEndLine(ASTNode astNode) {
 		final int res;
 
-		final Integer line = positions.getIdentifierEndLines(object);
+		final Integer line = positions.getIdentifierEndLines(astNode);
 		if (line != null) {
 			res = line.intValue();
 		} else {
@@ -408,63 +164,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the identifier end column of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the identifier end column of the given {@link ASTNode} in the parsed text if any,
 	 *         <code>-1</code> otherwise
 	 */
-	public int getIdentifierEndColumn(ASTNode node) {
-		return getInternalIdentifierEndColumn(node);
-	}
-
-	/**
-	 * Gets the identifier end column of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the identifier end column of the given {@link Expression} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndColumn(Expression expression) {
-		return getInternalIdentifierEndColumn(expression);
-	}
-
-	/**
-	 * Gets the identifier end column of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the identifier end column of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndColumn(VariableDeclaration declaration) {
-		return getInternalIdentifierEndColumn(declaration);
-	}
-
-	/**
-	 * Gets the identifier end column of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the identifier end column of the given {@link Binding} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getIdentifierEndColumn(Binding binding) {
-		return getInternalIdentifierEndColumn(binding);
-	}
-
-	/**
-	 * Gets the identifier end column of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the identifier end column of the given {@link EObject} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	private int getInternalIdentifierEndColumn(EObject object) {
+	public int getIdentifierEndColumn(ASTNode astNode) {
 		final int res;
 
-		final Integer column = positions.getIdentifierEndColumns(object);
+		final Integer column = positions.getIdentifierEndColumns(astNode);
 		if (column != null) {
 			res = column.intValue();
 		} else {
@@ -477,63 +185,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the start position of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the start position of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getStartPosition(ASTNode node) {
-		return getInternalStartPosition(node);
-	}
-
-	/**
-	 * Gets the start position of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the start position of the given {@link Expression} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartPosition(Expression expression) {
-		return getInternalStartPosition(expression);
-	}
-
-	/**
-	 * Gets the start position of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the start position of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getStartPosition(VariableDeclaration declaration) {
-		return getInternalStartPosition(declaration);
-	}
-
-	/**
-	 * Gets the start position of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the start position of the given {@link Binding} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartPosition(Binding binding) {
-		return getInternalStartPosition(binding);
-	}
-
-	/**
-	 * Gets the start position of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the start position of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	private int getInternalStartPosition(EObject object) {
+	public int getStartPosition(ASTNode astNode) {
 		final int res;
 
-		final Integer position = positions.getStartPositions(object);
+		final Integer position = positions.getStartPositions(astNode);
 		if (position != null) {
 			res = position.intValue();
 		} else {
@@ -546,63 +206,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the start line of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the start line of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getStartLine(ASTNode node) {
-		return getInternalStartLine(node);
-	}
-
-	/**
-	 * Gets the start line of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the start line of the given {@link Expression} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartLine(Expression expression) {
-		return getInternalStartLine(expression);
-	}
-
-	/**
-	 * Gets the start line of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the start line of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getStartLine(VariableDeclaration declaration) {
-		return getInternalStartLine(declaration);
-	}
-
-	/**
-	 * Gets the start line of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the start line of the given {@link Binding} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartLine(Binding binding) {
-		return getInternalStartLine(binding);
-	}
-
-	/**
-	 * Gets the start line of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the start line of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	private int getInternalStartLine(EObject object) {
+	public int getStartLine(ASTNode astNode) {
 		final int res;
 
-		final Integer line = positions.getStartLines(object);
+		final Integer line = positions.getStartLines(astNode);
 		if (line != null) {
 			res = line.intValue();
 		} else {
@@ -615,63 +227,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the start column of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the start column of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getStartColumn(ASTNode node) {
-		return getInternalStartColumn(node);
-	}
-
-	/**
-	 * Gets the start column of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the start column of the given {@link Expression} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartColumn(Expression expression) {
-		return getInternalStartColumn(expression);
-	}
-
-	/**
-	 * Gets the start column of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the start column of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getStartColumn(VariableDeclaration declaration) {
-		return getInternalStartColumn(declaration);
-	}
-
-	/**
-	 * Gets the start column of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the start column of the given {@link Binding} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getStartColumn(Binding binding) {
-		return getInternalStartColumn(binding);
-	}
-
-	/**
-	 * Gets the start column of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the start column of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	private int getInternalStartColumn(EObject object) {
+	public int getStartColumn(ASTNode astNode) {
 		final int res;
 
-		final Integer column = positions.getStartColumns(object);
+		final Integer column = positions.getStartColumns(astNode);
 		if (column != null) {
 			res = column.intValue();
 		} else {
@@ -684,63 +248,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the end position of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the end position of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getEndPosition(ASTNode node) {
-		return getInternalEndPosition(node);
-	}
-
-	/**
-	 * Gets the end position of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the end position of the given {@link Expression} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getEndPosition(Expression expression) {
-		return getInternalEndPosition(expression);
-	}
-
-	/**
-	 * Gets the end position of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the end position of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getEndPosition(VariableDeclaration declaration) {
-		return getInternalEndPosition(declaration);
-	}
-
-	/**
-	 * Gets the end position of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the end position of the given {@link Binding} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getEndPosition(Binding binding) {
-		return getInternalEndPosition(binding);
-	}
-
-	/**
-	 * Gets the end position of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the end position of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	private int getInternalEndPosition(EObject object) {
+	public int getEndPosition(ASTNode astNode) {
 		final int res;
 
-		final Integer position = positions.getEndPositions(object);
+		final Integer position = positions.getEndPositions(astNode);
 		if (position != null) {
 			res = position.intValue();
 		} else {
@@ -753,60 +269,14 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the end line of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the end line of the given {@link ASTNode} in the parsed text if any, <code>-1</code> otherwise
 	 */
-	public int getEndLine(ASTNode node) {
-		return getInternalEndLine(node);
-	}
-
-	/**
-	 * Gets the end line of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the end line of the given {@link Expression} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getEndLine(Expression expression) {
-		return getInternalEndLine(expression);
-	}
-
-	/**
-	 * Gets the end line of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the end line of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getEndLine(VariableDeclaration declaration) {
-		return getInternalEndLine(declaration);
-	}
-
-	/**
-	 * Gets the end line of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the end line of the given {@link Binding} in the parsed text if any, <code>-1</code> otherwise
-	 */
-	public int getEndLine(Binding binding) {
-		return getInternalEndLine(binding);
-	}
-
-	/**
-	 * Gets the end line of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the end line of the given {@link EObject} in the parsed text if any, <code>-1</code> otherwise
-	 */
-	private int getInternalEndLine(EObject object) {
+	public int getEndLine(ASTNode astNode) {
 		final int res;
 
-		final Integer line = positions.getEndLines(object);
+		final Integer line = positions.getEndLines(astNode);
 		if (line != null) {
 			res = line.intValue();
 		} else {
@@ -819,63 +289,15 @@ public class AcceleoAstResult {
 	/**
 	 * Gets the end column of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param node
+	 * @param astNode
 	 *            the {@link ASTNode}
 	 * @return the end column of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getEndColumn(ASTNode node) {
-		return getInternalEndColumn(node);
-	}
-
-	/**
-	 * Gets the end column of the given {@link Expression} in the parsed text.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the end column of the given {@link Expression} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getEndColumn(Expression expression) {
-		return getInternalEndColumn(expression);
-	}
-
-	/**
-	 * Gets the end column of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the end column of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getEndColumn(VariableDeclaration declaration) {
-		return getInternalEndColumn(declaration);
-	}
-
-	/**
-	 * Gets the end column of the given {@link Binding} in the parsed text.
-	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the end column of the given {@link Binding} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	public int getEndColumn(Binding binding) {
-		return getInternalEndColumn(binding);
-	}
-
-	/**
-	 * Gets the end column of the given {@link EObject} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link EObject}
-	 * @return the end column of the given {@link EObject} in the parsed text if any, <code>-1</code>
-	 *         otherwise
-	 */
-	private int getInternalEndColumn(EObject object) {
+	public int getEndColumn(ASTNode astNode) {
 		final int res;
 
-		final Integer column = positions.getEndColumns(object);
+		final Integer column = positions.getEndColumns(astNode);
 		if (column != null) {
 			res = column.intValue();
 		} else {
@@ -892,7 +314,7 @@ public class AcceleoAstResult {
 	 *            the position
 	 * @return the ast node at the given position if any, <code>null</code> otherwise
 	 */
-	public EObject getAstNode(int position) {
+	public ASTNode getAstNode(int position) {
 		return positions.getNodeAt(module, position);
 	}
 
@@ -905,7 +327,7 @@ public class AcceleoAstResult {
 	 *            the start column
 	 * @return the ast node at the given line and column if nay, <code>null</code> otherwise
 	 */
-	public EObject getAstNode(int line, int column) {
+	public ASTNode getAstNode(int line, int column) {
 		return positions.getNodeAt(module, line, column);
 	}
 

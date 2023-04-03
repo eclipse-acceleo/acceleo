@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 
@@ -28,7 +28,7 @@ public class AcceleoSymbol {
 	/**
 	 * The "main" semantic element from the AST that this symbol represents.
 	 */
-	private final ASTNode semanticElement;
+	private final AcceleoASTNode semanticElement;
 
 	/**
 	 * The {@link IAcceleoValidationResult validation result} of the module the represented semantic element
@@ -58,8 +58,8 @@ public class AcceleoSymbol {
 	 * Constructor for a non-deprecated {@link AcceleoSymbol}.
 	 * 
 	 * @param semanticElement
-	 *            the (non-{@code null}) {@link ASTNode semantic element} from the AST which this symbol
-	 *            represents.
+	 *            the (non-{@code null}) {@link AcceleoASTNode semantic element} from the AST which this
+	 *            symbol represents.
 	 * @param acceleoValidationResult
 	 *            the (non-{@code null}) {@link IAcceleoValidationResult validation result} of the module from
 	 *            which {@code semanticElement} originates.
@@ -68,7 +68,7 @@ public class AcceleoSymbol {
 	 * @param details
 	 *            the (maybe-{@code null}) additional details about the symbol.
 	 */
-	public AcceleoSymbol(ASTNode semanticElement, IAcceleoValidationResult acceleoValidationResult,
+	public AcceleoSymbol(AcceleoASTNode semanticElement, IAcceleoValidationResult acceleoValidationResult,
 			String name, String details) {
 		this.semanticElement = Objects.requireNonNull(semanticElement);
 		this.acceleoValidationResult = Objects.requireNonNull(acceleoValidationResult);
@@ -79,9 +79,9 @@ public class AcceleoSymbol {
 	/**
 	 * Provides the semantic element represented by this symbol.
 	 * 
-	 * @return the (non-{@code null}) {@link ASTNode} represented by this.
+	 * @return the (non-{@code null}) {@link AcceleoASTNode} represented by this.
 	 */
-	public ASTNode getSemanticElement() {
+	public AcceleoASTNode getSemanticElement() {
 		return semanticElement;
 	}
 

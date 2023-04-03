@@ -26,6 +26,7 @@ import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
@@ -110,7 +111,6 @@ import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * The {@link AstBuilderListener} builds an AST when plugged into the parser.
@@ -765,7 +765,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * The parsed {@link Positions}.
 	 */
-	private Positions positions = new Positions();
+	private Positions<ASTNode> positions = new Positions<>();
 
 	/**
 	 * The {@link List} of {@link Error}.
@@ -847,7 +847,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param column
 	 *            the column
 	 */
-	private void setIdentifierPositions(EObject node, int position, int line, int column) {
+	private void setIdentifierPositions(ASTNode node, int position, int line, int column) {
 		positions.setIdentifierStartPositions(node, position);
 		positions.setIdentifierStartLines(node, line);
 		positions.setIdentifierStartColumns(node, column);
@@ -868,7 +868,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param column
 	 *            the column
 	 */
-	private void setPositions(EObject node, int position, int line, int column) {
+	private void setPositions(ASTNode node, int position, int line, int column) {
 		positions.setStartPositions(node, position);
 		positions.setStartLines(node, line);
 		positions.setStartColumns(node, column);
@@ -885,7 +885,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param identifierToken
 	 *            the identifierToken {@link Token}
 	 */
-	private void setIdentifierPositions(EObject node, Token identifierToken) {
+	private void setIdentifierPositions(ASTNode node, Token identifierToken) {
 		positions.setIdentifierStartPositions(node, Integer.valueOf(identifierToken.getStartIndex()));
 		positions.setIdentifierStartLines(node, Integer.valueOf(identifierToken.getLine() - 1));
 		positions.setIdentifierStartColumns(node, Integer.valueOf(identifierToken.getCharPositionInLine()));
@@ -905,7 +905,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param end
 	 *            the end {@link Token}
 	 */
-	private void setPositions(EObject node, Token start, Token end) {
+	private void setPositions(ASTNode node, Token start, Token end) {
 		positions.setStartPositions(node, Integer.valueOf(start.getStartIndex()));
 		positions.setStartLines(node, Integer.valueOf(start.getLine() - 1));
 		positions.setStartColumns(node, Integer.valueOf(start.getCharPositionInLine()));
@@ -924,7 +924,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param end
 	 *            the end {@link Token}
 	 */
-	private void setIdentifierPositions(EObject node, Token start, Token end) {
+	private void setIdentifierPositions(ASTNode node, Token start, Token end) {
 		positions.setIdentifierStartPositions(node, Integer.valueOf(start.getStartIndex()));
 		positions.setIdentifierStartLines(node, Integer.valueOf(start.getLine() - 1));
 		positions.setIdentifierStartColumns(node, Integer.valueOf(start.getCharPositionInLine()));
@@ -944,7 +944,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param expressionEnd
 	 *            the end {@link Expression}
 	 */
-	private void setPositions(EObject node, Expression expressionStart, Expression expressionEnd) {
+	private void setPositions(ASTNode node, Expression expressionStart, Expression expressionEnd) {
 		positions.setStartPositions(node, positions.getStartPositions(expressionStart));
 		positions.setStartLines(node, positions.getStartLines(expressionStart));
 		positions.setStartColumns(node, positions.getStartColumns(expressionStart));
@@ -963,7 +963,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param expressionEnd
 	 *            the end {@link Expression}
 	 */
-	private void setIdentifierPositions(EObject node, Expression expressionStart, Expression expressionEnd) {
+	private void setIdentifierPositions(ASTNode node, Expression expressionStart, Expression expressionEnd) {
 		positions.setIdentifierStartPositions(node, positions.getStartPositions(expressionStart));
 		positions.setIdentifierStartLines(node, positions.getStartLines(expressionStart));
 		positions.setIdentifierStartColumns(node, positions.getStartColumns(expressionStart));
@@ -982,7 +982,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param end
 	 *            the end {@link Token}
 	 */
-	private void setPositions(EObject node, Expression expressionStart, Token end) {
+	private void setPositions(ASTNode node, Expression expressionStart, Token end) {
 		positions.setStartPositions(node, positions.getStartPositions(expressionStart));
 		positions.setStartLines(node, positions.getStartLines(expressionStart));
 		positions.setStartColumns(node, positions.getStartColumns(expressionStart));
@@ -1002,8 +1002,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		for (Diagnostic diag : diagnostics) {
 			diagnostic.add(diag);
 		}
-		final Positions resultPositions = positions;
-		positions = new Positions();
+		final Positions<ASTNode> resultPositions = positions;
+		positions = new Positions<>();
 		final List<Error> resultErrors = errors;
 		errors = new ArrayList<Error>();
 		return new AstResult(ast, resultPositions, resultErrors, diagnostic);

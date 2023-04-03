@@ -106,6 +106,7 @@ public class ProposalLabelProviderTests {
 		 *
 		 * @see org.eclipse.acceleo.query.runtime.IService#getServiceMethod()
 		 */
+		@SuppressWarnings("unused")
 		public Method getServiceMethod() {
 			Method result = null;
 			try {
@@ -126,6 +127,7 @@ public class ProposalLabelProviderTests {
 		 *
 		 * @see org.eclipse.acceleo.query.runtime.IService#getServiceInstance()
 		 */
+		@SuppressWarnings("unused")
 		public Object getServiceInstance() {
 			return ProposalLabelProviderTests.this;
 		}

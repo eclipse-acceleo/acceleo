@@ -14,7 +14,7 @@ package org.eclipse.acceleo.tests.utils;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.BlockComment;
@@ -1016,7 +1016,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	}
 
 	@Override
-	public Void caseASTNode(ASTNode node) {
+	public Void caseAcceleoASTNode(AcceleoASTNode node) {
 		builder.append(" (" + ast.getStartPosition(node));
 		builder.append("..");
 		builder.append(ast.getEndPosition(node) + ")");

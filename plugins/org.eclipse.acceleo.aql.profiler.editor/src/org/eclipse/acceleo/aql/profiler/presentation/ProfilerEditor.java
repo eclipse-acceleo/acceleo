@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.Module;
@@ -107,12 +107,12 @@ public final class ProfilerEditor extends EcoreEditor {
 		selectionViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				final Object selected = ((TreeSelection)event.getSelection()).getFirstElement();
-				ASTNode astNode = null;
+				AcceleoASTNode astNode = null;
 				if (selected instanceof ProfileEntry && ((ProfileEntry)selected)
-						.getMonitored() instanceof ASTNode) {
-					astNode = (ASTNode)((ProfileEntry)selected).getMonitored();
-				} else if (selected instanceof ASTNode) {
-					astNode = (ASTNode)selected;
+						.getMonitored() instanceof AcceleoASTNode) {
+					astNode = (AcceleoASTNode)((ProfileEntry)selected).getMonitored();
+				} else if (selected instanceof AcceleoASTNode) {
+					astNode = (AcceleoASTNode)selected;
 				}
 
 				if (astNode != null) {
@@ -493,7 +493,7 @@ public final class ProfilerEditor extends EcoreEditor {
 		return null;
 	}
 
-	private void selectInEditor(ASTNode astNode) throws PartInitException, URISyntaxException {
+	private void selectInEditor(AcceleoASTNode astNode) throws PartInitException, URISyntaxException {
 		Resource eResource = astNode.eResource();
 		if (eResource != null && !eResource.getContents().isEmpty() && eResource.getContents().get(
 				0) instanceof Module) {

@@ -13,7 +13,7 @@ package org.eclipse.acceleo.aql.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.BlockComment;
@@ -43,7 +43,7 @@ import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
 /**
- * Serializes {@link ASTNode}.
+ * Serializes {@link AcceleoASTNode}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
@@ -95,13 +95,13 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	private int currentBlockHeaderStartColumn;
 
 	/**
-	 * Serializes the given {@link ASTNode}.
+	 * Serializes the given {@link AcceleoASTNode}.
 	 * 
 	 * @param node
-	 *            the {@link ASTNode}
-	 * @return the serialized {@link ASTNode}
+	 *            the {@link AcceleoASTNode}
+	 * @return the serialized {@link AcceleoASTNode}
 	 */
-	public String serialize(ASTNode node) {
+	public String serialize(AcceleoASTNode node) {
 		builder = new StringBuilder();
 
 		currentIndentation = "";

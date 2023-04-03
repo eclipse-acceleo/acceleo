@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,10 @@ package org.eclipse.acceleo.query.parser;
 
 import java.util.List;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * Representation of an ast built.
@@ -38,7 +37,7 @@ public class AstResult {
 	/**
 	 * The positions of parsed elements.
 	 */
-	private final Positions positions;
+	private final Positions<ASTNode> positions;
 
 	/**
 	 * The {@link Diagnostic} of the parsing.
@@ -57,7 +56,8 @@ public class AstResult {
 	 * @param diagnostic
 	 *            the {@link Diagnostic} of the parsing
 	 */
-	public AstResult(Expression ast, Positions positions, List<Error> errors, Diagnostic diagnostic) {
+	public AstResult(Expression ast, Positions<ASTNode> positions, List<Error> errors,
+			Diagnostic diagnostic) {
 		this.ast = ast;
 		this.positions = positions;
 		this.errors = errors;
@@ -83,42 +83,17 @@ public class AstResult {
 	}
 
 	/**
-	 * Gets the start position of the given {@link Expression} in the parsed text.
+	 * Gets the start position of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the start position of the given {@link Expression} in the parsed text if any, <code>-1</code>
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the start position of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getStartPosition(Expression expression) {
-		return getInternalStartPosition(expression);
-	}
-
-	/**
-	 * Gets the start position of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the start position of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getStartPosition(VariableDeclaration declaration) {
-		return getInternalStartPosition(declaration);
-	}
-
-	/**
-	 * Gets the start position of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 * text.
-	 * 
-	 * @param object
-	 *            the {@link Expression} or a {@link VariableDeclaration}
-	 * @return the start position of the given {@link Expression} or a {@link VariableDeclaration} in the
-	 *         parsed text if any, <code>-1</code> otherwise
-	 */
-	private int getInternalStartPosition(EObject object) {
+	public int getStartPosition(ASTNode astNode) {
 		final int res;
 
-		final Integer position = positions.getStartPositions(object);
+		final Integer position = positions.getStartPositions(astNode);
 		if (position != null) {
 			res = position.intValue();
 		} else {
@@ -129,42 +104,17 @@ public class AstResult {
 	}
 
 	/**
-	 * Gets the start line of the given {@link Expression} in the parsed text.
+	 * Gets the start line of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the start line of the given {@link Expression} in the parsed text if any, <code>-1</code>
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the start line of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getStartLine(Expression expression) {
-		return getInternalStartLine(expression);
-	}
-
-	/**
-	 * Gets the start line of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the start line of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getStartLine(VariableDeclaration declaration) {
-		return getInternalStartLine(declaration);
-	}
-
-	/**
-	 * Gets the start line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 * text.
-	 * 
-	 * @param object
-	 *            the {@link Expression} or a {@link VariableDeclaration}
-	 * @return the start line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 *         text if any, <code>-1</code> otherwise
-	 */
-	private int getInternalStartLine(EObject object) {
+	public int getStartLine(ASTNode astNode) {
 		final int res;
 
-		final Integer line = positions.getStartLines(object);
+		final Integer line = positions.getStartLines(astNode);
 		if (line != null) {
 			res = line.intValue();
 		} else {
@@ -175,42 +125,17 @@ public class AstResult {
 	}
 
 	/**
-	 * Gets the start column of the given {@link Expression} in the parsed text.
+	 * Gets the start column of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the start column of the given {@link Expression} in the parsed text if any, <code>-1</code>
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the start column of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getStartColumn(Expression expression) {
-		return getInternalStartColumn(expression);
-	}
-
-	/**
-	 * Gets the start column of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the start column of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getStartColumn(VariableDeclaration declaration) {
-		return getInternalStartColumn(declaration);
-	}
-
-	/**
-	 * Gets the start column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 * text.
-	 * 
-	 * @param object
-	 *            the {@link Expression} or a {@link VariableDeclaration}
-	 * @return the start column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 *         text if any, <code>-1</code> otherwise
-	 */
-	private int getInternalStartColumn(EObject object) {
+	public int getStartColumn(ASTNode astNode) {
 		final int res;
 
-		final Integer column = positions.getStartColumns(object);
+		final Integer column = positions.getStartColumns(astNode);
 		if (column != null) {
 			res = column.intValue();
 		} else {
@@ -221,42 +146,17 @@ public class AstResult {
 	}
 
 	/**
-	 * Gets the end position of the given {@link Expression} in the parsed text.
+	 * Gets the end position of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the end position of the given {@link Expression} in the parsed text if any, <code>-1</code>
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the end position of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getEndPosition(Expression expression) {
-		return getInternalEndPosition(expression);
-	}
-
-	/**
-	 * Gets the end position of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the end position of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getEndPosition(VariableDeclaration declaration) {
-		return getInternalEndPosition(declaration);
-	}
-
-	/**
-	 * Gets the end position of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 * text.
-	 * 
-	 * @param object
-	 *            the {@link Expression} or a {@link VariableDeclaration}
-	 * @return the end position of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 *         text if any, <code>-1</code> otherwise
-	 */
-	private int getInternalEndPosition(EObject object) {
+	public int getEndPosition(ASTNode astNode) {
 		final int res;
 
-		final Integer position = positions.getEndPositions(object);
+		final Integer position = positions.getEndPositions(astNode);
 		if (position != null) {
 			res = position.intValue();
 		} else {
@@ -267,41 +167,16 @@ public class AstResult {
 	}
 
 	/**
-	 * Gets the end line of the given {@link Expression} in the parsed text.
+	 * Gets the end line of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the end line of the given {@link Expression} in the parsed text if any, <code>-1</code>
-	 *         otherwise
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the end line of the given {@link ASTNode} in the parsed text if any, <code>-1</code> otherwise
 	 */
-	public int getEndLine(Expression expression) {
-		return getInternalEndLine(expression);
-	}
-
-	/**
-	 * Gets the end line of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the end line of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getEndLine(VariableDeclaration declaration) {
-		return getInternalEndLine(declaration);
-	}
-
-	/**
-	 * Gets the end line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param object
-	 *            the {@link Expression} or a {@link VariableDeclaration}
-	 * @return the end line of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 *         text if any, <code>-1</code> otherwise
-	 */
-	private int getInternalEndLine(EObject object) {
+	public int getEndLine(ASTNode astNode) {
 		final int res;
 
-		final Integer line = positions.getEndLines(object);
+		final Integer line = positions.getEndLines(astNode);
 		if (line != null) {
 			res = line.intValue();
 		} else {
@@ -312,42 +187,17 @@ public class AstResult {
 	}
 
 	/**
-	 * Gets the end column of the given {@link Expression} in the parsed text.
+	 * Gets the end column of the given {@link ASTNode} in the parsed text.
 	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the end column of the given {@link Expression} in the parsed text if any, <code>-1</code>
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the end column of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
 	 *         otherwise
 	 */
-	public int getEndColumn(Expression expression) {
-		return getInternalEndColumn(expression);
-	}
-
-	/**
-	 * Gets the end column of the given {@link VariableDeclaration} in the parsed text.
-	 * 
-	 * @param declaration
-	 *            the {@link VariableDeclaration}
-	 * @return the end column of the given {@link VariableDeclaration} in the parsed text if any,
-	 *         <code>-1</code> otherwise
-	 */
-	public int getEndColumn(VariableDeclaration declaration) {
-		return getInternalEndColumn(declaration);
-	}
-
-	/**
-	 * Gets the end column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 * text.
-	 * 
-	 * @param object
-	 *            the {@link Expression} or a {@link VariableDeclaration}
-	 * @return the end column of the given {@link Expression} or a {@link VariableDeclaration} in the parsed
-	 *         text if any, <code>-1</code> otherwise
-	 */
-	private int getInternalEndColumn(EObject object) {
+	public int getEndColumn(ASTNode astNode) {
 		final int res;
 
-		final Integer column = positions.getEndColumns(object);
+		final Integer column = positions.getEndColumns(astNode);
 		if (column != null) {
 			res = column.intValue();
 		} else {
@@ -369,7 +219,8 @@ public class AstResult {
 	 * @param offsetColumn
 	 *            the offset column
 	 */
-	public void addAllPositonsTo(Positions pos, int offsetPosition, int offsetLine, int offsetColumn) {
+	public void addAllPositonsTo(Positions<ASTNode> pos, int offsetPosition, int offsetLine,
+			int offsetColumn) {
 		pos.addAll(this.positions, offsetPosition, offsetLine, offsetColumn);
 	}
 
@@ -401,7 +252,7 @@ public class AstResult {
 	 *            the position
 	 * @return the ast node at the given position if any, <code>null</code> otherwise
 	 */
-	public EObject getAstNode(int position) {
+	public ASTNode getAstNode(int position) {
 		return positions.getNodeAt(ast, position);
 	}
 
@@ -414,7 +265,7 @@ public class AstResult {
 	 *            the start column
 	 * @return the ast node at the given line and column if nay, <code>null</code> otherwise
 	 */
-	public EObject getAstNode(int line, int column) {
+	public ASTNode getAstNode(int line, int column) {
 		return positions.getNodeAt(ast, line, column);
 	}
 

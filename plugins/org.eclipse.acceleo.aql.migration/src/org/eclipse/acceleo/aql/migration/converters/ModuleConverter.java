@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
@@ -594,7 +594,7 @@ public final class ModuleConverter extends AbstractConverter {
 		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
 	}
 
-	private Block createBlock(ASTNode node, List<OCLExpression> inputStatements) {
+	private Block createBlock(AcceleoASTNode node, List<OCLExpression> inputStatements) {
 		Block res = AcceleoFactory.eINSTANCE.createBlock();
 
 		map(inputStatements, res.getStatements());
