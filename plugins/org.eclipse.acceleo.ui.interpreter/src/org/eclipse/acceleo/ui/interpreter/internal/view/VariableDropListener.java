@@ -20,6 +20,7 @@ import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
@@ -27,7 +28,6 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.views.navigator.LocalSelectionTransfer;
 
 /**
  * This listener will be registered against the "Variables" TreeViewer in order to allow drop operations on
@@ -56,7 +56,7 @@ public class VariableDropListener extends DropTargetAdapter {
 	 */
 	@Override
 	public void dragEnter(DropTargetEvent event) {
-		if (!LocalSelectionTransfer.getInstance().isSupportedType(event.currentDataType)) {
+		if (!LocalSelectionTransfer.getTransfer().isSupportedType(event.currentDataType)) {
 			return;
 		}
 
