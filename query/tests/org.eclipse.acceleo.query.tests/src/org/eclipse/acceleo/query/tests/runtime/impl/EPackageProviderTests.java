@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -72,8 +73,9 @@ public class EPackageProviderTests {
 	}
 
 	@Before
-	public void before() throws InstantiationException, IllegalAccessException {
-		provider = cls.newInstance();
+	public void before() throws InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
+		provider = cls.getDeclaredConstructor().newInstance();
 	}
 
 	@Test

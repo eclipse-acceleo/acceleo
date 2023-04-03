@@ -56,11 +56,10 @@ public class LexerTest {
 		checkToken("any_rule", QueryLexer.Ident);
 	}
 
-	//
-	// @Test
-	// public void testIncorrectIdent() {
-	// checkIncorectToken("rule);name");
-	// }
+	@Test
+	public void testIncorrectIdent() {
+		checkIncorectToken("rule);name");
+	}
 
 	/**
 	 * Integer : [0..9]+
@@ -85,10 +84,10 @@ public class LexerTest {
 		checkToken("12.123", QueryLexer.Real);
 		checkToken("0.9999", QueryLexer.Real);
 	}
-	//
-	// @Test
-	// public void testIncorrectReal() {
-	// checkIncorectToken(".1");
-	// checkIncorectToken("1.");
-	// }
+
+	@Test
+	public void testIncorrectReal() {
+		checkIncorectToken(".1");
+		checkIncorectToken("1.");
+	}
 }

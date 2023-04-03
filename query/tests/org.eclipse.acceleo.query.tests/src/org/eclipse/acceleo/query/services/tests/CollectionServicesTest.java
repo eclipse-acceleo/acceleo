@@ -1461,7 +1461,7 @@ public class CollectionServicesTest {
 	public void testSizeSet() {
 		Set<Integer> set = new LinkedHashSet<>();
 		set.add(1);
-		assertEquals(new Integer(1), collectionServices.size(set));
+		assertEquals(Integer.valueOf(1), collectionServices.size(set));
 
 		set.add(2);
 		set.add(3);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -100,7 +100,7 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void featureAccessOnObjectStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {new Integer(1),
+		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {Integer.valueOf(1),
 				"containment" }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());

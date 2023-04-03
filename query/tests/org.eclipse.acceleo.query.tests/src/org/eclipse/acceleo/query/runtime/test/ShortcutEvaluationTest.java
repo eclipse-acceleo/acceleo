@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class ShortcutEvaluationTest {
 		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment,
 				ServicesCountCalls.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
-		parser = QueryParsing.newBuilder(queryEnvironment);
+		parser = QueryParsing.newBuilder();
 		evaluator = QueryEvaluation.newEngine(queryEnvironment);
 		variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);

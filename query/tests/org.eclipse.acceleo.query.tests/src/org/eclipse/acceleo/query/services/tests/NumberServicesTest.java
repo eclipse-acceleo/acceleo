@@ -41,8 +41,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void testUnaryMinInteger() {
-		Integer integer1 = new Integer(1);
-		Integer integer2 = new Integer(5);
+		Integer integer1 = Integer.valueOf(1);
+		Integer integer2 = Integer.valueOf(5);
 
 		assertEquals("-1", numServices.unaryMin(integer1).toString());
 		assertEquals("-5", numServices.unaryMin(integer2).toString());
@@ -55,8 +55,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void testUnaryMinDouble() {
-		Double double1 = new Double(1);
-		Double double2 = new Double(5);
+		Double double1 = Double.valueOf(1);
+		Double double2 = Double.valueOf(5);
 
 		assertEquals("-1.0", numServices.unaryMin(double1).toString());
 		assertEquals("-5.0", numServices.unaryMin(double2).toString());
@@ -69,14 +69,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddIntegerIntegerNull() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.add(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddIntegerNullInteger() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.add((Integer)null, integer0);
 	}
@@ -84,8 +84,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testAddInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer integer0 = new Integer(0);
-		Integer integer1 = new Integer(1);
+		Integer integer0 = Integer.valueOf(0);
+		Integer integer1 = Integer.valueOf(1);
 
 		assertEquals("2", numServices.add(integer1, integer1).toString());
 		assertEquals("1", numServices.add(integer1, integer0).toString());
@@ -99,14 +99,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubIntegerIntegerNull() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.sub(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubIntegerNullInteger() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.sub((Integer)null, integer0);
 	}
@@ -114,9 +114,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testSubInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer integer0 = new Integer(0);
-		Integer integer1 = new Integer(1);
-		Integer integer3 = new Integer(3);
+		Integer integer0 = Integer.valueOf(0);
+		Integer integer1 = Integer.valueOf(1);
+		Integer integer3 = Integer.valueOf(3);
 
 		assertEquals("-1", numServices.sub(integer0, integer1).toString());
 		assertEquals("2", numServices.sub(integer3, integer1).toString());
@@ -129,14 +129,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testDivIntegerIntegerNull() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.div(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testDivIntegerNullInteger() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.div((Integer)null, integer0);
 	}
@@ -144,9 +144,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testDivInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer integer1 = new Integer(1);
-		Integer integer2 = new Integer(2);
-		Integer integer4 = new Integer(4);
+		Integer integer1 = Integer.valueOf(1);
+		Integer integer2 = Integer.valueOf(2);
+		Integer integer4 = Integer.valueOf(4);
 
 		assertEquals("2", numServices.divOp(integer4, integer2).toString());
 		assertEquals("0", numServices.divOp(integer1, integer2).toString());
@@ -159,14 +159,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultIntegerIntegerNull() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.mult(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultIntegerNullInteger() {
-		Integer integer0 = new Integer(0);
+		Integer integer0 = Integer.valueOf(0);
 
 		numServices.mult((Integer)null, integer0);
 	}
@@ -174,10 +174,10 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testMultInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer integer0 = new Integer(0);
-		Integer integer1 = new Integer(1);
-		Integer integer2 = new Integer(2);
-		Integer integer4 = new Integer(4);
+		Integer integer0 = Integer.valueOf(0);
+		Integer integer1 = Integer.valueOf(1);
+		Integer integer2 = Integer.valueOf(2);
+		Integer integer4 = Integer.valueOf(4);
 
 		assertEquals("8", numServices.mult(integer4, integer2).toString());
 		assertEquals("2", numServices.mult(integer1, integer2).toString());
@@ -192,14 +192,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddDoubleDoubleNull() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.add(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddDoubleNullDouble() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.add((Double)null, integer0);
 	}
@@ -207,8 +207,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testAddDouble() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Double double0 = new Double(0);
-		Double double1 = new Double(1);
+		Double double0 = Double.valueOf(0);
+		Double double1 = Double.valueOf(1);
 
 		assertEquals("2.0", numServices.add(double1, double1).toString());
 		assertEquals("1.0", numServices.add(double1, double0).toString());
@@ -222,14 +222,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubDoubleDoubleNull() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.sub(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubDoubleNullDouble() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.sub((Double)null, integer0);
 	}
@@ -237,9 +237,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testSubDouble() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Double double0 = new Double(0);
-		Double double1 = new Double(1);
-		Double double3 = new Double(3);
+		Double double0 = Double.valueOf(0);
+		Double double1 = Double.valueOf(1);
+		Double double3 = Double.valueOf(3);
 
 		assertEquals("-1.0", numServices.sub(double0, double1).toString());
 		assertEquals("2.0", numServices.sub(double3, double1).toString());
@@ -252,14 +252,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testDivDoubleDoubleNull() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.div(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testDivDoubleNullDouble() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.div((Double)null, integer0);
 	}
@@ -267,9 +267,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testDivDouble() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Double double1 = new Double(1);
-		Double double2 = new Double(2);
-		Double double4 = new Double(4);
+		Double double1 = Double.valueOf(1);
+		Double double2 = Double.valueOf(2);
+		Double double4 = Double.valueOf(4);
 
 		assertEquals("2.0", numServices.divOp(double4, double2).toString());
 		assertEquals("0.5", numServices.divOp(double1, double2).toString());
@@ -282,14 +282,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultDoubleDoubleNull() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.mult(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultDoubleNullDouble() {
-		Double integer0 = new Double(0);
+		Double integer0 = Double.valueOf(0);
 
 		numServices.mult((Double)null, integer0);
 	}
@@ -297,10 +297,10 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testMultDouble() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Double double0 = new Double(0);
-		Double double1 = new Double(1);
-		Double double2 = new Double(2);
-		Double double4 = new Double(4);
+		Double double0 = Double.valueOf(0);
+		Double double1 = Double.valueOf(1);
+		Double double2 = Double.valueOf(2);
+		Double double4 = Double.valueOf(4);
 
 		assertEquals("8.0", numServices.mult(double4, double2).toString());
 		assertEquals("2.0", numServices.mult(double1, double2).toString());
@@ -587,8 +587,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void testUnaryMinLong() {
-		Long long1 = new Long(1);
-		Long long2 = new Long(5);
+		Long long1 = Long.valueOf(1);
+		Long long2 = Long.valueOf(5);
 
 		assertEquals("-1", numServices.unaryMin(long1).toString());
 		assertEquals("-5", numServices.unaryMin(long2).toString());
@@ -601,8 +601,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void testUnaryMinFloat() {
-		Float float1 = new Float(1);
-		Float float2 = new Float(5);
+		Float float1 = Float.valueOf(1);
+		Float float2 = Float.valueOf(5);
 
 		assertEquals("-1.0", numServices.unaryMin(float1).toString());
 		assertEquals("-5.0", numServices.unaryMin(float2).toString());
@@ -615,14 +615,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddLongLongNull() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.add(long0, (Long)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddLongNullLong() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.add((Long)null, long0);
 	}
@@ -630,8 +630,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testAddLong() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Long long0 = new Long(0);
-		Long long1 = new Long(1);
+		Long long0 = Long.valueOf(0);
+		Long long1 = Long.valueOf(1);
 
 		assertEquals("2", numServices.add(long1, long1).toString());
 		assertEquals("1", numServices.add(long1, long0).toString());
@@ -645,14 +645,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubLongLongNull() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.sub(long0, (Long)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubLongNullLong() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.sub((Long)null, long0);
 	}
@@ -660,9 +660,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testSubLong() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Long long0 = new Long(0);
-		Long long1 = new Long(1);
-		Long long3 = new Long(3);
+		Long long0 = Long.valueOf(0);
+		Long long1 = Long.valueOf(1);
+		Long long3 = Long.valueOf(3);
 
 		assertEquals("-1", numServices.sub(long0, long1).toString());
 		assertEquals("2", numServices.sub(long3, long1).toString());
@@ -675,14 +675,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testDivLongLongNull() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.div(long0, (Long)null);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testDivLongNullLong() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.div((Long)null, long0);
 	}
@@ -690,9 +690,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testDivLong() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Long long1 = new Long(1);
-		Long long2 = new Long(2);
-		Long long4 = new Long(4);
+		Long long1 = Long.valueOf(1);
+		Long long2 = Long.valueOf(2);
+		Long long4 = Long.valueOf(4);
 
 		assertEquals("2", numServices.divOp(long4, long2).toString());
 		assertEquals("0", numServices.divOp(long1, long2).toString());
@@ -705,14 +705,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultLongLongNull() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.mult(long0, (Long)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultLongNullLong() {
-		Long long0 = new Long(0);
+		Long long0 = Long.valueOf(0);
 
 		numServices.mult((Long)null, long0);
 	}
@@ -720,10 +720,10 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testMultLong() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Long long0 = new Long(0);
-		Long long1 = new Long(1);
-		Long long2 = new Long(2);
-		Long long4 = new Long(4);
+		Long long0 = Long.valueOf(0);
+		Long long1 = Long.valueOf(1);
+		Long long2 = Long.valueOf(2);
+		Long long4 = Long.valueOf(4);
 
 		assertEquals("8", numServices.mult(long4, long2).toString());
 		assertEquals("2", numServices.mult(long1, long2).toString());
@@ -738,14 +738,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddFloatFloatNull() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.add(long0, (Float)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddFloatNullFloat() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.add((Float)null, long0);
 	}
@@ -753,8 +753,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testAddFloat() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Float float0 = new Float(0);
-		Float float1 = new Float(1);
+		Float float0 = Float.valueOf(0);
+		Float float1 = Float.valueOf(1);
 
 		assertEquals("2.0", numServices.add(float1, float1).toString());
 		assertEquals("1.0", numServices.add(float1, float0).toString());
@@ -768,14 +768,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubFloatFloatNull() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.sub(long0, (Float)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubFloatNullFloat() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.sub((Float)null, long0);
 	}
@@ -783,9 +783,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testSubFloat() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Float float0 = new Float(0);
-		Float float1 = new Float(1);
-		Float float3 = new Float(3);
+		Float float0 = Float.valueOf(0);
+		Float float1 = Float.valueOf(1);
+		Float float3 = Float.valueOf(3);
 
 		assertEquals("-1.0", numServices.sub(float0, float1).toString());
 		assertEquals("2.0", numServices.sub(float3, float1).toString());
@@ -798,14 +798,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testDivFloatFloatNull() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.div(long0, (Float)null);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testDivFloatNullFloat() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.div((Float)null, long0);
 	}
@@ -813,9 +813,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testDivFloat() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Float float1 = new Float(1);
-		Float float2 = new Float(2);
-		Float float4 = new Float(4);
+		Float float1 = Float.valueOf(1);
+		Float float2 = Float.valueOf(2);
+		Float float4 = Float.valueOf(4);
 
 		assertEquals("2.0", numServices.divOp(float4, float2).toString());
 		assertEquals("0.5", numServices.divOp(float1, float2).toString());
@@ -828,14 +828,14 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultFloatFloatNull() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.mult(long0, (Float)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultFloatNullFloat() {
-		Float long0 = new Float(0);
+		Float long0 = Float.valueOf(0);
 
 		numServices.mult((Float)null, long0);
 	}
@@ -843,10 +843,10 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Test
 	public void testMultFloat() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Float float0 = new Float(0);
-		Float float1 = new Float(1);
-		Float float2 = new Float(2);
-		Float float4 = new Float(4);
+		Float float0 = Float.valueOf(0);
+		Float float1 = Float.valueOf(1);
+		Float float2 = Float.valueOf(2);
+		Float float4 = Float.valueOf(4);
 
 		assertEquals("8.0", numServices.mult(float4, float2).toString());
 		assertEquals("2.0", numServices.mult(float1, float2).toString());

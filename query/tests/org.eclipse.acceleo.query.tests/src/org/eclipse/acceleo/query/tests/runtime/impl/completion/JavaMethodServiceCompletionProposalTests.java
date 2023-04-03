@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl.completion;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
@@ -41,7 +42,8 @@ public class JavaMethodServiceCompletionProposalTests {
 
 		if (serviceMethod != null) {
 			try {
-				JavaMethodService service = new JavaMethodService(serviceMethod, clazz.newInstance());
+				JavaMethodService service = new JavaMethodService(serviceMethod, clazz
+						.getDeclaredConstructor().newInstance());
 				JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(
 						service);
 				String description = proposal.getDescription();
@@ -50,6 +52,18 @@ public class JavaMethodServiceCompletionProposalTests {
 				e.printStackTrace();
 				fail();
 			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				fail();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				fail();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+				fail();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+				fail();
+			} catch (SecurityException e) {
 				e.printStackTrace();
 				fail();
 			}

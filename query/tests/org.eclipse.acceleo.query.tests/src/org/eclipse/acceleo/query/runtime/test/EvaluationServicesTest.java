@@ -172,8 +172,8 @@ public class EvaluationServicesTest {
 	@Test
 	public void testFeatureAccessOnObject() {
 		Diagnostic status = new BasicDiagnostic();
-		assertTrue(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
-				new Integer(3), "noname" }, status) instanceof Nothing);
+		assertTrue(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {Integer
+				.valueOf(3), "noname" }, status) instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
@@ -522,7 +522,7 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void serviceCallTest() {
-		Object[] args = {new Integer(1), new Integer(2) };
+		Object[] args = {Integer.valueOf(1), Integer.valueOf(2) };
 		Diagnostic status = new BasicDiagnostic();
 		assertEquals(3, services.call("add", args, status));
 	}
@@ -533,7 +533,7 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void callOrApplyOnScalarValueTest() {
-		Object[] args = {new Integer(1), new Integer(2) };
+		Object[] args = {Integer.valueOf(1), Integer.valueOf(2) };
 		Diagnostic status = new BasicDiagnostic();
 		assertEquals(3, services.callOrApply("add", args, status));
 

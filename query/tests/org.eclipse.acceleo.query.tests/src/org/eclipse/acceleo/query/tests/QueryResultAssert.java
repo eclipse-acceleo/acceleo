@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,7 @@
 package org.eclipse.acceleo.query.tests;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.acceleo.query.tests.qmodel.BooleanResult;
 import org.eclipse.acceleo.query.tests.qmodel.EObjectResult;
@@ -33,13 +30,11 @@ import org.eclipse.acceleo.query.tests.qmodel.SetResult;
 import org.eclipse.acceleo.query.tests.qmodel.StringResult;
 import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
 import org.eclipse.acceleo.query.tests.qmodel.Variable;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertSame;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class QueryResultAssert {
@@ -50,7 +45,7 @@ public class QueryResultAssert {
 		assertSame(expectedResult.eClass().getName(), actualResult.eClass().getName());
 
 		if (expectedResult instanceof ListResult) {
-			assertEquals(true, actualResult instanceof ListResult);
+			assertTrue(actualResult instanceof ListResult);
 			assertEquals(((ListResult)expectedResult).getValues().size(), ((ListResult)actualResult)
 					.getValues().size());
 			Iterator<QueryEvaluationResult> expectedIt = ((ListResult)expectedResult).getValues().iterator();
@@ -59,66 +54,57 @@ public class QueryResultAssert {
 				assertEquivalentEvaluation(expectedIt.next(), actualIt.next());
 			}
 		} else if (expectedResult instanceof SetResult) {
-			assertEquals(true, actualResult instanceof SetResult);
-			assertEquals(((SetResult)expectedResult).getValues().size(), ((SetResult)actualResult)
-					.getValues().size());
+			assertTrue(actualResult instanceof SetResult);
+			assertEquals(((SetResult)expectedResult).getValues().size(), ((SetResult)actualResult).getValues()
+					.size());
 			Iterator<QueryEvaluationResult> expectedIt = ((SetResult)expectedResult).getValues().iterator();
 			Iterator<QueryEvaluationResult> actualIt = ((SetResult)actualResult).getValues().iterator();
 			while (expectedIt.hasNext()) {
 				assertEquivalentEvaluation(expectedIt.next(), actualIt.next());
 			}
 		} else if (expectedResult instanceof EObjectResult) {
-			assertEquals(true, actualResult instanceof EObjectResult);
+			assertTrue(actualResult instanceof EObjectResult);
 			EObject expectedValue = ((EObjectResult)expectedResult).getValue();
 			EObject actualValue = ((EObjectResult)actualResult).getValue();
 			assertEquals(expectedValue, actualValue);
 		} else if (expectedResult instanceof StringResult) {
-			assertEquals(true, actualResult instanceof StringResult);
+			assertTrue(actualResult instanceof StringResult);
 			String expectedValue = ((StringResult)expectedResult).getValue();
 			String actualValue = ((StringResult)actualResult).getValue();
 			assertEquals(expectedValue, actualValue);
 		} else if (expectedResult instanceof BooleanResult) {
-			assertEquals(true, actualResult instanceof BooleanResult);
+			assertTrue(actualResult instanceof BooleanResult);
 			Boolean expectedValue = ((BooleanResult)expectedResult).isValue();
 			Boolean actualValue = ((BooleanResult)actualResult).isValue();
 			assertEquals(expectedValue, actualValue);
 		} else if (expectedResult instanceof InvalidResult) {
-			assertEquals(true, actualResult instanceof InvalidResult);
+			assertTrue(actualResult instanceof InvalidResult);
 		} else if (expectedResult instanceof ErrorResult) {
 			/*
 			 * we don't discriminate errors yet, we'll assume as long as it is an error its good.
 			 */
 		} else if (expectedResult instanceof EmptyResult) {
-			assertEquals(true, actualResult instanceof EmptyResult);
+			assertTrue(actualResult instanceof EmptyResult);
 		} else if (expectedResult instanceof EnumeratorResult) {
-			assertEquals(true, actualResult instanceof EnumeratorResult);
+			assertTrue(actualResult instanceof EnumeratorResult);
 			String expectedValue = ((EnumeratorResult)expectedResult).getValue();
 			String actualValue = ((EnumeratorResult)actualResult).getValue();
 			assertEquals(expectedValue, actualValue);
 		} else if (expectedResult instanceof SerializableResult) {
-			assertEquals(true, actualResult instanceof SerializableResult);
+			assertTrue(actualResult instanceof SerializableResult);
 			Serializable expectedValue = ((SerializableResult)expectedResult).getValue();
 			Serializable actualValue = ((SerializableResult)actualResult).getValue();
 			assertEquals(expectedValue, actualValue);
 		} else if (expectedResult instanceof IntegerResult) {
-			assertEquals(true, actualResult instanceof IntegerResult);
+			assertTrue(actualResult instanceof IntegerResult);
 			Integer expectedValue = ((IntegerResult)expectedResult).getValue();
 			Integer actualValue = ((IntegerResult)actualResult).getValue();
 			assertEquals(expectedValue, actualValue);
 		}
 
 		else {
-
 			fail("not supported yet in the test framework:" + expectedResult.eClass().getName());
 		}
-	}
-
-	private static Collection<URI> toURIs(Collection<EObject> expectedValues) {
-		List<URI> uris = new ArrayList<URI>(expectedValues.size());
-		for (EObject val : expectedValues) {
-			uris.add(EcoreUtil.getURI(val));
-		}
-		return uris;
 	}
 
 	public static void assertEquivalentValidation(QueryValidationResult expectedResult,
@@ -166,12 +152,12 @@ public class QueryResultAssert {
 	 */
 	private static void printQuery(Query query) {
 		System.out.println("Expression: " + query.getExpression());
-		System.out.println("Self: " + query.getStartingPoint().getName() + " - "
-				+ query.getStartingPoint().getTarget());
+		System.out.println("Self: " + query.getStartingPoint().getName() + " - " + query.getStartingPoint()
+				.getTarget());
 		for (Variable variable : query.getVariables()) {
 			if (variable instanceof EObjectVariable) {
-				System.out.println(variable.getName() + ": "
-						+ ((EObjectVariable)variable).getValue().getTarget());
+				System.out.println(variable.getName() + ": " + ((EObjectVariable)variable).getValue()
+						.getTarget());
 			}
 		}
 	}
