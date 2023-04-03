@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.Positions;
@@ -96,6 +97,18 @@ public class AcceleoAstResult {
 	}
 
 	/**
+	 * Gets the identifier start position of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the identifier start position of the given {@link Binding} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartPosition(Binding binding) {
+		return getInternalIdentifierStartPosition(binding);
+	}
+
+	/**
 	 * Gets the identifier start position of the given {@link EObject} in the parsed text.
 	 * 
 	 * @param object
@@ -150,6 +163,18 @@ public class AcceleoAstResult {
 	 */
 	public int getIdentifierStartLine(VariableDeclaration declaration) {
 		return getInternalIdentifierStartLine(declaration);
+	}
+
+	/**
+	 * Gets the identifier start line of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the identifier start line of the given {@link Binding} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartLine(Binding binding) {
+		return getInternalIdentifierStartLine(binding);
 	}
 
 	/**
@@ -210,6 +235,18 @@ public class AcceleoAstResult {
 	}
 
 	/**
+	 * Gets the identifier start column of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the identifier start column of the given {@link Binding} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartColumn(Binding binding) {
+		return getInternalIdentifierStartColumn(binding);
+	}
+
+	/**
 	 * Gets the identifier start column of the given {@link EObject} in the parsed text.
 	 * 
 	 * @param object
@@ -264,6 +301,18 @@ public class AcceleoAstResult {
 	 */
 	public int getIdentifierEndPosition(VariableDeclaration declaration) {
 		return getInternalIdentifierEndPosition(declaration);
+	}
+
+	/**
+	 * Gets the identifier end position of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the identifier end position of the given {@link Binding} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndPosition(Binding binding) {
+		return getInternalIdentifierEndPosition(binding);
 	}
 
 	/**
@@ -324,6 +373,18 @@ public class AcceleoAstResult {
 	}
 
 	/**
+	 * Gets the identifier end line of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the identifier end line of the given {@link Binding} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getIdentifierEndLine(Binding binding) {
+		return getInternalIdentifierEndLine(binding);
+	}
+
+	/**
 	 * Gets the identifier end line of the given {@link EObject} in the parsed text.
 	 * 
 	 * @param object
@@ -378,6 +439,18 @@ public class AcceleoAstResult {
 	 */
 	public int getIdentifierEndColumn(VariableDeclaration declaration) {
 		return getInternalIdentifierEndColumn(declaration);
+	}
+
+	/**
+	 * Gets the identifier end column of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the identifier end column of the given {@link Binding} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndColumn(Binding binding) {
+		return getInternalIdentifierEndColumn(binding);
 	}
 
 	/**
@@ -438,6 +511,18 @@ public class AcceleoAstResult {
 	}
 
 	/**
+	 * Gets the start position of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the start position of the given {@link Binding} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getStartPosition(Binding binding) {
+		return getInternalStartPosition(binding);
+	}
+
+	/**
 	 * Gets the start position of the given {@link EObject} in the parsed text.
 	 * 
 	 * @param object
@@ -492,6 +577,18 @@ public class AcceleoAstResult {
 	 */
 	public int getStartLine(VariableDeclaration declaration) {
 		return getInternalStartLine(declaration);
+	}
+
+	/**
+	 * Gets the start line of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the start line of the given {@link Binding} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getStartLine(Binding binding) {
+		return getInternalStartLine(binding);
 	}
 
 	/**
@@ -552,6 +649,18 @@ public class AcceleoAstResult {
 	}
 
 	/**
+	 * Gets the start column of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the start column of the given {@link Binding} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getStartColumn(Binding binding) {
+		return getInternalStartColumn(binding);
+	}
+
+	/**
 	 * Gets the start column of the given {@link EObject} in the parsed text.
 	 * 
 	 * @param object
@@ -606,6 +715,18 @@ public class AcceleoAstResult {
 	 */
 	public int getEndPosition(VariableDeclaration declaration) {
 		return getInternalEndPosition(declaration);
+	}
+
+	/**
+	 * Gets the end position of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the end position of the given {@link Binding} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getEndPosition(Binding binding) {
+		return getInternalEndPosition(binding);
 	}
 
 	/**
@@ -665,6 +786,17 @@ public class AcceleoAstResult {
 	}
 
 	/**
+	 * Gets the end line of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the end line of the given {@link Binding} in the parsed text if any, <code>-1</code> otherwise
+	 */
+	public int getEndLine(Binding binding) {
+		return getInternalEndLine(binding);
+	}
+
+	/**
 	 * Gets the end line of the given {@link EObject} in the parsed text.
 	 * 
 	 * @param object
@@ -718,6 +850,18 @@ public class AcceleoAstResult {
 	 */
 	public int getEndColumn(VariableDeclaration declaration) {
 		return getInternalEndColumn(declaration);
+	}
+
+	/**
+	 * Gets the end column of the given {@link Binding} in the parsed text.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the end column of the given {@link Binding} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getEndColumn(Binding binding) {
+		return getInternalEndColumn(binding);
 	}
 
 	/**

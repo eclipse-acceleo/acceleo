@@ -305,17 +305,11 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		return CompletableFutures.computeAsync(canceler -> {
 			canceler.checkCanceled();
 
-			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+			final int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
 					acceleoTextDocument.getContents());
-			List<AbstractLocationLink<?, ?>> declarationLocations = acceleoTextDocument
-					.getDeclarationLocations(atIndex);
 
 			canceler.checkCanceled();
-			List<LocationLink> locationLinks = declarationLocations.stream().map(
-					acceleoLocationLinkResolver::transform).collect(Collectors.toList());
-
-			canceler.checkCanceled();
-			return Either.forRight(locationLinks);
+			return Either.forRight(acceleoTextDocument.getDeclarationLocations(atIndex));
 		});
 	}
 
@@ -344,17 +338,11 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		return CompletableFutures.computeAsync(canceler -> {
 			canceler.checkCanceled();
 
-			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+			final int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
 					acceleoTextDocument.getContents());
-			List<AbstractLocationLink<?, ?>> definitionLocations = acceleoTextDocument.getDefinitionLocations(
-					atIndex);
 
 			canceler.checkCanceled();
-			List<LocationLink> locationLinks = definitionLocations.stream().map(
-					acceleoLocationLinkResolver::transform).collect(Collectors.toList());
-
-			canceler.checkCanceled();
-			return Either.forRight(locationLinks);
+			return Either.forRight(acceleoTextDocument.getDefinitionLocations(atIndex));
 		});
 	}
 

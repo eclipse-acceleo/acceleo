@@ -210,7 +210,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		if (unresolved != null) {
 			for (VarRef varRef : unresolved) {
 				result.putBindingResolvedVarRef(variable, varRef);
-				System.out.println(variable.getName() + " " + varRef.eContainer().toString());
 			}
 		}
 	}

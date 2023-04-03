@@ -11,18 +11,21 @@
 package org.eclipse.acceleo.aql.validation;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * Acceleo validation result.
@@ -103,5 +106,53 @@ public interface IAcceleoValidationResult {
 	 *         <code>null</code> otherwise
 	 */
 	List<VarRef> getResolvedVarRef(Variable variable);
+
+	/**
+	 * Gets the declaration {@link Binding} for the given {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 * @return the declaration {@link Binding} for the given {@link VarRef} if any, <code>null</code>
+	 *         otherwise
+	 */
+	Binding getDeclarationBinding(VarRef varRef);
+
+	/**
+	 * Gets the declaration {@link VariableDeclaration} for the given {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 * @return the declaration {@link VariableDeclaration} for the given {@link VarRef} if any,
+	 *         <code>null</code> otherwise
+	 */
+	VariableDeclaration getDeclarationVariableDeclaration(VarRef varRef);
+
+	/**
+	 * Gets the declaration {@link Variable} for the given {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 * @return the declaration {@link Variable} for the given {@link VarRef} if any, <code>null</code>
+	 *         otherwise
+	 */
+	Variable getDeclarationVariable(VarRef varRef);
+
+	/**
+	 * Gets the {@link List} of declaration {@link IService} for the given {@link Call}.
+	 * 
+	 * @param call
+	 *            the {@link VarRef}
+	 * @return the {@link List} of declaration {@link IService} for the given {@link Call}
+	 */
+	List<IService<?>> getDeclarationIService(Call call);
+
+	/**
+	 * Gets the possible types of the given {@link Expression}.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the possible types of the given {@link Expression} if known, <code>null</code> otherwise
+	 */
+	Set<IType> getPossibleTypes(Expression expression);
 
 }

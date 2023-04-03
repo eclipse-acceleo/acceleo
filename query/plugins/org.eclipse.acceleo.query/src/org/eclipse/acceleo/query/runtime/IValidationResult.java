@@ -106,4 +106,36 @@ public interface IValidationResult {
 	 */
 	List<VarRef> getUnresolvedVarRef();
 
+	/**
+	 * Gets the declaration {@link Binding} for the given {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 * @return the declaration {@link Binding} for the given {@link VarRef} if any, <code>null</code>
+	 *         otherwise
+	 * @since 8.0.1
+	 */
+	Binding getDeclarationBinding(VarRef varRef);
+
+	/**
+	 * Gets the declaration {@link VariableDeclaration} for the given {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 * @return the declaration {@link VariableDeclaration} for the given {@link VarRef} if any,
+	 *         <code>null</code> otherwise
+	 * @since 8.0.1
+	 */
+	VariableDeclaration getDeclarationVariableDeclaration(VarRef varRef);
+
+	/**
+	 * Gets the {@link List} of declaration {@link IService} for the given {@link Call}.
+	 * 
+	 * @param call
+	 *            the {@link VarRef}
+	 * @return the {@link List} of declaration {@link IService} for the given {@link Call}
+	 * @since 8.0.1
+	 */
+	List<IService<?>> getDeclarationIService(Call call);
+
 }

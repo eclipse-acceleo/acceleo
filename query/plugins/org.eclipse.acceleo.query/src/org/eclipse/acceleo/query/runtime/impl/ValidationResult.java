@@ -53,14 +53,29 @@ public class ValidationResult implements IValidationResult {
 	private final Map<IService<?>, List<Call>> resolvedCalls = new HashMap<>();
 
 	/**
+	 * The mapping from a {@link Call} to its {@link List} of declaration {@link IService}.
+	 */
+	private final Map<Call, List<IService<?>>> serviceDeclarations = new HashMap<>();
+
+	/**
 	 * The mapping from a {@link Binding} to the {@link List} of {@link VarRef} resolved to it.
 	 */
 	private final Map<Binding, List<VarRef>> bindingResolvedVarRef = new HashMap<>();
 
 	/**
+	 * The mapping from a {@link VarRef} to its declaration {@link Binding}.
+	 */
+	private final Map<VarRef, Binding> bindingDeclarations = new HashMap<>();
+
+	/**
 	 * The mapping from a {@link VariableDeclaration} to the {@link List} of {@link VarRef} resolved to it.
 	 */
 	private final Map<VariableDeclaration, List<VarRef>> variableDeclarationResolvedVarRef = new HashMap<>();
+
+	/**
+	 * The mapping from a {@link VarRef} to its declaration {@link VariableDeclaration}.
+	 */
+	private final Map<VarRef, VariableDeclaration> variableDeclarationDeclarations = new HashMap<>();
 
 	/**
 	 * The {@link List} of unresolved {@link VarRef}.
@@ -141,17 +156,8 @@ public class ValidationResult implements IValidationResult {
 	 */
 	public void putInferredVariableTypes(Expression expression, Boolean value,
 			Map<String, Set<IType>> inferredTypes) {
-		Map<Boolean, Map<String, Set<IType>>> map = inferredVariableType.get(expression);
-		if (map == null) {
-			map = new HashMap<Boolean, Map<String, Set<IType>>>();
-			inferredVariableType.put(expression, map);
-		}
-		Map<String, Set<IType>> t = map.get(value);
-		if (t == null) {
-			t = new HashMap<String, Set<IType>>();
-			map.put(value, t);
-		}
-		t.putAll(inferredTypes);
+		inferredVariableType.computeIfAbsent(expression, e -> new HashMap<Boolean, Map<String, Set<IType>>>())
+				.computeIfAbsent(value, v -> new HashMap<String, Set<IType>>()).putAll(inferredTypes);
 	}
 
 	/**
@@ -161,21 +167,8 @@ public class ValidationResult implements IValidationResult {
 	 *      java.lang.Boolean)
 	 */
 	public Map<String, Set<IType>> getInferredVariableTypes(Expression expression, Boolean value) {
-		final Map<String, Set<IType>> result;
-
-		final Map<Boolean, Map<String, Set<IType>>> map = inferredVariableType.get(expression);
-		if (map != null) {
-			final Map<String, Set<IType>> inferedTypes = map.get(value);
-			if (inferedTypes != null) {
-				result = inferedTypes;
-			} else {
-				result = Collections.emptyMap();
-			}
-		} else {
-			result = Collections.emptyMap();
-		}
-
-		return result;
+		return inferredVariableType.getOrDefault(expression, Collections.emptyMap()).getOrDefault(value,
+				Collections.emptyMap());
 	}
 
 	/**
@@ -189,6 +182,7 @@ public class ValidationResult implements IValidationResult {
 	 */
 	public void putResolvedCall(IService<?> service, Call call) {
 		resolvedCalls.computeIfAbsent(service, s -> new ArrayList<>()).add(call);
+		serviceDeclarations.computeIfAbsent(call, c -> new ArrayList<>()).add(service);
 	}
 
 	/**
@@ -212,6 +206,7 @@ public class ValidationResult implements IValidationResult {
 	 */
 	public void putBindingResolvedVarRef(Binding binding, VarRef varRef) {
 		bindingResolvedVarRef.computeIfAbsent(binding, s -> new ArrayList<>()).add(varRef);
+		bindingDeclarations.put(varRef, binding);
 	}
 
 	/**
@@ -236,6 +231,7 @@ public class ValidationResult implements IValidationResult {
 	public void putVariableDeclarationResolvedVarRef(VariableDeclaration variableDeclaration, VarRef varRef) {
 		variableDeclarationResolvedVarRef.computeIfAbsent(variableDeclaration, s -> new ArrayList<>()).add(
 				varRef);
+		variableDeclarationDeclarations.put(varRef, variableDeclaration);
 	}
 
 	/**
@@ -256,6 +252,36 @@ public class ValidationResult implements IValidationResult {
 	@Override
 	public List<VarRef> getUnresolvedVarRef() {
 		return unresolvedVarRef;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getDeclarationBinding(org.eclipse.acceleo.query.ast.VarRef)
+	 */
+	@Override
+	public Binding getDeclarationBinding(VarRef varRef) {
+		return bindingDeclarations.get(varRef);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getDeclarationIService(org.eclipse.acceleo.query.ast.Call)
+	 */
+	@Override
+	public List<IService<?>> getDeclarationIService(Call call) {
+		return serviceDeclarations.getOrDefault(call, Collections.emptyList());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getDeclarationVariableDeclaration(org.eclipse.acceleo.query.ast.VarRef)
+	 */
+	@Override
+	public VariableDeclaration getDeclarationVariableDeclaration(VarRef varRef) {
+		return variableDeclarationDeclarations.get(varRef);
 	}
 
 }

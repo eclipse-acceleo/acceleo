@@ -12,11 +12,14 @@ package org.eclipse.acceleo.aql.validation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.ASTNode;
@@ -24,12 +27,14 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * Acceleo validation result.
@@ -57,6 +62,11 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	 * The mapping from a {@link Variable} to the {@link List} of {@link VarRef} resolved to it.
 	 */
 	private final Map<Variable, List<VarRef>> variableResolvedVarRef = new HashMap<>();
+
+	/**
+	 * The mapping from a {@link VarRef} to its declaration {@link Variable}.
+	 */
+	private final Map<VarRef, Variable> variableDeclarations = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -108,41 +118,24 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 
 	@Override
 	public List<Call> getResolvedCalls(IService<?> service) {
-		final List<Call> res = new ArrayList<>();
-
-		for (IValidationResult validationResult : aqlValidationResults.values()) {
-			res.addAll(validationResult.getResolvedCalls(service));
-		}
-
-		return res;
+		return aqlValidationResults.values().stream().map(vr -> vr.getResolvedCalls(service)).flatMap(
+				List::stream).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<VarRef> getResolvedVarRef(Binding binding) {
-		List<VarRef> res = null;
+		final Optional<List<VarRef>> res = aqlValidationResults.values().stream().map(vr -> vr
+				.getResolvedVarRef(binding)).filter(db -> db != null).findFirst();
 
-		for (IValidationResult validationResult : aqlValidationResults.values()) {
-			final List<VarRef> resolved = validationResult.getResolvedVarRef(binding);
-			if (resolved != null) {
-				res = resolved;
-			}
-		}
-
-		return res;
+		return res.orElse(null);
 	}
 
 	@Override
 	public List<VarRef> getResolvedVarRef(VariableDeclaration variableDeclaration) {
-		List<VarRef> res = null;
+		final Optional<List<VarRef>> res = aqlValidationResults.values().stream().map(vr -> vr
+				.getResolvedVarRef(variableDeclaration)).filter(db -> db != null).findFirst();
 
-		for (IValidationResult validationResult : aqlValidationResults.values()) {
-			final List<VarRef> resolved = validationResult.getResolvedVarRef(variableDeclaration);
-			if (resolved != null) {
-				res = resolved;
-			}
-		}
-
-		return res;
+		return res.orElse(null);
 	}
 
 	/**
@@ -155,6 +148,7 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	 */
 	public void putBindingResolvedVarRef(Variable variable, VarRef varRef) {
 		variableResolvedVarRef.computeIfAbsent(variable, s -> new ArrayList<>()).add(varRef);
+		variableDeclarations.put(varRef, variable);
 	}
 
 	@Override
@@ -162,4 +156,40 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 		return variableResolvedVarRef.get(variable);
 	}
 
+	@Override
+	public Binding getDeclarationBinding(VarRef varRef) {
+		final Optional<Binding> res = aqlValidationResults.values().stream().map(vr -> vr
+				.getDeclarationBinding(varRef)).filter(db -> db != null).findFirst();
+
+		return res.orElse(null);
+	}
+
+	@Override
+	public VariableDeclaration getDeclarationVariableDeclaration(VarRef varRef) {
+		final Optional<VariableDeclaration> res = aqlValidationResults.values().stream().map(vr -> vr
+				.getDeclarationVariableDeclaration(varRef)).filter(db -> db != null).findFirst();
+
+		return res.orElse(null);
+	}
+
+	@Override
+	public List<IService<?>> getDeclarationIService(Call call) {
+		final Optional<List<IService<?>>> res = aqlValidationResults.values().stream().map(vr -> vr
+				.getDeclarationIService(call)).filter(db -> !db.isEmpty()).findFirst();
+
+		return res.orElse(Collections.emptyList());
+	}
+
+	@Override
+	public Variable getDeclarationVariable(VarRef varRef) {
+		return variableDeclarations.get(varRef);
+	}
+
+	@Override
+	public Set<IType> getPossibleTypes(Expression expression) {
+		final Optional<Set<IType>> res = aqlValidationResults.values().stream().map(vr -> vr.getPossibleTypes(
+				expression)).filter(pt -> pt != null).findFirst();
+
+		return res.orElse(null);
+	}
 }

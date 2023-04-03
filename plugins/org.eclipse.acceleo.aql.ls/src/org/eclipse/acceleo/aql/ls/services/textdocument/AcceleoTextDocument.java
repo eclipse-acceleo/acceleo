@@ -17,11 +17,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.Variable;
-import org.eclipse.acceleo.aql.location.AcceleoLocator;
 import org.eclipse.acceleo.aql.location.common.AbstractLocationLink;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
@@ -31,22 +33,29 @@ import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
+import org.eclipse.acceleo.aql.validation.DeclarationSwitch;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
+import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.lsp4j.Location;
+import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.services.TextDocumentService;
@@ -338,17 +347,12 @@ public class AcceleoTextDocument {
 	 * 
 	 * @param position
 	 *            the (positive) position in the source contents.
-	 * @return the {@link List} of {@link AbstractLocationLink} corresponding to the definition location(s) of
-	 *         the Acceleo element found at the given position in the source contents.
+	 * @return the {@link List} of {@link LocationLink} corresponding to the definition location(s) of the
+	 *         Acceleo element found at the given position in the source contents.
 	 */
-	public List<AbstractLocationLink<?, ?>> getDefinitionLocations(int position) {
-		final IQualifiedNameLookupEngine lookupEngine = getQueryEnvironment().getLookupEngine();
-		lookupEngine.pushImportsContext(getModuleQualifiedName(), getModuleQualifiedName());
-		List<AbstractLocationLink<?, ?>> definitionLocations = new AcceleoLocator(getQueryEnvironment(),
-				getModuleQualifiedName(), acceleoValidationResult).getDefinitionLocations(
-						this.acceleoAstResult, position);
-		lookupEngine.popContext(getModuleQualifiedName());
-		return definitionLocations;
+	public List<LocationLink> getDefinitionLocations(int position) {
+		// In the case of Acceleo and AQL all definition are located at the declaration.
+		return getDeclarationLocations(position);
 	}
 
 	/**
@@ -357,12 +361,139 @@ public class AcceleoTextDocument {
 	 * 
 	 * @param position
 	 *            the (positive) position in the source contents.
-	 * @return the {@link List} of {@link AbstractLocationLink} corresponding to the declaration location(s)
-	 *         of the Acceleo element found at the given position in the source contents.
+	 * @return the {@link List} of {@link LocationLink} corresponding to the declaration location(s) of the
+	 *         Acceleo element found at the given position in the source contents.
 	 */
-	public List<AbstractLocationLink<?, ?>> getDeclarationLocations(int position) {
-		return new AcceleoLocator(getQueryEnvironment(), getModuleQualifiedName(), acceleoValidationResult)
-				.getDeclarationLocations(this.acceleoAstResult, position);
+	public List<LocationLink> getDeclarationLocations(int position) {
+		final List<LocationLink> declarationLocations = new ArrayList<>();
+
+		final EObject acceleoOrAqlNodeUnderCursor = acceleoAstResult.getAstNode(position);
+		final Range originSelectionRange;
+		if (acceleoOrAqlNodeUnderCursor instanceof VarRef) {
+			originSelectionRange = LocationUtils.identifierRange(acceleoValidationResult,
+					(VarRef)acceleoOrAqlNodeUnderCursor);
+		} else if (acceleoOrAqlNodeUnderCursor instanceof Call) {
+			originSelectionRange = LocationUtils.identifierRange(acceleoValidationResult,
+					(Call)acceleoOrAqlNodeUnderCursor);
+		} else if (acceleoOrAqlNodeUnderCursor instanceof ModuleReference) {
+			originSelectionRange = LocationUtils.range(acceleoValidationResult,
+					(ModuleReference)acceleoOrAqlNodeUnderCursor);
+		} else {
+			originSelectionRange = null;
+		}
+
+		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		final List<Object> declarations = getDeclaration(acceleoOrAqlNodeUnderCursor);
+
+		for (Object declaration : declarations) {
+			if (declaration instanceof Binding) {
+				final Binding binding = (Binding)declaration;
+				declarationLocations.add(getDeclarationLocation(originSelectionRange, binding));
+			} else if (declaration instanceof VariableDeclaration) {
+				final VariableDeclaration variableDeclaration = (VariableDeclaration)declaration;
+				declarationLocations.add(getDeclarationLocation(originSelectionRange, variableDeclaration));
+			} else if (declaration instanceof Variable) {
+				final Variable variable = (Variable)declaration;
+				declarationLocations.add(getDeclarationLocation(originSelectionRange, variable));
+			} else if (declaration instanceof IService<?>) {
+				final IService<?> service = (IService<?>)declaration;
+				final ISourceLocation sourceLocation = resolver.getSourceLocation(service);
+				if (sourceLocation != null) {
+					final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), LocationUtils
+							.range(sourceLocation), LocationUtils.identifierRange(sourceLocation));
+					locationLink.setOriginSelectionRange(originSelectionRange);
+					locationLink.setTargetUri(sourceLocation.getSourceURI().toASCIIString());
+					declarationLocations.add(locationLink);
+				}
+			} else {
+				final String declarationQualifiedName;
+				if (declaration instanceof Module) {
+					// TODO this case could fall under the last else if we didn't use VALIDATION_NAMESPACE
+					declarationQualifiedName = ((Module)declaration).eResource().getURI().toString()
+							.substring(AcceleoParser.ACCELEOENV_URI_PROTOCOL.length());
+				} else {
+					declarationQualifiedName = resolver.getQualifiedName(declaration);
+				}
+				final ISourceLocation sourceLocation = resolver.getSourceLocation(declarationQualifiedName);
+				final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), LocationUtils
+						.range(sourceLocation), LocationUtils.identifierRange(sourceLocation));
+				locationLink.setOriginSelectionRange(originSelectionRange);
+				locationLink.setTargetUri(sourceLocation.getSourceURI().toASCIIString());
+				declarationLocations.add(locationLink);
+			}
+		}
+
+		return declarationLocations;
+	}
+
+	/**
+	 * Gets the declaration {@link LocationLink} for the given {@link Variable}.
+	 * 
+	 * @param originSelectionRange
+	 *            the original selection {@link Range}
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the declaration {@link LocationLink} for the given {@link Variable}
+	 */
+	private LocationLink getDeclarationLocation(final Range originSelectionRange, final Variable variable) {
+		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult, variable);
+		final Range range = LocationUtils.range(acceleoValidationResult, variable);
+		final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), range, identifierRange);
+		locationLink.setOriginSelectionRange(originSelectionRange);
+		locationLink.setTargetUri(getUri().toASCIIString());
+		return locationLink;
+	}
+
+	/**
+	 * Gets the declaration {@link LocationLink} for the given {@link VariableDeclaration}.
+	 * 
+	 * @param originSelectionRange
+	 *            the original selection {@link Range}
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the declaration {@link LocationLink} for the given {@link VariableDeclaration}
+	 */
+	private LocationLink getDeclarationLocation(final Range originSelectionRange,
+			final VariableDeclaration variableDeclaration) {
+		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult,
+				variableDeclaration);
+		final Range range = LocationUtils.range(acceleoValidationResult, variableDeclaration);
+		final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), range, identifierRange);
+		locationLink.setOriginSelectionRange(originSelectionRange);
+		locationLink.setTargetUri(getUri().toASCIIString());
+		return locationLink;
+	}
+
+	/**
+	 * Gets the declaration {@link LocationLink} for the given {@link Binding}.
+	 * 
+	 * @param originSelectionRange
+	 *            the original selection {@link Range}
+	 * @param binding
+	 *            the {@link Binding}
+	 * @return the declaration {@link LocationLink} for the given {@link Binding}
+	 */
+	private LocationLink getDeclarationLocation(final Range originSelectionRange, Binding binding) {
+		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult, binding);
+		final Range range = LocationUtils.range(acceleoValidationResult, binding);
+		final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), range, identifierRange);
+		locationLink.setOriginSelectionRange(originSelectionRange);
+		locationLink.setTargetUri(getUri().toASCIIString());
+		return locationLink;
+	}
+
+	/**
+	 * Gets the {@link List} of declaration {@link Object} for the given {@link EObject}.
+	 * 
+	 * @param eObject
+	 *            the {@link EObject}
+	 * @return the {@link List} of declaration {@link Object} for the given {@link EObject}
+	 */
+	private List<Object> getDeclaration(EObject eObject) {
+		final DeclarationSwitch declarationSwitch = new DeclarationSwitch(acceleoValidationResult,
+				queryEnvironment);
+
+		return declarationSwitch.getDeclarations(eObject);
 	}
 
 	/**
@@ -377,9 +508,9 @@ public class AcceleoTextDocument {
 	public List<Location> getReferencesLocations(int position) {
 		final List<Location> referencesLocations = new ArrayList<>();
 
-		final List<AbstractLocationLink<?, ?>> definitionLocations = getDefinitionLocations(position);
-		for (AbstractLocationLink<?, ?> declarationLocation : definitionLocations) {
-			final Object declaration = declarationLocation.getDestination();
+		final EObject acceleoOrAqlNodeUnderCursor = acceleoAstResult.getAstNode(position);
+		final List<Object> declarations = getDeclaration(acceleoOrAqlNodeUnderCursor);
+		for (Object declaration : declarations) {
 			if (declaration instanceof Binding) {
 				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef((Binding)declaration)) {
 					final Location location = LocationUtils.identifierLocation(queryEnvironment,
@@ -400,43 +531,157 @@ public class AcceleoTextDocument {
 					referencesLocations.add(location);
 				}
 			} else if (declaration instanceof IService<?>) {
+				IService<?> service = (IService<?>)declaration;
 				final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
-				final Set<String> qualifiedNames = new LinkedHashSet<>();
-				final String serviceContextQualifiedName = resolver.getContextQualifiedName(
-						(IService<?>)declaration);
-				qualifiedNames.add(serviceContextQualifiedName);
-				qualifiedNames.addAll(resolver.getDependOn(serviceContextQualifiedName));
 				final AcceleoWorkspace workspace = getProject().getWorkspace();
+				final Set<String> qualifiedNames = new LinkedHashSet<>();
+				String serviceContextQualifiedName = resolver.getContextQualifiedName(service);
+
+				// aqlFeatureAccess
+				final Set<IType> featuresPossibleTypes;
+				final String featureName;
+				if (AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(service.getName())) {
+					final Call originalCall = (Call)acceleoOrAqlNodeUnderCursor.eContainer();
+					final Expression receiver = originalCall.getArguments().get(0);
+					featuresPossibleTypes = acceleoValidationResult.getPossibleTypes(receiver);
+					featureName = ((StringLiteral)originalCall.getArguments().get(1)).getValue();
+				} else {
+					featuresPossibleTypes = null;
+					featureName = null;
+				}
+
+				if (serviceContextQualifiedName != null) {
+					if (serviceContextQualifiedName.startsWith(VALIDATION_NAMESPACE
+							+ AcceleoParser.QUALIFIER_SEPARATOR)) {
+						serviceContextQualifiedName = serviceContextQualifiedName.substring(
+								(VALIDATION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR).length());
+
+					}
+					qualifiedNames.add(serviceContextQualifiedName);
+					qualifiedNames.addAll(resolver.getDependOn(serviceContextQualifiedName));
+				} else {
+					// probably a standard service (select, oclIsKindOf, ...)
+					// we need to scan all modules
+					qualifiedNames.addAll(workspace.getAllTextDocuments().stream().map(d -> d
+							.getModuleQualifiedName()).collect(Collectors.toList()));
+				}
 				for (String dependentQualifiedName : qualifiedNames) {
 					final URI sourceURI = resolver.getSourceURI(dependentQualifiedName);
 					final AcceleoTextDocument document = workspace.getTextDocument(sourceURI);
 					if (document != null) {
-						final List<Call> resolvedCalls = document.getAcceleoValidationResults()
-								.getResolvedCalls((IService<?>)declaration);
-						for (Call call : resolvedCalls) {
-							final Location location = LocationUtils.identifierLocation(queryEnvironment,
-									dependentQualifiedName, document.getAcceleoValidationResults(), call);
-							referencesLocations.add(location);
-						}
+						referencesLocations.addAll(document.getLocalCallLocations(featuresPossibleTypes,
+								featureName, service));
 					} else {
 						// TODO not a module but a class or something else
 					}
 				}
-			} else if (declaration instanceof Module) {
+			} else {
 				final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 				final AcceleoWorkspace workspace = getProject().getWorkspace();
-				for (String dependentQualifiedName : resolver.getDependOn(getModuleQualifiedName())) {
-					final URI sourceURI = resolver.getSourceURI(dependentQualifiedName);
-					final AcceleoTextDocument document = workspace.getTextDocument(sourceURI);
-					final Module module = document.getAcceleoAstResult().getModule();
-					final Location location = LocationUtils.identifierLocation(queryEnvironment,
-							dependentQualifiedName, document.getAcceleoValidationResults(), module);
-					referencesLocations.add(location);
+				final String declarationQualifiedName;
+				if (declaration instanceof Module) {
+					// TODO this case could fall under the last else if we didn't use VALIDATION_NAMESPACE
+					declarationQualifiedName = ((Module)declaration).eResource().getURI().toString()
+							.substring(AcceleoParser.ACCELEOENV_URI_PROTOCOL.length());
+				} else {
+					declarationQualifiedName = resolver.getQualifiedName(declaration);
 				}
+				if (declarationQualifiedName != null) {
+					for (String dependentQualifiedName : resolver.getDependOn(declarationQualifiedName)) {
+						final URI sourceURI = resolver.getSourceURI(dependentQualifiedName);
+						final AcceleoTextDocument document = workspace.getTextDocument(sourceURI);
+						if (document != null) {
+							final Module module = document.getAcceleoAstResult().getModule();
+							if (module.getExtends() != null && declarationQualifiedName.equals(module
+									.getExtends().getQualifiedName())) {
+								final Location location = LocationUtils.location(queryEnvironment,
+										dependentQualifiedName, document.getAcceleoValidationResults(), module
+												.getExtends());
+								referencesLocations.add(location);
+							} else {
+								for (Import imported : module.getImports()) {
+									if (declarationQualifiedName.equals(imported.getModule()
+											.getQualifiedName())) {
+										final Location location = LocationUtils.location(queryEnvironment,
+												dependentQualifiedName, document
+														.getAcceleoValidationResults(), imported.getModule());
+										referencesLocations.add(location);
+									}
+								}
+							}
+						} else {
+							// TODO not a module but a class or something else
+						}
+					}
+				}
+			}
+		}
 
+		return referencesLocations;
+	}
+
+	/**
+	 * Tells if the given {@link Call} is compatible with the given {@link Set} of possible {@link IType} and
+	 * the given feature name.
+	 * 
+	 * @param featuresPossibleTypes
+	 *            the {@link Set} of possible {@link IType}
+	 * @param featureName
+	 *            the feature name
+	 * @param call
+	 *            the {@link Call} to check
+	 * @return <code>true</code> if the given {@link Call} is compatible with the given {@link Set} of
+	 *         possible {@link IType} and the given feature name, <code>false</code> otherwise
+	 */
+	private boolean isCompatibleAqlFeatureAccess(Set<IType> featuresPossibleTypes, String featureName,
+			Call call) {
+		boolean res = false;
+		final Expression receiver = call.getArguments().get(0);
+		final Set<IType> receiverTypes = acceleoValidationResult.getPossibleTypes(receiver);
+		if (call.getArguments().size() == 2 && featureName.equals(((StringLiteral)call.getArguments().get(1))
+				.getValue())) {
+			compatible: for (IType featuresPossibleType : featuresPossibleTypes) {
+				for (IType receiverType : receiverTypes) {
+					if (featuresPossibleType.isAssignableFrom(receiverType)) {
+						res = true;
+						break compatible;
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Gets the local {@link Location} of {@link Call} resolved to the given {@link IService}.
+	 * 
+	 * @param featuresPossibleTypes
+	 *            the {@link Set} of possible {@link IType} in the case of an aql feature access,
+	 *            <code>null</code> otherwise
+	 * @param featureName
+	 *            the feature name in the case of an aql feature access, <code>null</code> otherwise
+	 * @param service
+	 *            the {@link IService}
+	 * @return the local {@link Location} of {@link Call} resolved to the given {@link IService}
+	 */
+	public List<Location> getLocalCallLocations(Set<IType> featuresPossibleTypes, String featureName,
+			IService<?> service) {
+		final List<Location> referencesLocations = new ArrayList<>();
+
+		final List<Call> resolvedCalls = acceleoValidationResult.getResolvedCalls(service);
+		for (Call call : resolvedCalls) {
+			if (featureName != null && featuresPossibleTypes != null) {
+				if (isCompatibleAqlFeatureAccess(featuresPossibleTypes, featureName, call)) {
+					final Location location = LocationUtils.identifierLocation(queryEnvironment,
+							getModuleQualifiedName(), acceleoValidationResult, call);
+					referencesLocations.add(location);
+				} else {
+					// not compatible aql feature access
+				}
 			} else {
-				// TODO metamodel ?
-				// nothing to do here
+				final Location location = LocationUtils.identifierLocation(queryEnvironment,
+						getModuleQualifiedName(), acceleoValidationResult, call);
+				referencesLocations.add(location);
 			}
 		}
 

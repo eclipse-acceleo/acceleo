@@ -688,7 +688,6 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	 * @return the {@link ScopesResponse}
 	 */
 	private ScopesResponse getScopesResponse(final ScopesArguments args) {
-		System.out.println(args);
 		final ScopesResponse res = new ScopesResponse();
 
 		final Scope scope = new Scope();
