@@ -845,7 +845,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 			doSwitch(forStatement.getBody());
 		} finally {
-			resolveVarRefVariable(forStatement.getBinding());
+			if (forStatement.getBinding() != null) {
+				resolveVarRefVariable(forStatement.getBinding());
+			}
 			popVariableTypes();
 		}
 
