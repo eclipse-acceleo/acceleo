@@ -70,7 +70,7 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 			if (elements == null || elements.length == 0 && inputElement != null) {
 				if (inputElement instanceof EObject) {
 					elements = new Object[] {inputElement, };
-				} else {
+				} else if (inputElement != null) {
 					elements = new Object[] {inputElement.toString(), };
 				}
 			}

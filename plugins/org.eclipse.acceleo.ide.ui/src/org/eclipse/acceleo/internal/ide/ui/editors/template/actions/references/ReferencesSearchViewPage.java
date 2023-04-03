@@ -40,7 +40,7 @@ public class ReferencesSearchViewPage extends AbstractTextSearchViewPage impleme
 	 */
 	private static final IShowInTargetList SHOW_IN_TARGET_LIST = new IShowInTargetList() {
 		public String[] getShowInTargetIds() {
-			return new String[] {IPageLayout.ID_RES_NAV };
+			return new String[] {IPageLayout.ID_PROJECT_EXPLORER };
 		}
 	};
 

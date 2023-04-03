@@ -123,6 +123,7 @@ public class PreviewStrategy extends AbstractGenerationStrategy {
 		} else if (!appendMode && hasJMergeTags) {
 			// previous cannot be null if hasJMergeTags is true
 			writer = previous;
+			assert writer != null;
 			/*
 			 * We know the writer is an AcceleoStringWriter, reinitializing it allows it to know it should
 			 * merge its content through JMerge when it's next closed.
