@@ -7,4 +7,5 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/I202211121450
 	org.junit [4,5)
 	org.antlr.runtime [4.7.2,4.7.3)
 	org.kohsuke.args4j [2.33.0,2.34.0)
+	org.apache.commons.lang [2.6.0,2.6.1)
 }
