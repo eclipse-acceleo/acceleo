@@ -13,7 +13,7 @@ package org.eclipse.acceleo.impl;
 
 import java.util.Collection;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
@@ -22,6 +22,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -655,6 +656,12 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 					return -1;
 			}
 		}
+		if (baseClass == AcceleoASTNode.class) {
+			switch (derivedFeatureID) {
+				default:
+					return -1;
+			}
+		}
 		if (baseClass == DocumentedElement.class) {
 			switch (derivedFeatureID) {
 				case AcceleoPackage.MODULE__DOCUMENTATION:
@@ -676,6 +683,12 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == ASTNode.class) {
+			switch (baseFeatureID) {
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == AcceleoASTNode.class) {
 			switch (baseFeatureID) {
 				default:
 					return -1;

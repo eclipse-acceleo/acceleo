@@ -25,7 +25,7 @@ package org.eclipse.acceleo;
  * @model
  * @generated
  */
-public interface ModuleReference extends ASTNode {
+public interface ModuleReference extends AcceleoASTNode {
 	/**
 	 * Returns the value of the '<em><b>Qualified Name</b></em>' attribute. <!-- begin-user-doc -->
 	 * <p>

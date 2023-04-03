@@ -11,10 +11,11 @@
  */
 package org.eclipse.acceleo.impl;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.NamedElement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -174,6 +175,12 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 					return -1;
 			}
 		}
+		if (baseClass == AcceleoASTNode.class) {
+			switch (derivedFeatureID) {
+				default:
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -193,6 +200,12 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 			}
 		}
 		if (baseClass == ASTNode.class) {
+			switch (baseFeatureID) {
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == AcceleoASTNode.class) {
 			switch (baseFeatureID) {
 				default:
 					return -1;

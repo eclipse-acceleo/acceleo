@@ -11,7 +11,7 @@
  */
 package org.eclipse.acceleo.util;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
@@ -62,6 +62,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
@@ -230,8 +231,8 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseASTNode(ASTNode object) {
-			return createASTNodeAdapter();
+		public Adapter caseAcceleoASTNode(AcceleoASTNode object) {
+			return createAcceleoASTNodeAdapter();
 		}
 
 		@Override
@@ -377,6 +378,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseNewLineStatement(NewLineStatement object) {
 			return createNewLineStatementAdapter();
+		}
+
+		@Override
+		public Adapter caseASTNode(ASTNode object) {
+			return createASTNodeAdapter();
 		}
 
 		@Override
@@ -705,12 +711,27 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ASTNode <em>AST Node</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.AcceleoASTNode <em>AST
+	 * Node</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.eclipse.acceleo.ASTNode
+	 * @see org.eclipse.acceleo.AcceleoASTNode
+	 * @generated
+	 */
+	public Adapter createAcceleoASTNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ASTNode <em>AST
+	 * Node</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.ASTNode
 	 * @generated
 	 */
 	public Adapter createASTNodeAdapter() {

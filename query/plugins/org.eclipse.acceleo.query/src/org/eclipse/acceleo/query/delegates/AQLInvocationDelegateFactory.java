@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ public class AQLInvocationDelegateFactory extends AbstractEnvironmentProvider im
 		final IQueryEnvironment env = getEnvironment();
 		final String expression = EcoreUtil.getAnnotation(operation, AstPackage.eNS_URI, "body");
 
-		final IQueryBuilderEngine engine = QueryParsing.newBuilder(env);
+		final IQueryBuilderEngine engine = QueryParsing.newBuilder();
 		final AstResult astResult = engine.build(expression);
 		final List<String> parameterNames = new ArrayList<String>();
 		for (EParameter parameter : operation.getEParameters()) {

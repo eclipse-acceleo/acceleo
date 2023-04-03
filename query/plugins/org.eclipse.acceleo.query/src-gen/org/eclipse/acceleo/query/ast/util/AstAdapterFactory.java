@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015, 2021 Obeo.
+ *  Copyright (c) 2015, 2023 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo.query.ast.util;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -103,6 +104,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	protected AstSwitch<Adapter> modelSwitch = new AstSwitch<Adapter>() {
+		@Override
+		public Adapter caseASTNode(ASTNode object) {
+			return createASTNodeAdapter();
+		}
+
 		@Override
 		public Adapter caseExpression(Expression object) {
 			return createExpressionAdapter();
@@ -295,6 +301,20 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	@Override
 	public Adapter createAdapter(Notifier target) {
 		return modelSwitch.doSwitch((EObject)target);
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ASTNode <em>AST
+	 * Node</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.ASTNode
+	 * @generated
+	 */
+	public Adapter createASTNodeAdapter() {
+		return null;
 	}
 
 	/**

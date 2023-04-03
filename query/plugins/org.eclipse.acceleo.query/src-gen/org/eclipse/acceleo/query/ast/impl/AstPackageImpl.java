@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015, 2021 Obeo.
+ *  Copyright (c) 2015, 2023 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo.query.ast.impl;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.AstPackage;
@@ -62,6 +63,13 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class AstPackageImpl extends EPackageImpl implements AstPackage {
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass astNodeEClass = null;
+
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -382,6 +390,16 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(AstPackage.eNS_URI, theAstPackage);
 		return theAstPackage;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EClass getASTNode() {
+		return astNodeEClass;
 	}
 
 	/**
@@ -1123,6 +1141,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		isCreated = true;
 
 		// Create classes and their features
+		astNodeEClass = createEClass(AST_NODE);
+
 		expressionEClass = createEClass(EXPRESSION);
 
 		varRefEClass = createEClass(VAR_REF);
@@ -1262,6 +1282,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		expressionEClass.getESuperTypes().add(this.getASTNode());
 		varRefEClass.getESuperTypes().add(this.getExpression());
 		callEClass.getESuperTypes().add(this.getExpression());
 		literalEClass.getESuperTypes().add(this.getExpression());
@@ -1279,6 +1300,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		nullLiteralEClass.getESuperTypes().add(this.getLiteral());
 		setInExtensionLiteralEClass.getESuperTypes().add(this.getLiteral());
 		sequenceInExtensionLiteralEClass.getESuperTypes().add(this.getLiteral());
+		variableDeclarationEClass.getESuperTypes().add(this.getASTNode());
 		errorEClass.getESuperTypes().add(this.getExpression());
 		errorExpressionEClass.getESuperTypes().add(this.getError());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getError());
@@ -1295,6 +1317,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorStringLiteralEClass.getESuperTypes().add(this.getStringLiteral());
 		errorConditionalEClass.getESuperTypes().add(this.getError());
 		errorConditionalEClass.getESuperTypes().add(this.getConditional());
+		bindingEClass.getESuperTypes().add(this.getASTNode());
 		errorBindingEClass.getESuperTypes().add(this.getError());
 		errorBindingEClass.getESuperTypes().add(this.getBinding());
 		letEClass.getESuperTypes().add(this.getExpression());
@@ -1304,6 +1327,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		impliesEClass.getESuperTypes().add(this.getCall());
 
 		// Initialize classes, features, and operations; add parameters
+		initEClass(astNodeEClass, ASTNode.class, "ASTNode", IS_ABSTRACT, IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(expressionEClass, Expression.class, "Expression", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 

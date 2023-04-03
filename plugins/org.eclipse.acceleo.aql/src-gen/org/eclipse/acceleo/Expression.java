@@ -28,7 +28,7 @@ import org.eclipse.acceleo.query.parser.AstResult;
  * @model
  * @generated
  */
-public interface Expression extends ASTNode {
+public interface Expression extends AcceleoASTNode {
 	/**
 	 * Returns the value of the '<em><b>Ast</b></em>' attribute. <!-- begin-user-doc -->
 	 * <p>

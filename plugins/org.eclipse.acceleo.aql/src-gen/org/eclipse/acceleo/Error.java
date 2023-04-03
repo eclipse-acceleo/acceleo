@@ -18,5 +18,5 @@ package org.eclipse.acceleo;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface Error extends ASTNode {
+public interface Error extends AcceleoASTNode {
 } // Error

@@ -25,7 +25,7 @@ package org.eclipse.acceleo;
  * @model
  * @generated
  */
-public interface Import extends ASTNode {
+public interface Import extends AcceleoASTNode {
 
 	/**
 	 * Returns the value of the '<em><b>Module</b></em>' containment reference. <!-- begin-user-doc -->

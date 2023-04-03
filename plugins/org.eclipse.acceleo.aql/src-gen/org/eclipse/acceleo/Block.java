@@ -27,7 +27,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Block extends ASTNode {
+public interface Block extends AcceleoASTNode {
 	/**
 	 * Returns the value of the '<em><b>Statements</b></em>' containment reference list. The list contents are
 	 * of type {@link org.eclipse.acceleo.Statement}. <!-- begin-user-doc -->

@@ -19,5 +19,5 @@ package org.eclipse.acceleo;
  * @model
  * @generated
  */
-public interface Variable extends TypedElement, NamedElement, ASTNode {
+public interface Variable extends TypedElement, NamedElement, AcceleoASTNode {
 } // Variable

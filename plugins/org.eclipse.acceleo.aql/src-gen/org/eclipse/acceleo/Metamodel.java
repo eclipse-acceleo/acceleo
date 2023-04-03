@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EPackage;
  * @model
  * @generated
  */
-public interface Metamodel extends ASTNode {
+public interface Metamodel extends AcceleoASTNode {
 	/**
 	 * Returns the value of the '<em><b>Referenced Package</b></em>' reference. <!-- begin-user-doc -->
 	 * <p>

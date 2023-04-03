@@ -11,16 +11,16 @@
  */
 package org.eclipse.acceleo;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>AST Node</b></em>'. <!-- end-user-doc
  * -->
  *
- * @see org.eclipse.acceleo.AcceleoPackage#getASTNode()
+ * @see org.eclipse.acceleo.AcceleoPackage#getAcceleoASTNode()
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface ASTNode extends EObject {
-
-} // ASTNode
+public interface AcceleoASTNode extends EObject, ASTNode {
+} // AcceleoASTNode

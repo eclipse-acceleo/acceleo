@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo;
 
+import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -215,6 +216,34 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.AcceleoASTNode <em>AST Node</em>}' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.AcceleoASTNode
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoASTNode()
+	 * @generated
+	 */
+	int ACCELEO_AST_NODE = 22;
+
+	/**
+	 * The number of structural features of the '<em>AST Node</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_AST_NODE_FEATURE_COUNT = AstPackage.AST_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>AST Node</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_AST_NODE_OPERATION_COUNT = AstPackage.AST_NODE_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.Error <em>Error</em>}' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -235,41 +264,13 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.ASTNode <em>AST Node</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see org.eclipse.acceleo.ASTNode
-	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTNode()
-	 * @generated
-	 */
-	int AST_NODE = 22;
-
-	/**
-	 * The number of structural features of the '<em>AST Node</em>' class. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE_FEATURE_COUNT = 0;
-
-	/**
-	 * The number of operations of the '<em>AST Node</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE_OPERATION_COUNT = 0;
-
-	/**
 	 * The number of structural features of the '<em>Error</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 0;
+	int ERROR_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Error</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -277,7 +278,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int ERROR_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -438,7 +439,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METAMODEL__REFERENCED_PACKAGE = AST_NODE_FEATURE_COUNT + 0;
+	int METAMODEL__REFERENCED_PACKAGE = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Metamodel</em>' class. <!-- begin-user-doc --> <!--
@@ -447,7 +448,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METAMODEL_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 1;
+	int METAMODEL_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Metamodel</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -456,7 +457,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METAMODEL_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int METAMODEL_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl <em>Error
@@ -540,7 +541,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IMPORT__MODULE = AST_NODE_FEATURE_COUNT + 0;
+	int IMPORT__MODULE = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Import</em>' class. <!-- begin-user-doc --> <!--
@@ -549,7 +550,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IMPORT_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 1;
+	int IMPORT_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Import</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -557,7 +558,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IMPORT_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int IMPORT_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorImportImpl <em>Error Import</em>}'
@@ -612,7 +613,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_REFERENCE__QUALIFIED_NAME = AST_NODE_FEATURE_COUNT + 0;
+	int MODULE_REFERENCE__QUALIFIED_NAME = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Module Reference</em>' class. <!-- begin-user-doc -->
@@ -621,7 +622,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_REFERENCE_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 1;
+	int MODULE_REFERENCE_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Module Reference</em>' class. <!-- begin-user-doc --> <!--
@@ -630,7 +631,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_REFERENCE_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int MODULE_REFERENCE_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorModuleReferenceImpl <em>Error Module
@@ -686,7 +687,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_ELEMENT_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 0;
+	int MODULE_ELEMENT_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Module Element</em>' class. <!-- begin-user-doc --> <!--
@@ -695,7 +696,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_ELEMENT_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int MODULE_ELEMENT_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.CommentImpl <em>Comment</em>}' class. <!--
@@ -878,7 +879,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMENT_BODY__VALUE = AST_NODE_FEATURE_COUNT + 0;
+	int COMMENT_BODY__VALUE = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Comment Body</em>' class. <!-- begin-user-doc --> <!--
@@ -887,7 +888,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMENT_BODY_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 1;
+	int COMMENT_BODY_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Comment Body</em>' class. <!-- begin-user-doc --> <!--
@@ -896,7 +897,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMENT_BODY_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int COMMENT_BODY_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.Documentation <em>Documentation</em>}' class.
@@ -1270,7 +1271,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT__DOCUMENTATION = AST_NODE_FEATURE_COUNT + 0;
+	int DOCUMENTED_ELEMENT__DOCUMENTATION = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Deprecated</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1279,7 +1280,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT__DEPRECATED = AST_NODE_FEATURE_COUNT + 1;
+	int DOCUMENTED_ELEMENT__DEPRECATED = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Documented Element</em>' class. <!-- begin-user-doc -->
@@ -1288,7 +1289,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 2;
+	int DOCUMENTED_ELEMENT_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Documented Element</em>' class. <!-- begin-user-doc --> <!--
@@ -1297,7 +1298,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int DOCUMENTED_ELEMENT_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.BlockImpl <em>Block</em>}' class. <!--
@@ -1316,7 +1317,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BLOCK__STATEMENTS = AST_NODE_FEATURE_COUNT + 0;
+	int BLOCK__STATEMENTS = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Inlined</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1325,7 +1326,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BLOCK__INLINED = AST_NODE_FEATURE_COUNT + 1;
+	int BLOCK__INLINED = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Block</em>' class. <!-- begin-user-doc --> <!--
@@ -1334,7 +1335,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BLOCK_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 2;
+	int BLOCK_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Block</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1342,7 +1343,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BLOCK_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int BLOCK_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.TypedElementImpl <em>Typed Element</em>}'
@@ -1985,7 +1986,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION__AST = AST_NODE_FEATURE_COUNT + 0;
+	int EXPRESSION__AST = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Aql</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1994,7 +1995,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION__AQL = AST_NODE_FEATURE_COUNT + 1;
+	int EXPRESSION__AQL = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Expression</em>' class. <!-- begin-user-doc --> <!--
@@ -2003,7 +2004,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 2;
+	int EXPRESSION_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Expression</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2012,7 +2013,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPRESSION_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int EXPRESSION_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorExpressionImpl <em>Error
@@ -2377,7 +2378,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STATEMENT_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 0;
+	int STATEMENT_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Statement</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2386,7 +2387,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STATEMENT_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int STATEMENT_OPERATION_COUNT = ACCELEO_AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.LeafStatementImpl <em>Leaf Statement</em>}'
@@ -4026,14 +4027,14 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getNamedElement_Name();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.ASTNode <em>AST Node</em>}'. <!--
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.AcceleoASTNode <em>AST Node</em>}'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>AST Node</em>'.
-	 * @see org.eclipse.acceleo.ASTNode
+	 * @see org.eclipse.acceleo.AcceleoASTNode
 	 * @generated
 	 */
-	EClass getASTNode();
+	EClass getAcceleoASTNode();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Error <em>Error</em>}'. <!--
@@ -5892,14 +5893,14 @@ public interface AcceleoPackage extends EPackage {
 		EAttribute NAMED_ELEMENT__NAME = eINSTANCE.getNamedElement_Name();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.ASTNode <em>AST Node</em>}' class. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.AcceleoASTNode <em>AST Node</em>}'
+		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.eclipse.acceleo.ASTNode
-		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTNode()
+		 * @see org.eclipse.acceleo.AcceleoASTNode
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoASTNode()
 		 * @generated
 		 */
-		EClass AST_NODE = eINSTANCE.getASTNode();
+		EClass ACCELEO_AST_NODE = eINSTANCE.getAcceleoASTNode();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.Error <em>Error</em>}' class. <!--

@@ -19,5 +19,5 @@ package org.eclipse.acceleo;
  * @model abstract="true"
  * @generated
  */
-public interface ModuleElement extends ASTNode {
+public interface ModuleElement extends AcceleoASTNode {
 } // ModuleElement

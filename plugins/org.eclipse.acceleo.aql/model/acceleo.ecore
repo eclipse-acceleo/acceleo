@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="acceleo" nsURI="http://www.eclipse.org/acceleo/4.0" nsPrefix="acceleo">
-  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//NamedElement #//DocumentedElement #//ASTNode">
+  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//NamedElement #//DocumentedElement #//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="metamodels" lowerBound="1"
         upperBound="-1" eType="#//Metamodel"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="#//ModuleReference"
@@ -28,7 +28,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEndHeader" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Metamodel" eSuperTypes="#//ASTNode">
+  <eClassifiers xsi:type="ecore:EClass" name="Metamodel" eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="referencedPackage" lowerBound="1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
   </eClassifiers>
@@ -37,7 +37,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEndQuote" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//ASTNode">
+  <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="module" lowerBound="1"
         eType="#//ModuleReference" containment="true"/>
   </eClassifiers>
@@ -45,11 +45,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEnd" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ModuleReference" eSuperTypes="#//ASTNode">
+  <eClassifiers xsi:type="ecore:EClass" name="ModuleReference" eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="qualifiedName" eType="#//ModuleQualifiedName"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorModuleReference" eSuperTypes="#//Error #//ModuleReference"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ModuleElement" abstract="true" eSuperTypes="#//ASTNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ModuleElement" abstract="true" eSuperTypes="#//AcceleoASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="BlockComment" eSuperTypes="#//Comment"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorBlockComment" eSuperTypes="#//ErrorComment #//BlockComment"/>
   <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//ModuleElement #//Statement">
@@ -60,7 +60,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEndHeader" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CommentBody" eSuperTypes="#//ASTNode">
+  <eClassifiers xsi:type="ecore:EClass" name="CommentBody" eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Documentation" abstract="true" interface="true"
@@ -87,7 +87,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParameterDocumentation" eSuperTypes="#//Comment"/>
   <eClassifiers xsi:type="ecore:EClass" name="DocumentedElement" abstract="true" interface="true"
-      eSuperTypes="#//ASTNode">
+      eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="documentation" eType="#//Documentation"
         eOpposite="#//Documentation/documentedElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deprecated" lowerBound="1"
@@ -96,10 +96,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ASTNode" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AcceleoASTNode" abstract="true" interface="true"
+      eSuperTypes="http://www.eclipse.org/acceleo/query/1.0#//ASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"
-      eSuperTypes="#//ASTNode"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//ASTNode">
+      eSuperTypes="#//AcceleoASTNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="statements" upperBound="-1"
         eType="#//Statement" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="inlined" lowerBound="1"
@@ -187,13 +188,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEnd" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="#//ASTNode">
+  <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ast" lowerBound="1" eType="#//ASTResult"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="aql" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/acceleo/query/1.0#//Expression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorExpression" eSuperTypes="#//Error #//Expression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//TypedElement #//NamedElement #//ASTNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//TypedElement #//NamedElement #//AcceleoASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorVariable" eSuperTypes="#//Error #//Variable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
@@ -219,7 +220,7 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Statement" abstract="true" interface="true"
-      eSuperTypes="#//ASTNode"/>
+      eSuperTypes="#//AcceleoASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="LeafStatement" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="newLineNeeded" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

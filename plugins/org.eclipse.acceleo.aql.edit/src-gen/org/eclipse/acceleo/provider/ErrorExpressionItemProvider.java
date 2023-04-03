@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2023 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -177,11 +177,11 @@ public class ErrorExpressionItemProvider extends ItemProviderAdapter implements 
 		newChildDescriptors.add(
 				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createVarRef()));
 
-		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createCall()));
+		newChildDescriptors
+				.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createCall()));
 
-		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
-				AstFactory.eINSTANCE.createLiteral()));
+		newChildDescriptors.add(
+				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createLiteral()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
 				AstFactory.eINSTANCE.createIntegerLiteral()));
@@ -234,8 +234,8 @@ public class ErrorExpressionItemProvider extends ItemProviderAdapter implements 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
 				AstFactory.eINSTANCE.createErrorEnumLiteral()));
 
-		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
-				AstFactory.eINSTANCE.createErrorCall()));
+		newChildDescriptors.add(
+				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createErrorCall()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
 				AstFactory.eINSTANCE.createErrorVariableDeclaration()));
@@ -249,20 +249,20 @@ public class ErrorExpressionItemProvider extends ItemProviderAdapter implements 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
 				AstFactory.eINSTANCE.createErrorBinding()));
 
-		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createLet()));
+		newChildDescriptors
+				.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createLet()));
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
 				AstFactory.eINSTANCE.createConditional()));
 
-		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createOr()));
+		newChildDescriptors
+				.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createOr()));
+
+		newChildDescriptors
+				.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createAnd()));
 
 		newChildDescriptors.add(
-				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createAnd()));
-
-		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL,
-				AstFactory.eINSTANCE.createImplies()));
+				createChildParameter(AcceleoPackage.Literals.EXPRESSION__AQL, AstFactory.eINSTANCE.createImplies()));
 	}
 
 	/**

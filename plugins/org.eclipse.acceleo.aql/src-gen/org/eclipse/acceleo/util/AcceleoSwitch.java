@@ -11,7 +11,7 @@
  */
 package org.eclipse.acceleo.util;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
@@ -62,6 +62,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
@@ -125,6 +126,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseDocumentedElement(module);
 				if (result == null)
+					result = caseAcceleoASTNode(module);
+				if (result == null)
 					result = caseASTNode(module);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -142,6 +145,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseDocumentedElement(errorModule);
 				if (result == null)
+					result = caseAcceleoASTNode(errorModule);
+				if (result == null)
 					result = caseASTNode(errorModule);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -150,6 +155,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.METAMODEL: {
 				Metamodel metamodel = (Metamodel)theEObject;
 				T result = caseMetamodel(metamodel);
+				if (result == null)
+					result = caseAcceleoASTNode(metamodel);
 				if (result == null)
 					result = caseASTNode(metamodel);
 				if (result == null)
@@ -164,6 +171,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseMetamodel(errorMetamodel);
 				if (result == null)
+					result = caseAcceleoASTNode(errorMetamodel);
+				if (result == null)
 					result = caseASTNode(errorMetamodel);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -172,6 +181,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.IMPORT: {
 				Import import_ = (Import)theEObject;
 				T result = caseImport(import_);
+				if (result == null)
+					result = caseAcceleoASTNode(import_);
 				if (result == null)
 					result = caseASTNode(import_);
 				if (result == null)
@@ -186,6 +197,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseImport(errorImport);
 				if (result == null)
+					result = caseAcceleoASTNode(errorImport);
+				if (result == null)
 					result = caseASTNode(errorImport);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -194,6 +207,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.MODULE_REFERENCE: {
 				ModuleReference moduleReference = (ModuleReference)theEObject;
 				T result = caseModuleReference(moduleReference);
+				if (result == null)
+					result = caseAcceleoASTNode(moduleReference);
 				if (result == null)
 					result = caseASTNode(moduleReference);
 				if (result == null)
@@ -208,6 +223,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseModuleReference(errorModuleReference);
 				if (result == null)
+					result = caseAcceleoASTNode(errorModuleReference);
+				if (result == null)
 					result = caseASTNode(errorModuleReference);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -216,6 +233,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.MODULE_ELEMENT: {
 				ModuleElement moduleElement = (ModuleElement)theEObject;
 				T result = caseModuleElement(moduleElement);
+				if (result == null)
+					result = caseAcceleoASTNode(moduleElement);
 				if (result == null)
 					result = caseASTNode(moduleElement);
 				if (result == null)
@@ -231,6 +250,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseModuleElement(blockComment);
 				if (result == null)
 					result = caseStatement(blockComment);
+				if (result == null)
+					result = caseAcceleoASTNode(blockComment);
 				if (result == null)
 					result = caseASTNode(blockComment);
 				if (result == null)
@@ -253,6 +274,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(errorBlockComment);
 				if (result == null)
+					result = caseAcceleoASTNode(errorBlockComment);
+				if (result == null)
 					result = caseASTNode(errorBlockComment);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -265,6 +288,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseModuleElement(comment);
 				if (result == null)
 					result = caseStatement(comment);
+				if (result == null)
+					result = caseAcceleoASTNode(comment);
 				if (result == null)
 					result = caseASTNode(comment);
 				if (result == null)
@@ -283,6 +308,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(errorComment);
 				if (result == null)
+					result = caseAcceleoASTNode(errorComment);
+				if (result == null)
 					result = caseASTNode(errorComment);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -291,6 +318,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.COMMENT_BODY: {
 				CommentBody commentBody = (CommentBody)theEObject;
 				T result = caseCommentBody(commentBody);
+				if (result == null)
+					result = caseAcceleoASTNode(commentBody);
 				if (result == null)
 					result = caseASTNode(commentBody);
 				if (result == null)
@@ -306,6 +335,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseModuleElement(documentation);
 				if (result == null)
 					result = caseStatement(documentation);
+				if (result == null)
+					result = caseAcceleoASTNode(documentation);
 				if (result == null)
 					result = caseASTNode(documentation);
 				if (result == null)
@@ -324,6 +355,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(moduleDocumentation);
 				if (result == null)
+					result = caseAcceleoASTNode(moduleDocumentation);
+				if (result == null)
 					result = caseASTNode(moduleDocumentation);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -339,13 +372,15 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseDocumentation(errorModuleDocumentation);
 				if (result == null)
+					result = caseASTNode(errorModuleDocumentation);
+				if (result == null)
 					result = caseComment(errorModuleDocumentation);
 				if (result == null)
 					result = caseModuleElement(errorModuleDocumentation);
 				if (result == null)
 					result = caseStatement(errorModuleDocumentation);
 				if (result == null)
-					result = caseASTNode(errorModuleDocumentation);
+					result = caseAcceleoASTNode(errorModuleDocumentation);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -362,6 +397,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(moduleElementDocumentation);
 				if (result == null)
+					result = caseAcceleoASTNode(moduleElementDocumentation);
+				if (result == null)
 					result = caseASTNode(moduleElementDocumentation);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -377,13 +414,15 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseDocumentation(errorModuleElementDocumentation);
 				if (result == null)
+					result = caseASTNode(errorModuleElementDocumentation);
+				if (result == null)
 					result = caseComment(errorModuleElementDocumentation);
 				if (result == null)
 					result = caseModuleElement(errorModuleElementDocumentation);
 				if (result == null)
 					result = caseStatement(errorModuleElementDocumentation);
 				if (result == null)
-					result = caseASTNode(errorModuleElementDocumentation);
+					result = caseAcceleoASTNode(errorModuleElementDocumentation);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -398,6 +437,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(parameterDocumentation);
 				if (result == null)
+					result = caseAcceleoASTNode(parameterDocumentation);
+				if (result == null)
 					result = caseASTNode(parameterDocumentation);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -406,6 +447,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.DOCUMENTED_ELEMENT: {
 				DocumentedElement documentedElement = (DocumentedElement)theEObject;
 				T result = caseDocumentedElement(documentedElement);
+				if (result == null)
+					result = caseAcceleoASTNode(documentedElement);
 				if (result == null)
 					result = caseASTNode(documentedElement);
 				if (result == null)
@@ -419,9 +462,11 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
-			case AcceleoPackage.AST_NODE: {
-				ASTNode astNode = (ASTNode)theEObject;
-				T result = caseASTNode(astNode);
+			case AcceleoPackage.ACCELEO_AST_NODE: {
+				AcceleoASTNode acceleoASTNode = (AcceleoASTNode)theEObject;
+				T result = caseAcceleoASTNode(acceleoASTNode);
+				if (result == null)
+					result = caseASTNode(acceleoASTNode);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -429,6 +474,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.ERROR: {
 				org.eclipse.acceleo.Error error = (org.eclipse.acceleo.Error)theEObject;
 				T result = caseError(error);
+				if (result == null)
+					result = caseAcceleoASTNode(error);
 				if (result == null)
 					result = caseASTNode(error);
 				if (result == null)
@@ -438,6 +485,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.BLOCK: {
 				Block block = (Block)theEObject;
 				T result = caseBlock(block);
+				if (result == null)
+					result = caseAcceleoASTNode(block);
 				if (result == null)
 					result = caseASTNode(block);
 				if (result == null)
@@ -461,6 +510,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseNamedElement(template);
 				if (result == null)
+					result = caseAcceleoASTNode(template);
+				if (result == null)
 					result = caseASTNode(template);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -480,6 +531,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseNamedElement(errorTemplate);
 				if (result == null)
+					result = caseAcceleoASTNode(errorTemplate);
+				if (result == null)
 					result = caseASTNode(errorTemplate);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -496,6 +549,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseNamedElement(query);
 				if (result == null)
 					result = caseTypedElement(query);
+				if (result == null)
+					result = caseAcceleoASTNode(query);
 				if (result == null)
 					result = caseASTNode(query);
 				if (result == null)
@@ -518,6 +573,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseTypedElement(errorQuery);
 				if (result == null)
+					result = caseAcceleoASTNode(errorQuery);
+				if (result == null)
 					result = caseASTNode(errorQuery);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -526,6 +583,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.EXPRESSION: {
 				Expression expression = (Expression)theEObject;
 				T result = caseExpression(expression);
+				if (result == null)
+					result = caseAcceleoASTNode(expression);
 				if (result == null)
 					result = caseASTNode(expression);
 				if (result == null)
@@ -540,6 +599,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorExpression);
 				if (result == null)
+					result = caseAcceleoASTNode(errorExpression);
+				if (result == null)
 					result = caseASTNode(errorExpression);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -552,6 +613,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseTypedElement(variable);
 				if (result == null)
 					result = caseNamedElement(variable);
+				if (result == null)
+					result = caseAcceleoASTNode(variable);
 				if (result == null)
 					result = caseASTNode(variable);
 				if (result == null)
@@ -566,11 +629,13 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseVariable(errorVariable);
 				if (result == null)
-					result = caseASTNode(errorVariable);
+					result = caseAcceleoASTNode(errorVariable);
 				if (result == null)
 					result = caseTypedElement(errorVariable);
 				if (result == null)
 					result = caseNamedElement(errorVariable);
+				if (result == null)
+					result = caseASTNode(errorVariable);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -584,6 +649,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseTypedElement(binding);
 				if (result == null)
 					result = caseNamedElement(binding);
+				if (result == null)
+					result = caseAcceleoASTNode(binding);
 				if (result == null)
 					result = caseASTNode(binding);
 				if (result == null)
@@ -600,6 +667,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseVariable(errorBinding);
 				if (result == null)
+					result = caseAcceleoASTNode(errorBinding);
+				if (result == null)
 					result = caseASTNode(errorBinding);
 				if (result == null)
 					result = caseTypedElement(errorBinding);
@@ -613,6 +682,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				Statement statement = (Statement)theEObject;
 				T result = caseStatement(statement);
 				if (result == null)
+					result = caseAcceleoASTNode(statement);
+				if (result == null)
 					result = caseASTNode(statement);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -623,6 +694,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseLeafStatement(leafStatement);
 				if (result == null)
 					result = caseStatement(leafStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(leafStatement);
 				if (result == null)
 					result = caseASTNode(leafStatement);
 				if (result == null)
@@ -636,6 +709,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseLeafStatement(expressionStatement);
 				if (result == null)
 					result = caseStatement(expressionStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(expressionStatement);
 				if (result == null)
 					result = caseASTNode(expressionStatement);
 				if (result == null)
@@ -652,9 +727,11 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseLeafStatement(errorExpressionStatement);
 				if (result == null)
+					result = caseASTNode(errorExpressionStatement);
+				if (result == null)
 					result = caseStatement(errorExpressionStatement);
 				if (result == null)
-					result = caseASTNode(errorExpressionStatement);
+					result = caseAcceleoASTNode(errorExpressionStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -664,6 +741,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseProtectedArea(protectedArea);
 				if (result == null)
 					result = caseStatement(protectedArea);
+				if (result == null)
+					result = caseAcceleoASTNode(protectedArea);
 				if (result == null)
 					result = caseASTNode(protectedArea);
 				if (result == null)
@@ -680,6 +759,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(errorProtectedArea);
 				if (result == null)
+					result = caseAcceleoASTNode(errorProtectedArea);
+				if (result == null)
 					result = caseASTNode(errorProtectedArea);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -690,6 +771,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseForStatement(forStatement);
 				if (result == null)
 					result = caseStatement(forStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(forStatement);
 				if (result == null)
 					result = caseASTNode(forStatement);
 				if (result == null)
@@ -706,6 +789,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(errorForStatement);
 				if (result == null)
+					result = caseAcceleoASTNode(errorForStatement);
+				if (result == null)
 					result = caseASTNode(errorForStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -716,6 +801,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseIfStatement(ifStatement);
 				if (result == null)
 					result = caseStatement(ifStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(ifStatement);
 				if (result == null)
 					result = caseASTNode(ifStatement);
 				if (result == null)
@@ -732,6 +819,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(errorIfStatement);
 				if (result == null)
+					result = caseAcceleoASTNode(errorIfStatement);
+				if (result == null)
 					result = caseASTNode(errorIfStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -742,6 +831,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseLetStatement(letStatement);
 				if (result == null)
 					result = caseStatement(letStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(letStatement);
 				if (result == null)
 					result = caseASTNode(letStatement);
 				if (result == null)
@@ -758,6 +849,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(errorLetStatement);
 				if (result == null)
+					result = caseAcceleoASTNode(errorLetStatement);
+				if (result == null)
 					result = caseASTNode(errorLetStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -768,6 +861,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseFileStatement(fileStatement);
 				if (result == null)
 					result = caseStatement(fileStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(fileStatement);
 				if (result == null)
 					result = caseASTNode(fileStatement);
 				if (result == null)
@@ -784,6 +879,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseStatement(errorFileStatement);
 				if (result == null)
+					result = caseAcceleoASTNode(errorFileStatement);
+				if (result == null)
 					result = caseASTNode(errorFileStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -796,6 +893,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseLeafStatement(textStatement);
 				if (result == null)
 					result = caseStatement(textStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(textStatement);
 				if (result == null)
 					result = caseASTNode(textStatement);
 				if (result == null)
@@ -811,6 +910,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseLeafStatement(newLineStatement);
 				if (result == null)
 					result = caseStatement(newLineStatement);
+				if (result == null)
+					result = caseAcceleoASTNode(newLineStatement);
 				if (result == null)
 					result = caseASTNode(newLineStatement);
 				if (result == null)
@@ -1165,7 +1266,7 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseASTNode(ASTNode object) {
+	public T caseAcceleoASTNode(AcceleoASTNode object) {
 		return null;
 	}
 
@@ -1601,6 +1702,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseNewLineStatement(NewLineStatement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>AST Node</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>AST Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseASTNode(ASTNode object) {
 		return null;
 	}
 

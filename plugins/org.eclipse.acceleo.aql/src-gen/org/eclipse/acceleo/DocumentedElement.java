@@ -26,7 +26,7 @@ package org.eclipse.acceleo;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface DocumentedElement extends ASTNode {
+public interface DocumentedElement extends AcceleoASTNode {
 	/**
 	 * Returns the value of the '<em><b>Documentation</b></em>' reference. It is bidirectional and its
 	 * opposite is '{@link org.eclipse.acceleo.Documentation#getDocumentedElement <em>Documented

@@ -11,7 +11,7 @@
  */
 package org.eclipse.acceleo.impl;
 
-import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
@@ -67,6 +67,7 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.impl.AstPackageImpl;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -241,7 +242,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * 
 	 * @generated
 	 */
-	private EClass astNodeEClass = null;
+	private EClass acceleoASTNodeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -530,11 +531,19 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		isInited = true;
 
+		// Obtain or create and register interdependencies
+		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AstPackage.eNS_URI);
+		AstPackageImpl theAstPackage = (AstPackageImpl)(registeredPackage instanceof AstPackageImpl
+				? registeredPackage
+				: AstPackage.eINSTANCE);
+
 		// Create package meta-data objects
 		theAcceleoPackage.createPackageContents();
+		theAstPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theAcceleoPackage.initializePackageContents();
+		theAstPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theAcceleoPackage.freeze();
@@ -1060,8 +1069,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EClass getASTNode() {
-		return astNodeEClass;
+	public EClass getAcceleoASTNode() {
+		return acceleoASTNodeEClass;
 	}
 
 	/**
@@ -2389,7 +2398,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		namedElementEClass = createEClass(NAMED_ELEMENT);
 		createEAttribute(namedElementEClass, NAMED_ELEMENT__NAME);
 
-		astNodeEClass = createEClass(AST_NODE);
+		acceleoASTNodeEClass = createEClass(ACCELEO_AST_NODE);
 
 		errorEClass = createEClass(ERROR);
 
@@ -2573,6 +2582,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
+		// Obtain other dependent packages
+		AstPackage theAstPackage = (AstPackage)EPackage.Registry.INSTANCE.getEPackage(AstPackage.eNS_URI);
+
 		// Create type parameters
 
 		// Set bounds for type parameters
@@ -2580,19 +2592,19 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		// Add supertypes to classes
 		moduleEClass.getESuperTypes().add(this.getNamedElement());
 		moduleEClass.getESuperTypes().add(this.getDocumentedElement());
-		moduleEClass.getESuperTypes().add(this.getASTNode());
+		moduleEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		errorModuleEClass.getESuperTypes().add(this.getError());
 		errorModuleEClass.getESuperTypes().add(this.getModule());
-		metamodelEClass.getESuperTypes().add(this.getASTNode());
+		metamodelEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		errorMetamodelEClass.getESuperTypes().add(this.getError());
 		errorMetamodelEClass.getESuperTypes().add(this.getMetamodel());
-		importEClass.getESuperTypes().add(this.getASTNode());
+		importEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		errorImportEClass.getESuperTypes().add(this.getError());
 		errorImportEClass.getESuperTypes().add(this.getImport());
-		moduleReferenceEClass.getESuperTypes().add(this.getASTNode());
+		moduleReferenceEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		errorModuleReferenceEClass.getESuperTypes().add(this.getError());
 		errorModuleReferenceEClass.getESuperTypes().add(this.getModuleReference());
-		moduleElementEClass.getESuperTypes().add(this.getASTNode());
+		moduleElementEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		blockCommentEClass.getESuperTypes().add(this.getComment());
 		errorBlockCommentEClass.getESuperTypes().add(this.getErrorComment());
 		errorBlockCommentEClass.getESuperTypes().add(this.getBlockComment());
@@ -2600,7 +2612,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		commentEClass.getESuperTypes().add(this.getStatement());
 		errorCommentEClass.getESuperTypes().add(this.getError());
 		errorCommentEClass.getESuperTypes().add(this.getComment());
-		commentBodyEClass.getESuperTypes().add(this.getASTNode());
+		commentBodyEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		documentationEClass.getESuperTypes().add(this.getComment());
 		moduleDocumentationEClass.getESuperTypes().add(this.getDocumentation());
 		errorModuleDocumentationEClass.getESuperTypes().add(this.getError());
@@ -2609,9 +2621,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		errorModuleElementDocumentationEClass.getESuperTypes().add(this.getError());
 		errorModuleElementDocumentationEClass.getESuperTypes().add(this.getModuleElementDocumentation());
 		parameterDocumentationEClass.getESuperTypes().add(this.getComment());
-		documentedElementEClass.getESuperTypes().add(this.getASTNode());
-		errorEClass.getESuperTypes().add(this.getASTNode());
-		blockEClass.getESuperTypes().add(this.getASTNode());
+		documentedElementEClass.getESuperTypes().add(this.getAcceleoASTNode());
+		acceleoASTNodeEClass.getESuperTypes().add(theAstPackage.getASTNode());
+		errorEClass.getESuperTypes().add(this.getAcceleoASTNode());
+		blockEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		templateEClass.getESuperTypes().add(this.getModuleElement());
 		templateEClass.getESuperTypes().add(this.getDocumentedElement());
 		templateEClass.getESuperTypes().add(this.getNamedElement());
@@ -2623,18 +2636,18 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		queryEClass.getESuperTypes().add(this.getTypedElement());
 		errorQueryEClass.getESuperTypes().add(this.getError());
 		errorQueryEClass.getESuperTypes().add(this.getQuery());
-		expressionEClass.getESuperTypes().add(this.getASTNode());
+		expressionEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		errorExpressionEClass.getESuperTypes().add(this.getError());
 		errorExpressionEClass.getESuperTypes().add(this.getExpression());
 		variableEClass.getESuperTypes().add(this.getTypedElement());
 		variableEClass.getESuperTypes().add(this.getNamedElement());
-		variableEClass.getESuperTypes().add(this.getASTNode());
+		variableEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		errorVariableEClass.getESuperTypes().add(this.getError());
 		errorVariableEClass.getESuperTypes().add(this.getVariable());
 		bindingEClass.getESuperTypes().add(this.getVariable());
 		errorBindingEClass.getESuperTypes().add(this.getError());
 		errorBindingEClass.getESuperTypes().add(this.getBinding());
-		statementEClass.getESuperTypes().add(this.getASTNode());
+		statementEClass.getESuperTypes().add(this.getAcceleoASTNode());
 		leafStatementEClass.getESuperTypes().add(this.getStatement());
 		expressionStatementEClass.getESuperTypes().add(this.getLeafStatement());
 		errorExpressionStatementEClass.getESuperTypes().add(this.getError());
@@ -2817,7 +2830,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(astNodeEClass, ASTNode.class, "ASTNode", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
+		initEClass(acceleoASTNodeEClass, AcceleoASTNode.class, "AcceleoASTNode", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(errorEClass, org.eclipse.acceleo.Error.class, "Error", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
@@ -2837,8 +2850,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEAttribute(getTypedElement_Type(), this.getASTResult(), "type", null, 1, 1, TypedElement.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
-		initEReference(getTypedElement_TypeAql(), AstPackage.eINSTANCE.getExpression(), null, "typeAql", null, //$NON-NLS-1$
-				1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+		initEReference(getTypedElement_TypeAql(), theAstPackage.getExpression(), null, "typeAql", null, 1, 1, //$NON-NLS-1$
+				TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
@@ -2942,7 +2955,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEAttribute(getExpression_Ast(), this.getASTResult(), "ast", null, 1, 1, Expression.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
-		initEReference(getExpression_Aql(), AstPackage.eINSTANCE.getExpression(), null, "aql", null, 1, 1, //$NON-NLS-1$
+		initEReference(getExpression_Aql(), theAstPackage.getExpression(), null, "aql", null, 1, 1, //$NON-NLS-1$
 				Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

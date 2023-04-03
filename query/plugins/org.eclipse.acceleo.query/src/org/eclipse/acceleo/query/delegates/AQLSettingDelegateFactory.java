@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public class AQLSettingDelegateFactory extends AbstractEnvironmentProvider imple
 		final String expression = EcoreUtil.getAnnotation(eStructuralFeature, AstPackage.eNS_URI,
 				"derivation");
 
-		final IQueryBuilderEngine engine = QueryParsing.newBuilder(env);
+		final IQueryBuilderEngine engine = QueryParsing.newBuilder();
 		final AstResult astResult = engine.build(expression);
 
 		// TODO test if something went wrong

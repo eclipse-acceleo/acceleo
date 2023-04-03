@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015, 2021 Obeo.
+ *  Copyright (c) 2015, 2023 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo.query.ast.util;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -101,9 +102,18 @@ public class AstSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
+			case AstPackage.AST_NODE: {
+				ASTNode astNode = (ASTNode)theEObject;
+				T result = caseASTNode(astNode);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AstPackage.EXPRESSION: {
 				Expression expression = (Expression)theEObject;
 				T result = caseExpression(expression);
+				if (result == null)
+					result = caseASTNode(expression);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -114,6 +124,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(varRef);
 				if (result == null)
+					result = caseASTNode(varRef);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -123,6 +135,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(call);
 				if (result == null)
+					result = caseASTNode(call);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -131,6 +145,8 @@ public class AstSwitch<T> extends Switch<T> {
 				T result = caseLiteral(literal);
 				if (result == null)
 					result = caseExpression(literal);
+				if (result == null)
+					result = caseASTNode(literal);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -143,6 +159,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(integerLiteral);
 				if (result == null)
+					result = caseASTNode(integerLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -153,6 +171,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(realLiteral);
 				if (result == null)
 					result = caseExpression(realLiteral);
+				if (result == null)
+					result = caseASTNode(realLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -165,6 +185,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(stringLiteral);
 				if (result == null)
+					result = caseASTNode(stringLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -175,6 +197,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(booleanLiteral);
 				if (result == null)
 					result = caseExpression(booleanLiteral);
+				if (result == null)
+					result = caseASTNode(booleanLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -187,6 +211,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(enumLiteral);
 				if (result == null)
+					result = caseASTNode(enumLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -197,6 +223,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(typeLiteral);
 				if (result == null)
 					result = caseExpression(typeLiteral);
+				if (result == null)
+					result = caseASTNode(typeLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -211,6 +239,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(eClassifierTypeLiteral);
 				if (result == null)
+					result = caseASTNode(eClassifierTypeLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -223,6 +253,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(classTypeLiteral);
 				if (result == null)
 					result = caseExpression(classTypeLiteral);
+				if (result == null)
+					result = caseASTNode(classTypeLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -239,6 +271,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(typeSetLiteral);
 				if (result == null)
+					result = caseASTNode(typeSetLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -254,6 +288,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(collectionTypeLiteral);
 				if (result == null)
+					result = caseASTNode(collectionTypeLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -264,6 +300,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(lambda);
 				if (result == null)
 					result = caseExpression(lambda);
+				if (result == null)
+					result = caseASTNode(lambda);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -276,6 +314,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(nullLiteral);
 				if (result == null)
+					result = caseASTNode(nullLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -286,6 +326,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(setInExtensionLiteral);
 				if (result == null)
 					result = caseExpression(setInExtensionLiteral);
+				if (result == null)
+					result = caseASTNode(setInExtensionLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -298,12 +340,16 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(sequenceInExtensionLiteral);
 				if (result == null)
+					result = caseASTNode(sequenceInExtensionLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
 			case AstPackage.VARIABLE_DECLARATION: {
 				VariableDeclaration variableDeclaration = (VariableDeclaration)theEObject;
 				T result = caseVariableDeclaration(variableDeclaration);
+				if (result == null)
+					result = caseASTNode(variableDeclaration);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -313,6 +359,8 @@ public class AstSwitch<T> extends Switch<T> {
 				T result = caseError(error);
 				if (result == null)
 					result = caseExpression(error);
+				if (result == null)
+					result = caseASTNode(error);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -324,6 +372,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseError(errorExpression);
 				if (result == null)
 					result = caseExpression(errorExpression);
+				if (result == null)
+					result = caseASTNode(errorExpression);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -340,6 +390,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorTypeLiteral);
 				if (result == null)
+					result = caseASTNode(errorTypeLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -352,6 +404,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseEClassifierTypeLiteral(errorEClassifierTypeLiteral);
 				if (result == null)
 					result = caseTypeLiteral(errorEClassifierTypeLiteral);
+				if (result == null)
+					result = caseASTNode(errorEClassifierTypeLiteral);
 				if (result == null)
 					result = caseLiteral(errorEClassifierTypeLiteral);
 				if (result == null)
@@ -372,6 +426,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorEnumLiteral);
 				if (result == null)
+					result = caseASTNode(errorEnumLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -385,6 +441,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorCall);
 				if (result == null)
+					result = caseASTNode(errorCall);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -397,6 +455,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseVariableDeclaration(errorVariableDeclaration);
 				if (result == null)
 					result = caseExpression(errorVariableDeclaration);
+				if (result == null)
+					result = caseASTNode(errorVariableDeclaration);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -413,6 +473,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorStringLiteral);
 				if (result == null)
+					result = caseASTNode(errorStringLiteral);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -426,12 +488,16 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorConditional);
 				if (result == null)
+					result = caseASTNode(errorConditional);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
 			case AstPackage.BINDING: {
 				Binding binding = (Binding)theEObject;
 				T result = caseBinding(binding);
+				if (result == null)
+					result = caseASTNode(binding);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -446,6 +512,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorBinding);
 				if (result == null)
+					result = caseASTNode(errorBinding);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -455,6 +523,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(let);
 				if (result == null)
+					result = caseASTNode(let);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -463,6 +533,8 @@ public class AstSwitch<T> extends Switch<T> {
 				T result = caseConditional(conditional);
 				if (result == null)
 					result = caseExpression(conditional);
+				if (result == null)
+					result = caseASTNode(conditional);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -475,6 +547,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(or);
 				if (result == null)
+					result = caseASTNode(or);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -485,6 +559,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseCall(and);
 				if (result == null)
 					result = caseExpression(and);
+				if (result == null)
+					result = caseASTNode(and);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -497,12 +573,29 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(implies);
 				if (result == null)
+					result = caseASTNode(implies);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
 			default:
 				return defaultCase(theEObject);
 		}
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>AST Node</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>AST Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseASTNode(ASTNode object) {
+		return null;
 	}
 
 	/**

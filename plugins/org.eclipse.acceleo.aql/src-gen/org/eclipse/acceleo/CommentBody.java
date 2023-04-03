@@ -25,7 +25,7 @@ package org.eclipse.acceleo;
  * @model
  * @generated
  */
-public interface CommentBody extends ASTNode {
+public interface CommentBody extends AcceleoASTNode {
 	/**
 	 * Returns the value of the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc -->
 	 * <p>
