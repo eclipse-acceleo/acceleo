@@ -30,7 +30,9 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
+import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
+import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.services.ReceiverServices;
@@ -48,6 +50,9 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,7 +75,13 @@ public class ValidationTest {
 
 	@Before
 	public void setup() {
-		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		final ResourceSet dummyResourceSet = new ResourceSetImpl();
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(dummyResourceSet));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				dummyResourceSet);
+
+		queryEnvironment = Query.newEnvironmentWithDefaultServices(crossReferenceProvider, rootProvider);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
@@ -1721,6 +1732,50 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void allInstancesTestNoRootPrivider() {
+		final IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
+		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		final QueryValidationEngine engine = new QueryValidationEngine(queryEnvironment);
+
+		final IValidationResult validationResult = engine.validate("ecore::EPackage.allInstances()",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		assertNothingType("Nothing will be left after calling allInstances:\n"
+				+ "No IRootEObjectProvider registered", ((SequenceType)possibleType).getCollectionType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+				"Empty collection: Nothing will be left after calling allInstances:\n"
+						+ "No IRootEObjectProvider registered", 15, 30);
+	}
+
+	@Test
+	public void allInstancesTest() {
+		final IValidationResult validationResult = engine.validate("ecore::EPackage.allInstances()",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), ((EClassifierType)((SequenceType)possibleType)
+				.getCollectionType()).getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
