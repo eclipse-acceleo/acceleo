@@ -782,6 +782,51 @@ public interface AstPackage extends EPackage {
 	int SEQUENCE_IN_EXTENSION_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.Declaration <em>Declaration</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.Declaration
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getDeclaration()
+	 * @generated
+	 */
+	int DECLARATION = 36;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DECLARATION__NAME = AST_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DECLARATION__TYPE = AST_NODE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Declaration</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DECLARATION_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Declaration</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DECLARATION_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl
 	 * <em>Variable Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -797,7 +842,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_DECLARATION__NAME = AST_NODE_FEATURE_COUNT + 0;
+	int VARIABLE_DECLARATION__NAME = DECLARATION__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -806,7 +851,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_DECLARATION__TYPE = AST_NODE_FEATURE_COUNT + 1;
+	int VARIABLE_DECLARATION__TYPE = DECLARATION__TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' reference. <!-- begin-user-doc --> <!--
@@ -815,7 +860,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_DECLARATION__EXPRESSION = AST_NODE_FEATURE_COUNT + 2;
+	int VARIABLE_DECLARATION__EXPRESSION = DECLARATION_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Variable Declaration</em>' class. <!-- begin-user-doc -->
@@ -824,7 +869,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_DECLARATION_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 3;
+	int VARIABLE_DECLARATION_FEATURE_COUNT = DECLARATION_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Variable Declaration</em>' class. <!-- begin-user-doc --> <!--
@@ -833,7 +878,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_DECLARATION_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int VARIABLE_DECLARATION_OPERATION_COUNT = DECLARATION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.Error <em>Error</em>}' class. <!--
@@ -1261,7 +1306,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BINDING__NAME = AST_NODE_FEATURE_COUNT + 0;
+	int BINDING__NAME = DECLARATION__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1270,7 +1315,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BINDING__TYPE = AST_NODE_FEATURE_COUNT + 1;
+	int BINDING__TYPE = DECLARATION__TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1279,7 +1324,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BINDING__VALUE = AST_NODE_FEATURE_COUNT + 2;
+	int BINDING__VALUE = DECLARATION_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Binding</em>' class. <!-- begin-user-doc --> <!--
@@ -1288,7 +1333,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BINDING_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 3;
+	int BINDING_FEATURE_COUNT = DECLARATION_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Binding</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1296,7 +1341,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BINDING_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+	int BINDING_OPERATION_COUNT = DECLARATION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl <em>Error
@@ -1619,7 +1664,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 36;
+	int CALL_TYPE = 37;
 
 	/**
 	 * The meta object id for the '<em>Java Class</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1629,7 +1674,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getJavaClass()
 	 * @generated
 	 */
-	int JAVA_CLASS = 37;
+	int JAVA_CLASS = 38;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ASTNode <em>AST Node</em>}'.
@@ -2065,30 +2110,6 @@ public interface AstPackage extends EPackage {
 	EClass getVariableDeclaration();
 
 	/**
-	 * Returns the meta object for the attribute
-	 * '{@link org.eclipse.acceleo.query.ast.VariableDeclaration#getName <em>Name</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.acceleo.query.ast.VariableDeclaration#getName()
-	 * @see #getVariableDeclaration()
-	 * @generated
-	 */
-	EAttribute getVariableDeclaration_Name();
-
-	/**
-	 * Returns the meta object for the containment reference
-	 * '{@link org.eclipse.acceleo.query.ast.VariableDeclaration#getType <em>Type</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the containment reference '<em>Type</em>'.
-	 * @see org.eclipse.acceleo.query.ast.VariableDeclaration#getType()
-	 * @see #getVariableDeclaration()
-	 * @generated
-	 */
-	EReference getVariableDeclaration_Type();
-
-	/**
 	 * Returns the meta object for the reference '
 	 * {@link org.eclipse.acceleo.query.ast.VariableDeclaration#getExpression <em>Expression</em>}'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -2237,29 +2258,6 @@ public interface AstPackage extends EPackage {
 	EClass getBinding();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Binding#getName
-	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.acceleo.query.ast.Binding#getName()
-	 * @see #getBinding()
-	 * @generated
-	 */
-	EAttribute getBinding_Name();
-
-	/**
-	 * Returns the meta object for the containment reference
-	 * '{@link org.eclipse.acceleo.query.ast.Binding#getType <em>Type</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @return the meta object for the containment reference '<em>Type</em>'.
-	 * @see org.eclipse.acceleo.query.ast.Binding#getType()
-	 * @see #getBinding()
-	 * @generated
-	 */
-	EReference getBinding_Type();
-
-	/**
 	 * Returns the meta object for the containment reference
 	 * '{@link org.eclipse.acceleo.query.ast.Binding#getValue <em>Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -2389,6 +2387,39 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getImplies();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Declaration
+	 * <em>Declaration</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Declaration</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Declaration
+	 * @generated
+	 */
+	EClass getDeclaration();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Declaration#getName
+	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Declaration#getName()
+	 * @see #getDeclaration()
+	 * @generated
+	 */
+	EAttribute getDeclaration_Name();
+
+	/**
+	 * Returns the meta object for the containment reference
+	 * '{@link org.eclipse.acceleo.query.ast.Declaration#getType <em>Type</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Type</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Declaration#getType()
+	 * @see #getDeclaration()
+	 * @generated
+	 */
+	EReference getDeclaration_Type();
 
 	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'.
@@ -2801,22 +2832,6 @@ public interface AstPackage extends EPackage {
 		EClass VARIABLE_DECLARATION = eINSTANCE.getVariableDeclaration();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EAttribute VARIABLE_DECLARATION__NAME = eINSTANCE.getVariableDeclaration_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' containment reference feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EReference VARIABLE_DECLARATION__TYPE = eINSTANCE.getVariableDeclaration_Type();
-
-		/**
 		 * The meta object literal for the '<em><b>Expression</b></em>' reference feature. <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
 		 * 
@@ -2952,22 +2967,6 @@ public interface AstPackage extends EPackage {
 		EClass BINDING = eINSTANCE.getBinding();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EAttribute BINDING__NAME = eINSTANCE.getBinding_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' containment reference feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EReference BINDING__TYPE = eINSTANCE.getBinding_Type();
-
-		/**
 		 * The meta object literal for the '<em><b>Value</b></em>' containment reference feature. <!--
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
@@ -3074,6 +3073,32 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EClass IMPLIES = eINSTANCE.getImplies();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.Declaration
+		 * <em>Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.Declaration
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getDeclaration()
+		 * @generated
+		 */
+		EClass DECLARATION = eINSTANCE.getDeclaration();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute DECLARATION__NAME = eINSTANCE.getDeclaration_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference DECLARATION__TYPE = eINSTANCE.getDeclaration_Type();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'

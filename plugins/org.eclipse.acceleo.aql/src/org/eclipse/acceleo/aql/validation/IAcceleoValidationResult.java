@@ -16,11 +16,10 @@ import java.util.Set;
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VarRef;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -78,24 +77,14 @@ public interface IAcceleoValidationResult {
 	List<Call> getResolvedCalls(IService<?> service);
 
 	/**
-	 * Gets the {@link List} of resolved {@link VarRef} for the given {@link Binding}.
+	 * Gets the {@link List} of resolved {@link VarRef} for the given {@link Declaration}.
 	 * 
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the {@link List} of resolved {@link VarRef} for the given {@link Binding} if any,
+	 * @param declaration
+	 *            the {@link Declaration}
+	 * @return the {@link List} of resolved {@link VarRef} for the given {@link Declaration} if any,
 	 *         <code>null</code> otherwise
 	 */
-	List<VarRef> getResolvedVarRef(Binding binding);
-
-	/**
-	 * Gets the {@link List} of resolved {@link VarRef} for the given {@link VariableDeclaration}.
-	 * 
-	 * @param variableDeclaration
-	 *            the {@link VariableDeclaration}
-	 * @return the {@link List} of resolved {@link VarRef} for the given {@link VariableDeclaration} if any,
-	 *         <code>null</code> otherwise
-	 */
-	List<VarRef> getResolvedVarRef(VariableDeclaration variableDeclaration);
+	List<VarRef> getResolvedVarRef(Declaration declaration);
 
 	/**
 	 * Gets the {@link List} of resolved {@link VarRef} for the given {@link Variable}.
@@ -108,24 +97,13 @@ public interface IAcceleoValidationResult {
 	List<VarRef> getResolvedVarRef(Variable variable);
 
 	/**
-	 * Gets the declaration {@link Binding} for the given {@link VarRef}.
+	 * Gets the {@link Declaration} for the given {@link VarRef}.
 	 * 
 	 * @param varRef
 	 *            the {@link VarRef}
-	 * @return the declaration {@link Binding} for the given {@link VarRef} if any, <code>null</code>
-	 *         otherwise
+	 * @return the {@link Declaration} for the given {@link VarRef} if any, <code>null</code> otherwise
 	 */
-	Binding getDeclarationBinding(VarRef varRef);
-
-	/**
-	 * Gets the declaration {@link VariableDeclaration} for the given {@link VarRef}.
-	 * 
-	 * @param varRef
-	 *            the {@link VarRef}
-	 * @return the declaration {@link VariableDeclaration} for the given {@link VarRef} if any,
-	 *         <code>null</code> otherwise
-	 */
-	VariableDeclaration getDeclarationVariableDeclaration(VarRef varRef);
+	Declaration getDeclaration(VarRef varRef);
 
 	/**
 	 * Gets the declaration {@link Variable} for the given {@link VarRef}.

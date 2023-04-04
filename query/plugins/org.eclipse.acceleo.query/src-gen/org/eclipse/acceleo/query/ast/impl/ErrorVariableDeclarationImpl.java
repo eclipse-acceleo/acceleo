@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015, 2021 Obeo.
+ *  Copyright (c) 2015, 2023 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
 package org.eclipse.acceleo.query.ast.impl;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
@@ -316,12 +317,18 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == VariableDeclaration.class) {
+		if (baseClass == Declaration.class) {
 			switch (derivedFeatureID) {
 				case AstPackage.ERROR_VARIABLE_DECLARATION__NAME:
-					return AstPackage.VARIABLE_DECLARATION__NAME;
+					return AstPackage.DECLARATION__NAME;
 				case AstPackage.ERROR_VARIABLE_DECLARATION__TYPE:
-					return AstPackage.VARIABLE_DECLARATION__TYPE;
+					return AstPackage.DECLARATION__TYPE;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == VariableDeclaration.class) {
+			switch (derivedFeatureID) {
 				case AstPackage.ERROR_VARIABLE_DECLARATION__EXPRESSION:
 					return AstPackage.VARIABLE_DECLARATION__EXPRESSION;
 				default:
@@ -338,12 +345,18 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == Declaration.class) {
+			switch (baseFeatureID) {
+				case AstPackage.DECLARATION__NAME:
+					return AstPackage.ERROR_VARIABLE_DECLARATION__NAME;
+				case AstPackage.DECLARATION__TYPE:
+					return AstPackage.ERROR_VARIABLE_DECLARATION__TYPE;
+				default:
+					return -1;
+			}
+		}
 		if (baseClass == VariableDeclaration.class) {
 			switch (baseFeatureID) {
-				case AstPackage.VARIABLE_DECLARATION__NAME:
-					return AstPackage.ERROR_VARIABLE_DECLARATION__NAME;
-				case AstPackage.VARIABLE_DECLARATION__TYPE:
-					return AstPackage.ERROR_VARIABLE_DECLARATION__TYPE;
 				case AstPackage.VARIABLE_DECLARATION__EXPRESSION:
 					return AstPackage.ERROR_VARIABLE_DECLARATION__EXPRESSION;
 				default:

@@ -28,6 +28,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
@@ -204,32 +205,16 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	}
 
 	/**
-	 * Resolves unresolved {@link VarRef} for the given {@link Binding}.
+	 * Resolves unresolved {@link VarRef} for the given {@link Declaration}.
 	 * 
-	 * @param binding
-	 *            the {@link Binding}
+	 * @param declaration
+	 *            the {@link Declaration}
 	 */
-	private void resolveVarRefBinding(Binding binding) {
-		final List<VarRef> unresolved = unresolvedVarRefsMapping.remove(binding.getName());
+	private void resolveVarRef(Declaration declaration) {
+		final List<VarRef> unresolved = unresolvedVarRefsMapping.remove(declaration.getName());
 		if (unresolved != null) {
 			for (VarRef varRef : unresolved) {
-				validationResult.putBindingResolvedVarRef(binding, varRef);
-			}
-			unresolvedVarRef.removeAll(unresolved);
-		}
-	}
-
-	/**
-	 * Resolves unresolved {@link VarRef} for the given {@link VariableDeclaration}.
-	 * 
-	 * @param variableDeclaration
-	 *            the {@link VariableDeclaration}
-	 */
-	private void resolveVarRefVariableDeclaration(VariableDeclaration variableDeclaration) {
-		final List<VarRef> unresolved = unresolvedVarRefsMapping.remove(variableDeclaration.getName());
-		if (unresolved != null) {
-			for (VarRef varRef : unresolved) {
-				validationResult.putVariableDeclarationResolvedVarRef(variableDeclaration, varRef);
+				validationResult.putResolvedVarRef(declaration, varRef);
 			}
 			unresolvedVarRef.removeAll(unresolved);
 		}
@@ -865,7 +850,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			}
 		} finally {
 			for (VariableDeclaration variableDeclaration : object.getParameters()) {
-				resolveVarRefVariableDeclaration(variableDeclaration);
+				resolveVarRef(variableDeclaration);
 			}
 			popVariableTypes();
 		}
@@ -1194,7 +1179,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			result.addAll(bodyTypes);
 		} finally {
 			for (Binding binding : object.getBindings()) {
-				resolveVarRefBinding(binding);
+				resolveVarRef(binding);
 			}
 			popVariableTypes();
 		}

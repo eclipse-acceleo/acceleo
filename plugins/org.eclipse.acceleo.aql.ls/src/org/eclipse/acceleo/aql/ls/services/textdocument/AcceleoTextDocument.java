@@ -34,12 +34,11 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.DeclarationSwitch;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
-import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -385,12 +384,9 @@ public class AcceleoTextDocument {
 		final List<Object> declarations = getDeclaration(acceleoOrAqlNodeUnderCursor);
 
 		for (Object declaration : declarations) {
-			if (declaration instanceof Binding) {
-				final Binding binding = (Binding)declaration;
-				declarationLocations.add(getDeclarationLocation(originSelectionRange, binding));
-			} else if (declaration instanceof VariableDeclaration) {
-				final VariableDeclaration variableDeclaration = (VariableDeclaration)declaration;
-				declarationLocations.add(getDeclarationLocation(originSelectionRange, variableDeclaration));
+			if (declaration instanceof Declaration) {
+				final Declaration aqlDeclaration = (Declaration)declaration;
+				declarationLocations.add(getDeclarationLocation(originSelectionRange, aqlDeclaration));
 			} else if (declaration instanceof Variable) {
 				final Variable variable = (Variable)declaration;
 				declarationLocations.add(getDeclarationLocation(originSelectionRange, variable));
@@ -430,8 +426,8 @@ public class AcceleoTextDocument {
 	 * 
 	 * @param originSelectionRange
 	 *            the original selection {@link Range}
-	 * @param binding
-	 *            the {@link Binding}
+	 * @param variable
+	 *            the {@link Variable}
 	 * @return the declaration {@link LocationLink} for the given {@link Variable}
 	 */
 	private LocationLink getDeclarationLocation(final Range originSelectionRange, final Variable variable) {
@@ -444,37 +440,17 @@ public class AcceleoTextDocument {
 	}
 
 	/**
-	 * Gets the declaration {@link LocationLink} for the given {@link VariableDeclaration}.
+	 * Gets the declaration {@link LocationLink} for the given {@link Declaration}.
 	 * 
 	 * @param originSelectionRange
 	 *            the original selection {@link Range}
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the declaration {@link LocationLink} for the given {@link VariableDeclaration}
+	 * @param declaration
+	 *            the {@link Declaration}
+	 * @return the declaration {@link LocationLink} for the given {@link Declaration}
 	 */
-	private LocationLink getDeclarationLocation(final Range originSelectionRange,
-			final VariableDeclaration variableDeclaration) {
-		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult,
-				variableDeclaration);
-		final Range range = LocationUtils.range(acceleoValidationResult, variableDeclaration);
-		final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), range, identifierRange);
-		locationLink.setOriginSelectionRange(originSelectionRange);
-		locationLink.setTargetUri(getUri().toASCIIString());
-		return locationLink;
-	}
-
-	/**
-	 * Gets the declaration {@link LocationLink} for the given {@link Binding}.
-	 * 
-	 * @param originSelectionRange
-	 *            the original selection {@link Range}
-	 * @param binding
-	 *            the {@link Binding}
-	 * @return the declaration {@link LocationLink} for the given {@link Binding}
-	 */
-	private LocationLink getDeclarationLocation(final Range originSelectionRange, Binding binding) {
-		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult, binding);
-		final Range range = LocationUtils.range(acceleoValidationResult, binding);
+	private LocationLink getDeclarationLocation(final Range originSelectionRange, Declaration declaration) {
+		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult, declaration);
+		final Range range = LocationUtils.range(acceleoValidationResult, declaration);
 		final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), range, identifierRange);
 		locationLink.setOriginSelectionRange(originSelectionRange);
 		locationLink.setTargetUri(getUri().toASCIIString());
@@ -509,15 +485,8 @@ public class AcceleoTextDocument {
 		final EObject acceleoOrAqlNodeUnderCursor = acceleoAstResult.getAstNode(position);
 		final List<Object> declarations = getDeclaration(acceleoOrAqlNodeUnderCursor);
 		for (Object declaration : declarations) {
-			if (declaration instanceof Binding) {
-				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef((Binding)declaration)) {
-					final Location location = LocationUtils.identifierLocation(queryEnvironment,
-							getModuleQualifiedName(), acceleoValidationResult, varRef);
-					referencesLocations.add(location);
-				}
-			} else if (declaration instanceof VariableDeclaration) {
-				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef(
-						(VariableDeclaration)declaration)) {
+			if (declaration instanceof Declaration) {
+				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef((Declaration)declaration)) {
 					final Location location = LocationUtils.identifierLocation(queryEnvironment,
 							getModuleQualifiedName(), acceleoValidationResult, varRef);
 					referencesLocations.add(location);

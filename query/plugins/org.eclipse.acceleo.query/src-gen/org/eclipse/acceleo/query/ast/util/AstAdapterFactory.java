@@ -20,6 +20,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
@@ -282,6 +283,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseImplies(Implies object) {
 			return createImpliesAdapter();
+		}
+
+		@Override
+		public Adapter caseDeclaration(Declaration object) {
+			return createDeclarationAdapter();
 		}
 
 		@Override
@@ -803,6 +809,20 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createImpliesAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Declaration
+	 * <em>Declaration</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.Declaration
+	 * @generated
+	 */
+	public Adapter createDeclarationAdapter() {
 		return null;
 	}
 

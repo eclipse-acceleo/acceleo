@@ -20,6 +20,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
@@ -349,6 +350,8 @@ public class AstSwitch<T> extends Switch<T> {
 				VariableDeclaration variableDeclaration = (VariableDeclaration)theEObject;
 				T result = caseVariableDeclaration(variableDeclaration);
 				if (result == null)
+					result = caseDeclaration(variableDeclaration);
+				if (result == null)
 					result = caseASTNode(variableDeclaration);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -456,6 +459,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseExpression(errorVariableDeclaration);
 				if (result == null)
+					result = caseDeclaration(errorVariableDeclaration);
+				if (result == null)
 					result = caseASTNode(errorVariableDeclaration);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -497,6 +502,8 @@ public class AstSwitch<T> extends Switch<T> {
 				Binding binding = (Binding)theEObject;
 				T result = caseBinding(binding);
 				if (result == null)
+					result = caseDeclaration(binding);
+				if (result == null)
 					result = caseASTNode(binding);
 				if (result == null)
 					result = defaultCase(theEObject);
@@ -511,6 +518,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseBinding(errorBinding);
 				if (result == null)
 					result = caseExpression(errorBinding);
+				if (result == null)
+					result = caseDeclaration(errorBinding);
 				if (result == null)
 					result = caseASTNode(errorBinding);
 				if (result == null)
@@ -574,6 +583,15 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseExpression(implies);
 				if (result == null)
 					result = caseASTNode(implies);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.DECLARATION: {
+				Declaration declaration = (Declaration)theEObject;
+				T result = caseDeclaration(declaration);
+				if (result == null)
+					result = caseASTNode(declaration);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -1122,6 +1140,21 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseImplies(Implies object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Declaration</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDeclaration(Declaration object) {
 		return null;
 	}
 

@@ -25,11 +25,10 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
-import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VarRef;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -123,17 +122,9 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	}
 
 	@Override
-	public List<VarRef> getResolvedVarRef(Binding binding) {
+	public List<VarRef> getResolvedVarRef(Declaration declaration) {
 		final Optional<List<VarRef>> res = aqlValidationResults.values().stream().map(vr -> vr
-				.getResolvedVarRef(binding)).filter(db -> db != null).findFirst();
-
-		return res.orElse(null);
-	}
-
-	@Override
-	public List<VarRef> getResolvedVarRef(VariableDeclaration variableDeclaration) {
-		final Optional<List<VarRef>> res = aqlValidationResults.values().stream().map(vr -> vr
-				.getResolvedVarRef(variableDeclaration)).filter(db -> db != null).findFirst();
+				.getResolvedVarRef(declaration)).filter(db -> db != null).findFirst();
 
 		return res.orElse(null);
 	}
@@ -157,17 +148,9 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	}
 
 	@Override
-	public Binding getDeclarationBinding(VarRef varRef) {
-		final Optional<Binding> res = aqlValidationResults.values().stream().map(vr -> vr
-				.getDeclarationBinding(varRef)).filter(db -> db != null).findFirst();
-
-		return res.orElse(null);
-	}
-
-	@Override
-	public VariableDeclaration getDeclarationVariableDeclaration(VarRef varRef) {
-		final Optional<VariableDeclaration> res = aqlValidationResults.values().stream().map(vr -> vr
-				.getDeclarationVariableDeclaration(varRef)).filter(db -> db != null).findFirst();
+	public Declaration getDeclaration(VarRef varRef) {
+		final Optional<Declaration> res = aqlValidationResults.values().stream().map(vr -> vr.getDeclaration(
+				varRef)).filter(db -> db != null).findFirst();
 
 		return res.orElse(null);
 	}

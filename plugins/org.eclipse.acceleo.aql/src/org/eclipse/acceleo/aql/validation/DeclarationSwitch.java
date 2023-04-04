@@ -21,11 +21,10 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.evaluation.QueryService;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
-import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -53,21 +52,15 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 		public List<Object> caseVarRef(VarRef varRef) {
 			List<Object> res = new ArrayList<>();
 
-			final Binding binding = acceleoValidationResult.getDeclarationBinding(varRef);
-			if (binding != null) {
-				res.add(binding);
+			final Declaration declaration = acceleoValidationResult.getDeclaration(varRef);
+			if (declaration != null) {
+				res.add(declaration);
 			} else {
-				final VariableDeclaration variableDeclaration = acceleoValidationResult
-						.getDeclarationVariableDeclaration(varRef);
-				if (variableDeclaration != null) {
-					res.add(variableDeclaration);
+				final Variable variable = acceleoValidationResult.getDeclarationVariable(varRef);
+				if (variable != null) {
+					res.add(variable);
 				} else {
-					final Variable variable = acceleoValidationResult.getDeclarationVariable(varRef);
-					if (variable != null) {
-						res.add(variable);
-					} else {
-						// variable reference is unresolved
-					}
+					// variable reference is unresolved
 				}
 			}
 
@@ -112,19 +105,10 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 		}
 
 		@Override
-		public List<Object> caseBinding(Binding binding) {
+		public List<Object> caseDeclaration(Declaration declaration) {
 			List<Object> res = new ArrayList<>();
 
-			res.add(binding);
-
-			return res;
-		}
-
-		@Override
-		public List<Object> caseVariableDeclaration(VariableDeclaration variableDeclaration) {
-			List<Object> res = new ArrayList<>();
-
-			res.add(variableDeclaration);
+			res.add(declaration);
 
 			return res;
 		}

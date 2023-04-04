@@ -73,10 +73,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="values" upperBound="-1"
         eType="#//Expression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableDeclaration" eSuperTypes="#//ASTNode">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeLiteral"
-        containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableDeclaration" eSuperTypes="#//Declaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//Expression"/>
   </eClassifiers>
@@ -100,10 +97,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ErrorVariableDeclaration" eSuperTypes="#//Error #//VariableDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorStringLiteral" eSuperTypes="#//Error #//StringLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorConditional" eSuperTypes="#//Error #//Conditional"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Binding" eSuperTypes="#//ASTNode">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeLiteral"
-        containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Binding" eSuperTypes="#//Declaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
@@ -125,4 +119,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//Call"/>
   <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//Call"/>
   <eClassifiers xsi:type="ecore:EClass" name="Implies" eSuperTypes="#//Call"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Declaration" abstract="true" interface="true"
+      eSuperTypes="#//ASTNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeLiteral"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

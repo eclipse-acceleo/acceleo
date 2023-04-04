@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015, 2021 Obeo.
+ *  Copyright (c) 2015, 2023 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.ast.impl;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
@@ -325,12 +326,18 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Binding.class) {
+		if (baseClass == Declaration.class) {
 			switch (derivedFeatureID) {
 				case AstPackage.ERROR_BINDING__NAME:
-					return AstPackage.BINDING__NAME;
+					return AstPackage.DECLARATION__NAME;
 				case AstPackage.ERROR_BINDING__TYPE:
-					return AstPackage.BINDING__TYPE;
+					return AstPackage.DECLARATION__TYPE;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == Binding.class) {
+			switch (derivedFeatureID) {
 				case AstPackage.ERROR_BINDING__VALUE:
 					return AstPackage.BINDING__VALUE;
 				default:
@@ -347,12 +354,18 @@ public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == Declaration.class) {
+			switch (baseFeatureID) {
+				case AstPackage.DECLARATION__NAME:
+					return AstPackage.ERROR_BINDING__NAME;
+				case AstPackage.DECLARATION__TYPE:
+					return AstPackage.ERROR_BINDING__TYPE;
+				default:
+					return -1;
+			}
+		}
 		if (baseClass == Binding.class) {
 			switch (baseFeatureID) {
-				case AstPackage.BINDING__NAME:
-					return AstPackage.ERROR_BINDING__NAME;
-				case AstPackage.BINDING__TYPE:
-					return AstPackage.ERROR_BINDING__TYPE;
 				case AstPackage.BINDING__VALUE:
 					return AstPackage.ERROR_BINDING__VALUE;
 				default:

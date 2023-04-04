@@ -17,11 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VarRef;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -58,24 +57,14 @@ public class ValidationResult implements IValidationResult {
 	private final Map<Call, List<IService<?>>> serviceDeclarations = new HashMap<>();
 
 	/**
-	 * The mapping from a {@link Binding} to the {@link List} of {@link VarRef} resolved to it.
+	 * The mapping from a {@link Declaration} to the {@link List} of {@link VarRef} resolved to it.
 	 */
-	private final Map<Binding, List<VarRef>> bindingResolvedVarRef = new HashMap<>();
+	private final Map<Declaration, List<VarRef>> resolvedVarRef = new HashMap<>();
 
 	/**
-	 * The mapping from a {@link VarRef} to its declaration {@link Binding}.
+	 * The mapping from a {@link VarRef} to its declaration {@link Declaration}.
 	 */
-	private final Map<VarRef, Binding> bindingDeclarations = new HashMap<>();
-
-	/**
-	 * The mapping from a {@link VariableDeclaration} to the {@link List} of {@link VarRef} resolved to it.
-	 */
-	private final Map<VariableDeclaration, List<VarRef>> variableDeclarationResolvedVarRef = new HashMap<>();
-
-	/**
-	 * The mapping from a {@link VarRef} to its declaration {@link VariableDeclaration}.
-	 */
-	private final Map<VarRef, VariableDeclaration> variableDeclarationDeclarations = new HashMap<>();
+	private final Map<VarRef, Declaration> declarations = new HashMap<>();
 
 	/**
 	 * The {@link List} of unresolved {@link VarRef}.
@@ -196,52 +185,22 @@ public class ValidationResult implements IValidationResult {
 	}
 
 	/**
-	 * Adds the given {@link VarRef} to the resolved calls of the given {@link Binding}.
+	 * Adds the given {@link VarRef} to the resolved calls of the given {@link Declaration}.
 	 * 
-	 * @param binding
-	 *            the {@link Binding}
+	 * @param declaration
+	 *            the {@link Declaration}
 	 * @param varRef
 	 *            the {@link VarRef}
 	 * @since 8.0.1
 	 */
-	public void putBindingResolvedVarRef(Binding binding, VarRef varRef) {
-		bindingResolvedVarRef.computeIfAbsent(binding, s -> new ArrayList<>()).add(varRef);
-		bindingDeclarations.put(varRef, binding);
+	public void putResolvedVarRef(Declaration declaration, VarRef varRef) {
+		resolvedVarRef.computeIfAbsent(declaration, s -> new ArrayList<>()).add(varRef);
+		declarations.put(varRef, declaration);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getResolvedVarRef(org.eclipse.acceleo.query.ast.Binding)
-	 */
 	@Override
-	public List<VarRef> getResolvedVarRef(Binding binding) {
-		return bindingResolvedVarRef.get(binding);
-	}
-
-	/**
-	 * Adds the given {@link VarRef} to the resolved calls of the given {@link VariableDeclaration}.
-	 * 
-	 * @param variableDeclaration
-	 *            the {@link VariableDeclaration}
-	 * @param varRef
-	 *            the {@link VarRef}
-	 * @since 8.0.1
-	 */
-	public void putVariableDeclarationResolvedVarRef(VariableDeclaration variableDeclaration, VarRef varRef) {
-		variableDeclarationResolvedVarRef.computeIfAbsent(variableDeclaration, s -> new ArrayList<>()).add(
-				varRef);
-		variableDeclarationDeclarations.put(varRef, variableDeclaration);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getResolvedVarRef(org.eclipse.acceleo.query.ast.VariableDeclaration)
-	 */
-	@Override
-	public List<VarRef> getResolvedVarRef(VariableDeclaration variableDeclaration) {
-		return variableDeclarationResolvedVarRef.get(variableDeclaration);
+	public List<VarRef> getResolvedVarRef(Declaration declaration) {
+		return resolvedVarRef.get(declaration);
 	}
 
 	/**
@@ -254,34 +213,14 @@ public class ValidationResult implements IValidationResult {
 		return unresolvedVarRef;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getDeclarationBinding(org.eclipse.acceleo.query.ast.VarRef)
-	 */
 	@Override
-	public Binding getDeclarationBinding(VarRef varRef) {
-		return bindingDeclarations.get(varRef);
+	public Declaration getDeclaration(VarRef varRef) {
+		return declarations.get(varRef);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getDeclarationIService(org.eclipse.acceleo.query.ast.Call)
-	 */
 	@Override
 	public List<IService<?>> getDeclarationIService(Call call) {
 		return serviceDeclarations.getOrDefault(call, Collections.emptyList());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getDeclarationVariableDeclaration(org.eclipse.acceleo.query.ast.VarRef)
-	 */
-	@Override
-	public VariableDeclaration getDeclarationVariableDeclaration(VarRef varRef) {
-		return variableDeclarationDeclarations.get(varRef);
 	}
 
 }

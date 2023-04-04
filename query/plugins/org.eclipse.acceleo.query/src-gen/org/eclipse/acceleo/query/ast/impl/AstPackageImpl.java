@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
@@ -314,6 +315,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass impliesEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass declarationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -798,28 +806,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getVariableDeclaration_Name() {
-		return (EAttribute)variableDeclarationEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public EReference getVariableDeclaration_Type() {
-		return (EReference)variableDeclarationEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
 	public EReference getVariableDeclaration_Expression() {
-		return (EReference)variableDeclarationEClass.getEStructuralFeatures().get(2);
+		return (EReference)variableDeclarationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -958,28 +946,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBinding_Name() {
-		return (EAttribute)bindingEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public EReference getBinding_Type() {
-		return (EReference)bindingEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
 	public EReference getBinding_Value() {
-		return (EReference)bindingEClass.getEStructuralFeatures().get(2);
+		return (EReference)bindingEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1098,6 +1066,36 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	@Override
+	public EClass getDeclaration() {
+		return declarationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDeclaration_Name() {
+		return (EAttribute)declarationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EReference getDeclaration_Type() {
+		return (EReference)declarationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public EEnum getCallType() {
 		return callTypeEEnum;
 	}
@@ -1200,8 +1198,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		createEReference(sequenceInExtensionLiteralEClass, SEQUENCE_IN_EXTENSION_LITERAL__VALUES);
 
 		variableDeclarationEClass = createEClass(VARIABLE_DECLARATION);
-		createEAttribute(variableDeclarationEClass, VARIABLE_DECLARATION__NAME);
-		createEReference(variableDeclarationEClass, VARIABLE_DECLARATION__TYPE);
 		createEReference(variableDeclarationEClass, VARIABLE_DECLARATION__EXPRESSION);
 
 		errorEClass = createEClass(ERROR);
@@ -1226,8 +1222,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorConditionalEClass = createEClass(ERROR_CONDITIONAL);
 
 		bindingEClass = createEClass(BINDING);
-		createEAttribute(bindingEClass, BINDING__NAME);
-		createEReference(bindingEClass, BINDING__TYPE);
 		createEReference(bindingEClass, BINDING__VALUE);
 
 		errorBindingEClass = createEClass(ERROR_BINDING);
@@ -1246,6 +1240,10 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		andEClass = createEClass(AND);
 
 		impliesEClass = createEClass(IMPLIES);
+
+		declarationEClass = createEClass(DECLARATION);
+		createEAttribute(declarationEClass, DECLARATION__NAME);
+		createEReference(declarationEClass, DECLARATION__TYPE);
 
 		// Create enums
 		callTypeEEnum = createEEnum(CALL_TYPE);
@@ -1300,7 +1298,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		nullLiteralEClass.getESuperTypes().add(this.getLiteral());
 		setInExtensionLiteralEClass.getESuperTypes().add(this.getLiteral());
 		sequenceInExtensionLiteralEClass.getESuperTypes().add(this.getLiteral());
-		variableDeclarationEClass.getESuperTypes().add(this.getASTNode());
+		variableDeclarationEClass.getESuperTypes().add(this.getDeclaration());
 		errorEClass.getESuperTypes().add(this.getExpression());
 		errorExpressionEClass.getESuperTypes().add(this.getError());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getError());
@@ -1317,7 +1315,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorStringLiteralEClass.getESuperTypes().add(this.getStringLiteral());
 		errorConditionalEClass.getESuperTypes().add(this.getError());
 		errorConditionalEClass.getESuperTypes().add(this.getConditional());
-		bindingEClass.getESuperTypes().add(this.getASTNode());
+		bindingEClass.getESuperTypes().add(this.getDeclaration());
 		errorBindingEClass.getESuperTypes().add(this.getError());
 		errorBindingEClass.getESuperTypes().add(this.getBinding());
 		letEClass.getESuperTypes().add(this.getExpression());
@@ -1325,6 +1323,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		orEClass.getESuperTypes().add(this.getCall());
 		andEClass.getESuperTypes().add(this.getCall());
 		impliesEClass.getESuperTypes().add(this.getCall());
+		declarationEClass.getESuperTypes().add(this.getASTNode());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(astNodeEClass, ASTNode.class, "ASTNode", IS_ABSTRACT, IS_INTERFACE,
@@ -1444,12 +1443,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		initEClass(variableDeclarationEClass, VariableDeclaration.class, "VariableDeclaration", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getVariableDeclaration_Name(), ecorePackage.getEString(), "name", null, 1, 1,
-				VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariableDeclaration_Type(), this.getTypeLiteral(), null, "type", null, 0, 1,
-				VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVariableDeclaration_Expression(), this.getExpression(), null, "expression", null, 1,
 				1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1492,12 +1485,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		initEClass(bindingEClass, Binding.class, "Binding", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBinding_Name(), ecorePackage.getEString(), "name", null, 1, 1, Binding.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEReference(getBinding_Type(), this.getTypeLiteral(), null, "type", null, 0, 1, Binding.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBinding_Value(), this.getExpression(), null, "value", null, 1, 1, Binding.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1531,6 +1518,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		initEClass(impliesEClass, Implies.class, "Implies", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(declarationEClass, Declaration.class, "Declaration", IS_ABSTRACT, IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDeclaration_Name(), ecorePackage.getEString(), "name", null, 1, 1,
+				Declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDeclaration_Type(), this.getTypeLiteral(), null, "type", null, 0, 1,
+				Declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(callTypeEEnum, CallType.class, "CallType");
