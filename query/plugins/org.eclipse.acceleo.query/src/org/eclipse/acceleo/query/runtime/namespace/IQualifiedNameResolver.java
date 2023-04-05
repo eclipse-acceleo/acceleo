@@ -149,15 +149,17 @@ public interface IQualifiedNameResolver {
 	List<String> getImports(String qualifiedName);
 
 	/**
-	 * Gets the {@link List} of qualified name depending on the given qualified name. Opposite relation of
-	 * {@link #getExtend(String)} and {@link #getImports(String)}.
+	 * Gets the {@link Set} of qualified name depending on the given qualified name. Opposite relation of
+	 * {@link #getExtend(String)} closure and opposite relation of {@link #getImports(String)} for this
+	 * closure.
 	 * 
 	 * @param qualifiedName
 	 *            the qualified name
-	 * @return the {@link List} of qualified name depending on the given qualified name. Opposite relation of
-	 *         {@link #getExtend(String)} and {@link #getImports(String)}
+	 * @return the {@link Set} of qualified name depending on the given qualified name. Opposite relation of
+	 *         {@link #getExtend(String)} closure and opposite relation of {@link #getImports(String)} for
+	 *         this closure
 	 */
-	List<String> getDependOn(String qualifiedName);
+	Set<String> getDependOn(String qualifiedName);
 
 	/**
 	 * Gets the {@link Set} of available qualified names.

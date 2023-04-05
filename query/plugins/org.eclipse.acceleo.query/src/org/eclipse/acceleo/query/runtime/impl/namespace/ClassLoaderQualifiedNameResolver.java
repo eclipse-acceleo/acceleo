@@ -84,20 +84,24 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private final Map<String, List<String>> qualifiedNameToImports = new HashMap<String, List<String>>();
 
 	/**
+	 * Mapping from qualifiedName to qualified names that import it.
+	 */
+	private final Map<String, List<String>> qualifiedNameImportedBy = new HashMap<String, List<String>>();
+
+	/**
 	 * Mapping from qualifiedName to its extend.
 	 */
 	private final Map<String, String> qualifiedNameToExtend = new HashMap<String, String>();
 
 	/**
-	 * Mapping from qualifiedName to qualified names depending on it. Opposite of {@link #getExtend(String)}
-	 * and {@link #getImports(String)}.
-	 */
-	private final Map<String, List<String>> qualifiedNameToDependOn = new HashMap<String, List<String>>();
-
-	/**
 	 * The mapping from services to its contextual qualified name (class, module, ... qualified name).
 	 */
 	private final Map<IService<?>, String> contextQualifiedNames = new HashMap<>();
+
+	/**
+	 * Mapping from qualifiedName to qualified names that import it.
+	 */
+	private final Map<String, List<String>> qualifiedNameExtendedBy = new HashMap<String, List<String>>();
 
 	/**
 	 * Constructor.
@@ -251,15 +255,12 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private void register(ILoader loader, String qualifiedName, Object object) {
 		final List<String> imports = loader.getImports(object);
 		qualifiedNameToImports.put(qualifiedName, imports);
-		for (String imported : imports) {
-			qualifiedNameToDependOn.computeIfAbsent(imported, qn -> new ArrayList<String>()).add(
-					qualifiedName);
+		for (String imp : imports) {
+			qualifiedNameImportedBy.computeIfAbsent(imp, qn -> new ArrayList<>()).add(qualifiedName);
 		}
 		final String ext = loader.getExtends(object);
 		qualifiedNameToExtend.put(qualifiedName, ext);
-		if (ext != null) {
-			qualifiedNameToDependOn.computeIfAbsent(ext, qn -> new ArrayList<String>()).add(qualifiedName);
-		}
+		qualifiedNameExtendedBy.computeIfAbsent(ext, qn -> new ArrayList<>()).add(qualifiedName);
 		final Object removedObject = qualifiedNameToObject.put(qualifiedName, object);
 		if (removedObject != null) {
 			objectToQualifiedName.remove(removedObject);
@@ -296,17 +297,17 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 			final List<String> imports = qualifiedNameToImports.remove(qualifiedName);
 			if (imports != null) {
 				for (String imported : imports) {
-					final List<String> dependendOn = qualifiedNameToDependOn.get(imported);
-					if (dependendOn != null) {
-						dependendOn.remove(qualifiedName);
+					final List<String> importedBy = qualifiedNameImportedBy.get(imported);
+					if (importedBy != null) {
+						importedBy.remove(qualifiedName);
 					}
 				}
 			}
 			final String extended = qualifiedNameToExtend.remove(qualifiedName);
 			if (extended != null) {
-				final List<String> dependendOn = qualifiedNameToDependOn.get(extended);
-				if (dependendOn != null) {
-					dependendOn.remove(qualifiedName);
+				final List<String> extendedBy = qualifiedNameExtendedBy.get(extended);
+				if (extendedBy != null) {
+					extendedBy.remove(qualifiedName);
 				}
 			}
 		}
@@ -365,8 +366,31 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	}
 
 	@Override
-	public List<String> getDependOn(String qualifiedName) {
-		return qualifiedNameToDependOn.getOrDefault(qualifiedName, Collections.emptyList());
+	public Set<String> getDependOn(String qualifiedName) {
+		final Set<String> res = new LinkedHashSet<>();
+
+		final Set<String> extendedByClosure = new LinkedHashSet<>();
+		Set<String> added = new LinkedHashSet<>(qualifiedNameExtendedBy.getOrDefault(qualifiedName,
+				Collections.emptyList()));
+		while (!added.isEmpty()) {
+			extendedByClosure.addAll(added);
+			Set<String> localAdded = new LinkedHashSet<>();
+			for (String addedQualifiedName : added) {
+				if (!extendedByClosure.contains(addedQualifiedName)) {
+					localAdded.addAll(qualifiedNameExtendedBy.getOrDefault(addedQualifiedName, Collections
+							.emptyList()));
+				}
+			}
+			added = localAdded;
+		}
+		res.addAll(extendedByClosure);
+
+		res.addAll(qualifiedNameImportedBy.getOrDefault(qualifiedName, Collections.emptyList()));
+		for (String extendedBy : extendedByClosure) {
+			res.addAll(qualifiedNameImportedBy.getOrDefault(extendedBy, Collections.emptyList()));
+		}
+
+		return res;
 	}
 
 	@Override
