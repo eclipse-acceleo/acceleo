@@ -208,6 +208,132 @@ public class AstResult {
 	}
 
 	/**
+	 * Gets the identifier start position of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the identifier start position of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartPosition(ASTNode astNode) {
+		final int res;
+
+		final Integer position = positions.getIdentifierStartPositions(astNode);
+		if (position != null) {
+			res = position.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier start line of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the identifier start line of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartLine(ASTNode astNode) {
+		final int res;
+
+		final Integer line = positions.getIdentifierStartLines(astNode);
+		if (line != null) {
+			res = line.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier start column of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the identifier start column of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierStartColumn(ASTNode astNode) {
+		final int res;
+
+		final Integer column = positions.getIdentifierStartColumns(astNode);
+		if (column != null) {
+			res = column.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier end position of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the identifier end position of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndPosition(ASTNode astNode) {
+		final int res;
+
+		final Integer position = positions.getIdentifierEndPositions(astNode);
+		if (position != null) {
+			res = position.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier end line of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the identifier end line of the given {@link ASTNode} in the parsed text if any, <code>-1</code>
+	 *         otherwise
+	 */
+	public int getIdentifierEndLine(ASTNode astNode) {
+		final int res;
+
+		final Integer line = positions.getIdentifierEndLines(astNode);
+		if (line != null) {
+			res = line.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier end column of the given {@link ASTNode} in the parsed text.
+	 * 
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the identifier end column of the given {@link ASTNode} in the parsed text if any,
+	 *         <code>-1</code> otherwise
+	 */
+	public int getIdentifierEndColumn(ASTNode astNode) {
+		final int res;
+
+		final Integer column = positions.getIdentifierEndColumns(astNode);
+		if (column != null) {
+			res = column.intValue();
+		} else {
+			res = -1;
+		}
+
+		return res;
+	}
+
+	/**
 	 * Add all the ast positions to the given {@link Positions} shifted by the given offset.
 	 * 
 	 * @param pos

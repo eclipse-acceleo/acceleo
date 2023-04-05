@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -734,7 +734,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
-		assertExpression(build, Lambda.class, 17, 0, 17, 21, 0, 21, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 13, 0, 13, 21, 0, 21, ((Call)ast).getArguments().get(1));
 		assertVariableDeclaration(build, 13, 14, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0));
 		assertEquals("e", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
@@ -759,7 +759,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
-		assertExpression(build, Lambda.class, 19, 0, 19, 23, 0, 23, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 13, 0, 13, 23, 0, 23, ((Call)ast).getArguments().get(1));
 		assertEquals("var", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
 		assertEquals(null, ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
@@ -782,7 +782,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
-		assertExpression(build, Lambda.class, 20, 0, 20, 24, 0, 24, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 13, 0, 13, 24, 0, 24, ((Call)ast).getArguments().get(1));
 		assertEquals("_var", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
 		assertEquals(null, ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
@@ -805,7 +805,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
-		assertExpression(build, Lambda.class, 35, 0, 35, 39, 0, 39, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 13, 0, 13, 39, 0, 39, ((Call)ast).getArguments().get(1));
 		assertVariableDeclaration(build, 13, 32, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0));
 		assertEquals("var", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
@@ -2007,7 +2007,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 17, 0, 17, 21, 0, 21, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 13, 0, 13, 21, 0, 21, ((Call)ast).getArguments().get(1));
 		assertExpression(build, BooleanLiteral.class, 17, 0, 17, 21, 0, 21, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(1, build.getErrors().size());
@@ -2028,7 +2028,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 17, 0, 17, 17, 0, 17, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 14, 0, 14, 17, 0, 17, ((Call)ast).getArguments().get(1));
 		assertExpression(build, ErrorExpression.class, 17, 0, 17, 17, 0, 17, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(2, build.getErrors().size());
@@ -2052,7 +2052,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 18, 0, 18, 22, 0, 22, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 14, 0, 14, 22, 0, 22, ((Call)ast).getArguments().get(1));
 		assertExpression(build, BooleanLiteral.class, 18, 0, 18, 22, 0, 22, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(1, build.getErrors().size());
@@ -2106,7 +2106,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 27, 0, 27, 27, 0, 27, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 14, 0, 14, 27, 0, 27, ((Call)ast).getArguments().get(1));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
 		assertExpression(build, ErrorEClassifierTypeLiteral.class, 18, 0, 18, 25, 0, 25,
@@ -2144,7 +2144,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 31, 0, 31, 31, 0, 31, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 14, 0, 14, 31, 0, 31, ((Call)ast).getArguments().get(1));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
 		assertExpression(build, EClassifierTypeLiteral.class, 18, 0, 18, 31, 0, 31,
@@ -2180,7 +2180,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 33, 0, 33, 33, 0, 33, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 14, 0, 14, 33, 0, 33, ((Call)ast).getArguments().get(1));
 		assertExpression(build, ErrorExpression.class, 33, 0, 33, 33, 0, 33, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(2, build.getErrors().size());
@@ -2204,7 +2204,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 34, 0, 34, 38, 0, 38, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 14, 0, 14, 38, 0, 38, ((Call)ast).getArguments().get(1));
 		assertExpression(build, BooleanLiteral.class, 34, 0, 34, 38, 0, 38, ((Lambda)((Call)ast)
 				.getArguments().get(1)).getExpression());
 		assertEquals(1, build.getErrors().size());
@@ -2452,7 +2452,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 17, 0, 17, 31, 0, 31, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 13, 0, 13, 31, 0, 31, ((Call)ast).getArguments().get(1));
 		assertVariableDeclaration(build, 13, 14, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
@@ -2479,7 +2479,7 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 17, 0, 17, 34, 0, 34, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 13, 0, 13, 34, 0, 34, ((Call)ast).getArguments().get(1));
 		assertVariableDeclaration(build, 13, 14, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
@@ -2872,7 +2872,7 @@ public class BuildTest {
 		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
 				.getArguments().get(1);
 		assertEquals("packagedElement", featureName.getValue());
-		assertExpression(build, Lambda.class, 33, 0, 33, 51, 0, 51, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 29, 0, 29, 51, 0, 51, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorCall.class, 33, 0, 33, 51, 0, 51, lambda.getExpression());
 		final ErrorCall call = (ErrorCall)lambda.getExpression();
@@ -2911,7 +2911,7 @@ public class BuildTest {
 		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
 				.getArguments().get(1);
 		assertEquals("packagedElement", featureName.getValue());
-		assertExpression(build, Lambda.class, 33, 0, 33, 61, 0, 61, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 29, 0, 29, 61, 0, 61, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorCall.class, 33, 0, 33, 61, 0, 61, lambda.getExpression());
 		final ErrorCall call = (ErrorCall)lambda.getExpression();
@@ -2953,7 +2953,7 @@ public class BuildTest {
 		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
 				.getArguments().get(1);
 		assertEquals("packagedElement", featureName.getValue());
-		assertExpression(build, Lambda.class, 33, 0, 33, 63, 0, 63, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 29, 0, 29, 63, 0, 63, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorCall.class, 33, 0, 33, 63, 0, 63, lambda.getExpression());
 		final ErrorCall call = (ErrorCall)lambda.getExpression();
@@ -2989,7 +2989,7 @@ public class BuildTest {
 		assertExpression(build, Call.class, 0, 0, 0, 51, 0, 51, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, Call.class, 0, 0, 0, 32, 0, 32, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 51, 0, 51, 51, 0, 51, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 44, 0, 44, 51, 0, 51, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorExpression.class, 51, 0, 51, 51, 0, 51, lambda.getExpression());
 		assertExpression(build, ErrorEClassifierTypeLiteral.class, 44, 0, 44, 51, 0, 51, lambda
@@ -3017,7 +3017,7 @@ public class BuildTest {
 		assertExpression(build, Call.class, 0, 0, 0, 52, 0, 52, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, Call.class, 0, 0, 0, 32, 0, 32, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 52, 0, 52, 52, 0, 52, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 44, 0, 44, 52, 0, 52, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorExpression.class, 52, 0, 52, 52, 0, 52, lambda.getExpression());
 		assertExpression(build, ErrorEClassifierTypeLiteral.class, 44, 0, 44, 52, 0, 52, lambda
@@ -3046,7 +3046,7 @@ public class BuildTest {
 		assertExpression(build, Call.class, 0, 0, 0, 56, 0, 56, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, Call.class, 0, 0, 0, 32, 0, 32, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 55, 0, 55, 55, 0, 55, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 41, 0, 41, 55, 0, 55, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorExpression.class, 55, 0, 55, 55, 0, 55, lambda.getExpression());
 		assertExpression(build, ErrorEClassifierTypeLiteral.class, 44, 0, 44, 56, 0, 56, lambda
@@ -3077,7 +3077,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 8, 0, 8, ((Call)ast).getArguments().get(0));
 		assertEquals("aPackage", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
-		assertExpression(build, Lambda.class, 37, 0, 37, 66, 0, 66, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 27, 0, 27, 66, 0, 66, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, ErrorEClassifierTypeLiteral.class, 27, 0, 27, 36, 0, 36, lambda
 				.getParameters().get(0).getType());
@@ -3112,7 +3112,7 @@ public class BuildTest {
 		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
 				.getArguments().get(1);
 		assertEquals("value", featureName.getValue());
-		assertExpression(build, Lambda.class, 27, 0, 27, 64, 0, 64, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 19, 0, 19, 64, 0, 64, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
 		assertExpression(build, Call.class, 27, 0, 27, 64, 0, 64, lambda.getExpression());
 		assertEquals("not", ((Call)lambda.getExpression()).getServiceName());

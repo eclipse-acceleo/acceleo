@@ -1736,7 +1736,7 @@ public class ValidationTest {
 	}
 
 	@Test
-	public void allInstancesTestNoRootPrivider() {
+	public void allInstancesTestNoRootProvider() {
 		final IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);

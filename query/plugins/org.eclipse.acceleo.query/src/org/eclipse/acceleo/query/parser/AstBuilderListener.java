@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -939,18 +939,18 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * 
 	 * @param node
 	 *            the node
-	 * @param expressionStart
-	 *            the start {@link Expression}
-	 * @param expressionEnd
-	 *            the end {@link Expression}
+	 * @param astNodeStart
+	 *            the start {@link ASTNode}
+	 * @param astNodeEnd
+	 *            the end {@link ASTNode}
 	 */
-	private void setPositions(ASTNode node, Expression expressionStart, Expression expressionEnd) {
-		positions.setStartPositions(node, positions.getStartPositions(expressionStart));
-		positions.setStartLines(node, positions.getStartLines(expressionStart));
-		positions.setStartColumns(node, positions.getStartColumns(expressionStart));
-		positions.setEndPositions(node, positions.getEndPositions(expressionEnd));
-		positions.setEndLines(node, positions.getEndLines(expressionEnd));
-		positions.setEndColumns(node, positions.getEndColumns(expressionEnd));
+	private void setPositions(ASTNode node, ASTNode astNodeStart, ASTNode astNodeEnd) {
+		positions.setStartPositions(node, positions.getStartPositions(astNodeStart));
+		positions.setStartLines(node, positions.getStartLines(astNodeStart));
+		positions.setStartColumns(node, positions.getStartColumns(astNodeStart));
+		positions.setEndPositions(node, positions.getEndPositions(astNodeEnd));
+		positions.setEndLines(node, positions.getEndLines(astNodeEnd));
+		positions.setEndColumns(node, positions.getEndColumns(astNodeEnd));
 	}
 
 	/**
@@ -958,18 +958,18 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * 
 	 * @param node
 	 *            the node
-	 * @param expressionStart
-	 *            the start {@link Expression}
-	 * @param expressionEnd
-	 *            the end {@link Expression}
+	 * @param astNodeStart
+	 *            the start {@link ASTNode}
+	 * @param astNodeEnd
+	 *            the end {@link ASTNode}
 	 */
-	private void setIdentifierPositions(ASTNode node, Expression expressionStart, Expression expressionEnd) {
-		positions.setIdentifierStartPositions(node, positions.getStartPositions(expressionStart));
-		positions.setIdentifierStartLines(node, positions.getStartLines(expressionStart));
-		positions.setIdentifierStartColumns(node, positions.getStartColumns(expressionStart));
-		positions.setIdentifierEndPositions(node, positions.getEndPositions(expressionEnd));
-		positions.setIdentifierEndLines(node, positions.getEndLines(expressionEnd));
-		positions.setIdentifierEndColumns(node, positions.getEndColumns(expressionEnd));
+	private void setIdentifierPositions(ASTNode node, ASTNode astNodeStart, ASTNode astNodeEnd) {
+		positions.setIdentifierStartPositions(node, positions.getStartPositions(astNodeStart));
+		positions.setIdentifierStartLines(node, positions.getStartLines(astNodeStart));
+		positions.setIdentifierStartColumns(node, positions.getStartColumns(astNodeStart));
+		positions.setIdentifierEndPositions(node, positions.getEndPositions(astNodeEnd));
+		positions.setIdentifierEndLines(node, positions.getEndLines(astNodeEnd));
+		positions.setIdentifierEndColumns(node, positions.getEndColumns(astNodeEnd));
 	}
 
 	/**
@@ -977,15 +977,15 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * 
 	 * @param node
 	 *            the node
-	 * @param expressionStart
-	 *            the start {@link Expression}
+	 * @param astNodeStart
+	 *            the start {@link ASTNode}
 	 * @param end
 	 *            the end {@link Token}
 	 */
-	private void setPositions(ASTNode node, Expression expressionStart, Token end) {
-		positions.setStartPositions(node, positions.getStartPositions(expressionStart));
-		positions.setStartLines(node, positions.getStartLines(expressionStart));
-		positions.setStartColumns(node, positions.getStartColumns(expressionStart));
+	private void setPositions(ASTNode node, ASTNode astNodeStart, Token end) {
+		positions.setStartPositions(node, positions.getStartPositions(astNodeStart));
+		positions.setStartLines(node, positions.getStartLines(astNodeStart));
+		positions.setStartColumns(node, positions.getStartColumns(astNodeStart));
 		positions.setEndPositions(node, Integer.valueOf(end.getStopIndex() + 1));
 		positions.setEndLines(node, Integer.valueOf(end.getLine() - 1));
 		positions.setEndColumns(node, Integer.valueOf(end.getCharPositionInLine() + end.getText().length()));
@@ -1524,12 +1524,15 @@ public class AstBuilderListener extends QueryBaseListener {
 		if (ast instanceof ErrorVariableDeclaration) {
 			iterator = (VariableDeclaration)ast;
 			final Lambda lambda = builder.lambda(ast, iterator);
+			setIdentifierPositions(lambda, iterator, iterator);
+			setPositions(lambda, iterator, ast);
 			call = builder.callService(serviceName, iterator.getExpression(), lambda);
 			push(call);
 		} else {
 			iterator = popVariableDeclaration();
 			final Lambda lambda = builder.lambda(ast, iterator);
-			setPositions(lambda, ast, ast);
+			setIdentifierPositions(lambda, iterator, iterator);
+			setPositions(lambda, iterator, ast);
 			if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
 				// at this point ANTLR can report a missing ')' even is the closing parenthesis is present
 				// so we check by hand

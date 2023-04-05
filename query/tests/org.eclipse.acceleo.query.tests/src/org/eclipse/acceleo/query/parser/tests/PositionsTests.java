@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.VarRef;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 
@@ -29,9 +30,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class PositionsTests {
 
-	private QueryBuilderEngine engine;
+	private final QueryBuilderEngine engine;
 
-	private IQueryEnvironment queryEnvironment;
+	private final IQueryEnvironment queryEnvironment;
 
 	public PositionsTests() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
@@ -48,15 +49,15 @@ public class PositionsTests {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void getNodeAtLineColumnOutOfRange() {
-		AstResult build = engine.build("a or b");
+		final AstResult build = engine.build("a or b");
 		build.getAstNode(1, 0);
 	}
 
 	@Test
 	public void getNodeAtPosition() {
-		AstResult build = engine.build("a or b");
+		final AstResult build = engine.build("a or b");
 
-		EObject node = build.getAstNode(0);
+		ASTNode node = build.getAstNode(0);
 
 		assertTrue(node instanceof VarRef);
 		assertEquals("a", ((VarRef)node).getVariableName());
@@ -69,6 +70,16 @@ public class PositionsTests {
 
 		assertTrue(node instanceof VarRef);
 		assertEquals("b", ((VarRef)node).getVariableName());
+	}
+
+	@Test
+	public void getNodeAtPositionLambdaVariableDeclaration() {
+		AstResult build = engine.build("self->select(aaa | aaa.name = '')");
+
+		final ASTNode node = build.getAstNode(14);
+
+		assertTrue(node instanceof VariableDeclaration);
+		assertEquals("aaa", ((VariableDeclaration)node).getName());
 	}
 
 }
