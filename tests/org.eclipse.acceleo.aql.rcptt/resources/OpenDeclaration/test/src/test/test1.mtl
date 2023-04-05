@@ -1,0 +1,18 @@
+[module test1('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public templateExtends(c : ecore::EClass)]
+  [file ('anydsl.txt', overwrite)]
+    [c.name.toLowerLast().toUpperLast()/]
+  [/file]
+[/template]
+
+[template public toUpperLast(s : String)]
+  [s.substring(1, s.size() - 1).concat(s.substring(s.size(), s.size()).toUpper())/]
+[/template]
+
+[template public toLowerLast(s : String)]
+  [s.substring(1, s.size() - 1).concat(s.substring(s.size(), s.size()).toLower())/]
+[/template]
+
+[query public myQueryExtends(myParameter: Integer): Integer= myParameter * 2/]

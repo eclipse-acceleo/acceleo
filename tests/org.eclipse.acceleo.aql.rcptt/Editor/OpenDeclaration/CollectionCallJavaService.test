@@ -1,13 +1,13 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Contexts: _NOhMENOvEe2HOPiwgPK0BQ,_Ayow4KrpEeqpkej7GeVvKQ
-Element-Name: ModuleImport
+Element-Name: CollectionCallJavaService
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
-Id: _AZJXYMElEeqjcPTfvO5d8Q
+Id: _hvwdAL4sEeurjqLO2NtWfQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 4/5/23, 3:29 PM
+Save-Time: 4/5/23, 3:27 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -17,7 +17,7 @@ Entry-Name: .content
 get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | double-click
 
 with [get-editor "test.mtl" | get-text-viewer] {
-    set-caret-pos 4 19
+    set-caret-pos 14 42
     open-declaration
 }
 
@@ -25,11 +25,11 @@ with [get-view "Package Explorer" | get-button "Link with Editor"] {
     click -metaKeys ""
     click -metaKeys ""
 }
-get-label "otherModule.mtl - test/src/test" | get-property caption | equals "otherModule.mtl - test/src/test" 
+get-label "test.ModuleServices.java - test/src" | get-property caption | equals "test.ModuleServices.java - test/src" 
     | verify-true
-with [get-editor "otherModule.mtl" | get-text-viewer] {
-    get-property "getSelectionText()" | equals otherModule | verify-true
-    get-property "getSelectionRange().x" | equals 8 | verify-true
-    get-property "getSelectionRange().y" | equals 11 | verify-true
+with [get-editor "ModuleServices.java" | get-text-viewer] {
+    get-property "getSelectionText()" | equals getMessage | verify-true
+    get-property "getSelectionRange().x" | equals 61 | verify-true
+    get-property "getSelectionRange().y" | equals 10 | verify-true
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -1,0 +1,7 @@
+[module otherModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplateImport(myParam : ecore::EClassifier)]
+  [myParam.name/].
+[/template]
+
+[query public myQueryImport(myParameter: Integer): Integer= myParameter * 2/]
