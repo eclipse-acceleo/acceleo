@@ -1,0 +1,5 @@
+[module superSuperImported('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template protected t41(param1 : ecore::EClass)]
+  generated from imported.t41(EClass)
+[/template]

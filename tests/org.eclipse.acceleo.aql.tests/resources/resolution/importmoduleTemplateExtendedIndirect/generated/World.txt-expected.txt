@@ -1,0 +1,2 @@
+generated from import.t11(EClass)
+generated from imported.t41(EClass)

@@ -1,0 +1,15 @@
+
+header position 0..79
+module importmoduleTemplateExtended
+  metamodel http://www.eclipse.org/emf/2002/Ecore (38..76)
+  imports resolution::importmoduleTemplateExtended::imported (89..139) (81..141)
+  [comment @main  (152..158) /] (143..160)
+  
+  public template t11(param1 : EClass (182..204))
+  @main
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (216..236) mode overwrite
+      generated from import.t11(EClass) (newLineNeeded) (254..288)
+      [.t41(param1) (293..305)/] (newLineNeeded (292..308) (249..310)
+    [/file] (209..317)
+     (newLineNeeded) (317..318) (206..318)
+  [/template] (161..329) (0..330)

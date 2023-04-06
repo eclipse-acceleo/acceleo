@@ -1,0 +1,3 @@
+ (null 0 2) null[]
+   (org.eclipse.acceleo.aql 0 2) AQL evaluation issue[org.eclipse.acceleo.impl.ExpressionImpl@00000000 (ast: org.eclipse.acceleo.query.parser.AstResult@00000000 [(param1, org.eclipse.emf.ecore.impl.EClassImpl@00000000 (name: World) (instanceClassName: null) (abstract: false, interface: false)), ]]
+     (org.eclipse.acceleo.query 0 2) Couldn't find the 't41(EClassifier=EClass)' service[null]

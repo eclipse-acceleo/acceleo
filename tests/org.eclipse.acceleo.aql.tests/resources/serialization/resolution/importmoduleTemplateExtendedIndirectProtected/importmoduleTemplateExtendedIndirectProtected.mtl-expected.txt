@@ -1,0 +1,11 @@
+[module importmoduleTemplateExtendedIndirectProtected('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import resolution::importmoduleTemplateExtendedIndirectProtected::imported/]
+
+[comment @main /]
+[template public t11(param1 : ecore::EClass)]
+  [file (param1.name + '.txt', overwrite)]
+    generated from import.t11(EClass)
+    [param1.t41()/]
+  [/file]
+[/template]
