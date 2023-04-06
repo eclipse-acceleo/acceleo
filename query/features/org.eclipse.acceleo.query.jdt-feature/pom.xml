@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.acceleo.features</groupId>
   <artifactId>org.eclipse.acceleo.query.jdt</artifactId>
-  <version>8.0.1-SNAPSHOT</version>
+  <version>8.0.2-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   
