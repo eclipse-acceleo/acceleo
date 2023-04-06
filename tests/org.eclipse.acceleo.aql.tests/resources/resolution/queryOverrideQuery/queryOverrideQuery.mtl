@@ -1,0 +1,13 @@
+[module queryOverrideQuery('http://www.eclipse.org/emf/2002/Ecore')extends resolution::queryOverrideQuery::super/]
+
+[comment @main /]
+[template public t11(param1 : ecore::EClass)]
+  [file (param1.name + '.txt', overwrite)]
+    generated from import.t11(EClass)
+    [param1.t41()/]
+  [/file]
+[/template]
+
+[query public toOverride(param1 : ecore::EClass) : String =
+  'generated from queryOverrideQuery.toOverride(EClass)'
+/]

@@ -1,0 +1,19 @@
+
+header position 0..120
+module templateOverrideQuery
+  metamodel http://www.eclipse.org/emf/2002/Ecore (31..69)
+  extends resolution::templateOverrideQuery::super (78..118)
+  [comment @main  (131..137) /] (122..139)
+  
+  public template t11(param1 : EClass (161..183))
+  @main
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (195..215) mode overwrite
+      generated from import.t11(EClass) (newLineNeeded) (233..267)
+      [.t41(param1) (272..284)/] (newLineNeeded (271..287) (228..289)
+    [/file] (188..296)
+     (newLineNeeded) (296..297) (185..297)
+  [/template] (140..308)
+  
+  public template toOverride(param1 : EClass (338..360))
+    generated from templateOverrideQuery.toOverride(EClass) (newLineNeeded) (365..421) (362..421)
+  [/template] (310..432) (0..432)
