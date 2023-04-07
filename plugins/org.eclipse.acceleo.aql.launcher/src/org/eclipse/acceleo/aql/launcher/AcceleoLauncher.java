@@ -20,6 +20,8 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
+import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
@@ -244,8 +246,10 @@ public class AcceleoLauncher implements IApplication {
 
 	private void evaluate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module mainModule, ResourceSet modelResourceSet) {
-		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, URI.createURI(
-				target));
+		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResourceSet
+				.getURIConverter());
+		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, strategy, URI
+				.createURI(target));
 	}
 
 	private void printDiagnostic(PrintStream stream, Diagnostic diagnostic, String indentation) {

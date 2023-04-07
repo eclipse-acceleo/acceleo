@@ -23,6 +23,8 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -86,7 +88,10 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(
 							AcceleoParser.QUALIFIER_SEPARATOR));
 
-					AcceleoUtil.generate(evaluator, queryEnvironment, module, model, getDestination());
+					final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model
+							.getResourceSet().getURIConverter());
+					AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy,
+							getDestination());
 				}
 			} finally {
 				// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
@@ -329,7 +334,10 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), noDebugEvaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, getDestination());
+		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResource
+				.getResourceSet().getURIConverter());
+		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, strategy,
+				getDestination());
 
 		if (profiler != null) {
 			try {

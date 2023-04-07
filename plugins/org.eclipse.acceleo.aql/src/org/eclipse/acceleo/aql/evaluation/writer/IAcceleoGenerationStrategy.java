@@ -129,6 +129,15 @@ public interface IAcceleoGenerationStrategy {
 			throws IOException;
 
 	/**
+	 * This will be called by the engine when the evaluation starts. The strategy can use this chance to run
+	 * initialization tasks or start long-running background jobs.
+	 * 
+	 * @param destination
+	 *            the destination {@link URI}
+	 */
+	public void start(URI destination);
+
+	/**
 	 * This will be called by the engine when the evaluation ends or is cancelled. The strategy can use this
 	 * chance to run cleanup tasks or terminate long-running background jobs.
 	 */

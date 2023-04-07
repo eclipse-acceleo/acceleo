@@ -62,11 +62,13 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 
 	/**
 	 * Constructor.
+	 * 
+	 * @param uriConverter
+	 *            the {@link URIConverter}
 	 */
-	public DefaultGenerationStrategy() {
+	public DefaultGenerationStrategy(URIConverter uriConverter) {
 		protectedAreaContents = new LinkedHashMap<URI, Map<String, List<String>>>();
-		uriConverter = URIConverter.INSTANCE; // FIXME pass the instance ? Yes we should pass the URIConverter
-												// from the ResourceSet for models
+		this.uriConverter = uriConverter;
 	}
 
 	@Override
@@ -172,9 +174,13 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 	}
 
 	@Override
-	public void terminate() {
-		// TODO Auto-generated method stub
+	public void start(URI destination) {
+		// nothing to do here
+	}
 
+	@Override
+	public void terminate() {
+		// nothing to do here
 	}
 
 	/**
@@ -224,4 +230,5 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 		}
 		return protectedAreas;
 	}
+
 }

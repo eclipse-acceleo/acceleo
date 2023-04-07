@@ -30,6 +30,8 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
+import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -87,7 +89,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final Resource res;
 
 		final URI modelURI = URI.createFileURI(modelFile.getAbsolutePath());
-		if (URIConverter.INSTANCE.exists(modelURI, null)) {
+		if (rs.getURIConverter().exists(modelURI, null)) {
 			res = rs.getResource(modelURI, true);
 		} else {
 			res = null;
@@ -113,12 +115,14 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 			final URI relativeURI = protectedAreaURI.deresolve(protectedAreaFolderURI);
 			final URI destinationURI = URI.createURI(relativeURI.resolve(memoryDestination).toString()
 					.replaceAll(PROTECTED_AREA_SUFFIX, ""));
-			copy(protectedAreaURI, destinationURI);
+			copy(resourceSetForModels.getURIConverter(), protectedAreaURI, destinationURI);
 		}
 
 		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
-		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, memoryDestination);
+		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
+				.getURIConverter());
+		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy, memoryDestination);
 
 		assertGenerationMessages(evaluator.getGenerationResult());
 
@@ -133,19 +137,21 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 			final URI expectedURI = URI.createURI(generatedURI.toString() + EXPECTED_SUFFIX);
 			expectedGeneratedFiles.remove(expectedURI);
 			final URI actualURI = URI.createURI(generatedURI.toString() + ACTUAL_SUFFIT);
-			if (URIConverter.INSTANCE.exists(expectedURI, null)) {
+			if (resourceSetForModels.getURIConverter().exists(expectedURI, null)) {
 				final String expectedContent;
-				try (InputStream expectedStream = URIConverter.INSTANCE.createInputStream(expectedURI)) {
+				try (InputStream expectedStream = resourceSetForModels.getURIConverter().createInputStream(
+						expectedURI)) {
 					expectedContent = AcceleoUtil.getContent(expectedStream, UTF_8); // TODO test other
 																						// encoding
 				}
 				final String actualContent;
-				try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(memoryGeneratedURI)) {
+				try (InputStream actualStream = resourceSetForModels.getURIConverter().createInputStream(
+						memoryGeneratedURI)) {
 					actualContent = AcceleoUtil.getContent(actualStream, UTF_8); // TODO test other encoding
 				}
 				assertEquals(getPortableString(expectedContent), getPortableString(actualContent));
 			} else {
-				copy(memoryGeneratedURI, actualURI);
+				copy(resourceSetForModels.getURIConverter(), memoryGeneratedURI, actualURI);
 				unexpectedGeneratedFiles.add(actualURI);
 			}
 		}
@@ -325,9 +331,9 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 	 * @throws IOException
 	 *             if the copy can't be done
 	 */
-	private static long copy(URI sourceURI, URI destURI) throws IOException {
-		try (InputStream source = URIConverter.INSTANCE.createInputStream(sourceURI);
-				OutputStream dest = URIConverter.INSTANCE.createOutputStream(destURI);) {
+	private static long copy(URIConverter uriConverter, URI sourceURI, URI destURI) throws IOException {
+		try (InputStream source = uriConverter.createInputStream(sourceURI);
+				OutputStream dest = uriConverter.createOutputStream(destURI);) {
 			long nread = 0L;
 			byte[] buf = new byte[BUFFER_SIZE];
 			int n;

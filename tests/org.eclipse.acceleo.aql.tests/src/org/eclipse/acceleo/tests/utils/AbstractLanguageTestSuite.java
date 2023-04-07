@@ -46,12 +46,9 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironmen
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -170,23 +167,6 @@ public abstract class AbstractLanguageTestSuite {
 	}
 
 	/**
-	 * Registers {@link MemoryURIHandler}.
-	 */
-	@BeforeClass
-	public static void beforeClass() {
-		URIConverter.INSTANCE.getURIHandlers().add(0, uriHandler);
-	}
-
-	/**
-	 * Removes {@link MemoryURIHandler}.
-	 */
-	@AfterClass
-	public static void afterClass() {
-		uriHandler.clear();
-		URIConverter.INSTANCE.getURIHandlers().remove(uriHandler);
-	}
-
-	/**
 	 * Gets the test folder path.
 	 * 
 	 * @return the test folder path
@@ -204,6 +184,7 @@ public abstract class AbstractLanguageTestSuite {
 		ResourceSetImpl res = new ResourceSetImpl();
 
 		res.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		res.getURIConverter().getURIHandlers().add(0, uriHandler);
 
 		return res;
 	}

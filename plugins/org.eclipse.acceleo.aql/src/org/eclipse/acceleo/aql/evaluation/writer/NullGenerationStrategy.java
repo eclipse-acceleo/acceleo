@@ -54,6 +54,11 @@ public class NullGenerationStrategy implements IAcceleoGenerationStrategy {
 	}
 
 	@Override
+	public void start(URI destination) {
+		// Do nothing
+	}
+
+	@Override
 	public void terminate() {
 		// Do nothing
 	}

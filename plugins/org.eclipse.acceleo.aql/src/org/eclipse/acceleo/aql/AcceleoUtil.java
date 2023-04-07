@@ -27,7 +27,7 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
@@ -101,12 +101,15 @@ public final class AcceleoUtil {
 	 *            the {@link Module}
 	 * @param model
 	 *            the {@link Resource} containing the model
+	 * @param generationStrategy
+	 *            the {@link IAcceleoGenerationStrategy}
 	 * @param destination
 	 *            destination {@link URI}
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
-			Module module, Resource model, URI destination) {
-		generate(evaluator, queryEnvironment, module, Collections.singletonList(model), destination);
+			Module module, Resource model, IAcceleoGenerationStrategy generationStrategy, URI destination) {
+		generate(evaluator, queryEnvironment, module, Collections.singletonList(model), generationStrategy,
+				destination);
 	}
 
 	/**
@@ -120,16 +123,21 @@ public final class AcceleoUtil {
 	 *            the {@link Module}
 	 * @param resourceSet
 	 *            the {@link ResourceSet} containing the input model(s)
+	 * @param generationStrategy
+	 *            the {@link IAcceleoGenerationStrategy}
 	 * @param destination
 	 *            the destination {@link URI}
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
-			Module module, ResourceSet resourceSet, URI destination) {
-		generate(evaluator, queryEnvironment, module, resourceSet.getResources(), destination);
+			Module module, ResourceSet resourceSet, IAcceleoGenerationStrategy generationStrategy,
+			URI destination) {
+		generate(evaluator, queryEnvironment, module, resourceSet.getResources(), generationStrategy,
+				destination);
 	}
 
 	private static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
-			Module module, List<Resource> resources, URI destination) {
+			Module module, List<Resource> resources, IAcceleoGenerationStrategy generationStrategy,
+			URI destination) {
 
 		final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
 		final Template main = getMainTemplate(module);
@@ -155,7 +163,7 @@ public final class AcceleoUtil {
 				}
 			}
 
-			final DefaultGenerationStrategy generationStrategy = new DefaultGenerationStrategy();
+			generationStrategy.start(destination);
 			final Map<String, Object> variables = new HashMap<String, Object>();
 			for (EObject value : values) {
 				variables.put(parameterName, value);
