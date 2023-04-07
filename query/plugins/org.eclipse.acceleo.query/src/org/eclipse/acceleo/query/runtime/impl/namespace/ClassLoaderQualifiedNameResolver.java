@@ -373,7 +373,6 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		Set<String> added = new LinkedHashSet<>(qualifiedNameExtendedBy.getOrDefault(qualifiedName,
 				Collections.emptyList()));
 		while (!added.isEmpty()) {
-			extendedByClosure.addAll(added);
 			Set<String> localAdded = new LinkedHashSet<>();
 			for (String addedQualifiedName : added) {
 				if (!extendedByClosure.contains(addedQualifiedName)) {
@@ -381,6 +380,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 							.emptyList()));
 				}
 			}
+			extendedByClosure.addAll(added);
 			added = localAdded;
 		}
 		res.addAll(extendedByClosure);
