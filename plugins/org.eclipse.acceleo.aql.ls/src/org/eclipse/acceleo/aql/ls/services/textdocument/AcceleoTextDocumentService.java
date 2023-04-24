@@ -255,11 +255,14 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 							.getFileNameWithoutExtension(), source, atIndex);
 
 			canceler.checkCanceled();
+			final CompletionList res = new CompletionList();
 			List<CompletionItem> completionItems = AcceleoLanguageServerServicesUtils.transform(
 					completionProposals);
+			res.getItems().addAll(completionItems);
+			res.setIsIncomplete(true);
 
 			canceler.checkCanceled();
-			return Either.forLeft(completionItems);
+			return Either.forRight(res);
 		});
 	}
 
