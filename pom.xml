@@ -74,7 +74,7 @@
   </scm>
 
   <modules>
-    <module>releng/org.eclipse.acceleo.targetplatforms/2022-12</module>
+    <module>releng/org.eclipse.acceleo.targetplatforms/2023-03</module>
     
     <module>plugins/org.eclipse.acceleo.ui.interpreter</module>
     <module>features/org.eclipse.acceleo.ui.interpreter-feature</module>
@@ -347,12 +347,12 @@
 
   <profiles>
     <profile>
-      <id>platform-2022-12</id>
+      <id>platform-2023-03</id>
       <activation>
         <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
-          <value>2022-12</value>
+          <value>2023-03</value>
         </property>
       </activation>
       <build>
@@ -364,7 +364,7 @@
               <target>
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
-                  <artifactId>acceleo-2022-12</artifactId>
+                  <artifactId>acceleo-2023-03</artifactId>
                   <version>4.0.0-SNAPSHOT</version>
                 </artifact>
               </target>
