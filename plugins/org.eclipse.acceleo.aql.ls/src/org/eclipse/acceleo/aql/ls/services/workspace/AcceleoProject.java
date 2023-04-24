@@ -215,18 +215,25 @@ public class AcceleoProject {
 		final IQualifiedNameLookupEngine lookupEngine = savedTextDocument.getQueryEnvironment()
 				.getLookupEngine();
 
+		Set<AcceleoTextDocument> consumers = getTextDocumentsThatDependOn(qualifiedNameOfSavedModule);
 		// First clear the environment for the document that was changed.
 		lookupEngine.clearContext(qualifiedNameOfSavedModule);
-		lookupEngine.getResolver().clear(Collections.singleton(qualifiedNameOfSavedModule));
+		for (AcceleoProject project : getWorkspace().getProjects()) {
+			project.getResolver().clear(Collections.singleton(qualifiedNameOfSavedModule));
+		}
+		for (AcceleoTextDocument consumer : consumers) {
+			consumer.getQueryEnvironment().getLookupEngine().clearContext(qualifiedNameOfSavedModule);
+		}
 
 		// Then update the environment with the new version of the module from the saved document.
-		lookupEngine.getResolver().register(qualifiedNameOfSavedModule, savedTextDocument
-				.getAcceleoAstResult().getModule());
+		for (AcceleoProject project : getWorkspace().getProjects()) {
+			project.getResolver().register(qualifiedNameOfSavedModule, savedTextDocument.getAcceleoAstResult()
+					.getModule());
+		}
 
 		// Re-validate all modules that depend on the changed module.
-		Set<AcceleoTextDocument> consumers = getTextDocumentsThatDependOn(qualifiedNameOfSavedModule);
 		for (AcceleoTextDocument consumer : consumers) {
-			consumer.resolverChanged();
+			consumer.validateAndPublishResults();
 		}
 
 		// If the saved document belongs to us, we propagate the notification up to the workspace.
@@ -246,18 +253,24 @@ public class AcceleoProject {
 	public void documentRemoved(AcceleoTextDocument removedTextDocument) {
 		final IQualifiedNameLookupEngine lookupEngine = removedTextDocument.getQueryEnvironment()
 				.getLookupEngine();
-
-		// Since the qualified name of a module depends on its environment, we want the qualified name
-		// according to our environment.
 		String removedModuleQualifiedName = lookupEngine.getResolver().getQualifiedName(removedTextDocument
 				.getUri());
 
+		Set<AcceleoTextDocument> consumers = getTextDocumentsThatDependOn(removedModuleQualifiedName);
+		// Since the qualified name of a module depends on its environment, we want the qualified name
+		// according to our environment.
+
 		// First unregister it from the environment.
-		lookupEngine.getResolver().clear(Collections.singleton(removedModuleQualifiedName));
+		for (AcceleoProject project : getWorkspace().getProjects()) {
+			project.getResolver().clear(Collections.singleton(removedModuleQualifiedName));
+		}
+		for (AcceleoTextDocument consumer : consumers) {
+			consumer.getQueryEnvironment().getLookupEngine().clearContext(removedModuleQualifiedName);
+		}
+
 		lookupEngine.clearContext(removedModuleQualifiedName);
 
 		// Re-validate all modules that depend on the changed module.
-		Set<AcceleoTextDocument> consumers = getTextDocumentsThatDependOn(removedModuleQualifiedName);
 		for (AcceleoTextDocument consumer : consumers) {
 			consumer.resolverChanged();
 		}
@@ -276,12 +289,16 @@ public class AcceleoProject {
 	 */
 	private Set<AcceleoTextDocument> getTextDocumentsThatDependOn(String moduleQualifiedName) {
 		Set<AcceleoTextDocument> res = new HashSet<>();
-		for (AcceleoTextDocument acceleoTextDocument : this.getTextDocuments()) {
-			if (!moduleQualifiedName.equals(acceleoTextDocument.getModuleQualifiedName()) && dependsOn(
-					acceleoTextDocument.getAcceleoAstResult().getModule(), moduleQualifiedName)) {
-				res.add(acceleoTextDocument);
+
+		for (AcceleoProject project : getWorkspace().getProjects()) {
+			for (AcceleoTextDocument acceleoTextDocument : project.getTextDocuments()) {
+				if (!moduleQualifiedName.equals(acceleoTextDocument.getModuleQualifiedName()) && dependsOn(
+						acceleoTextDocument.getAcceleoAstResult().getModule(), moduleQualifiedName)) {
+					res.add(acceleoTextDocument);
+				}
 			}
 		}
+
 		return res;
 	}
 
