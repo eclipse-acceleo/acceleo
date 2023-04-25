@@ -1,0 +1,44 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _UpUkMNPEEe2HOPiwgPK0BQ,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: VarRefBindingFor
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _OVQc8OKdEe2DiuG6X15Vyw
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 4/24/23, 5:11 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/a.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/b.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/c.mtl" | double-click
+
+with [get-editor "c.mtl" | get-text-viewer] {
+    select-range 10 15 10 16
+    get-menu -path "Find References" | click -metaKeys ""
+}
+
+with [get-view Search | get-tree] {
+    with [get-item -path "test/src/test/c.mtl \\(3 matches\\)/8: some text \\[myVariable1.name\\/\\]"] {
+        get-property "getData().getLength()" | equals 38 | verify-true
+        get-property "getData().getOffset()" | equals 275 | verify-true
+        get-property "getData().getContents()" | equals "some text [myVariable1.name/]" | verify-true
+    }
+    with [get-item -path "test/src/test/c.mtl \\(3 matches\\)/9: \\[myVariable1.myTemplateImport\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 42 | verify-true
+        get-property "getData().getOffset()" | equals 314 | verify-true
+        get-property "getData().getContents()" | equals "[myVariable1.myTemplateImport()/]" | verify-true
+    }
+    with [get-item 
+        -path "test/src/test/c.mtl \\(3 matches\\)/10: some text \\[myVariable1.name.getMessage\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 51 | verify-true
+        get-property "getData().getOffset()" | equals 357 | verify-true
+        get-property "getData().getContents()" | equals "some text [myVariable1.name.getMessage()/]" | verify-true
+    }
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

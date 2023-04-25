@@ -1,0 +1,40 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _UpUkMNPEEe2HOPiwgPK0BQ,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: ModuleImport
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _LWdcoOK1Ee2DiuG6X15Vyw
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 4/24/23, 6:08 PM
+Tags: fail
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/a.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/b.mtl" | double-click
+
+with [get-editor "b.mtl" | get-text-viewer] {
+    select-range 1 62 1 63
+    key-type "M1+M2+g"
+}
+
+with [get-view Search | get-tree] {
+    with [get-item 
+        -path "test/src/test/b.mtl/0: \\[module b\\('http:\\/\\/www.eclipse.org\\/emf\\/2002\\/Ecore'\\) extends test::c\\/\\]"] {
+        get-property "getData().getLength()" | equals 68 | verify-true
+        get-property "getData().getOffset()" | equals 0 | verify-true
+        get-property "getData().getContents()" 
+            | equals "[module b('http://www.eclipse.org/emf/2002/Ecore') extends test::c/]" | verify-true
+    }
+    with [get-item -path "test/src/test/importC.mtl/2: \\[import test::c\\/\\]"] {
+        get-property "getData().getLength()" | equals 17 | verify-true
+        get-property "getData().getOffset()" | equals 60 | verify-true
+        get-property "getData().getContents()" | equals "[import test::c/]" | verify-true
+    }
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
