@@ -43,7 +43,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean verify -P$PLATFORM"
+					sh "mvn clean verify deploy:deploy -P$PLATFORM"
 				}
 			}
 		}
