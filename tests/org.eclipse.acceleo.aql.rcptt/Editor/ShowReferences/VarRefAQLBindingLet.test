@@ -1,13 +1,13 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _UpUkMNPEEe2HOPiwgPK0BQ,_Ayow4KrpEeqpkej7GeVvKQ
+Contexts: _UpUkMNPEEe2HOPiwgPK0BQ,_cVN2wOjqEe2z9_81fZHIXA
 Element-Name: VarRefAQLBindingLet
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _pNJN8OK0Ee2DiuG6X15Vyw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 4/24/23, 6:23 PM
+Save-Time: 5/2/23, 3:23 PM
 Tags: fail
 Testcase-Type: ecl
 
@@ -29,4 +29,6 @@ with [get-view Search | get-tree | get-item -path "test/src/test/c.mtl/22: \\[ l
     get-property "getData().getOffset()" | equals 708 | verify-true
     get-property "getData().getContents()" | equals "[ let name = myParam.name in name/]" | verify-true
 }
+
+get-view Search | get-button "Remove All Matches" | click -metaKeys ""
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
