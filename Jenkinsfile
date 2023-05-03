@@ -27,7 +27,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean verify -P$PLATFORM -Psign"
+					sh "mvn clean verify deploy:deploy -P$PLATFORM -Psign"
 				}
 				sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
 					sh '''
@@ -43,7 +43,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean verify deploy:deploy -P$PLATFORM"
+					sh "mvn clean verify -P$PLATFORM"
 				}
 			}
 		}
