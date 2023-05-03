@@ -21,10 +21,34 @@ pipeline {
 	stages {
 		stage ('Nightly') {
 			when {
-				not {
-					branch 'PR-*'
+				allOf {
+					not {
+						branch 'PR-*'
+					}
+					not {
+						tag "*"
+					}
 				}
 			}
+			steps {
+				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
+					sh "mvn clean verify -P$PLATFORM -Psign"
+				}
+				sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+					sh '''
+						chmod +x ./releng/org.eclipse.acceleo.releng/publish-nightly.sh
+						./releng/org.eclipse.acceleo.releng/publish-nightly.sh
+					'''
+				}
+			}
+		}
+		stage ('Tag') {
+				allOf {
+					not {
+						branch 'PR-*'
+					}
+					tag "*"
+				}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 					sh "mvn clean verify deploy:deploy -P$PLATFORM -Psign"
