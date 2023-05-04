@@ -13,8 +13,10 @@ package org.eclipse.acceleo.aql.ls.services.textdocument;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,6 +36,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.DeclarationSwitch;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -54,8 +57,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
+import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
+import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.services.TextDocumentService;
 
 /**
@@ -809,6 +814,59 @@ public class AcceleoTextDocument {
 	 */
 	public void setOpened(boolean opened) {
 		this.isOpened = opened;
+	}
+
+	/**
+	 * Gets the {@link PrepareRenameResult} for the given index.
+	 * 
+	 * @param position
+	 *            the (positive) position in the source contents.
+	 * @return the {@link PrepareRenameResult} for the given index if any, <code>null</code> otherwise
+	 */
+	public PrepareRenameResult getPrepareRenameResult(int position) {
+		final PrepareRenameResult res;
+
+		final ASTNode astNode = acceleoAstResult.getAstNode(position);
+		if (astNode != null) {
+			final int start = acceleoAstResult.getIdentifierStartPosition(astNode);
+			final int end = acceleoAstResult.getIdentifierEndPosition(astNode);
+			if (start <= position && position <= end) {
+				final Range range = LocationUtils.identifierRange(acceleoValidationResult, astNode);
+				res = new PrepareRenameResult(range, contents.substring(start, end));
+			} else {
+				res = null;
+			}
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the mapping from a {@link URI} to its {@link List} of {@link TextEdit}.
+	 * 
+	 * @param position
+	 *            the (positive) position in the source contents.
+	 * @param newName
+	 *            the new name
+	 * @return the mapping from a {@link URI} to its {@link List} of {@link TextEdit}
+	 */
+	public Map<String, List<TextEdit>> getRename(int position, String newName) {
+		final Map<String, List<TextEdit>> res = new HashMap<>();
+
+		for (LocationLink locationLink : getDeclarationLocations(position)) {
+			final List<TextEdit> edits = res.computeIfAbsent(locationLink.getTargetUri(),
+					uri -> new ArrayList<>());
+			edits.add(new TextEdit(locationLink.getTargetSelectionRange(), newName));
+		}
+
+		for (Location location : getReferencesLocations(position)) {
+			final List<TextEdit> edits = res.computeIfAbsent(location.getUri(), uri -> new ArrayList<>());
+			edits.add(new TextEdit(location.getRange(), newName));
+		}
+
+		return res;
 	}
 
 }

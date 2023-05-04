@@ -46,14 +46,21 @@ import org.eclipse.lsp4j.DocumentSymbolParams;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.PrepareRenameDefaultBehavior;
+import org.eclipse.lsp4j.PrepareRenameParams;
+import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
+import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
+import org.eclipse.lsp4j.RenameParams;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WillSaveTextDocumentParams;
+import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.messages.Either3;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageClientAware;
 import org.eclipse.lsp4j.services.TextDocumentService;
@@ -426,4 +433,73 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		});
 	}
 
+	@Override
+	public CompletableFuture<Either3<Range, PrepareRenameResult, PrepareRenameDefaultBehavior>> prepareRename(
+			PrepareRenameParams params) {
+		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
+		checkDocumentIsOpened(textDocumentUri);
+		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		Position position = params.getPosition();
+		return prepareRename(acceleoTextDocument, position);
+	}
+
+	/**
+	 * Provides the rename results for a {@link Position} in a {@link AcceleoTextDocument}.
+	 * 
+	 * @param acceleoTextDocument
+	 *            the (non-{@code null}) {@link AcceleoTextDocument}.
+	 * @param position
+	 *            the (non-{@code null}) {@link Position}.
+	 * @return the asynchronous computation of the "go to definition" proposals.
+	 */
+	private CompletableFuture<Either3<Range, PrepareRenameResult, PrepareRenameDefaultBehavior>> prepareRename(
+			AcceleoTextDocument acceleoTextDocument, Position position) {
+		return CompletableFutures.computeAsync(canceler -> {
+			canceler.checkCanceled();
+
+			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+					acceleoTextDocument.getContents());
+			final PrepareRenameResult prepareRenameResult = acceleoTextDocument.getPrepareRenameResult(
+					atIndex);
+
+			canceler.checkCanceled();
+			return Either3.forSecond(prepareRenameResult);
+		});
+	}
+
+	@Override
+	public CompletableFuture<WorkspaceEdit> rename(RenameParams params) {
+		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
+		checkDocumentIsOpened(textDocumentUri);
+		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		Position position = params.getPosition();
+		return rename(acceleoTextDocument, position, params.getNewName());
+	}
+
+	/**
+	 * Gets the {@link WorkspaceEdit} corresponding to the rename operation.
+	 * 
+	 * @param acceleoTextDocument
+	 *            the (non-{@code null}) {@link AcceleoTextDocument}.
+	 * @param position
+	 *            the (non-{@code null}) {@link Position}.
+	 * @param newName
+	 *            the (non-{@code null}) new name.
+	 * @return
+	 */
+	private CompletableFuture<WorkspaceEdit> rename(AcceleoTextDocument acceleoTextDocument,
+			Position position, String newName) {
+		return CompletableFutures.computeAsync(canceler -> {
+			canceler.checkCanceled();
+
+			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+					acceleoTextDocument.getContents());
+			final Map<String, List<TextEdit>> changes = acceleoTextDocument.getRename(atIndex, newName);
+
+			canceler.checkCanceled();
+			return new WorkspaceEdit(changes);
+		});
+	}
 }

@@ -23,6 +23,7 @@ import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.MessageType;
+import org.eclipse.lsp4j.RenameOptions;
 import org.eclipse.lsp4j.SaveOptions;
 import org.eclipse.lsp4j.ServerCapabilities;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
@@ -141,6 +142,8 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 		capabilities.setDocumentSymbolProvider(true);
 
 		capabilities.setReferencesProvider(true);
+
+		capabilities.setRenameProvider(new RenameOptions(true));
 
 		final InitializeResult res = new InitializeResult(capabilities);
 		return CompletableFuture.completedFuture(res);
