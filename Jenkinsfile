@@ -43,12 +43,14 @@ pipeline {
 			}
 		}
 		stage ('Tag') {
+			when {
 				allOf {
 					not {
 						branch 'PR-*'
 					}
 					tag "*"
 				}
+			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 					sh "mvn clean verify deploy:deploy -P$PLATFORM -Psign"
