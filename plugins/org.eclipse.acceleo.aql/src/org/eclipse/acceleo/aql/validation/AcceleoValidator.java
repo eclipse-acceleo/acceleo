@@ -495,13 +495,13 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 						}
 					}
 				}
-				if (!incompatibleTypeBuilder.isEmpty()) {
+				if (incompatibleTypeBuilder.length() != 0) {
 					builder.append(superService.getLongSignature() + "\n");
 					builder.append(incompatibleTypeBuilder.toString());
 				}
 			}
 		}
-		if (!builder.isEmpty()) {
+		if (builder.length() != 0) {
 			final int startPosition = result.getAcceleoAstResult().getIdentifierStartPosition(node);
 			final int endPosition = result.getAcceleoAstResult().getIdentifierEndPosition(node);
 			addMessage(node, ValidationMessageLevel.ERROR,
