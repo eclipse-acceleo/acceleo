@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021  Obeo.
+ * Copyright (c) 2016, 2023  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,9 @@ import java.util.Set;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.completion.proposals.TemplateServiceCompletionProposal;
-import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -84,10 +82,10 @@ public class TemplateService extends AbstractModuleElementService<Template> {
 	}
 
 	@Override
-	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
 		Set<IType> result = new LinkedHashSet<IType>();
 		result.add(new ClassType(queryEnvironment, String.class));
+
 		return result;
 	}
 

@@ -63,6 +63,8 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.parser.CombineIterator;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
@@ -421,8 +423,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
+			final List<Set<IType>> parameterTypes = new ArrayList<>();
 			for (Variable parameter : template.getParameters()) {
 				doSwitch(parameter);
+				parameterTypes.add(peekVariableTypes().get(parameter.getName()));
 				if (parameter.getName() != null) {
 					if (!parameterNames.add(parameter.getName())) {
 						final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
@@ -432,6 +436,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					}
 				}
 			}
+			final Set<IType> returnTypes = new LinkedHashSet<>();
+			returnTypes.add(new ClassType(queryEnvironment, String.class));
+			validateOverriding(template, template.getName(), returnTypes, parameterTypes);
 			if (template.getGuard() != null) {
 				doSwitch(template.getGuard());
 			}
@@ -455,6 +462,52 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		}
 
 		return RETURN_VALUE;
+	}
+
+	/**
+	 * Validates the Overring of other {@link Template} or {@link Query}.
+	 * 
+	 * @param node
+	 *            a {@link Template} or a {@link Query}
+	 * @param name
+	 *            the {@link Template} or {@link Query} name
+	 * @param returnTypes
+	 *            the {@link Set} of possible static return {@link IType}
+	 * @param parameterTypes
+	 *            the {@link List} of {@link Set} of possible parameter {@link IType}
+	 */
+	protected void validateOverriding(AcceleoASTNode node, String name, Set<IType> returnTypes,
+			List<Set<IType>> parameterTypes) {
+		final CombineIterator<IType> it = new CombineIterator<IType>(parameterTypes);
+		final StringBuilder builder = new StringBuilder();
+		while (it.hasNext()) {
+			final List<IType> types = it.next();
+			final IService<?> superService = queryEnvironment.getLookupEngine().superServiceLookup(name, types
+					.toArray(new IType[types.size()]));
+			if (superService != null) {
+				Set<IType> superReturnTypes = superService.getType(queryEnvironment);
+				final StringBuilder incompatibleTypeBuilder = new StringBuilder();
+				for (IType superReturnType : superReturnTypes) {
+					for (IType returnType : returnTypes) {
+						if (!superReturnType.isAssignableFrom(returnType)) {
+							incompatibleTypeBuilder.append("\t" + superReturnType + IS_INCOMPATIBLE_WITH
+									+ returnType + "\n");
+						}
+					}
+				}
+				if (!incompatibleTypeBuilder.isEmpty()) {
+					builder.append(superService.getLongSignature() + "\n");
+					builder.append(incompatibleTypeBuilder.toString());
+				}
+			}
+		}
+		if (!builder.isEmpty()) {
+			final int startPosition = result.getAcceleoAstResult().getIdentifierStartPosition(node);
+			final int endPosition = result.getAcceleoAstResult().getIdentifierEndPosition(node);
+			addMessage(node, ValidationMessageLevel.ERROR,
+					"Return type incompatible with overrided service:\n" + builder.substring(0, builder
+							.length() - 1), startPosition, endPosition);
+		}
 	}
 
 	@Override
@@ -506,8 +559,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		pushVariableTypes(new HashMap<String, Set<IType>>(peekVariableTypes()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
+			final List<Set<IType>> parameterTypes = new ArrayList<>();
 			for (Variable parameter : query.getParameters()) {
 				doSwitch(parameter);
+				parameterTypes.add(peekVariableTypes().get(parameter.getName()));
 				if (parameter.getName() != null) {
 					if (!parameterNames.add(parameter.getName())) {
 						final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
@@ -530,6 +585,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				final Set<IType> iTypes = validator.getDeclarationTypes(queryEnvironment, typeValidationResult
 						.getPossibleTypes(query.getType().getAst()));
 				checkTypesCompatibility(query, possibleTypes, iTypes);
+
+				validateOverriding(query, query.getName(), iTypes, parameterTypes);
 			}
 		} finally {
 			for (Variable parameter : query.getParameters()) {

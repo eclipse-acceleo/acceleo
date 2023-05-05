@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -115,7 +115,7 @@ public interface IService<O> {
 	int getPriority();
 
 	/**
-	 * Gets the {@link IType} of elements returned by the service.
+	 * Gets the dynamic {@link IType} of elements returned by the service {@link Call}.
 	 * 
 	 * @param call
 	 *            the {@link Call}
@@ -132,6 +132,15 @@ public interface IService<O> {
 	 */
 	Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes);
+
+	/**
+	 * Gets the static {@link IType} for the service.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @return the static {@link IType} for the service
+	 */
+	Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment);
 
 	/**
 	 * Validates all couple of arguments {@link IType} and the {@link IType} of elements returned by the

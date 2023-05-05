@@ -120,6 +120,11 @@ public class TestServiceProvider implements IServiceProvider {
 			return null;
 		}
 
+		@Override
+		public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
+			return null;
+		}
+
 		/**
 		 * {@inheritDoc}
 		 *
@@ -216,6 +221,11 @@ public class TestServiceProvider implements IServiceProvider {
 		@Override
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+			return null;
+		}
+
+		@Override
+		public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
 			return null;
 		}
 

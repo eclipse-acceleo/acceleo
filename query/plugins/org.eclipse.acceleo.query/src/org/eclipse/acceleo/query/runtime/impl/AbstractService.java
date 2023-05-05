@@ -19,10 +19,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 
@@ -244,6 +246,12 @@ public abstract class AbstractService<O> implements IService<O> {
 	@Override
 	public Visibility getVisibility() {
 		return Visibility.PUBLIC;
+	}
+
+	@Override
+	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+		return getType(queryEnvironment);
 	}
 
 	/**

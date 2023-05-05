@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -169,9 +167,7 @@ public class JavaMethodService extends AbstractService<Method> {
 	}
 
 	@Override
-	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
-
+	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
 		if (knwonEnvironment != queryEnvironment || returnTypes == null) {
 			knwonEnvironment = queryEnvironment;
 			returnTypes = new LinkedHashSet<IType>();

@@ -357,4 +357,21 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 		return resolver;
 	}
 
+	@Override
+	public IService<?> superServiceLookup(String name, IType[] argumentTypes) {
+		final IService<?> result;
+
+		final CallStack currentStack = getCurrentContext();
+		final String start = currentStack.getStartingQualifiedName();
+		final String extendQualifiedName = getExtend(start);
+		if (extendQualifiedName != null) {
+			result = lookupExtendedService(extendQualifiedName, name, argumentTypes,
+					IService.Visibility.PROTECTED, IService.Visibility.PUBLIC);
+		} else {
+			result = null;
+		}
+
+		return result;
+	}
+
 }

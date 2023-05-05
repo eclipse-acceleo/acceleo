@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021  Obeo.
+ * Copyright (c) 2016, 2023  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -85,6 +85,17 @@ public class QueryService extends AbstractModuleElementService<Query> {
 	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final AstValidator validator = new AstValidator(services);
+
+		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(
+				Collections.emptyMap(), getOrigin().getType()).getPossibleTypes(getOrigin().getType()
+						.getAst()));
+
+		return result;
+	}
+
+	@Override
+	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 
 		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(
 				Collections.emptyMap(), getOrigin().getType()).getPossibleTypes(getOrigin().getType()

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -171,11 +171,11 @@ public class ValidationServices extends AbstractLanguageServices {
 		}
 		try {
 			final ServicesValidationResult result = new ServicesValidationResult(queryEnvironment, this);
-			CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
+			final CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
 			final Map<IService<?>, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService<?>, Map<List<IType>, Set<IType>>>();
 			boolean serviceFound = false;
 			boolean emptyCombination = !it.hasNext();
-			List<String> notFoundSignatures = new ArrayList<String>();
+			final List<String> notFoundSignatures = new ArrayList<String>();
 			while (it.hasNext()) {
 				List<IType> currentArgTypes = it.next();
 				IService<?> service = queryEnvironment.getLookupEngine().lookup(serviceName, currentArgTypes

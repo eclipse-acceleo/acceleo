@@ -1,0 +1,8 @@
+[module super('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public t41(param1 : ecore::EClass)]
+  generated from super.t41(EClass)
+  toOverride: [param1.toOverride()/]
+[/template]
+
+[query public toOverride(param1 : ecore::EClass) : String = 'generated from super.toOverride(EClass)'/]

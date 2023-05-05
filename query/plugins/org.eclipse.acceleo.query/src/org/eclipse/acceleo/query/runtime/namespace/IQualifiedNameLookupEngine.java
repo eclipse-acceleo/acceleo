@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.namespace.CallStack;
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * Lookups {@link IService} in qualified name spaces.
@@ -96,5 +97,19 @@ public interface IQualifiedNameLookupEngine extends ILookupEngine {
 	 * @return the {@link IQualifiedNameResolver}
 	 */
 	IQualifiedNameResolver getResolver();
+
+	/**
+	 * Gets the {@link IService} {@link #lookup(String, IType[]) lookedup} if the {@link #getExtend(String)
+	 * extends} of the {@link #getCurrentContext() current context}.
+	 * 
+	 * @param name
+	 *            the name of the service to retrieve.
+	 * @param argumentTypes
+	 *            {@link IType} of the arguments to best match.
+	 * @return t the {@link IService} {@link #lookup(String, IType[]) lookedup} if the
+	 *         {@link #getExtend(String) extends} of the {@link #getCurrentContext() current context} if any,
+	 *         <code>null</code> otherwise
+	 */
+	IService<?> superServiceLookup(String name, IType[] argumentTypes);
 
 }

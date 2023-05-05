@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationServiceCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
@@ -255,8 +253,7 @@ public class EOperationService extends AbstractService<EOperation> {
 	}
 
 	@Override
-	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		final IType eClassifierType = new EClassifierType(queryEnvironment, getOrigin().getEType());

@@ -1,0 +1,3 @@
+ERROR Return type incompatible with overrided service:
+resolution::templateOverrideQueryIncompatibleType::super::toOverride(Object=EClassifier=EClass)
+	EClassifier=EClass is incompatible with java.lang.String - 343 353
