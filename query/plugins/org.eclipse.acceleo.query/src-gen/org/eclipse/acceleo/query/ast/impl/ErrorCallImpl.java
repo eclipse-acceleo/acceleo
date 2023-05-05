@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getServiceName <em>Service Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getType <em>Type</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getArguments <em>Arguments</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#isSuperCall <em>Super Call</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#isMissingEndParenthesis <em>Missing End
  * Parenthesis</em>}</li>
  * </ul>
@@ -92,6 +93,26 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * @ordered
 	 */
 	protected EList<Expression> arguments;
+
+	/**
+	 * The default value of the '{@link #isSuperCall() <em>Super Call</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isSuperCall()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean SUPER_CALL_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isSuperCall() <em>Super Call</em>}' attribute. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #isSuperCall()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean superCall = SUPER_CALL_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isMissingEndParenthesis() <em>Missing End Parenthesis</em>}'
@@ -200,6 +221,30 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	 * @generated
 	 */
 	@Override
+	public boolean isSuperCall() {
+		return superCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setSuperCall(boolean newSuperCall) {
+		boolean oldSuperCall = superCall;
+		superCall = newSuperCall;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_CALL__SUPER_CALL,
+					oldSuperCall, superCall));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public boolean isMissingEndParenthesis() {
 		return missingEndParenthesis;
 	}
@@ -247,6 +292,8 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 				return getType();
 			case AstPackage.ERROR_CALL__ARGUMENTS:
 				return getArguments();
+			case AstPackage.ERROR_CALL__SUPER_CALL:
+				return isSuperCall();
 			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
 				return isMissingEndParenthesis();
 		}
@@ -272,6 +319,9 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 				getArguments().clear();
 				getArguments().addAll((Collection<? extends Expression>)newValue);
 				return;
+			case AstPackage.ERROR_CALL__SUPER_CALL:
+				setSuperCall((Boolean)newValue);
+				return;
 			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
 				setMissingEndParenthesis((Boolean)newValue);
 				return;
@@ -296,6 +346,9 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 			case AstPackage.ERROR_CALL__ARGUMENTS:
 				getArguments().clear();
 				return;
+			case AstPackage.ERROR_CALL__SUPER_CALL:
+				setSuperCall(SUPER_CALL_EDEFAULT);
+				return;
 			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
 				setMissingEndParenthesis(MISSING_END_PARENTHESIS_EDEFAULT);
 				return;
@@ -318,6 +371,8 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 				return type != TYPE_EDEFAULT;
 			case AstPackage.ERROR_CALL__ARGUMENTS:
 				return arguments != null && !arguments.isEmpty();
+			case AstPackage.ERROR_CALL__SUPER_CALL:
+				return superCall != SUPER_CALL_EDEFAULT;
 			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
 				return missingEndParenthesis != MISSING_END_PARENTHESIS_EDEFAULT;
 		}
@@ -339,6 +394,8 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 					return AstPackage.CALL__TYPE;
 				case AstPackage.ERROR_CALL__ARGUMENTS:
 					return AstPackage.CALL__ARGUMENTS;
+				case AstPackage.ERROR_CALL__SUPER_CALL:
+					return AstPackage.CALL__SUPER_CALL;
 				default:
 					return -1;
 			}
@@ -361,6 +418,8 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 					return AstPackage.ERROR_CALL__TYPE;
 				case AstPackage.CALL__ARGUMENTS:
 					return AstPackage.ERROR_CALL__ARGUMENTS;
+				case AstPackage.CALL__SUPER_CALL:
+					return AstPackage.ERROR_CALL__SUPER_CALL;
 				default:
 					return -1;
 			}
@@ -383,6 +442,8 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 		result.append(serviceName);
 		result.append(", type: ");
 		result.append(type);
+		result.append(", superCall: ");
+		result.append(superCall);
 		result.append(", missingEndParenthesis: ");
 		result.append(missingEndParenthesis);
 		result.append(')');

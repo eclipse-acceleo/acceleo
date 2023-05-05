@@ -1,6 +1,6 @@
  (null 0 4) null[]
    (org.eclipse.acceleo.aql 0 4) AQL parsing issue[org.eclipse.acceleo.impl.ExpressionImpl@00000000 (ast: org.eclipse.acceleo.query.parser.AstResult@00000000 ]
-     (org.eclipse.acceleo.query 0 4) missing feature access or service call[org.eclipse.acceleo.query.ast.impl.ErrorCallImpl@00000000 (serviceName: aqlFeatureAccess, type: CALLORAPPLY, missingEndParenthesis: false)]
+     (org.eclipse.acceleo.query 0 4) missing feature access or service call[org.eclipse.acceleo.query.ast.impl.ErrorCallImpl@00000000 (serviceName: aqlFeatureAccess, type: CALLORAPPLY, superCall: false, missingEndParenthesis: false)]
    (org.eclipse.acceleo.aql 0 2) AQL evaluation issue[org.eclipse.acceleo.impl.ExpressionImpl@00000000 (ast: org.eclipse.acceleo.query.parser.AstResult@00000000 [(self, anydsl
 ), (myParam, org.eclipse.emf.ecore.impl.EPackageImpl@00000000 (name: anydsl) (nsURI: http://www.eclipse.org/acceleo/anydsl, nsPrefix: anydsl)), ]]
      (org.eclipse.acceleo.query 0 2) Couldn't find the 'aqlFeatureAccess(java.lang.String)' service[null]

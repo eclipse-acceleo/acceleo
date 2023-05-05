@@ -345,6 +345,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	private static final int CONDITIONAL_CONTEXT_CHILD_COUNT = 7;
 
 	/**
+	 * Super call modifier.
+	 */
+	public static final String SUPER_CALL = "super:";
+
+	/**
 	 * Error listener.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -1374,7 +1379,16 @@ public class AstBuilderListener extends QueryBaseListener {
 			for (int i = argc - 1; i >= 0; i--) {
 				args[i] = popExpression();
 			}
-			final String serviceName = ctx.getChild(0).getText().replace("::", ".");
+			final String serviceName;
+			final boolean isSuperCall;
+			if (SUPER_CALL.equals(ctx.getChild(0).getText())) {
+				serviceName = ctx.getChild(1).getText().replace("::", ".");
+				isSuperCall = true;
+			} else {
+				serviceName = ctx.getChild(0).getText().replace("::", ".");
+				isSuperCall = false;
+			}
+
 			final Call call;
 			if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
 				call = builder.errorCall(serviceName, true, args);
@@ -1384,6 +1398,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				push(call);
 			}
 
+			call.setSuperCall(isSuperCall);
 			setIdentifierPositions(call, (Token)ctx.getChild(0).getPayload());
 			setPositions(call, args[0], ctx.stop);
 		}

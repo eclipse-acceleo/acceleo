@@ -1,0 +1,13 @@
+[module templateOverrideTemplate('http://www.eclipse.org/emf/2002/Ecore') extends resolution::templateOverrideTemplateSuperCall::super/]
+
+[comment @main /]
+[template public t11(param1 : ecore::EClass)]
+  [file (param1.name + '.txt', overwrite)]
+    generated from import.t11(EClass)
+    [param1.t41()/]
+  [/file]
+[/template]
+
+[template public toOverride(param1 : ecore::EClass)]
+  [param1.toOverride()/]
+[/template]

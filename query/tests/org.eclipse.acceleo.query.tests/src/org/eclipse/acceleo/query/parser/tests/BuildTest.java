@@ -165,6 +165,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 9, 0, 9, ast);
 		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		VarRef varRef = (VarRef)((Call)ast).getArguments().get(0);
 		assertEquals("self", varRef.getVariableName());
@@ -182,6 +183,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 10, 0, 10, ast);
 		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		VarRef varRef = (VarRef)((Call)ast).getArguments().get(0);
 		assertEquals("self", varRef.getVariableName());
@@ -211,6 +213,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 12, 0, 12, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertEquals(2, ((IntegerLiteral)((Call)ast).getArguments().get(0)).getValue());
 	}
@@ -237,6 +240,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, RealLiteral.class, 0, 0, 0, 3, 0, 3, ((Call)ast).getArguments().get(0));
 		assertEquals(1.0, ((RealLiteral)((Call)ast).getArguments().get(0)).getValue(), 0.1);
@@ -264,6 +268,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 15, 0, 15, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(true, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
@@ -291,6 +296,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 16, 0, 16, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 0, 0, 0, 5, 0, 5, ((Call)ast).getArguments().get(0));
 		assertEquals(false, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
@@ -477,6 +483,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 35, 0, 35, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, StringLiteral.class, 0, 0, 0, 24, 0, 24, ((Call)ast).getArguments().get(0));
 		assertEquals("acceleo query is great", ((StringLiteral)((Call)ast).getArguments().get(0)).getValue());
@@ -503,6 +510,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 15, 0, 15, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, NullLiteral.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 	}
@@ -517,6 +525,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 4, 0, 4, ast);
 		assertEquals("lessThanEqual", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 0, 0, 1, 0, 1, ((Call)ast).getArguments().get(0));
@@ -535,6 +544,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 3, 0, 3, ast);
 		assertEquals("lessThan", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 0, 0, 1, 0, 1, ((Call)ast).getArguments().get(0));
@@ -553,6 +563,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 4, 0, 4, ast);
 		assertEquals("greaterThanEqual", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 0, 0, 1, 0, 1, ((Call)ast).getArguments().get(0));
@@ -571,6 +582,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 3, 0, 3, ast);
 		assertEquals("greaterThan", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 0, 0, 1, 0, 1, ((Call)ast).getArguments().get(0));
@@ -589,6 +601,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 9, 0, 9, ast);
 		assertEquals("add", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, StringLiteral.class, 0, 0, 0, 3, 0, 3, ((Call)ast).getArguments().get(0));
@@ -625,6 +638,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
 		assertEquals("xor", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -680,6 +694,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 8, 0, 8, ast);
 		assertEquals("not", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 4, 0, 4, 8, 0, 8, ((Call)ast).getArguments().get(0));
@@ -696,6 +711,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 3, 0, 3, ast);
 		assertEquals("mult", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 0, 0, 1, 0, 1, ((Call)ast).getArguments().get(0));
@@ -714,6 +730,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 12, 0, 12, ast);
 		assertEquals("size", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -730,6 +747,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 22, 0, 22, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -755,6 +773,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 24, 0, 24, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -778,6 +797,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 25, 0, 25, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -801,6 +821,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 40, 0, 40, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -872,6 +893,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 33, 0, 33, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 0, 0, 22, 0, 22, ((Call)ast)
 				.getArguments().get(0));
@@ -929,6 +951,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 35, 0, 35, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 0, 0, 24, 0, 24, ((Call)ast).getArguments()
 				.get(0));
@@ -941,6 +964,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 29, 0, 29, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -964,6 +988,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1099,6 +1124,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 24, 0, 24, ast);
 		assertEquals("precedingSiblings", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(0, build.getErrors().size());
@@ -1113,6 +1139,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 37, 0, 37, ast);
 		assertEquals("precedingSiblings", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, EClassifierTypeLiteral.class, 23, 0, 23, 36, 0, 36, ((Call)ast).getArguments()
@@ -1131,6 +1158,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 37, 0, 37, ast);
 		assertEquals("followingSiblings", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, EClassifierTypeLiteral.class, 23, 0, 23, 36, 0, 36, ((Call)ast).getArguments()
@@ -1149,6 +1177,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 24, 0, 24, ast);
 		assertEquals("followingSiblings", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(0, build.getErrors().size());
@@ -1163,6 +1192,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 15, 0, 15, ast);
 		assertEquals("eInverse", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(0, build.getErrors().size());
@@ -1177,6 +1207,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 28, 0, 28, ast);
 		assertEquals("eInverse", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, EClassifierTypeLiteral.class, 14, 0, 14, 27, 0, 27, ((Call)ast).getArguments()
@@ -1195,6 +1226,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 21, 0, 21, ast);
 		assertEquals("eInverse", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, StringLiteral.class, 14, 0, 14, 20, 0, 20, ((Call)ast).getArguments().get(1));
@@ -1346,6 +1378,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 3, 0, 3, ast);
 		assertEquals("not", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, ErrorExpression.class, 3, 0, 3, 3, 0, 3, ((Call)ast).getArguments().get(0));
@@ -1364,6 +1397,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 1, 0, 1, ast);
 		assertEquals("unaryMin", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)build.getAst()).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, ErrorExpression.class, 1, 0, 1, 1, 0, 1, ((Call)ast).getArguments().get(0));
@@ -1382,6 +1416,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
 		assertEquals("mult", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1401,6 +1436,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
 		assertEquals("divOp", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1420,6 +1456,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
 		assertEquals("add", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1439,6 +1476,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
 		assertEquals("sub", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1455,6 +1493,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
 		assertEquals("sub", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1474,6 +1513,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
 		assertEquals("lessThan", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1493,6 +1533,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
 		assertEquals("lessThanEqual", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1512,6 +1553,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
 		assertEquals("greaterThan", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1531,6 +1573,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
 		assertEquals("greaterThanEqual", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1550,6 +1593,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 6, 0, 6, ast);
 		assertEquals("equals", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1569,6 +1613,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
 		assertEquals("equals", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1588,6 +1633,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
 		assertEquals("differs", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1607,6 +1653,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 7, 0, 7, ast);
 		assertEquals("differs", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1664,6 +1711,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 8, 0, 8, ast);
 		assertEquals("xor", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1702,6 +1750,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 5, 0, 5, ast);
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
 		assertEquals(1, build.getErrors().size());
@@ -1752,6 +1801,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 8, 0, 8, ast);
 		assertEquals("equals", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1773,6 +1823,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 2, 0, 2, ast);
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(ast, build.getErrors().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -1974,6 +2025,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 13, 0, 13, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2004,6 +2056,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 21, 0, 21, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2025,6 +2078,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 17, 0, 17, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2049,6 +2103,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 22, 0, 22, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2070,6 +2125,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 17, 0, 17, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2103,6 +2159,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 27, 0, 27, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2140,6 +2197,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals("select", ((Call)ast).getServiceName());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
@@ -2177,6 +2235,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 33, 0, 33, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2201,6 +2260,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 38, 0, 38, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2224,6 +2284,7 @@ public class BuildTest {
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2238,6 +2299,7 @@ public class BuildTest {
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertExpression(build, Call.class, 0, 0, 0, 15, 0, 15, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2250,6 +2312,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 13, 0, 13, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2268,6 +2331,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2287,6 +2351,7 @@ public class BuildTest {
 		assertExpression(build, Call.class, 0, 0, 0, 18, 0, 18, ast);
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals("service", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, BooleanLiteral.class, 14, 0, 14, 18, 0, 18, ((Call)ast).getArguments().get(
@@ -2306,6 +2371,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 19, 0, 19, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(3, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2331,6 +2397,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 21, 0, 21, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2359,6 +2426,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 27, 0, 27, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2390,6 +2458,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 23, 0, 23, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2418,6 +2487,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 29, 0, 29, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2449,6 +2519,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2463,6 +2534,7 @@ public class BuildTest {
 				.get(1)).getExpression());
 		final Call call = (ErrorCall)((Lambda)((Call)ast).getArguments().get(1)).getExpression();
 		assertEquals("startsWith", call.getServiceName());
+		assertFalse(call.isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, call.getType());
 		assertEquals(2, call.getArguments().size());
 		assertExpression(build, VarRef.class, 17, 0, 17, 18, 0, 18, call.getArguments().get(0));
@@ -2476,6 +2548,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 34, 0, 34, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
@@ -2490,6 +2563,7 @@ public class BuildTest {
 				.get(1)).getExpression());
 		final Call call = (ErrorCall)((Lambda)((Call)ast).getArguments().get(1)).getExpression();
 		assertEquals("startsWith", call.getServiceName());
+		assertFalse(call.isSuperCall());
 		assertEquals(CallType.CALLORAPPLY, call.getType());
 		assertEquals(3, call.getArguments().size());
 		assertExpression(build, VarRef.class, 17, 0, 17, 18, 0, 18, call.getArguments().get(0));
@@ -2723,10 +2797,12 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 22, 0, 22, ast);
 		assertEquals("equals", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, Call.class, 0, 0, 0, 13, 0, 13, ((Call)ast).getArguments().get(0));
 		Call not = (Call)((Call)ast).getArguments().get(0);
 		assertEquals("not", not.getServiceName());
+		assertFalse(not.isSuperCall());
 		assertEquals(1, not.getArguments().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -2739,13 +2815,16 @@ public class BuildTest {
 
 		assertExpression(build, Or.class, 0, 0, 0, 43, 0, 43, ast);
 		assertEquals("or", ((Or)ast).getServiceName());
+		assertFalse(((Or)ast).isSuperCall());
 		assertEquals(2, ((Or)ast).getArguments().size());
 		assertExpression(build, And.class, 0, 0, 0, 29, 0, 29, ((Or)ast).getArguments().get(0));
 		And and = (And)((Or)ast).getArguments().get(0);
 		assertEquals("and", and.getServiceName());
+		assertFalse(and.isSuperCall());
 		assertEquals(2, and.getArguments().size());
 		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ((And)and).getArguments().get(0));
 		Call not = (Call)((And)and).getArguments().get(0);
+		assertFalse(not.isSuperCall());
 		assertEquals("not", not.getServiceName());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -2758,13 +2837,16 @@ public class BuildTest {
 
 		assertExpression(build, Or.class, 0, 0, 0, 43, 0, 43, ast);
 		assertEquals("or", ((Or)ast).getServiceName());
+		assertFalse(((Or)ast).isSuperCall());
 		assertEquals(2, ((Or)ast).getArguments().size());
 		assertExpression(build, And.class, 14, 0, 14, 43, 0, 43, ((Or)ast).getArguments().get(1));
 		And and = (And)((Or)ast).getArguments().get(1);
 		assertEquals("and", and.getServiceName());
+		assertFalse(and.isSuperCall());
 		assertEquals(2, and.getArguments().size());
 		assertExpression(build, Call.class, 14, 0, 14, 28, 0, 28, ((And)and).getArguments().get(0));
 		Call not = (Call)((Call)and).getArguments().get(0);
+		assertFalse(not.isSuperCall());
 		assertEquals("not", not.getServiceName());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
@@ -2864,6 +2946,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 51, 0, 51, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, Call.class, 0, 0, 0, 20, 0, 20, ((Call)ast).getArguments().get(0));
 		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
 				.getServiceName());
@@ -2904,6 +2987,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 61, 0, 61, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
 				.getServiceName());
 		assertExpression(build, StringLiteral.class, 5, 0, 5, 20, 0, 20, ((Call)((Call)ast).getArguments()
@@ -2946,6 +3030,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 63, 0, 63, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
 				.getServiceName());
 		assertExpression(build, StringLiteral.class, 5, 0, 5, 20, 0, 20, ((Call)((Call)ast).getArguments()
@@ -2988,6 +3073,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 51, 0, 51, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, Call.class, 0, 0, 0, 32, 0, 32, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 44, 0, 44, 51, 0, 51, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
@@ -3016,6 +3102,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 52, 0, 52, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, Call.class, 0, 0, 0, 32, 0, 32, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 44, 0, 44, 52, 0, 52, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
@@ -3045,6 +3132,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 56, 0, 56, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, Call.class, 0, 0, 0, 32, 0, 32, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 41, 0, 41, 55, 0, 55, ((Call)ast).getArguments().get(1));
 		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
@@ -3075,6 +3163,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 67, 0, 67, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, VarRef.class, 0, 0, 0, 8, 0, 8, ((Call)ast).getArguments().get(0));
 		assertEquals("aPackage", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
 		assertExpression(build, Lambda.class, 27, 0, 27, 66, 0, 66, ((Call)ast).getArguments().get(1));
@@ -3104,6 +3193,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 64, 0, 64, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
 				.getServiceName());
@@ -3133,6 +3223,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 27, 0, 27, ast);
 		assertEquals("any", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 0, 0, 19, 0, 19, ((Call)ast).getArguments()
 				.get(0));
@@ -3234,6 +3325,7 @@ public class BuildTest {
 		final ErrorCall arg0 = (ErrorCall)((Call)ast).getArguments().get(0);
 		assertEquals(false, arg0.isMissingEndParenthesis());
 		assertEquals("aqlFeatureAccess", arg0.getServiceName());
+		assertFalse(arg0.isSuperCall());
 		assertEquals(1, arg0.getArguments().size());
 		assertExpression(build, Call.class, 0, 0, 0, 22, 0, 22, arg0.getArguments().get(0));
 		assertEquals("primaryKeyColumn", ((Call)arg0.getArguments().get(0)).getServiceName());
@@ -3252,6 +3344,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 0, 0, 31, 0, 31, ast);
 		assertEquals("add", ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 	}
@@ -3291,6 +3384,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 0, 0, 14, 0, 14, ast);
 		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)ast).getServiceName());
+		assertFalse(((Call)ast).isSuperCall());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 		VarRef varRef = (VarRef)((Call)ast).getArguments().get(0);
 		assertEquals("self", varRef.getVariableName());
@@ -3299,7 +3393,7 @@ public class BuildTest {
 	}
 
 	@Test
-	public void missingvariableCall() {
+	public void missingVariableCall() {
 		AstResult build = engine.build(".someService(a, b)");
 		Expression ast = build.getAst();
 
@@ -3313,7 +3407,7 @@ public class BuildTest {
 	}
 
 	@Test
-	public void missingvariableCollectionCall() {
+	public void missingVariableCollectionCall() {
 		AstResult build = engine.build("->select(e | e)");
 		Expression ast = build.getAst();
 
@@ -3339,6 +3433,21 @@ public class BuildTest {
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, ErrorVariableDeclaration.class, 13, 0, 13, 15, 0, 15, build.getErrors().get(
 				0));
+	}
+
+	@Test
+	public void superCall() {
+		AstResult build = engine.build("self.super:service()");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertExpression(build, Call.class, 0, 0, 0, 20, 0, 20, ast);
+		assertEquals("service", ((Call)ast).getServiceName());
+		assertTrue(((Call)ast).isSuperCall());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
 	}
 
 }

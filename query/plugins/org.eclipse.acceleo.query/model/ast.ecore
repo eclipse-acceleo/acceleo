@@ -11,6 +11,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//CallType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="arguments" upperBound="-1"
         eType="#//Expression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="superCall" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="CallType">
     <eLiterals name="CALLSERVICE"/>

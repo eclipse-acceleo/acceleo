@@ -486,6 +486,16 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getCall_SuperCall() {
+		return (EAttribute)callEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public EClass getLiteral() {
 		return literalEClass;
 	}
@@ -1150,6 +1160,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		createEAttribute(callEClass, CALL__SERVICE_NAME);
 		createEAttribute(callEClass, CALL__TYPE);
 		createEReference(callEClass, CALL__ARGUMENTS);
+		createEAttribute(callEClass, CALL__SUPER_CALL);
 
 		literalEClass = createEClass(LITERAL);
 
@@ -1347,6 +1358,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEReference(getCall_Arguments(), this.getExpression(), null, "arguments", null, 0, -1, Call.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCall_SuperCall(), ecorePackage.getEBoolean(), "superCall", null, 0, 1, Call.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
 		initEClass(literalEClass, Literal.class, "Literal", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

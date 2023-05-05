@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.acceleo.query.ast.Call#getServiceName <em>Service Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.Call#getType <em>Type</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.Call#getArguments <em>Arguments</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.Call#isSuperCall <em>Super Call</em>}</li>
  * </ul>
  *
  * @see org.eclipse.acceleo.query.ast.AstPackage#getCall()
@@ -100,5 +101,28 @@ public interface Call extends Expression {
 	 * @generated
 	 */
 	EList<Expression> getArguments();
+
+	/**
+	 * Returns the value of the '<em><b>Super Call</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Super Call</em>' attribute.
+	 * @see #setSuperCall(boolean)
+	 * @see org.eclipse.acceleo.query.ast.AstPackage#getCall_SuperCall()
+	 * @model
+	 * @generated
+	 */
+	boolean isSuperCall();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.Call#isSuperCall <em>Super Call</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Super Call</em>' attribute.
+	 * @see #isSuperCall()
+	 * @generated
+	 */
+	void setSuperCall(boolean value);
 
 } // Call

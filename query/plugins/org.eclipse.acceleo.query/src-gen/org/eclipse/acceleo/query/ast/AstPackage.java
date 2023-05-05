@@ -192,13 +192,22 @@ public interface AstPackage extends EPackage {
 	int CALL__ARGUMENTS = EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Super Call</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__SUPER_CALL = EXPRESSION_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Call</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int CALL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
+	int CALL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Call</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1119,13 +1128,22 @@ public interface AstPackage extends EPackage {
 	int ERROR_CALL__ARGUMENTS = ERROR_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Super Call</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CALL__SUPER_CALL = ERROR_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Missing End Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_CALL__MISSING_END_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
+	int ERROR_CALL__MISSING_END_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Error Call</em>' class. <!-- begin-user-doc --> <!--
@@ -1134,7 +1152,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
+	int ERROR_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Error Call</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1534,6 +1552,15 @@ public interface AstPackage extends EPackage {
 	int OR__ARGUMENTS = CALL__ARGUMENTS;
 
 	/**
+	 * The feature id for the '<em><b>Super Call</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int OR__SUPER_CALL = CALL__SUPER_CALL;
+
+	/**
 	 * The number of structural features of the '<em>Or</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -1587,6 +1614,15 @@ public interface AstPackage extends EPackage {
 	int AND__ARGUMENTS = CALL__ARGUMENTS;
 
 	/**
+	 * The feature id for the '<em><b>Super Call</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int AND__SUPER_CALL = CALL__SUPER_CALL;
+
+	/**
 	 * The number of structural features of the '<em>And</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -1638,6 +1674,15 @@ public interface AstPackage extends EPackage {
 	 * @ordered
 	 */
 	int IMPLIES__ARGUMENTS = CALL__ARGUMENTS;
+
+	/**
+	 * The feature id for the '<em><b>Super Call</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int IMPLIES__SUPER_CALL = CALL__SUPER_CALL;
 
 	/**
 	 * The number of structural features of the '<em>Implies</em>' class. <!-- begin-user-doc --> <!--
@@ -1760,6 +1805,17 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getCall_Arguments();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Call#isSuperCall
+	 * <em>Super Call</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Super Call</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Call#isSuperCall()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EAttribute getCall_SuperCall();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Literal <em>Literal</em>}'.
@@ -2536,6 +2592,14 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CALL__ARGUMENTS = eINSTANCE.getCall_Arguments();
+
+		/**
+		 * The meta object literal for the '<em><b>Super Call</b></em>' attribute feature. <!-- begin-user-doc
+		 * --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute CALL__SUPER_CALL = eINSTANCE.getCall_SuperCall();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.LiteralImpl

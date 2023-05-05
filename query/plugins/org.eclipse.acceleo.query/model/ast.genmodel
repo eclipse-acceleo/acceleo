@@ -24,6 +24,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Call/serviceName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Call/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Call/arguments"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Call/superCall"/>
     </genClasses>
     <genClasses ecoreClass="ast.ecore#//Literal"/>
     <genClasses ecoreClass="ast.ecore#//IntegerLiteral">

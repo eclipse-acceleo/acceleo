@@ -86,8 +86,8 @@ public class EvaluationServiceStatusTests {
 		attribute.setName("attr0");
 
 		Diagnostic status = new BasicDiagnostic();
-		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {attribute, "noname" },
-				status);
+		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {attribute,
+				"noname" }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -100,7 +100,7 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void featureAccessOnObjectStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {Integer.valueOf(1),
+		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {Integer.valueOf(1),
 				"containment" }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
@@ -114,7 +114,7 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void serviceNotFoundStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call("noservice", new Object[] {1 }, status);
+		services.call("noservice", false, new Object[] {1 }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -127,7 +127,7 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void serviceReturnsNullStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call("serviceReturnsNull", new Object[] {1 }, status);
+		services.call("serviceReturnsNull", false, new Object[] {1 }, status);
 
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertEquals(0, status.getChildren().size());
@@ -136,7 +136,7 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void serviceThrowsExceptionStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call("serviceThrowsException", new Object[] {1 }, status);
+		services.call("serviceThrowsException", false, new Object[] {1 }, status);
 
 		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());

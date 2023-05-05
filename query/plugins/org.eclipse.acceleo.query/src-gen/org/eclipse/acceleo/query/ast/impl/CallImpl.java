@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link org.eclipse.acceleo.query.ast.impl.CallImpl#getServiceName <em>Service Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.CallImpl#getType <em>Type</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.CallImpl#getArguments <em>Arguments</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.CallImpl#isSuperCall <em>Super Call</em>}</li>
  * </ul>
  *
  * @generated
@@ -88,6 +89,26 @@ public class CallImpl extends ExpressionImpl implements Call {
 	 * @ordered
 	 */
 	protected EList<Expression> arguments;
+
+	/**
+	 * The default value of the '{@link #isSuperCall() <em>Super Call</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isSuperCall()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean SUPER_CALL_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isSuperCall() <em>Super Call</em>}' attribute. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #isSuperCall()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean superCall = SUPER_CALL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -175,6 +196,30 @@ public class CallImpl extends ExpressionImpl implements Call {
 	 * @generated
 	 */
 	@Override
+	public boolean isSuperCall() {
+		return superCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setSuperCall(boolean newSuperCall) {
+		boolean oldSuperCall = superCall;
+		superCall = newSuperCall;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.CALL__SUPER_CALL, oldSuperCall,
+					superCall));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AstPackage.CALL__ARGUMENTS:
@@ -197,6 +242,8 @@ public class CallImpl extends ExpressionImpl implements Call {
 				return getType();
 			case AstPackage.CALL__ARGUMENTS:
 				return getArguments();
+			case AstPackage.CALL__SUPER_CALL:
+				return isSuperCall();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -220,6 +267,9 @@ public class CallImpl extends ExpressionImpl implements Call {
 				getArguments().clear();
 				getArguments().addAll((Collection<? extends Expression>)newValue);
 				return;
+			case AstPackage.CALL__SUPER_CALL:
+				setSuperCall((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -241,6 +291,9 @@ public class CallImpl extends ExpressionImpl implements Call {
 			case AstPackage.CALL__ARGUMENTS:
 				getArguments().clear();
 				return;
+			case AstPackage.CALL__SUPER_CALL:
+				setSuperCall(SUPER_CALL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -260,6 +313,8 @@ public class CallImpl extends ExpressionImpl implements Call {
 				return type != TYPE_EDEFAULT;
 			case AstPackage.CALL__ARGUMENTS:
 				return arguments != null && !arguments.isEmpty();
+			case AstPackage.CALL__SUPER_CALL:
+				return superCall != SUPER_CALL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -279,6 +334,8 @@ public class CallImpl extends ExpressionImpl implements Call {
 		result.append(serviceName);
 		result.append(", type: ");
 		result.append(type);
+		result.append(", superCall: ");
+		result.append(superCall);
 		result.append(')');
 		return result.toString();
 	}
