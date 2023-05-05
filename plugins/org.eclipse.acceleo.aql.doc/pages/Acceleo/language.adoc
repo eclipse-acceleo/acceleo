@@ -282,7 +282,7 @@ The return type describes the kind of object this query is expected to return. I
 
 Queries can be overriden by extending a <<_module,module>> and writing a template or a query that have the same signature of a template or query that return a String in the extended module.
 
-Templates can be overriden by extending a <<_module,module>> and writing a template or query that have the same signature of a template or query that return a compatible type (String for template) in the extended module. Only `public` and `protected` templates and queries can be overriden.
+Templates can be overriden by extending a <<_module,module>> and writing a template or query that have the same signature of a template or query that return a compatible type (String for template) in the extended module.  Only `public` and `protected` templates and queries can be overriden.
 
 It you want to call the super template or query you can prefix the call with `super:`:
 
