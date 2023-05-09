@@ -53,6 +53,7 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
+import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -747,10 +748,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				// the first value is generated on its own
 				// to insert separators
 				final Object firstValue = iteration.remove(0);
+				int index = 1;
 				variables.put(name, firstValue);
+				variables.put(name + AcceleoValidator.INDEX_SUFFIX, index++);
 				builder.append(doSwitch(forStatement.getBody()));
 				for (Object val : iteration) {
 					variables.put(name, val);
+					variables.put(name + AcceleoValidator.INDEX_SUFFIX, index++);
 					if (forStatement.getSeparator() != null) {
 						builder.append(toString(doSwitch(forStatement.getSeparator())));
 					}

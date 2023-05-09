@@ -86,6 +86,11 @@ import org.eclipse.emf.ecore.EPackage;
 public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	/**
+	 * The index varible suffix for {@link ForStatement} {@link Binding}.
+	 */
+	public static final String INDEX_SUFFIX = "Index";
+
+	/**
 	 * The is incompatible with message.
 	 */
 	private static final String IS_INCOMPATIBLE_WITH = " is incompatible with ";
@@ -141,6 +146,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final IType booleanObjectType;
 
 	/**
+	 * {@link Integer} {@link IType}.
+	 */
+	private final IType integerType;
+
+	/**
 	 * The mapping from a {@link VarRef#getVariableName() variable name} to its {@link List} of unresolved
 	 * {@link VarRef}.
 	 */
@@ -157,6 +167,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		this.stringType = new ClassType(queryEnvironment, String.class);
 		this.booleanType = new ClassType(queryEnvironment, boolean.class);
 		this.booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
+		this.integerType = new ClassType(queryEnvironment, Integer.class);
 		validator = new AstValidator(new ValidationServices(queryEnvironment));
 	}
 
@@ -699,6 +710,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					variableTypes.add(possibleType);
 				}
 			}
+			final Set<IType> indexTypes = new LinkedHashSet<>();
+			indexTypes.add(integerType);
+			peekVariableTypes().put(binding.getName() + INDEX_SUFFIX, indexTypes);
 		} else {
 			variableTypes.addAll(possibleTypes);
 		}

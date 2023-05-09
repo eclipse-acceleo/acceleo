@@ -156,6 +156,7 @@ For loops in Acceleo need to be expressed using the following syntax:
 
 variable::
 The variable follows the <<_variable,format for variables>>. The variable type must match the result of the iteration expression. If the expression returns a collection of Strings, then the variable will be of type String. Because of this, typing the variable is optional.
+A variable with the same name and suffixed with `Index` will also be created. Its value is the current loop index starting at `1`.
 iteration expression::
 An AQL expression returning a collection of elements on which to iterate. If the expression doesn't return a collection but a single element, it will be used to iterate only once.
 separator::
@@ -170,6 +171,7 @@ Example:
 [/template]
 ----
 
+In this example you can also use the `featureIndex` variable to keep track of the loop index.
 See also the <<syntax#_for_statement,For Statement syntax documentation>>.
 
 ==== If conditions
