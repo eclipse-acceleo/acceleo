@@ -1,0 +1,68 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _UpUkMNPEEe2HOPiwgPK0BQ,_cVN2wOjqEe2z9_81fZHIXA
+Element-Name: BindingLet
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _rBkhkO48Ee2tuaw94kZDDQ
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 5/9/23, 10:29 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/a.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/b.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/c.mtl" | double-click
+
+with [get-editor "c.mtl" | get-text-viewer] {
+    select-range 19 11 19 12
+    key-type "M2+M3+r"
+}
+with [get-window Rename] {
+    get-editbox -after [get-label "New name:"] | set-text renamed
+    get-button OK | click -metaKeys ""
+}
+
+get-editor "c.mtl" | get-text-viewer | get-property text 
+    | equals "[module c('http://www.eclipse.org/emf/2002/Ecore')/]\n\n"
+    + "[import test::ModuleServices/]\n\n"
+    + "[comment @main /]\n"
+    + "[template public myTemplate(myParam : ecore::EPackage)]\n"
+    + "  [file (myParam.name + '.txt', overwrite)]\n"
+    + "     - [for (myVariable1 : ecore::EClassifier | myParam.eClassifiers)]\n"
+    + "         some text [myVariable1.name/]\n"
+    + "         [myVariable1.myTemplateImport()/]\n"
+    + "         some text [myVariable1.name.getMessage()/]\n"
+    + "       [/for]\n"
+    + "        [myParam.eClassifiers.name.getMessage()/]\n"
+    + "        [myParam.myTemplate2()/]\n"
+    + "  [/file]\n"
+    + "[/template]\n\n"
+    + "[template public myTemplate2(myParam : ecore::EPackage)]\n"
+    + "  [let  renamed = myParam.name]\n"
+    + "    [renamed/]\n"
+    + "  [/let]\n"
+    + "  [myParam->select(ccc | ccc.name = '' or ccc.name = 'A')/]\n"
+    + "  [ let name = myParam.name in name/]\n"
+    + "  [myParam.name.getMessage()/]\n"
+    + "  [myParam.name.size().myQuery()/]\n"
+    + "  [myParam.name.size().myQueryExtends()/]\n"
+    + "  [myParam.name.size().myQueryImport()/]\n"
+    + "  [myParam.eClassifiers->filter(ecore::EClass).templateExtends()/]\n"
+    + "[/template]\n\n"
+    + "[query public myQuery(myParameter: Integer): Integer= myParameter * 2/]\n\n"
+    + "[template public templateExtends(c : ecore::EClass)]\n"
+    + "  [file ('anydsl.txt', overwrite)]\n"
+    + "    [c.name.toUpperFirst()/]\n"
+    + "  [/file]\n"
+    + "[/template]\n\n"
+    + "[query public myQueryExtends(myParameter: Integer): Integer= myParameter * 2/]\n\n"
+    + "[template public myTemplateImport(myParam : ecore::EClassifier)]\n"
+    + "  [myParam.name/].\n"
+    + "[/template]\n\n"
+    + "[query public myQueryImport(myParameter: Integer): Integer= myParameter * 2/]" | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
