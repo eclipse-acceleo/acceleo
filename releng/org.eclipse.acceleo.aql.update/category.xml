@@ -42,6 +42,9 @@
    <feature id="org.eclipse.acceleo.ui.interpreter.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.license" version="0.0.0">
+       <category name="M2Doc"/>
+   </feature>
    <bundle id="org.antlr.runtime"/>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
