@@ -5,7 +5,7 @@ include "../common/license.tpd"
 include "../common/lsp.tpd"
 include "../common/rcptt.tpd"
 
-with source requirements
+with requirements
 
 location "https://download.eclipse.org/releases/2023-03" {
 	org.eclipse.platform.sdk lazy

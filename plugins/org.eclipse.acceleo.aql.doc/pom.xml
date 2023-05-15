@@ -29,6 +29,7 @@
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
+        <version>2.2.3</version>
         <configuration>
           <sourceHighlighter>highlight.js</sourceHighlighter>
           <icons>font</icons>

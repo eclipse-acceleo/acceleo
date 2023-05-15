@@ -2,7 +2,7 @@ target "LSP"
 
 include "orbit.tpd"
 
-with source, requirements
+with requirements
 
 location "https://download.eclipse.org/lsp4e/releases/0.22.0/" {
 	org.eclipse.lsp4j lazy

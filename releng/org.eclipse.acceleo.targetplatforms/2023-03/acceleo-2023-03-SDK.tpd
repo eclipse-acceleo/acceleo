@@ -1,0 +1,8 @@
+target "Acceleo 2022-12 Target Platform SDK"
+
+include "acceleo-2023-03.tpd"
+include "../common/license.tpd"
+include "../common/lsp.tpd"
+include "../common/rcptt.tpd"
+
+with source requirements

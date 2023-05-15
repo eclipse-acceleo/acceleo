@@ -1,6 +1,6 @@
 target "RCPTT"
 
-with source, requirements
+with requirements
 
 location "https://download.eclipse.org/rcptt/release/2.5.4/repository" {
 	org.eclipse.rcptt.platform.feature.group lazy
