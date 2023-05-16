@@ -68,4 +68,11 @@
             contentTypeId="org.eclipse.acceleo.aql.ide.ui">
       </contentTypeBinding>
    </extension>
+   <extension
+         point="org.eclipse.ui.genericeditor.autoEditStrategies">
+      <autoEditStrategy
+            class="org.eclipse.acceleo.aql.ide.ui.AcceleoAutoEditStrategy"
+            contentType="org.eclipse.acceleo.aql.ide.ui">
+      </autoEditStrategy>
+   </extension>
 </plugin>
