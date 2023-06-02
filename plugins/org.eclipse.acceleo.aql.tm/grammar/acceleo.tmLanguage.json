@@ -180,16 +180,23 @@
 				},
 				{
 					"include": "#module-element-documentation-param-tag-value"
+				},
+				{
+					"include": "#module-element-documentation-main-tag-value"
 				}
 			]
 		},
 		"module-element-documentation-tag": {
 			"name": "keyword.other.documentation.acceleo",
-			"match": "@\\b(param)\\b"
+			"match": "@\\b(param|main)\\b"
 		},
 		"module-element-documentation-param-tag-value": {
 			"name": "meta.documentation.tag.value",
 			"match": "(?<=@\\bparam\\b)(.*)(?=$)"
+		},
+		"module-element-documentation-main-tag-value": {
+			"name": "meta.documentation.tag.value",
+			"match": "(@\\bmain\\b)"
 		},
 		
 		"query": {
