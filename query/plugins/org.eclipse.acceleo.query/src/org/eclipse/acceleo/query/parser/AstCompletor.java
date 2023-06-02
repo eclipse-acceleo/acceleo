@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -212,10 +212,10 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorTypeLiteral(ErrorTypeLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		result.add(new TextCompletionProposal("String", 0));
-		result.add(new TextCompletionProposal("Integer", 0));
-		result.add(new TextCompletionProposal("Real", 0));
-		result.add(new TextCompletionProposal("Boolean", 0));
+		result.add(new TextCompletionProposal(AstSerializer.STRING_TYPE, 0));
+		result.add(new TextCompletionProposal(AstSerializer.INTEGER_TYPE, 0));
+		result.add(new TextCompletionProposal(AstSerializer.REAL_TYPE, 0));
+		result.add(new TextCompletionProposal(AstSerializer.BOOLEAN_TYPE, 0));
 		result.add(new TextCompletionProposal("Sequence()", 1));
 		result.add(new TextCompletionProposal("OrderedSet()", 1));
 		result.add(new TextCompletionProposal("{}", 1));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,26 @@ import org.eclipse.acceleo.query.ast.util.AstSwitch;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AstSerializer extends AstSwitch<Object> {
+
+	/**
+	 * id of the String type to use in variable declaration properties.
+	 */
+	public static final String STRING_TYPE = "String";
+
+	/**
+	 * id of the integer type to use in variable declaration properties.
+	 */
+	public static final String INTEGER_TYPE = "Integer";
+
+	/**
+	 * id of the real type to use in variable declaration properties.
+	 */
+	public static final String REAL_TYPE = "Real";
+
+	/**
+	 * id of the boolean type to use in variable declaration properties.
+	 */
+	public static final String BOOLEAN_TYPE = "Boolean";
 
 	/**
 	 * A dummy {@link Object} to prevent switching in super types.
@@ -893,7 +913,7 @@ public class AstSerializer extends AstSwitch<Object> {
 	@Override
 	public Object caseClassTypeLiteral(ClassTypeLiteral classTypeLiteral) {
 		if (classTypeLiteral.getValue() == Double.class) {
-			builder.append("Real");
+			builder.append(REAL_TYPE);
 		} else {
 			builder.append(((Class<?>)classTypeLiteral.getValue()).getSimpleName());
 		}

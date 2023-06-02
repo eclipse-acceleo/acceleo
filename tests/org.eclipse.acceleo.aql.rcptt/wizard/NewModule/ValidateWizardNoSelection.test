@@ -1,0 +1,470 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _d8d2kKyFEeqylZAj0d4Xnw,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: ValidateWizardNoSelection
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _tTc3YACBEe6sgorFApEawQ
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 6/2/23, 10:48 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | get-menu -path "New/Other..." | click -metaKeys ""
+with [get-window "Select a wizard"] {
+    get-tree | select "Acceleo 4/Acceleo Module File"
+    get-button "Next >" | click -metaKeys ""
+}
+with [get-window -class WizardDialog] {
+    get-label "" -after [get-label File] -index 3 | get-property "image.path" 
+        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "The path of the parent folder of the module cannot be empty." | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "" | verify-true
+    get-button "Select..." | get-property enablement | equals false | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals false | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-button "Browse..." | click -metaKeys ""
+    with [get-window "Folder Selection"] {
+        get-tree | select "test/src/test"
+        get-button OK | click -metaKeys ""
+    }
+}
+with [get-window -class WizardDialog] {
+    get-label "" -after [get-label File] -index 3 | get-property "image.path" 
+        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "The list of metamodel URIs used by the module is empty." | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "" | verify-true
+    get-button "Select..." | get-property enablement | equals false | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals false | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-button "Add metamodels to the module definition" | click -metaKeys ""
+    get-window "Package Selection" | get-table | select "http:\\/\\/www.eclipse.org\\/acceleo\\/profiler\\/4.0" | click 
+        -default
+}
+with [get-window -class WizardDialog] {
+    get-label "" -after [get-label File] -index 3 | get-property "image.path" 
+        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "The type of the parameter of the module element cannot be empty." | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals false | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-button "Select..." | click -metaKeys ""
+    get-window "Select a variable type for parameter" | get-tree | select "profiler::ProfileResource" | double-click
+}
+with [get-window -class WizardDialog] {
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "" | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+get-window -class WizardDialog | get-button "Generate documentation" | check
+with [get-window -class WizardDialog] {
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "" | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+get-window -class WizardDialog | get-button "Generate file" | check
+with [get-window -class WizardDialog] {
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "" | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+get-window -class WizardDialog | get-button "Main template" | check
+with [get-window -class WizardDialog] {
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "" | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals false | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+get-window -class WizardDialog | get-button "Initialize Contents" | check
+with [get-window -class WizardDialog] {
+    get-label "" -after [get-label File] -index 3 | get-property "image.path" 
+        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "The path of initialization file cannot be empty if the initialization of the content has been selected." | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals true | verify-true
+        get-property text | equals "" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals true | verify-true
+    get-button Finish | get-property enablement | equals false | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-button "Browse..." -after [get-label File] | click -metaKeys ""
+    get-window "Select an example" | get-table | select "ModuleServices.java - test\\/src\\/test" | double-click
+}
+with [get-window -class WizardDialog] {
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "" | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Template Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals true | verify-true
+    get-button Query | get-property selected | equals false | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals true | verify-true
+        get-property text | equals "/test/src/test/ModuleServices.java" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals true | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+get-window -class WizardDialog | get-button Query | click -metaKeys ""
+with [get-window -class WizardDialog] {
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "" | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Query Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals false | verify-true
+    get-button Query | get-property selected | equals true | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "/test/src/test/ModuleServices.java" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-table | select "http:\\/\\/www.eclipse.org\\/acceleo\\/profiler\\/4.0"
+    get-button "Remove metamodels from the module definition" | click -metaKeys ""
+}
+with [get-window -class WizardDialog] {
+    get-label "" -after [get-label File] -index 3 | get-property "image.path" 
+        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "The list of metamodel URIs used by the module is empty." | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Query Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals false | verify-true
+    get-button Query | get-property selected | equals true | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "" | verify-true
+    get-button "Select..." | get-property enablement | equals false | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "/test/src/test/ModuleServices.java" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals false | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-button "Add metamodels to the module definition" | click -metaKeys ""
+    with [get-window "Package Selection"] {
+        get-table | select "http:\\/\\/www.eclipse.org\\/acceleo\\/profiler\\/4.0" | click -default
+    }
+    get-button "Select..." | click -metaKeys ""
+    get-window "Select a variable type for parameter" | get-tree | select "profiler::ProfileResource" | double-click
+    get-button "Add metamodels to the module definition" | click -metaKeys ""
+    get-window "Package Selection" | get-table | select "http:\\/\\/eclipse.org\\/rcptt\\/ctx\\/debug" | click -default
+    get-table | select "http:\\/\\/eclipse.org\\/rcptt\\/ctx\\/debug"
+    get-button "Remove metamodels from the module definition" | click -metaKeys ""
+}
+with [get-window -class WizardDialog] {
+    get-editbox -after [get-label File] -index 1 | get-property text 
+        | equals "" | verify-true
+    get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
+    get-editbox -after [get-label "Module Name:"] | get-property text | equals generate | verify-true
+    get-editbox -after [get-label "Query Name:"] | get-property text | equals generateElement | verify-true
+    get-button Template | get-property selected | equals false | verify-true
+    get-button Query | get-property selected | equals true | verify-true
+    get-editbox -after [get-label "Type:"] | get-property text | equals "profiler::ProfileResource" | verify-true
+    get-button "Select..." | get-property enablement | equals true | verify-true
+    with [get-button "Generate documentation"] {
+        get-property enablement | equals true | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Generate file"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Main template"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-button "Initialize Contents"] {
+        get-property enablement | equals false | verify-true
+        get-property selected | equals true | verify-true
+    }
+    with [get-editbox -after [get-label File]] {
+        get-property enablement | equals false | verify-true
+        get-property text | equals "/test/src/test/ModuleServices.java" | verify-true
+    }
+    get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+get-window -class WizardDialog | get-button Cancel | click -metaKeys ""
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

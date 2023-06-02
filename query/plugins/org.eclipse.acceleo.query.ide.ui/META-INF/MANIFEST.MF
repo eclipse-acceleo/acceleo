@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.jface;bundle-version="[3.0.0,4.0.0)",
  org.antlr.runtime;bundle-version="[4.10.1,4.10.2)",
  org.eclipse.core.runtime
 Export-Package: org.eclipse.acceleo.query.ide.ui,
+ org.eclipse.acceleo.query.ide.ui.dialog,
  org.eclipse.acceleo.query.ide.ui.viewer
 Bundle-Localization: plugin
 Automatic-Module-Name: org.eclipse.acceleo.query.ide.ui
