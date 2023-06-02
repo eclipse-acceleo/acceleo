@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _efG8QAEkEe6wCshv5RDL9g
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 6/2/23, 11:05 AM
+Save-Time: 6/2/23, 4:25 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -30,25 +30,25 @@ with [get-window "Select a wizard"] {
     get-window "Select an example" | get-table | select "ModuleServices.java - test\\/src\\/test" | double-click
 }
 get-window -class WizardDialog | get-button Finish | click -metaKeys ""
-get-editor "generate.mtl" | get-text-viewer | get-property text | equals "[comment encoding = UTF-8 /]\n"
-    + "[**\n"
-    + " * The documentation of the module generate.\n"
-    + " * @author ylp\n"
-    + " * @version 1.0.0\n"
-    + " * @since 1.0.0\n"
-    + " */]\n"
-    + "[module generate('http://www.eclipse.org/acceleo/profiler/4.0')/]\n\n"
-    + "[comment @main/]\n"
-    + "[template public generateElement(parameter : profiler::ProfileResource)]\n"
+get-editor "generate.mtl" | get-text-viewer | get-property text | matches "\\[comment encoding = UTF-8 /]\n"
+    + "\\[\\*\\*\n"
+    + " \\* The documentation of the module generate.\n"
+    + " \\* @author [a-zA-Z-0-9]+\n"
+    + " \\* @version 1.0.0\n"
+    + " \\* @since 1.0.0\n"
+    + " \\*/]\n"
+    + "\\[module generate\\('http://www.eclipse.org/acceleo/profiler/4.0'\\)/]\n\n"
+    + "\\[comment @main/]\n"
+    + "\\[template public generateElement\\(parameter : profiler::ProfileResource\\)]\n"
     + "  package test;\n"
     + "  \n"
-    + "  public class ModuleServices {\n"
+    + "  public class ModuleServices \\{\n"
     + "  \n"
-    + "  \tpublic String getMessage(String name) {\n"
-    + "  \t\treturn \"Hello \" + name + \" !!!\";\n"
+    + "  \tpublic String getMessage\\(String name\\) \\{\n"
+    + "  \t\treturn \"Hello \" \\+ name \\+ \" !!!\";\n"
     + "  \t}\n"
     + "  \n"
     + "  }\n"
     + "  \n"
-    + "[/template]" | verify-true
+    + "\\[/template]" | verify-true
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
