@@ -1,0 +1,218 @@
+class World(EObject):
+    """
+    Java class: World
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "World")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class MultiNamedElement(EObject):
+    """
+    Java class: MultiNamedElement
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "MultiNamedElement")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class NamedElement(EObject):
+    """
+    Java class: NamedElement
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "NamedElement")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Producer(NamedElement):
+    """
+    Java class: Producer
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Producer")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Adress(EObject):
+    """
+    Java class: Adress
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Adress")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Company(NamedElement):
+    """
+    Java class: Company
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Company")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class ProductionCompany(Company):
+    """
+    Java class: ProductionCompany
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "ProductionCompany")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Restaurant(Company):
+    """
+    Java class: Restaurant
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Restaurant")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Chef(NamedElement):
+    """
+    Java class: Chef
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Chef")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Recipe(NamedElement):
+    """
+    Java class: Recipe
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Recipe")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Food(NamedElement):
+    """
+    Java class: Food
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Food")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Source(MultiNamedElement):
+    """
+    Java class: Source
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Source")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Plant(Source):
+    """
+    Java class: Plant
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Plant")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+class Animal(Source):
+    """
+    Java class: Animal
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "Animal")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+# TODO generateClassifier(EEnum)
+# TODO generateClassifier(EEnum)
+# TODO generateClassifier(EEnum)
+# TODO generateClassifier(EEnum)
+# TODO generateClassifier(EEnum)
+# TODO generateClassifier(EEnum)
+# TODO generateClassifier(EDataType)
+# TODO generateClassifier(EDataType)
+class EStringToRecipeMap(EObject):
+    """
+    Java class: EStringToRecipeMap
+    """
+    e_class = get_e_classifier("http://www.eclipse.org/acceleo/anydsl", "EStringToRecipeMap")
+    def __init__(self, java_object = None):
+        if java_object is None:
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+        elif isinstance(java_object, CapellaElement):
+            JavaObject.__init__(self, java_object.get_java_object())
+        elif self.e_class.isInstance(java_object):
+            JavaObject.__init__(self, java_object)
+        else:
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))

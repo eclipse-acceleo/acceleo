@@ -122,7 +122,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	/**
 	 * Tells if the current {@link Block} is {@link Block#isInlined() inlined}.
 	 */
-	private boolean inlinedBlock;
+	private Deque<Boolean> inlinedBlock = new ArrayDeque<>();
 
 	/**
 	 * The destination {@link URI}.
@@ -189,9 +189,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		generationStrategy = strategy;
 
 		final String savedLastLineOfLastStatement = lastLineOfLastStatement;
-		final boolean savedInlinedBlock = inlinedBlock;
+		final Deque<Boolean> savedInlinedBlock = inlinedBlock;
 		lastLineOfLastStatement = "";
-		inlinedBlock = false;
+		inlinedBlock.addLast(false);
 		if (generationResult == null) {
 			generationResult = new GenerationResult();
 		}
@@ -255,12 +255,21 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	protected void pushIndentation(Block block, String indentation) {
 		if (block.isInlined()) {
-			inlinedBlock = true;
+			inlinedBlock.addLast(true);
 			indentationStack.addLast("");
 		} else {
-			inlinedBlock = false;
+			inlinedBlock.addLast(false);
 			indentationStack.addLast(indentation);
 		}
+	}
+
+	/**
+	 * Peeks the last {@link #pushIndentation(Map) pushed} inline block from the stack.
+	 * 
+	 * @return the last {@link #pushIndentation(Map) pushed} inline block from the stack
+	 */
+	protected boolean peekInlinedBlock() {
+		return inlinedBlock.peekLast();
 	}
 
 	/**
@@ -278,6 +287,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 * @return the last {@link #pushIndentation(Map) pushed} indentation from the stack
 	 */
 	protected String popIndentation() {
+		inlinedBlock.removeLast();
 		return indentationStack.removeLast();
 	}
 
@@ -327,7 +337,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		final String indentation;
-		if (inlinedBlock) {
+		if (peekInlinedBlock()) {
 			indentation = "";
 		} else {
 			if (lastLineOfLastStatement.isEmpty()) {

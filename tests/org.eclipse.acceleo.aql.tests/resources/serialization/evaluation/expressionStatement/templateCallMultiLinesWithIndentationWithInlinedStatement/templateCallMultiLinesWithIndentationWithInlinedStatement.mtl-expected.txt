@@ -1,0 +1,47 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(pkg : ecore::EPackage)]
+  [file (pkg.name + '.txt', overwrite)]
+    [for (cls | pkg.eClassifiers)]
+      [cls.generateClassifier()/]
+    [/for]
+  [/file]
+[/template]
+
+[**
+ * Generates the Python class for the given EClassifier.
+ * @param cls the classifier
+ */]
+[template public generateClassifier(cls : ecore::EClassifier)]
+  # TODO generateClassifier([cls.eClass().name/])
+[/template]
+
+[**
+ * Generates the Python class for the given EClass.
+ * @param cls the class
+ */]
+[template public generateClassifier(cls : ecore::EClass)]
+  class [cls.name/]([if (not cls.eSuperTypes->isEmpty())][cls.eSuperTypes.name->sep(', ')/][else]EObject[/if]):
+      """
+      Java class: [cls.name/]
+      """
+      [cls.generateConstructor()/]
+[/template]
+
+[**
+ * Generates the Python class constructor for the given EClass.
+ * @param cls the class
+ */]
+[template public generateConstructor(cls : ecore::EClass)]
+  e_class = get_e_classifier("[cls.ePackage.nsURI/]", "[cls.name/]")
+  def __init__(self, java_object = None):
+      if java_object is None:
+          JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class))
+      elif isinstance(java_object, CapellaElement):
+          JavaObject.__init__(self, java_object.get_java_object())
+      elif self.e_class.isInstance(java_object):
+          JavaObject.__init__(self, java_object)
+      else:
+          raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object))
+[/template]
