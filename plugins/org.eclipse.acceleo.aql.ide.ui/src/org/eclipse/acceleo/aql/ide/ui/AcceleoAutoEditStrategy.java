@@ -133,8 +133,33 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 	@Override
 	public void customizeDocumentCommand(IDocument document, DocumentCommand command) {
 		if (command.length == 0 && command.text != null && TextUtilities.endsWith(document
-				.getLegalLineDelimiters(), command.text) != -1)
-			autoIndentAfterNewLine(document, command);
+				.getLegalLineDelimiters(), command.text) != -1) {
+			if (onNewLine(document, command)) {
+				autoIndentAfterNewLine(document, command);
+			}
+		}
+	}
+
+	/**
+	 * Tells if the given {@link DocumentCommand} was triggered on a new line of the given {@link IDocument}.
+	 * 
+	 * @param document
+	 *            the {@link IDocument}
+	 * @param command
+	 *            the {@link DocumentCommand}
+	 * @return <code>true</code> if the given {@link DocumentCommand} was triggered on a new line of the given
+	 *         {@link IDocument}, <code>false</code> otherwise
+	 */
+	private boolean onNewLine(IDocument document, DocumentCommand command) {
+		boolean res;
+		try {
+			res = AcceleoParser.NEW_LINE.equals(document.get(command.offset, AcceleoParser.NEW_LINE
+					.length()));
+		} catch (BadLocationException e) {
+			res = false;
+		}
+
+		return res;
 	}
 
 }
