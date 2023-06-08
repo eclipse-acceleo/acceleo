@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -267,7 +267,7 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_FOR_STATEMENT = AcceleoParser.FOR_HEADER_START + SPACE
+	public static final String NEW_FOR_STATEMENT = AcceleoParser.FOR_HEADER_START
 			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE + AcceleoParser.PIPE
 			+ SPACE + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END
 			+ NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.FOR_END;
@@ -283,7 +283,7 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_IF_STATEMENT = AcceleoParser.IF_HEADER_START + SPACE
+	public static final String NEW_IF_STATEMENT = AcceleoParser.IF_HEADER_START
 			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS
 			+ AcceleoParser.IF_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.IF_END;
 
@@ -298,7 +298,7 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_FILE_STATEMENT = AcceleoParser.FILE_HEADER_START + SPACE
+	public static final String NEW_FILE_STATEMENT = AcceleoParser.FILE_HEADER_START
 			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.COMMA + SPACE
 			+ OpenModeKind.OVERWRITE.getName() + AcceleoParser.COMMA + SPACE + "'UTF-8'"
 			+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FILE_HEADER_END + NEWLINE + SPACE + SPACE
@@ -316,7 +316,7 @@ public final class AcceleoCodeTemplates {
 	 * </pre>
 	 */
 	public static final String NEW_PROTECTED_AREA_STATEMENT = AcceleoParser.PROTECTED_AREA_HEADER_START
-			+ SPACE + AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS
+			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS
 			+ AcceleoParser.PROTECTED_AREA_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE
 			+ AcceleoParser.PROTECTED_AREA_END;
 
@@ -331,7 +331,7 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_LET_STATEMENT = AcceleoParser.LET_HEADER_START + SPACE
+	public static final String NEW_LET_STATEMENT = AcceleoParser.LET_HEADER_START
 			+ DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE + AcceleoParser.EQUAL + SPACE + DEFAULT_EXPRESSION
 			+ AcceleoParser.LET_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.LET_END;
 
