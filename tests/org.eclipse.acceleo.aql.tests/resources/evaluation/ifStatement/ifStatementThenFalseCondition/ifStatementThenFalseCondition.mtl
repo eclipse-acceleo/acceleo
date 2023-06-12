@@ -4,13 +4,9 @@
 [template public myTemplate(myParam : ecore::EPackage)]
   [file (myParam.name + '.txt', overwrite)]
     first text.
-    ***[if (false)]
-         then block.
-       [elseif (false)]
-         elseif block.
-       [else]
-         else block.
-       [/if]
+    [if (false)]
+      then block.
+    [/if]
     last text.
   [/file]
 [/template]

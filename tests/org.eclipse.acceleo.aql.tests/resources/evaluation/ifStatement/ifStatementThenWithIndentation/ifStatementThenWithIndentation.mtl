@@ -3,6 +3,7 @@
 [comment @main /]
 [template public myTemplate(myParam : ecore::EPackage)]
   [file (myParam.name + '.txt', overwrite)]
+    first text.
     ***[if (true)]
          then block.
        [elseif (false)]
@@ -10,5 +11,6 @@
        [else]
          else block.
        [/if]
+    last text.
   [/file]
 [/template]

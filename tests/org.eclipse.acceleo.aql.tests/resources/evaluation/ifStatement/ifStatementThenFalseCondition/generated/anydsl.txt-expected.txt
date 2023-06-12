@@ -1,3 +1,2 @@
 first text.
-***then block.
 last text.

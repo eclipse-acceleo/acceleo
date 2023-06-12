@@ -1,1 +1,3 @@
+first text.
 ***else block.
+last text.
