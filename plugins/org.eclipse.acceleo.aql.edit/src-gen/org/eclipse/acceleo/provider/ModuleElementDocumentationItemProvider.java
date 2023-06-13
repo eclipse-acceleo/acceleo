@@ -107,7 +107,8 @@ public class ModuleElementDocumentationItemProvider extends CommentItemProvider 
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_ModuleElementDocumentation_type"); //$NON-NLS-1$
+		ModuleElementDocumentation moduleElementDocumentation = (ModuleElementDocumentation) object;
+		return getString("_UI_ModuleElementDocumentation_type") + " " + moduleElementDocumentation.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

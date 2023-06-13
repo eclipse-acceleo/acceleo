@@ -62,6 +62,7 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addMissingOpenParenthesisPropertyDescriptor(object);
 			addMissingCloseParenthesisPropertyDescriptor(object);
 			addMissingStartTagPrefixCloseParenthesisPropertyDescriptor(object);
@@ -70,6 +71,22 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 			addMissingEndPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -225,7 +242,7 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 	@Override
 	public String getText(Object object) {
 		ErrorProtectedArea errorProtectedArea = (ErrorProtectedArea) object;
-		return getString("_UI_ErrorProtectedArea_type") + " " + errorProtectedArea.getMissingOpenParenthesis(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_ErrorProtectedArea_type") + " " + errorProtectedArea.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -240,6 +257,7 @@ public class ErrorProtectedAreaItemProvider extends ItemProviderAdapter implemen
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorProtectedArea.class)) {
+		case AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES:
 		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS:
 		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS:
 		case AcceleoPackage.ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS:

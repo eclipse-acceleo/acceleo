@@ -1649,6 +1649,16 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getStatement_MultiLines() {
+		return (EAttribute)statementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public EClass getLeafStatement() {
 		return leafStatementEClass;
 	}
@@ -2470,6 +2480,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(errorBindingEClass, ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION);
 
 		statementEClass = createEClass(STATEMENT);
+		createEAttribute(statementEClass, STATEMENT__MULTI_LINES);
 
 		leafStatementEClass = createEClass(LEAF_STATEMENT);
 		createEAttribute(leafStatementEClass, LEAF_STATEMENT__NEW_LINE_NEEDED);
@@ -3003,6 +3014,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(statementEClass, Statement.class, "Statement", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getStatement_MultiLines(), ecorePackage.getEBoolean(), "multiLines", null, 1, 1, //$NON-NLS-1$
+				Statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(leafStatementEClass, LeafStatement.class, "LeafStatement", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);

@@ -40,6 +40,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#isMultiLines <em>Multi
+ * Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getDocumentedElement <em>Documented
  * Element</em>}</li>
@@ -52,6 +54,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Container implements ErrorModuleElementDocumentation {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
@@ -119,6 +141,31 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.ERROR_MODULE_ELEMENT_DOCUMENTATION;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES, oldMultiLines,
+					multiLines));
 	}
 
 	/**
@@ -330,6 +377,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY:
 				return getBody();
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT:
@@ -353,6 +402,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY:
 				setBody((CommentBody)newValue);
 				return;
@@ -378,6 +430,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY:
 				setBody((CommentBody)null);
 				return;
@@ -402,6 +457,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY:
 				return body != null;
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT:
@@ -429,6 +486,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 		}
 		if (baseClass == Statement.class) {
 			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES:
+					return AcceleoPackage.STATEMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -475,6 +534,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 		}
 		if (baseClass == Statement.class) {
 			switch (baseFeatureID) {
+				case AcceleoPackage.STATEMENT__MULTI_LINES:
+					return AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -517,7 +578,9 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (missingEndHeader: "); //$NON-NLS-1$
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);
 		result.append(')');
 		return result.toString();

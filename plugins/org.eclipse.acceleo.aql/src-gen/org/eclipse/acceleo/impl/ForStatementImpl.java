@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBinding <em>Binding</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getSeparator <em>Separator</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ForStatementImpl#getBody <em>Body</em>}</li>
@@ -38,6 +39,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ForStatementImpl extends MinimalEObjectImpl.Container implements ForStatement {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getBinding() <em>Binding</em>}' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -85,6 +106,30 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.FOR_STATEMENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FOR_STATEMENT__MULTI_LINES,
+					oldMultiLines, multiLines));
 	}
 
 	/**
@@ -269,6 +314,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.FOR_STATEMENT__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				return getBinding();
 			case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
@@ -287,6 +334,9 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.FOR_STATEMENT__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				setBinding((Binding)newValue);
 				return;
@@ -308,6 +358,9 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.FOR_STATEMENT__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				setBinding((Binding)null);
 				return;
@@ -329,6 +382,8 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.FOR_STATEMENT__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.FOR_STATEMENT__BINDING:
 				return binding != null;
 			case AcceleoPackage.FOR_STATEMENT__SEPARATOR:
@@ -337,6 +392,23 @@ public class ForStatementImpl extends MinimalEObjectImpl.Container implements Fo
 				return body != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(')');
+		return result.toString();
 	}
 
 } // ForStatementImpl

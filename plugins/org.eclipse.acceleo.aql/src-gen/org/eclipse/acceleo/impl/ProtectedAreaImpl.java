@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#getId <em>Id</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ProtectedAreaImpl#getStartTagPrefix <em>Start Tag Prefix</em>}</li>
@@ -38,6 +39,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements ProtectedArea {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getId() <em>Id</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -95,6 +116,30 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.PROTECTED_AREA;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.PROTECTED_AREA__MULTI_LINES,
+					oldMultiLines, multiLines));
 	}
 
 	/**
@@ -333,6 +378,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.PROTECTED_AREA__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.PROTECTED_AREA__ID:
 				return getId();
 			case AcceleoPackage.PROTECTED_AREA__BODY:
@@ -353,6 +400,9 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.PROTECTED_AREA__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.PROTECTED_AREA__ID:
 				setId((Expression)newValue);
 				return;
@@ -377,6 +427,9 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.PROTECTED_AREA__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.PROTECTED_AREA__ID:
 				setId((Expression)null);
 				return;
@@ -401,6 +454,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.PROTECTED_AREA__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.PROTECTED_AREA__ID:
 				return id != null;
 			case AcceleoPackage.PROTECTED_AREA__BODY:
@@ -411,6 +466,23 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements P
 				return endTagPrefix != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(')');
+		return result.toString();
 	}
 
 } // ProtectedAreaImpl

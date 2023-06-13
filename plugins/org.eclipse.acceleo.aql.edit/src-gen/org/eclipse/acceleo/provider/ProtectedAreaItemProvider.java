@@ -21,12 +21,14 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -60,8 +62,25 @@ public class ProtectedAreaItemProvider extends ItemProviderAdapter implements IE
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -117,7 +136,8 @@ public class ProtectedAreaItemProvider extends ItemProviderAdapter implements IE
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_ProtectedArea_type"); //$NON-NLS-1$
+		ProtectedArea protectedArea = (ProtectedArea) object;
+		return getString("_UI_ProtectedArea_type") + " " + protectedArea.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -132,6 +152,9 @@ public class ProtectedAreaItemProvider extends ItemProviderAdapter implements IE
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ProtectedArea.class)) {
+		case AcceleoPackage.PROTECTED_AREA__MULTI_LINES:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		case AcceleoPackage.PROTECTED_AREA__ID:
 		case AcceleoPackage.PROTECTED_AREA__BODY:
 		case AcceleoPackage.PROTECTED_AREA__START_TAG_PREFIX:

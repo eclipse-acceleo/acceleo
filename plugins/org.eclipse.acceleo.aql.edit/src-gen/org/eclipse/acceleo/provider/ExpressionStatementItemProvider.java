@@ -90,7 +90,7 @@ public class ExpressionStatementItemProvider extends LeafStatementItemProvider {
 	@Override
 	public String getText(Object object) {
 		ExpressionStatement expressionStatement = (ExpressionStatement) object;
-		return getString("_UI_ExpressionStatement_type") + " " + expressionStatement.isNewLineNeeded(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_ExpressionStatement_type") + " " + expressionStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

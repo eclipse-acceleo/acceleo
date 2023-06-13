@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.ErrorFileStatement;
-import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -63,6 +62,7 @@ public class ErrorFileStatementItemProvider extends ItemProviderAdapter implemen
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addModePropertyDescriptor(object);
 			addMissingOpenParenthesisPropertyDescriptor(object);
 			addMissingCommaPropertyDescriptor(object);
@@ -72,6 +72,22 @@ public class ErrorFileStatementItemProvider extends ItemProviderAdapter implemen
 			addMissingEndPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -239,10 +255,8 @@ public class ErrorFileStatementItemProvider extends ItemProviderAdapter implemen
 	 */
 	@Override
 	public String getText(Object object) {
-		OpenModeKind labelValue = ((ErrorFileStatement) object).getMode();
-		String label = labelValue == null ? null : labelValue.toString();
-		return label == null || label.length() == 0 ? getString("_UI_ErrorFileStatement_type") : //$NON-NLS-1$
-				getString("_UI_ErrorFileStatement_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+		ErrorFileStatement errorFileStatement = (ErrorFileStatement) object;
+		return getString("_UI_ErrorFileStatement_type") + " " + errorFileStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -257,6 +271,7 @@ public class ErrorFileStatementItemProvider extends ItemProviderAdapter implemen
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorFileStatement.class)) {
+		case AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES:
 		case AcceleoPackage.ERROR_FILE_STATEMENT__MODE:
 		case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS:
 		case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_COMMA:

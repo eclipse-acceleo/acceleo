@@ -14,6 +14,7 @@ package org.eclipse.acceleo.provider;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -70,7 +71,8 @@ public class ParameterDocumentationItemProvider extends CommentItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_ParameterDocumentation_type"); //$NON-NLS-1$
+		ParameterDocumentation parameterDocumentation = (ParameterDocumentation) object;
+		return getString("_UI_ParameterDocumentation_type") + " " + parameterDocumentation.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

@@ -62,12 +62,29 @@ public class ErrorIfStatementItemProvider extends ItemProviderAdapter implements
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addMissingOpenParenthesisPropertyDescriptor(object);
 			addMissingCloseParenthesisPropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
 			addMissingEndPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -188,7 +205,7 @@ public class ErrorIfStatementItemProvider extends ItemProviderAdapter implements
 	@Override
 	public String getText(Object object) {
 		ErrorIfStatement errorIfStatement = (ErrorIfStatement) object;
-		return getString("_UI_ErrorIfStatement_type") + " " + errorIfStatement.getMissingOpenParenthesis(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_ErrorIfStatement_type") + " " + errorIfStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -203,6 +220,7 @@ public class ErrorIfStatementItemProvider extends ItemProviderAdapter implements
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorIfStatement.class)) {
+		case AcceleoPackage.ERROR_IF_STATEMENT__MULTI_LINES:
 		case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
 		case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 		case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_END_HEADER:

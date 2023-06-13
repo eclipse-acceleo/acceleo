@@ -1,3 +1,2 @@
 first line
-BEFORE_TEXT 
 last line

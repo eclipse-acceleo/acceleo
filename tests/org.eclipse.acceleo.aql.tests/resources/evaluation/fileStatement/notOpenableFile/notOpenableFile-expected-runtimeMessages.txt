@@ -1,2 +1,2 @@
  (null 0 4) null[]
-   (org.eclipse.acceleo.aql 0 4) Can't open OutputStream[org.eclipse.acceleo.impl.FileStatementImpl@00000000 (mode: overwrite)[(myParam, org.eclipse.emf.ecore.impl.EPackageImpl@00000000 (name: anydsl) (nsURI: http://www.eclipse.org/acceleo/anydsl, nsPrefix: anydsl)), ]]
+   (org.eclipse.acceleo.aql 0 4) Can't open OutputStream[org.eclipse.acceleo.impl.FileStatementImpl@00000000 (multiLines: true, mode: overwrite)[(myParam, org.eclipse.emf.ecore.impl.EPackageImpl@00000000 (name: anydsl) (nsURI: http://www.eclipse.org/acceleo/anydsl, nsPrefix: anydsl)), ]]

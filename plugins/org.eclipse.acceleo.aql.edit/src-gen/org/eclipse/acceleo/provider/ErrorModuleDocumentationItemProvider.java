@@ -62,12 +62,29 @@ public class ErrorModuleDocumentationItemProvider extends ItemProviderAdapter im
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addAuthorPropertyDescriptor(object);
 			addVersionPropertyDescriptor(object);
 			addSincePropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -185,9 +202,8 @@ public class ErrorModuleDocumentationItemProvider extends ItemProviderAdapter im
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ErrorModuleDocumentation) object).getAuthor();
-		return label == null || label.length() == 0 ? getString("_UI_ErrorModuleDocumentation_type") : //$NON-NLS-1$
-				getString("_UI_ErrorModuleDocumentation_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+		ErrorModuleDocumentation errorModuleDocumentation = (ErrorModuleDocumentation) object;
+		return getString("_UI_ErrorModuleDocumentation_type") + " " + errorModuleDocumentation.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -202,6 +218,7 @@ public class ErrorModuleDocumentationItemProvider extends ItemProviderAdapter im
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorModuleDocumentation.class)) {
+		case AcceleoPackage.ERROR_MODULE_DOCUMENTATION__MULTI_LINES:
 		case AcceleoPackage.ERROR_MODULE_DOCUMENTATION__AUTHOR:
 		case AcceleoPackage.ERROR_MODULE_DOCUMENTATION__VERSION:
 		case AcceleoPackage.ERROR_MODULE_DOCUMENTATION__SINCE:

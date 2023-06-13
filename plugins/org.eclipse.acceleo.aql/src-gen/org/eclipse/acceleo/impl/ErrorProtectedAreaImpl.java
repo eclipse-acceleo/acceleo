@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getId <em>Id</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorProtectedAreaImpl#getStartTagPrefix <em>Start Tag
@@ -52,6 +53,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container implements ErrorProtectedArea {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getId() <em>Id</em>}' containment reference. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -229,6 +250,30 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.ERROR_PROTECTED_AREA;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES, oldMultiLines, multiLines));
 	}
 
 	/**
@@ -618,6 +663,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				return getId();
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
@@ -650,6 +697,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				setId((Expression)newValue);
 				return;
@@ -692,6 +742,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				setId((Expression)null);
 				return;
@@ -734,6 +787,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__ID:
 				return id != null;
 			case AcceleoPackage.ERROR_PROTECTED_AREA__BODY:
@@ -767,6 +822,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Statement.class) {
 			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES:
+					return AcceleoPackage.STATEMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -797,6 +854,8 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Statement.class) {
 			switch (baseFeatureID) {
+				case AcceleoPackage.STATEMENT__MULTI_LINES:
+					return AcceleoPackage.ERROR_PROTECTED_AREA__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -829,7 +888,9 @@ public class ErrorProtectedAreaImpl extends MinimalEObjectImpl.Container impleme
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (missingOpenParenthesis: "); //$NON-NLS-1$
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
 		result.append(missingCloseParenthesis);

@@ -60,9 +60,26 @@ public class LeafStatementItemProvider extends ItemProviderAdapter implements IE
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addNewLineNeededPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -100,7 +117,7 @@ public class LeafStatementItemProvider extends ItemProviderAdapter implements IE
 	@Override
 	public String getText(Object object) {
 		LeafStatement leafStatement = (LeafStatement) object;
-		return getString("_UI_LeafStatement_type") + " " + leafStatement.isNewLineNeeded(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_LeafStatement_type") + " " + leafStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -115,6 +132,7 @@ public class LeafStatementItemProvider extends ItemProviderAdapter implements IE
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(LeafStatement.class)) {
+		case AcceleoPackage.LEAF_STATEMENT__MULTI_LINES:
 		case AcceleoPackage.LEAF_STATEMENT__NEW_LINE_NEEDED:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;

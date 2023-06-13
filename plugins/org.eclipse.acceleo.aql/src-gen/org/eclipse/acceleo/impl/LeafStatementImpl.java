@@ -25,12 +25,33 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.LeafStatementImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.LeafStatementImpl#isNewLineNeeded <em>New Line Needed</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class LeafStatementImpl extends MinimalEObjectImpl.Container implements LeafStatement {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #isNewLineNeeded() <em>New Line Needed</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -76,6 +97,30 @@ public class LeafStatementImpl extends MinimalEObjectImpl.Container implements L
 	 * @generated
 	 */
 	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.LEAF_STATEMENT__MULTI_LINES,
+					oldMultiLines, multiLines));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public boolean isNewLineNeeded() {
 		return newLineNeeded;
 	}
@@ -102,6 +147,8 @@ public class LeafStatementImpl extends MinimalEObjectImpl.Container implements L
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.LEAF_STATEMENT__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.LEAF_STATEMENT__NEW_LINE_NEEDED:
 				return isNewLineNeeded();
 		}
@@ -116,6 +163,9 @@ public class LeafStatementImpl extends MinimalEObjectImpl.Container implements L
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.LEAF_STATEMENT__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.LEAF_STATEMENT__NEW_LINE_NEEDED:
 				setNewLineNeeded((Boolean)newValue);
 				return;
@@ -131,6 +181,9 @@ public class LeafStatementImpl extends MinimalEObjectImpl.Container implements L
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.LEAF_STATEMENT__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.LEAF_STATEMENT__NEW_LINE_NEEDED:
 				setNewLineNeeded(NEW_LINE_NEEDED_EDEFAULT);
 				return;
@@ -146,6 +199,8 @@ public class LeafStatementImpl extends MinimalEObjectImpl.Container implements L
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.LEAF_STATEMENT__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.LEAF_STATEMENT__NEW_LINE_NEEDED:
 				return newLineNeeded != NEW_LINE_NEEDED_EDEFAULT;
 		}
@@ -163,7 +218,9 @@ public class LeafStatementImpl extends MinimalEObjectImpl.Container implements L
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (newLineNeeded: "); //$NON-NLS-1$
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(", newLineNeeded: "); //$NON-NLS-1$
 		result.append(newLineNeeded);
 		result.append(')');
 		return result.toString();

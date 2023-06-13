@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getMode <em>Mode</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getUrl <em>Url</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getCharset <em>Charset</em>}</li>
@@ -51,6 +52,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container implements ErrorFileStatement {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -238,6 +259,30 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.ERROR_FILE_STATEMENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES, oldMultiLines, multiLines));
 	}
 
 	/**
@@ -594,6 +639,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MODE:
 				return getMode();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__URL:
@@ -626,6 +673,9 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MODE:
 				setMode((OpenModeKind)newValue);
 				return;
@@ -668,6 +718,9 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MODE:
 				setMode(MODE_EDEFAULT);
 				return;
@@ -710,6 +763,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MODE:
 				return mode != MODE_EDEFAULT;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__URL:
@@ -743,6 +798,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Statement.class) {
 			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES:
+					return AcceleoPackage.STATEMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -773,6 +830,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Statement.class) {
 			switch (baseFeatureID) {
+				case AcceleoPackage.STATEMENT__MULTI_LINES:
+					return AcceleoPackage.ERROR_FILE_STATEMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -805,7 +864,9 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (mode: "); //$NON-NLS-1$
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(", mode: "); //$NON-NLS-1$
 		result.append(mode);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);

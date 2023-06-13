@@ -92,7 +92,7 @@ public class TextStatementItemProvider extends LeafStatementItemProvider {
 	@Override
 	public String getText(Object object) {
 		TextStatement textStatement = (TextStatement) object;
-		return getString("_UI_TextStatement_type") + " " + textStatement.isNewLineNeeded(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_TextStatement_type") + " " + textStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

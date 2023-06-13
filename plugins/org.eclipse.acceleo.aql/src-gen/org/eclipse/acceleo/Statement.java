@@ -20,4 +20,27 @@ package org.eclipse.acceleo;
  * @generated
  */
 public interface Statement extends AcceleoASTNode {
+
+	/**
+	 * Returns the value of the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Multi Lines</em>' attribute.
+	 * @see #setMultiLines(boolean)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getStatement_MultiLines()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isMultiLines();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.Statement#isMultiLines <em>Multi Lines</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Multi Lines</em>' attribute.
+	 * @see #isMultiLines()
+	 * @generated
+	 */
+	void setMultiLines(boolean value);
 } // Statement

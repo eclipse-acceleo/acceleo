@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getMode <em>Mode</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getUrl <em>Url</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.FileStatementImpl#getCharset <em>Charset</em>}</li>
@@ -39,6 +40,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class FileStatementImpl extends MinimalEObjectImpl.Container implements FileStatement {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -106,6 +127,30 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.FILE_STATEMENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FILE_STATEMENT__MULTI_LINES,
+					oldMultiLines, multiLines));
 	}
 
 	/**
@@ -314,6 +359,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.FILE_STATEMENT__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.FILE_STATEMENT__MODE:
 				return getMode();
 			case AcceleoPackage.FILE_STATEMENT__URL:
@@ -334,6 +381,9 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.FILE_STATEMENT__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.FILE_STATEMENT__MODE:
 				setMode((OpenModeKind)newValue);
 				return;
@@ -358,6 +408,9 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.FILE_STATEMENT__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.FILE_STATEMENT__MODE:
 				setMode(MODE_EDEFAULT);
 				return;
@@ -382,6 +435,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.FILE_STATEMENT__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.FILE_STATEMENT__MODE:
 				return mode != MODE_EDEFAULT;
 			case AcceleoPackage.FILE_STATEMENT__URL:
@@ -405,7 +460,9 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements F
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (mode: "); //$NON-NLS-1$
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(", mode: "); //$NON-NLS-1$
 		result.append(mode);
 		result.append(')');
 		return result.toString();

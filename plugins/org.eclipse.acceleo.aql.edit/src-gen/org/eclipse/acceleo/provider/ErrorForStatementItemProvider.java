@@ -62,6 +62,7 @@ public class ErrorForStatementItemProvider extends ItemProviderAdapter implement
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addMissingOpenParenthesisPropertyDescriptor(object);
 			addMissingBindingPropertyDescriptor(object);
 			addMissingCloseParenthesisPropertyDescriptor(object);
@@ -70,6 +71,22 @@ public class ErrorForStatementItemProvider extends ItemProviderAdapter implement
 			addMissingEndPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -222,7 +239,7 @@ public class ErrorForStatementItemProvider extends ItemProviderAdapter implement
 	@Override
 	public String getText(Object object) {
 		ErrorForStatement errorForStatement = (ErrorForStatement) object;
-		return getString("_UI_ErrorForStatement_type") + " " + errorForStatement.getMissingOpenParenthesis(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_ErrorForStatement_type") + " " + errorForStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -237,6 +254,7 @@ public class ErrorForStatementItemProvider extends ItemProviderAdapter implement
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorForStatement.class)) {
+		case AcceleoPackage.ERROR_FOR_STATEMENT__MULTI_LINES:
 		case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS:
 		case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_BINDING:
 		case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:

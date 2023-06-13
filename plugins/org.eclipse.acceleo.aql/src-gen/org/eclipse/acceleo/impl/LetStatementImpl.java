@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getVariables <em>Variables</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.LetStatementImpl#getBody <em>Body</em>}</li>
  * </ul>
@@ -41,6 +42,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class LetStatementImpl extends MinimalEObjectImpl.Container implements LetStatement {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getVariables() <em>Variables</em>}' containment reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -78,6 +99,30 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.LET_STATEMENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.LET_STATEMENT__MULTI_LINES,
+					oldMultiLines, multiLines));
 	}
 
 	/**
@@ -170,6 +215,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.LET_STATEMENT__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				return getVariables();
 			case AcceleoPackage.LET_STATEMENT__BODY:
@@ -187,6 +234,9 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.LET_STATEMENT__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				getVariables().clear();
 				getVariables().addAll((Collection<? extends Binding>)newValue);
@@ -206,6 +256,9 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.LET_STATEMENT__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				getVariables().clear();
 				return;
@@ -224,12 +277,31 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements Le
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.LET_STATEMENT__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.LET_STATEMENT__VARIABLES:
 				return variables != null && !variables.isEmpty();
 			case AcceleoPackage.LET_STATEMENT__BODY:
 				return body != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(')');
+		return result.toString();
 	}
 
 } // LetStatementImpl

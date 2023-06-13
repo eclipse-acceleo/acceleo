@@ -1524,6 +1524,14 @@ public class AcceleoParser {
 		}
 		// CHECKSTYLE:ON
 
+		if (res != null) {
+			if (res instanceof TextStatement) {
+				res.setMultiLines(false);
+			} else {
+				res.setMultiLines(!positions.getStartLines(res).equals(positions.getEndLines(res)));
+			}
+		}
+
 		return res;
 	}
 

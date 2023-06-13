@@ -63,9 +63,26 @@ public class ErrorModuleElementDocumentationItemProvider extends ItemProviderAda
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -139,7 +156,7 @@ public class ErrorModuleElementDocumentationItemProvider extends ItemProviderAda
 	public String getText(Object object) {
 		ErrorModuleElementDocumentation errorModuleElementDocumentation = (ErrorModuleElementDocumentation) object;
 		return getString("_UI_ErrorModuleElementDocumentation_type") + " " //$NON-NLS-1$//$NON-NLS-2$
-				+ errorModuleElementDocumentation.getMissingEndHeader();
+				+ errorModuleElementDocumentation.isMultiLines();
 	}
 
 	/**
@@ -154,6 +171,7 @@ public class ErrorModuleElementDocumentationItemProvider extends ItemProviderAda
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorModuleElementDocumentation.class)) {
+		case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES:
 		case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;

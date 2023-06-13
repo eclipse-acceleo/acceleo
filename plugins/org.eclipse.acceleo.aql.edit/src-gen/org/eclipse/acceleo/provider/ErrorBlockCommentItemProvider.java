@@ -72,7 +72,7 @@ public class ErrorBlockCommentItemProvider extends ErrorCommentItemProvider {
 	@Override
 	public String getText(Object object) {
 		ErrorBlockComment errorBlockComment = (ErrorBlockComment) object;
-		return getString("_UI_ErrorBlockComment_type") + " " + errorBlockComment.getMissingEndHeader(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_ErrorBlockComment_type") + " " + errorBlockComment.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

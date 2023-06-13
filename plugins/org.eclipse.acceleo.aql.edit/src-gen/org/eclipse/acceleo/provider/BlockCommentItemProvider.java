@@ -14,6 +14,7 @@ package org.eclipse.acceleo.provider;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.acceleo.BlockComment;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -69,7 +70,8 @@ public class BlockCommentItemProvider extends CommentItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_BlockComment_type"); //$NON-NLS-1$
+		BlockComment blockComment = (BlockComment) object;
+		return getString("_UI_BlockComment_type") + " " + blockComment.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

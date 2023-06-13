@@ -93,7 +93,7 @@ public class NewLineStatementItemProvider extends TextStatementItemProvider {
 	@Override
 	public String getText(Object object) {
 		NewLineStatement newLineStatement = (NewLineStatement) object;
-		return getString("_UI_NewLineStatement_type") + " " + newLineStatement.isNewLineNeeded(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_NewLineStatement_type") + " " + newLineStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

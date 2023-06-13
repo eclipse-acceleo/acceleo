@@ -60,11 +60,28 @@ public class ErrorExpressionStatementItemProvider extends ItemProviderAdapter im
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addNewLineNeededPropertyDescriptor(object);
 			addExpressionPropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -134,7 +151,7 @@ public class ErrorExpressionStatementItemProvider extends ItemProviderAdapter im
 	@Override
 	public String getText(Object object) {
 		ErrorExpressionStatement errorExpressionStatement = (ErrorExpressionStatement) object;
-		return getString("_UI_ErrorExpressionStatement_type") + " " + errorExpressionStatement.isNewLineNeeded(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_ErrorExpressionStatement_type") + " " + errorExpressionStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -149,6 +166,7 @@ public class ErrorExpressionStatementItemProvider extends ItemProviderAdapter im
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorExpressionStatement.class)) {
+		case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES:
 		case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
 		case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

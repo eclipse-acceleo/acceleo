@@ -1,0 +1,21 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main  (70..76) /] (61..78)
+  
+  public template myTemplate(myParam : EPackage (107..132))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
+      fist text. (newLineNeeded) (183..194)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (238..258) (204..258)
+        [if false (272..277)
+          [.aqlFeatureAccess(myParam, 'name') (289..301)/] (newLineNeeded (288..304) (279..310)
+        [/if] (267..315)
+         (newLineNeeded) (315..316) (260..320)
+      [/for] (198..326)
+       (newLineNeeded) (326..327)
+      last text. (newLineNeeded) (331..342) (178..344)
+    [/file] (137..351)
+     (newLineNeeded) (351..352) (134..352)
+  [/template] (79..363) (0..363)

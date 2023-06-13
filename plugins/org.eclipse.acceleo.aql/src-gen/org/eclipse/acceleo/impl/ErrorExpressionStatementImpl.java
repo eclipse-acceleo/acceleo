@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#isNewLineNeeded <em>New Line
  * Needed</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorExpressionStatementImpl#getExpression <em>Expression</em>}</li>
@@ -41,6 +42,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container implements ErrorExpressionStatement {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #isNewLineNeeded() <em>New Line Needed</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -108,6 +129,30 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.ERROR_EXPRESSION_STATEMENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES, oldMultiLines, multiLines));
 	}
 
 	/**
@@ -234,6 +279,8 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
 				return isNewLineNeeded();
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION:
@@ -252,6 +299,9 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
 				setNewLineNeeded((Boolean)newValue);
 				return;
@@ -273,6 +323,9 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
 				setNewLineNeeded(NEW_LINE_NEEDED_EDEFAULT);
 				return;
@@ -294,6 +347,8 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED:
 				return newLineNeeded != NEW_LINE_NEEDED_EDEFAULT;
 			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__EXPRESSION:
@@ -313,6 +368,8 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Statement.class) {
 			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES:
+					return AcceleoPackage.STATEMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -345,6 +402,8 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Statement.class) {
 			switch (baseFeatureID) {
+				case AcceleoPackage.STATEMENT__MULTI_LINES:
+					return AcceleoPackage.ERROR_EXPRESSION_STATEMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -379,7 +438,9 @@ public class ErrorExpressionStatementImpl extends MinimalEObjectImpl.Container i
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (newLineNeeded: "); //$NON-NLS-1$
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(", newLineNeeded: "); //$NON-NLS-1$
 		result.append(newLineNeeded);
 		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);

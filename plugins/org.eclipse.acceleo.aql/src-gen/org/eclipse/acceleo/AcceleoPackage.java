@@ -709,13 +709,22 @@ public interface AcceleoPackage extends EPackage {
 	int COMMENT = 11;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int COMMENT__MULTI_LINES = MODULE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int COMMENT__BODY = MODULE_ELEMENT_FEATURE_COUNT + 0;
+	int COMMENT__BODY = MODULE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Comment</em>' class. <!-- begin-user-doc --> <!--
@@ -724,7 +733,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMENT_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 1;
+	int COMMENT_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Comment</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -743,6 +752,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int BLOCK_COMMENT = 9;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK_COMMENT__MULTI_LINES = COMMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -782,13 +800,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_COMMENT = 12;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_COMMENT__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT__BODY = ERROR_FEATURE_COUNT + 0;
+	int ERROR_COMMENT__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -797,7 +824,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 1;
+	int ERROR_COMMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Error Comment</em>' class. <!-- begin-user-doc --> <!--
@@ -806,7 +833,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
+	int ERROR_COMMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Error Comment</em>' class. <!-- begin-user-doc --> <!--
@@ -826,6 +853,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_BLOCK_COMMENT = 10;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BLOCK_COMMENT__MULTI_LINES = ERROR_COMMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -910,6 +946,15 @@ public interface AcceleoPackage extends EPackage {
 	int DOCUMENTATION = 14;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENTATION__MULTI_LINES = COMMENT__MULTI_LINES;
+
+	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -954,6 +999,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int MODULE_DOCUMENTATION = 15;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE_DOCUMENTATION__MULTI_LINES = DOCUMENTATION__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1028,13 +1082,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE_DOCUMENTATION = 16;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_MODULE_DOCUMENTATION__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 0;
+	int ERROR_MODULE_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Documented Element</b></em>' reference. <!-- begin-user-doc --> <!--
@@ -1043,7 +1106,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 1;
+	int ERROR_MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Author</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1052,7 +1115,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__AUTHOR = ERROR_FEATURE_COUNT + 2;
+	int ERROR_MODULE_DOCUMENTATION__AUTHOR = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1061,7 +1124,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__VERSION = ERROR_FEATURE_COUNT + 3;
+	int ERROR_MODULE_DOCUMENTATION__VERSION = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Since</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1069,7 +1132,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__SINCE = ERROR_FEATURE_COUNT + 4;
+	int ERROR_MODULE_DOCUMENTATION__SINCE = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1078,7 +1141,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 5;
+	int ERROR_MODULE_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Error Module Documentation</em>' class. <!--
@@ -1087,7 +1150,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
+	int ERROR_MODULE_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Error Module Documentation</em>' class. <!-- begin-user-doc -->
@@ -1107,6 +1170,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION = 17;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES = DOCUMENTATION__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1164,13 +1236,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE_ELEMENT_DOCUMENTATION = 18;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 0;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Documented Element</b></em>' reference. <!-- begin-user-doc --> <!--
@@ -1179,7 +1260,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 1;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Parameter Documentation</b></em>' containment reference list. <!--
@@ -1188,7 +1269,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION = ERROR_FEATURE_COUNT + 2;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1197,7 +1278,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Error Module Element Documentation</em>' class. <!--
@@ -1206,7 +1287,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Error Module Element Documentation</em>' class. <!--
@@ -1226,6 +1307,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int PARAMETER_DOCUMENTATION = 19;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER_DOCUMENTATION__MULTI_LINES = COMMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2372,13 +2462,22 @@ public interface AcceleoPackage extends EPackage {
 	int STATEMENT = 36;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int STATEMENT__MULTI_LINES = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Statement</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int STATEMENT_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 0;
+	int STATEMENT_FEATURE_COUNT = ACCELEO_AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Statement</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2398,6 +2497,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int LEAF_STATEMENT = 37;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int LEAF_STATEMENT__MULTI_LINES = STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2435,6 +2543,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int EXPRESSION_STATEMENT = 38;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int EXPRESSION_STATEMENT__MULTI_LINES = LEAF_STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2483,13 +2600,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_EXPRESSION_STATEMENT = 39;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION_STATEMENT__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED = ERROR_FEATURE_COUNT + 0;
+	int ERROR_EXPRESSION_STATEMENT__NEW_LINE_NEEDED = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2498,7 +2624,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__EXPRESSION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_EXPRESSION_STATEMENT__EXPRESSION = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2507,7 +2633,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 2;
+	int ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Error Expression Statement</em>' class. <!--
@@ -2516,7 +2642,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_EXPRESSION_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Error Expression Statement</em>' class. <!-- begin-user-doc -->
@@ -2536,6 +2662,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int PROTECTED_AREA = 40;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PROTECTED_AREA__MULTI_LINES = STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2602,13 +2737,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_PROTECTED_AREA = 41;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_PROTECTED_AREA__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__ID = ERROR_FEATURE_COUNT + 0;
+	int ERROR_PROTECTED_AREA__ID = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2617,7 +2761,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__BODY = ERROR_FEATURE_COUNT + 1;
+	int ERROR_PROTECTED_AREA__BODY = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Start Tag Prefix</b></em>' containment reference. <!-- begin-user-doc
@@ -2626,7 +2770,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__START_TAG_PREFIX = ERROR_FEATURE_COUNT + 2;
+	int ERROR_PROTECTED_AREA__START_TAG_PREFIX = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>End Tag Prefix</b></em>' containment reference. <!-- begin-user-doc -->
@@ -2635,7 +2779,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__END_TAG_PREFIX = ERROR_FEATURE_COUNT + 3;
+	int ERROR_PROTECTED_AREA__END_TAG_PREFIX = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -2644,7 +2788,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -2653,7 +2797,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+	int ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Start Tag Prefix Close Parenthesis</b></em>' attribute. <!--
@@ -2662,7 +2806,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
+	int ERROR_PROTECTED_AREA__MISSING_START_TAG_PREFIX_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Tag Prefix Close Parenthesis</b></em>' attribute. <!--
@@ -2671,7 +2815,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 7;
+	int ERROR_PROTECTED_AREA__MISSING_END_TAG_PREFIX_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2680,7 +2824,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 8;
+	int ERROR_PROTECTED_AREA__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2689,7 +2833,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_END = ERROR_FEATURE_COUNT + 9;
+	int ERROR_PROTECTED_AREA__MISSING_END = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Error Protected Area</em>' class. <!-- begin-user-doc -->
@@ -2698,7 +2842,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA_FEATURE_COUNT = ERROR_FEATURE_COUNT + 10;
+	int ERROR_PROTECTED_AREA_FEATURE_COUNT = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Error Protected Area</em>' class. <!-- begin-user-doc --> <!--
@@ -2718,6 +2862,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int FOR_STATEMENT = 42;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int FOR_STATEMENT__MULTI_LINES = STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2775,13 +2928,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_FOR_STATEMENT = 43;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_FOR_STATEMENT__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__BINDING = ERROR_FEATURE_COUNT + 0;
+	int ERROR_FOR_STATEMENT__BINDING = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Separator</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2790,7 +2952,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__SEPARATOR = ERROR_FEATURE_COUNT + 1;
+	int ERROR_FOR_STATEMENT__SEPARATOR = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2799,7 +2961,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__BODY = ERROR_FEATURE_COUNT + 2;
+	int ERROR_FOR_STATEMENT__BODY = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -2808,7 +2970,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
+	int ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Binding</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2817,7 +2979,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_BINDING = ERROR_FEATURE_COUNT + 4;
+	int ERROR_FOR_STATEMENT__MISSING_BINDING = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -2826,7 +2988,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Separator Close Parenthesis</b></em>' attribute. <!--
@@ -2835,7 +2997,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
+	int ERROR_FOR_STATEMENT__MISSING_SEPARATOR_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2844,7 +3006,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 7;
+	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2853,7 +3015,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 8;
+	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Error For Statement</em>' class. <!-- begin-user-doc -->
@@ -2862,7 +3024,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 9;
+	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Error For Statement</em>' class. <!-- begin-user-doc --> <!--
@@ -2882,6 +3044,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int IF_STATEMENT = 44;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int IF_STATEMENT__MULTI_LINES = STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2939,13 +3110,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_IF_STATEMENT = 45;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_IF_STATEMENT__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__CONDITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_IF_STATEMENT__CONDITION = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Then</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2954,7 +3134,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__THEN = ERROR_FEATURE_COUNT + 1;
+	int ERROR_IF_STATEMENT__THEN = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Else</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -2963,7 +3143,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__ELSE = ERROR_FEATURE_COUNT + 2;
+	int ERROR_IF_STATEMENT__ELSE = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -2972,7 +3152,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
+	int ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -2981,7 +3161,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2990,7 +3170,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 5;
+	int ERROR_IF_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -2999,7 +3179,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 6;
+	int ERROR_IF_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Error If Statement</em>' class. <!-- begin-user-doc -->
@@ -3008,7 +3188,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 7;
+	int ERROR_IF_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Error If Statement</em>' class. <!-- begin-user-doc --> <!--
@@ -3028,6 +3208,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int LET_STATEMENT = 46;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int LET_STATEMENT__MULTI_LINES = STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -3076,13 +3265,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_LET_STATEMENT = 47;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_LET_STATEMENT__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__VARIABLES = ERROR_FEATURE_COUNT + 0;
+	int ERROR_LET_STATEMENT__VARIABLES = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -3091,7 +3289,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__BODY = ERROR_FEATURE_COUNT + 1;
+	int ERROR_LET_STATEMENT__BODY = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Bindings</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3100,7 +3298,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__MISSING_BINDINGS = ERROR_FEATURE_COUNT + 2;
+	int ERROR_LET_STATEMENT__MISSING_BINDINGS = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3109,7 +3307,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
+	int ERROR_LET_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3118,7 +3316,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 4;
+	int ERROR_LET_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Error Let Statement</em>' class. <!-- begin-user-doc -->
@@ -3127,7 +3325,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
+	int ERROR_LET_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Error Let Statement</em>' class. <!-- begin-user-doc --> <!--
@@ -3147,6 +3345,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int FILE_STATEMENT = 48;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int FILE_STATEMENT__MULTI_LINES = STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3212,12 +3419,21 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_FILE_STATEMENT = 49;
 
 	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_FILE_STATEMENT__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MODE = ERROR_FEATURE_COUNT + 0;
+	int ERROR_FILE_STATEMENT__MODE = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Url</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -3226,7 +3442,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__URL = ERROR_FEATURE_COUNT + 1;
+	int ERROR_FILE_STATEMENT__URL = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Charset</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -3235,7 +3451,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__CHARSET = ERROR_FEATURE_COUNT + 2;
+	int ERROR_FILE_STATEMENT__CHARSET = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -3244,7 +3460,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__BODY = ERROR_FEATURE_COUNT + 3;
+	int ERROR_FILE_STATEMENT__BODY = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -3253,7 +3469,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing Comma</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3262,7 +3478,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_COMMA = ERROR_FEATURE_COUNT + 5;
+	int ERROR_FILE_STATEMENT__MISSING_COMMA = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Mode</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3271,7 +3487,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_OPEN_MODE = ERROR_FEATURE_COUNT + 6;
+	int ERROR_FILE_STATEMENT__MISSING_OPEN_MODE = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -3280,7 +3496,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 7;
+	int ERROR_FILE_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3289,7 +3505,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 8;
+	int ERROR_FILE_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3298,7 +3514,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 9;
+	int ERROR_FILE_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Error File Statement</em>' class. <!-- begin-user-doc -->
@@ -3307,7 +3523,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 10;
+	int ERROR_FILE_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Error File Statement</em>' class. <!-- begin-user-doc --> <!--
@@ -3327,6 +3543,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int TEXT_STATEMENT = 50;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TEXT_STATEMENT__MULTI_LINES = LEAF_STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3372,6 +3597,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int NEW_LINE_STATEMENT = 51;
+
+	/**
+	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int NEW_LINE_STATEMENT__MULTI_LINES = TEXT_STATEMENT__MULTI_LINES;
 
 	/**
 	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -4664,6 +4898,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getStatement();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.Statement#isMultiLines <em>Multi
+	 * Lines</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Multi Lines</em>'.
+	 * @see org.eclipse.acceleo.Statement#isMultiLines()
+	 * @see #getStatement()
+	 * @generated
+	 */
+	EAttribute getStatement_MultiLines();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.LeafStatement <em>Leaf Statement</em>}'.
@@ -6392,6 +6637,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EClass STATEMENT = eINSTANCE.getStatement();
+
+		/**
+		 * The meta object literal for the '<em><b>Multi Lines</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute STATEMENT__MULTI_LINES = eINSTANCE.getStatement_MultiLines();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.LeafStatementImpl <em>Leaf

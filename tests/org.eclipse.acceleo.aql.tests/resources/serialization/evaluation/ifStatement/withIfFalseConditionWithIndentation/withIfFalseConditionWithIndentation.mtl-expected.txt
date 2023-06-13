@@ -1,0 +1,14 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+    first text.
+    ***[if (true)]
+         [if (false)]
+           [myParam.name/]
+         [/if]
+       [/if]
+    last text.
+  [/file]
+[/template]

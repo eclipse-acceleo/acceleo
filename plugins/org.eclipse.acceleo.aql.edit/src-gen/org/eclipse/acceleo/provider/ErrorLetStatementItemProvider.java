@@ -62,11 +62,28 @@ public class ErrorLetStatementItemProvider extends ItemProviderAdapter implement
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addMultiLinesPropertyDescriptor(object);
 			addMissingBindingsPropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
 			addMissingEndPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Multi Lines feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMultiLinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Statement_multiLines_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Statement_multiLines_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Statement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -170,7 +187,7 @@ public class ErrorLetStatementItemProvider extends ItemProviderAdapter implement
 	@Override
 	public String getText(Object object) {
 		ErrorLetStatement errorLetStatement = (ErrorLetStatement) object;
-		return getString("_UI_ErrorLetStatement_type") + " " + errorLetStatement.getMissingBindings(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getString("_UI_ErrorLetStatement_type") + " " + errorLetStatement.isMultiLines(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -185,6 +202,7 @@ public class ErrorLetStatementItemProvider extends ItemProviderAdapter implement
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorLetStatement.class)) {
+		case AcceleoPackage.ERROR_LET_STATEMENT__MULTI_LINES:
 		case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS:
 		case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END_HEADER:
 		case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END:

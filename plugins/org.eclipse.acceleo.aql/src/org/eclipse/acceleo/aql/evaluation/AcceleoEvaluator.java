@@ -454,6 +454,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					res = peekIndentation() + textStatement.getValue() + NEW_LINE;
 				} else {
 					// empty text with new line at the beginning of a line is a no operation
+					// see NewLineStatement
 					res = EMPTY_RESULT;
 				}
 			} else {
@@ -478,7 +479,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		if (newLineStatement.isIndentationNeeded()) {
-			res = NEW_LINE + peekIndentation();
+			res = peekIndentation() + NEW_LINE;
 		} else {
 			res = NEW_LINE;
 		}
@@ -488,12 +489,77 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 	@Override
 	public String caseBlock(Block block) {
-		final StringBuilder builder = new StringBuilder();
+		final List<String> texts = new ArrayList<>();
 
+		boolean lastIsEmptyBlock = false;
+		String lastRemovedIndentation = null;
 		for (Statement statement : block.getStatements()) {
-			builder.append((String)doSwitch(statement));
+			final String text = (String)doSwitch(statement);
+			if (!text.isEmpty()) {
+				if (lastIsEmptyBlock) {
+					final String lastText;
+					if (!texts.isEmpty()) {
+						lastText = texts.remove(texts.size() - 1);
+					} else {
+						lastText = EMPTY_RESULT;
+					}
+					final int lastNewLineIndex = lastText.lastIndexOf(NEW_LINE);
+					final String prefix;
+					if (lastNewLineIndex >= 0) {
+						prefix = lastText.substring(0, lastNewLineIndex + NEW_LINE.length());
+					} else {
+						prefix = EMPTY_RESULT;
+					}
+					final String suffix;
+					if (text.startsWith(NEW_LINE)) {
+						suffix = text.substring(NEW_LINE.length());
+					} else {
+						if (lastRemovedIndentation != null) {
+							suffix = lastRemovedIndentation + text;
+							lastRemovedIndentation = null;
+						} else {
+							suffix = text;
+						}
+					}
+
+					final String newText = prefix + suffix;
+					if (!newText.isEmpty()) {
+						texts.add(newText);
+					}
+				} else {
+					texts.add(text);
+				}
+				lastIsEmptyBlock = false;
+			} else {
+				lastIsEmptyBlock = statement.isMultiLines();
+				if (lastIsEmptyBlock) {
+					final String lastText;
+					if (!texts.isEmpty()) {
+						lastText = texts.remove(texts.size() - 1);
+					} else {
+						lastText = EMPTY_RESULT;
+					}
+					final int lastNewLineIndex = lastText.lastIndexOf(NEW_LINE);
+					final String newText;
+					if (lastNewLineIndex >= 0) {
+						final int index = lastNewLineIndex + NEW_LINE.length();
+						newText = lastText.substring(0, index);
+						lastRemovedIndentation = lastText.substring(index, lastText.length());
+					} else {
+						newText = EMPTY_RESULT;
+						lastRemovedIndentation = lastText;
+					}
+					if (!newText.isEmpty()) {
+						texts.add(newText);
+					}
+				}
+			}
 		}
 
+		final StringBuilder builder = new StringBuilder();
+		for (String text : texts) {
+			builder.append(text);
+		}
 		return builder.toString();
 	}
 
@@ -832,9 +898,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + NEW_LINE
 						+ peekIndentation());
 
-				res.append(doSwitch(protectedArea.getBody()));
+				final String text = (String)doSwitch(protectedArea.getBody());
+				res.append(text);
 
-				if (lastLineOfLastStatement.isEmpty()) {
+				if (!text.isEmpty() && lastLineOfLastStatement.isEmpty()) {
 					res.append(peekIndentation());
 				}
 				if (protectedArea.getEndTagPrefix() != null) {

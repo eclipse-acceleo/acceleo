@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorCommentImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorCommentImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorCommentImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
@@ -38,6 +39,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements ErrorComment {
+	/**
+	 * The default value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTI_LINES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultiLines() <em>Multi Lines</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMultiLines()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multiLines = MULTI_LINES_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
@@ -85,6 +106,30 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 	@Override
 	protected EClass eStaticClass() {
 		return AcceleoPackage.Literals.ERROR_COMMENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean isMultiLines() {
+		return multiLines;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMultiLines(boolean newMultiLines) {
+		boolean oldMultiLines = multiLines;
+		multiLines = newMultiLines;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_COMMENT__MULTI_LINES,
+					oldMultiLines, multiLines));
 	}
 
 	/**
@@ -185,6 +230,8 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_COMMENT__MULTI_LINES:
+				return isMultiLines();
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				return getBody();
 			case AcceleoPackage.ERROR_COMMENT__MISSING_END_HEADER:
@@ -201,6 +248,9 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_COMMENT__MULTI_LINES:
+				setMultiLines((Boolean)newValue);
+				return;
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				setBody((CommentBody)newValue);
 				return;
@@ -219,6 +269,9 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_COMMENT__MULTI_LINES:
+				setMultiLines(MULTI_LINES_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				setBody((CommentBody)null);
 				return;
@@ -237,6 +290,8 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AcceleoPackage.ERROR_COMMENT__MULTI_LINES:
+				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				return body != null;
 			case AcceleoPackage.ERROR_COMMENT__MISSING_END_HEADER:
@@ -260,6 +315,8 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 		}
 		if (baseClass == Statement.class) {
 			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_COMMENT__MULTI_LINES:
+					return AcceleoPackage.STATEMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -290,6 +347,8 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 		}
 		if (baseClass == Statement.class) {
 			switch (baseFeatureID) {
+				case AcceleoPackage.STATEMENT__MULTI_LINES:
+					return AcceleoPackage.ERROR_COMMENT__MULTI_LINES;
 				default:
 					return -1;
 			}
@@ -316,7 +375,9 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (missingEndHeader: "); //$NON-NLS-1$
+		result.append(" (multiLines: "); //$NON-NLS-1$
+		result.append(multiLines);
+		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);
 		result.append(')');
 		return result.toString();
