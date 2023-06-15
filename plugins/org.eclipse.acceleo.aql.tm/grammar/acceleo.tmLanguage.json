@@ -706,25 +706,39 @@
 		
 		"statement-protected-header": {
 			"name": "keyword.other.statement.protected.acceleo",
-			"begin": "\\[\\bprotected\\b\\s*\\(",
+			"begin": "\\[\\bprotected\\b\\s*",
 			"end": "(?<=\\])",
 			"patterns": [
 				{
 					"include": "#statement-protected-header-tag-close"
 				},
 				{
-					"include": "#statement-protected-identifier"
+					"include": "#statement-protected-expression"
+				},
+				{
+					"include": "#statement-protected-start-prefix"
+				},
+				{
+					"include": "#statement-protected-end-prefix"
 				}
 			]
 		},
-		"statement-protected-identifier": {
-			"name": "meta.expression.aql",
-			"begin": "(?<=\\()(?:\\s*)",
-			"end": "(?=\\s*\\))"		
-		},
 		"statement-protected-header-tag-close": {
 			"name": "keyword.other.statement.protected.acceleo",
-			"match": "\\)\\s*\\]"
+			"match": "\\)\\s*"
+		},
+		"statement-protected-expression": {
+			"name": "meta.expression.aql",
+			"begin": "(?<=\\()",
+			"end": "(?=\\)\\s*(?=(\\]|\\bstartTagPrefix\\b|\\bendTagPrefix\\b)))"
+		},
+		"statement-protected-start-prefix": {
+			"name": "keyword.other.statement.protected.acceleo",
+			"match": "\\bstartTagPrefix\\b\\s*\\(" 
+		},
+		"statement-protected-end-prefix": {
+			"name": "keyword.other.statement.protected.acceleo",
+			"match": "\\bendTagPrefix\\b\\s*\\(" 
 		},
 		"statement-protected-footer": {
 			"name": "keyword.other.statement.protected.acceleo",
