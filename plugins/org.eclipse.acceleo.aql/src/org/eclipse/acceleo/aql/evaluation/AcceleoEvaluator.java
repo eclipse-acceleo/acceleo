@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Binding;
@@ -110,6 +111,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private final Deque<String> indentationStack = new ArrayDeque<String>();
 
 	/**
+	 * The user code stack, mapping from ID to user code.
+	 */
+	private final Deque<Map<String, String>> protectedAreaContentStack = new ArrayDeque<>();
+
+	/**
 	 * The last generated line of the last {@link Statement}.
 	 */
 	private String lastLineOfLastStatement;
@@ -189,20 +195,19 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		generationStrategy = strategy;
 
 		final String savedLastLineOfLastStatement = lastLineOfLastStatement;
-		final Deque<Boolean> savedInlinedBlock = inlinedBlock;
 		lastLineOfLastStatement = "";
-		inlinedBlock.addLast(false);
 		if (generationResult == null) {
 			generationResult = new GenerationResult();
 		}
 
+		inlinedBlock.addLast(false);
 		pushVariables(variables);
 		try {
 			res = doSwitch(node);
 		} finally {
 			popVariables();
+			inlinedBlock.removeLast();
 			lastLineOfLastStatement = savedLastLineOfLastStatement;
-			inlinedBlock = savedInlinedBlock;
 		}
 
 		return res;
@@ -246,6 +251,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
+	 * Peeks the last {@link #pushIndentation(Map) pushed} inline block from the stack.
+	 * 
+	 * @return the last {@link #pushIndentation(Map) pushed} inline block from the stack
+	 */
+	protected boolean peekInlinedBlock() {
+		return inlinedBlock.peekLast();
+	}
+
+	/**
 	 * Pushes the given indentation into the stack.
 	 * 
 	 * @param block
@@ -261,15 +275,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			inlinedBlock.addLast(false);
 			indentationStack.addLast(indentation);
 		}
-	}
-
-	/**
-	 * Peeks the last {@link #pushIndentation(Map) pushed} inline block from the stack.
-	 * 
-	 * @return the last {@link #pushIndentation(Map) pushed} inline block from the stack
-	 */
-	protected boolean peekInlinedBlock() {
-		return inlinedBlock.peekLast();
 	}
 
 	/**
@@ -289,6 +294,29 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	protected String popIndentation() {
 		inlinedBlock.removeLast();
 		return indentationStack.removeLast();
+	}
+
+	/**
+	 * Pushes a new protected area contents {@link Map} into the stack.
+	 */
+	protected void pushProtectedAreaContent() {
+		protectedAreaContentStack.addLast(new HashMap<>());
+	}
+
+	/**
+	 * Puts the given protected area contents in the current {@link #pushUserCode() pushed Map} in the stack.
+	 */
+	protected void putProtectedAreaContent(String id, String useCode) {
+		protectedAreaContentStack.peekLast().put(id, useCode);
+	}
+
+	/**
+	 * Pops the last {@link #pushProtectedAreaContent() pushed Map} protected area contents from the stack.
+	 * 
+	 * @return the last {@link #pushProtectedAreaContent() pushed Map} protected area contents from the stack
+	 */
+	protected Map<String, String> popProtectedAreaContent() {
+		return protectedAreaContentStack.removeLast();
 	}
 
 	/**
@@ -475,7 +503,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	@Override
-	public Object caseNewLineStatement(NewLineStatement newLineStatement) {
+	public String caseNewLineStatement(NewLineStatement newLineStatement) {
 		final String res;
 
 		if (newLineStatement.isIndentationNeeded()) {
@@ -617,10 +645,19 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				openWriter(uri, mode, charset, NEW_LINE);
 				lastLineOfLastStatement = "";
 				pushIndentation(fileStatement.getBody(), lastLineOfLastStatement);
+				pushProtectedAreaContent();
+				String content = EMPTY_RESULT;
 				try {
-					final String content = (String)doSwitch(fileStatement.getBody());
-					write(content);
+					content = (String)doSwitch(fileStatement.getBody());
 				} finally {
+					for (Entry<String, String> entry : popProtectedAreaContent().entrySet()) {
+						final String protectedAreaContentsRegex = IAcceleoGenerationStrategy.USER_CODE_START
+								+ " " + Pattern.quote(entry.getKey()) + NEW_LINE + "((?!"
+								+ IAcceleoGenerationStrategy.USER_CODE_END + ").|" + NEW_LINE + ")*"
+								+ IAcceleoGenerationStrategy.USER_CODE_END + NEW_LINE;
+						content = content.replaceFirst(protectedAreaContentsRegex, entry.getValue());
+					}
+					write(content);
 					popIndentation();
 					closeWriter(fileStatement);
 				}
@@ -851,7 +888,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 * @see org.eclipse.acceleo.util.AcceleoSwitch#caseProtectedArea(org.eclipse.acceleo.ProtectedArea)
 	 */
 	@Override
-	public Object caseProtectedArea(ProtectedArea protectedArea) {
+	public String caseProtectedArea(ProtectedArea protectedArea) {
 		final String res;
 
 		final Object idObject = doSwitch(protectedArea.getId());
@@ -891,7 +928,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final URI uri = getTargetURI();
 		final String protectedAreaContent = generationStrategy.consumeProtectedAreaContent(uri, id);
 		if (protectedAreaContent != null) {
-			res.append(protectedAreaContent);
+			putProtectedAreaContent(id, protectedAreaContent);
+			// We just mark the protected area, the contents will be set at the end of the FileStatement.
+			res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + NEW_LINE);
+			res.append(IAcceleoGenerationStrategy.USER_CODE_END + NEW_LINE);
 		} else {
 			pushIndentation(protectedArea.getBody(), lastLineOfLastStatement);
 			try {
@@ -955,7 +995,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	@Override
-	public Object caseError(Error error) {
+	public String caseError(Error error) {
 		final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
 				"Acceleo parsing error see validation for more details", new Object[] {error });
 		generationResult.addDiagnostic(diagnostic);
