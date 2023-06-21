@@ -13,14 +13,13 @@ package org.eclipse.acceleo.aql.ls.services.workspace;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
@@ -280,41 +279,24 @@ public class AcceleoProject {
 	}
 
 	/**
-	 * Provides the {@link AcceleoTextDocument text documents} of this project that depend on the given
-	 * qualified name.
+	 * Gets the {@link Set} of {@link AcceleoTextDocument text document} of this project that depend on the
+	 * given qualified name.
 	 * 
-	 * @param moduleQualifiedName
-	 *            the (non-{@code null}) qualified name of an Acceleo Module.
-	 * @return the {@link Set} of {@link AcceleoTextDocument} that depend on {@code moduleQualifiedName}.
+	 * @param qualifiedName
+	 *            the (non-{@code null}) qualified name.
+	 * @return the {@link Set} of {@link AcceleoTextDocument text document} of this project that depend on the
+	 *         given qualified name
 	 */
-	private Set<AcceleoTextDocument> getTextDocumentsThatDependOn(String moduleQualifiedName) {
-		Set<AcceleoTextDocument> res = new HashSet<>();
+	public Set<AcceleoTextDocument> getTextDocumentsThatDependOn(String qualifiedName) {
+		Set<AcceleoTextDocument> res = new LinkedHashSet<>();
 
-		for (AcceleoProject project : getWorkspace().getProjects()) {
-			for (AcceleoTextDocument acceleoTextDocument : project.getTextDocuments()) {
-				if (!moduleQualifiedName.equals(acceleoTextDocument.getModuleQualifiedName()) && dependsOn(
-						acceleoTextDocument.getAcceleoAstResult().getModule(), moduleQualifiedName)) {
-					res.add(acceleoTextDocument);
-				}
+		final Set<String> dependOn = getResolver().getDependOn(qualifiedName);
+		for (AcceleoTextDocument acceleoTextDocument : getTextDocuments()) {
+			if (dependOn.contains(acceleoTextDocument.getModuleQualifiedName())) {
+				res.add(acceleoTextDocument);
 			}
 		}
 
-		return res;
-	}
-
-	private static boolean dependsOn(org.eclipse.acceleo.Module module, String moduleQualifiedName) {
-		boolean res = false;
-		if (module.getExtends() != null && moduleQualifiedName.equals(module.getExtends()
-				.getQualifiedName())) {
-			res = true;
-		} else {
-			for (Import imp : module.getImports()) {
-				if (moduleQualifiedName.equals(imp.getModule().getQualifiedName())) {
-					res = true;
-					break;
-				}
-			}
-		}
 		return res;
 	}
 }

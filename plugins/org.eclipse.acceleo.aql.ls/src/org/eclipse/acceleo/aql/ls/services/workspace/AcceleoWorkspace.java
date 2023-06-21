@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,10 @@ package org.eclipse.acceleo.aql.ls.services.workspace;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
@@ -127,19 +129,6 @@ public class AcceleoWorkspace {
 		// TODO: we probably want to find other projects of the workspace that depended on the removed project
 		// and re-validate them.
 	}
-
-	// /**
-	// * Provides the {@link AcceleoProject} of this {@link AcceleoWorkspace} that contains the given
-	// * {@link URI}.
-	// *
-	// * @param uri
-	// * the (non-{@code null}) {@link URI}.
-	// * @return the {@link AcceleoProject} that contains the given {@link URI}. {@code null} if it is not
-	// * contained by any project of this workspace.
-	// */
-	// public AcceleoProject getProjectContaining(URI uri) {
-	// return this.projects.stream().filter(project -> project.contains(uri)).findFirst().orElse(null);
-	// }
 
 	/**
 	 * Collects all the {@link AcceleoTextDocument} contained in all the {@link AcceleoProject} of this

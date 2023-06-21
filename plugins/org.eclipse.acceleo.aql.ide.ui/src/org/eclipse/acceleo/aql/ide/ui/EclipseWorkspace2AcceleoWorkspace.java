@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
@@ -36,6 +38,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 
 /**
@@ -363,11 +366,12 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 *            the (non-{@code null}) removed {@link IFile}.
 		 */
 		private void remove(IFile removedFile) {
-			if (this.filesTrace.containsKey(removedFile)) {
-				AcceleoTextDocument fileToRemove = this.filesTrace.get(removedFile);
+			final AcceleoTextDocument fileToRemove = this.filesTrace.get(removedFile);
+			if (fileToRemove != null) {
 				fileToRemove.getProject().removeTextDocument(fileToRemove);
 				this.filesTrace.remove(removedFile);
 			}
+			updateAllProjectResolvers();
 		}
 
 		/**
@@ -401,6 +405,20 @@ public class EclipseWorkspace2AcceleoWorkspace {
 				this.createAcceleoProject(workspaceProject);
 			} else {
 				this.updateAcceleoProject(workspaceProject);
+			}
+			updateAllProjectResolvers();
+		}
+
+		/**
+		 * Updates all project resolvers.
+		 */
+		private void updateAllProjectResolvers() {
+			// FIXME we should pass a project to only update projects that depend (closure) on it.
+			for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+				final AcceleoProject acceleoProject = projectsTrace.get(project);
+				if (acceleoProject != null) {
+					acceleoProject.setResolver(createResolver(project));
+				}
 			}
 		}
 
@@ -445,6 +463,9 @@ public class EclipseWorkspace2AcceleoWorkspace {
 				} else {
 					if (workspaceFileIsAcceleoTextDocument(workspaceFile)) {
 						this.createAcceleoTextDocument(workspaceFile);
+						notifyChange(workspaceFile.getLocationURI());
+					} else if (isDeivedAndNotModule(workspaceFile)) {
+						notifyChange(workspaceFile.getLocationURI());
 					}
 				}
 			} else {
@@ -461,10 +482,9 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 *         as an {@link AcceleoTextDocument}.
 		 */
 		private static boolean workspaceFileIsAcceleoTextDocument(IFile workspaceFile) {
-			String fileExtension = workspaceFile.getFileExtension();
 			// FIXME we simply ignore derived files, there might be a better way
-			return !workspaceFile.isDerived() && fileExtension != null && fileExtension.equals(
-					AcceleoParser.MODULE_FILE_EXTENSION);
+			return !workspaceFile.isDerived() && AcceleoParser.MODULE_FILE_EXTENSION.equals(workspaceFile
+					.getFileExtension());
 		}
 
 		/**
@@ -488,7 +508,6 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 */
 		private void updateFileContents(IFile workspaceFile) {
 			AcceleoTextDocument acceleoTextDocument = this.filesTrace.get(workspaceFile);
-			// FIXME we ignore non-mtl files for now
 			if (acceleoTextDocument != null) {
 				if (!workspaceFileIsAcceleoTextDocument(workspaceFile)) {
 					// The workspace file is no longer a file we consider as an Acceleo text document, so we
@@ -496,9 +515,48 @@ public class EclipseWorkspace2AcceleoWorkspace {
 					// to remove it from our workspace.
 					acceleoTextDocument.getProject().removeTextDocument(acceleoTextDocument);
 					this.filesTrace.remove(workspaceFile);
+					notifyChange(workspaceFile.getLocationURI());
 				} else {
 					String workspaceFileContents = readWorkspaceFile(workspaceFile);
 					acceleoTextDocument.setContents(workspaceFileContents);
+					notifyChange(workspaceFile.getLocationURI());
+				}
+			} else if (isDeivedAndNotModule(workspaceFile)) {
+				notifyChange(workspaceFile.getLocationURI());
+			}
+		}
+
+		private boolean isDeivedAndNotModule(IFile workspaceFile) {
+			return workspaceFile.isDerived() && !AcceleoParser.MODULE_FILE_EXTENSION.equals(workspaceFile
+					.getFileExtension());
+		}
+
+		/**
+		 * Notifies a change for the given {@link URI}.
+		 * 
+		 * @param uri
+		 *            the change {@link URI}
+		 */
+		private void notifyChange(URI uri) {
+			for (IProject workspaceProject : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+				final AcceleoProject acceleoProject = projectsTrace.get(workspaceProject);
+				if (acceleoProject != null) {
+					final String fileQualifiedName = acceleoProject.getResolver().getQualifiedName(uri);
+					if (fileQualifiedName != null) {
+						final Set<AcceleoTextDocument> dependOns = acceleoProject
+								.getTextDocumentsThatDependOn(fileQualifiedName);
+						for (AcceleoTextDocument dependOn : dependOns) {
+							dependOn.getQueryEnvironment().getLookupEngine().clearContext(fileQualifiedName);
+						}
+						if (acceleoProject.getResolver().resolve(fileQualifiedName) instanceof Class<?>) {
+							acceleoProject.setResolver(createResolver(workspaceProject));
+						} else {
+							acceleoProject.getResolver().clear(Collections.singleton(fileQualifiedName));
+						}
+						for (AcceleoTextDocument dependOn : dependOns) {
+							dependOn.validateAndPublishResults();
+						}
+					}
 				}
 			}
 		}

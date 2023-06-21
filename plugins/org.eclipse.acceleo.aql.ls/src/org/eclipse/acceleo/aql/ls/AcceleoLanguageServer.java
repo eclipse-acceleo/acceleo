@@ -194,34 +194,6 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 		return this.workspaceService;
 	}
 
-	// /**
-	// * Creates the {@link IAcceleoEnvironment} for an Acceleo document.
-	// *
-	// * @param workspaceFolder
-	// * the {@link WorkspaceFolder} from the client for which we want to create an
-	// * {@link IAcceleoeEnvironment}.
-	// * @return the {@link IAcceleoEnvironment} for the given Acceleo document.
-	// */
-	// public IAcceleoEnvironment createAcceleoEnvironmentFor(WorkspaceFolder workspaceFolder) {
-	// return this.acceleoLanguageServerContext.createAcceleoEnvironmentFor(workspaceFolder);
-	// }
-
-	// /**
-	// * Recursively finds all Acceleo documents in the given folder, and loads them.
-	// *
-	// * @param folderUri
-	// * the (non-{@code null}) {@link String URI} of a folder from the client workspace.
-	// * @return the {@link List} of all loaded {@link AcceleoTextDocument}.
-	// */
-	// public List<AcceleoTextDocument> loadAllAcceleoDocumentsIn(String folderUri) {
-	// Map<URI, String> acceleoDocumentsMap = this.acceleoLanguageServerContext.getAllAcceleoDocumentsIn(
-	// folderUri);
-	// List<AcceleoTextDocument> acceleoTextDocuments = acceleoDocumentsMap.entrySet().stream().map(
-	// entry -> this.textDocumentService.getOrLoadTextDocument(entry.getKey(), entry.getValue()))
-	// .collect(Collectors.toList());
-	// return acceleoTextDocuments;
-	// }
-
 	/**
 	 * Provides the {@link AcceleoWorkspace}.
 	 * 
