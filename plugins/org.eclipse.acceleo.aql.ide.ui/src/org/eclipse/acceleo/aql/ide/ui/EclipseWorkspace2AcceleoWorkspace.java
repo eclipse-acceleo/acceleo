@@ -40,6 +40,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 
 /**
  * Transformation to create an {@link AcceleoWorkspace} from an {@link IWorkspace}. The created
@@ -77,7 +78,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		// Step 2: create the synchronizer that will fill the AcceleoWorkspace depending on the contents of
 		// the client Eclipse workspace.
 		final SynchronizerEclipseWorkspace2AcceleoWorkspace synchronizer = new SynchronizerEclipseWorkspace2AcceleoWorkspace(
-				createdAcceleoWorkspace);
+				createdAcceleoWorkspace, clientWorkspace);
 		this.synchronizerTrace.put(createdAcceleoWorkspace, synchronizer);
 
 		// Step 3: plug together
@@ -143,7 +144,6 @@ public class EclipseWorkspace2AcceleoWorkspace {
 	 * {@link #workspaceFileIsAcceleoTextDocument(IFile)}) is represented as an
 	 * {@link AcceleoTextDocument}.</li>
 	 * </ul>
-	 * TODO: maybe we will also have to track Java files that provide services?
 	 * 
 	 * @author Florent Latombe
 	 */
@@ -165,6 +165,11 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		private final AcceleoWorkspace acceleoWorkspace;
 
 		/**
+		 * The synchronized {@link IWorkspace}.
+		 */
+		private final IWorkspace workspace;
+
+		/**
 		 * The {@link Map} that traces the transformation of {@link IProject} into {@link AcceleoProject}.
 		 */
 		private final Map<IProject, AcceleoProject> projectsTrace = new LinkedHashMap<>();
@@ -179,9 +184,13 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 * 
 		 * @param acceleoWorkspaceToFill
 		 *            the (non-{@code null}) {@link AcceleoWorkspace} to fill while visiting.
+		 * @param workspace
+		 *            the (non-{@code null}) visited {@link IWorkspace}.
 		 */
-		SynchronizerEclipseWorkspace2AcceleoWorkspace(AcceleoWorkspace acceleoWorkspaceToFill) {
+		SynchronizerEclipseWorkspace2AcceleoWorkspace(AcceleoWorkspace acceleoWorkspaceToFill,
+				IWorkspace workspace) {
 			this.acceleoWorkspace = acceleoWorkspaceToFill;
+			this.workspace = workspace;
 		}
 
 		/**
@@ -462,8 +471,29 @@ public class EclipseWorkspace2AcceleoWorkspace {
 							"Did not expect to synchronize a file from the workspace before its containing project.");
 				} else {
 					if (workspaceFileIsAcceleoTextDocument(workspaceFile)) {
-						this.createAcceleoTextDocument(workspaceFile);
-						notifyChange(workspaceFile.getLocationURI());
+						final AcceleoProject acceleoProject = projectsTrace.get(workspaceFile.getProject());
+						// make sure the derived file exists
+						if (acceleoProject.getResolver().getQualifiedName(workspaceFile
+								.getLocationURI()) != null) {
+							this.createAcceleoTextDocument(workspaceFile);
+							notifyChange(workspaceFile.getLocationURI());
+						}
+					} else if (isDeivedAndModule(workspaceFile)) {
+						final AcceleoProject acceleoProject = projectsTrace.get(workspaceFile.getProject());
+						if (acceleoProject != null) {
+							final String derivedQualifiedName = acceleoProject.getResolver().getQualifiedName(
+									workspaceFile.getLocationURI());
+							if (derivedQualifiedName != null) {
+								final URI srcURI = acceleoProject.getResolver().getSourceURI(
+										derivedQualifiedName);
+								final IFile srcFile = workspace.getRoot().getFileForLocation(new Path(srcURI
+										.getPath()));
+								if (!this.filesTrace.containsKey(srcFile)) {
+									this.createAcceleoTextDocument(srcFile);
+									notifyChange(srcFile.getLocationURI());
+								}
+							}
+						}
 					} else if (isDeivedAndNotModule(workspaceFile)) {
 						notifyChange(workspaceFile.getLocationURI());
 					}
@@ -482,7 +512,6 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 *         as an {@link AcceleoTextDocument}.
 		 */
 		private static boolean workspaceFileIsAcceleoTextDocument(IFile workspaceFile) {
-			// FIXME we simply ignore derived files, there might be a better way
 			return !workspaceFile.isDerived() && AcceleoParser.MODULE_FILE_EXTENSION.equals(workspaceFile
 					.getFileExtension());
 		}
@@ -526,8 +555,29 @@ public class EclipseWorkspace2AcceleoWorkspace {
 			}
 		}
 
+		/**
+		 * Tells if the given {@link IFile} is derived and not a {@link Module}.
+		 * 
+		 * @param workspaceFile
+		 *            the workspace {@link IFile}
+		 * @return <code>true</code> if the given {@link IFile} is derived and not a {@link Module},
+		 *         <code>false</code> otherwise
+		 */
 		private boolean isDeivedAndNotModule(IFile workspaceFile) {
 			return workspaceFile.isDerived() && !AcceleoParser.MODULE_FILE_EXTENSION.equals(workspaceFile
+					.getFileExtension());
+		}
+
+		/**
+		 * Tells if the given {@link IFile} is derived and a {@link Module}.
+		 * 
+		 * @param workspaceFile
+		 *            the workspace {@link IFile}
+		 * @return <code>true</code> if the given {@link IFile} is derived and a {@link Module},
+		 *         <code>false</code> otherwise
+		 */
+		private boolean isDeivedAndModule(IFile workspaceFile) {
+			return workspaceFile.isDerived() && AcceleoParser.MODULE_FILE_EXTENSION.equals(workspaceFile
 					.getFileExtension());
 		}
 

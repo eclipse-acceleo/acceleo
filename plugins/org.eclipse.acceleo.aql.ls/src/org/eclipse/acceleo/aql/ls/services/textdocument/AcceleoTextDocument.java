@@ -174,10 +174,12 @@ public class AcceleoTextDocument {
 	public void setProject(AcceleoProject acceleoProject) {
 		AcceleoProject oldProject = ownerProject;
 		this.ownerProject = acceleoProject;
-		qualifiedName = getProject().getResolver().getQualifiedName(getUri());
-		if ((acceleoProject == null && oldProject != null) || !acceleoProject.equals(oldProject)) {
-			// When the project changes, the environment changes.
-			this.resolverChanged();
+		if (getProject() != null) {
+			qualifiedName = getProject().getResolver().getQualifiedName(getUri());
+			if ((acceleoProject == null && oldProject != null) || !acceleoProject.equals(oldProject)) {
+				// When the project changes, the environment changes.
+				this.resolverChanged();
+			}
 		}
 	}
 
@@ -249,7 +251,16 @@ public class AcceleoTextDocument {
 			AcceleoParser acceleoParser = new AcceleoParser();
 			res = acceleoParser.parse(documentContents, moduleQualifiedName);
 		} else {
-			res = ((Module)ownerProject.getResolver().resolve(moduleQualifiedName)).getAst();
+			final Module module = (Module)ownerProject.getResolver().resolve(moduleQualifiedName);
+			if (module == null) {
+				Objects.requireNonNull(moduleQualifiedName);
+				Objects.requireNonNull(documentContents);
+				AcceleoParser acceleoParser = new AcceleoParser();
+				res = acceleoParser.parse(documentContents, moduleQualifiedName);
+				ownerProject.getResolver().register(moduleQualifiedName, res);
+			} else {
+				res = module.getAst();
+			}
 		}
 
 		return res;
