@@ -1,0 +1,60 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _8e51gBD2Ee6BudswnHiOBA,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: OnNotEmptyLineNoIndentationLine
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _V9rjsBD8Ee6BudswnHiOBA
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 6/22/23, 3:01 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/c.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/copy.txt" | double-click
+
+with [get-editor "copy.txt" | get-text-viewer] {
+    select-range 4 9 4 46
+    key-type "M1+c"
+}
+with [get-editor "c.mtl"] {
+    click
+    with [get-text-viewer] {
+        select-range 20 25 20 26
+        key-type Right
+        key-type "M1+v"
+    }
+}
+
+get-editor "c.mtl" | get-text-viewer | get-property text 
+    | equals "[module c('http://www.eclipse.org/emf/2002/Ecore')/]\n\n"
+    + "[** some comment /]\n\n"
+    + "[comment some other comment/]\n\n"
+    + "[comment @main /]\n"
+    + "[template public myTemplate(myParam : ecore::EPackage)]\n"
+    + "  [file (myParam.name + '.txt', overwrite)]\n"
+    + "     - [for (myVariable1 : ecore::EClassifier | myParam.eClassifiers)]\n"
+    + "         some text [myVariable1.name/]\n"
+    + "         [myVariable1.name/]\n"
+    + "       [/for]\n"
+    + "        [myParam.name/]\n"
+    + "        [if  (myParam <> null)]\n"
+    + "          [myParam.name/]\n"
+    + "        [elseif (myParam <> null)]\n"
+    + "          [myParam.name/]\n"
+    + "        [else]\n"
+    + "          [myParam.name/]if (atEndOfLine(document, command)) {\n"
+    + "        [/if]\n"
+    + "  [/file]\n"
+    + "  [let  myVariable = myParam.name]\n"
+    + "    [myParam.name/]\n"
+    + "  [/let]\n"
+    + "  [protected  (myParam.name)]\n"
+    + "    [myParam.name/]\n"
+    + "  [/protected]\n"
+    + "[/template]" | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

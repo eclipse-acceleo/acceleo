@@ -1,0 +1,24 @@
+
+			
+
+		if (atEndOfLine(document, command)) {
+			try {
+				final IRegion lineInfo = document.getLineInformationOfOffset(command.offset);
+				res = document.get(lineInfo.getOffset(), lineInfo.getLength()).trim().isEmpty();
+			} catch (BadLocationException e) {
+				res = false;
+			}
+		} else {
+			res = false;
+		}
+
+if (atEndOfLine(document, command)) {
+	try {
+		final IRegion lineInfo = document.getLineInformationOfOffset(command.offset);
+		res = document.get(lineInfo.getOffset(), lineInfo.getLength()).trim().isEmpty();
+	} catch (BadLocationException e) {
+		res = false;
+	}
+} else {
+	res = false;
+}

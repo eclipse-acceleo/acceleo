@@ -19,6 +19,7 @@ import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.MultiStringMatcher;
 import org.eclipse.jface.text.TextUtilities;
 
 public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
@@ -40,6 +41,23 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 		res.add(AcceleoParser.TEMPLATE_HEADER_START);
 
 		return res;
+	}
+
+	@Override
+	public void customizeDocumentCommand(IDocument document, DocumentCommand command) {
+		if (newLineCommand(document, command)) {
+			if (atEndOfLine(document, command)) {
+				autoIndentAfterNewLine(document, command);
+			}
+		} else if (atEndOfBlankLine(document, command)) {
+			if (multiLineCommand(document, command)) {
+				shiftBlock(document, command);
+			}
+		}
+	}
+
+	private boolean multiLineCommand(IDocument document, DocumentCommand command) {
+		return MultiStringMatcher.indexOf(command.text, 0, document.getLegalLineDelimiters()) != null;
 	}
 
 	/**
@@ -108,6 +126,17 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 		}
 	}
 
+	/**
+	 * Gets the size of the needed indentation for creating a new line at the given position in the given
+	 * {@link IDocument}.
+	 * 
+	 * @param document
+	 *            the {@link IDocument}
+	 * @param position
+	 *            the position
+	 * @return the size of the needed indentation for creating a new line at the given position in the given
+	 *         {@link IDocument}
+	 */
 	private int neededIndentation(IDocument document, int position) {
 		int res = 0;
 
@@ -130,31 +159,116 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 		return res;
 	}
 
-	@Override
-	public void customizeDocumentCommand(IDocument document, DocumentCommand command) {
-		if (command.length == 0 && command.text != null && TextUtilities.endsWith(document
-				.getLegalLineDelimiters(), command.text) != -1) {
-			if (onNewLine(document, command)) {
-				autoIndentAfterNewLine(document, command);
-			}
-		}
-	}
-
 	/**
-	 * Tells if the given {@link DocumentCommand} was triggered on a new line of the given {@link IDocument}.
+	 * Shifts the given {@link DocumentCommand} text if it's a block by the needed indentation in the given
+	 * {@link IDocument}.
 	 * 
 	 * @param document
 	 *            the {@link IDocument}
 	 * @param command
 	 *            the {@link DocumentCommand}
-	 * @return <code>true</code> if the given {@link DocumentCommand} was triggered on a new line of the given
-	 *         {@link IDocument}, <code>false</code> otherwise
 	 */
-	private boolean onNewLine(IDocument document, DocumentCommand command) {
-		boolean res;
+	private void shiftBlock(IDocument document, DocumentCommand command) {
+		final String blockIndentation = getBlockIndentation(document, command.text);
 		try {
-			res = AcceleoParser.NEW_LINE.equals(document.get(command.offset, AcceleoParser.NEW_LINE
-					.length()));
+			final IRegion lineInfo = document.getLineInformationOfOffset(command.offset);
+			final String indentation = document.get(lineInfo.getOffset(), lineInfo.getLength());
+			command.text = command.text.substring(blockIndentation.length());
+			for (String lineDelimiter : document.getLegalLineDelimiters()) {
+				command.text = command.text.replace(lineDelimiter + blockIndentation, lineDelimiter
+						+ indentation);
+			}
+			if (TextUtilities.endsWith(document.getLegalLineDelimiters(), command.text) != -1) {
+				command.text = command.text + indentation;
+			}
+		} catch (BadLocationException e) {
+			// keep the command has is
+		}
+	}
+
+	private String getBlockIndentation(IDocument document, String text) {
+		int offset = 0;
+		while (offset < text.length()) {
+			final char charAt = text.charAt(offset);
+			if (charAt == ' ' || charAt == '\t') {
+				offset++;
+			} else {
+				break;
+			}
+		}
+
+		return text.substring(0, offset);
+	}
+
+	/**
+	 * Tells if the given {@link DocumentCommand} insert a new line in the given {@link IDocument}.
+	 * 
+	 * @param document
+	 *            the {@link IDocument}
+	 * @param command
+	 *            the {@link DocumentCommand}
+	 * @return <code>true</code> if the given {@link DocumentCommand} insert a new line in the given
+	 *         {@link IDocument}.
+	 * @param document
+	 *            the {@link IDocument}, <code>false</code> otherwise
+	 */
+	private boolean newLineCommand(IDocument document, DocumentCommand command) {
+		return command.length == 0 && command.text != null && TextUtilities.endsWith(document
+				.getLegalLineDelimiters(), command.text) != -1 && TextUtilities.startsWith(document
+						.getLegalLineDelimiters(), command.text) != -1;
+	}
+
+	/**
+	 * Tells if the given {@link DocumentCommand} in the given {@link IDocument} was triggered at the
+	 * {@link #atEndOfLine(IDocument, DocumentCommand) end} of a blank line.
+	 * 
+	 * @param document
+	 *            the {@link IDocument}
+	 * @param command
+	 *            the {@link DocumentCommand}
+	 * @return <code>true</code> if the given {@link DocumentCommand} in the given {@link IDocument} was
+	 *         triggered at the {@link #atEndOfLine(IDocument, DocumentCommand) end} of a
+	 *         {@link String#isBlank() blank} line, <code>false</code> otherwise
+	 */
+	private boolean atEndOfBlankLine(IDocument document, DocumentCommand command) {
+		boolean res;
+
+		if (atEndOfLine(document, command)) {
+			try {
+				final IRegion lineInfo = document.getLineInformationOfOffset(command.offset);
+				res = document.get(lineInfo.getOffset(), lineInfo.getLength()).trim().isEmpty();
+			} catch (BadLocationException e) {
+				res = false;
+			}
+		} else {
+			res = false;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link DocumentCommand} was triggered at the end line of the given
+	 * {@link IDocument}.
+	 * 
+	 * @param document
+	 *            the {@link IDocument}
+	 * @param command
+	 *            the {@link DocumentCommand}
+	 * @return <code>true</code> if the given {@link DocumentCommand} was triggered at the end line of the
+	 *         given {@link IDocument}, <code>false</code> otherwise
+	 */
+	private boolean atEndOfLine(IDocument document, DocumentCommand command) {
+		boolean res = false;
+		try {
+			for (String lineDelimiter : document.getLegalLineDelimiters()) {
+				if (document.getLength() > command.offset + lineDelimiter.length()) {
+					res = lineDelimiter.equals(document.get(command.offset, lineDelimiter.length()));
+					if (res) {
+						break;
+					}
+				}
+			}
 		} catch (BadLocationException e) {
 			res = false;
 		}
