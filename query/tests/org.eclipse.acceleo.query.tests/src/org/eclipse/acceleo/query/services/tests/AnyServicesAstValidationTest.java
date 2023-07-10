@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -33,11 +35,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testAddNullString() {
 		final IValidationResult validationResult = validate("null + 'string'");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -45,11 +52,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testAddStringNull() {
 		final IValidationResult validationResult = validate("'string' + null");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -58,13 +70,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testAddNothingString() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing + 'string'", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -75,13 +94,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testAddStringNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("'string' + nothing", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 11, 18);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 11, 18);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -92,11 +118,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testAddObjectString() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("object + 'string'", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -105,11 +136,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testAddStringObject() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("'string' + object", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -117,11 +153,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testDiffersNullNull() {
 		final IValidationResult validationResult = validate("null <> null");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -130,13 +171,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testDiffersNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null <> nothing", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 8, 15);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 8, 15);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -147,13 +195,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testDiffersNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing <> null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -164,11 +219,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testDiffersNullObject() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("null <> object", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -177,11 +237,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testDiffersObjectNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("object <> null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -190,11 +255,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testDiffersObjectObject() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("object <> object", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -202,11 +272,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testEqualsNullNull() {
 		final IValidationResult validationResult = validate("null = null");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -215,13 +290,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testEqualsNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null = nothing", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 7, 14);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 7, 14);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -232,13 +314,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testEqualsNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing = null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -249,11 +338,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testEqualsNullObject() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("null = object", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -262,11 +356,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testEqualsObjectNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("object = null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -275,11 +374,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testEqualsObjectObject() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("object = object", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -287,6 +391,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclAsTypeNullNull() {
 		final IValidationResult validationResult = validate("null.oclAsType(null)");
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Nothing will be left after calling oclAsType:\n"
 				+ "null is not compatible with type null";
@@ -295,8 +400,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, expectedMessage, 4, 20);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.ERROR, expectedMessage, 4, 20);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(1, types.size());
 		final Iterator<IType> it = types.iterator();
@@ -309,13 +420,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testOclAsTypeNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.oclAsType(null)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -326,13 +444,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testOclAsTypeNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null.oclAsType(nothing)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 15, 22);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 15, 22);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -343,6 +468,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testOclAsTypeNothingNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.oclAsType(nothing)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -350,8 +476,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, "Nothing", 18, 25);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 18, 25);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -365,11 +499,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
 	}
@@ -379,11 +518,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classType(String.class));
 		final IValidationResult validationResult = validate("var.oclAsType(String)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -393,11 +537,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classLiteralType(String.class));
 		final IValidationResult validationResult = validate("var.oclAsType(String)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -409,11 +558,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
 	}
@@ -423,6 +577,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classLiteralType(String.class));
 		final IValidationResult validationResult = validate("var.oclAsType(Integer)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Nothing will be left after calling oclAsType:\n"
 				+ "ClassLiteral=java.lang.String is not compatible with type ClassLiteral=java.lang.Integer";
@@ -431,8 +586,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, expectedMessage, 3, 22);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.ERROR, expectedMessage, 3, 22);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(1, types.size());
 		final Iterator<IType> it = types.iterator();
@@ -448,6 +609,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Nothing will be left after calling oclAsType:\n"
 				+ "EClassifier=EClass is not compatible with type EClassifierLiteral=EPackage";
@@ -456,8 +618,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, expectedMessage, 4, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.ERROR, expectedMessage, 4, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(1, types.size());
 		final Iterator<IType> it = types.iterator();
@@ -472,6 +640,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final VariableBuilder variables = new VariableBuilder().addVar("eCls", classType(EClass.class));
 		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Nothing will be left after calling oclAsType:\n"
 				+ "org.eclipse.emf.ecore.EClass is not compatible with type EClassifierLiteral=EPackage";
@@ -480,8 +649,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, expectedMessage, 4, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.ERROR, expectedMessage, 4, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(1, types.size());
 		final Iterator<IType> it = types.iterator();
@@ -497,6 +672,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Nothing will be left after calling oclAsType:\n"
 				+ "EClassifierLiteral=EClass is not compatible with type EClassifierLiteral=EPackage";
@@ -505,8 +681,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, expectedMessage, 4, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.ERROR, expectedMessage, 4, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(1, types.size());
 		final Iterator<IType> it = types.iterator();
@@ -522,11 +704,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclAsType(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
 	}
@@ -538,11 +725,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EClassifier.class));
 		final IValidationResult validationResult = validate("eClasssifier.oclAsType(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
 	}
@@ -554,11 +746,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclAsType(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
 	}
@@ -566,11 +763,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclIsKindOfNullNull() {
 		final IValidationResult validationResult = validate("null.oclIsKindOf(null)");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// ClassType(Boolean) because ecore is not registered
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
@@ -580,6 +782,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testOclIsKindOfNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.oclIsKindOf(null)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -588,8 +791,17 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				ValidationMessageLevel.INFO, "Always false:\n"
 						+ "Nothing inferred when nothing (Nothing(Nothing)) is kind of null", 0, 25);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, "Always false:\n"
+						+ "Nothing inferred when nothing (Nothing(Nothing)) is kind of null", 0, 25);
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -600,13 +812,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testOclIsKindOfNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null.oclIsKindOf(nothing)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 17, 24);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 17, 24);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -618,6 +837,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.oclIsKindOf(nothing)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -625,8 +845,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, "Nothing", 20, 27);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 20, 27);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -638,6 +866,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsKindOf(String)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when var (java.lang.String) is not kind of ClassLiteral=java.lang.String";
@@ -646,8 +875,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -657,6 +892,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classLiteralType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsKindOf(String)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when var (ClassLiteral=java.lang.String) is not kind of ClassLiteral=java.lang.String";
@@ -665,8 +901,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -678,6 +920,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when eCls (EClassifier=EClass) is not kind of EClassifierLiteral=EClass";
@@ -686,8 +929,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -699,6 +948,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when eCls (EClassifierLiteral=EClass) is not kind of EClassifierLiteral=EClass";
@@ -707,8 +957,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -718,6 +974,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsKindOf(Integer)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when var (java.lang.String) is kind of ClassLiteral=java.lang.Integer";
@@ -726,8 +983,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -737,6 +1000,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classLiteralType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsKindOf(Integer)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when var (ClassLiteral=java.lang.String) is kind of ClassLiteral=java.lang.Integer";
@@ -745,8 +1009,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -758,6 +1028,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when eCls (EClassifier=EClass) is kind of EClassifierLiteral=EPackage";
@@ -766,8 +1037,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -778,6 +1055,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final VariableBuilder variables = new VariableBuilder().addVar("eCls", classType(EClass.class));
 		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when eCls (org.eclipse.emf.ecore.EClass) is kind of EClassifierLiteral=EPackage";
@@ -786,8 +1064,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -799,6 +1083,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when eCls (EClassifierLiteral=EClass) is kind of EClassifierLiteral=EPackage";
@@ -807,8 +1092,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -820,11 +1111,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsKindOf(ecore::EClass)",
 				variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -836,11 +1132,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EClassifier.class));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsKindOf(ecore::EClass)",
 				variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -852,11 +1153,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsKindOf(ecore::EClass)",
 				variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -864,11 +1170,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclIsTypeOfNullNull() {
 		final IValidationResult validationResult = validate("null.oclIsTypeOf(null)");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// ClassType(Boolean) because ecore is not registered
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
@@ -878,6 +1189,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testOclIsTypeOfNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.oclIsTypeOf(null)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -886,8 +1198,17 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				ValidationMessageLevel.INFO, "Always false:\n"
 						+ "Nothing inferred when nothing (Nothing(Nothing)) is type of null", 0, 25);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, "Always false:\n"
+						+ "Nothing inferred when nothing (Nothing(Nothing)) is type of null", 0, 25);
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -898,13 +1219,20 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testOclIsTypeOfNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null.oclIsTypeOf(nothing)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 17, 24);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 17, 24);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -916,6 +1244,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.oclIsTypeOf(nothing)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -923,8 +1252,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, "Nothing", 20, 27);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 20, 27);
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -936,6 +1273,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsTypeOf(String)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when var (java.lang.String) is not type of ClassLiteral=java.lang.String";
@@ -944,8 +1282,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -955,6 +1299,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classLiteralType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsTypeOf(String)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when var (ClassLiteral=java.lang.String) is not type of ClassLiteral=java.lang.String";
@@ -963,8 +1308,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 23);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -976,6 +1327,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when eCls (EClassifier=EClass) is not type of EClassifierLiteral=EClass";
@@ -984,8 +1336,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -996,6 +1354,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final VariableBuilder variables = new VariableBuilder().addVar("eCls", classType(EClass.class));
 		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when eCls (org.eclipse.emf.ecore.EClass) is not type of EClassifierLiteral=EClass";
@@ -1004,8 +1363,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1017,6 +1382,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EClass)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always true:\n"
 				+ "Nothing inferred when eCls (EClassifierLiteral=EClass) is not type of EClassifierLiteral=EClass";
@@ -1025,8 +1391,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 31);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1036,6 +1408,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsTypeOf(Integer)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when var (java.lang.String) is type of ClassLiteral=java.lang.Integer";
@@ -1044,8 +1417,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1055,6 +1434,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final VariableBuilder variables = new VariableBuilder().addVar("var", classLiteralType(String.class));
 		final IValidationResult validationResult = validate("var.oclIsTypeOf(Integer)", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when var (ClassLiteral=java.lang.String) is type of ClassLiteral=java.lang.Integer";
@@ -1063,8 +1443,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 24);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1076,6 +1462,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when eCls (EClassifier=EClass) is type of EClassifierLiteral=EPackage";
@@ -1084,8 +1471,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1097,6 +1490,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EPackage)", variables
 				.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		final String expectedMessage = "Always false:\n"
 				+ "Nothing inferred when eCls (EClassifierLiteral=EClass) is type of EClassifierLiteral=EPackage";
@@ -1105,8 +1499,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO, expectedMessage, 0, 33);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1118,11 +1518,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsTypeOf(ecore::EClass)",
 				variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1134,11 +1539,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EClassifier.class));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsTypeOf(ecore::EClass)",
 				variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1150,11 +1560,16 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsTypeOf(ecore::EClass)",
 				variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -1162,11 +1577,15 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testToStringNull() {
 		final IValidationResult validationResult = validate("null.toString()");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -1175,22 +1594,31 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testToStringNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.toString()", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 	}
 
 	@Test
 	public void testToStringObject() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("object.trace()", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -1198,11 +1626,15 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testTraceNull() {
 		final IValidationResult validationResult = validate("null.trace()");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
@@ -1211,22 +1643,31 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	public void testTraceNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing.trace()", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 	}
 
 	@Test
 	public void testTraceObject() {
 		final VariableBuilder variables = new VariableBuilder().addVar("object", classType(Object.class));
 		final IValidationResult validationResult = validate("object.trace()", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+
+		final AstResult astResult = validationResult.getAstResult();
+		final Set<IType> types = validationResult.getPossibleTypes(astResult.getAst());
 
 		assertEquals(Collections.singleton(classType(String.class)), types);
 	}

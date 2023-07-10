@@ -13,10 +13,13 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -74,7 +77,7 @@ public class ValidationResult implements IValidationResult {
 	/**
 	 * Messages.
 	 */
-	private final List<IValidationMessage> messages = new ArrayList<IValidationMessage>();
+	private final Map<ASTNode, List<IValidationMessage>> messages = new LinkedHashMap<ASTNode, List<IValidationMessage>>();
 
 	/**
 	 * The {@link AstResult}.
@@ -103,24 +106,36 @@ public class ValidationResult implements IValidationResult {
 		types.put(expression, possibleTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getPossibleTypes(org.eclipse.acceleo.query.ast.Expression)
-	 */
 	@Override
 	public Set<IType> getPossibleTypes(Expression expression) {
 		return types.get(expression);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getMessages()
-	 */
 	@Override
 	public List<IValidationMessage> getMessages() {
-		return messages;
+		return messages.values().stream().flatMap(List::stream).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<IValidationMessage> getMessages(ASTNode node) {
+		return messages.getOrDefault(node, Collections.emptyList());
+	}
+
+	@Override
+	public void addMessage(ASTNode node, IValidationMessage message) {
+		messages.computeIfAbsent(node, n -> new ArrayList<>()).add(message);
+	}
+
+	@Override
+	public void removeMessage(ASTNode node, IValidationMessage message) {
+		final List<IValidationMessage> nodeMessages = messages.get(node);
+		if (nodeMessages != null) {
+			if (nodeMessages.remove(message)) {
+				if (nodeMessages.isEmpty()) {
+					messages.remove(node);
+				}
+			}
+		}
 	}
 
 	/**

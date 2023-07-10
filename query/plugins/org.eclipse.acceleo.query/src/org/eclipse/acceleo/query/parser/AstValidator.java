@@ -16,12 +16,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
@@ -130,7 +132,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * Set of {@link IValidationMessage}.
 	 */
-	private Set<IValidationMessage> messages = new LinkedHashSet<IValidationMessage>();
+	private Map<ASTNode, Set<IValidationMessage>> messages = new LinkedHashMap<>();
 
 	/**
 	 * The mapping from a {@link VarRef#getVariableName() variable name} to its {@link List} of unresolved
@@ -269,8 +271,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			}
 		}
 
-		messages.addAll(msgs);
-		messages.addAll(infoMsgs);
+		msgs.stream().forEach(m -> messages.computeIfAbsent(expression,
+				n -> new LinkedHashSet<IValidationMessage>()).add(m));
+		infoMsgs.stream().forEach(m -> messages.computeIfAbsent(expression,
+				n -> new LinkedHashSet<IValidationMessage>()).add(m));
 		validationResult.addTypes(expression, validationTypes);
 
 		return result;
@@ -605,7 +609,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final int endPosition = astResult.getEndPosition(call);
 			final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
 					messageWhenTrue.toString(), startPostion, endPosition);
-			messages.add(message);
+			messages.computeIfAbsent(call, c -> new LinkedHashSet<>()).add(message);
 		}
 		if (!inferredFalseTypes.isEmpty()) {
 			Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
@@ -617,7 +621,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final int endPosition = astResult.getEndPosition(call);
 			final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
 					messageWhenFalse.toString(), startPostion, endPosition);
-			validationResult.getMessages().add(message);
+			validationResult.addMessage(call, message);
 		}
 	}
 
@@ -900,9 +904,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		pushVariableTypes(variableTypes);
 		doSwitch(astResult.getAst());
 		popVariableTypes();
-		validationResult.getMessages().addAll(messages);
+		messages.entrySet().stream().forEach(e -> e.getValue().stream().forEach(m -> validationResult
+				.addMessage(e.getKey(), m)));
 		validationResult.getUnresolvedVarRef().addAll(unresolvedVarRef);
-		messages = new LinkedHashSet<IValidationMessage>();
+		messages = new LinkedHashMap<>();
 
 		return validationResult;
 	}

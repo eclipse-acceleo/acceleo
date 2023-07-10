@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -50,6 +51,35 @@ public interface IValidationResult {
 	 * @return the {@link List} of link IValidationMessage}
 	 */
 	List<IValidationMessage> getMessages();
+
+	/**
+	 * Gets the {@link List} of link IValidationMessage} for the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the {@link List} of link IValidationMessage} for the given {@link ASTNode}
+	 */
+	List<IValidationMessage> getMessages(ASTNode node);
+
+	/**
+	 * Adds the given {@link IValidationMessage} to the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @param message
+	 *            the {@link IValidationMessage}
+	 */
+	void addMessage(ASTNode node, IValidationMessage message);
+
+	/**
+	 * Removes the given {@link IValidationMessage} for the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @param message
+	 *            the {@link IValidationMessage}
+	 */
+	void removeMessage(ASTNode node, IValidationMessage message);
 
 	/**
 	 * Gets inferred variable {@link IType} when the given boolean {@link Expression} has the given

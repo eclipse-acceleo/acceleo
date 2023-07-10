@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -139,6 +141,16 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
 				0, 36);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
+				0, 36);
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 10);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -174,6 +186,10 @@ public class ValidationInferenceTest {
 		assertEquals(EcorePackage.eINSTANCE.getEObject(), ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -209,6 +225,10 @@ public class ValidationInferenceTest {
 		assertEquals(EObject.class, ((ClassType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -239,6 +259,10 @@ public class ValidationInferenceTest {
 		assertEquals(a, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -269,6 +293,10 @@ public class ValidationInferenceTest {
 		assertEquals(A.class, ((ClassType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -296,6 +324,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varB (EClassifier=B) is not kind of EClassifierLiteral=B",
 				0, 30);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varB (EClassifier=B) is not kind of EClassifierLiteral=B",
+				0, 30);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -323,6 +359,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varBClass (inference.B) is not kind of EClassifierLiteral=B",
 				0, 35);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varBClass (inference.B) is not kind of EClassifierLiteral=B",
+				0, 35);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -350,6 +394,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varC (EClassifier=C) is not kind of EClassifierLiteral=B",
 				0, 30);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varC (EClassifier=C) is not kind of EClassifierLiteral=B",
+				0, 30);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -377,6 +429,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varCClass (inference.C) is not kind of EClassifierLiteral=B",
 				0, 35);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varCClass (inference.C) is not kind of EClassifierLiteral=B",
+				0, 35);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -404,6 +464,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varC (EClassifier=C) is kind of EClassifierLiteral=O",
 				0, 30);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is kind of EClassifierLiteral=O",
+				0, 30);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -431,6 +499,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varCClass (inference.C) is kind of EClassifierLiteral=O",
 				0, 35);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varCClass (inference.C) is kind of EClassifierLiteral=O",
+				0, 35);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -460,6 +536,16 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is type of EClassifierLiteral=B",
 				0, 36);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is type of EClassifierLiteral=B",
+				0, 36);
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 10);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -495,6 +581,10 @@ public class ValidationInferenceTest {
 		assertEquals(EcorePackage.eINSTANCE.getEObject(), ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -530,6 +620,10 @@ public class ValidationInferenceTest {
 		assertEquals(EObject.class, ((ClassType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -559,6 +653,10 @@ public class ValidationInferenceTest {
 		assertEquals(a, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -588,6 +686,10 @@ public class ValidationInferenceTest {
 		assertEquals(A.class, ((ClassType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -615,6 +717,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varA (EClassifier=A) is type of EClassifierLiteral=X",
 				0, 30);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varA (EClassifier=A) is type of EClassifierLiteral=X",
+				0, 30);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -642,6 +752,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varAClass (inference.A) is type of EClassifierLiteral=X",
 				0, 35);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varAClass (inference.A) is type of EClassifierLiteral=X",
+				0, 35);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -674,6 +792,10 @@ public class ValidationInferenceTest {
 		assertEquals(y, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -706,6 +828,10 @@ public class ValidationInferenceTest {
 		assertEquals(y, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -733,6 +859,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varZ (EClassifier=Z) is not type of EClassifierLiteral=Z",
 				0, 30);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varZ (EClassifier=Z) is not type of EClassifierLiteral=Z",
+				0, 30);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -760,6 +894,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varZClass (inference.Z) is not type of EClassifierLiteral=Z",
 				0, 35);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varZClass (inference.Z) is not type of EClassifierLiteral=Z",
+				0, 35);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -787,6 +929,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=B",
 				0, 30);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=B",
+				0, 30);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -814,6 +964,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=B",
 				0, 35);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=B",
+				0, 35);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -841,6 +999,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=O",
 				0, 30);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=O",
+				0, 30);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -868,6 +1034,14 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=O",
 				0, 35);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=O",
+				0, 35);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -898,6 +1072,19 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
 				4, 40);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
+				4, 40);
+		assertEquals(1, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)((Call)ast).getArguments()
+				.get(0)).getArguments().get(0)).get(0), ValidationMessageLevel.ERROR, "Nothing", 4, 14);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -928,6 +1115,13 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -958,6 +1152,13 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -988,6 +1189,10 @@ public class ValidationInferenceTest {
 		assertEquals(a, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -1018,6 +1223,10 @@ public class ValidationInferenceTest {
 		assertEquals(A.class, ((ClassType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -1045,6 +1254,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varB (EClassifier=B) is not kind of EClassifierLiteral=B",
 				4, 34);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varB (EClassifier=B) is not kind of EClassifierLiteral=B",
+				4, 34);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1072,6 +1292,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varBClass (inference.B) is not kind of EClassifierLiteral=B",
 				4, 39);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varBClass (inference.B) is not kind of EClassifierLiteral=B",
+				4, 39);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1099,6 +1330,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varC (EClassifier=C) is not kind of EClassifierLiteral=B",
 				4, 34);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varC (EClassifier=C) is not kind of EClassifierLiteral=B",
+				4, 34);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1126,6 +1368,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varCClass (inference.C) is not kind of EClassifierLiteral=B",
 				4, 39);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varCClass (inference.C) is not kind of EClassifierLiteral=B",
+				4, 39);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1153,6 +1406,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varC (EClassifier=C) is kind of EClassifierLiteral=O",
 				4, 34);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is kind of EClassifierLiteral=O",
+				4, 34);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1180,6 +1444,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varCClass (inference.C) is kind of EClassifierLiteral=O",
 				4, 39);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varCClass (inference.C) is kind of EClassifierLiteral=O",
+				4, 39);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1209,6 +1484,19 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is type of EClassifierLiteral=B",
 				4, 40);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is type of EClassifierLiteral=B",
+				4, 40);
+		assertEquals(1, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)((Call)ast).getArguments()
+				.get(0)).getArguments().get(0)).get(0), ValidationMessageLevel.ERROR, "Nothing", 4, 14);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1238,6 +1526,13 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1267,6 +1562,13 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1299,6 +1601,13 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1331,6 +1640,13 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1358,6 +1674,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varZ (EClassifier=Z) is not type of EClassifierLiteral=Z",
 				4, 34);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varZ (EClassifier=Z) is not type of EClassifierLiteral=Z",
+				4, 34);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1385,6 +1712,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always true:\nNothing inferred when varZClass (inference.Z) is not type of EClassifierLiteral=Z",
 				4, 39);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always true:\nNothing inferred when varZClass (inference.Z) is not type of EClassifierLiteral=Z",
+				4, 39);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1412,6 +1750,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=B",
 				4, 34);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=B",
+				4, 34);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1439,6 +1788,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=B",
 				4, 39);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=B",
+				4, 39);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1466,6 +1826,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=O",
 				4, 34);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=O",
+				4, 34);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1493,6 +1864,17 @@ public class ValidationInferenceTest {
 				ValidationMessageLevel.INFO,
 				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=O",
 				4, 39);
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varCClass (inference.C) is type of EClassifierLiteral=O",
+				4, 39);
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1525,6 +1907,18 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1557,6 +1951,18 @@ public class ValidationInferenceTest {
 		assertEquals(B.class, ((ClassType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1574,6 +1980,18 @@ public class ValidationInferenceTest {
 		assertNull(inferredWhenFalse);
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1591,6 +2009,18 @@ public class ValidationInferenceTest {
 		assertNull(inferredWhenFalse);
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1620,6 +2050,18 @@ public class ValidationInferenceTest {
 		assertEquals(b, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1649,6 +2091,18 @@ public class ValidationInferenceTest {
 		assertEquals(B.class, ((ClassType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
@@ -1669,6 +2123,15 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getPredicate()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Conditional)ast).getPredicate()).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Conditional)ast).getPredicate()).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getTrueBranch()).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getFalseBranch()).size());
 	}
 
 	@Test
@@ -1689,6 +2152,15 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getPredicate()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Conditional)ast).getPredicate()).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Conditional)ast).getPredicate()).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getTrueBranch()).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getFalseBranch()).size());
 	}
 
 	@Test
@@ -1709,6 +2181,17 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getPredicate()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Conditional)ast).getPredicate()).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Conditional)ast).getPredicate())
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Conditional)ast).getPredicate())
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getTrueBranch()).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getFalseBranch()).size());
 	}
 
 	@Test
@@ -1729,6 +2212,17 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getPredicate()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Conditional)ast).getPredicate()).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Conditional)ast).getPredicate())
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Conditional)ast).getPredicate())
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getTrueBranch()).size());
+		assertEquals(0, validationResult.getMessages(((Conditional)ast).getFalseBranch()).size());
 	}
 
 	@Test
@@ -1745,6 +2239,18 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -1761,6 +2267,18 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)type).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -1779,6 +2297,18 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)rawType).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -1797,6 +2327,18 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)rawType).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -1815,6 +2357,20 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)rawType).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).getArguments().get(1)).size());
 	}
 
 	@Test
@@ -1833,38 +2389,124 @@ public class ValidationInferenceTest {
 		assertEquals(c, ((EClassifierType)rawType).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression()).getArguments().get(0)).getArguments().get(1)).size());
 	}
 
 	@Test
 	public void andWithSubTypeAttribute() {
 		final IValidationResult validationResult = engine.validate(
 				"varB.oclIsKindOf(inference::C) and varB.cAttr = null", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
 	public void andWithSubTypeAttributeClass() {
 		final IValidationResult validationResult = engine.validate(
 				"varBClass.oclIsKindOf(inference::C) and varBClass.cAttr = null", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
 	public void orWithSubTypeAttribute() {
 		final IValidationResult validationResult = engine.validate(
 				"not varB.oclIsKindOf(inference::C) or varB.cAttr = null", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(0))
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(0))
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	@Test
 	public void orWithSubTypeAttributeClass() {
 		final IValidationResult validationResult = engine.validate(
 				"not varBClass.oclIsKindOf(inference::C) or varBClass.cAttr = null", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(0)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(0))
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(0))
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)((Call)ast).getArguments().get(1))
+				.getArguments().get(0)).getArguments().get(1)).size());
+		assertEquals(0, validationResult.getMessages(((Call)((Call)ast).getArguments().get(1)).getArguments()
+				.get(1)).size());
 	}
 
 	private void assertDisjointTypes(Set<IType> inferredWhenTrue, Set<IType> inferredWhenFalse) {

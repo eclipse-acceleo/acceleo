@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,8 @@ package org.eclipse.acceleo.query.services.tests;
 import java.util.Collections;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
@@ -28,11 +29,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	@Test
 	public void testGreaterThanNullNull() {
 		final IValidationResult validationResult = validate("null > null");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -41,13 +46,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testGreaterThanNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing > null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -58,13 +69,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testGreaterThanNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null > nothing", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 7, 14);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 7, 14);
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -76,11 +93,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("null > comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -90,11 +111,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable > null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -104,11 +129,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable > comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -116,11 +145,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	@Test
 	public void testGreaterThanEqualNullNull() {
 		final IValidationResult validationResult = validate("null >= null");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -129,13 +162,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testGreaterThanEqualNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing >= null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -146,13 +185,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testGreaterThanEqualNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null >= nothing", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 8, 15);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 8, 15);
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -164,11 +209,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("null >= comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -178,11 +227,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable >= null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -192,11 +245,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable >= comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -204,11 +261,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	@Test
 	public void testLessThanNullNull() {
 		final IValidationResult validationResult = validate("null < null");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -217,13 +278,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testLessThanNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing < null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -234,13 +301,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testLessThanNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null < nothing", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 7, 14);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 7, 14);
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -252,11 +325,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("null < comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -266,11 +343,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable < null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -280,11 +361,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable < comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -292,11 +377,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	@Test
 	public void testLessThanEqualNullNull() {
 		final IValidationResult validationResult = validate("null <= null");
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -305,13 +394,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testLessThanEqualNothingNull() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("nothing <= null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 7);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(0))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 0, 7);
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -322,13 +417,19 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 	public void testLessThanEqualNullNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
 		final IValidationResult validationResult = validate("null <= nothing", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 8, 15);
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(1, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages(((Call)ast).getArguments().get(1))
+				.get(0), ValidationMessageLevel.ERROR, "Nothing", 8, 15);
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		// the NothingType is removed from possible types then no lookup is done because of empty combination
 		// set
@@ -340,11 +441,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("null <= comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -354,11 +459,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable <= null", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
@@ -368,11 +477,15 @@ public class ComparableServicesAstValidationTest extends AbstractServicesValidat
 		final VariableBuilder variables = new VariableBuilder().addVar("comparable", classType(
 				Comparable.class));
 		final IValidationResult validationResult = validate("comparable <= comparable", variables.build());
+		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(0, validationResult.getMessages().size());
 
-		final AstResult ast = validationResult.getAstResult();
-		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
+
+		final Set<IType> types = validationResult.getPossibleTypes(ast);
 
 		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
