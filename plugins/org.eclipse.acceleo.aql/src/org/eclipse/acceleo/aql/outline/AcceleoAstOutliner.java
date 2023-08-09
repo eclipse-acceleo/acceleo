@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.outline;
 
 import org.eclipse.acceleo.AcceleoASTNode;
+import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
@@ -68,6 +69,11 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 	public AcceleoSymbol caseMetamodel(Metamodel metamodel) {
 		String details = metamodel.getReferencedPackage().getNsURI();
 		return this.createSymbol(metamodel, metamodel.getReferencedPackage().getName(), details);
+	}
+
+	@Override
+	public AcceleoSymbol caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
+		return this.createSymbol(errorMetamodel, "", "");
 	}
 
 	/**
