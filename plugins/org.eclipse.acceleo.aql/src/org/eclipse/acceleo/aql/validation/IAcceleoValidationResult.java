@@ -13,9 +13,9 @@ package org.eclipse.acceleo.aql.validation;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -50,13 +50,13 @@ public interface IAcceleoValidationResult {
 	List<IValidationMessage> getValidationMessages();
 
 	/**
-	 * Gets the {@link List} of {@link IValidationMessage} for the given {@link AcceleoASTNode}.
+	 * Gets the {@link List} of {@link IValidationMessage} for the given {@link ASTNode}.
 	 * 
 	 * @param node
-	 *            the {@link AcceleoASTNode}
-	 * @return the {@link List} of {@link IValidationMessage} for the given {@link AcceleoASTNode}
+	 *            the {@link ASTNode}
+	 * @return the {@link List} of {@link IValidationMessage} for the given {@link ASTNode}
 	 */
-	List<IValidationMessage> getValidationMessages(AcceleoASTNode node);
+	List<IValidationMessage> getValidationMessages(ASTNode node);
 
 	/**
 	 * Gets the {@link IValidationResult AQL validation result} for the given {@link AstResult AQL AST}.

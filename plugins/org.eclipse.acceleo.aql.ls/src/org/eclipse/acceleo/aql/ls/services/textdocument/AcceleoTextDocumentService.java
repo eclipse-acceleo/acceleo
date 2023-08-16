@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.aql.ls.services.textdocument;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +30,10 @@ import org.eclipse.acceleo.aql.outline.AcceleoOutliner;
 import org.eclipse.acceleo.aql.outline.AcceleoSymbol;
 import org.eclipse.acceleo.aql.parser.AcceleoAstUtils;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.lsp4j.CodeAction;
+import org.eclipse.lsp4j.CodeActionContext;
+import org.eclipse.lsp4j.CodeActionParams;
+import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.CompletionParams;
@@ -108,8 +111,9 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	// Mandatory TextDocumentService API.
 	@Override
 	public void didOpen(DidOpenTextDocumentParams params) {
-		URI openedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument().getUri());
-		AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
+		final URI openedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
+		final AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
 				openedDocumentUri);
 		if (openedAcceleoTextDocument == null) {
 			throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
@@ -122,20 +126,23 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 
 	@Override
 	public void didChange(DidChangeTextDocumentParams params) {
-		URI changedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument().getUri());
+		final URI changedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
 		this.checkDocumentIsOpened(changedDocumentUri);
 
-		List<TextDocumentContentChangeEvent> textDocumentContentchangeEvents = params.getContentChanges();
-		AcceleoTextDocument changedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
+		final List<TextDocumentContentChangeEvent> textDocumentContentchangeEvents = params
+				.getContentChanges();
+		final AcceleoTextDocument changedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
 				changedDocumentUri);
 		changedAcceleoTextDocument.applyChanges(textDocumentContentchangeEvents);
 	}
 
 	@Override
 	public void didClose(DidCloseTextDocumentParams params) {
-		URI closedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument().getUri());
+		final URI closedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
 		checkDocumentIsOpened(closedDocumentUri);
-		AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
+		final AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getTextDocument(
 				closedDocumentUri);
 		if (openedAcceleoTextDocument == null) {
 			throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
@@ -148,8 +155,10 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 
 	@Override
 	public void didSave(DidSaveTextDocumentParams params) {
-		URI savedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument().getUri());
-		AcceleoTextDocument savedTextDocument = this.server.getWorkspace().getTextDocument(savedDocumentUri);
+		final URI savedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
+		final AcceleoTextDocument savedTextDocument = this.server.getWorkspace().getTextDocument(
+				savedDocumentUri);
 		savedTextDocument.documentSaved();
 	}
 	////
@@ -163,8 +172,9 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	 */
 	public void publishValidationResults(AcceleoTextDocument acceleoTextDocument) {
 		if (this.languageClient != null) {
-			IAcceleoValidationResult validationResults = acceleoTextDocument.getAcceleoValidationResults();
-			List<Diagnostic> diagnosticsToPublish = AcceleoLanguageServerServicesUtils.transform(
+			final IAcceleoValidationResult validationResults = acceleoTextDocument
+					.getAcceleoValidationResults();
+			final List<Diagnostic> diagnosticsToPublish = AcceleoLanguageServerServicesUtils.transform(
 					validationResults, acceleoTextDocument.getContents());
 			this.languageClient.publishDiagnostics(new PublishDiagnosticsParams(acceleoTextDocument.getUri()
 					.toString(), diagnosticsToPublish));
@@ -182,7 +192,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	public AcceleoTextDocument findTextDocumentDefining(Module definedModule) {
 		AcceleoTextDocument definingTextDocument = null;
 
-		List<AcceleoTextDocument> allTextDocuments = this.server.getWorkspace().getAllTextDocuments();
+		final List<AcceleoTextDocument> allTextDocuments = this.server.getWorkspace().getAllTextDocuments();
 		for (AcceleoTextDocument candidate : allTextDocuments) {
 			if (documentDefinesModule(candidate, definedModule)) {
 				definingTextDocument = candidate;
@@ -233,8 +243,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
-		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
-		Position position = params.getPosition();
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final Position position = params.getPosition();
 		return completion(acceleoTextDocument, position);
 	}
 
@@ -255,15 +265,16 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 
 			// Acceleo provides an API to access completion proposals.
 			final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
-			String source = acceleoTextDocument.getContents();
-			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position, source);
-			List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(
+			final String source = acceleoTextDocument.getContents();
+			final int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+					source);
+			final List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(
 					acceleoTextDocument.getQueryEnvironment(), acceleoTextDocument
 							.getFileNameWithoutExtension(), source, atIndex);
 
 			canceler.checkCanceled();
 			final CompletionList res = new CompletionList();
-			List<CompletionItem> completionItems = AcceleoLanguageServerServicesUtils.transform(
+			final List<CompletionItem> completionItems = AcceleoLanguageServerServicesUtils.transform(
 					completionProposals);
 			res.getItems().addAll(completionItems);
 			res.setIsIncomplete(true);
@@ -288,8 +299,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
-		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
-		Position position = params.getPosition();
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final Position position = params.getPosition();
 		return declaration(acceleoTextDocument, position);
 	}
 
@@ -321,8 +332,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
-		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
-		Position position = params.getPosition();
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final Position position = params.getPosition();
 		return definition(acceleoTextDocument, position);
 	}
 
@@ -354,7 +365,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
-		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
 		return documentSymbol(acceleoTextDocument);
 	}
 
@@ -370,7 +381,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		return CompletableFutures.computeAsync(canceler -> {
 			canceler.checkCanceled();
 
-			List<Either<SymbolInformation, DocumentSymbol>> documentSymbols = new ArrayList<>();
+			final List<Either<SymbolInformation, DocumentSymbol>> documentSymbols;
 			if (acceleoTextDocument.getAcceleoValidationResults() != null) {
 				// Acceleo provides an API to access all defined symbols
 				final AcceleoOutliner acceleoOutliner = new AcceleoOutliner();
@@ -383,6 +394,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 								acceleoTextDocument.getContents())).map(
 										Either::<SymbolInformation, DocumentSymbol> forRight).collect(
 												Collectors.toList());
+			} else {
+				documentSymbols = Collections.emptyList();
 			}
 
 			canceler.checkCanceled();
@@ -396,8 +409,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
-		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
-		Position position = params.getPosition();
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final Position position = params.getPosition();
 		return references(acceleoTextDocument, position);
 	}
 
@@ -439,8 +452,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
-		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
-		Position position = params.getPosition();
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final Position position = params.getPosition();
 		return prepareRename(acceleoTextDocument, position);
 	}
 
@@ -458,7 +471,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		return CompletableFutures.computeAsync(canceler -> {
 			canceler.checkCanceled();
 
-			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+			final int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
 					acceleoTextDocument.getContents());
 			final PrepareRenameResult prepareRenameResult = acceleoTextDocument.getPrepareRenameResult(
 					atIndex);
@@ -473,8 +486,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(textDocumentUri);
-		AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
-		Position position = params.getPosition();
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final Position position = params.getPosition();
 		return rename(acceleoTextDocument, position, params.getNewName());
 	}
 
@@ -494,12 +507,41 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		return CompletableFutures.computeAsync(canceler -> {
 			canceler.checkCanceled();
 
-			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
+			final int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
 					acceleoTextDocument.getContents());
-			final Map<String, List<TextEdit>> changes = acceleoTextDocument.getRename(atIndex, newName);
+			final Map<String, List<TextEdit>> changes = acceleoTextDocument.getRenames(atIndex, newName);
 
 			canceler.checkCanceled();
 			return new WorkspaceEdit(changes);
 		});
 	}
+
+	@Override
+	public CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params) {
+		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+				.getUri());
+		checkDocumentIsOpened(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final Range position = params.getRange();
+		final CodeActionContext context = params.getContext();
+		return codeAction(acceleoTextDocument, position, context);
+	}
+
+	private CompletableFuture<List<Either<Command, CodeAction>>> codeAction(
+			AcceleoTextDocument acceleoTextDocument, Range range, CodeActionContext context) {
+		return CompletableFutures.computeAsync(canceler -> {
+			canceler.checkCanceled();
+
+			final int atStartIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(range
+					.getStart(), acceleoTextDocument.getContents());
+			final int atEndIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(range
+					.getEnd(), acceleoTextDocument.getContents());
+			final List<Either<Command, CodeAction>> codeActions = acceleoTextDocument.getCodeActions(
+					atStartIndex, atEndIndex, context);
+
+			canceler.checkCanceled();
+			return codeActions;
+		});
+	}
+
 }

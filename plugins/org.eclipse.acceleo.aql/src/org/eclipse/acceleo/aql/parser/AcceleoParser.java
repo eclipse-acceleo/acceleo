@@ -12,18 +12,11 @@ package org.eclipse.acceleo.aql.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonToken;
-import org.antlr.v4.runtime.CommonTokenFactory;
-import org.antlr.v4.runtime.TokenStream;
-import org.antlr.v4.runtime.UnbufferedCharStream;
-import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
@@ -75,16 +68,10 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoUtil;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
-import org.eclipse.acceleo.query.ast.AstPackage;
-import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
-import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
-import org.eclipse.acceleo.query.parser.QueryLexer;
-import org.eclipse.acceleo.query.parser.QueryParser;
-import org.eclipse.emf.common.util.BasicDiagnostic;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -2351,51 +2338,7 @@ public class AcceleoParser {
 	 * @return the corresponding {@link AstResult}
 	 */
 	protected AstResult parseWhileAqlExpression(String expression) {
-		final AstResult result;
-
-		if (expression != null && expression.length() > 0) {
-			AstBuilderListener astBuilder = new AstBuilderListener();
-			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
-			QueryLexer lexer = new QueryLexer(input);
-			lexer.setTokenFactory(new CommonTokenFactory(true));
-			lexer.removeErrorListeners();
-			lexer.addErrorListener(astBuilder.getErrorListener());
-			TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
-			QueryParser parser = new QueryParser(tokens);
-			parser.addParseListener(astBuilder);
-			parser.removeErrorListeners();
-			parser.addErrorListener(astBuilder.getErrorListener());
-			// parser.setTrace(true);
-			parser.expression();
-			result = astBuilder.getAstResult();
-		} else {
-			org.eclipse.acceleo.query.ast.ErrorExpression errorExpression = (org.eclipse.acceleo.query.ast.ErrorExpression)EcoreUtil
-					.create(AstPackage.eINSTANCE.getErrorExpression());
-			List<org.eclipse.acceleo.query.ast.Error> aqlErrors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
-					1);
-			aqlErrors.add(errorExpression);
-			final Positions<ASTNode> aqlPositions = new Positions<>();
-			if (expression != null) {
-				aqlPositions.setIdentifierStartPositions(errorExpression, Integer.valueOf(0));
-				aqlPositions.setIdentifierStartLines(errorExpression, Integer.valueOf(0));
-				aqlPositions.setIdentifierStartColumns(errorExpression, Integer.valueOf(0));
-				aqlPositions.setIdentifierEndPositions(errorExpression, Integer.valueOf(0));
-				aqlPositions.setIdentifierEndLines(errorExpression, Integer.valueOf(0));
-				aqlPositions.setIdentifierEndColumns(errorExpression, Integer.valueOf(0));
-				aqlPositions.setStartPositions(errorExpression, Integer.valueOf(0));
-				aqlPositions.setStartLines(errorExpression, Integer.valueOf(0));
-				aqlPositions.setStartColumns(errorExpression, Integer.valueOf(0));
-				aqlPositions.setEndPositions(errorExpression, Integer.valueOf(0));
-				aqlPositions.setEndLines(errorExpression, Integer.valueOf(0));
-				aqlPositions.setEndColumns(errorExpression, Integer.valueOf(0));
-			}
-			final BasicDiagnostic diagnostic = new BasicDiagnostic();
-			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
-					"missing expression", new Object[] {errorExpression }));
-			result = new AstResult(errorExpression, aqlPositions, aqlErrors, diagnostic);
-		}
-
-		return result;
+		return AQLUtils.parseWhileAqlExpression(expression);
 	}
 
 	/**
@@ -2406,51 +2349,7 @@ public class AcceleoParser {
 	 * @return the corresponding {@link AstResult}
 	 */
 	protected AstResult parseWhileAqlTypeLiteral(String expression) {
-		final AstResult result;
-
-		if (expression != null && expression.length() > 0) {
-			AstBuilderListener astBuilder = new AstBuilderListener();
-			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
-			QueryLexer lexer = new QueryLexer(input);
-			lexer.setTokenFactory(new CommonTokenFactory(true));
-			lexer.removeErrorListeners();
-			lexer.addErrorListener(astBuilder.getErrorListener());
-			TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
-			QueryParser parser = new QueryParser(tokens);
-			parser.addParseListener(astBuilder);
-			parser.removeErrorListeners();
-			parser.addErrorListener(astBuilder.getErrorListener());
-			// parser.setTrace(true);
-			parser.typeLiteral();
-			result = astBuilder.getAstResult();
-		} else {
-			ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral)EcoreUtil.create(AstPackage.eINSTANCE
-					.getErrorTypeLiteral());
-			List<org.eclipse.acceleo.query.ast.Error> errs = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
-					1);
-			errs.add(errorTypeLiteral);
-			final Positions<ASTNode> aqlPositions = new Positions<>();
-			if (expression != null) {
-				aqlPositions.setIdentifierStartPositions(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setIdentifierStartLines(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setIdentifierStartColumns(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setIdentifierEndPositions(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setIdentifierEndLines(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setIdentifierEndColumns(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setStartPositions(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setStartLines(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setStartColumns(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setEndPositions(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setEndLines(errorTypeLiteral, Integer.valueOf(0));
-				aqlPositions.setEndColumns(errorTypeLiteral, Integer.valueOf(0));
-			}
-			final BasicDiagnostic diagnostic = new BasicDiagnostic();
-			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
-					"missing type literal", new Object[] {errorTypeLiteral }));
-			result = new AstResult(errorTypeLiteral, aqlPositions, errs, diagnostic);
-		}
-
-		return result;
+		return AQLUtils.parseWhileAqlTypeLiteral(expression);
 	}
 
 	/**

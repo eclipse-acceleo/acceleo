@@ -1,0 +1,8 @@
+//@imports.0/@module
+Create Class
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/services/notExisting.java
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/services/notExisting.java [0, 0, 0, 0, 0, 0] package org.eclipse.acceleo.services;
+
+public class notExisting {
+
+}

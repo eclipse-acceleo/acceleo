@@ -1,0 +1,3 @@
+//@moduleElements.0/@body/@aql/@arguments.0/@arguments.0
+Add parameter myParam
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/query/missingParameterName/missingParameterName.mtl [153, 2, 93, 153, 2, 93] myParam: String

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,16 +18,6 @@ import org.eclipse.acceleo.query.runtime.namespace.ILoader;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractLoader implements ILoader {
-
-	/**
-	 * A slash.
-	 */
-	protected static final String SLASH = "/";
-
-	/**
-	 * A dot.
-	 */
-	protected static final String DOT = ".";
 
 	/**
 	 * The qualifier separator.

@@ -1,0 +1,9 @@
+//@moduleElements.0/@body/@statements.0/@condition/@aql/@arguments.0/@arguments.0/@arguments.0
+Add parameter notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/ifStatement/invalidCondition/invalidCondition.mtl [114, 2, 53, 114, 2, 53] , notExisting: String
+Surround with Let: notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/ifStatement/invalidCondition/invalidCondition.mtl [119, 3, 2, 192, 5, 7] [let notExisting : String = '']
+    [if (notExisting.eClassifiers->size() = 0)]
+      some static text.
+    [/if]
+  [/let]

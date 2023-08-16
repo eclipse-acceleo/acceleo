@@ -1,0 +1,6 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import org::eclipse::acceleo::notExisting/]
+[import org::eclipse::acceleo::services::notExisting/]
+
+[query public calledQuery(myParam : ecore::EPackage) : ecore::EClassifier = myParam.eClassifiers->notExistingService()/]

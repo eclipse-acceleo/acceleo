@@ -80,7 +80,7 @@ public class AstSerializer extends AstSwitch<Object> {
 	/**
 	 * The separator between ecore segments.
 	 */
-	private static final String ECORE_SEPARATOR = "::";
+	public static final String ECORE_SEPARATOR = "::";
 
 	/**
 	 * The mapping of an operator service call name to is precedence.

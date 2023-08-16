@@ -1,0 +1,3 @@
+[module test('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public calledQuery(myParam : ecore::EPackage) : ecore::EClassifier = myParam.eClassifiers->notExistingService()/]

@@ -145,6 +145,8 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 
 		capabilities.setRenameProvider(new RenameOptions(true));
 
+		capabilities.setCodeActionProvider(true);
+
 		final InitializeResult res = new InitializeResult(capabilities);
 		return CompletableFuture.completedFuture(res);
 	}

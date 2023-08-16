@@ -1,0 +1,9 @@
+//@moduleElements.0/@body/@statements.0/@startTagPrefix/@aql/@arguments.0
+Add parameter notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixInvalidExpression/withStartTagPrefixInvalidExpression.mtl [114, 2, 53, 114, 2, 53] , notExisting: String
+Surround with Let: notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixInvalidExpression/withStartTagPrefixInvalidExpression.mtl [119, 3, 2, 215, 5, 14] [let notExisting : String = '']
+    [protected (myParam.name) startTagPrefix(notExisting.name)]
+      some static text.
+    [/protected]
+  [/let]

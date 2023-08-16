@@ -36,6 +36,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.DeclarationSwitch;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.aql.validation.quickfixes.AcceleoQuickFixesSwitch;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
@@ -43,6 +44,12 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.quickfixes.CreateResource;
+import org.eclipse.acceleo.query.parser.quickfixes.DeleteResource;
+import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
+import org.eclipse.acceleo.query.parser.quickfixes.IAstResourceChange;
+import org.eclipse.acceleo.query.parser.quickfixes.IAstTextReplacement;
+import org.eclipse.acceleo.query.parser.quickfixes.MoveResource;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
@@ -55,12 +62,24 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.lsp4j.CodeAction;
+import org.eclipse.lsp4j.CodeActionContext;
+import org.eclipse.lsp4j.Command;
+import org.eclipse.lsp4j.CreateFile;
+import org.eclipse.lsp4j.DeleteFile;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
+import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.RenameFile;
+import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
+import org.eclipse.lsp4j.TextDocumentEdit;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkspaceEdit;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.services.TextDocumentService;
 
 /**
@@ -863,7 +882,7 @@ public class AcceleoTextDocument {
 	 *            the new name
 	 * @return the mapping from a {@link URI} to its {@link List} of {@link TextEdit}
 	 */
-	public Map<String, List<TextEdit>> getRename(int position, String newName) {
+	public Map<String, List<TextEdit>> getRenames(int position, String newName) {
 		final Map<String, List<TextEdit>> res = new HashMap<>();
 
 		for (LocationLink locationLink : getDeclarationLocations(position)) {
@@ -878,6 +897,71 @@ public class AcceleoTextDocument {
 		}
 
 		return res;
+	}
+
+	public List<Either<Command, CodeAction>> getCodeActions(int atStartIndex, int atEndIndex,
+			CodeActionContext context) {
+		final List<Either<Command, CodeAction>> res;
+
+		final ASTNode astNode = acceleoAstResult.getAstNode(atEndIndex);
+		if (astNode != null) {
+			final AcceleoQuickFixesSwitch quickFixesSwitch = new AcceleoQuickFixesSwitch(
+					getQueryEnvironment(), acceleoValidationResult, getModuleQualifiedName(), getContents());
+			final List<IAstQuickFix> quickFixes = quickFixesSwitch.getQuickFixes(astNode);
+			res = quickFixes.stream().map(qf -> transform(qf)).collect(Collectors.toList());
+		} else {
+			res = Collections.emptyList();
+		}
+		return res;
+	}
+
+	private Either<Command, CodeAction> transform(IAstQuickFix quickFix) {
+		final CodeAction res = new CodeAction(quickFix.getName());
+		final WorkspaceEdit workspaceEdit = new WorkspaceEdit();
+		res.setEdit(workspaceEdit);
+		final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges = new ArrayList<>();
+		workspaceEdit.setDocumentChanges(documentChanges);
+
+		for (IAstResourceChange change : quickFix.getResourceChanges()) {
+			final ResourceOperation resourceOperation;
+			if (change instanceof CreateResource) {
+				resourceOperation = new CreateFile(((CreateResource)change).getUri().toString());
+			} else if (change instanceof DeleteResource) {
+				resourceOperation = new DeleteFile(((DeleteResource)change).getUri().toString());
+			} else if (change instanceof MoveResource) {
+				resourceOperation = new RenameFile(((MoveResource)change).getSource().toString(),
+						((MoveResource)change).getTarget().toString());
+			} else {
+				throw new IllegalStateException("unknown resource change.");
+			}
+			documentChanges.add(Either.forRight(resourceOperation));
+		}
+
+		for (IAstTextReplacement replacement : quickFix.getTextReplacements()) {
+			final TextEdit textEdit = new TextEdit(getRange(replacement), replacement.getReplacement());
+			// TODO version
+			final VersionedTextDocumentIdentifier version = new VersionedTextDocumentIdentifier(replacement
+					.getURI().toString(), null);
+			final TextDocumentEdit textDocumentEdit = new TextDocumentEdit(version, new ArrayList<>());
+			textDocumentEdit.getEdits().add(textEdit);
+			documentChanges.add(Either.forLeft(textDocumentEdit));
+		}
+
+		return Either.forRight(res);
+	}
+
+	/**
+	 * Gets the {@link Range} corresponding to the given {@link IAstTextReplacement}.
+	 * 
+	 * @param replacement
+	 *            the {@link IAstTextReplacement}
+	 * @return the {@link Range} corresponding to the given {@link IAstTextReplacement}
+	 */
+	private Range getRange(IAstTextReplacement replacement) {
+		final Position start = new Position(replacement.getStartLine(), replacement.getStartColumn());
+		final Position end = new Position(replacement.getEndLine(), replacement.getEndColumn());
+
+		return new Range(start, end);
 	}
 
 }

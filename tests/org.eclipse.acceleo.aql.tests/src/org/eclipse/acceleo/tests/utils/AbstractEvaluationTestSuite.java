@@ -19,7 +19,6 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +35,6 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.Test;
 
 /**
@@ -51,11 +49,6 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 	private static final String EXPECTED_SUFFIX = "-expected.txt";
 
 	private static final String PROTECTED_AREA_SUFFIX = "-protectedArea.txt";
-
-	/**
-	 * Copy buffer size.
-	 */
-	private static final int BUFFER_SIZE = 8192;
 
 	/**
 	 * The {@link Resource}.
@@ -291,58 +284,6 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		}
 
 		return builder.toString();
-	}
-
-	/**
-	 * Gets the portable version of the given {@link String}.
-	 * 
-	 * @param textContent
-	 *            the text content
-	 * @return the portable version of the given {@link String}
-	 */
-	private String getPortableString(String textContent) {
-		String res;
-
-		res = textContent.replaceAll("/home/.*/M2Doc", "/home/.../M2Doc"); // remove folder prefix
-		res = res.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc"); // remove folder prefix
-		res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace
-																									// localized
-																									// message
-		res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost"); // strip lost user doc
-																						// date
-		res = res.replaceAll("@[a-f0-9]{5,8}[, )]", "@00000000 "); // object address in toString()
-		res = res.replaceAll(
-				"(\\tat [a-zA-Z0-9$./]+((<|&lt;)init(>|&gt;))?\\((Unknown Source|Native Method|[a-zA-Z0-9$./]+java:[0-9]+)\\)\n?)+",
-				"...STACK..."); // strip stack traces
-		res = res.replaceAll("127.0.0.100:12.345", "127.0.0.100:12 345"); // localized port...
-		res = res.replaceAll("127.0.0.100:12,345", "127.0.0.100:12 345"); // localized port...
-
-		return res;
-	}
-
-	/**
-	 * Copies all bytes from a source {@link URI} to a destination {@link URI}.
-	 * 
-	 * @param sourceURI
-	 *            the source {@link URI}
-	 * @param destURI
-	 *            the destination {@link URI}
-	 * @return the number of copied bytes
-	 * @throws IOException
-	 *             if the copy can't be done
-	 */
-	private static long copy(URIConverter uriConverter, URI sourceURI, URI destURI) throws IOException {
-		try (InputStream source = uriConverter.createInputStream(sourceURI);
-				OutputStream dest = uriConverter.createOutputStream(destURI);) {
-			long nread = 0L;
-			byte[] buf = new byte[BUFFER_SIZE];
-			int n;
-			while ((n = source.read(buf)) > 0) {
-				dest.write(buf, 0, n);
-				nread += n;
-			}
-			return nread;
-		}
 	}
 
 }

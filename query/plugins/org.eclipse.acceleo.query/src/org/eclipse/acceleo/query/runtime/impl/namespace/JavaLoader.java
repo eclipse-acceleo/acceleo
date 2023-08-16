@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,13 +28,23 @@ import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 public class JavaLoader extends AbstractLoader {
 
 	/**
+	 * The class extension.
+	 */
+	public static final String CLASS = "class";
+
+	/**
+	 * The java extension.
+	 */
+	public static final String JAVA = "java";
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param qualifierSeparator
 	 *            the qualifier separator
 	 */
 	public JavaLoader(String qualifierSeparator) {
-		super(qualifierSeparator, "class", "java");
+		super(qualifierSeparator, CLASS, JAVA);
 	}
 
 	@Override

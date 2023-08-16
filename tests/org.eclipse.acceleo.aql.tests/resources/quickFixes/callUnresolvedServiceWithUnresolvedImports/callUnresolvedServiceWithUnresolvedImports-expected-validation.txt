@@ -1,0 +1,4 @@
+ERROR Could not resolve org::eclipse::acceleo::notExisting - 69 103
+ERROR Could not resolve org::eclipse::acceleo::services::notExisting - 114 158
+ERROR Couldn't find the 'notExistingService(Sequence(EClassifier=EClassifier))' service - 258 280
+WARNING EClassifier=EClassifier is incompatible with Nothing(Couldn't find the 'notExistingService(Sequence(EClassifier=EClassifier))' service) - 162 282

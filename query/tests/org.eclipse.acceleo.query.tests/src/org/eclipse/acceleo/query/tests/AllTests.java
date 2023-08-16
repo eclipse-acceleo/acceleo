@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -103,7 +103,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		ValidationInferenceTest.class, TypeTests.class, QueryEnvironmentTests.class,
 		EPackageProviderTests.class, CompletionCheck.class, FilterCamelCaseTest.class,
 		CollectionServicesAstValidationTest.class, DelegateTests.class, CombineIteratorTest.class,
-		PositionsTests.class, AstSerializerTests.class, AstSerializerSimplifiedTests.class, })
+		PositionsTests.class, AstSerializerTests.class, AstSerializerSimplifiedTests.class,
+		AQLUtilsTests.class, })
 public class AllTests {
 
 }

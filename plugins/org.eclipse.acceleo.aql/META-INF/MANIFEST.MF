@@ -18,6 +18,7 @@ Export-Package: org.eclipse.acceleo,
  org.eclipse.acceleo.aql.outline,
  org.eclipse.acceleo.aql.parser,
  org.eclipse.acceleo.aql.validation,
+ org.eclipse.acceleo.aql.validation.quickfixes,
  org.eclipse.acceleo.impl,
  org.eclipse.acceleo.util
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,

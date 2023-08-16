@@ -1,0 +1,4 @@
+//@extends
+Create Module
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/notExisting.mtl
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/notExisting.mtl [0, 0, 0, 0, 0, 0] [module notExisting('http://www.eclipse.org/emf/2002/Ecore')/]

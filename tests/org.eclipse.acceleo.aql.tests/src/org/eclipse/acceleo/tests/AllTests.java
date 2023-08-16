@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import org.eclipse.acceleo.tests.completion.CompletionTests;
 import org.eclipse.acceleo.tests.evaluation.EvaluationTests;
 import org.eclipse.acceleo.tests.language.LanguageTests;
 import org.eclipse.acceleo.tests.parser.AcceleoAstSerializerTests;
+import org.eclipse.acceleo.tests.quickfixes.QuickFixesTests;
 import org.eclipse.acceleo.tests.resolution.ResolutionTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -26,7 +27,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {LanguageTests.class, EvaluationTests.class, CompletionTests.class,
-		ResolutionTests.class, AcceleoAstSerializerTests.class, })
+		ResolutionTests.class, AcceleoAstSerializerTests.class, QuickFixesTests.class, })
 public class AllTests {
 
 }

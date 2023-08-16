@@ -1,0 +1,4 @@
+//@imports.0/@module
+Create Module
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/withUnknownImport/importedModule.mtl
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/withUnknownImport/importedModule.mtl [0, 0, 0, 0, 0, 0] [module importedModule('http://www.eclipse.org/emf/2002/Ecore')/]

@@ -349,4 +349,13 @@ public class AcceleoAstResult {
 		return errors;
 	}
 
+	/**
+	 * Gets the {@link Positions}.
+	 * 
+	 * @return the {@link Positions}
+	 */
+	public Positions<ASTNode> getPositions() {
+		return positions;
+	}
+
 }

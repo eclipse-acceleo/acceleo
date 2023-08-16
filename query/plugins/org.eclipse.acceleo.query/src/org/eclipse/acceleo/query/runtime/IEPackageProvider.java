@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,11 +28,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 public interface IEPackageProvider {
 
 	/**
-	 * Returns the package registered with the specified name. Returns null if no such package is registered.
+	 * Returns the {@link Collection} of {@link EPackage} registered with the specified name.
 	 * 
 	 * @param name
 	 *            the name of the requested package.
-	 * @return the list of packages registered with the specified name.
+	 * @return the {@link Collection} of {@link EPackage} registered with the specified name
 	 * @since 4.1
 	 */
 	Collection<EPackage> getEPackage(String name);

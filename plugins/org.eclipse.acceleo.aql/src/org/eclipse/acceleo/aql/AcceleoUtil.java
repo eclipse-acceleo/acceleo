@@ -20,14 +20,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
@@ -229,6 +232,57 @@ public final class AcceleoUtil {
 			}
 		}
 		return res.toString();
+	}
+
+	/**
+	 * Gets the containing {@link ModuleElement} of the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the containing {@link ModuleElement} of the given {@link ASTNode} if any, <code>null</code>
+	 *         otherwise
+	 */
+	public static ModuleElement getContainingModuleElement(ASTNode node) {
+		return (ModuleElement)getContainer(node, n -> n instanceof ModuleElement);
+	}
+
+	/**
+	 * Gets the containing {@link Statement} of the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the containing {@link Statement} of the given {@link ASTNode} if any, <code>null</code>
+	 *         otherwise
+	 */
+	public static Statement getContainingStatement(ASTNode node) {
+		return (Statement)getContainer(node, n -> n instanceof Statement);
+	}
+
+	/**
+	 * Gets the first {@link EObject container} of the given {@link EObject} matching the given
+	 * {@link Predicate}.
+	 * 
+	 * @param eObject
+	 *            the {@link EObject}
+	 * @param predicate
+	 *            the {@link Predicate}
+	 * @return the first {@link EObject container} of the given {@link EObject} matching the given
+	 *         {@link Predicate} if any, <code>null</code> otherwise
+	 */
+	private static EObject getContainer(EObject eObject, Predicate<EObject> predicate) {
+		EObject res = null;
+
+		EObject current = eObject.eContainer();
+		while (current != null) {
+			if (predicate.test(current)) {
+				res = current;
+				break;
+			} else {
+				current = current.eContainer();
+			}
+		}
+
+		return res;
 	}
 
 }

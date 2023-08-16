@@ -1,0 +1,5 @@
+
+header position 0..112
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  extends org::eclipse::acceleo::services::notExisting (66..110) (0..112)

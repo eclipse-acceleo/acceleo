@@ -1,0 +1,10 @@
+//@moduleElements.1/@body/@statements.0/@body/@statements.1/@expression/@aql
+Add template t41(EClassifier=EClass) to this module
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/resolution/importmoduleQueryPrivate/importmoduleQueryPrivate.mtl [322, 11, 0, 322, 11, 0] 
+[template public t41(parameter0 : ecore::EClass)]
+[/template]
+Add template t41(EClassifier=EClass) to resolution::importmoduleQueryPrivate::imported
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/resolution/importmoduleQueryPrivate/imported.mtl [155, 2, 94, 155, 2, 94] 
+
+[template public t41(parameter0 : ecore::EClass)]
+[/template]

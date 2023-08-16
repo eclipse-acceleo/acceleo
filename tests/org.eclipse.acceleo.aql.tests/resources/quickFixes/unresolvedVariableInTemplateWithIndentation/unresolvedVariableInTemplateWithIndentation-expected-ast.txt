@@ -1,0 +1,11 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (89..114))
+    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (124..156)
+      [notExistingVariable (164..183)/] (newLineNeeded (163..186) (158..188)
+    [/if] (119..193)
+     (newLineNeeded) (193..194) (116..194)
+  [/template] (61..205) (0..206)

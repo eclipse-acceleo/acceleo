@@ -23,6 +23,16 @@ import org.eclipse.acceleo.query.runtime.IService;
 public interface ILoader {
 
 	/**
+	 * A slash.
+	 */
+	String SLASH = "/";
+
+	/**
+	 * A dot.
+	 */
+	String DOT = ".";
+
+	/**
 	 * Gets the resource name from the given qualified name.
 	 * 
 	 * @param qualifiedName

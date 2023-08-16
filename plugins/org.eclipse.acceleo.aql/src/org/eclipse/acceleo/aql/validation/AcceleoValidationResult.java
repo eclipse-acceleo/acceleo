@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -88,8 +89,17 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	}
 
 	@Override
-	public List<IValidationMessage> getValidationMessages(AcceleoASTNode node) {
-		return new ArrayList<IValidationMessage>(messages.getOrDefault(node, new LinkedList<>()));
+	public List<IValidationMessage> getValidationMessages(ASTNode node) {
+		final List<IValidationMessage> res = new ArrayList<>();
+
+		if (node instanceof AcceleoASTNode) {
+			res.addAll(messages.getOrDefault(node, new LinkedList<>()));
+		} else {
+			res.addAll(aqlValidationResults.values().stream().map(vr -> vr.getMessages(node)).flatMap(
+					List::stream).collect(Collectors.toList()));
+		}
+
+		return res;
 	}
 
 	@Override

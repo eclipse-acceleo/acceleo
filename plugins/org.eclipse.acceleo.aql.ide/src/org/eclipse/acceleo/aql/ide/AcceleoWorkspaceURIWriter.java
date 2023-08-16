@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 
 import org.eclipse.acceleo.aql.evaluation.writer.AcceleoURIWriter;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.codegen.merge.java.JControlModel;
@@ -47,8 +48,8 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 
 	@Override
 	public void close() throws IOException {
-		if (!EMFPlugin.IS_ECLIPSE_RUNNING || !"java".equals(getTargetURI().fileExtension()) || !uriConverter
-				.exists(getTargetURI(), new LinkedHashMap<>())) {
+		if (!EMFPlugin.IS_ECLIPSE_RUNNING || !JavaLoader.JAVA.equals(getTargetURI().fileExtension())
+				|| !uriConverter.exists(getTargetURI(), new LinkedHashMap<>())) {
 			super.close();
 		} else {
 			try {
