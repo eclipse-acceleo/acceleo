@@ -637,7 +637,7 @@ public abstract class AbstractLanguageTestSuite {
 		String res;
 
 		res = textContent.replaceAll("/home/.*/tests", "/home/.../tests"); // remove folder prefix
-		res = res.replaceAll("file:/.*/acceleo", "file:/.../tests"); // remove folder prefix
+		res = res.replaceAll("file:/.*/tests", "file:/.../tests"); // remove folder prefix
 		res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace
 																									// localized
 																									// message
