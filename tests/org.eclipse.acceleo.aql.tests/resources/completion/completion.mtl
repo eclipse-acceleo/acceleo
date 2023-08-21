@@ -4,7 +4,7 @@
  * <<moduleCommentAfterAuthor>>@version 0.1.0
  * <<moduleCommentAfterAuthorAndVersion>>@since 0.0.1<<moduleCommentAfterAuthorAndVersionAndSince>>
 */]
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+<<beforeModuleHeader>>[module <<beforeModuleName>>completion('http://www.eclipse.org/emf/2002/Ecore'<<afterModuleMetamodel>>)/]
 [comment a simple comment<<commentBeforeEnd>>/]
 [**
  * My query has a nice comment.

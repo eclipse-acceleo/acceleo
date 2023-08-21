@@ -72,10 +72,15 @@ public class CompletionTests {
 	private static final String ROOT = "resources" + File.separator + "completion";
 
 	/**
+	 * The module name.
+	 */
+	private static final String MODULE_NAME = "completion";
+
+	/**
 	 * The root folder.
 	 */
-	private static final String MODULE = "resources" + File.separator + "completion" + File.separator
-			+ "completion.mtl";
+	private static final String MODULE = "resources" + File.separator + MODULE_NAME + File.separator
+			+ MODULE_NAME + ".mtl";
 
 	/**
 	 * The test name.
@@ -139,9 +144,9 @@ public class CompletionTests {
 
 		final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
 		final Module module = parsingResult.getModule();
-		resolver.register("org::eclipse::acceleo::tests::" + module.getName(), module);
+		resolver.register("org::eclipse::acceleo::tests::" + MODULE_NAME, module);
 		final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(queryEnvironment,
-				module.getName(), source, position);
+				MODULE_NAME, source, position);
 		final String actualCompletion = serialize(completionProposals);
 		final File expectedCompletionFile = getExpectedCompletionFile();
 		if (!expectedCompletionFile.exists()) {
@@ -158,8 +163,23 @@ public class CompletionTests {
 
 		try (InputStream stream = new FileInputStream(expectedCompletionFile)) {
 			String expectedCompletion = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);
-			assertEquals(expectedCompletion, actualCompletion);
+			assertEquals(getPortableString(expectedCompletion), getPortableString(actualCompletion));
 		}
+	}
+
+	/**
+	 * Gets the portable version of the given {@link String}.
+	 * 
+	 * @param textContent
+	 *            the text content
+	 * @return the portable version of the given {@link String}
+	 */
+	private String getPortableString(String textContent) {
+		String res;
+
+		res = textContent.replaceAll("@author [a-zA-Z0-9-_ ]+", "@author ..."); // remove author
+
+		return res;
 	}
 
 	/**

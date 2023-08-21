@@ -101,14 +101,6 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 			AcceleoPackage.Literals.TEMPLATE);
 
 	/**
-	 * Code template completion proposal for a new {@link Module}.
-	 */
-	public static final AcceleoCodeTemplateCompletionProposal NEW_MODULE = new AcceleoCodeTemplateCompletionProposal(
-			"New Module", "Inserts the following sample Acceleo Module:" + NEWLINE + CODE_OPEN
-					+ AcceleoCodeTemplates.NEW_MODULE + CODE_CLOSE, AcceleoCodeTemplates.NEW_MODULE,
-			AcceleoPackage.Literals.MODULE);
-
-	/**
 	 * Code template completion proposal for a new {@link Comment}.
 	 */
 	public static final AcceleoCodeTemplateCompletionProposal NEW_COMMENT = new AcceleoCodeTemplateCompletionProposal(
@@ -133,15 +125,23 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 			AcceleoCodeTemplates.NEW_COMMENT_MAIN, AcceleoPackage.Literals.COMMENT);
 
 	/**
+	 * The computed module name.
+	 */
+	private String computedModuleName;
+
+	/**
 	 * Provides the code template completion proposals for a position where the given Acceleo type is
 	 * syntactically allowed.
 	 * 
+	 * @param computedModuleName
+	 *            the computed module name
 	 * @param acceleoEClass
 	 *            the (non-{@code null}) Acceleo {@link EClass}.
 	 * @return the {@link List} of {@link AcceleoCompletionProposal}.
 	 * @see AcceleoPackage
 	 */
-	public List<AcceleoCompletionProposal> getProposalsFor(EClass acceleoEClass) {
+	public List<AcceleoCompletionProposal> getProposalsFor(String computedModuleName, EClass acceleoEClass) {
+		this.computedModuleName = computedModuleName;
 		return this.doSwitch(acceleoEClass, null);
 	}
 
@@ -181,9 +181,24 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 	public List<AcceleoCompletionProposal> caseModule(Module object) {
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
-		completionProposals.add(NEW_MODULE);
+		completionProposals.add(getModuleCodeTemplate(computedModuleName));
 
 		return completionProposals;
+	}
+
+	/**
+	 * Gets the module {@link AcceleoCompletionProposal} for the given computed module name.
+	 * 
+	 * @param computedModuleName
+	 *            the computed module name
+	 * @return the module {@link AcceleoCompletionProposal} for the given computed module name
+	 */
+	public static AcceleoCompletionProposal getModuleCodeTemplate(String computedModuleName) {
+		final String moduleCodeTemplate = AcceleoCodeTemplates.getModuleCodeTemplate(computedModuleName);
+		return new AcceleoCodeTemplateCompletionProposal("New Module",
+				"Inserts the following sample Acceleo Module:" + NEWLINE + CODE_OPEN + moduleCodeTemplate
+						+ CODE_CLOSE, moduleCodeTemplate, AcceleoPackage.Literals.MODULE);
+
 	}
 
 	@Override

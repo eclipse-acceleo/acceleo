@@ -56,15 +56,23 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 	private final AcceleoCodeTemplateCompletionProposalsProvider acceleoCodeTemplatesProvider = new AcceleoCodeTemplateCompletionProposalsProvider();
 
 	/**
+	 * The computed module name.
+	 */
+	private String computedModuleName;
+
+	/**
 	 * Provides the syntactic and code template completion proposals for a position where the given Acceleo
 	 * type is syntactically allowed.
 	 * 
+	 * @param computedModuleName
+	 *            the computed module name
 	 * @param acceleoEClass
 	 *            the (non-{@code null}) Acceleo {@link EClass}.
 	 * @return the {@link List} of {@link AcceleoCompletionProposal}.
 	 * @see AcceleoPackage
 	 */
-	public List<AcceleoCompletionProposal> getProposalsFor(EClass acceleoEClass) {
+	public List<AcceleoCompletionProposal> getProposalsFor(String computedModuleName, EClass acceleoEClass) {
+		this.computedModuleName = computedModuleName;
 		return this.doSwitch(acceleoEClass, null);
 	}
 
@@ -78,7 +86,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.COMMENT_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.COMMENT));
 
 		return completionProposals;
@@ -89,7 +97,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.BLOCK_COMMENT_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.BLOCK_COMMENT));
 
 		return completionProposals;
@@ -100,7 +108,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.IMPORT_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.IMPORT));
 
 		return completionProposals;
@@ -120,7 +128,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.addAll(this.caseDocumentation(object));
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.MODULE_DOCUMENTATION));
 
 		return completionProposals;
@@ -131,7 +139,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.addAll(this.caseDocumentation(object));
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.MODULE_ELEMENT_DOCUMENTATION));
 
 		return completionProposals;
@@ -142,7 +150,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.MODULE_HEADER_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.MODULE));
 
 		return completionProposals;
@@ -163,7 +171,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.QUERY_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.QUERY));
 
 		return completionProposals;
@@ -174,7 +182,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.TEMPLATE_HEADER_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.TEMPLATE));
 
 		return completionProposals;
@@ -199,7 +207,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.STATEMENT_FILE_HEADER_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.FILE_STATEMENT));
 
 		return completionProposals;
@@ -210,7 +218,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.STATEMENT_IF_HEADER_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.IF_STATEMENT));
 
 		return completionProposals;
@@ -221,7 +229,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.STATEMENT_LET_HEADER_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.LET_STATEMENT));
 
 		return completionProposals;
@@ -234,7 +242,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		String sampleVariableName = AcceleoCodeTemplates.DEFAULT_NEW_BINDING_VARIABLE_NAME;
 		completionProposals.add(new AcceleoCodeTemplateCompletionProposal(sampleVariableName,
 				sampleVariableName, AcceleoPackage.Literals.BINDING));
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.BINDING));
 
 		return completionProposals;
@@ -245,7 +253,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.STATEMENT_FOR_HEADER_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.FOR_STATEMENT));
 
 		return completionProposals;
@@ -256,7 +264,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.STATEMENT_PROTECTED_AREA_HEADER_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.PROTECTED_AREA));
 
 		return completionProposals;
@@ -267,7 +275,7 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		completionProposals.add(AcceleoSyntacticCompletionProposals.STATEMENT_EXPRESSION_START);
-		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(
+		completionProposals.addAll(this.acceleoCodeTemplatesProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.EXPRESSION_STATEMENT));
 
 		return completionProposals;

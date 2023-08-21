@@ -184,6 +184,11 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private final AcceleoCompletionProposalsProvider acceleoCompletionProposalProvider;
 
 	/**
+	 * The computed module name.
+	 */
+	private String computedModuleName;
+
+	/**
 	 * The module source fragment.
 	 */
 	private String moduleSourceFragment;
@@ -209,14 +214,17 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	/**
 	 * Get the {@link List} of {@link AcceleoCompletionProposal} for the given acceleo element.
 	 * 
+	 * @param computedModuleName
+	 *            the computed module name
 	 * @param sourceFragment
 	 *            the module source code
 	 * @param acceleoElementToComplete
 	 *            the acceleo element to complete
 	 * @return the {@link List} of {@link AcceleoCompletionProposal} for the given acceleo element
 	 */
-	public List<AcceleoCompletionProposal> getCompletion(String sourceFragment,
+	public List<AcceleoCompletionProposal> getCompletion(String computedModuleName, String sourceFragment,
 			EObject acceleoElementToComplete) {
+		this.computedModuleName = computedModuleName;
 		this.moduleSourceFragment = sourceFragment;
 		return doSwitch(acceleoElementToComplete);
 	}
@@ -228,16 +236,19 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		if (!moduleToComplete.getModuleElements().stream().anyMatch(
 				moduleElement -> moduleElement instanceof Query || moduleElement instanceof Template)) {
 			// The module has no queries or templates, or the cursor is above them, so we can add imports.
-			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 					AcceleoPackage.Literals.IMPORT));
 		}
 
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(AcceleoPackage.Literals.TEMPLATE));
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(AcceleoPackage.Literals.QUERY));
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
+				AcceleoPackage.Literals.TEMPLATE));
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
+				AcceleoPackage.Literals.QUERY));
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.MODULE_ELEMENT_DOCUMENTATION));
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(AcceleoPackage.Literals.COMMENT));
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
+				AcceleoPackage.Literals.COMMENT));
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.BLOCK_COMMENT));
 		res.add(AcceleoCodeTemplateCompletionProposalsProvider.NEW_COMMENT_MAIN);
 
@@ -290,8 +301,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 
 		if (errorModule.getMissingOpenParenthesis() != -1) {
 			if (errorModule.getName() == null) {
-				String sampleModuleName = AcceleoCodeTemplates.DEFAULT_NEW_MODULE_NAME;
-				res.add(new AcceleoCodeTemplateCompletionProposal(sampleModuleName, sampleModuleName,
+				res.add(new AcceleoCodeTemplateCompletionProposal(computedModuleName, computedModuleName,
 						AcceleoPackage.Literals.MODULE));
 			} else {
 				res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
@@ -314,13 +324,13 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			}
 		} else {
 			// We do not even have a module header.
-			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 					AcceleoPackage.Literals.MODULE));
-			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 					AcceleoPackage.Literals.MODULE_DOCUMENTATION));
-			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 					AcceleoPackage.Literals.COMMENT));
-			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 					AcceleoPackage.Literals.BLOCK_COMMENT));
 		}
 
@@ -440,9 +450,11 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 
 		res.addAll(getBodyCompletionProposals(column));
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(AcceleoPackage.Literals.STATEMENT));
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(AcceleoPackage.Literals.COMMENT));
-		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
+				AcceleoPackage.Literals.STATEMENT));
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
+				AcceleoPackage.Literals.COMMENT));
+		res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 				AcceleoPackage.Literals.BLOCK_COMMENT));
 
 		return res;
@@ -702,7 +714,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		if (errorForStatement.getMissingOpenParenthesis() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 		} else if (errorForStatement.getMissingBinding() != -1) {
-			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 					AcceleoPackage.Literals.BINDING));
 			res.add(AcceleoSyntacticCompletionProposals.FOR_STATEMENT_PIPE);
 		} else if (errorForStatement.getMissingCloseParenthesis() != -1) {
@@ -769,7 +781,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	public List<AcceleoCompletionProposal> caseErrorLetStatement(ErrorLetStatement errorLetStatement) {
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 		if (errorLetStatement.getMissingBindings() != -1) {
-			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(
+			res.addAll(this.acceleoCompletionProposalProvider.getProposalsFor(computedModuleName,
 					AcceleoPackage.Literals.BINDING));
 		} else if (errorLetStatement.getMissingEndHeader() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_LET_HEADER_END);

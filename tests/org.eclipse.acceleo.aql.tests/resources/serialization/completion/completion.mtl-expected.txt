@@ -1,13 +1,1 @@
-[**	
- * My module has a nice comment.
- * <<moduleComment>>@author Yvan Lussaud
- * <<moduleCommentAfterAuthor>>@version 0.1.0
- * <<moduleCommentAfterAuthorAndVersion>>@since 0.0.1<<moduleCommentAfterAuthorAndVersionAndSince>>
-*/]
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
-
-[comment a simple comment<<commentBeforeEnd>>/]
-[**
- * My query has a nice comment.
- * <<queryComment>>@param myParam the input EPackage<<queryCommentAfterParameters>>
-*/]
+[module null()/]

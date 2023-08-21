@@ -171,11 +171,6 @@ public final class AcceleoCodeTemplates {
 
 	// New Module
 	/**
-	 * The name of the module.
-	 */
-	public static final String DEFAULT_NEW_MODULE_NAME = "myModule";
-
-	/**
 	 * The nsURI of the metamodel.
 	 */
 	public static final String DEFAULT_NEW_MODULE_NSURI = "http://www.eclipse.org/emf/2002/Ecore";
@@ -217,15 +212,6 @@ public final class AcceleoCodeTemplates {
 			+ DEFAULT_NEW_TEMPLATE_PARAMETER_NAME + " : " + DEFAULT_NEW_TEMPLATE_PARAMETER_TYPE + ")"
 			+ AcceleoParser.TEMPLATE_HEADER_END + NEWLINE + TABULATION + DEFAULT_NEW_TEMPLATE_BODY + NEWLINE
 			+ AcceleoParser.TEMPLATE_END;
-
-	/**
-	 * Code template for creating a new empty Acceleo Module.<br/>
-	 * <code>
-	 * [module public myModule('http://www.eclipse.org/emf/2002/Ecore')/]
-	 * </code>
-	 */
-	public static final String NEW_MODULE = AcceleoParser.MODULE_HEADER_START + DEFAULT_NEW_MODULE_NAME + "('"
-			+ DEFAULT_NEW_MODULE_NSURI + "')" + AcceleoParser.MODULE_HEADER_END;
 
 	/**
 	 * Code template for creating a new Acceleo comment.<br/>
@@ -390,4 +376,17 @@ public final class AcceleoCodeTemplates {
 	private AcceleoCodeTemplates() {
 		// Utility class.
 	}
+
+	/**
+	 * Gets the module code template for the given computed module name.
+	 * 
+	 * @param computedTemplateName
+	 *            the computed module name
+	 * @return the module code template for the given computed module name
+	 */
+	public static String getModuleCodeTemplate(String computedTemplateName) {
+		return AcceleoParser.MODULE_HEADER_START + computedTemplateName + "('" + DEFAULT_NEW_MODULE_NSURI
+				+ "')" + AcceleoParser.MODULE_HEADER_END;
+	}
+
 }

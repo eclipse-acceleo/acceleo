@@ -79,8 +79,8 @@ public class AcceleoCompletor {
 			queryEnvironment.getLookupEngine().pushImportsContext(moduleQualifiedNameForCompletion,
 					moduleQualifiedNameForCompletion);
 			try {
-				proposals = this.getProposals(queryEnvironment, partialAcceleoSource, acceleoValidationResult,
-						acceleoElementToComplete);
+				proposals = this.getProposals(queryEnvironment, moduleFileName, partialAcceleoSource,
+						acceleoValidationResult, acceleoElementToComplete);
 			} finally {
 				queryEnvironment.getLookupEngine().popContext(moduleQualifiedNameForCompletion);
 			}
@@ -99,6 +99,8 @@ public class AcceleoCompletor {
 	 * 
 	 * @param queryEnvironment
 	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
+	 * @param computedModuleName
+	 *            the module computed name
 	 * @param sourceFragment
 	 *            the module source fragment
 	 * @param acceleoValidationResult
@@ -108,14 +110,14 @@ public class AcceleoCompletor {
 	 * @return the {@link List} of {@link AcceleoCompletionProposal}.
 	 */
 	protected List<AcceleoCompletionProposal> getProposals(IQualifiedNameQueryEnvironment queryEnvironment,
-			String sourceFragment, IAcceleoValidationResult acceleoValidationResult,
-			EObject acceleoElementToComplete) {
+			String computedModuleName, String sourceFragment,
+			IAcceleoValidationResult acceleoValidationResult, EObject acceleoElementToComplete) {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		AcceleoAstCompletor acceleoSyntaxCompletor = new AcceleoAstCompletor(queryEnvironment,
 				acceleoValidationResult);
 
-		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(sourceFragment,
+		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(computedModuleName, sourceFragment,
 				acceleoElementToComplete));
 
 		return completionProposals;

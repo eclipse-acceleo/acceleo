@@ -1,0 +1,89 @@
+* Label:
+[module 
+* Description:
+Inserts the start of an Acceleo Module header:<br/><pre>[module </pre>
+* Text:
+[module 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Module
+
+* Label:
+New Module
+* Description:
+Inserts the following sample Acceleo Module:<br/><pre>[module completion('http://www.eclipse.org/emf/2002/Ecore')/]</pre>
+* Text:
+[module completion('http://www.eclipse.org/emf/2002/Ecore')/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Module
+
+* Label:
+[**
+* Description:
+Inserts the start of a Module Documentation or Module Element Documentation:<br/><pre>[**</pre>
+* Text:
+[**
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Documentation
+
+* Label:
+New Module Documentation
+* Description:
+Inserts the following sample Module Documentation:
+[**
+ * My module documentation.
+ * 
+ * @author ylp
+ * @version 0.0.1
+ * @since 0.0.1
+*/]
+* Text:
+[**
+ * My module documentation.
+ * 
+ * @author ylp
+ * @version 0.0.1
+ * @since 0.0.1
+*/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleDocumentation
+
+* Label:
+[comment 
+* Description:
+Inserts the start of a Comment:<br/><pre>[comment </pre>
+* Text:
+[comment 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
+
+* Label:
+New Comment
+* Description:
+Inserts the following sample Comment:<br/><pre>[comment My comment./]</pre>
+* Text:
+[comment My comment./]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
+
+* Label:
+[comment]
+* Description:
+Inserts the start of a Block Comment:<br/><pre>[comment]</pre>
+* Text:
+[comment]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//BlockComment
+
+* Label:
+New Block Comment
+* Description:
+Inserts the following sample Block Comment:<br/><pre>[comment]
+My comment.
+[/comment]</pre>
+* Text:
+[comment]
+My comment.
+[/comment]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//BlockComment
+

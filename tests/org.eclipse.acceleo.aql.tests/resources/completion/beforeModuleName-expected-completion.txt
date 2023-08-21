@@ -1,0 +1,9 @@
+* Label:
+completion
+* Description:
+Inserts the following text: <pre>completion</pre>
+* Text:
+completion
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Module
+
