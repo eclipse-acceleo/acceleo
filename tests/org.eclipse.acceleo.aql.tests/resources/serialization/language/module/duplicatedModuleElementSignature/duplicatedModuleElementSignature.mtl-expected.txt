@@ -1,0 +1,9 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public generateBody(pkg : ecore::EPackage)]
+[/template]
+
+[template public generateBody(pkg : ecore::EPackage)]
+[/template]
+
+[query public generateBody(pkg : ecore::EPackage) : String = ''/]

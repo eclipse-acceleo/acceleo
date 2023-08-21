@@ -61,15 +61,18 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.lookup.basic.ServiceStore;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -275,23 +278,26 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModule(Module module) {
-		final Set<EPackage> ePackages = new HashSet<EPackage>();
-		for (Metamodel metamodel : module.getMetamodels()) {
-			doSwitch(metamodel);
-			if (metamodel.getReferencedPackage() != null) {
-				if (!ePackages.add(metamodel.getReferencedPackage())) {
-					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
-					addMessage(module, ValidationMessageLevel.WARNING, metamodel.getReferencedPackage()
-							.getNsURI() + " already referenced", acceleoAstResult.getStartPosition(metamodel),
-							acceleoAstResult.getEndPosition(metamodel));
-				}
-			}
-		}
-
+		checkMetamodels(module);
 		if (module.getExtends() != null) {
 			doSwitch(module.getExtends());
 		}
+		checkImports(module);
+		checkDuplicatedServices(module);
+		for (ModuleElement element : module.getModuleElements()) {
+			doSwitch(element);
+		}
 
+		return RETURN_VALUE;
+	}
+
+	/**
+	 * Checks imports for the given {@link Module}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 */
+	private void checkImports(Module module) {
 		final Set<String> imports = new HashSet<String>();
 		for (Import imp : module.getImports()) {
 			doSwitch(imp);
@@ -304,13 +310,55 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				}
 			}
 		}
+	}
 
-		for (ModuleElement element : module.getModuleElements()) {
-			// TODO check IService registration
-			doSwitch(element);
+	/**
+	 * Checks metamodels for the given {@link Module}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 */
+	private void checkMetamodels(Module module) {
+		final Set<EPackage> ePackages = new HashSet<EPackage>();
+		for (Metamodel metamodel : module.getMetamodels()) {
+			doSwitch(metamodel);
+			if (metamodel.getReferencedPackage() != null) {
+				if (!ePackages.add(metamodel.getReferencedPackage())) {
+					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+					addMessage(module, ValidationMessageLevel.WARNING, metamodel.getReferencedPackage()
+							.getNsURI() + " already referenced", acceleoAstResult.getStartPosition(metamodel),
+							acceleoAstResult.getEndPosition(metamodel));
+				}
+			}
 		}
+	}
 
-		return RETURN_VALUE;
+	/**
+	 * Checks duplicated services for the given {@link Module}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 */
+	private void checkDuplicatedServices(Module module) {
+		final ServiceStore serviceStore = new ServiceStore(queryEnvironment);
+		final ModuleLoader moduleLoader = new ModuleLoader(null, null);
+		final Set<IService<?>> services = moduleLoader.getServices(null, module, null);
+		Set<IService<?>> duplicatedServices = new LinkedHashSet<>();
+		for (IService<?> service : services) {
+			final ServiceRegistrationResult registrationResult = serviceStore.add(service);
+			for (List<IService<?>> value : registrationResult.getDuplicated().values()) {
+				duplicatedServices.addAll(value);
+			}
+			duplicatedServices.addAll(registrationResult.getDuplicated().keySet());
+		}
+		if (!duplicatedServices.isEmpty()) {
+			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+			for (IService<?> service : duplicatedServices) {
+				final ModuleElement origin = (ModuleElement)service.getOrigin();
+				addMessage(origin, ValidationMessageLevel.ERROR, "Duplicated service signature",
+						acceleoAstResult.getStartPosition(origin), acceleoAstResult.getEndPosition(origin));
+			}
+		}
 	}
 
 	@Override
