@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,11 +23,14 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -425,6 +429,42 @@ public class TypeTests {
 
 		assertFalse(toType.getType() + " should not have been assignable from " + fromType.getType(), toType
 				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void collectionTypeAssignable() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+		final IType sequenceEClassifier = new SequenceType(getQueryEnvironment(), new EClassifierType(
+				getQueryEnvironment(), EcorePackage.eINSTANCE.getEClassifier()));
+		final IType sequenceEClass = new SequenceType(getQueryEnvironment(), new EClassifierType(
+				getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+		final IType setEClassifier = new SetType(getQueryEnvironment(), new EClassifierType(
+				getQueryEnvironment(), EcorePackage.eINSTANCE.getEClassifier()));
+		final IType setEClass = new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+				EcorePackage.eINSTANCE.getEClass()));
+		final IType javaList = new ClassType(getQueryEnvironment(), List.class);
+		final IType javaSet = new ClassType(getQueryEnvironment(), Set.class);
+
+		assertEquals(true, sequenceEClassifier.isAssignableFrom(sequenceEClassifier));
+		assertEquals(true, sequenceEClassifier.isAssignableFrom(sequenceEClass));
+		assertEquals(false, sequenceEClass.isAssignableFrom(sequenceEClassifier));
+		assertEquals(true, sequenceEClass.isAssignableFrom(javaList));
+		assertEquals(false, sequenceEClass.isAssignableFrom(javaSet));
+
+		assertEquals(true, setEClassifier.isAssignableFrom(setEClassifier));
+		assertEquals(true, setEClassifier.isAssignableFrom(setEClass));
+		assertEquals(false, setEClass.isAssignableFrom(setEClassifier));
+		assertEquals(false, setEClass.isAssignableFrom(javaList));
+		assertEquals(true, setEClass.isAssignableFrom(javaSet));
+
+		assertEquals(false, sequenceEClassifier.isAssignableFrom(setEClassifier));
+		assertEquals(false, setEClassifier.isAssignableFrom(sequenceEClassifier));
+
+		assertEquals(true, javaList.isAssignableFrom(sequenceEClassifier));
+		assertEquals(true, javaList.isAssignableFrom(sequenceEClass));
+		assertEquals(true, javaSet.isAssignableFrom(setEClassifier));
+		assertEquals(true, javaSet.isAssignableFrom(setEClass));
 	}
 
 	protected IQueryEnvironment getQueryEnvironment() {
