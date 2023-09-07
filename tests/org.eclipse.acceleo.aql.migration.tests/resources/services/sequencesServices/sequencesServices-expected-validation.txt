@@ -1,3 +1,4 @@
+WARNING Sequence(EClassifier=EClass) is incompatible with Sequence(EClassifier=EClassifier) - 516 581
 INFO Always true:
 Nothing inferred when temp8 (java.lang.String) is not type of ClassLiteral=java.lang.String - 1486 1511
 INFO Always true:

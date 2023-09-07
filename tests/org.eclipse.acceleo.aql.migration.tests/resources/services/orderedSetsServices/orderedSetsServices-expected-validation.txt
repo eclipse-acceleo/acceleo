@@ -1,3 +1,4 @@
+WARNING Set(EClassifier=EClass) is incompatible with Set(EClassifier=EClassifier) - 540 609
 INFO Always true:
 Nothing inferred when temp8 (java.lang.String) is not type of ClassLiteral=java.lang.String - 1634 1659
 INFO Always true:
