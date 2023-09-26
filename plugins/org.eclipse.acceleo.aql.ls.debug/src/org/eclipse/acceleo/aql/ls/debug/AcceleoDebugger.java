@@ -397,20 +397,25 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		}
 
 		final EObject res;
-		EObject instruction = moduleAstResult.getAstNode((int)line, (int)column);
-		if (column == 0) {
-			// The breakpoint has been set on the line so we select the containing Expression statement if
-			// needed
-			while (instruction != null) {
-				if (isAcceleoInstruction(instruction)) {
-					break;
+		if (moduleAstResult != null) {
+			EObject instruction = moduleAstResult.getAstNode((int)line, (int)column);
+			if (column == 0) {
+				// The breakpoint has been set on the line so we select the containing Expression statement if
+				// needed
+				while (instruction != null) {
+					if (isAcceleoInstruction(instruction)) {
+						break;
+					}
+					instruction = instruction.eContainer();
 				}
-				instruction = instruction.eContainer();
+				res = instruction;
+			} else {
+				res = instruction;
 			}
-			res = instruction;
 		} else {
-			res = instruction;
+			res = null;
 		}
+
 		return res;
 	}
 
