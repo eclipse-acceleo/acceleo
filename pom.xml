@@ -85,6 +85,14 @@
     <module>query/plugins/org.eclipse.acceleo.query.ide.jdt</module>
     <module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
 
+    <module>query/features/org.eclipse.acceleo.query.cdo-feature</module>
+    <module>query/plugins/org.eclipse.acceleo.query.cdo</module>
+    <module>query/tests/org.eclipse.acceleo.query.cdo.tests</module>
+
+    <module>query/features/org.eclipse.acceleo.query.sirius-feature</module>
+    <module>query/plugins/org.eclipse.acceleo.query.sirius</module>
+    <module>query/tests/org.eclipse.acceleo.query.sirius.tests</module>
+
     <module>query/plugins/org.eclipse.acceleo.query.doc</module>
 
     <module>query/features/org.eclipse.acceleo.query-feature</module>

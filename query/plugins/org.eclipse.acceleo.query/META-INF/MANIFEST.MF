@@ -27,5 +27,7 @@ Export-Package: org.eclipse.acceleo.query,
  org.eclipse.acceleo.query.runtime.namespace,
  org.eclipse.acceleo.query.services,
  org.eclipse.acceleo.query.services.collection,
+ org.eclipse.acceleo.query.services.configurator,
+ org.eclipse.acceleo.query.util,
  org.eclipse.acceleo.query.validation.type
 Automatic-Module-Name: org.eclipse.acceleo.query

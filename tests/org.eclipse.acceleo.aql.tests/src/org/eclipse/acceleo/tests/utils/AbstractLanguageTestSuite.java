@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
@@ -42,14 +44,13 @@ import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.aql.validation.quickfixes.AcceleoQuickFixesSwitch;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstResourceChange;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstTextReplacement;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
-import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
@@ -59,7 +60,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -174,13 +174,16 @@ public abstract class AbstractLanguageTestSuite {
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 
-		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
-				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
-		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
-				resourceSetForModels);
-		queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
-						rootProvider);
+		// TODO get options form ??? or list all possible options ?
+		// don't add any options ?
+		final Map<String, String> options = new LinkedHashMap<>();
+		final ArrayList<Exception> exceptions = new ArrayList<>();
+		// the ResourceSet will not be used
+		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
+				new ResourceSetImpl(), options);
+		// TODO report exceptions
+
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
 
 		evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));

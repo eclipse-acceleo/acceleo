@@ -4,10 +4,11 @@ include "../common/orbit.tpd"
 include "../common/license.tpd"
 include "../common/lsp.tpd"
 include "../common/rcptt.tpd"
+include "../common/cdo.tpd"
 
 with requirements
 
-location "https://download.eclipse.org/releases/2023-03" {
+location Eclipse_2023-03 "https://download.eclipse.org/releases/2023-03" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
@@ -23,6 +24,7 @@ location "https://download.eclipse.org/releases/2023-03" {
 	
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius.specifier.feature.group lazy
+	org.eclipse.acceleo.query.feature.group [7.0.0,7.0.1)
 	
 	org.eclipse.jface lazy
 	org.eclipse.tm4e.core lazy

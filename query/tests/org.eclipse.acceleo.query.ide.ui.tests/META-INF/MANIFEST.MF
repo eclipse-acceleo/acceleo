@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.acceleo.query.ide.ui;bundle-version="3.6.0",
  org.eclipse.acceleo.query.tests.anydsl,
  org.eclipse.ui,
  org.eclipse.equinox.registry,
- org.eclipse.ui.editors
+ org.eclipse.ui.editors,
+ org.eclipse.acceleo.query.ide
 Export-Package: org.eclipse.acceleo.query.ide.ui.test,
  org.eclipse.acceleo.query.ide.ui.test.view
 Automatic-Module-Name: org.eclipse.acceleo.query.ide.ui.tests

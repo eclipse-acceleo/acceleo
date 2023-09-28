@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.acceleo.query.ide" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.acceleo.query.ide" id="servicesConfigurator" name="Services Configurator"/>
+      </appInfo>
+      <documentation>
+         Allow to configure IServices for a given IReadOnlyQueryEnvironment and a Map of options.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="servicesConfigurators"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="servicesConfigurators">
+      <complexType>
+         <attribute name="language" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The language name this service configurator will contribut to.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  The implementation of IServicesConfigurator.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.acceleo.query.services.configurator.IServicesConfigurator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         8.0.3
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;extension
+         point=&quot;org.eclipse.acceleo.query.ide.servicesConfigurator&quot;&gt;
+      &lt;servicesConfigurators
+            class=&quot;org.eclipse.acceleo.query.ide.ui.services.configurator.SWTPromptServicesConfigurator&quot;&gt;
+      &lt;/servicesConfigurators&gt;
+   &lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiinfo"/>
+      </appInfo>
+      <documentation>
+         see IServiceConfigurator.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         see org.eclipse.acceleo.query.ide.ui.services.configurator.SWTPromptServicesConfigurator.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2016, 2023 Obeo. 
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v2.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v20.html
+    
+    Contributors:
+        Obeo - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>

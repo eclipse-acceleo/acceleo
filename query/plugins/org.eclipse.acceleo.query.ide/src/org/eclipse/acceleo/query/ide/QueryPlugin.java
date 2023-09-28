@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020, 2021 Obeo. 
+ *  Copyright (c) 2020, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import java.util.List;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.EclipseQualifiedNameResolver;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.ResolverFactoryRegistryListener;
 import org.eclipse.acceleo.query.ide.runtime.namespace.IResolverFactoryDescriptor;
+import org.eclipse.acceleo.query.ide.services.configurator.ResourceSetConfiguratorRegistryListener;
+import org.eclipse.acceleo.query.ide.services.configurator.ServicesConfiguratorRegistryListener;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
@@ -84,6 +86,12 @@ public class QueryPlugin extends EMFPlugin {
 		/** The registry listener that will be used to listen to extension changes. */
 		private final ResolverFactoryRegistryListener resolverFactoryListener = new ResolverFactoryRegistryListener();
 
+		/** The service registry listener that will be used to listen to extension changes. */
+		private ServicesConfiguratorRegistryListener serviceRegistryListener = new ServicesConfiguratorRegistryListener();
+
+		/** The service registry listener that will be used to listen to extension changes. */
+		private ResourceSetConfiguratorRegistryListener resourceSetConfiguratorRegistryListener = new ResourceSetConfiguratorRegistryListener();
+
 		/**
 		 * Create the Eclipse Implementation.
 		 */
@@ -107,6 +115,14 @@ public class QueryPlugin extends EMFPlugin {
 			registry.addListener(resolverFactoryListener,
 					ResolverFactoryRegistryListener.CLASS_PROVIDER_EXTENSION_POINT);
 			resolverFactoryListener.parseInitialContributions();
+
+			registry.addListener(serviceRegistryListener,
+					ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
+			serviceRegistryListener.parseInitialContributions();
+
+			registry.addListener(resourceSetConfiguratorRegistryListener,
+					ResourceSetConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
+			resourceSetConfiguratorRegistryListener.parseInitialContributions();
 		}
 
 		/*
@@ -118,6 +134,8 @@ public class QueryPlugin extends EMFPlugin {
 			super.stop(context);
 
 			final IExtensionRegistry registry = Platform.getExtensionRegistry();
+			registry.removeListener(resourceSetConfiguratorRegistryListener);
+			registry.removeListener(serviceRegistryListener);
 			registry.removeListener(resolverFactoryListener);
 		}
 

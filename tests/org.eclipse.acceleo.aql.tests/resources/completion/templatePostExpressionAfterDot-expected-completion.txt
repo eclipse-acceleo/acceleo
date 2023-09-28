@@ -197,6 +197,51 @@ prefix()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+promptDouble()
+* Description:
+promptDouble(message: java.lang.String) = Double<br><br>Prompts for a Double value with the given message.<br><br>  @param message<br>        The message displayed to the user<br><br>  @return<br>        Prompts the user and return the input of the user as a Double.<br><br>
+* Text:
+promptDouble()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+promptFloat()
+* Description:
+promptFloat(message: java.lang.String) = Float<br><br>Prompts for a Float value with the given message.<br><br>  @param message<br>        The message displayed to the user<br><br>  @return<br>        Prompts the user and return the input of the user as a Float.<br><br>
+* Text:
+promptFloat()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+promptInteger()
+* Description:
+promptInteger(message: java.lang.String) = Integer<br><br>Prompts for a Integer value with the given message.<br><br>  @param message<br>        The message displayed to the user<br><br>  @return<br>        Prompts the user and return the input of the user as an Integer.<br><br>
+* Text:
+promptInteger()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+promptLong()
+* Description:
+promptLong(message: java.lang.String) = Long<br><br>Prompts for a Long value with the given message.<br><br>  @param message<br>        The message displayed to the user<br><br>  @return<br>        Prompts the user and return the input of the user as an Long.<br><br>
+* Text:
+promptLong()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+promptString()
+* Description:
+promptString(message: java.lang.String) = String<br><br>Prompts for a String value with the given message.<br><br>  @param message<br>        The message displayed to the user<br><br>  @return<br>        Prompts the user and return the input of the user as a String.<br><br>
+* Text:
+promptString()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 replace()
 * Description:
 replace(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String<br><br>Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".<br><br>  @param self<br>        The current String.<br>  @param regex<br>        The regular expression used to find the substring to replace in the current String.<br>  @param replacement<br>        The replacement String.<br><br>  @return<br>        Returns the resulting String of a substitution of the first substring matching the given regex by the given replacement<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "regex" or "replacement" is null.<br>  @throw java.util.regex.PatternSyntaxException<br>        If the regular expression's syntax is invalid<br><br>

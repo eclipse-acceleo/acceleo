@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.PromptServices;
 import org.eclipse.acceleo.query.services.PropertiesServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
@@ -1466,6 +1467,7 @@ public class LookupEngineTest {
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), BooleanServices.class));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), CollectionServices.class));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), ResourceServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), PromptServices.class));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new PropertiesServices(
 				new Properties())));
 

@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
 import org.eclipse.acceleo.aql.ls.common.LocationUtils;
@@ -37,6 +39,7 @@ import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.DeclarationSwitch;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.aql.validation.quickfixes.AcceleoQuickFixesSwitch;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
@@ -51,9 +54,6 @@ import org.eclipse.acceleo.query.parser.quickfixes.IAstResourceChange;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstTextReplacement;
 import org.eclipse.acceleo.query.parser.quickfixes.MoveResource;
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.Query;
-import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
-import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
@@ -61,7 +61,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionContext;
 import org.eclipse.lsp4j.Command;
@@ -236,13 +235,17 @@ public class AcceleoTextDocument {
 		AcceleoAstResult parsingResult = null;
 		parsingResult = doParsing(this.getModuleQualifiedName(), this.contents);
 
-		final ResourceSet resourceSetForModels = new ResourceSetImpl(); // this will not be used
-		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
-				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
-		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
-				resourceSetForModels);
-		queryEnvironment = Query.newQualifiedNameEnvironmentWithDefaultServices(getProject().getResolver(),
-				crossReferenceProvider, rootProvider);
+		final IQualifiedNameResolver resolver = getProject().getResolver();
+		// TODO get options form ??? or list all possible options ?
+		// don't add any options ?
+		final Map<String, String> options = new LinkedHashMap<>();
+		final ArrayList<Exception> exceptions = new ArrayList<>();
+		// the ResourceSet will not be used
+		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
+				new ResourceSetImpl(), options);
+		// TODO report exceptions
+
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
 
 		for (Metamodel metamodel : parsingResult.getModule().getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {

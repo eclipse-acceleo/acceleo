@@ -18,6 +18,18 @@
    <feature id="org.eclipse.acceleo.query.jdt.source">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.query.cdo">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.query.cdo.source">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <!--feature id="org.eclipse.acceleo.query.sirius">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.query.sirius.source">
+      <category name="org.eclipse.acceleo"/>
+   </feature-->
    <feature id="org.eclipse.acceleo.aql.feature">
       <category name="org.eclipse.acceleo"/>
    </feature>

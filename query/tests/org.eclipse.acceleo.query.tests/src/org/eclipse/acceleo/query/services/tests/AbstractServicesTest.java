@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.PromptServices;
 import org.eclipse.acceleo.query.services.PropertiesServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
@@ -68,6 +69,8 @@ public abstract class AbstractServicesTest {
 		services = ServiceUtils.getServices(queryEnvironment, CollectionServices.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 		services = ServiceUtils.getServices(queryEnvironment, ResourceServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, PromptServices.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 		services = ServiceUtils.getServices(queryEnvironment, new PropertiesServices(new Properties()));
 		ServiceUtils.registerServices(queryEnvironment, services);

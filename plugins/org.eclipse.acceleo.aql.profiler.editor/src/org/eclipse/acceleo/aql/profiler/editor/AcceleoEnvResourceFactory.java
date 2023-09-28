@@ -8,15 +8,18 @@
 package org.eclipse.acceleo.aql.profiler.editor;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
-import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
-import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
@@ -27,7 +30,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 
 /**
  * A resource factory able to resolve acceleoenv URIs.
@@ -65,14 +67,13 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 
-		final ResourceSet resourceSetForModels = new ResourceSetImpl(); // this will not be used
-		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
-				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
-		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
-				resourceSetForModels);
-		queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
-						rootProvider);
+		final Map<String, String> options = new LinkedHashMap<>();
+		final ArrayList<Exception> exceptions = new ArrayList<>();
+		// the ResourceSet will not be used
+		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
+				new ResourceSetImpl(), options);
+		// TODO report exceptions
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));

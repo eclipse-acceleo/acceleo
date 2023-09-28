@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.ls.debug;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.acceleo.AcceleoASTNode;
@@ -37,10 +38,9 @@ import org.eclipse.acceleo.debug.AbstractDSLDebugger;
 import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.util.StackFrame;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
-import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
-import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IContainer;
@@ -58,7 +58,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.swt.widgets.Display;
 
@@ -247,9 +246,6 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final URI modelURI = URI.createURI((String)arguments.get(MODEL));
 		destination = URI.createURI((String)arguments.get(DESTINATION));
 
-		final ResourceSet resourceSetForModels = new ResourceSetImpl();
-		model = resourceSetForModels.getResource(modelURI, true);
-
 		final String profileModel = (String)arguments.get(PROFILE_MODEL);
 		if (profileModel != null) {
 			profileModelURI = URI.createFileURI(URI.decode(profileModel));
@@ -264,13 +260,14 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 
-		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
-				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
-		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
-				resourceSetForModels);
-		queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
-						rootProvider);
+		// TODO get options form the launch configuration
+		final Map<String, String> options = new LinkedHashMap<>();
+		final ArrayList<Exception> exceptions = new ArrayList<>();
+		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
+				new ResourceSetImpl(), options);
+		// TODO report exceptions
+		model = resourceSetForModels.getResource(modelURI, true);
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
 
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));

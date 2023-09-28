@@ -363,13 +363,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModuleElementDocumentation(ModuleElementDocumentation moduleElementDocumentation) {
-		// TODO Auto-generated method stub
 		return RETURN_VALUE;
 	}
 
 	@Override
 	public Object caseComment(Comment comment) {
-		// TODO Auto-generated method stub
 		return RETURN_VALUE;
 	}
 

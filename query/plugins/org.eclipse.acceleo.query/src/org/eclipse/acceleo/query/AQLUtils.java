@@ -15,8 +15,12 @@ import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -35,6 +39,18 @@ import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.services.configurator.IOptionProvider;
+import org.eclipse.acceleo.query.services.configurator.IResourceSetConfigurator;
+import org.eclipse.acceleo.query.services.configurator.IResourceSetConfiguratorDescriptor;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfiguratorDescriptor;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -44,14 +60,49 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class AQLUtils {
+
+	/**
+	 * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
+	 * {@link IServicesConfiguratorDescriptor}.
+	 */
+	private static final Map<String, List<IServicesConfiguratorDescriptor>> SERVICES_CONFIGURATORS = new LinkedHashMap<String, List<IServicesConfiguratorDescriptor>>();
+
+	/**
+	 * The {@link List} of {@link #registerServicesConfigurator(IResourceSetConfiguratorDescriptor)
+	 * registered} {@link IResourceSetConfiguratorDescriptor}.
+	 */
+	private static final List<IResourceSetConfiguratorDescriptor> RESOURCE_SET_CONFIGURATORS = new ArrayList<>();
+
+	/**
+	 * The install {@link ECrossReferenceAdapter} option.
+	 */
+	public static final String INSTALL_CROSS_REFERENCE_ADAPTER_OPTION = "InstallCrossReferenceAdapter";
+
+	/**
+	 * The install {@link ECrossReferenceAdapter} option.
+	 */
+	public static final String BASE_URI_OPTION = "BaseURI";
+
+	/**
+	 * The AQL language name for {@link IServicesConfigurator}.
+	 */
+	public static final String AQL_LANGUAGE = "org.eclipse.acceleo.query";
+
+	/**
+	 * The mapping from {@link Object key} to installed {@link ECrossReferenceAdapter}.
+	 */
+	private static final Map<Object, ECrossReferenceAdapter> CROSS_REFERENCE_ADAPTERS = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -303,6 +354,308 @@ public final class AQLUtils {
 			// can't happen: we are reading from memory
 		}
 		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of registered {@link IServicesConfigurator}.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @return the {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor)
+	 *         registered} {@link IServicesConfigurator}
+	 */
+	public static List<IServicesConfigurator> getServicesConfigurators(String language) {
+		final List<IServicesConfigurator> res = new ArrayList<>();
+
+		synchronized(SERVICES_CONFIGURATORS) {
+			List<IServicesConfiguratorDescriptor> configurators = SERVICES_CONFIGURATORS.get(language);
+			if (configurators != null) {
+				synchronized(configurators) {
+					for (IServicesConfiguratorDescriptor descriptor : configurators) {
+						final IServicesConfigurator configurator = descriptor.getServicesConfigurator();
+						if (configurator != null) {
+							res.add(configurator);
+						}
+					}
+				}
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Registers the given {@link IServicesConfiguratorDescriptor}.
+	 * 
+	 * @param configurator
+	 *            the {@link IServicesConfiguratorDescriptor} to register
+	 */
+	public static void registerServicesConfigurator(IServicesConfiguratorDescriptor configurator) {
+		if (configurator != null) {
+			synchronized(SERVICES_CONFIGURATORS) {
+				final List<IServicesConfiguratorDescriptor> configurators = SERVICES_CONFIGURATORS
+						.computeIfAbsent(configurator.getLanguage(),
+								l -> new ArrayList<IServicesConfiguratorDescriptor>());
+				synchronized(configurators) {
+					configurators.add(configurator);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Unregister the given {@link IServicesConfiguratorDescriptor}.
+	 * 
+	 * @param configuratorDescriptor
+	 *            the {@link IServicesConfiguratorDescriptor} to unregister
+	 */
+	public static void unregisterServicesConfigurator(
+			IServicesConfiguratorDescriptor configuratorDescriptor) {
+		if (configuratorDescriptor != null) {
+			synchronized(SERVICES_CONFIGURATORS) {
+				final List<IServicesConfiguratorDescriptor> configurators = SERVICES_CONFIGURATORS.get(
+						configuratorDescriptor.getLanguage());
+				if (configurators != null) {
+					synchronized(configurators) {
+						if (configurators.remove(configuratorDescriptor) && configurators.isEmpty()) {
+							SERVICES_CONFIGURATORS.remove(configuratorDescriptor.getLanguage());
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Gets the {@link List} of registered {@link IResourceSetConfigurator}.
+	 * 
+	 * @return the {@link List} of {@link #registerResourceSetConfigurator(IResourceSetConfiguratorDescriptor)
+	 *         registered} {@link IResourceSetConfigurator}
+	 */
+	public static List<IResourceSetConfigurator> getResourceSetConfigurators() {
+		final List<IResourceSetConfigurator> res = new ArrayList<>();
+
+		synchronized(RESOURCE_SET_CONFIGURATORS) {
+			for (IResourceSetConfiguratorDescriptor descriptor : RESOURCE_SET_CONFIGURATORS) {
+				final IResourceSetConfigurator configurator = descriptor.getResourceSetConfigurator();
+				if (configurator != null) {
+					res.add(configurator);
+				}
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Registers the given {@link IResourceSetConfiguratorDescriptor}.
+	 * 
+	 * @param configurator
+	 *            the {@link IResourceSetConfiguratorDescriptor} to register
+	 */
+	public static void registerResourceSetConfigurator(IResourceSetConfiguratorDescriptor configurator) {
+		if (configurator != null) {
+			synchronized(RESOURCE_SET_CONFIGURATORS) {
+				RESOURCE_SET_CONFIGURATORS.add(configurator);
+			}
+		}
+	}
+
+	/**
+	 * Unregister the given {@link IResourceSetConfiguratorDescriptor}.
+	 * 
+	 * @param configuratorDescriptor
+	 *            the {@link IResourceSetConfiguratorDescriptor} to unregister
+	 */
+	public static void unregisterResourceSetConfigurator(
+			IResourceSetConfiguratorDescriptor configuratorDescriptor) {
+		if (configuratorDescriptor != null) {
+			synchronized(RESOURCE_SET_CONFIGURATORS) {
+				RESOURCE_SET_CONFIGURATORS.remove(configuratorDescriptor);
+			}
+		}
+	}
+
+	/**
+	 * Create a new {@link ResourceSet} suitable for loading {@link EObject} from the given options.
+	 * 
+	 * @param exceptions
+	 *            the {@link List} of resulting exceptions (filled by this method)
+	 * @param key
+	 *            the {@link Object} key
+	 * @param defaultResourceSet
+	 *            the default {@link ResourceSet} to use if none is created
+	 * @param options
+	 *            the {@link Map} of existing options.
+	 * @return the {@link ResourceSet} suitable for loading {@link EObject} from the given options if any, the
+	 *         default {@link ResourceSet} otherwise
+	 * @see #cleanResourceSetForModels(Object)
+	 */
+	public static ResourceSet createResourceSetForModels(List<Exception> exceptions, Object key,
+			ResourceSet defaultResourceSet, Map<String, String> options) {
+		ResourceSet res = null;
+
+		for (IResourceSetConfigurator configurator : getResourceSetConfigurators()) {
+			try {
+				res = configurator.createResourceSetForModels(key, options);
+				if (res != null) {
+					break;
+				}
+				// CHECKSTYLE:OFF
+			} catch (Exception e) {
+				// CHECKSTYLE:ON
+				exceptions.add(e);
+			}
+		}
+
+		if (res == null) {
+			res = defaultResourceSet;
+		}
+
+		if (Boolean.valueOf(options.get(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION))) {
+			final ECrossReferenceAdapter adapter = new ECrossReferenceAdapter();
+			adapter.setTarget(res);
+			res.eAdapters().add(adapter);
+			CROSS_REFERENCE_ADAPTERS.put(key, adapter);
+		}
+
+		return res;
+	}
+
+	/**
+	 * Cleans the {@link #createResourceSetForModels(List, Object, ResourceSet, Map) created}
+	 * {@link ResourceSet} for the given {@link Object} key.
+	 * 
+	 * @param key
+	 *            the {@link Object} key
+	 * @param resourceSet
+	 *            the {@link ResourceSet} created using
+	 *            {@link #createResourceSetForModels(List, Object, ResourceSet, Map)}
+	 */
+	public static void cleanResourceSetForModels(Object key, ResourceSet resourceSet) {
+		final ECrossReferenceAdapter adapter = CROSS_REFERENCE_ADAPTERS.remove(key);
+		if (adapter != null) {
+			adapter.unsetTarget(resourceSet);
+			resourceSet.eAdapters().remove(adapter);
+		}
+		for (IResourceSetConfigurator configurator : getResourceSetConfigurators()) {
+			configurator.cleanResourceSetForModels(key);
+		}
+	}
+
+	/**
+	 * Gets the {@link Map} of initialized options.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @param options
+	 *            the {@link Map} of existing options.
+	 * @return the {@link Map} of initialized options
+	 */
+	public static Map<String, String> getInitializedOptions(String language, Map<String, String> options) {
+		final Map<String, String> res = new LinkedHashMap<>();
+
+		for (IOptionProvider provider : getOptionProviders(AQL_LANGUAGE)) {
+			res.putAll(provider.getInitializedOptions(options));
+		}
+		for (IOptionProvider provider : getOptionProviders(language)) {
+			res.putAll(provider.getInitializedOptions(options));
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of possible option names.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @return the {@link List} of possible option names
+	 */
+	public static Set<String> getPossibleOptionNames(String language) {
+		final Set<String> res = new LinkedHashSet<>();
+
+		for (IOptionProvider provider : getOptionProviders(AQL_LANGUAGE)) {
+			res.addAll(provider.getOptions());
+		}
+		for (IOptionProvider provider : getOptionProviders(language)) {
+			res.addAll(provider.getOptions());
+		}
+
+		res.add(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION);
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of {@link IOptionProvider}.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @return the {@link List} of {@link IOptionProvider}
+	 */
+	private static List<IOptionProvider> getOptionProviders(String language) {
+		final List<IOptionProvider> res = new ArrayList<>();
+
+		res.addAll(getServicesConfigurators(AQL_LANGUAGE));
+		res.addAll(getServicesConfigurators(language));
+		res.addAll(getResourceSetConfigurators());
+
+		return res;
+	}
+
+	/**
+	 * Creates a new IQueryEnvironment for the given language name and options.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @param options
+	 *            the {@link Map} of options
+	 * @param resourceSetForModels
+	 *            the {@link ResourceSet} for models
+	 * @return a new IQueryEnvironment for the given language name and options
+	 */
+	public static IQueryEnvironment newEnvironmentWithDefaultServices(String language,
+			Map<String, String> options, ResourceSet resourceSetForModels) {
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				resourceSetForModels);
+		final IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(
+				crossReferenceProvider, rootProvider);
+
+		for (IServicesConfigurator configurator : getServicesConfigurators(AQL_LANGUAGE)) {
+			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
+					resourceSetForModels, options));
+		}
+		for (IServicesConfigurator configurator : getServicesConfigurators(language)) {
+			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
+					resourceSetForModels, options));
+		}
+
+		return queryEnvironment;
+	}
+
+	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironment(String language,
+			Map<String, String> options, IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
+		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
+				resourceSetForModels);
+		final IQualifiedNameQueryEnvironment queryEnvironment = Query
+				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
+						rootProvider);
+
+		for (IServicesConfigurator configurator : getServicesConfigurators(AQL_LANGUAGE)) {
+			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
+					resourceSetForModels, options));
+		}
+		for (IServicesConfigurator configurator : getServicesConfigurators(language)) {
+			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
+					resourceSetForModels, options));
+		}
+
+		return queryEnvironment;
 	}
 
 }

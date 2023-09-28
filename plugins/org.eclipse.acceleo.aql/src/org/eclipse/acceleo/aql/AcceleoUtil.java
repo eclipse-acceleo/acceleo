@@ -30,11 +30,14 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.EObjectServices;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -49,6 +52,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class AcceleoUtil {
+
+	/**
+	 * The language name for Acceleo {@link IServicesConfigurator}.
+	 */
+	public static final String LANGUAGE_NAME = "org.eclipse.acceleo.aql";
 
 	/**
 	 * "self".
@@ -283,6 +291,22 @@ public final class AcceleoUtil {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Creates a {@link IQualifiedNameQueryEnvironment} for Acceleo.
+	 * 
+	 * @param options
+	 *            the {@link Map} of options
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param resourceSetForModels
+	 *            the {@link ResourceSet} for models
+	 * @return
+	 */
+	public static IQualifiedNameQueryEnvironment newAcceleoQueryEnvironment(Map<String, String> options,
+			IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
+		return AQLUtils.newQualifiedNameEnvironment(LANGUAGE_NAME, options, resolver, resourceSetForModels);
 	}
 
 }
