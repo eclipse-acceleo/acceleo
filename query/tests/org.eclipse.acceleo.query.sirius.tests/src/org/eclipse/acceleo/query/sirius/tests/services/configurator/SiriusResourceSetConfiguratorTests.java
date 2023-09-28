@@ -87,9 +87,8 @@ public class SiriusResourceSetConfiguratorTests {
 		final List<Diagnostic> list = diagnostics.get(AqlSiriusUtils.SIRIUS_SESSION_OPTION);
 		assertEquals(true, list != null);
 		assertEquals(1, list.size());
-		assertEquals(
-				"The Sirius session doesn't exist: file:/home/development/git/acceleo/query/tests/org.eclipse.acceleo.query.sirius.tests/resources/NotExisting.aird",
-				list.get(0).getMessage());
+		assertEquals(true, list.get(0).getMessage().contains("The Sirius session doesn't exist"));
+		assertEquals(true, list.get(0).getMessage().contains("NotExisting.aird"));
 	}
 
 	@Test
