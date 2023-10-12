@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,9 @@
 package org.eclipse.acceleo.aql.migration.standalone;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,8 +68,15 @@ public final class StandaloneMigrator {
 	private Path binFolderPath;
 
 	/**
+	 * The log {@link Writer}.
+	 */
+	private final Writer logWriter;
+
+	/**
 	 * Creates a launcher using the given source & target paths.
 	 * 
+	 * @param logWriter
+	 *            the log {@link Writer}
 	 * @param sourceFolderPath
 	 *            the source path
 	 * @param binFolderPath
@@ -75,9 +84,11 @@ public final class StandaloneMigrator {
 	 * @param targetFolderPath
 	 *            the target path
 	 */
-	public StandaloneMigrator(Path sourceFolderPath, Path binFolderPath, Path targetFolderPath) {
+	public StandaloneMigrator(Writer logWriter, Path sourceFolderPath, Path binFolderPath,
+			Path targetFolderPath) {
 		this.sourceFolderPath = sourceFolderPath;
 		this.targetFolderPath = targetFolderPath;
+		this.logWriter = logWriter;
 		if (binFolderPath == null) {
 			this.binFolderPath = sourceFolderPath.getParent().resolve(BIN_FOLDER_NAME);
 		} else {
@@ -104,6 +115,7 @@ public final class StandaloneMigrator {
 				javaTargetFile.getParentFile().mkdirs();
 				Files.copy(javaFile.toPath(), javaTargetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				System.out.println("Copied " + javaFile.getAbsolutePath());
+				logWriter.write("Copied " + javaFile.getAbsolutePath() + "\n");
 			}
 		}
 
@@ -113,6 +125,7 @@ public final class StandaloneMigrator {
 			Path mtlFile = (Path)iterator.next();
 			migrate(mtlFile);
 		}
+		logWriter.flush();
 	}
 
 	/**
@@ -120,6 +133,8 @@ public final class StandaloneMigrator {
 	 * 
 	 * @param mtlFile
 	 *            the mtl file
+	 * @param logWriter
+	 *            the log {@link Writer}
 	 * @throws IOException
 	 */
 	public void migrate(Path mtlFile) throws IOException {
@@ -142,11 +157,14 @@ public final class StandaloneMigrator {
 				targetMtlFile.toFile().createNewFile();
 				Files.write(targetMtlFile, a4Content.getBytes());
 				System.out.println("Migrated " + mtlFile);
+				logWriter.write("Migrated " + mtlFile + "\n");
 			} catch (MigrationException e) {
 				System.err.println("Error migrating " + mtlFile + ": " + e.getMessage());
+				logWriter.write("Error migrating " + mtlFile + ": " + e.getMessage() + "\n");
 			}
 		} else {
-			System.err.println("EMTL file not found: " + emtlFile);
+			System.err.println("Error EMTL file not found: " + emtlFile);
+			logWriter.write("Error EMTL file not found: " + emtlFile + "\n");
 		}
 	}
 
@@ -163,7 +181,15 @@ public final class StandaloneMigrator {
 		} else {
 			Path sourceFolderPath = Paths.get(args[0]);
 			Path targetFolderPath = Paths.get(args[1]);
-			new StandaloneMigrator(sourceFolderPath, null, targetFolderPath).migrateAll();
+
+			final File logFile = targetFolderPath.resolve("Acceleo4migation.log").toFile();
+			if (!logFile.exists()) {
+				logFile.createNewFile();
+			}
+
+			try (FileWriter logWriter = new FileWriter(logFile)) {
+				new StandaloneMigrator(logWriter, sourceFolderPath, null, targetFolderPath).migrateAll();
+			}
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.migration.ide.ui.command;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -79,50 +81,69 @@ public class MigrateToAcceleo4Handler extends AbstractHandler {
 			dialog.setMessage("Select target directory");
 			dialog.setText("Select the target directory for migrated projects.");
 			final String targetString = dialog.open();
-			if (targetString != null) {
-				final Path targetPath = new File(targetString).toPath();
-				@SuppressWarnings("unchecked")
-				Iterator<IJavaProject> it = ((IStructuredSelection)selection).iterator();
-				while (it.hasNext()) {
-					final IJavaProject javaProject = it.next();
-					final IProject project = javaProject.getAdapter(IProject.class);
-					final Path projectPath = project.getLocation().toFile().toPath();
+			try {
+				if (targetString != null) {
+					final Path targetPath = new File(targetString).toPath();
+					final File logFile = targetPath.resolve("Acceleo4migation.log").toFile();
+					if (!logFile.exists()) {
+						logFile.createNewFile();
+					}
 
-					final List<Path> ignoreFolders = new ArrayList<>();
-					try {
-						final Path binaryPath = new File(projectPath.getParent().toString() + javaProject
-								.getOutputLocation().toString()).toPath();
-						ignoreFolders.add(binaryPath);
-						for (IClasspathEntry entry : javaProject.getRawClasspath()) {
-							if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-								final Path sourcePath = new File(projectPath.getParent().toString() + entry
-										.getPath().toString()).toPath();
-								ignoreFolders.add(sourcePath);
-								final Path relativeSourcePath = projectPath.getParent().relativize(
-										sourcePath);
-								final Path targetSourcePath = targetPath.resolve(relativeSourcePath);
-								final StandaloneMigrator migrator = new StandaloneMigrator(sourcePath,
-										binaryPath, targetSourcePath);
-								migrator.migrateAll();
+					try (FileWriter logWriter = new FileWriter(logFile)) {
+						Iterator<?> it = ((IStructuredSelection)selection).iterator();
+						while (it.hasNext()) {
+							final IJavaProject javaProject;
+							final Object selected = it.next();
+							if (selected instanceof IJavaProject) {
+								javaProject = (IJavaProject)selected;
+							} else if (selected instanceof IProject) {
+								javaProject = JavaCore.create((IProject)selected);
+							} else {
+								javaProject = null; // not possible
 							}
+							final IProject project = javaProject.getProject();
+							final Path projectPath = project.getLocation().toFile().toPath();
+
+							final List<Path> ignoreFolders = new ArrayList<>();
+							try {
+								final Path binaryPath = new File(projectPath.getParent().toString()
+										+ javaProject.getOutputLocation().toString()).toPath();
+								ignoreFolders.add(binaryPath);
+								for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+									if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+										final Path sourcePath = new File(projectPath.getParent().toString()
+												+ entry.getPath().toString()).toPath();
+										ignoreFolders.add(sourcePath);
+										final Path relativeSourcePath = projectPath.getParent().relativize(
+												sourcePath);
+										final Path targetSourcePath = targetPath.resolve(relativeSourcePath);
+										final StandaloneMigrator migrator = new StandaloneMigrator(logWriter,
+												sourcePath, binaryPath, targetSourcePath);
+										migrator.migrateAll();
+									}
+								}
+							} catch (JavaModelException | IOException e) {
+								AcceleoMigrationPlugin.getPlugin().log(new Status(IStatus.ERROR,
+										AcceleoMigrationPlugin.ID, MIGRATION_FAILED, e));
+							}
+
+							final Path targetProjectPath = targetPath.resolve(projectPath.getParent()
+									.relativize(projectPath));
+							try {
+								copyPath(projectPath, targetProjectPath, ignoreFolders);
+							} catch (IOException e) {
+								AcceleoMigrationPlugin.getPlugin().log(new Status(IStatus.ERROR,
+										AcceleoMigrationPlugin.ID, MIGRATION_FAILED, e));
+								e.printStackTrace();
+							}
+
+							removeAcceleo3BuilderAndNature(targetProjectPath);
 						}
-					} catch (JavaModelException | IOException e) {
-						AcceleoMigrationPlugin.getPlugin().log(new Status(IStatus.ERROR,
-								AcceleoMigrationPlugin.ID, MIGRATION_FAILED, e));
 					}
-
-					final Path targetProjectPath = targetPath.resolve(projectPath.getParent().relativize(
-							projectPath));
-					try {
-						copyPath(projectPath, targetProjectPath, ignoreFolders);
-					} catch (IOException e) {
-						AcceleoMigrationPlugin.getPlugin().log(new Status(IStatus.ERROR,
-								AcceleoMigrationPlugin.ID, MIGRATION_FAILED, e));
-						e.printStackTrace();
-					}
-
-					removeAcceleo3BuilderAndNature(targetProjectPath);
 				}
+			} catch (IOException e) {
+				AcceleoMigrationPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoMigrationPlugin.ID,
+						MIGRATION_FAILED, e));
 			}
 		}
 
