@@ -229,7 +229,7 @@ public final class ModuleConverter extends AbstractConverter {
 
 		for (Entry<Call, String> entry : expressionConverter.getJavaServiceCalls().entrySet()) {
 			if (isAmbiguousJavaServiceCall(outputModule, entry.getKey())) {
-				ASTParser parser = ASTParser.newParser(AST.JLS10);
+				ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 				final File javaFile = new File(targetFolderPath + FileSystems.getDefault().getSeparator()
 						+ entry.getValue().replace(".", FileSystems.getDefault().getSeparator()) + ".java");
 				if (javaFile.exists()) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -641,7 +641,7 @@ public final class ExpressionConverter extends AbstractConverter {
 	 *             if the java file can't be read or written
 	 */
 	private void refactorService(String serviceClassName, String serviceName) throws IOException {
-		ASTParser parser = ASTParser.newParser(AST.JLS10);
+		ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 		final File javaFile = new File(targetFolderPath + FileSystems.getDefault().getSeparator()
 				+ serviceClassName.replace(".", FileSystems.getDefault().getSeparator()) + ".java");
 		if (javaFile.exists()) {
