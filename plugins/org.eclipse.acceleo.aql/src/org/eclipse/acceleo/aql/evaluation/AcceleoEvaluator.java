@@ -420,7 +420,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			if (element instanceof Template && ((Template)element).isMain()) {
 				final String start = lookupEngine.getResolver().getQualifiedName(module);
 				lookupEngine.pushImportsContext(start, start);
-				doSwitch(element);
+				try {
+					doSwitch(element);
+				} finally {
+					lookupEngine.popContext(start);
+				}
 			}
 		}
 
