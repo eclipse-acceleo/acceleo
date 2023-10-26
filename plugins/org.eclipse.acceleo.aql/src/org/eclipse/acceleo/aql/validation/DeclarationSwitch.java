@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.validation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleReference;
@@ -28,8 +29,10 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
@@ -50,7 +53,7 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 
 		@Override
 		public List<Object> caseVarRef(VarRef varRef) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
 			final Declaration declaration = acceleoValidationResult.getDeclaration(varRef);
 			if (declaration != null) {
@@ -69,10 +72,16 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 
 		@Override
 		public List<Object> caseCall(Call call) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
-			List<IService<?>> services = acceleoValidationResult.getDeclarationIService(call);
-			res.addAll(services);
+			final List<IService<?>> services = acceleoValidationResult.getDeclarationIService(call);
+			if (withCompatibleServices) {
+				for (IService<?> service : services) {
+					res.addAll(getCompatibleServices(service));
+				}
+			} else {
+				res.addAll(services);
+			}
 
 			return res;
 		}
@@ -106,7 +115,7 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 
 		@Override
 		public List<Object> caseDeclaration(Declaration declaration) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
 			res.add(declaration);
 
@@ -128,7 +137,7 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 
 		@Override
 		public List<Object> caseModuleReference(ModuleReference moduleReference) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
 			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 			final Object resolved = resolver.resolve(moduleReference.getQualifiedName());
@@ -141,25 +150,35 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 
 		@Override
 		public List<Object> caseTemplate(Template template) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
-			res.add(new TemplateService(template, null, null, null));
+			final IService<Template> templateService = new TemplateService(template, null, null, null);
+			if (withCompatibleServices) {
+				res.addAll(getCompatibleServices(templateService));
+			} else {
+				res.add(templateService);
+			}
 
 			return res;
 		}
 
 		@Override
 		public List<Object> caseQuery(Query query) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
-			res.add(new QueryService(query, null, null, null));
+			final IService<Query> queryService = new QueryService(query, null, null, null);
+			if (withCompatibleServices) {
+				res.addAll(getCompatibleServices(queryService));
+			} else {
+				res.add(queryService);
+			}
 
 			return res;
 		}
 
 		@Override
 		public List<Object> caseVariable(Variable variable) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
 			res.add(variable);
 
@@ -168,7 +187,7 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 
 		@Override
 		public List<Object> caseModule(Module module) {
-			List<Object> res = new ArrayList<>();
+			final List<Object> res = new ArrayList<>();
 
 			res.add(module);
 
@@ -192,31 +211,97 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
+	 * Tells if we should also return all compatible {@link IService}.
+	 */
+	private final boolean withCompatibleServices;
+
+	/**
+	 * The context qualified name.
+	 */
+	private String contextQualifiedName;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param acceleoValidationResult
 	 *            the {@link IAcceleoValidationResult}
 	 * @param queryEnvironment
 	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param withCompatibleServices
+	 *            tells if we should also return all compatible {@link IService}
 	 */
 	public DeclarationSwitch(IAcceleoValidationResult acceleoValidationResult,
-			IQualifiedNameQueryEnvironment queryEnvironment) {
+			IQualifiedNameQueryEnvironment queryEnvironment, boolean withCompatibleServices) {
 		super();
 		addSwitch(new AQLDeclarationSwitch());
 		addSwitch(new AcceleoDeclarationSwitch());
 		this.acceleoValidationResult = acceleoValidationResult;
 		this.queryEnvironment = queryEnvironment;
+		this.withCompatibleServices = withCompatibleServices;
 	}
 
 	/**
 	 * Gets the {@link List} of declarations {@link Object} for the given {@link EObject}.
 	 * 
+	 * @param contextQualifiedName
+	 *            the context qualified name
 	 * @param eObject
 	 *            the {@link EObject} to get the declaration from
 	 * @return the {@link List} of declarations {@link Object} for the given {@link EObject}
 	 */
-	public List<Object> getDeclarations(EObject eObject) {
+	public List<Object> getDeclarations(String contextQualifiedName, EObject eObject) {
+		this.contextQualifiedName = contextQualifiedName;
 		return doSwitch(eObject);
+	}
+
+	/**
+	 * Gets all compatible services for the given {@link IService}.
+	 * 
+	 * @param service
+	 *            the {@link IService}
+	 * @return all compatible services for the given {@link IService}.
+	 */
+	private List<IService<?>> getCompatibleServices(IService<?> service) {
+		final List<IService<?>> res = new ArrayList<>();
+
+		final IQualifiedNameLookupEngine lookupEngine = queryEnvironment.getLookupEngine();
+		lookupEngine.pushImportsContext(contextQualifiedName, contextQualifiedName);
+		try {
+			final List<IService<?>> possibleServices = lookupEngine.getRegisteredServices().stream().filter(
+					s -> s.getName().equals(service.getName()) && s.getNumberOfParameters() == service
+							.getNumberOfParameters()).collect(Collectors.toList());
+
+			List<IService<?>> currentCompatibleServices = new ArrayList<>();
+			currentCompatibleServices.add(service);
+			List<IService<?>> newCompatibleServices = new ArrayList<>();
+			do {
+				for (IService<?> currentCompatibleService : currentCompatibleServices) {
+					final List<IType> serviceParameterTypes = currentCompatibleService.getParameterTypes(
+							queryEnvironment);
+					nextservice: for (IService<?> registeredService : possibleServices) {
+						final List<IType> registeredServiceParameterTypes = registeredService
+								.getParameterTypes(queryEnvironment);
+						for (int i = 0; i < currentCompatibleService.getNumberOfParameters(); i++) {
+							if (!serviceParameterTypes.get(i).isAssignableFrom(registeredServiceParameterTypes
+									.get(i)) && !registeredServiceParameterTypes.get(i).isAssignableFrom(
+											serviceParameterTypes.get(i))) {
+								break nextservice;
+							}
+						}
+						if (!res.contains(registeredService)) {
+							newCompatibleServices.add(registeredService);
+						}
+					}
+				}
+				res.addAll(newCompatibleServices);
+				currentCompatibleServices = newCompatibleServices;
+				newCompatibleServices = new ArrayList<>();
+			} while (!currentCompatibleServices.isEmpty());
+		} finally {
+			lookupEngine.popContext(contextQualifiedName);
+		}
+
+		return res;
 	}
 
 }

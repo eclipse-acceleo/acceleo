@@ -118,6 +118,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 	 *            the (non-{@code null}) {@link AcceleoWorkspace} to delete.
 	 */
 	public void deleteAcceleoWorkspace(AcceleoWorkspace acceleoWorkspaceToDelete) {
+		acceleoWorkspaceToDelete.dispose();
 		if (this.workspaceTrace.containsKey(acceleoWorkspaceToDelete)) {
 			IWorkspace clientWorkspace = this.workspaceTrace.get(acceleoWorkspaceToDelete);
 			SynchronizerEclipseWorkspace2AcceleoWorkspace synchronizer = this.synchronizerTrace.get(
@@ -237,7 +238,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 			if (delta.getFlags() == IResourceDelta.MARKERS) {
 				// Only markers have changed.
 				// Do nothing.
-			} else {
+			} else if (delta.getResource().isDerived(IResource.CHECK_ANCESTORS)) {
 				IResource resource = delta.getResource();
 				if (resource.getType() == IResource.PROJECT) {
 					IProject workspaceProject = (IProject)resource;
@@ -380,7 +381,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 				fileToRemove.getProject().removeTextDocument(fileToRemove);
 				this.filesTrace.remove(removedFile);
 			}
-			updateAllProjectResolvers();
+			notifyChange(removedFile.getLocationURI());
 		}
 
 		/**
@@ -426,7 +427,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 			for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
 				final AcceleoProject acceleoProject = projectsTrace.get(project);
 				if (acceleoProject != null) {
-					acceleoProject.setResolver(createResolver(project));
+					acceleoProject.setResolver(createResolver(acceleoProject.getResolver(), null, project));
 				}
 			}
 		}
@@ -453,7 +454,8 @@ public class EclipseWorkspace2AcceleoWorkspace {
 			AcceleoProject acceleoProject = this.projectsTrace.get(workspaceProject);
 
 			acceleoProject.setLabel(getAcceleoProjectLabelFor(workspaceProject));
-			acceleoProject.setResolver(this.createResolver(workspaceProject));
+			acceleoProject.setResolver(this.createResolver(acceleoProject.getResolver(), null,
+					workspaceProject));
 
 			// The contained documents are updated on their own.
 		}
@@ -588,6 +590,7 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 *            the change {@link URI}
 		 */
 		private void notifyChange(URI uri) {
+			// FIXME only update projects that depends (closure) on the project containing the given URI
 			for (IProject workspaceProject : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
 				final AcceleoProject acceleoProject = projectsTrace.get(workspaceProject);
 				if (acceleoProject != null) {
@@ -599,11 +602,22 @@ public class EclipseWorkspace2AcceleoWorkspace {
 							dependOn.getQueryEnvironment().getLookupEngine().clearContext(fileQualifiedName);
 						}
 						if (acceleoProject.getResolver().resolve(fileQualifiedName) instanceof Class<?>) {
-							acceleoProject.setResolver(createResolver(workspaceProject));
+							acceleoProject.setResolver(createResolver(acceleoProject.getResolver(),
+									fileQualifiedName, workspaceProject));
 						} else {
 							acceleoProject.getResolver().clear(Collections.singleton(fileQualifiedName));
+
+							final AcceleoTextDocument acceleoTextDocument = acceleoProject.getTextDocument(
+									uri);
+							if (acceleoTextDocument != null) {
+								acceleoProject.getResolver().register(fileQualifiedName, acceleoTextDocument
+										.getAcceleoAstResult().getModule());
+							} else {
+								acceleoProject.getResolver().resolve(fileQualifiedName);
+							}
 						}
 						for (AcceleoTextDocument dependOn : dependOns) {
+							dependOn.getQueryEnvironment().getLookupEngine().clearContext(fileQualifiedName);
 							dependOn.validateAndPublishResults();
 						}
 					}
@@ -632,24 +646,44 @@ public class EclipseWorkspace2AcceleoWorkspace {
 		 * @return the corresponding {@link AcceleoProject}.
 		 */
 		private AcceleoProject transform(IProject workspaceProject) {
-			return new AcceleoProject(getAcceleoProjectLabelFor(workspaceProject), this.createResolver(
-					workspaceProject));
+			return new AcceleoProject(getAcceleoProjectLabelFor(workspaceProject), this.createResolver(null,
+					null, workspaceProject));
 		}
 
 		/**
 		 * Creates a new {@link IQualifiedNameResolver} for the given {@link IProject}.
 		 * 
+		 * @param oldResolver
+		 *            the old {@link IQualifiedNameResolver} if any, <code>null</code> otherwise
+		 * @param updatedQualifiedName
+		 *            the updated qualified name if any, <code>null</code> otherwise
 		 * @param project
 		 *            the (non-{@code null}) {@link IProject}.
 		 * @return the corresponding {@link IQualifiedNameResolver}.
 		 */
-		public IQualifiedNameResolver createResolver(IProject project) {
+		public IQualifiedNameResolver createResolver(IQualifiedNameResolver oldResolver,
+				String updatedQualifiedName, IProject project) {
 			Objects.nonNull(project);
 			final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 					AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 					AcceleoParser.QUALIFIER_SEPARATOR);
 			resolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
 			resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+
+			if (oldResolver != null) {
+				final Set<String> resolvedQualifiedName = oldResolver.getResolvedQualifiedNames();
+				resolvedQualifiedName.remove(updatedQualifiedName);
+				for (String qualifiedName : resolvedQualifiedName) {
+					final Object resolved = oldResolver.resolve(qualifiedName);
+					if (resolved instanceof Class<?>) {
+						// we reload class in the new classloader
+						resolver.resolve(qualifiedName);
+					} else {
+						// we keep other resolved objects
+						resolver.register(qualifiedName, resolved);
+					}
+				}
+			}
 
 			return resolver;
 		}

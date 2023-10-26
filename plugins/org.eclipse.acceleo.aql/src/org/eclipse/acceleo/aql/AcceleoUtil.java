@@ -34,6 +34,7 @@ import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.EObjectServices;
@@ -302,11 +303,26 @@ public final class AcceleoUtil {
 	 *            the {@link IQualifiedNameResolver}
 	 * @param resourceSetForModels
 	 *            the {@link ResourceSet} for models
-	 * @return
+	 * @return {@link IQualifiedNameQueryEnvironment} for Acceleo
+	 * @see #cleanServices(IReadOnlyQueryEnvironment, ResourceSet)
 	 */
 	public static IQualifiedNameQueryEnvironment newAcceleoQueryEnvironment(Map<String, String> options,
 			IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
-		return AQLUtils.newQualifiedNameEnvironment(LANGUAGE_NAME, options, resolver, resourceSetForModels);
+		return AQLUtils.newQualifiedNameEnvironmentDefaultServices(LANGUAGE_NAME, options, resolver,
+				resourceSetForModels);
+	}
+
+	/**
+	 * Cleans the services for the given Acceleo {@link IReadOnlyQueryEnvironment}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param resourceSetForModels
+	 *            the {@link ResourceSet} for models
+	 */
+	public static void cleanServices(IReadOnlyQueryEnvironment queryEnvironment,
+			ResourceSet resourceSetForModels) {
+		AQLUtils.cleanServices(LANGUAGE_NAME, queryEnvironment, resourceSetForModels);
 	}
 
 }

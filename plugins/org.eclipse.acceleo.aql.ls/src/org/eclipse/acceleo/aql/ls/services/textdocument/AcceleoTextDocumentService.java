@@ -322,7 +322,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 					acceleoTextDocument.getContents());
 
 			canceler.checkCanceled();
-			return Either.forRight(acceleoTextDocument.getDeclarationLocations(atIndex));
+			return Either.forRight(acceleoTextDocument.getDeclarationLocations(atIndex, false));
 		});
 	}
 
@@ -430,7 +430,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 
 			int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
 					acceleoTextDocument.getContents());
-			final List<Location> locations = acceleoTextDocument.getReferencesLocations(atIndex);
+			final List<Location> locations = acceleoTextDocument.getReferencesLocations(atIndex, true);
 
 			canceler.checkCanceled();
 			return locations;

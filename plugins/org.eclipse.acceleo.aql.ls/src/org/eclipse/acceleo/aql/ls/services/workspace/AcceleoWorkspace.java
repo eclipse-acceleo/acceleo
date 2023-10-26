@@ -13,10 +13,8 @@ package org.eclipse.acceleo.aql.ls.services.workspace;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
@@ -125,6 +123,7 @@ public class AcceleoWorkspace {
 					+ projectToRemove.toString() + " so it cannot be removed from it.");
 		}
 
+		projectToRemove.dispose();
 		this.projects.remove(projectToRemove);
 		// TODO: we probably want to find other projects of the workspace that depended on the removed project
 		// and re-validate them.
@@ -185,6 +184,15 @@ public class AcceleoWorkspace {
 	public void documentRemoved(AcceleoTextDocument removedAcceleoTextDocument) {
 		this.getProjects().stream().forEach(acceleoProject -> acceleoProject.documentRemoved(
 				removedAcceleoTextDocument));
+	}
+
+	/**
+	 * Disposes this workspace.
+	 */
+	public void dispose() {
+		for (AcceleoProject project : getProjects()) {
+			project.dispose();
+		}
 	}
 
 }

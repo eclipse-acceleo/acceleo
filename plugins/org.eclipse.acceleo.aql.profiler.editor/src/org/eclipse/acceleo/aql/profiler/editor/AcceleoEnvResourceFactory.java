@@ -44,6 +44,11 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 	private IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
+	 * The {@link ResourceSet} for models.
+	 */
+	private ResourceSet resourceSetForModels;
+
+	/**
 	 * The project where to find modules.
 	 */
 	private IProject project;
@@ -63,6 +68,10 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 	 * Inits the factory acceleo environnement. Resets any module cache.
 	 */
 	public void init() {
+		// clean any previous environment
+		if (queryEnvironment != null && resourceSetForModels != null) {
+			dispose();
+		}
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR);
@@ -70,8 +79,8 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 		final Map<String, String> options = new LinkedHashMap<>();
 		final ArrayList<Exception> exceptions = new ArrayList<>();
 		// the ResourceSet will not be used
-		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
-				new ResourceSetImpl(), options);
+		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, new ResourceSetImpl(),
+				options);
 		// TODO report exceptions
 		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
 
@@ -117,5 +126,10 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 			}
 		}
 		return null;
+	}
+
+	public void dispose() {
+		AQLUtils.cleanResourceSetForModels(this, resourceSetForModels);
+		AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
 	}
 }

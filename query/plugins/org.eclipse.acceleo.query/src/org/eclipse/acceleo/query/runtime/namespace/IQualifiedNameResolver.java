@@ -169,6 +169,13 @@ public interface IQualifiedNameResolver {
 	Set<String> getAvailableQualifiedNames();
 
 	/**
+	 * Gets the {@link Set} of resolved qualified names.
+	 * 
+	 * @return the {@link Set} of resolved qualified names
+	 */
+	Set<String> getResolvedQualifiedNames();
+
+	/**
 	 * Gets the {@link InputStream} from the given resource name.
 	 * 
 	 * @param resourceName

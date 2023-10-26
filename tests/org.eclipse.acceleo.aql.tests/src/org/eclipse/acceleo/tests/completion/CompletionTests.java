@@ -138,34 +138,38 @@ public class CompletionTests {
 
 		final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
 				options, resolver, resourceSetForModels);
+		try {
+			final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
+			final AcceleoParser parser = new AcceleoParser();
+			resolver.addLoader(new ModuleLoader(parser, evaluator));
+			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
-		final AcceleoParser parser = new AcceleoParser();
-		resolver.addLoader(new ModuleLoader(parser, evaluator));
-		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
-
-		final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
-		final Module module = parsingResult.getModule();
-		resolver.register("org::eclipse::acceleo::tests::" + MODULE_NAME, module);
-		final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(queryEnvironment,
-				MODULE_NAME, source, position);
-		final String actualCompletion = serialize(completionProposals);
-		final File expectedCompletionFile = getExpectedCompletionFile();
-		if (!expectedCompletionFile.exists()) {
-			final File actualCompletionFile = getActualCompletionFile();
-			if (!actualCompletionFile.exists()) {
-				actualCompletionFile.createNewFile();
+			final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
+			final Module module = parsingResult.getModule();
+			resolver.register("org::eclipse::acceleo::tests::" + MODULE_NAME, module);
+			final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(
+					queryEnvironment, MODULE_NAME, source, position);
+			final String actualCompletion = serialize(completionProposals);
+			final File expectedCompletionFile = getExpectedCompletionFile();
+			if (!expectedCompletionFile.exists()) {
+				final File actualCompletionFile = getActualCompletionFile();
+				if (!actualCompletionFile.exists()) {
+					actualCompletionFile.createNewFile();
+				}
+				try (OutputStream stream = new FileOutputStream(actualCompletionFile)) {
+					AbstractLanguageTestSuite.setContent(stream, AbstractLanguageTestSuite.UTF_8,
+							actualCompletion);
+				}
+				fail("file doesn't exist.");
 			}
-			try (OutputStream stream = new FileOutputStream(actualCompletionFile)) {
-				AbstractLanguageTestSuite.setContent(stream, AbstractLanguageTestSuite.UTF_8,
-						actualCompletion);
-			}
-			fail("file doesn't exist.");
-		}
 
-		try (InputStream stream = new FileInputStream(expectedCompletionFile)) {
-			String expectedCompletion = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);
-			assertEquals(getPortableString(expectedCompletion), getPortableString(actualCompletion));
+			try (InputStream stream = new FileInputStream(expectedCompletionFile)) {
+				String expectedCompletion = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);
+				assertEquals(getPortableString(expectedCompletion), getPortableString(actualCompletion));
+			}
+		} finally {
+			AQLUtils.cleanResourceSetForModels(resolver, resourceSetForModels);
+			AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
 		}
 	}
 

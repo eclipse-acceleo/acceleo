@@ -198,6 +198,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	private IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
+	 * The {@link ResourceSet} for models.
+	 */
+	private ResourceSet resourceSetForModels;
+
+	/**
 	 * The destination {@link URI}.
 	 */
 	private URI destination;
@@ -263,8 +268,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		// TODO get options form the launch configuration
 		final Map<String, String> options = new LinkedHashMap<>();
 		final ArrayList<Exception> exceptions = new ArrayList<>();
-		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
-				new ResourceSetImpl(), options);
+		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, new ResourceSetImpl(),
+				options);
 		// TODO report exceptions
 		model = resourceSetForModels.getResource(modelURI, true);
 		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
@@ -348,7 +353,10 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
+		if (queryEnvironment != null && resourceSetForModels != null) {
+			AQLUtils.cleanResourceSetForModels(this, resourceSetForModels);
+			AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
+		}
 	}
 
 	@Override

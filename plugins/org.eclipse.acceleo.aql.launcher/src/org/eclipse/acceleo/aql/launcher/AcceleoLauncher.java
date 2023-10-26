@@ -226,20 +226,25 @@ public class AcceleoLauncher implements IApplication {
 		final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
 				options, resolver, resourceSetForModels);
 
-		AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
+		try {
+			AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 
-		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+			resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
+			resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
 
-		final Object resolved = resolver.resolve(moduleQualifiedName);
-		final Module mainModule;
-		if (resolved instanceof Module) {
-			mainModule = (Module)resolved;
-		} else {
-			mainModule = null;
+			final Object resolved = resolver.resolve(moduleQualifiedName);
+			final Module mainModule;
+			if (resolved instanceof Module) {
+				mainModule = (Module)resolved;
+			} else {
+				mainModule = null;
+			}
+			evaluate(evaluator, queryEnvironment, mainModule, resourceSetForModels);
+			return evaluator.getGenerationResult();
+		} finally {
+			AQLUtils.cleanResourceSetForModels(resolver, resourceSetForModels);
+			AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
 		}
-		evaluate(evaluator, queryEnvironment, mainModule, resourceSetForModels);
-		return evaluator.getGenerationResult();
 	}
 
 	private void evaluate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,

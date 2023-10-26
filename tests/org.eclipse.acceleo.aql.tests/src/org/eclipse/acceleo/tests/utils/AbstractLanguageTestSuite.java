@@ -61,6 +61,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -101,7 +102,12 @@ public abstract class AbstractLanguageTestSuite {
 	/**
 	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	protected final IQualifiedNameQueryEnvironment queryEnvironment;
+	protected static IQualifiedNameQueryEnvironment queryEnvironment;
+
+	/**
+	 * The {@link ResourceSet} for models.
+	 */
+	protected static ResourceSet resourceSetForModels;
 
 	/**
 	 * The {@link AcceleoEvaluator}.
@@ -132,11 +138,6 @@ public abstract class AbstractLanguageTestSuite {
 	 * The module qualified name.
 	 */
 	private final String qualifiedName;
-
-	/**
-	 * The {@link ResourceSet} for models.
-	 */
-	protected final ResourceSet resourceSetForModels = getResourceSet();
 
 	/**
 	 * The {@link IAcceleoValidationResult}.
@@ -179,8 +180,8 @@ public abstract class AbstractLanguageTestSuite {
 		final Map<String, String> options = new LinkedHashMap<>();
 		final ArrayList<Exception> exceptions = new ArrayList<>();
 		// the ResourceSet will not be used
-		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
-				new ResourceSetImpl(), options);
+		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, getResourceSet(),
+				options);
 		// TODO report exceptions
 
 		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
@@ -200,6 +201,13 @@ public abstract class AbstractLanguageTestSuite {
 		}
 		final AcceleoValidator validator = new AcceleoValidator(queryEnvironment);
 		validationResult = validator.validate(astResult, qualifiedName);
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		AQLUtils.cleanResourceSetForModels(queryEnvironment.getLookupEngine().getResolver(),
+				resourceSetForModels);
+		AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
 	}
 
 	/**

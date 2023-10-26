@@ -553,6 +553,7 @@ public final class ProfilerEditor extends EcoreEditor {
 	 */
 	@Override
 	public void dispose() {
+		acceleoEnvResourceFactory.dispose();
 		if (coverageHelper != null) {
 			coverageHelper.clearAnnotations();
 		}

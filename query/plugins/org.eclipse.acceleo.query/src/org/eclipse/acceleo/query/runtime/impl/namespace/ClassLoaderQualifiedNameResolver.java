@@ -137,7 +137,8 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 			for (int i = segments.length - 1; i >= 0; i--) {
 				moduleQualifiedNameBuilder.insert(0, segments[i]);
 				final String qualifiedName = moduleQualifiedNameBuilder.toString();
-				if (getURI(qualifiedName) != null) {
+				// object already loaded or can be loaded
+				if (qualifiedNameToObject.get(qualifiedName) != null || getURI(qualifiedName) != null) {
 					res = qualifiedName;
 				}
 				moduleQualifiedNameBuilder.insert(0, qualifierSeparator);
@@ -432,6 +433,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		}
 
 		return res;
+	}
+
+	@Override
+	public Set<String> getResolvedQualifiedNames() {
+		return new LinkedHashSet<>(qualifiedNameToObject.keySet());
 	}
 
 	/**

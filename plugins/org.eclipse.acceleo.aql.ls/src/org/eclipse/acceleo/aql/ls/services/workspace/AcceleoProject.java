@@ -176,6 +176,7 @@ public class AcceleoProject {
 					+ textDocumentToRemove.getUri() + " from project " + this.getLabel()
 					+ ": there is no known text document with this URI.");
 		}
+		textDocumentToRemove.dispose();
 		textDocumentToRemove.setProject(null);
 		this.acceleoTextDocumentsIndex.remove(textDocumentToRemove.getUri());
 		this.workspace.documentRemoved(textDocumentToRemove);
@@ -260,18 +261,17 @@ public class AcceleoProject {
 		// according to our environment.
 
 		// First unregister it from the environment.
-		for (AcceleoProject project : getWorkspace().getProjects()) {
-			project.getResolver().clear(Collections.singleton(removedModuleQualifiedName));
-		}
+		lookupEngine.clearContext(removedModuleQualifiedName);
+		getResolver().clear(Collections.singleton(removedModuleQualifiedName));
 		for (AcceleoTextDocument consumer : consumers) {
 			consumer.getQueryEnvironment().getLookupEngine().clearContext(removedModuleQualifiedName);
+			consumer.getQueryEnvironment().getLookupEngine().getResolver().clear(Collections.singleton(
+					removedModuleQualifiedName));
 		}
-
-		lookupEngine.clearContext(removedModuleQualifiedName);
 
 		// Re-validate all modules that depend on the changed module.
 		for (AcceleoTextDocument consumer : consumers) {
-			consumer.resolverChanged();
+			consumer.validateAndPublishResults();
 		}
 
 		// Unlike in documentSaved, we do not need to propagate the notification as it cannot come from the
@@ -298,5 +298,14 @@ public class AcceleoProject {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Disposes this project.
+	 */
+	public void dispose() {
+		for (AcceleoTextDocument document : getTextDocuments()) {
+			document.dispose();
+		}
 	}
 }

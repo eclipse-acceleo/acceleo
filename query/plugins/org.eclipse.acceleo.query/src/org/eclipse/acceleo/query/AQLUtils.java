@@ -40,6 +40,7 @@ import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
@@ -605,7 +606,7 @@ public final class AQLUtils {
 	}
 
 	/**
-	 * Creates a new IQueryEnvironment for the given language name and options.
+	 * Creates a new {@link IQueryEnvironment} for the given language name and options.
 	 * 
 	 * @param language
 	 *            the language name
@@ -613,7 +614,8 @@ public final class AQLUtils {
 	 *            the {@link Map} of options
 	 * @param resourceSetForModels
 	 *            the {@link ResourceSet} for models
-	 * @return a new IQueryEnvironment for the given language name and options
+	 * @return a new {@link IQueryEnvironment} for the given language name and options
+	 * @see #cleanServices(String, IReadOnlyQueryEnvironment, ResourceSet)
 	 */
 	public static IQueryEnvironment newEnvironmentWithDefaultServices(String language,
 			Map<String, String> options, ResourceSet resourceSetForModels) {
@@ -636,7 +638,19 @@ public final class AQLUtils {
 		return queryEnvironment;
 	}
 
-	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironment(String language,
+	/**
+	 * Creates a new {@link IQualifiedNameQueryEnvironment} for the given language name and options.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @param options
+	 *            the {@link Map} of options
+	 * @param resourceSetForModels
+	 *            the {@link ResourceSet} for models
+	 * @return a new {@link IQualifiedNameQueryEnvironment} for the given language name and options
+	 * @see #cleanServices(String, IReadOnlyQueryEnvironment, ResourceSet)
+	 */
+	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentDefaultServices(String language,
 			Map<String, String> options, IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
 		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
 				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
@@ -656,6 +670,26 @@ public final class AQLUtils {
 		}
 
 		return queryEnvironment;
+	}
+
+	/**
+	 * Cleans the services for the given language and {@link IReadOnlyQueryEnvironment}.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param resourceSetForModels
+	 *            the {@link ResourceSet} for models
+	 */
+	public static void cleanServices(String language, IReadOnlyQueryEnvironment queryEnvironment,
+			ResourceSet resourceSetForModels) {
+		for (IServicesConfigurator configurator : getServicesConfigurators(AQL_LANGUAGE)) {
+			configurator.cleanServices(queryEnvironment, resourceSetForModels);
+		}
+		for (IServicesConfigurator configurator : getServicesConfigurators(language)) {
+			configurator.cleanServices(queryEnvironment, resourceSetForModels);
+		}
 	}
 
 }
