@@ -49,6 +49,6 @@ Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.core.runtime;bundle-version="3.4.0";resolution:=optional,
  org.eclipse.core.resources;bundle-version="3.3.0";resolution:=optional,
  org.eclipse.core.filesystem;resolution:=optional
-Import-Package: com.google.common.base;version="[27.0.0,30.2.0)",
- com.google.common.collect;version="[27.0.0,30.2.0)",
- com.google.common.io;version="[27.0.0,30.2.0)"
+Import-Package: com.google.common.base;version="[27.0.0,33.0)",
+ com.google.common.collect;version="[27.0.0,33.0)",
+ com.google.common.io;version="[27.0.0,33.0)"

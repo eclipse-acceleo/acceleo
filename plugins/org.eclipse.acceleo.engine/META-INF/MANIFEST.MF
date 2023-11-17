@@ -48,6 +48,6 @@ Export-Package: org.eclipse.acceleo.engine;uses:="org.osgi.framework,org.eclipse
    org.eclipse.acceleo.engine.generation.strategy",
  org.eclipse.acceleo.engine.service.properties;uses:="org.osgi.framework,org.eclipse.acceleo.engine.service",
  org.eclipse.acceleo.engine.utils;uses:="org.eclipse.acceleo.profiler,org.eclipse.emf.ecore.resource"
-Import-Package: com.google.common.base;version="[27.0.0,30.2.0)",
- com.google.common.collect;version="[27.0.0,30.2.0)",
- com.google.common.io;version="[27.0.0,30.2.0)"
+Import-Package: com.google.common.base;version="[27.0.0,33.0)",
+ com.google.common.collect;version="[27.0.0,33.0)",
+ com.google.common.io;version="[27.0.0,33.0)"
