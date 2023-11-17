@@ -28,7 +28,7 @@ location "https://download.eclipse.org/releases/2023-03" {
 }
 
 // Use nightly for platform to test API breaks
-location "https://download.eclipse.org/eclipse/updates/4.28-I-builds/" {
+location "https://download.eclipse.org/eclipse/updates/4.28/" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.jdt.feature.group lazy
