@@ -13,7 +13,6 @@ Require-Bundle: org.junit;bundle-version="[4.11.0,5.0.0)",
  org.eclipse.emf.ecore,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- com.google.guava,
  org.eclipse.acceleo.common,
  org.eclipse.acceleo.parser,
  org.eclipse.acceleo.model,
@@ -24,4 +23,5 @@ Require-Bundle: org.junit;bundle-version="[4.11.0,5.0.0)",
  org.eclipse.acceleo.query.tests.qmodel
 Export-Package: org.eclipse.acceleo.query.compat.tests;x-friends:="org.eclipse.acceleo.query.tests.qmodel.editor",
  org.eclipse.acceleo.query.compat.tests.unit;x-friends:="org.eclipse.acceleo.query.tests.qmodel.editor"
+Import-Package: com.google.common.collect;version="[27.0.0,33.0.0)"
 

@@ -121,6 +121,6 @@ Export-Package: org.eclipse.acceleo.ide.ui;
  org.eclipse.acceleo.internal.ide.ui.wizards.newfile.main;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.wizards.newproject;x-friends:="org.eclipse.acceleo.parser.tests",
  org.eclipse.acceleo.internal.ide.ui.wizards.project;x-friends:="org.eclipse.acceleo.ide.ui.tests"
-Import-Package: com.google.common.base;version="[27.0.0,30.2.0)",
- com.google.common.collect;version="[27.0.0,30.2.0)",
- com.google.common.io;version="[27.0.0,30.2.0)"
+Import-Package: com.google.common.base;version="[27.0.0,33.0.0)",
+ com.google.common.collect;version="[27.0.0,33.0.0)",
+ com.google.common.io;version="[27.0.0,33.0.0)"

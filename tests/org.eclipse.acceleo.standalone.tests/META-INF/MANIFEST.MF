@@ -10,4 +10,4 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.acceleo.parser,
  org.eclipse.acceleo.engine,
  org.junit;bundle-version="4.11.0",
- com.google.guava;bundle-version="[27.0.0,30.2.0)"
+ com.google.guava;bundle-version="[27.0.0,33.0.0)"
