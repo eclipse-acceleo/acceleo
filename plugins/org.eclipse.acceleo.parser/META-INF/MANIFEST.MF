@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.7.13.qualifier
+Bundle-Version: 3.7.14.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.eclipse.acceleo.parser;singleton:=true
 Bundle-ActivationPolicy: lazy

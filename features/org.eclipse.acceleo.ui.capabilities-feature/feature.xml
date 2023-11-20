@@ -12,7 +12,7 @@ Contributors:
 <feature
       id="org.eclipse.acceleo.ui.capabilities"
       label="%featureName"
-      version="3.7.13.qualifier"
+      version="3.7.14.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1">
