@@ -9,6 +9,16 @@ location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2023
 	org.apache.commons.lang3 lazy
 }
 
-location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2023-09" {
-	org.antlr.runtime [4.7.2,4.7.3)
+maven antlr
+	scope = compile
+	dependencyDepth = none
+	missingManifest = error
+	includeSources {
+	
+	dependency {
+		groupId = "org.antlr"
+		artifactId = "antlr4-runtime"
+		version = "4.7.2"
+	}
+	
 }
