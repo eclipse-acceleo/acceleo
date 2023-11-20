@@ -29,22 +29,13 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <id>source-feature</id>
-            <goals>
-              <goal>source-feature</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <plugin id="org.antlr.runtime"/>
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <plugin id="org.antlr.runtime"/>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

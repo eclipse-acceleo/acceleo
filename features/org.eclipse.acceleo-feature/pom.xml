@@ -29,23 +29,14 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <id>source-feature</id>
-            <goals>
-              <goal>source-feature</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <plugin id="com.google.guava"/>
-                <plugin id="org.eclipse.acceleo.doc"/>
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <plugin id="com.google.guava"/>
+            <plugin id="org.eclipse.acceleo.doc"/>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>
