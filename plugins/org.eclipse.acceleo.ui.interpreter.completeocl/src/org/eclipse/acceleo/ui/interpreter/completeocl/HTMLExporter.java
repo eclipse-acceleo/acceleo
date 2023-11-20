@@ -12,7 +12,7 @@ package org.eclipse.acceleo.ui.interpreter.completeocl;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.ConstraintElement;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.ConstraintResult;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.OCLElement;
@@ -73,9 +73,9 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends the target html file header.
 	 * 
 	 * @param html
-	 *            the string appender.
+	 *                 the string appender.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendHeader(Appendable html) throws IOException {
 		html.append("<html>\n"); //$NON-NLS-1$
@@ -87,11 +87,11 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends the target html file general information.
 	 * 
 	 * @param html
-	 *            the string appender.
+	 *                           the string appender.
 	 * @param outputFileName
-	 *            the target file name.
+	 *                           the target file name.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendGeneralInformation(Appendable html, String outputFileName) throws IOException {
 		html.append("\t\t<h1>1. GENERAL INFORMATION</h1>\n"); //$NON-NLS-1$
@@ -116,15 +116,16 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends the constraints and the operations metrics.
 	 * 
 	 * @param html
-	 *            the string appender
+	 *                             the string appender
 	 * @param constraintstotal
-	 *            the total number of evaluated constraints.
+	 *                             the total number of evaluated constraints.
 	 * @param operationstotal
-	 *            the total number of evaluated operations.
+	 *                             the total number of evaluated operations.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
-	private void appendMetrics(Appendable html, int constraintstotal, int operationstotal) throws IOException {
+	private void appendMetrics(Appendable html, int constraintstotal, int operationstotal)
+			throws IOException {
 		html.append("\t\t<h1>2. METRICS</h1>\n"); //$NON-NLS-1$
 		html.append("\n"); //$NON-NLS-1$
 		html.append("\t\t<h1>2.1. Constraints METRICS</h1>\n"); //$NON-NLS-1$
@@ -196,17 +197,18 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends the constraints logs.
 	 * 
 	 * @param html
-	 *            the string appender.
+	 *                             the string appender.
 	 * @param constraintstotal
-	 *            the total number of evaluated constraints.
+	 *                             the total number of evaluated constraints.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendConstraintsLogs(Appendable html, int constraintstotal) throws IOException {
 		html.append("\t\t<h1>3. LOGS</h1>\n"); //$NON-NLS-1$
 
 		if (constraintsSuccess.size() == constraintstotal) {
-			html.append("<p>No log to display: all constraints has been successfully evaluated on the current model.</p>\n"); //$NON-NLS-1$
+			html.append(
+					"<p>No log to display: all constraints has been successfully evaluated on the current model.</p>\n"); //$NON-NLS-1$
 		} else {
 			int section = 1;
 			if (!constraintsInfos.isEmpty()) {
@@ -246,9 +248,9 @@ public class HTMLExporter extends AbstractExporter {
 	 * The constraints titles table appender.
 	 * 
 	 * @param s
-	 *            the string appender.
+	 *              the string appender.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendConstraintsTitlesTable(Appendable s) throws IOException {
 		s.append("\t\t\t<tr>\n"); //$NON-NLS-1$
@@ -265,13 +267,13 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends the target file with all the constraints evaluation results of a specific constraint element.
 	 * 
 	 * @param s
-	 *            the string appender.
+	 *                              the string appender.
 	 * @param constraintElement
-	 *            the given constraint constraint element.
+	 *                              the given constraint constraint element.
 	 * @param severity
-	 *            the severity.
+	 *                              the severity.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendConstraintLog(Appendable s, ConstraintElement constraintElement, String severity)
 			throws IOException {
@@ -300,19 +302,19 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends a specific result of a specific constraint element.
 	 * 
 	 * @param s
-	 *            the string appender.
+	 *                       the string appender.
 	 * @param context
-	 *            the given constraint element context.
+	 *                       the given constraint element context.
 	 * @param identifier
-	 *            the given constraint element identifier.
+	 *                       the given constraint element identifier.
 	 * @param expression
-	 *            the given constraint element expression.
+	 *                       the given constraint element expression.
 	 * @param severity
-	 *            the given constraint element severity.
+	 *                       the given constraint element severity.
 	 * @param result
-	 *            the given constraint element result.
+	 *                       the given constraint element result.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendConstraintsResult(Appendable s, String context, String identifier, String expression,
 			String severity, OCLResult result) throws IOException {
@@ -340,27 +342,27 @@ public class HTMLExporter extends AbstractExporter {
 		s.append("\t\t\t\t<td>" + getEvaluationTargetText(result.getEvaluationTarget()) + "</td>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		s.append("\t\t\t\t<td>" + severity + "</td>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		s.append("\t\t\t\t<td>" + StringEscapeUtils.escapeHtml(getMessage(result)) + "</td>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		s.append("\t\t\t\t<td>" + StringEscapeUtils.escapeHtml4(getMessage(result)) + "</td>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
 	 * Appends the operations (statistics) logs.
 	 * 
 	 * @param html
-	 *            the string appender.
+	 *                            the string appender.
 	 * @param operationstotal
-	 *            the total number of evaluated operations.
+	 *                            the total number of evaluated operations.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
-	private void appendOperationsLogs(Appendable html)
-			throws IOException {
+	private void appendOperationsLogs(Appendable html) throws IOException {
 		html.append("\t\t<h1>4. STATISTICS</h1>\n"); //$NON-NLS-1$
 
 		int section = 1;
 		if (operationsSuccess.isEmpty() && operationsInfos.isEmpty() && operationsWarnings.isEmpty()
 				&& operationsErrors.isEmpty()) {
-			html.append("<p>No log to display: there is no operation to evaluate on the current model.</p>\n"); //$NON-NLS-1$
+			html.append(
+					"<p>No log to display: there is no operation to evaluate on the current model.</p>\n"); //$NON-NLS-1$
 			return;
 		}
 		if (!operationsSuccess.isEmpty()) {
@@ -409,9 +411,9 @@ public class HTMLExporter extends AbstractExporter {
 	 * The operations titles table appender.
 	 * 
 	 * @param s
-	 *            the string appender.
+	 *              the string appender.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendOperationsTitlesTable(Appendable s) throws IOException {
 		s.append("\t\t\t<tr>\n"); //$NON-NLS-1$
@@ -428,13 +430,13 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends the target file with all the operations evaluation results of a specific operation element.
 	 * 
 	 * @param s
-	 *            the string appender.
+	 *                             the string appender.
 	 * @param operationElement
-	 *            the given operation operation element.
+	 *                             the given operation operation element.
 	 * @param severity
-	 *            the severity.
+	 *                             the severity.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendOperationLog(Appendable s, OperationElement operationElement, String severity)
 			throws IOException {
@@ -462,19 +464,19 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends a specific result of a specific operation element.
 	 * 
 	 * @param s
-	 *            the string appender.
+	 *                       the string appender.
 	 * @param context
-	 *            the given operation element context.
+	 *                       the given operation element context.
 	 * @param identifier
-	 *            the given operation element identifier.
+	 *                       the given operation element identifier.
 	 * @param expression
-	 *            the given operation element expression.
+	 *                       the given operation element expression.
 	 * @param severity
-	 *            the given operation element severity.
+	 *                       the given operation element severity.
 	 * @param result
-	 *            the given operation element result.
+	 *                       the given operation element result.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendOperationsResult(Appendable s, String context, String identifier, String expression,
 			String severity, OCLResult result) throws IOException {
@@ -510,9 +512,9 @@ public class HTMLExporter extends AbstractExporter {
 	 * Appends the target html file footer.
 	 * 
 	 * @param html
-	 *            the string appender.
+	 *                 the string appender.
 	 * @throws IOException
-	 *             threw when an IO Exception occurs.
+	 *                         threw when an IO Exception occurs.
 	 */
 	private void appendFooter(Appendable html) throws IOException {
 		html.append("</body>\n"); //$NON-NLS-1$
@@ -523,7 +525,7 @@ public class HTMLExporter extends AbstractExporter {
 	 * The label text for the adapted evaluation target.
 	 * 
 	 * @param evaluationTarget
-	 *            The evaluation target.
+	 *                             The evaluation target.
 	 * @return The label text for the adapted evaluation target.
 	 */
 	private String getEvaluationTargetText(EObject evaluationTarget) {
