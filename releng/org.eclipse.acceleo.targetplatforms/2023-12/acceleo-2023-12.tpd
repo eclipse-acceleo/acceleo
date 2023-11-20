@@ -1,4 +1,4 @@
-target "Acceleo 2023-03 Target Platform"
+target "Acceleo 2023-12 Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"
@@ -6,8 +6,13 @@ include "../common/swtbot.tpd"
 
 with source requirements
 
-location "https://download.eclipse.org/releases/2023-03" {
+location "https://download.eclipse.org/releases/2023-12" {
+	org.eclipse.platform.feature.group lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	
 	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.jdt.feature.group lazy
+	org.eclipse.pde.feature.group lazy
 	org.eclipse.uml2.feature.group lazy
 	
 	org.eclipse.sirius.runtime.feature.group lazy
@@ -25,12 +30,4 @@ location "https://download.eclipse.org/releases/2023-03" {
 	
 	org.eclipse.ocl.pivot.uml lazy
 	org.eclipse.ocl.pivot.ui lazy
-}
-
-// Use nightly for platform to test API breaks
-location "https://download.eclipse.org/eclipse/updates/4.28-I-builds/" {
-	org.eclipse.platform.sdk lazy
-	org.eclipse.equinox.core.feature.feature.group lazy
-	org.eclipse.jdt.feature.group lazy
-	org.eclipse.pde.feature.group lazy
 }

@@ -2,10 +2,13 @@ target "Orbit"
 
 with source, requirements
 
-location "https://download.eclipse.org/tools/orbit/downloads/drops/R20221123021534/repository" {
-	com.google.guava [27.0.0,30.2.0)
+location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2023-12" {
+	com.google.guava [32.0.0,33.0.0)
 	org.junit [4,5)
-	org.antlr.runtime [4.7.2,4.7.3)
 	org.kohsuke.args4j [2.33.0,2.34.0)
-	org.apache.commons.lang [2.6.0,2.6.1)
+	org.apache.commons.lang3 lazy
+}
+
+location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2023-09" {
+	org.antlr.runtime [4.7.2,4.7.3)
 }
