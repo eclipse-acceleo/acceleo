@@ -38,13 +38,21 @@ public class JavaLoader extends AbstractLoader {
 	public static final String JAVA = "java";
 
 	/**
+	 * Tells if the {@link IService} will be used in a workspace.
+	 */
+	private boolean forWorkspace;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param qualifierSeparator
 	 *            the qualifier separator
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	public JavaLoader(String qualifierSeparator) {
+	public JavaLoader(String qualifierSeparator, boolean forWorkspace) {
 		super(qualifierSeparator, CLASS, JAVA);
+		this.forWorkspace = forWorkspace;
 	}
 
 	@Override
@@ -60,7 +68,7 @@ public class JavaLoader extends AbstractLoader {
 	@Override
 	public Set<IService<?>> getServices(IQualifiedNameLookupEngine lookupEngine, Object object,
 			String contextQualifiedName) {
-		return ServiceUtils.getServices(lookupEngine.getQueryEnvironment(), (Class<?>)object);
+		return ServiceUtils.getServices(lookupEngine.getQueryEnvironment(), (Class<?>)object, forWorkspace);
 	}
 
 	@Override

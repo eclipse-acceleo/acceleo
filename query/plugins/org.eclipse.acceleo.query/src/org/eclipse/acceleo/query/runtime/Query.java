@@ -89,7 +89,25 @@ public final class Query {
 	 */
 	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider) {
-		configureEnvironment(env, xRefProvider, rootProvider, new Properties());
+		configureEnvironment(env, xRefProvider, rootProvider, false);
+	}
+
+	/**
+	 * Configures an environment with all the default services provided by AQL.
+	 * 
+	 * @param env
+	 *            The environment in which to register all default services.
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @param rootProvider
+	 *            an instance to search all instances at evaluation time
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
+	 * @since 8.0.2
+	 */
+	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
+			IRootEObjectProvider rootProvider, boolean forWorkspace) {
+		configureEnvironment(env, xRefProvider, rootProvider, new Properties(), forWorkspace);
 	}
 
 	/**
@@ -107,28 +125,49 @@ public final class Query {
 	 */
 	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider, Properties properties) {
-		Set<IService<?>> services = ServiceUtils.getServices(env, new AnyServices(env));
+		configureEnvironment(env, xRefProvider, rootProvider, properties, false);
+	}
+
+	/**
+	 * Configures an environment with all the default services provided by AQL.
+	 * 
+	 * @param env
+	 *            The environment in which to register all default services.
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @param rootProvider
+	 *            an instance to search all instances at evaluation time
+	 * @param properties
+	 *            the {@link Properties}
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
+	 * @since 8.0.2
+	 */
+	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
+			IRootEObjectProvider rootProvider, Properties properties, boolean forWorkspace) {
+		Set<IService<?>> services = ServiceUtils.getServices(env, new AnyServices(env), forWorkspace);
 		ServiceUtils.registerServices(env, services);
 		env.registerEPackage(EcorePackage.eINSTANCE);
 		env.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
 				EStringToStringMapEntryImpl.class);
-		services = ServiceUtils.getServices(env, new EObjectServices(env, xRefProvider, rootProvider));
+		services = ServiceUtils.getServices(env, new EObjectServices(env, xRefProvider, rootProvider),
+				forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, new XPathServices(env));
+		services = ServiceUtils.getServices(env, new XPathServices(env), forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, ComparableServices.class);
+		services = ServiceUtils.getServices(env, ComparableServices.class, forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, NumberServices.class);
+		services = ServiceUtils.getServices(env, NumberServices.class, forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, StringServices.class);
+		services = ServiceUtils.getServices(env, StringServices.class, forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, BooleanServices.class);
+		services = ServiceUtils.getServices(env, BooleanServices.class, forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, CollectionServices.class);
+		services = ServiceUtils.getServices(env, CollectionServices.class, forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, ResourceServices.class);
+		services = ServiceUtils.getServices(env, ResourceServices.class, forWorkspace);
 		ServiceUtils.registerServices(env, services);
-		services = ServiceUtils.getServices(env, PromptServices.class);
+		services = ServiceUtils.getServices(env, PromptServices.class, forWorkspace);
 		ServiceUtils.registerServices(env, services);
 		services = ServiceUtils.getServices(env, new PropertiesServices(properties));
 		ServiceUtils.registerServices(env, services);
@@ -158,7 +197,7 @@ public final class Query {
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
 			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider) {
-		return newQualifiedNameEnvironmentWithDefaultServices(resolver, xRefProvider, null);
+		return newQualifiedNameEnvironmentWithDefaultServices(resolver, xRefProvider, null, false);
 	}
 
 	/**
@@ -171,16 +210,18 @@ public final class Query {
 	 *            an instance to inspect cross references at evaluation time
 	 * @param rootProvider
 	 *            an instance to search all instances at evaluation time
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @return a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default
 	 *         with Acceleo Query
 	 * @since 9.0
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
 			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider,
-			IRootEObjectProvider rootProvider) {
+			IRootEObjectProvider rootProvider, boolean forWorkspace) {
 		final IQualifiedNameQueryEnvironment env = newQualifiedNameEnvironment(resolver);
 
-		configureEnvironment(env, xRefProvider, rootProvider);
+		configureEnvironment(env, xRefProvider, rootProvider, forWorkspace);
 
 		return env;
 	}

@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
@@ -43,9 +44,11 @@ class EAllContentsService extends FilterService {
 	 *            the method that realizes the service
 	 * @param serviceInstance
 	 *            the instance on which the service must be called
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	EAllContentsService(Method serviceMethod, Object serviceInstance) {
-		super(serviceMethod, serviceInstance);
+	EAllContentsService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+		super(serviceMethod, serviceInstance, forWorkspace);
 	}
 
 	@Override

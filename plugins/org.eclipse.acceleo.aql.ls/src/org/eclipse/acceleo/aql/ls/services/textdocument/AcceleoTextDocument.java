@@ -57,6 +57,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -146,73 +147,28 @@ public class AcceleoTextDocument {
 	 * Creates a new {@link AcceleoTextDocument} corresponding to the given URI and with the given initial
 	 * contents.
 	 * 
+	 * @param project
+	 *            the (non-{@code null}) owner {@link AcceleoProject}
 	 * @param textDocumentUri
 	 *            the (non-{@code null}) {@link URI} of this text document.
+	 * @param qualifiedName
+	 *            the (non-{@code null}) module qualified name
 	 * @param textDocumentContents
 	 *            the (non-{@code null}) initial contents of this text document.
-	 * @param project
-	 *            the owner project
+	 * @param module
+	 *            the {@link Module}
 	 */
-	public AcceleoTextDocument(URI textDocumentUri, String textDocumentContents, AcceleoProject project) {
+	public AcceleoTextDocument(AcceleoProject project, URI textDocumentUri, String qualifiedName,
+			String textDocumentContents, Module module) {
+		Objects.requireNonNull(project);
 		Objects.requireNonNull(textDocumentUri);
 		Objects.requireNonNull(textDocumentContents);
+		Objects.requireNonNull(qualifiedName);
 		this.ownerProject = project;
 		this.uri = textDocumentUri;
-		qualifiedName = getProject().getResolver().getQualifiedName(getUri());
-
-		this.setContents(textDocumentContents);
-	}
-
-	/**
-	 * Behavior triggered when the contents or environment of this document have changed. We update the cached
-	 * values of the parsing and validation results.
-	 */
-	private void documentChanged() {
-		// Retrieve the parsing result first, as other services depend on it.
-		this.parseContents();
-		getProject().getResolver().register(getModuleQualifiedName(), getAcceleoAstResult().getModule());
-
-		// And validation second, as some other services depend on it.
-		this.validateAndPublishResults();
-	}
-
-	/**
-	 * This is called when this document is saved. Notifies external parties which may rely on this document.
-	 */
-	public void documentSaved() {
-		// TODO: we probably only want to send this notification out when the "publicly-accessible" parts of
-		// the Module have changed, like a public/protected Template/Query signature.
-		if (this.getProject() != null) {
-			// This text document belongs to an AcceleoProject which holds the resolver in which
-			// this module is registered.
-			this.getProject().documentSaved(this);
-		}
-	}
-
-	/**
-	 * Sets the owner {@link AcceleoProject} of this document.
-	 * 
-	 * @param acceleoProject
-	 *            the new (maybe-{@code null}) owner {@link AcceleoProject}.
-	 */
-	public void setProject(AcceleoProject acceleoProject) {
-		AcceleoProject oldProject = ownerProject;
-		this.ownerProject = acceleoProject;
-		if (getProject() != null) {
-			qualifiedName = getProject().getResolver().getQualifiedName(getUri());
-			if ((acceleoProject == null && oldProject != null) || !acceleoProject.equals(oldProject)) {
-				// When the project changes, the environment changes.
-				this.resolverChanged();
-			}
-		}
-	}
-
-	/**
-	 * This is called to notify this {@link AcceleoTextDocument} that its contextual
-	 * {@link IQualifiedNameResolver} has changed. As a result, it needs to be re-parsed and re-validated.
-	 */
-	public void resolverChanged() {
-		this.documentChanged();
+		this.qualifiedName = qualifiedName;
+		this.contents = textDocumentContents;
+		this.acceleoAstResult = module.getAst();
 	}
 
 	/**
@@ -239,10 +195,22 @@ public class AcceleoTextDocument {
 	 */
 	private void parseContents() {
 		AcceleoAstResult parsingResult = null;
-		parsingResult = doParsing(this.getModuleQualifiedName(), this.contents);
 
-		dispose();
+		if (isOpened()) {
+			AcceleoParser acceleoParser = new AcceleoParser();
+			parsingResult = acceleoParser.parse(this.contents, this.getModuleQualifiedName());
+		} else {
+			final Module resolvedModule = (Module)getProject().getResolver().resolve(qualifiedName);
+			parsingResult = resolvedModule.getAst();
+		}
 
+		this.acceleoAstResult = parsingResult;
+	}
+
+	/**
+	 * Validates the contents of this document, and caches its results.
+	 */
+	private void validateContents() {
 		final IQualifiedNameResolver resolver = getProject().getResolver();
 		// TODO get options form ??? or list all possible options ?
 		// don't add any options ?
@@ -252,90 +220,34 @@ public class AcceleoTextDocument {
 		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, new ResourceSetImpl(),
 				options);
 		// TODO report exceptions
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
+				true);
 
-		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
-
-		for (Metamodel metamodel : parsingResult.getModule().getMetamodels()) {
+		for (Metamodel metamodel : getAcceleoAstResult().getModule().getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {
 				queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
 			}
 		}
-		this.acceleoAstResult = parsingResult;
-	}
-
-	public void dispose() {
-		// clean any existing environment
-		if (queryEnvironment != null && resourceSetForModels != null) {
+		try {
+			final IAcceleoValidationResult validationResults;
+			if (isOpened()) {
+				String moduleQualifiedNameForValidation = VALIDATION_NAMESPACE
+						+ AcceleoParser.QUALIFIER_SEPARATOR + qualifiedName;
+				resolver.register(moduleQualifiedNameForValidation, acceleoAstResult.getModule());
+				try {
+					validationResults = validate(queryEnvironment, this.acceleoAstResult,
+							moduleQualifiedNameForValidation);
+				} finally {
+					resolver.clear(Collections.singleton(moduleQualifiedNameForValidation));
+				}
+			} else {
+				validationResults = validate(queryEnvironment, acceleoAstResult, qualifiedName);
+			}
+			this.acceleoValidationResult = validationResults;
+		} finally {
 			AQLUtils.cleanResourceSetForModels(this, resourceSetForModels);
 			AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
 		}
-
-	}
-
-	/**
-	 * Performs the parsing.
-	 * 
-	 * @param moduleQualifiedName
-	 *            the (non-{@code null}) qualified name of the document we are parsing.
-	 * @param documentContents
-	 *            the (non-{@code null}) contents of the document we are parsing.
-	 * @return the resulting {@link AcceleoAstResult}.
-	 */
-	private AcceleoAstResult doParsing(String moduleQualifiedName, String documentContents) {
-		final AcceleoAstResult res;
-
-		if (isOpened()) {
-			Objects.requireNonNull(moduleQualifiedName);
-			Objects.requireNonNull(documentContents);
-			AcceleoParser acceleoParser = new AcceleoParser();
-			res = acceleoParser.parse(documentContents, moduleQualifiedName);
-		} else {
-			final Module module = (Module)ownerProject.getResolver().resolve(moduleQualifiedName);
-			if (module == null) {
-				Objects.requireNonNull(moduleQualifiedName);
-				Objects.requireNonNull(documentContents);
-				AcceleoParser acceleoParser = new AcceleoParser();
-				res = acceleoParser.parse(documentContents, moduleQualifiedName);
-				ownerProject.getResolver().register(moduleQualifiedName, res);
-			} else {
-				res = module.getAst();
-			}
-		}
-
-		return res;
-	}
-
-	/**
-	 * Validates the contents of this document, and caches its results.
-	 */
-	private void validateContents() {
-		IAcceleoValidationResult validationResults = null;
-		if (this.acceleoAstResult != null && this.getQueryEnvironment() != null) {
-			validationResults = doValidation(this.acceleoAstResult, this.getQueryEnvironment(),
-					getModuleQualifiedName());
-		}
-		this.acceleoValidationResult = validationResults;
-	}
-
-	/**
-	 * Validates the contents of this document using the {@link AcceleoValidator}. As a side effect, it
-	 * registers the resulting
-	 * 
-	 * @param acceleoAstResult
-	 *            the (non-{@code null}) {@link AcceleoAstResult} to validate.
-	 * @param queryEnvironment
-	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment} of the document being
-	 *            validated.
-	 * @param qualifiedName
-	 *            the context qualified name
-	 * @return the {@link IAcceleoValidationResult}.
-	 */
-	private static IAcceleoValidationResult doValidation(AcceleoAstResult acceleoAstResult,
-			IQualifiedNameQueryEnvironment queryEnvironment, String qualifiedName) {
-		Objects.requireNonNull(acceleoAstResult);
-		Objects.requireNonNull(queryEnvironment);
-
-		return validate(queryEnvironment, acceleoAstResult, qualifiedName);
 	}
 
 	/**
@@ -444,8 +356,10 @@ public class AcceleoTextDocument {
 				final IService<?> service = (IService<?>)declaration;
 				final ISourceLocation sourceLocation = resolver.getSourceLocation(service);
 				if (sourceLocation != null) {
-					final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), LocationUtils
-							.range(sourceLocation), LocationUtils.identifierRange(sourceLocation));
+					final URI sourceURI = getProject().getResolver().getSourceURI(getModuleQualifiedName());
+					final LocationLink locationLink = new LocationLink(sourceURI.toASCIIString(),
+							LocationUtils.range(sourceLocation), LocationUtils.identifierRange(
+									sourceLocation));
 					locationLink.setOriginSelectionRange(originSelectionRange);
 					locationLink.setTargetUri(sourceLocation.getSourceURI().toASCIIString());
 					declarationLocations.add(locationLink);
@@ -460,7 +374,8 @@ public class AcceleoTextDocument {
 					declarationQualifiedName = resolver.getQualifiedName(declaration);
 				}
 				final ISourceLocation sourceLocation = resolver.getSourceLocation(declarationQualifiedName);
-				final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), LocationUtils
+				final URI sourceURI = getProject().getResolver().getSourceURI(getModuleQualifiedName());
+				final LocationLink locationLink = new LocationLink(sourceURI.toASCIIString(), LocationUtils
 						.range(sourceLocation), LocationUtils.identifierRange(sourceLocation));
 				locationLink.setOriginSelectionRange(originSelectionRange);
 				locationLink.setTargetUri(sourceLocation.getSourceURI().toASCIIString());
@@ -483,9 +398,10 @@ public class AcceleoTextDocument {
 	private LocationLink getDeclarationLocation(final Range originSelectionRange, final Variable variable) {
 		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult, variable);
 		final Range range = LocationUtils.range(acceleoValidationResult, variable);
-		final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), range, identifierRange);
+		final URI sourceURI = getProject().getResolver().getSourceURI(getModuleQualifiedName());
+		final LocationLink locationLink = new LocationLink(sourceURI.toASCIIString(), range, identifierRange);
 		locationLink.setOriginSelectionRange(originSelectionRange);
-		locationLink.setTargetUri(getUri().toASCIIString());
+		locationLink.setTargetUri(sourceURI.toASCIIString());
 		return locationLink;
 	}
 
@@ -501,9 +417,10 @@ public class AcceleoTextDocument {
 	private LocationLink getDeclarationLocation(final Range originSelectionRange, Declaration declaration) {
 		final Range identifierRange = LocationUtils.identifierRange(acceleoValidationResult, declaration);
 		final Range range = LocationUtils.range(acceleoValidationResult, declaration);
-		final LocationLink locationLink = new LocationLink(getUri().toASCIIString(), range, identifierRange);
+		final URI sourceURI = getProject().getResolver().getSourceURI(getModuleQualifiedName());
+		final LocationLink locationLink = new LocationLink(sourceURI.toASCIIString(), range, identifierRange);
 		locationLink.setOriginSelectionRange(originSelectionRange);
-		locationLink.setTargetUri(getUri().toASCIIString());
+		locationLink.setTargetUri(sourceURI.toASCIIString());
 		return locationLink;
 	}
 
@@ -537,7 +454,30 @@ public class AcceleoTextDocument {
 		final List<Location> referencesLocations = new ArrayList<>();
 
 		final ASTNode acceleoOrAqlNodeUnderCursor = acceleoAstResult.getAstNode(position);
-		final List<Object> declarations = getDeclaration(acceleoOrAqlNodeUnderCursor, withCompatibleServices);
+		final List<Object> firstDeclarations = getDeclaration(acceleoOrAqlNodeUnderCursor,
+				withCompatibleServices);
+		final AcceleoWorkspace workspace = getProject().getWorkspace();
+		boolean needDeclarationsRefesh = false;
+		for (Object declaration : firstDeclarations) {
+			if (declaration instanceof IService<?>) {
+				final IQueryWorkspaceQualifiedNameResolver resolver = getProject().getResolver();
+				final String serviceContextQualifiedName = resolver.getContextQualifiedName(
+						(IService<?>)declaration);
+				final URI serviceContextURI = resolver.getURI(serviceContextQualifiedName);
+				final AcceleoTextDocument document = workspace.getDocument(serviceContextURI);
+				if (document != null && document.isOpened()) {
+					workspace.registerAndPropagateChanges(document.getProject(), serviceContextQualifiedName,
+							document.getAcceleoAstResult().getModule());
+					needDeclarationsRefesh = true;
+				}
+			}
+		}
+		final List<Object> declarations;
+		if (needDeclarationsRefesh) {
+			declarations = getDeclaration(acceleoOrAqlNodeUnderCursor, withCompatibleServices);
+		} else {
+			declarations = firstDeclarations;
+		}
 		for (Object declaration : declarations) {
 			if (declaration instanceof Declaration) {
 				for (VarRef varRef : acceleoValidationResult.getResolvedVarRef((Declaration)declaration)) {
@@ -556,8 +496,7 @@ public class AcceleoTextDocument {
 				referencesLocations.addAll(getServiceReferenceLocations(acceleoOrAqlNodeUnderCursor,
 						service));
 			} else {
-				final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
-				final AcceleoWorkspace workspace = getProject().getWorkspace();
+				final IQueryWorkspaceQualifiedNameResolver resolver = getProject().getResolver();
 				final String declarationQualifiedName;
 				if (declaration instanceof Module) {
 					// TODO this case could fall under the last else if we didn't use VALIDATION_NAMESPACE
@@ -567,24 +506,37 @@ public class AcceleoTextDocument {
 					declarationQualifiedName = resolver.getQualifiedName(declaration);
 				}
 				if (declarationQualifiedName != null) {
-					for (String dependentQualifiedName : resolver.getDependOn(declarationQualifiedName)) {
-						final URI sourceURI = resolver.getSourceURI(dependentQualifiedName);
-						final AcceleoTextDocument document = workspace.getTextDocument(sourceURI);
+					final Set<URI> uris = new LinkedHashSet<>();
+					final IQueryWorkspaceQualifiedNameResolver declarationResolver = resolver
+							.getDeclarationResolver(declarationQualifiedName);
+					for (String dependentQualifiedName : declarationResolver.getDependOn(
+							declarationQualifiedName)) {
+						uris.add(declarationResolver.getSourceURI(dependentQualifiedName));
+					}
+					for (IQueryWorkspaceQualifiedNameResolver dependentResolver : declarationResolver
+							.getResolversDependOn()) {
+						for (String dependOn : dependentResolver.getDependOn(declarationQualifiedName)) {
+							uris.add(dependentResolver.getSourceURI(dependOn));
+						}
+					}
+
+					for (URI uri : uris) {
+						final AcceleoTextDocument document = workspace.getDocument(uri);
 						if (document != null) {
 							final Module module = document.getAcceleoAstResult().getModule();
 							if (module.getExtends() != null && declarationQualifiedName.equals(module
 									.getExtends().getQualifiedName())) {
-								final Location location = LocationUtils.location(queryEnvironment,
-										dependentQualifiedName, document.getAcceleoValidationResults(), module
-												.getExtends());
+								final Location location = LocationUtils.location(document
+										.getQueryEnvironment(), document.getModuleQualifiedName(), document
+												.getAcceleoValidationResults(), module.getExtends());
 								referencesLocations.add(location);
 							} else {
 								for (Import imported : module.getImports()) {
 									if (declarationQualifiedName.equals(imported.getModule()
 											.getQualifiedName())) {
-										final Location location = LocationUtils.location(queryEnvironment,
-												dependentQualifiedName, document
-														.getAcceleoValidationResults(), imported.getModule());
+										final Location location = LocationUtils.location(document
+												.getQueryEnvironment(), document.getModuleQualifiedName(),
+												document.getAcceleoValidationResults(), imported.getModule());
 										referencesLocations.add(location);
 									}
 								}
@@ -613,9 +565,9 @@ public class AcceleoTextDocument {
 			IService<?> service) {
 		final List<Location> res = new ArrayList<>();
 
-		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		final IQueryWorkspaceQualifiedNameResolver resolver = getProject().getResolver();
 		final AcceleoWorkspace workspace = getProject().getWorkspace();
-		final Set<String> qualifiedNames = new LinkedHashSet<>();
+		final Set<URI> uris = new LinkedHashSet<>();
 		String serviceContextQualifiedName = resolver.getContextQualifiedName(service);
 
 		// aqlFeatureAccess
@@ -638,17 +590,29 @@ public class AcceleoTextDocument {
 						+ AcceleoParser.QUALIFIER_SEPARATOR).length());
 
 			}
-			qualifiedNames.add(serviceContextQualifiedName);
-			qualifiedNames.addAll(resolver.getDependOn(serviceContextQualifiedName));
+
+			final IQueryWorkspaceQualifiedNameResolver declarationResolver = resolver.getDeclarationResolver(
+					serviceContextQualifiedName);
+			final URI declarationContextSourceURI = declarationResolver.getSourceURI(
+					serviceContextQualifiedName);
+			uris.add(declarationContextSourceURI);
+			for (String dependOn : declarationResolver.getDependOn(serviceContextQualifiedName)) {
+				uris.add(resolver.getSourceURI(dependOn));
+			}
+			for (IQueryWorkspaceQualifiedNameResolver dependentResolver : declarationResolver
+					.getResolversDependOn()) {
+				for (String dependOn : dependentResolver.getDependOn(serviceContextQualifiedName)) {
+					uris.add(dependentResolver.getSourceURI(dependOn));
+				}
+			}
 		} else {
 			// probably a standard service (select, oclIsKindOf, ...)
 			// we need to scan all modules
-			qualifiedNames.addAll(workspace.getAllTextDocuments().stream().map(d -> d
-					.getModuleQualifiedName()).collect(Collectors.toList()));
+			uris.addAll(workspace.getAllTextDocuments().stream().map(d -> d.getUri()).collect(Collectors
+					.toList()));
 		}
-		for (String dependentQualifiedName : qualifiedNames) {
-			final URI sourceURI = resolver.getSourceURI(dependentQualifiedName);
-			final AcceleoTextDocument document = workspace.getTextDocument(sourceURI);
+		for (URI uri : uris) {
+			final AcceleoTextDocument document = workspace.getDocument(uri);
 			if (document != null) {
 				res.addAll(document.getLocalCallLocations(featuresPossibleTypes, featureName, service));
 			} else {
@@ -762,8 +726,10 @@ public class AcceleoTextDocument {
 	 *            the new (non-{@code null}) contents of the text document.
 	 */
 	public void setContents(String newTextDocumentContents) {
+		Objects.requireNonNull(newTextDocumentContents);
 		this.contents = newTextDocumentContents;
-		this.documentChanged();
+		this.parseContents();
+		this.validateAndPublishResults();
 	}
 
 	/**
@@ -810,7 +776,7 @@ public class AcceleoTextDocument {
 	 *            the (non-{@code null}) {@link IQualifiedNameQueryEnvironment}.
 	 * @param acceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
-	 * @param qualifiedName
+	 * @param moduleQualifiedNameForValidation
 	 *            the context qualified name
 	 * @return the {@link IAcceleoValidationResult}.
 	 */
@@ -819,19 +785,12 @@ public class AcceleoTextDocument {
 	// for another validation
 	private static synchronized IAcceleoValidationResult validate(
 			IQualifiedNameQueryEnvironment queryEnvironment, AcceleoAstResult acceleoAstResult,
-			String qualifiedName) {
-		String moduleQualifiedNameForValidation = VALIDATION_NAMESPACE + AcceleoParser.QUALIFIER_SEPARATOR
-				+ qualifiedName;
-		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
-		resolver.register(moduleQualifiedNameForValidation, acceleoAstResult.getModule());
-		try {
-			final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
-			final IAcceleoValidationResult validationResults = acceleoValidator.validate(acceleoAstResult,
-					moduleQualifiedNameForValidation);
-			return validationResults;
-		} finally {
-			resolver.clear(Collections.singleton(moduleQualifiedNameForValidation));
-		}
+			String moduleQualifiedNameForValidation) {
+		final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
+		final IAcceleoValidationResult validationResults = acceleoValidator.validate(acceleoAstResult,
+				moduleQualifiedNameForValidation);
+
+		return validationResults;
 	}
 
 	/**
@@ -873,14 +832,23 @@ public class AcceleoTextDocument {
 	}
 
 	/**
-	 * Sets if the document is {@link TextDocumentService#didOpen(org.eclipse.lsp4j.DidOpenTextDocumentParams)
-	 * opened}.
+	 * Opens this document with the given contents.
 	 * 
-	 * @param opened
-	 *            the new value
+	 * @param contents
+	 *            the text contents
 	 */
-	public void setOpened(boolean opened) {
-		this.isOpened = opened;
+	public void open(String contents) {
+		isOpened = true;
+		setContents(contents);
+	}
+
+	/**
+	 * Closes this document.
+	 */
+	public void close() {
+		isOpened = false;
+		parseContents();
+		validateAndPublishResults();
 	}
 
 	/**

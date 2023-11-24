@@ -137,12 +137,12 @@ public class CompletionTests {
 		// TODO report exceptions
 
 		final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
-				options, resolver, resourceSetForModels);
+				options, resolver, resourceSetForModels, true);
 		try {
 			final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 			final AcceleoParser parser = new AcceleoParser();
 			resolver.addLoader(new ModuleLoader(parser, evaluator));
-			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, true));
 
 			final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
 			final Module module = parsingResult.getModule();

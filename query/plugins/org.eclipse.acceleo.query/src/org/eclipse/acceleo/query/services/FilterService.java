@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -46,9 +47,11 @@ public class FilterService extends JavaMethodService {
 	 *            the method that realizes the service
 	 * @param serviceInstance
 	 *            the instance on which the service must be called
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	public FilterService(Method serviceMethod, Object serviceInstance) {
-		this(serviceMethod, serviceInstance, 1);
+	public FilterService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+		this(serviceMethod, serviceInstance, 1, forWorkspace);
 	}
 
 	/**
@@ -60,10 +63,13 @@ public class FilterService extends JavaMethodService {
 	 *            the instance on which the service must be called
 	 * @param filterIndex
 	 *            the index of the filtering {@link IType}
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @since 4.0.0
 	 */
-	public FilterService(Method serviceMethod, Object serviceInstance, int filterIndex) {
-		super(serviceMethod, serviceInstance);
+	public FilterService(Method serviceMethod, Object serviceInstance, int filterIndex,
+			boolean forWorkspace) {
+		super(serviceMethod, serviceInstance, forWorkspace);
 		this.filterIndex = filterIndex;
 	}
 

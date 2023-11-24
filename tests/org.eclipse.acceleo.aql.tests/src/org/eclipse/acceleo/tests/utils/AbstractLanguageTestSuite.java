@@ -184,11 +184,12 @@ public abstract class AbstractLanguageTestSuite {
 				options);
 		// TODO report exceptions
 
-		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
+				true);
 
 		evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 		String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
 				"::") + "::";

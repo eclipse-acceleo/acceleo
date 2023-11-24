@@ -59,7 +59,7 @@ public class HTTPServiceConfigurator implements IServicesConfigurator {
 
 	@Override
 	public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment,
-			ResourceSet resourceSetForModels, Map<String, String> options) {
+			ResourceSet resourceSetForModels, Map<String, String> options, boolean forWorkspace) {
 		resourceSetForModels.getURIConverter().getURIHandlers().add(0, dataHandler);
 		resourceSetForModels.getURIConverter().getURIHandlers().add(0, httpHandler);
 

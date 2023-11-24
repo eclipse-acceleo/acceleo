@@ -141,24 +141,48 @@ public class EPackageProviderTests {
 	}
 
 	@Test
-	public void getEClassNull() {
-		final Set<EClassifier> eClasses = provider.getEClassifiers(null);
+	public void getEClassClassNull() {
+		final Set<EClassifier> eClasses = provider.getEClassifiers((Class<?>)null);
 
 		assertEquals(null, eClasses);
 	}
 
 	@Test
-	public void getEClassNotRegistered() {
+	public void getEClassStringNull() {
+		final Set<EClassifier> eClasses = provider.getEClassifiers((String)null);
+
+		assertEquals(null, eClasses);
+	}
+
+	@Test
+	public void getEClassClassNotRegistered() {
 		final Set<EClassifier> eClasses = provider.getEClassifiers(EObject.class);
 
 		assertEquals(null, eClasses);
 	}
 
 	@Test
-	public void getEClassRegistered() {
+	public void getEClassStringNotRegistered() {
+		final Set<EClassifier> eClasses = provider.getEClassifiers(EObject.class.getCanonicalName());
+
+		assertEquals(null, eClasses);
+	}
+
+	@Test
+	public void getEClassClassRegistered() {
 		provider.registerPackage(EcorePackage.eINSTANCE);
 
 		final Set<EClassifier> eClasses = provider.getEClassifiers(EObject.class);
+
+		assertEquals(1, eClasses.size());
+		assertEquals(EcorePackage.eINSTANCE.getEObject(), eClasses.iterator().next());
+	}
+
+	@Test
+	public void getEClassStringRegistered() {
+		provider.registerPackage(EcorePackage.eINSTANCE);
+
+		final Set<EClassifier> eClasses = provider.getEClassifiers(EObject.class.getCanonicalName());
 
 		assertEquals(1, eClasses.size());
 		assertEquals(EcorePackage.eINSTANCE.getEObject(), eClasses.iterator().next());

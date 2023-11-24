@@ -41,6 +41,7 @@ import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferenceProvider;
@@ -614,11 +615,13 @@ public final class AQLUtils {
 	 *            the {@link Map} of options
 	 * @param resourceSetForModels
 	 *            the {@link ResourceSet} for models
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @return a new {@link IQueryEnvironment} for the given language name and options
 	 * @see #cleanServices(String, IReadOnlyQueryEnvironment, ResourceSet)
 	 */
 	public static IQueryEnvironment newEnvironmentWithDefaultServices(String language,
-			Map<String, String> options, ResourceSet resourceSetForModels) {
+			Map<String, String> options, ResourceSet resourceSetForModels, boolean forWorkspace) {
 		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
 				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
 		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
@@ -628,11 +631,11 @@ public final class AQLUtils {
 
 		for (IServicesConfigurator configurator : getServicesConfigurators(AQL_LANGUAGE)) {
 			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
-					resourceSetForModels, options));
+					resourceSetForModels, options, forWorkspace));
 		}
 		for (IServicesConfigurator configurator : getServicesConfigurators(language)) {
 			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
-					resourceSetForModels, options));
+					resourceSetForModels, options, forWorkspace));
 		}
 
 		return queryEnvironment;
@@ -647,26 +650,29 @@ public final class AQLUtils {
 	 *            the {@link Map} of options
 	 * @param resourceSetForModels
 	 *            the {@link ResourceSet} for models
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @return a new {@link IQualifiedNameQueryEnvironment} for the given language name and options
 	 * @see #cleanServices(String, IReadOnlyQueryEnvironment, ResourceSet)
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentDefaultServices(String language,
-			Map<String, String> options, IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
+			Map<String, String> options, IQualifiedNameResolver resolver, ResourceSet resourceSetForModels,
+			boolean forWorkspace) {
 		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
 				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
 		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
 				resourceSetForModels);
 		final IQualifiedNameQueryEnvironment queryEnvironment = Query
 				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
-						rootProvider);
+						rootProvider, forWorkspace);
 
 		for (IServicesConfigurator configurator : getServicesConfigurators(AQL_LANGUAGE)) {
 			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
-					resourceSetForModels, options));
+					resourceSetForModels, options, forWorkspace));
 		}
 		for (IServicesConfigurator configurator : getServicesConfigurators(language)) {
 			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
-					resourceSetForModels, options));
+					resourceSetForModels, options, forWorkspace));
 		}
 
 		return queryEnvironment;

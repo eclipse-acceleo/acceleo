@@ -20,7 +20,9 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.query.runtime.IEPackageProvider;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -31,6 +33,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -63,33 +66,31 @@ public class JavaMethodService extends AbstractService<Method> {
 	private Set<IType> returnTypes;
 
 	/**
+	 * Tells if the {@link IService} will be used in a workspace.
+	 */
+	private boolean forWorkspace;
+
+	/**
 	 * Creates a new service instance given a method and an instance.
 	 * 
 	 * @param method
 	 *            the method that realizes the service
 	 * @param serviceInstance
 	 *            the instance on which the service must be called
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	public JavaMethodService(Method method, Object serviceInstance) {
+	public JavaMethodService(Method method, Object serviceInstance, boolean forWorkspace) {
 		super(method);
 		this.instance = serviceInstance;
+		this.forWorkspace = forWorkspace;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getName()
-	 */
 	@Override
 	public String getName() {
 		return getOrigin().getName();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment)
-	 */
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
@@ -124,11 +125,11 @@ public class JavaMethodService extends AbstractService<Method> {
 						.getActualTypeArguments()[0]);
 				result = new SetType(queryEnvironment, t);
 			} else {
-				result = new ClassType(queryEnvironment, cls);
+				result = getClassJavaType(queryEnvironment, cls);
 			}
 		} else if (type instanceof Class<?>) {
 			final Class<?> cls = (Class<?>)type;
-			result = new ClassType(queryEnvironment, cls);
+			result = getClassJavaType(queryEnvironment, cls);
 		} else {
 			result = new ClassType(queryEnvironment, Object.class);
 		}
@@ -137,30 +138,42 @@ public class JavaMethodService extends AbstractService<Method> {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getNumberOfParameters()
+	 * Gets the {@link IJavaType} for the given {@link IReadOnlyQueryEnvironment} and {@link Class}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param cls
+	 *            the {@link Class}
+	 * @return the {@link IJavaType} for the given {@link IReadOnlyQueryEnvironment} and {@link Class}
 	 */
+	protected IJavaType getClassJavaType(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
+		final IJavaType result;
+		final IEPackageProvider ePackageProvider = queryEnvironment.getEPackageProvider();
+		if (forWorkspace && EObject.class.isAssignableFrom(cls) && ePackageProvider.getEClassifiers(
+				cls) == null) {
+			final Set<EClassifier> eClassifiers = ePackageProvider.getEClassifiers(cls.getCanonicalName());
+			if (eClassifiers != null && !eClassifiers.isEmpty()) {
+				final Class<?> eClassifierCls = ePackageProvider.getClass(eClassifiers.iterator().next());
+				result = new ClassType(queryEnvironment, eClassifierCls);
+			} else {
+				result = new ClassType(queryEnvironment, cls);
+			}
+		} else {
+			result = new ClassType(queryEnvironment, cls);
+		}
+		return result;
+	}
+
 	@Override
 	public int getNumberOfParameters() {
 		return getOrigin().getParameterTypes().length;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#internalInvoke(java.lang.Object[])
-	 */
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		return getOrigin().invoke(instance, arguments);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getPriority()
-	 */
 	@Override
 	public int getPriority() {
 		return PRIORITY;
@@ -204,7 +217,7 @@ public class JavaMethodService extends AbstractService<Method> {
 					result.add(new SetType(queryEnvironment, t));
 				}
 			} else {
-				result.add(new ClassType(queryEnvironment, cls));
+				result.add(getClassJavaType(queryEnvironment, cls));
 			}
 		} else if (type instanceof Class<?>) {
 			final Class<?> cls = (Class<?>)type;
@@ -234,18 +247,12 @@ public class JavaMethodService extends AbstractService<Method> {
 		} else if (Set.class.isAssignableFrom(cls)) {
 			result.add(new SetType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
 		} else {
-			result.add(new ClassType(queryEnvironment, cls));
+			result.add(getClassJavaType(queryEnvironment, cls));
 		}
 
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#matches(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
-	 *      org.eclipse.acceleo.query.validation.type.IType[])
-	 */
 	@Override
 	public boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes) {
 		final ClassType[] classTypes = new ClassType[argumentTypes.length];
@@ -299,41 +306,21 @@ public class JavaMethodService extends AbstractService<Method> {
 		return instance;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getShortSignature()
-	 */
 	@Override
 	public String getShortSignature() {
 		return serviceShortSignature(getOrigin().getParameterTypes());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getLongSignature()
-	 */
 	@Override
 	public String getLongSignature() {
 		return getOrigin().toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof JavaMethodService && ((JavaMethodService)obj).getOrigin().equals(getOrigin());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		return getOrigin().hashCode();

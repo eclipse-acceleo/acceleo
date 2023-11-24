@@ -11,21 +11,28 @@
 package org.eclipse.acceleo.aql.ls.services.workspace;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Set;
 
+import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
+import org.eclipse.acceleo.aql.ls.AcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
+import org.eclipse.acceleo.query.runtime.impl.namespace.workspace.QueryWorkspace;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 
 /**
  * A representation in the {@link AcceleoLanguageServer} of the client's workspace as it pertains to Acceleo.
  * 
  * @author Florent Latombe
  */
-public class AcceleoWorkspace {
+public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 
 	/**
 	 * The name of this workspace.
@@ -33,15 +40,19 @@ public class AcceleoWorkspace {
 	private final String name;
 
 	/**
-	 * The {@link List} of {@link AcceleoProject} of this workspace. Modifications to the list may have an
-	 * impact on the validation state of other projects.
-	 */
-	private final List<AcceleoProject> projects = new ArrayList<>();
-
-	/**
 	 * The owner {@link AcceleoLanguageServer} of this workspace.
 	 */
 	private AcceleoLanguageServer owner;
+
+	/**
+	 * The mapping from URI to the corresponding {@link AcceleoTextDocument}.
+	 */
+	private final Map<URI, AcceleoTextDocument> uriToDocuments = new LinkedHashMap<>();
+
+	/**
+	 * The {@link AcceleoLanguageServerContext}.
+	 */
+	private AcceleoLanguageServerContext context;
 
 	/**
 	 * Creates a new {@link AcceleoWorkspace}.
@@ -49,22 +60,9 @@ public class AcceleoWorkspace {
 	 * @param name
 	 *            the (non-{@code null}) name of the {@link AcceleoWorkspace}.
 	 */
-	public AcceleoWorkspace(String name) {
+	public AcceleoWorkspace(String name, AcceleoLanguageServerContext context) {
 		this.name = Objects.requireNonNull(name);
-	}
-
-	/**
-	 * Sets the given {@link AcceleoLanguageServer} as the owner of this {@link AcceleoWorkspace}.
-	 * 
-	 * @param newOwner
-	 *            the (maybe-{@code null}) owner {@link AcceleoLanguageServer}.
-	 */
-	public void setOwner(AcceleoLanguageServer newOwner) {
-		this.owner = newOwner;
-	}
-
-	public AcceleoLanguageServer getOwner() {
-		return owner;
+		this.context = Objects.requireNonNull(context);
 	}
 
 	/**
@@ -77,122 +75,144 @@ public class AcceleoWorkspace {
 	}
 
 	/**
-	 * Provides the {@link AcceleoProject projects} of this {@link AcceleoWorkspace}.
+	 * Sets the given {@link AcceleoLanguageServer} as the owner of this {@link AcceleoWorkspace}.
 	 * 
-	 * @return the (non-{@code null}) unmodifiable {@link List} of {@link AcceleoProject}. Use
-	 *         {@link #addProject(AcceleoProject)} and {@link #removeProject(AcceleoProject)} to modify the
-	 *         list.
+	 * @param newOwner
+	 *            the (maybe-{@code null}) owner {@link AcceleoLanguageServer}.
 	 */
-	public List<AcceleoProject> getProjects() {
-		return Collections.unmodifiableList(this.projects);
+	public void setOwner(AcceleoLanguageServer newOwner) {
+		this.owner = newOwner;
 	}
 
 	/**
-	 * Adds a {@link AcceleoProject} to this {@link AcceleoWorkspace} and updates the other projects
-	 * accordingly.
+	 * Gets the {@link AcceleoLanguageServer} owning this workspace.
 	 * 
-	 * @param projectToAdd
-	 *            the (non-{@code null}) {@link AcceleoProject} to add.
+	 * @return
 	 */
-	public void addProject(AcceleoProject projectToAdd) {
-		Objects.requireNonNull(projectToAdd);
-
-		if (this.projects.contains(projectToAdd)) {
-			throw new IllegalArgumentException("Workspace \"" + this.name + "\" already contains project "
-					+ projectToAdd.toString() + " so we cannot add it to it.");
-		}
-
-		projectToAdd.setWorkspace(this);
-		this.projects.add(projectToAdd);
-		// TODO: we probably want to validate all projects so they can take into account the newly-added
-		// project.
+	public AcceleoLanguageServer getOwner() {
+		return owner;
 	}
 
-	/**
-	 * Removes an {@link AcceleoProject} from this {@link AcceleoWorkspace} and updates the other projects
-	 * accordingly.
-	 * 
-	 * @param projectToRemove
-	 *            the (non-{@code null}) {@link AcceleoProject} to remove.
-	 */
-	public void removeProject(AcceleoProject projectToRemove) {
-		Objects.requireNonNull(projectToRemove);
-
-		if (!this.projects.contains(projectToRemove)) {
-			throw new IllegalArgumentException("Workspace \"" + this.name + "\" does not contain project "
-					+ projectToRemove.toString() + " so it cannot be removed from it.");
-		}
-
-		projectToRemove.dispose();
-		this.projects.remove(projectToRemove);
-		// TODO: we probably want to find other projects of the workspace that depended on the removed project
-		// and re-validate them.
-	}
-
-	/**
-	 * Collects all the {@link AcceleoTextDocument} contained in all the {@link AcceleoProject} of this
-	 * {@link AcceleoWorkspace}.
-	 * 
-	 * @return the {@link List} of all {@link AcceleoTextDocument AcceleoTextDocuments} in this
-	 *         {@link AcceleoWorkspace}.
-	 */
-	public List<AcceleoTextDocument> getAllTextDocuments() {
-		return this.projects.stream().map(AcceleoProject::getTextDocuments).flatMap(List::stream).collect(
-				Collectors.toList());
-	}
-
-	/**
-	 * Provides the {@link AcceleoTextDocument} found at the given {@link URI}.
-	 * 
-	 * @param uri
-	 *            the (non-{@code null}) {@link URI} of the {@link AcceleoTextDocument} we are looking for.
-	 * @return the {@link AcceleoTextDocument} found at {@code uri}. {@code null} if there was no such
-	 *         document.
-	 */
-	public AcceleoTextDocument getTextDocument(URI uri) {
-		for (AcceleoProject acceleoProject : this.projects) {
-			AcceleoTextDocument textDocument = acceleoProject.getTextDocument(uri);
-			if (textDocument != null) {
-				return textDocument;
+	@Override
+	public String addResource(AcceleoProject project, URI resource) {
+		final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
+		final String qualifiedName = resolver.getQualifiedName(resource);
+		if (qualifiedName != null) {
+			// clean previous resolved values to resolve the new one
+			resolver.clear(Collections.singleton(qualifiedName));
+			final Object resolved = resolver.resolve(qualifiedName);
+			if (resolved instanceof Module) {
+				final String textDocumentContents = context.getResourceContents(resource);
+				final AcceleoTextDocument acceleoTextDocument = new AcceleoTextDocument(project, resource,
+						qualifiedName, textDocumentContents, (Module)resolved);
+				uriToDocuments.put(resource, acceleoTextDocument);
+				final URI sourceURI = resolver.getSourceURI(qualifiedName);
+				if (sourceURI != null) {
+					uriToDocuments.put(sourceURI, acceleoTextDocument);
+				}
+				project.addDocument(acceleoTextDocument);
 			}
 		}
-		return null;
+		return super.addResource(project, resource);
 	}
 
-	/**
-	 * This method is called by an {@link AcceleoProject} to notify us that one of its
-	 * {@link AcceleoTextDocument} has been saved. We notify the other projects of the workspace so they can
-	 * update their environments accordingly.
-	 * 
-	 * @param savedAcceleoTextDocument
-	 *            the (non-{@code null}) {@link AcceleoTextDocument} which has been saved..
-	 */
-	public void documentSaved(AcceleoTextDocument savedAcceleoTextDocument) {
-		this.getProjects().stream().filter(project -> !project.getTextDocuments().contains(
-				savedAcceleoTextDocument)).forEach(project -> project.documentSaved(
-						savedAcceleoTextDocument));
-	}
-
-	/**
-	 * This method is called by an {@link AcceleoProject} to notify us that one of its
-	 * {@link AcceleoTextDocument} has been removed. We notify all projects so that they can update their
-	 * environments accordingly.
-	 * 
-	 * @param removedAcceleoTextDocument
-	 *            the (non-{@code null}) {@link AcceleoTextDocument} which has been removed.
-	 */
-	public void documentRemoved(AcceleoTextDocument removedAcceleoTextDocument) {
-		this.getProjects().stream().forEach(acceleoProject -> acceleoProject.documentRemoved(
-				removedAcceleoTextDocument));
-	}
-
-	/**
-	 * Disposes this workspace.
-	 */
-	public void dispose() {
-		for (AcceleoProject project : getProjects()) {
-			project.dispose();
+	@Override
+	public String removeResource(AcceleoProject project, URI resource) {
+		final AcceleoTextDocument removedDocument = uriToDocuments.remove(resource);
+		if (removedDocument != null) {
+			project.removeDocument(removedDocument);
+			uriToDocuments.remove(getResolver(project).getSourceURI(removedDocument
+					.getModuleQualifiedName()));
 		}
+		return super.removeResource(project, resource);
+	}
+
+	@Override
+	public String moveResource(AcceleoProject sourceProject, URI sourceResource, AcceleoProject targetProject,
+			URI targetResource) {
+		final AcceleoTextDocument removedDocument = uriToDocuments.remove(sourceResource);
+		if (removedDocument != null) {
+			sourceProject.removeDocument(removedDocument);
+			uriToDocuments.remove(getResolver(sourceProject).getSourceURI(removedDocument
+					.getModuleQualifiedName()));
+		}
+
+		final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(targetProject);
+		final String qualifiedName = resolver.getQualifiedName(targetResource);
+		if (qualifiedName != null) {
+			final Object resolved = resolver.resolve(qualifiedName);
+			if (resolved instanceof Module) {
+				final String textDocumentContents = context.getResourceContents(targetResource);
+				final AcceleoTextDocument acceleoTextDocument = new AcceleoTextDocument(targetProject,
+						targetResource, qualifiedName, textDocumentContents, (Module)resolved);
+				uriToDocuments.put(targetResource, acceleoTextDocument);
+				final URI sourceURI = resolver.getSourceURI(qualifiedName);
+				if (sourceURI != null) {
+					uriToDocuments.put(sourceURI, acceleoTextDocument);
+				}
+				targetProject.addDocument(acceleoTextDocument);
+			}
+		}
+
+		return super.moveResource(sourceProject, sourceResource, targetProject, targetResource);
+	}
+
+	/**
+	 * Gets the {@link AcceleoTextDocument} for the given resource {@link URI}.
+	 * 
+	 * @param resource
+	 *            the resource {@link URI}
+	 * @return the {@link AcceleoTextDocument} for the given resource {@link URI} if any, <code>null</code>
+	 *         otherwise
+	 */
+	public AcceleoTextDocument getDocument(URI resource) {
+		return uriToDocuments.get(resource);
+	}
+
+	@Override
+	protected void updateResourceContents(AcceleoProject project, IQualifiedNameResolver resolver,
+			URI resource) {
+		final AcceleoTextDocument acceleoTextDocument = uriToDocuments.get(resource);
+		if (acceleoTextDocument != null) {
+			acceleoTextDocument.setContents(context.getResourceContents(resource));
+		}
+	}
+
+	@Override
+	protected void validate(AcceleoProject project, IQualifiedNameResolver resolver, String qualifiedName) {
+		final AcceleoTextDocument acceleoTextDocument = project.getDocument(qualifiedName);
+		if (acceleoTextDocument != null) {
+			acceleoTextDocument.validateAndPublishResults();
+		}
+	}
+
+	@Override
+	protected IQualifiedNameLookupEngine getLookupEngine(AcceleoProject project,
+			IQualifiedNameResolver resolver, String qualifiedName) {
+		final IQualifiedNameLookupEngine res;
+
+		final AcceleoTextDocument acceleoTextDocument = project.getDocument(qualifiedName);
+		if (acceleoTextDocument != null && acceleoTextDocument.getQueryEnvironment() != null) {
+			res = acceleoTextDocument.getQueryEnvironment().getLookupEngine();
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	@Override
+	protected IQueryWorkspaceQualifiedNameResolver createResolver(AcceleoProject project) {
+		return context.createResolver(project);
+	}
+
+	/**
+	 * Gets the {@link Set} of all {@link AcceleoTextDocument} in this workspace.
+	 * 
+	 * @return the {@link Set} of all {@link AcceleoTextDocument} in this workspace
+	 */
+	public Set<AcceleoTextDocument> getAllTextDocuments() {
+		return new LinkedHashSet<>(uriToDocuments.values());
 	}
 
 }

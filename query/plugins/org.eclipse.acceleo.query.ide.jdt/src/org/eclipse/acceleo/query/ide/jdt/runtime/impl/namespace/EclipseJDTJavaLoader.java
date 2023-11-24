@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.query.ide.jdt;
+package org.eclipse.acceleo.query.ide.jdt.runtime.impl.namespace;
 
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -16,19 +16,22 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.ide.jdt.Activator;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.impl.namespace.Position;
 import org.eclipse.acceleo.query.runtime.impl.namespace.Range;
 import org.eclipse.acceleo.query.runtime.impl.namespace.SourceLocation;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
-import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IPosition;
-import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IRange;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.IJavaProject;
@@ -63,30 +66,31 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 	 * 
 	 * @param qualifierSeparator
 	 *            the qualifier separator
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	public EclipseJDTJavaLoader(String qualifierSeparator) {
-		super(qualifierSeparator);
+	public EclipseJDTJavaLoader(String qualifierSeparator, boolean forWorkspace) {
+		super(qualifierSeparator, forWorkspace);
+	}
+
+	@Override
+	public Set<IService<?>> getServices(IQualifiedNameLookupEngine lookupEngine, Object object,
+			String contextQualifiedName) {
+		// TODO Auto-generated method stub
+		return super.getServices(lookupEngine, object, contextQualifiedName);
 	}
 
 	@Override
 	public ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, IService<?> service) {
-		ISourceLocation res = null;
+		ISourceLocation res;
 
-		IPosition identifierStart = new Position(0, 0, 0);
-		IPosition identifierEnd = new Position(0, 0, 0);
-		final IRange identifierRange;
-
-		IPosition start = new Position(0, 0, 0);
-		IPosition end = new Position(0, 0, 0);
-		final IRange range;
-
-		if (service.getOrigin() instanceof Method) {
-			final Method method = (Method)service.getOrigin();
+		final String contextQualifiedName = getQualifiedName(getContext(service));
+		if (contextQualifiedName != null) {
 			URI sourceURI = null;
 			if (resolver instanceof EclipseJDTQualifiedNameResolver) {
 				final IJavaProject project = ((EclipseJDTQualifiedNameResolver)resolver).getProject();
 				try {
-					final IType type = project.findType(method.getDeclaringClass().getCanonicalName());
+					final IType type = project.findType(contextQualifiedName);
 					if (type != null) {
 						type.getOpenable().open(new NullProgressMonitor());
 						final IResource typeResource = type.getResource();
@@ -100,41 +104,95 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 										.toASCIIString(), SYNTAX_SERVER_ID));
 								parser.setSource(type.getSource().toCharArray());
 							} catch (Exception e) {
-								// TODO: handle exception
+								Activator.getPlugin().getLog().log(new Status(IStatus.ERROR,
+										Activator.PLUGIN_ID, "can't get source location from:"
+												+ contextQualifiedName, e));
 							}
 						}
-						final IMethod javaMethod = type.getMethod(method.getName(), getParamterTypes(method));
-						javaMethod.getOpenable().open(new NullProgressMonitor());
-						final ISourceRange methodIdentifierRange = javaMethod.getNameRange();
-						final ISourceRange sourceRange = javaMethod.getSourceRange();
-						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
-						final int identifierStartOffset = methodIdentifierRange.getOffset();
-						identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
-								.getColumnNumber(identifierStartOffset), identifierStartOffset);
-						final int identifierEndOffset = identifierStartOffset + methodIdentifierRange
-								.getLength();
-						identifierEnd = new Position(cu.getLineNumber(identifierEndOffset) - 1, cu
-								.getColumnNumber(identifierEndOffset), identifierEndOffset);
-
-						final int startOffset = sourceRange.getOffset();
-						start = new Position(cu.getLineNumber(startOffset) - 1, cu.getColumnNumber(
-								startOffset), startOffset);
-						final int endOffset = startOffset + sourceRange.getLength();
-						end = new Position(cu.getLineNumber(endOffset) - 1, cu.getColumnNumber(endOffset),
-								endOffset);
-
-						identifierRange = new Range(identifierStart, identifierEnd);
-						range = new Range(start, end);
-						res = new SourceLocation(sourceURI, identifierRange, range);
+						if (sourceURI != null) {
+							final IMethod javaMethod = getIMethod(type, service);
+							javaMethod.getOpenable().open(new NullProgressMonitor());
+							final ISourceRange methodIdentifierRange = javaMethod.getNameRange();
+							final ISourceRange sourceRange = javaMethod.getSourceRange();
+							res = getIdentifierLocation(sourceURI, parser, methodIdentifierRange,
+									sourceRange);
+						} else {
+							res = null;
+						}
 					} else {
 						res = null;
 					}
 				} catch (JavaModelException e) {
-					sourceURI = getDefaultSourceURI(resolver, method);
+					res = null;
 				}
 			} else {
-				sourceURI = getDefaultSourceURI(resolver, method);
+				res = null;
 			}
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the qualified name of the given resolved {@link Object}.
+	 * 
+	 * @param resolved
+	 *            the resolved {@link Object}
+	 * @return the qualified name of the given resolved {@link Object} if any, <code>null</code> otherwise
+	 */
+	private String getQualifiedName(Object resolved) {
+		final String res;
+
+		if (resolved instanceof Class<?>) {
+			res = ((Class<?>)resolved).getCanonicalName();
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the context for the given {@link IService}.
+	 * 
+	 * @param service
+	 *            the {@link IService}
+	 * @return the context for the given {@link IService} if any, <code>null</code> otherwisse
+	 */
+	private Object getContext(IService<?> service) {
+		final Object res;
+
+		final Object origin = service.getOrigin();
+		if (origin instanceof Method) {
+			res = ((Method)origin).getDeclaringClass();
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link IMethod} form the given {@link IType} for the given {@link IService}.
+	 * 
+	 * @param type
+	 *            the containing {@link IType}
+	 * @param service
+	 *            the {@link IService}
+	 * @return the {@link IMethod} form the given {@link IType} for the given {@link IService} if nay,
+	 *         <code>null</code> otherwise
+	 */
+	private IMethod getIMethod(IType type, IService<?> service) {
+		final IMethod res;
+
+		final Object origin = service.getOrigin();
+		if (origin instanceof IMethod) {
+			res = (IMethod)origin;
+		} else if (origin instanceof Method) {
+			final Method method = (Method)origin;
+			res = type.getMethod(method.getName(), getParamterTypes(method));
 		} else {
 			res = null;
 		}
@@ -189,23 +247,15 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 
 	@Override
 	public ISourceLocation getSourceLocation(IQualifiedNameResolver resolver, String qualifiedName) {
-		ISourceLocation res = null;
-
-		IPosition identifierStart = new Position(0, 0, 0);
-		IPosition identifierEnd = new Position(0, 0, 0);
-		final IRange identifierRange;
-
-		IPosition start = new Position(0, 0, 0);
-		IPosition end = new Position(0, 0, 0);
-		final IRange range;
+		ISourceLocation res;
 
 		final Object resolved = resolver.resolve(qualifiedName);
-		if (resolved instanceof Class<?>) {
+		if (resolved != null) {
 			URI sourceURI = null;
 			if (resolver instanceof EclipseJDTQualifiedNameResolver) {
 				final IJavaProject project = ((EclipseJDTQualifiedNameResolver)resolver).getProject();
 				try {
-					final IType type = project.findType(((Class<?>)resolved).getCanonicalName());
+					final IType type = getJDTIType(resolved, project);
 					if (type != null) {
 						type.getOpenable().open(new NullProgressMonitor());
 						final IResource typeResource = type.getResource();
@@ -220,39 +270,71 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 						final ISourceRange classIdentifierRange = type.getNameRange();
 						final ISourceRange sourceRange = type.getSourceRange();
 
-						final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
-						final int identifierStartOffset = classIdentifierRange.getOffset();
-						identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
-								.getColumnNumber(identifierStartOffset), identifierStartOffset);
-						final int identifierEndOffset = identifierStartOffset + classIdentifierRange
-								.getLength();
-						identifierEnd = new Position(cu.getLineNumber(identifierEndOffset) - 1, cu
-								.getColumnNumber(identifierEndOffset), identifierEndOffset);
-
-						final int startOffset = sourceRange.getOffset();
-						start = new Position(cu.getLineNumber(startOffset) - 1, cu.getColumnNumber(
-								startOffset), startOffset);
-						final int endOffset = startOffset + sourceRange.getLength();
-						end = new Position(cu.getLineNumber(endOffset) - 1, cu.getColumnNumber(endOffset),
-								endOffset);
-
-						identifierRange = new Range(identifierStart, identifierEnd);
-						range = new Range(start, end);
-						res = new SourceLocation(sourceURI, identifierRange, range);
+						res = getIdentifierLocation(sourceURI, parser, classIdentifierRange, sourceRange);
 					} else {
 						res = null;
 					}
 				} catch (JavaModelException e) {
-					// nothing to do here
+					res = null;
 				}
 			} else {
-				// nothing to do here
+				res = null;
 			}
 		} else {
 			res = null;
 		}
 
 		return res;
+	}
+
+	private IType getJDTIType(final Object resolved, final IJavaProject project) throws JavaModelException {
+		final IType res;
+
+		if (resolved instanceof Class<?>) {
+			res = project.findType(((Class<?>)resolved).getCanonicalName());
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the identifier {@link ISourceLocation} from the given {@link URI} {@link ASTParser} and
+	 * {@link ISourceRange}.
+	 * 
+	 * @param sourceURI
+	 *            the source resource {@link URI}
+	 * @param parser
+	 *            the {@link ASTParser}
+	 * @param javaIdentifierRange
+	 *            the Java identiefier {@link ISourceRange}
+	 * @param javaSourceRange
+	 *            the containing Java {@link ISourceRange}
+	 * @return the identifier {@link ISourceLocation} from the given {@link URI} {@link ASTParser} and
+	 *         {@link ISourceRange}
+	 */
+	private ISourceLocation getIdentifierLocation(URI sourceURI, final ASTParser parser,
+			final ISourceRange javaIdentifierRange, final ISourceRange javaSourceRange) {
+		final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
+		final int identifierStartOffset = javaIdentifierRange.getOffset();
+		final Position identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
+				.getColumnNumber(identifierStartOffset), identifierStartOffset);
+		final int identifierEndOffset = identifierStartOffset + javaIdentifierRange.getLength();
+		final Position identifierEnd = new Position(cu.getLineNumber(identifierEndOffset) - 1, cu
+				.getColumnNumber(identifierEndOffset), identifierEndOffset);
+
+		final int startOffset = javaSourceRange.getOffset();
+		final Position start = new Position(cu.getLineNumber(startOffset) - 1, cu.getColumnNumber(
+				startOffset), startOffset);
+		final int endOffset = startOffset + javaSourceRange.getLength();
+		final Position end = new Position(cu.getLineNumber(endOffset) - 1, cu.getColumnNumber(endOffset),
+				endOffset);
+
+		final Range identifierRange = new Range(identifierStart, identifierEnd);
+		final Range range = new Range(start, end);
+
+		return new SourceLocation(sourceURI, identifierRange, range);
 	}
 
 	private String[] getParamterTypes(Method method) {
@@ -263,14 +345,6 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 		}
 
 		return res.toArray(new String[res.size()]);
-	}
-
-	private URI getDefaultSourceURI(IQualifiedNameResolver resolver, final Method method) {
-		final URI sourceURI;
-		// TODO this will not work if the method is in a super class of the registered class
-		final String qualifiedName = resolver.getQualifiedName(method.getDeclaringClass());
-		sourceURI = resolver.getSourceURI(qualifiedName);
-		return sourceURI;
 	}
 
 }

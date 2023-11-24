@@ -17,12 +17,17 @@ import java.util.List;
 
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.EclipseQualifiedNameResolver;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.ResolverFactoryRegistryListener;
+import org.eclipse.acceleo.query.ide.runtime.impl.namespace.workspace.EclipseWorkspaceQualifiedNameResolver;
 import org.eclipse.acceleo.query.ide.runtime.namespace.IResolverFactoryDescriptor;
+import org.eclipse.acceleo.query.ide.runtime.namespace.workspace.IWorkspaceResolverFactoryDescriptor;
+import org.eclipse.acceleo.query.ide.runtime.namespace.workspace.IWorkspaceResolverProvider;
 import org.eclipse.acceleo.query.ide.services.configurator.ResourceSetConfiguratorRegistryListener;
 import org.eclipse.acceleo.query.ide.services.configurator.ServicesConfiguratorRegistryListener;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
@@ -59,6 +64,12 @@ public class QueryPlugin extends EMFPlugin {
 	 * {@link IResolverFactoryDescriptor}.
 	 */
 	private static final List<IResolverFactoryDescriptor> RESOLVER_FACTORY_DESCRIPTORS = new ArrayList<IResolverFactoryDescriptor>();
+
+	/**
+	 * The {@link List} of {@link #registerWorkspaceResolverFactory(IWorkspaceResolverFactoryDescriptor)
+	 * registered} {@link IWorkspaceResolverFactoryDescriptor}.
+	 */
+	private static final List<IWorkspaceResolverFactoryDescriptor> WORKSPACE_RESOLVER_FACTORY_DESCRIPTORS = new ArrayList<IWorkspaceResolverFactoryDescriptor>();
 
 	/**
 	 * The constructor.
@@ -148,10 +159,12 @@ public class QueryPlugin extends EMFPlugin {
 		 *            the {@link IProject}
 		 * @param qualifierSeparator
 		 *            the qualifier name separator
+		 * @param forWorkspace
+		 *            <code>true</code> for workspace use, local project resolution only
 		 * @return the {@link IQualifiedNameResolver} for the given {@link IProject}
 		 */
 		public IQualifiedNameResolver createQualifiedNameResolver(ClassLoader classLoader, IProject project,
-				String qualifierSeparator) {
+				String qualifierSeparator, boolean forWorkspace) {
 			final IQualifiedNameResolver res;
 
 			final List<IResolverFactoryDescriptor> factoryDescriptors;
@@ -163,7 +176,38 @@ public class QueryPlugin extends EMFPlugin {
 				res = new EclipseQualifiedNameResolver(classLoader, project, qualifierSeparator);
 			} else {
 				res = factoryDescriptors.get(0).getFactory().createResolver(classLoader, project,
-						qualifierSeparator);
+						qualifierSeparator, forWorkspace);
+			}
+
+			return res;
+		}
+
+		/**
+		 * Creates a {@link IQueryWorkspaceQualifiedNameResolver} for the given {@link IProject}.
+		 * 
+		 * @param project
+		 *            the {@link IProject}
+		 * @param resolver
+		 *            the {@link IQualifiedNameResolver} for the {@link IProject}
+		 * @param resolverProvider
+		 *            the {@link IWorkspaceResolverProvider} to retrieve other {@link IProject} resolver.
+		 * @return the {@link IQueryWorkspaceQualifiedNameResolver} for the given {@link IProject}
+		 */
+		public IQueryWorkspaceQualifiedNameResolver createWorkspaceQualifiedNameResolver(IProject project,
+				IQualifiedNameResolver resolver, IWorkspaceResolverProvider resolverProvider) {
+			final IQueryWorkspaceQualifiedNameResolver res;
+
+			final List<IWorkspaceResolverFactoryDescriptor> factoryDescriptors;
+			synchronized(WORKSPACE_RESOLVER_FACTORY_DESCRIPTORS) {
+				factoryDescriptors = new ArrayList<IWorkspaceResolverFactoryDescriptor>(
+						WORKSPACE_RESOLVER_FACTORY_DESCRIPTORS);
+			}
+
+			if (factoryDescriptors.isEmpty()) {
+				res = new EclipseWorkspaceQualifiedNameResolver(project, resolver, resolverProvider);
+			} else {
+				res = factoryDescriptors.get(0).getFactory().createResolver(project, resolver,
+						resolverProvider);
 			}
 
 			return res;
@@ -174,9 +218,11 @@ public class QueryPlugin extends EMFPlugin {
 		 * 
 		 * @param qualifierSeparator
 		 *            the qualifier name separator
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 * @return the created Java {@link ILoader}
 		 */
-		public ILoader createJavaLoader(String qualifierSeparator) {
+		public ILoader createJavaLoader(String qualifierSeparator, boolean forWorkspace) {
 			final ILoader res;
 
 			final List<IResolverFactoryDescriptor> factoryDescriptors;
@@ -185,9 +231,10 @@ public class QueryPlugin extends EMFPlugin {
 			}
 
 			if (factoryDescriptors.isEmpty()) {
-				res = new JavaLoader(qualifierSeparator);
+				res = new JavaLoader(qualifierSeparator, forWorkspace);
 			} else {
-				res = factoryDescriptors.get(0).getFactory().createJavaLoader(qualifierSeparator);
+				res = factoryDescriptors.get(0).getFactory().createJavaLoader(qualifierSeparator,
+						forWorkspace);
 			}
 
 			return res;
@@ -266,6 +313,34 @@ public class QueryPlugin extends EMFPlugin {
 		if (descriptor != null) {
 			synchronized(RESOLVER_FACTORY_DESCRIPTORS) {
 				RESOLVER_FACTORY_DESCRIPTORS.remove(descriptor);
+			}
+		}
+	}
+
+	/**
+	 * Registers the given {@link IWorkspaceResolverFactoryDescriptor}.
+	 * 
+	 * @param descriptor
+	 *            the {@link IWorkspaceResolverFactoryDescriptor}
+	 */
+	public static void registerWorkspaceResolverFactory(IWorkspaceResolverFactoryDescriptor descriptor) {
+		if (descriptor != null) {
+			synchronized(WORKSPACE_RESOLVER_FACTORY_DESCRIPTORS) {
+				WORKSPACE_RESOLVER_FACTORY_DESCRIPTORS.add(descriptor);
+			}
+		}
+	}
+
+	/**
+	 * Unregisters the given {@link IWorkspaceResolverFactoryDescriptor}.
+	 * 
+	 * @param descriptor
+	 *            the {@link IWorkspaceResolverFactoryDescriptor}
+	 */
+	public static void unregisterWorkspaceResolverFactory(IWorkspaceResolverFactoryDescriptor descriptor) {
+		if (descriptor != null) {
+			synchronized(WORKSPACE_RESOLVER_FACTORY_DESCRIPTORS) {
+				WORKSPACE_RESOLVER_FACTORY_DESCRIPTORS.remove(descriptor);
 			}
 		}
 	}

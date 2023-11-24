@@ -74,7 +74,7 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 		}
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
-				AcceleoParser.QUALIFIER_SEPARATOR);
+				AcceleoParser.QUALIFIER_SEPARATOR, false);
 
 		final Map<String, String> options = new LinkedHashMap<>();
 		final ArrayList<Exception> exceptions = new ArrayList<>();
@@ -82,11 +82,12 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, new ResourceSetImpl(),
 				options);
 		// TODO report exceptions
-		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
+				true);
 
 		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, true));
 	}
 
 	/**

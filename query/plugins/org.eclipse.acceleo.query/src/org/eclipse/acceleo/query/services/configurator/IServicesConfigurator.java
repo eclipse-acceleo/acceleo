@@ -34,10 +34,12 @@ public interface IServicesConfigurator extends IOptionProvider {
 	 *            the {@link ResourceSet} for model elements
 	 * @param options
 	 *            the {@link Map} of options
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @return the {@link Set} of {@link IService} for the given {@link IReadOnlyQueryEnvironment}
 	 */
 	Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
-			Map<String, String> options);
+			Map<String, String> options, boolean forWorkspace);
 
 	/**
 	 * Clears the services for the given {@link IReadOnlyQueryEnvironment}.

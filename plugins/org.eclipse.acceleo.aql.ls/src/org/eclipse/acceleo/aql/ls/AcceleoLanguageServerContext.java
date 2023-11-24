@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls;
 
+import java.net.URI;
+
+import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoProject;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 
 /**
  * The context of the {@link AcceleoLanguageServer} provided by the runtime that hosts the server. It is used
@@ -38,5 +42,23 @@ public interface AcceleoLanguageServerContext {
 	 *            the (non-{@code null}) {@link AcceleoWorkspace} to delete.
 	 */
 	void deleteWorkspace(AcceleoWorkspace workspaceToDelete);
+
+	/**
+	 * Gets the contents of the given resource {@link URI}.
+	 * 
+	 * @param resource
+	 *            the resource {@link URI}
+	 * @return the contents of the given resource {@link URI}
+	 */
+	String getResourceContents(URI resource);
+
+	/**
+	 * Creates the {@link IQueryWorkspaceQualifiedNameResolver} for the given {@link AcceleoProject}.
+	 * 
+	 * @param project
+	 *            the {@link AcceleoProject}
+	 * @return the created {@link IQueryWorkspaceQualifiedNameResolver} for the given {@link AcceleoProject}
+	 */
+	IQueryWorkspaceQualifiedNameResolver createResolver(AcceleoProject project);
 
 }

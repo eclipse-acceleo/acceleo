@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,8 +75,8 @@ public class XPathServices extends AbstractServiceProvider {
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
 		 */
-		private AncestorsService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private AncestorsService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override
@@ -195,9 +195,11 @@ public class XPathServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private FollowingSiblingsService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private FollowingSiblingsService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override
@@ -313,9 +315,11 @@ public class XPathServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private PrecedingSiblingsService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private PrecedingSiblingsService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override
@@ -431,9 +435,11 @@ public class XPathServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private SiblingsService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private SiblingsService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override
@@ -549,24 +555,19 @@ public class XPathServices extends AbstractServiceProvider {
 		this.queryEnvironment = queryEnvironment;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
-	 */
 	@Override
-	protected IService<Method> getService(Method publicMethod) {
+	protected IService<Method> getService(Method publicMethod, boolean forWorkspace) {
 		final IService<Method> result;
 		if ("ancestors".equals(publicMethod.getName())) {
-			result = new AncestorsService(publicMethod, this);
+			result = new AncestorsService(publicMethod, this, forWorkspace);
 		} else if ("followingSiblings".equals(publicMethod.getName())) {
-			result = new FollowingSiblingsService(publicMethod, this);
+			result = new FollowingSiblingsService(publicMethod, this, forWorkspace);
 		} else if ("precedingSiblings".equals(publicMethod.getName())) {
-			result = new PrecedingSiblingsService(publicMethod, this);
+			result = new PrecedingSiblingsService(publicMethod, this, forWorkspace);
 		} else if ("siblings".equals(publicMethod.getName())) {
-			result = new SiblingsService(publicMethod, this);
+			result = new SiblingsService(publicMethod, this, forWorkspace);
 		} else {
-			result = new JavaMethodService(publicMethod, this);
+			result = new JavaMethodService(publicMethod, this, forWorkspace);
 		}
 
 		return result;

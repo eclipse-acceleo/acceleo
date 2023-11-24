@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015,2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,13 +80,13 @@ public class AnyServices extends AbstractServiceProvider {
 	}
 
 	@Override
-	protected IService<Method> getService(Method publicMethod) {
+	protected IService<Method> getService(Method publicMethod, boolean forWorkspace) {
 		final IService<Method> result;
 
 		if ("oclAsType".equals(publicMethod.getName())) {
-			result = new OCLAsTypeService(publicMethod, this);
+			result = new OCLAsTypeService(publicMethod, this, forWorkspace);
 		} else {
-			result = new JavaMethodService(publicMethod, this);
+			result = new JavaMethodService(publicMethod, this, forWorkspace);
 		}
 
 		return result;
@@ -406,8 +406,18 @@ public class AnyServices extends AbstractServiceProvider {
 
 	private static class OCLAsTypeService extends FilterService {
 
-		OCLAsTypeService(Method publicMethod, Object serviceInstance) {
-			super(publicMethod, serviceInstance);
+		/**
+		 * Constructor.
+		 * 
+		 * @param publicMethod
+		 *            the {@link Method}
+		 * @param serviceInstance
+		 *            the service instance
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
+		 */
+		OCLAsTypeService(Method publicMethod, Object serviceInstance, boolean forWorkspace) {
+			super(publicMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override

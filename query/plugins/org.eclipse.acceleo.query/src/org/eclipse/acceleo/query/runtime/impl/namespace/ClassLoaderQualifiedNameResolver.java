@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -77,6 +78,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 * Mapping from an {@link Object} to its qualified name.
 	 */
 	private final Map<Object, String> objectToQualifiedName = new HashMap<Object, String>();
+
+	/**
+	 * Mapping from an {@link Object} to its {@link URI}.
+	 */
+	private final Map<Object, URI> objectToURI = new HashMap<Object, URI>();
 
 	/**
 	 * Mapping from qualifiedName to its imports.
@@ -137,12 +143,36 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 			for (int i = segments.length - 1; i >= 0; i--) {
 				moduleQualifiedNameBuilder.insert(0, segments[i]);
 				final String qualifiedName = moduleQualifiedNameBuilder.toString();
-				// object already loaded or can be loaded
-				if (qualifiedNameToObject.get(qualifiedName) != null || getURI(qualifiedName) != null) {
+				if (qualifiedNameURIMatch(qualifiedName, uri)) {
 					res = qualifiedName;
 				}
 				moduleQualifiedNameBuilder.insert(0, qualifierSeparator);
 			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given qualified name and {@link URI} correspond to each other.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @param uri
+	 *            the {@link URI}
+	 * @return <code>true</code> if the given qualified name and {@link URI} correspond to each other,
+	 *         <code>false</code> otherwise
+	 */
+	private boolean qualifiedNameURIMatch(final String qualifiedName, URI uri) {
+		final boolean res;
+
+		final Object resolved = qualifiedNameToObject.get(qualifiedName);
+
+		if (resolved != null) {
+			// this case is needed when the resource has already been deleted but was previously resolved
+			res = uri.equals(getURI(resolved));
+		} else {
+			res = uri.equals(getURI(qualifiedName));
 		}
 
 		return res;
@@ -186,6 +216,19 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	}
 
 	@Override
+	public URI getBinaryURI(URI sourceURI) {
+		final URI res;
+
+		if (getQualifiedName(sourceURI) != null) {
+			res = sourceURI;
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	@Override
 	public ISourceLocation getSourceLocation(String qualifiedName) {
 		ISourceLocation res = null;
 
@@ -206,7 +249,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 *            the qualified name
 	 * @return the {@link Object} from the given qualified name if any, <code>null</code> otherwise
 	 */
-	private Object load(String qualifiedName) {
+	protected Object load(String qualifiedName) {
 		Object res = null;
 
 		boolean registered = false;
@@ -221,12 +264,22 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 
 		// we perform a dummy registration to prevent further loading
 		if (!registered) {
-			qualifiedNameToImports.put(qualifiedName, Collections.emptyList());
-			qualifiedNameToExtend.put(qualifiedName, null);
-			qualifiedNameToObject.put(qualifiedName, null);
+			dummyRegistration(qualifiedName);
 		}
 
 		return res;
+	}
+
+	/**
+	 * Register nothing for the given qualified name to prevent further {@link #load(String) loading}.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 */
+	protected void dummyRegistration(String qualifiedName) {
+		qualifiedNameToImports.put(qualifiedName, Collections.emptyList());
+		qualifiedNameToExtend.put(qualifiedName, null);
+		qualifiedNameToObject.put(qualifiedName, null);
 	}
 
 	/**
@@ -265,9 +318,18 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		final Object removedObject = qualifiedNameToObject.put(qualifiedName, object);
 		if (removedObject != null) {
 			objectToQualifiedName.remove(removedObject);
+			objectToURI.remove(removedObject);
 		}
 		objectToQualifiedName.put(object, qualifiedName);
-
+		try {
+			final URL resource = classLoader.getResource(loader.resourceName(qualifiedName));
+			// can be null for validation and completion
+			if (resource != null) {
+				objectToURI.put(object, resource.toURI());
+			}
+		} catch (URISyntaxException e) {
+			// we already loaded the object from this URI so it should never happen.
+		}
 	}
 
 	/**
@@ -295,6 +357,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		for (String qualifiedName : qualifiedNames) {
 			final Object object = qualifiedNameToObject.remove(qualifiedName);
 			objectToQualifiedName.remove(object);
+			objectToURI.remove(object);
 			final List<String> imports = qualifiedNameToImports.remove(qualifiedName);
 			if (imports != null) {
 				for (String imported : imports) {
@@ -437,7 +500,15 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 
 	@Override
 	public Set<String> getResolvedQualifiedNames() {
-		return new LinkedHashSet<>(qualifiedNameToObject.keySet());
+		final LinkedHashSet<String> res = new LinkedHashSet<>();
+
+		for (Entry<String, Object> entry : qualifiedNameToObject.entrySet()) {
+			if (entry.getValue() != null) {
+				res.add(entry.getKey());
+			}
+		}
+
+		return res;
 	}
 
 	/**
@@ -554,6 +625,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	@Override
 	public String getQualifiedName(Object object) {
 		return objectToQualifiedName.get(object);
+	}
+
+	@Override
+	public URI getURI(Object object) {
+		return objectToURI.get(object);
 	}
 
 	@Override

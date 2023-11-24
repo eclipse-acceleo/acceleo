@@ -16,6 +16,7 @@
 
 <plugin>
    <extension-point id="resolverfactory" name="Acceleo Query Language qualified name resolver factory" schema="schema/resolverfactory.exsd"/>
+   <extension-point id="workspaceresolverfactory" name="Acceleo Query Language workspace qualified name resolver factory" schema="schema/workspaceresolverfactory.exsd"/>
    <extension-point id="servicesConfigurator" name="Acceleo Query Language Services Configurator" schema="schema/servicesConfigurator.exsd"/>
    <extension-point id="resourceSetConfigurator" name="Acceleo Query Language Resource Set Configurator" schema="schema/resourceSetConfigurator.exsd"/>
 

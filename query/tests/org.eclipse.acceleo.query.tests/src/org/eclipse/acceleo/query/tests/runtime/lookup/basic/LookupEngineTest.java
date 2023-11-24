@@ -234,8 +234,8 @@ public class LookupEngineTest {
 		}
 
 		@Override
-		protected IService<Method> getService(Method method) {
-			IService<Method> result = new JavaMethodService(method, this);
+		protected IService<Method> getService(Method method, boolean forWorkspace) {
+			IService<Method> result = new JavaMethodService(method, this, forWorkspace);
 
 			service1 = result;
 
@@ -258,8 +258,8 @@ public class LookupEngineTest {
 		}
 
 		@Override
-		protected IService<Method> getService(Method method) {
-			IService<Method> result = new JavaMethodService(method, this);
+		protected IService<Method> getService(Method method, boolean forWorkspace) {
+			IService<Method> result = new JavaMethodService(method, this, forWorkspace);
 
 			service1 = result;
 
@@ -282,8 +282,8 @@ public class LookupEngineTest {
 		}
 
 		@Override
-		protected IService<Method> getService(Method method) {
-			IService<Method> result = new JavaMethodService(method, this);
+		protected IService<Method> getService(Method method, boolean forWorkspace) {
+			IService<Method> result = new JavaMethodService(method, this, forWorkspace);
 
 			service1 = result;
 
@@ -310,14 +310,14 @@ public class LookupEngineTest {
 		}
 
 		@Override
-		protected IService<Method> getService(Method method) {
+		protected IService<Method> getService(Method method, boolean forWorkspace) {
 			final IService<Method> result;
 
 			if ("service2".equals(method.getName())) {
-				result = new JavaMethodService(method, this);
+				result = new JavaMethodService(method, this, forWorkspace);
 				service2 = result;
 			} else {
-				result = super.getService(method);
+				result = super.getService(method, forWorkspace);
 			}
 
 			return result;

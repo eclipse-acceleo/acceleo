@@ -60,9 +60,11 @@ public class SWTPromptServices extends AbstractServiceProvider {
 		 *            the {@link Method}
 		 * @param serviceInstance
 		 *            the instance
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		EOBjectPromptService(Method publicMethod, Object serviceInstance) {
-			super(publicMethod, serviceInstance);
+		EOBjectPromptService(Method publicMethod, Object serviceInstance, boolean forWorkspace) {
+			super(publicMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override
@@ -411,13 +413,13 @@ public class SWTPromptServices extends AbstractServiceProvider {
 	}
 
 	@Override
-	protected IService getService(Method method) {
-		final IService result;
+	protected IService<Method> getService(Method method, boolean forWorkspace) {
+		final IService<Method> result;
 
 		if ("promptEObject".equals(method.getName())) {
-			result = new EOBjectPromptService(method, this);
+			result = new EOBjectPromptService(method, this, forWorkspace);
 		} else if (!"dispose".equals(method.getName())) {
-			result = new JavaMethodService(method, this);
+			result = new JavaMethodService(method, this, forWorkspace);
 		} else {
 			result = null;
 		}

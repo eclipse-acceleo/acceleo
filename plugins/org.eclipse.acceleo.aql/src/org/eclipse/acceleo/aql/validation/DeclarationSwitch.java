@@ -285,7 +285,7 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 							if (!serviceParameterTypes.get(i).isAssignableFrom(registeredServiceParameterTypes
 									.get(i)) && !registeredServiceParameterTypes.get(i).isAssignableFrom(
 											serviceParameterTypes.get(i))) {
-								break nextservice;
+								continue nextservice;
 							}
 						}
 						if (!res.contains(registeredService)) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,17 +43,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class ResourceServices extends AbstractServiceProvider {
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
-	 */
+
 	@Override
-	protected IService<Method> getService(Method method) {
+	protected IService<Method> getService(Method method, boolean forWorkspace) {
 		if ("getContents".equals(method.getName())) {
-			return new GetContentsService(method, this);
+			return new GetContentsService(method, this, forWorkspace);
 		}
-		return new JavaMethodService(method, this);
+		return new JavaMethodService(method, this, forWorkspace);
 	}
 
 	// @formatter:off
@@ -186,9 +182,11 @@ public class ResourceServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private GetContentsService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private GetContentsService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override

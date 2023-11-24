@@ -43,7 +43,7 @@ public class JavaMethodServiceCompletionProposalTests {
 		if (serviceMethod != null) {
 			try {
 				JavaMethodService service = new JavaMethodService(serviceMethod, clazz
-						.getDeclaredConstructor().newInstance());
+						.getDeclaredConstructor().newInstance(), false);
 				JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(
 						service);
 				String description = proposal.getDescription();
@@ -162,7 +162,7 @@ public class JavaMethodServiceCompletionProposalTests {
 	@Test
 	public void getCursorOffsetOneParameter() throws NoSuchMethodException, SecurityException {
 		final Method serviceMethod = AnyServices.class.getMethod("toString", Object.class);
-		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null));
+		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null), false);
 
 		JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(service);
 
@@ -172,7 +172,7 @@ public class JavaMethodServiceCompletionProposalTests {
 	@Test
 	public void getCursorOffsetMoreThanOneParameter() throws NoSuchMethodException, SecurityException {
 		final Method serviceMethod = AnyServices.class.getMethod("equals", Object.class, Object.class);
-		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null));
+		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null), false);
 
 		JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(service);
 
@@ -182,7 +182,7 @@ public class JavaMethodServiceCompletionProposalTests {
 	@Test
 	public void testToString() throws NoSuchMethodException, SecurityException {
 		final Method serviceMethod = AnyServices.class.getMethod("equals", Object.class, Object.class);
-		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null));
+		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null), false);
 
 		JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(service);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,44 +69,46 @@ import org.eclipse.emf.ecore.EClassifier;
 public class CollectionServices extends AbstractServiceProvider {
 
 	@Override
-	protected IService<Method> getService(Method publicMethod) {
+	protected IService<Method> getService(Method publicMethod, boolean forWorkspace) {
 		final IService<Method> result;
 
 		if ("filter".equals(publicMethod.getName())) {
-			result = new SecondArgumentTypeInFirstArgumentCollectionType(publicMethod, this);
+			result = new SecondArgumentTypeInFirstArgumentCollectionType(publicMethod, this, forWorkspace);
 		} else if ("add".equals(publicMethod.getName()) || "concat".equals(publicMethod.getName()) || "union"
 				.equals(publicMethod.getName())) {
-			result = new ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType(publicMethod, this);
+			result = new ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType(publicMethod, this,
+					forWorkspace);
 		} else if ("asSequence".equals(publicMethod.getName()) || "asSet".equals(publicMethod.getName())
 				|| "asOrderedSet".equals(publicMethod.getName())) {
-			result = new ReturnCollectionTypeWithFirstArgumentRawCollectionType(publicMethod, this);
+			result = new ReturnCollectionTypeWithFirstArgumentRawCollectionType(publicMethod, this,
+					forWorkspace);
 		} else if ("subOrderedSet".equals(publicMethod.getName()) || "subSequence".equals(publicMethod
 				.getName())) {
-			result = new FirstCollectionTypeService(publicMethod, this);
+			result = new FirstCollectionTypeService(publicMethod, this, forWorkspace);
 		} else if ("drop".equals(publicMethod.getName()) || "dropRight".equals(publicMethod.getName())) {
-			result = new FirstCollectionTypeService(publicMethod, this);
+			result = new FirstCollectionTypeService(publicMethod, this, forWorkspace);
 		} else if ("first".equals(publicMethod.getName()) || "at".equals(publicMethod.getName()) || "last"
 				.equals(publicMethod.getName())) {
-			result = new FirstArgumentRawCollectionType(publicMethod, this);
+			result = new FirstArgumentRawCollectionType(publicMethod, this, forWorkspace);
 		} else if ("excluding".equals(publicMethod.getName()) || "sub".equals(publicMethod.getName())
 				|| "reverse".equals(publicMethod.getName())) {
-			result = new FirstCollectionTypeService(publicMethod, this);
+			result = new FirstCollectionTypeService(publicMethod, this, forWorkspace);
 		} else if ("sortedBy".equals(publicMethod.getName())) {
-			result = new FirstCollectionTypeService(publicMethod, this);
+			result = new FirstCollectionTypeService(publicMethod, this, forWorkspace);
 		} else if ("reject".equals(publicMethod.getName())) {
-			result = new RejectService(publicMethod, this);
+			result = new RejectService(publicMethod, this, forWorkspace);
 		} else if ("select".equals(publicMethod.getName())) {
-			result = new SelectService(publicMethod, this);
+			result = new SelectService(publicMethod, this, forWorkspace);
 		} else if ("collect".equals(publicMethod.getName())) {
-			result = new CollectService(publicMethod, this);
+			result = new CollectService(publicMethod, this, forWorkspace);
 		} else if ("closure".equals(publicMethod.getName())) {
-			result = new ClosureService(publicMethod, this);
+			result = new ClosureService(publicMethod, this, forWorkspace);
 		} else if ("including".equals(publicMethod.getName()) || "prepend".equals(publicMethod.getName())
 				|| "append".equals(publicMethod.getName())) {
-			result = new IncludingService(publicMethod, this);
+			result = new IncludingService(publicMethod, this, forWorkspace);
 		} else if ("sep".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2) {
-				result = new JavaMethodService(publicMethod, this) {
+				result = new JavaMethodService(publicMethod, this, forWorkspace) {
 
 					@Override
 					public Set<IType> getType(Call call, ValidationServices services,
@@ -122,7 +124,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 				};
 			} else if (publicMethod.getParameterTypes().length == 4) {
-				result = new JavaMethodService(publicMethod, this) {
+				result = new JavaMethodService(publicMethod, this, forWorkspace) {
 
 					@Override
 					public Set<IType> getType(Call call, ValidationServices services,
@@ -141,22 +143,22 @@ public class CollectionServices extends AbstractServiceProvider {
 
 				};
 			} else {
-				result = new JavaMethodService(publicMethod, this);
+				result = new JavaMethodService(publicMethod, this, forWorkspace);
 			}
 		} else if ("any".equals(publicMethod.getName())) {
-			result = new AnyService(publicMethod, this);
+			result = new AnyService(publicMethod, this, forWorkspace);
 		} else if ("exists".equals(publicMethod.getName()) || "forAll".equals(publicMethod.getName()) || "one"
 				.equals(publicMethod.getName())) {
-			result = new BooleanLambdaService(publicMethod, this);
+			result = new BooleanLambdaService(publicMethod, this, forWorkspace);
 		} else if ("insertAt".equals(publicMethod.getName())) {
-			result = new InsertAtService(publicMethod, this);
+			result = new InsertAtService(publicMethod, this, forWorkspace);
 		} else if ("intersection".equals(publicMethod.getName())) {
-			result = new IntersectionService(publicMethod, this);
+			result = new IntersectionService(publicMethod, this, forWorkspace);
 		} else if ("sum".equals(publicMethod.getName()) || "min".equals(publicMethod.getName()) || "max"
 				.equals(publicMethod.getName())) {
-			result = new NumberService(publicMethod, this);
+			result = new NumberService(publicMethod, this, forWorkspace);
 		} else {
-			result = new JavaMethodService(publicMethod, this);
+			result = new JavaMethodService(publicMethod, this, forWorkspace);
 		}
 		return result;
 	}

@@ -15,6 +15,8 @@ Bundle-Localization: plugin
 Automatic-Module-Name: org.eclipse.acceleo.query.ide
 Export-Package: org.eclipse.acceleo.query.ide,
  org.eclipse.acceleo.query.ide.runtime.impl.namespace,
+ org.eclipse.acceleo.query.ide.runtime.impl.namespace.workspace,
  org.eclipse.acceleo.query.ide.runtime.namespace,
+ org.eclipse.acceleo.query.ide.runtime.namespace.workspace,
  org.eclipse.acceleo.query.ide.services.configurator
 Bundle-Activator: org.eclipse.acceleo.query.ide.QueryPlugin$Implementation

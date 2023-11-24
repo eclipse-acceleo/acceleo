@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,11 @@ public interface IServiceProvider {
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @return services offered by this class
+	 * @since 8.0.2
 	 */
-	List<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment);
+	List<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, boolean forWorkspace);
 
 }

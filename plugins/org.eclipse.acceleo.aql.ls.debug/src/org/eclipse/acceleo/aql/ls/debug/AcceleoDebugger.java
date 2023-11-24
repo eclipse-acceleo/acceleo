@@ -85,7 +85,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					resolver.clearLoaders();
 					resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 					resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(
-							AcceleoParser.QUALIFIER_SEPARATOR));
+							AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 					final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model
 							.getResourceSet().getURIConverter());
@@ -263,7 +263,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final IProject project = LSPEclipseUtils.findResourceFor((String)arguments.get(MODULE)).getProject();
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
-				AcceleoParser.QUALIFIER_SEPARATOR);
+				AcceleoParser.QUALIFIER_SEPARATOR, false);
 
 		// TODO get options form the launch configuration
 		final Map<String, String> options = new LinkedHashMap<>();
@@ -272,16 +272,18 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				options);
 		// TODO report exceptions
 		model = resourceSetForModels.getResource(modelURI, true);
-		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels);
+		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
+				false);
 
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
 			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
 		}
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR,
+				false));
 
-		final String moduleQualifiedName = resolver.getQualifiedName(java.net.URI.create(moduleURI
-				.toString()));
+		final java.net.URI moduleBinaryURI = resolver.getBinaryURI(java.net.URI.create(moduleURI.toString()));
+		final String moduleQualifiedName = resolver.getQualifiedName(moduleBinaryURI);
 		final Object resolved = resolver.resolve(moduleQualifiedName);
 		if (resolved instanceof Module) {
 			astResult = ((Module)resolved).getAst();
@@ -334,7 +336,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final IQualifiedNameResolver resolver = environment.getLookupEngine().getResolver();
 		resolver.clearLoaders();
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), noDebugEvaluator));
-		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR,
+				false));
 
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResource
 				.getResourceSet().getURIConverter());

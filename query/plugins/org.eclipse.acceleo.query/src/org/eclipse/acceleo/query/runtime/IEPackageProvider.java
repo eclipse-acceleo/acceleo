@@ -140,6 +140,18 @@ public interface IEPackageProvider {
 	Set<EClassifier> getEClassifiers(Class<?> cls);
 
 	/**
+	 * Gets the {@link EClassifier} represented by the given {@link Class} {@link Class#getCanonicalName()
+	 * canonical name}.
+	 * 
+	 * @param clsName
+	 *            the {@link Class} qualified name
+	 * @return the {@link EClassifier} represented by the given {@link Class} {@link Class#getCanonicalName()
+	 *         canonical name} if any, <code>null</code> otherwise
+	 * @since 8.0.2
+	 */
+	Set<EClassifier> getEClassifiers(String clsName);
+
+	/**
 	 * Gets the {@link Class} of instance of the given {@link EClassifier}.
 	 * 
 	 * @param eCls

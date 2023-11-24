@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -30,16 +31,13 @@ public class JavaMethodReceiverService extends JavaMethodService {
 	 * 
 	 * @param method
 	 *            the method that realizes the service
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	public JavaMethodReceiverService(Method method) {
-		super(method, null);
+	public JavaMethodReceiverService(Method method, boolean forWorkspace) {
+		super(method, null, forWorkspace);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getShortSignature()
-	 */
 	@Override
 	public String getShortSignature() {
 		final Class<?>[] parameters = getParameterTypes();
@@ -61,21 +59,11 @@ public class JavaMethodReceiverService extends JavaMethodService {
 		return parameters;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getLongSignature()
-	 */
 	@Override
 	public String getLongSignature() {
 		return super.getLongSignature() + " (receiver as first parameter)";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment)
-	 */
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
@@ -87,21 +75,11 @@ public class JavaMethodReceiverService extends JavaMethodService {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getNumberOfParameters()
-	 */
 	@Override
 	public int getNumberOfParameters() {
 		return super.getNumberOfParameters() + 1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#internalInvoke(java.lang.Object[])
-	 */
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		final Object receiver = arguments[0];

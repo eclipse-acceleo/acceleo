@@ -35,6 +35,7 @@ import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.EObjectServices;
@@ -303,13 +304,15 @@ public final class AcceleoUtil {
 	 *            the {@link IQualifiedNameResolver}
 	 * @param resourceSetForModels
 	 *            the {@link ResourceSet} for models
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @return {@link IQualifiedNameQueryEnvironment} for Acceleo
 	 * @see #cleanServices(IReadOnlyQueryEnvironment, ResourceSet)
 	 */
 	public static IQualifiedNameQueryEnvironment newAcceleoQueryEnvironment(Map<String, String> options,
-			IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
+			IQualifiedNameResolver resolver, ResourceSet resourceSetForModels, boolean forWorkspace) {
 		return AQLUtils.newQualifiedNameEnvironmentDefaultServices(LANGUAGE_NAME, options, resolver,
-				resourceSetForModels);
+				resourceSetForModels, forWorkspace);
 	}
 
 	/**

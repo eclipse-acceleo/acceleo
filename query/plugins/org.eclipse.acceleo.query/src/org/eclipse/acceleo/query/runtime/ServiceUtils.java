@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,9 +49,28 @@ public final class ServiceUtils {
 	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param cls
 	 *            the {@link Class}
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 * @return the {@link Set} of {@link IService} for the given {@link Class}
 	 */
 	public static Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
+		return getServices(queryEnvironment, cls, false);
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} for the given {@link Class}. If the class can't be
+	 * instantiated only static {@link Method} will be used to produce {@link IService}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param cls
+	 *            the {@link Class}
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
+	 * @return the {@link Set} of {@link IService} for the given {@link Class}
+	 */
+	public static Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls,
+			boolean forWorkspace) {
 		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		Object instance = null;
@@ -72,7 +91,7 @@ public final class ServiceUtils {
 		} catch (InvocationTargetException e) {
 			// we will go without instance and register only static methods
 		}
-		result.addAll(getServicesFromInstance(queryEnvironment, cls, instance));
+		result.addAll(getServicesFromInstance(queryEnvironment, cls, instance, forWorkspace));
 
 		return result;
 	}
@@ -89,11 +108,28 @@ public final class ServiceUtils {
 	 */
 	public static Set<IService<?>> getReceiverServices(IReadOnlyQueryEnvironment queryEnvironment,
 			Class<?> cls) {
+		return getReceiverServices(queryEnvironment, cls, false);
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} for the given {@link Class} with receiver as first parameter.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param cls
+	 *            the {@link Class}
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
+	 * @return the {@link Set} of {@link IService} for the given {@link Class} with receiver as first
+	 *         parameter
+	 */
+	public static Set<IService<?>> getReceiverServices(IReadOnlyQueryEnvironment queryEnvironment,
+			Class<?> cls, boolean forWorkspace) {
 		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		for (Method method : cls.getMethods()) {
 			if (isReveiverServiceMethod(method)) {
-				result.add(new JavaMethodReceiverService(method));
+				result.add(new JavaMethodReceiverService(method, forWorkspace));
 			}
 		}
 
@@ -110,7 +146,23 @@ public final class ServiceUtils {
 	 * @return the {@link Set} of {@link IService} for the given {@link Object instance}
 	 */
 	public static Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, Object instance) {
-		return getServicesFromInstance(queryEnvironment, instance.getClass(), instance);
+		return getServices(queryEnvironment, instance, false);
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} for the given {@link Object instance}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param instance
+	 *            the {@link Object instance}
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
+	 * @return the {@link Set} of {@link IService} for the given {@link Object instance}
+	 */
+	public static Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, Object instance,
+			boolean forWorkspace) {
+		return getServicesFromInstance(queryEnvironment, instance.getClass(), instance, forWorkspace);
 	}
 
 	/**
@@ -125,16 +177,16 @@ public final class ServiceUtils {
 	 * @return the {@link ServiceRegistrationResult}
 	 */
 	private static Set<IService<?>> getServicesFromInstance(IReadOnlyQueryEnvironment queryEnvironment,
-			Class<?> cls, Object instance) {
+			Class<?> cls, Object instance, boolean forWorkspace) {
 		final Set<IService<?>> result = new LinkedHashSet<IService<?>>();
 
 		if (instance instanceof IServiceProvider) {
-			result.addAll(((IServiceProvider)instance).getServices(queryEnvironment));
+			result.addAll(((IServiceProvider)instance).getServices(queryEnvironment, forWorkspace));
 		} else {
 			Method[] methods = cls.getMethods();
 			for (Method method : methods) {
 				if (isServiceMethod(instance, method)) {
-					final IService<?> service = new JavaMethodService(method, instance);
+					final IService<?> service = new JavaMethodService(method, instance, forWorkspace);
 					result.add(service);
 				}
 			}

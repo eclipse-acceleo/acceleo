@@ -52,6 +52,15 @@ public interface IQualifiedNameResolver {
 	URI getSourceURI(String qualifiedName);
 
 	/**
+	 * Gets the binary {@link URI} for the given source {@link URI}.
+	 * 
+	 * @param sourceURI
+	 *            the source {@link URI}
+	 * @return the binary {@link URI} for the given source {@link URI}
+	 */
+	URI getBinaryURI(URI sourceURI);
+
+	/**
 	 * Gets the {@link ISourceLocation} for the given {@link IService}.
 	 * 
 	 * @param service
@@ -106,6 +115,16 @@ public interface IQualifiedNameResolver {
 	 *         resolved} if any, <code>null</code> otherwise
 	 */
 	String getQualifiedName(Object object);
+
+	/**
+	 * Gets the {@link URI} from the given {@link Object} that have been {@link #resolve(String) resolved}.
+	 * 
+	 * @param object
+	 *            the {@link Object}
+	 * @return the {@link URI} from the given {@link Object} that have been {@link #resolve(String) resolved}
+	 *         if any, <code>null</code> otherwise
+	 */
+	URI getURI(Object object);
 
 	/**
 	 * Gets the {@link List} of {@link IService} from the given {@link Object}.

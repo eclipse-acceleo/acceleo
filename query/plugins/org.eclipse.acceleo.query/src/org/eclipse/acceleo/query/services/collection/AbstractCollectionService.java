@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.services.collection;
 import java.lang.reflect.Method;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.emf.ecore.EClassifier;
@@ -39,9 +40,11 @@ public abstract class AbstractCollectionService extends JavaMethodService {
 	 *            the method that realizes the service
 	 * @param serviceInstance
 	 *            the instance on which the service must be called
+	 * @param forWorkspace
+	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	public AbstractCollectionService(Method method, Object serviceInstance) {
-		super(method, serviceInstance);
+	public AbstractCollectionService(Method method, Object serviceInstance, boolean forWorkspace) {
+		super(method, serviceInstance, forWorkspace);
 	}
 
 	/**

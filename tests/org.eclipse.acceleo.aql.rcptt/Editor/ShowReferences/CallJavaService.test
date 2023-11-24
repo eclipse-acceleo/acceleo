@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _5ufeMOKlEe2DiuG6X15Vyw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 5/2/23, 3:21 PM
+Save-Time: 11/24/23, 10:21 AM
 Tags: fail
 Testcase-Type: ecl
 
@@ -24,30 +24,33 @@ with [get-editor "c.mtl" | get-text-viewer] {
     get-menu -path "Find References" | click -metaKeys ""
 }
 
+
 with [get-view Search | get-tree] {
     with [get-item 
         -path "test/src/test/c.mtl \\(3 matches\\)/10: some text \\[myVariable1.name.getMessage\\(\\)\\/\\]"] {
+        get-property "getData().getLine()" | equals 10 | verify-true
         get-property "getData().getLength()" | equals 51 | verify-true
         get-property "getData().getOffset()" | equals 357 | verify-true
         get-property "getData().getContents()" | equals "some text [myVariable1.name.getMessage()/]" | verify-true
     }
     with [get-item 
         -path "test/src/test/c.mtl \\(3 matches\\)/12: \\[myParam.eClassifiers.name.getMessage\\(\\)\\/\\]"] {
+        get-property "getData().getLine()" | equals 12 | verify-true
         get-property "getData().getLength()" | equals 49 | verify-true
         get-property "getData().getOffset()" | equals 423 | verify-true
         get-property "getData().getContents()" | equals "[myParam.eClassifiers.name.getMessage()/]" | verify-true
     }
     with [get-item -path "test/src/test/c.mtl \\(3 matches\\)/23: \\[myParam.name.getMessage\\(\\)\\/\\]"] {
+        get-property "getData().getLine()" | equals 23 | verify-true
         get-property "getData().getLength()" | equals 30 | verify-true
         get-property "getData().getOffset()" | equals 746 | verify-true
         get-property "getData().getContents()" | equals "[myParam.name.getMessage()/]" | verify-true
     }
     with [get-item -path "test/src/test/importA.mtl/17: \\[myParam.name.getMessage\\(\\)\\/\\]"] {
+        get-property "getData().getLine()" | equals 17 | verify-true
         get-property "getData().getLength()" | equals 30 | verify-true
         get-property "getData().getOffset()" | equals 544 | verify-true
         get-property "getData().getContents()" | equals "[myParam.name.getMessage()/]" | verify-true
     }
 }
-
-get-view Search | get-button "Remove All Matches" | click -metaKeys ""
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

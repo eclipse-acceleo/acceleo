@@ -179,9 +179,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		EObjectFeatureAccess(Method method, Object serviceInstance) {
-			super(method, serviceInstance);
+		EObjectFeatureAccess(Method method, Object serviceInstance, boolean forWorkspace) {
+			super(method, serviceInstance, forWorkspace);
 		}
 
 		/**
@@ -324,9 +326,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private EContainerService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private EContainerService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override
@@ -419,9 +423,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private EContainerOrSelfService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private EContainerOrSelfService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		/**
@@ -512,9 +518,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private EContentsService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private EContentsService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		@Override
@@ -639,9 +647,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private AllInstancesService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private AllInstancesService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		/**
@@ -690,9 +700,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		private EInverseService(Method serviceMethod, Object serviceInstance) {
-			super(serviceMethod, serviceInstance);
+		private EInverseService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, forWorkspace);
 		}
 
 		/**
@@ -704,10 +716,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the instance on which the service must be called
 		 * @param filterIndex
 		 *            the index of the filtering {@link IType}
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 * @since 4.0.0
 		 */
-		private EInverseService(Method serviceMethod, Object serviceInstance, int filterIndex) {
-			super(serviceMethod, serviceInstance, filterIndex);
+		private EInverseService(Method serviceMethod, Object serviceInstance, int filterIndex,
+				boolean forWorkspace) {
+			super(serviceMethod, serviceInstance, filterIndex, forWorkspace);
 		}
 
 		@Override
@@ -865,9 +880,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		 *            the method that realizes the service
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
+		 * @param forWorkspace
+		 *            tells if the {@link IService} will be used in a workspace
 		 */
-		EGetService(Method method, Object serviceInstance) {
-			super(method, serviceInstance);
+		EGetService(Method method, Object serviceInstance, boolean forWorkspace) {
+			super(method, serviceInstance, forWorkspace);
 		}
 
 		/**
@@ -938,39 +955,34 @@ public class EObjectServices extends AbstractServiceProvider {
 		this.rootProvider = rootProvider;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
-	 */
 	@Override
-	protected IService<Method> getService(Method publicMethod) {
+	protected IService<Method> getService(Method publicMethod, boolean forWorkspace) {
 		final IService<Method> result;
 
 		if ("eContents".equals(publicMethod.getName())) {
-			result = new EContentsService(publicMethod, this);
+			result = new EContentsService(publicMethod, this, forWorkspace);
 		} else if ("eAllContents".equals(publicMethod.getName())) {
-			result = new EAllContentsService(publicMethod, this);
+			result = new EAllContentsService(publicMethod, this, forWorkspace);
 		} else if ("eContainer".equals(publicMethod.getName())) {
-			result = new EContainerService(publicMethod, this);
+			result = new EContainerService(publicMethod, this, forWorkspace);
 		} else if ("eContainerOrSelf".equals(publicMethod.getName())) {
-			result = new EContainerOrSelfService(publicMethod, this);
+			result = new EContainerOrSelfService(publicMethod, this, forWorkspace);
 		} else if ("eInverse".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2 && publicMethod
 					.getParameterTypes()[1] == String.class) {
 				// no filter for eInverse(EObject, String)
-				result = new EInverseService(publicMethod, this, 10);
+				result = new EInverseService(publicMethod, this, 10, forWorkspace);
 			} else {
-				result = new EInverseService(publicMethod, this);
+				result = new EInverseService(publicMethod, this, forWorkspace);
 			}
 		} else if ("allInstances".equals(publicMethod.getName())) {
-			result = new AllInstancesService(publicMethod, this);
+			result = new AllInstancesService(publicMethod, this, forWorkspace);
 		} else if (AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(publicMethod.getName())) {
-			result = new EObjectFeatureAccess(publicMethod, this);
+			result = new EObjectFeatureAccess(publicMethod, this, forWorkspace);
 		} else if ("eGet".equals(publicMethod.getName())) {
-			result = new EGetService(publicMethod, this);
+			result = new EGetService(publicMethod, this, forWorkspace);
 		} else {
-			result = new JavaMethodService(publicMethod, this);
+			result = new JavaMethodService(publicMethod, this, forWorkspace);
 		}
 
 		return result;

@@ -257,7 +257,7 @@ public class TestServiceProvider implements IServiceProvider {
 	}
 
 	@Override
-	public List<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
+	public List<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, boolean forWorkspace) {
 		final List<IService<?>> result = new ArrayList<IService<?>>();
 
 		result.add(new Service1(new Object()));

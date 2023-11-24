@@ -55,11 +55,11 @@ public class SWTPromptServicesConfigurator implements IServicesConfigurator {
 
 	@Override
 	public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment,
-			ResourceSet resourceSetForModels, Map<String, String> options) {
+			ResourceSet resourceSetForModels, Map<String, String> options, boolean forWorkspace) {
 		SWTPromptServices serviceInstance = new SWTPromptServices(queryEnvironment, resourceSetForModels);
 		services.put(queryEnvironment, serviceInstance);
 
-		return ServiceUtils.getServices(queryEnvironment, serviceInstance);
+		return ServiceUtils.getServices(queryEnvironment, serviceInstance, forWorkspace);
 	}
 
 	@Override

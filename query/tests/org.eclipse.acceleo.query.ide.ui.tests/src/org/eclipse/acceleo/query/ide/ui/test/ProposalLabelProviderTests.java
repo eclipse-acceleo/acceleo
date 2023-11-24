@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,16 +65,9 @@ public class ProposalLabelProviderTests {
 		 */
 		public TestService() throws NoSuchMethodException, SecurityException {
 			super(ProposalLabelProviderTests.this.getClass().getMethod("testService", String.class,
-					String.class), ProposalLabelProviderTests.this);
+					String.class), ProposalLabelProviderTests.this, false);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getType(Call,
-		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices, IValidationResult,
-		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
-		 */
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
@@ -84,12 +77,6 @@ public class ProposalLabelProviderTests {
 			return result;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
-		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
-		 */
 		public Set<IType> validateAllType(ValidationServices services,
 				IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
@@ -101,11 +88,6 @@ public class ProposalLabelProviderTests {
 			return result;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getServiceMethod()
-		 */
 		@SuppressWarnings("unused")
 		public Method getServiceMethod() {
 			Method result = null;
@@ -122,11 +104,6 @@ public class ProposalLabelProviderTests {
 			return result;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getServiceInstance()
-		 */
 		@SuppressWarnings("unused")
 		public Object getServiceInstance() {
 			return ProposalLabelProviderTests.this;
