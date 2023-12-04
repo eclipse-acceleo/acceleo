@@ -1,0 +1,1 @@
+[module withExtendsNotJavaIdentifier('http://www.eclipse.org/emf/2002/Ecore') extends misc::My_Other_Module/]

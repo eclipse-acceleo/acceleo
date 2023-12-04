@@ -139,7 +139,6 @@ public final class StandaloneMigrator {
 	 */
 	public void migrate(Path mtlFile) throws IOException {
 		String relativePath = sourceFolderPath.relativize(mtlFile).toString();
-		Path targetMtlFile = targetFolderPath.resolve(relativePath);
 		File emtlFile = binFolderPath.resolve(relativePath.replaceAll(MTL_FILE_EXTENSION,
 				EMTL_FILE_EXTENSION)).toFile();
 		if (emtlFile.exists()) {
@@ -152,6 +151,8 @@ public final class StandaloneMigrator {
 				String a4Content = new AcceleoAstSerializer().serialize(module);
 
 				// write result
+				Path targetMtlFile = targetFolderPath.resolve(relativePath).getParent().resolve(module
+						.getName() + "." + AcceleoParser.MODULE_FILE_EXTENSION);
 				Files.deleteIfExists(targetMtlFile);
 				Files.createDirectories(targetMtlFile.getParent());
 				targetMtlFile.toFile().createNewFile();

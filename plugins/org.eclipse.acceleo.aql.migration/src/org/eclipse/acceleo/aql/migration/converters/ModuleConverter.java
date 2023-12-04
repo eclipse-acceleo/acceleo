@@ -192,7 +192,7 @@ public final class ModuleConverter extends AbstractConverter {
 
 	private Object caseModule(org.eclipse.acceleo.model.mtl.Module inputModule) {
 		final Module outputModule = AcceleoFactory.eINSTANCE.createModule();
-		outputModule.setName(inputModule.getName());
+		outputModule.setName(getModuleName(inputModule.getName()));
 		map(inputModule.getInput(), outputModule.getMetamodels());
 		map(inputModule.getOwnedModuleElement(), outputModule.getModuleElements());
 
@@ -202,10 +202,10 @@ public final class ModuleConverter extends AbstractConverter {
 			// only one module can be extended
 			org.eclipse.acceleo.model.mtl.Module extendedModule = inputModule.getExtends().get(0);
 			if (extendedModule.getNsURI() != null) {
-				moduleReference.setQualifiedName(extendedModule.getNsURI());
+				moduleReference.setQualifiedName(getModuleName(extendedModule.getNsURI()));
 			} else {
-				moduleReference.setQualifiedName(moduleResolver.getQualifiedName(inputModule,
-						extendedModule));
+				moduleReference.setQualifiedName(getModuleName(moduleResolver.getQualifiedName(inputModule,
+						extendedModule)));
 			}
 			outputModule.setExtends(moduleReference);
 		}
@@ -215,10 +215,10 @@ public final class ModuleConverter extends AbstractConverter {
 			Import outputImport = AcceleoFactory.eINSTANCE.createImport();
 			ModuleReference moduleReference = AcceleoFactory.eINSTANCE.createModuleReference();
 			if (importedModule.getNsURI() != null) {
-				moduleReference.setQualifiedName(importedModule.getNsURI());
+				moduleReference.setQualifiedName(getModuleName(importedModule.getNsURI()));
 			} else {
-				moduleReference.setQualifiedName(moduleResolver.getQualifiedName(inputModule,
-						importedModule));
+				moduleReference.setQualifiedName(getModuleName(moduleResolver.getQualifiedName(inputModule,
+						importedModule)));
 			}
 			outputImport.setModule(moduleReference);
 			outputModule.getImports().add(outputImport);
@@ -252,6 +252,42 @@ public final class ModuleConverter extends AbstractConverter {
 		}
 
 		return outputModule;
+	}
+
+	/**
+	 * Gets the Acceleo 4 identifier for the given name or qualified name of a module.
+	 * 
+	 * @param name
+	 *            the name or qualified name of a module
+	 * @return the Acceleo 4 identifier for the given name or qualified name of a module
+	 */
+	private String getModuleName(String name) {
+		final StringBuilder res = new StringBuilder();
+
+		final int lastColonIndex = name.lastIndexOf("::");
+		final int start;
+		if (lastColonIndex >= 0) {
+			start = lastColonIndex + 2;
+			res.append(name.substring(0, start));
+		} else {
+			start = 0;
+		}
+		char charAt = name.charAt(start);
+		if (Character.isJavaIdentifierStart(charAt)) {
+			res.append(charAt);
+		} else {
+			res.append('_');
+		}
+		for (int i = start + 1; i < name.length(); i++) {
+			charAt = name.charAt(i);
+			if (Character.isJavaIdentifierPart(charAt)) {
+				res.append(charAt);
+			} else {
+				res.append('_');
+			}
+		}
+
+		return res.toString();
 	}
 
 	private boolean isAmbiguousJavaServiceCall(Module module, Call call) {

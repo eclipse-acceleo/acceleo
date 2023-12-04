@@ -1,0 +1,3 @@
+[module withImportNotJavaIdentifier('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import misc::My-Other-Module/]
