@@ -64,7 +64,7 @@ public class TemplateService extends AbstractModuleElementService<Template> {
 	}
 
 	@Override
-	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+	public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		for (Variable var : getOrigin().getParameters()) {
@@ -82,7 +82,7 @@ public class TemplateService extends AbstractModuleElementService<Template> {
 	}
 
 	@Override
-	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
+	public Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
 		Set<IType> result = new LinkedHashSet<IType>();
 		result.add(new ClassType(queryEnvironment, String.class));
 

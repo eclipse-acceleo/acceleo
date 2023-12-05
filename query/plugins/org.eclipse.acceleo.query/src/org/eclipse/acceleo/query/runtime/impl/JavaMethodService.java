@@ -92,14 +92,14 @@ public class JavaMethodService extends AbstractService<Method> {
 	}
 
 	@Override
-	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-		final List<IType> result = new ArrayList<IType>();
+	public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		final List<IType> res = new ArrayList<IType>();
 
 		for (Class<?> cls : getOrigin().getParameterTypes()) {
-			result.add(getClassType(queryEnvironment, cls));
+			res.add(getClassType(queryEnvironment, cls));
 		}
 
-		return result;
+		return res;
 	}
 
 	/**
@@ -180,15 +180,13 @@ public class JavaMethodService extends AbstractService<Method> {
 	}
 
 	@Override
-	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
-		if (knwonEnvironment != queryEnvironment || returnTypes == null) {
-			knwonEnvironment = queryEnvironment;
-			returnTypes = new LinkedHashSet<IType>();
-			Type returnType = getOrigin().getGenericReturnType();
-			returnTypes.addAll(getIType(queryEnvironment, returnType));
-		}
+	public Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
+		final Set<IType> res = new LinkedHashSet<IType>();
 
-		return returnTypes;
+		Type returnType = getOrigin().getGenericReturnType();
+		res.addAll(getIType(queryEnvironment, returnType));
+
+		return res;
 	}
 
 	/**

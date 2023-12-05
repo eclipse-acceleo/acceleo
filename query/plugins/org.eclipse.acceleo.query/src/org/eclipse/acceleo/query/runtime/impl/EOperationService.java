@@ -111,23 +111,13 @@ public class EOperationService extends AbstractService<EOperation> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getName()
-	 */
 	@Override
 	public String getName() {
 		return getOrigin().getName();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment)
-	 */
 	@Override
-	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+	public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IType> result = new ArrayList<IType>();
 
 		result.add(new EClassifierType(queryEnvironment, getOrigin().getEContainingClass()));
@@ -143,21 +133,11 @@ public class EOperationService extends AbstractService<EOperation> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getNumberOfParameters()
-	 */
 	@Override
 	public int getNumberOfParameters() {
 		return getOrigin().getEParameters().size() + 1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#internalInvoke(java.lang.Object[])
-	 */
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		final Object result;
@@ -242,18 +222,13 @@ public class EOperationService extends AbstractService<EOperation> {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getPriority()
-	 */
 	@Override
 	public int getPriority() {
 		return PRIORITY;
 	}
 
 	@Override
-	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
+	public Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		final IType eClassifierType = new EClassifierType(queryEnvironment, getOrigin().getEType());
@@ -266,12 +241,6 @@ public class EOperationService extends AbstractService<EOperation> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#matches(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
-	 *      org.eclipse.acceleo.query.validation.type.IType[])
-	 */
 	@Override
 	public boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes) {
 		final List<Set<IType>> eClassifierTypes = new ArrayList<Set<IType>>(argumentTypes.length);
@@ -335,11 +304,6 @@ public class EOperationService extends AbstractService<EOperation> {
 		return canMatch;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getShortSignature()
-	 */
 	@Override
 	public String getShortSignature() {
 		final List<IType> parameterTypes = getParameterTypes(null);
@@ -348,11 +312,6 @@ public class EOperationService extends AbstractService<EOperation> {
 		return serviceShortSignature(argumentTypes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getLongSignature()
-	 */
 	@Override
 	public String getLongSignature() {
 		final String ePkgNsURI;
@@ -375,21 +334,11 @@ public class EOperationService extends AbstractService<EOperation> {
 		return ePkgNsURI + " " + eCLassName + " " + getShortSignature();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof EOperationService && ((EOperationService)obj).getOrigin().equals(getOrigin());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		return getOrigin().hashCode();

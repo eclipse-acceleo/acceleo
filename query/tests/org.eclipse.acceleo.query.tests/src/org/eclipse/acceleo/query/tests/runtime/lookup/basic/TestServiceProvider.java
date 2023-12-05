@@ -14,13 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
-import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractService;
-import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -42,43 +39,23 @@ public class TestServiceProvider implements IServiceProvider {
 			super(serviceOrigin);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getName()
-		 */
 		@Override
 		public String getName() {
 			return SERVICE_NAME;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getShortSignature()
-		 */
 		@Override
 		public String getShortSignature() {
 			return SERVICE_NAME;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getLongSignature()
-		 */
 		@Override
 		public String getLongSignature() {
 			return SERVICE_NAME;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment)
-		 */
 		@Override
-		public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 			final List<IType> result = new ArrayList<IType>();
 
 			result.add(new ClassType(queryEnvironment, type1));
@@ -86,50 +63,21 @@ public class TestServiceProvider implements IServiceProvider {
 			return result;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getNumberOfParameters()
-		 */
 		@Override
 		public int getNumberOfParameters() {
 			return 1;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getPriority()
-		 */
 		@Override
 		public int getPriority() {
 			return priority1;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getType(org.eclipse.acceleo.query.ast.Call,
-		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
-		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
-		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
-		 */
 		@Override
-		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+		public Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
 			return null;
 		}
 
-		@Override
-		public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
-			return null;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#internalInvoke(java.lang.Object[])
-		 */
 		@Override
 		protected Object internalInvoke(Object[] arguments) throws Exception {
 			return null;
@@ -146,43 +94,23 @@ public class TestServiceProvider implements IServiceProvider {
 			super(serviceOrigin);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getName()
-		 */
 		@Override
 		public String getName() {
 			return SERVICE_NAME;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getShortSignature()
-		 */
 		@Override
 		public String getShortSignature() {
 			return SERVICE_NAME;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getLongSignature()
-		 */
 		@Override
 		public String getLongSignature() {
 			return SERVICE_NAME;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment)
-		 */
 		@Override
-		public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 			final List<IType> result = new ArrayList<IType>();
 
 			result.add(new ClassType(queryEnvironment, type2));
@@ -190,50 +118,21 @@ public class TestServiceProvider implements IServiceProvider {
 			return result;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getNumberOfParameters()
-		 */
 		@Override
 		public int getNumberOfParameters() {
 			return 1;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getPriority()
-		 */
 		@Override
 		public int getPriority() {
 			return priority2;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getType(org.eclipse.acceleo.query.ast.Call,
-		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
-		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
-		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
-		 */
 		@Override
-		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+		public Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
 			return null;
 		}
 
-		@Override
-		public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
-			return null;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#internalInvoke(java.lang.Object[])
-		 */
 		@Override
 		protected Object internalInvoke(Object[] arguments) throws Exception {
 			return null;

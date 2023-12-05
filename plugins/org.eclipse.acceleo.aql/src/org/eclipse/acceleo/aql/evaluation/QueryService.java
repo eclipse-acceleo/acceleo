@@ -20,11 +20,9 @@ import java.util.Set;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.completion.proposals.QueryServiceCompletionProposal;
-import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -64,7 +62,7 @@ public class QueryService extends AbstractModuleElementService<Query> {
 	}
 
 	@Override
-	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+	public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		List<IType> result = new ArrayList<IType>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		for (Variable var : getOrigin().getParameters()) {
@@ -82,19 +80,7 @@ public class QueryService extends AbstractModuleElementService<Query> {
 	}
 
 	@Override
-	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
-		final AstValidator validator = new AstValidator(services);
-
-		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(
-				Collections.emptyMap(), getOrigin().getType()).getPossibleTypes(getOrigin().getType()
-						.getAst()));
-
-		return result;
-	}
-
-	@Override
-	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
+	public Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 
 		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(

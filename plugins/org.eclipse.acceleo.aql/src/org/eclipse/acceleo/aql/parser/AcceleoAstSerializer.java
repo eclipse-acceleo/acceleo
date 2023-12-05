@@ -39,6 +39,7 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
@@ -113,7 +114,8 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseBinding(Binding binding) {
-		builder.append(binding.getName());
+		final String bindingName = AstBuilder.protectWithUnderscore(binding.getName());
+		builder.append(bindingName);
 		if (binding.getType() != null) {
 			builder.append(" : ");
 			builder.append(querySerializer.serialize(binding.getType().getAst()));
@@ -567,7 +569,8 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseVariable(Variable variable) {
-		builder.append(variable.getName());
+		final String variableName = AstBuilder.protectWithUnderscore(variable.getName());
+		builder.append(variableName);
 		builder.append(SPACE);
 		builder.append(AcceleoParser.COLON);
 		builder.append(SPACE);

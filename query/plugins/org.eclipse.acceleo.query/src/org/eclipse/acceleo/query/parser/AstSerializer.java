@@ -147,7 +147,8 @@ public class AstSerializer extends AstSwitch<Object> {
 
 	@Override
 	public Object caseBinding(Binding binding) {
-		builder.append(binding.getName());
+		final String bindingName = AstBuilder.protectWithUnderscore(binding.getName());
+		builder.append(bindingName);
 		if (binding.getType() != null) {
 			builder.append(SPACE).append(':').append(SPACE);
 			builder.append(doSwitch(binding.getType()));
@@ -932,7 +933,8 @@ public class AstSerializer extends AstSwitch<Object> {
 
 	@Override
 	public Object caseVariableDeclaration(VariableDeclaration variableDeclaration) {
-		builder.append(variableDeclaration.getName());
+		final String variableName = AstBuilder.protectWithUnderscore(variableDeclaration.getName());
+		builder.append(variableName);
 		if (variableDeclaration.getType() != null) {
 			builder.append(SPACE).append(':').append(SPACE);
 			doSwitch(variableDeclaration.getType());
@@ -942,7 +944,8 @@ public class AstSerializer extends AstSwitch<Object> {
 
 	@Override
 	public Object caseVarRef(VarRef varRef) {
-		builder.append(varRef.getVariableName());
+		final String variableName = AstBuilder.protectWithUnderscore(varRef.getVariableName());
+		builder.append(variableName);
 		return DUMMY;
 	}
 

@@ -41,6 +41,22 @@ public abstract class AbstractService<O> implements IService<O> {
 	private final O origin;
 
 	/**
+	 * Known {@link IReadOnlyQueryEnvironment} to invalidate cached {@link #returnTypes} and
+	 * {@link #res}.
+	 */
+	private IReadOnlyQueryEnvironment knwonEnvironment;
+
+	/**
+	 * Return {@link IType} cache.
+	 */
+	private Set<IType> returnTypes;
+
+	/**
+	 * Parameters {@link IType} cache.
+	 */
+	private List<IType> res;
+
+	/**
 	 * Constructor with an {@link Object origin}.
 	 * 
 	 * @param serviceOrigin
@@ -59,6 +75,44 @@ public abstract class AbstractService<O> implements IService<O> {
 	public O getOrigin() {
 		return this.origin;
 	}
+
+	@Override
+	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		if (knwonEnvironment != queryEnvironment || returnTypes == null) {
+			knwonEnvironment = queryEnvironment;
+			res = computeParameterTypes(queryEnvironment);
+		}
+
+		return res;
+	}
+
+	/**
+	 * Computes the {@link #getParameterTypes(IReadOnlyQueryEnvironment)}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @return the {@link #getParameterTypes(IReadOnlyQueryEnvironment)}
+	 */
+	protected abstract List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment);
+
+	@Override
+	public Set<IType> getType(IReadOnlyQueryEnvironment queryEnvironment) {
+		if (knwonEnvironment != queryEnvironment || returnTypes == null) {
+			knwonEnvironment = queryEnvironment;
+			returnTypes = computeType(queryEnvironment);
+		}
+
+		return returnTypes;
+	}
+
+	/**
+	 * Computes the {@link #getType(IReadOnlyQueryEnvironment)}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @return the {@link #getType(IReadOnlyQueryEnvironment)}
+	 */
+	protected abstract Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment);
 
 	/**
 	 * {@inheritDoc}
