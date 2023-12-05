@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,12 @@ import java.util.Collections;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -77,12 +79,21 @@ final class ServiceWithNoParameterMethodRefactorVisitor extends ASTVisitor {
 			newMethod.parameters().add(parameter);
 
 			// newMethod body: return <serviceName>();
+			// or <serviceName>();
 			final Block body = newMethod.getAST().newBlock();
-			final ReturnStatement returnStatement = newMethod.getAST().newReturnStatement();
 			final MethodInvocation methodInvocation = newMethod.getAST().newMethodInvocation();
 			methodInvocation.setName(newMethod.getAST().newSimpleName(serviceName));
-			returnStatement.setExpression(methodInvocation);
-			body.statements().add(returnStatement);
+			final Statement statement;
+			if (method.getReturnType2() != null && !"void".equals(method.getReturnType2().toString())) {
+				final ReturnStatement returnStatement = newMethod.getAST().newReturnStatement();
+				returnStatement.setExpression(methodInvocation);
+				statement = returnStatement;
+			} else {
+				final ExpressionStatement expressionStatement = newMethod.getAST().newExpressionStatement(
+						methodInvocation);
+				statement = expressionStatement;
+			}
+			body.statements().add(statement);
 			newMethod.setBody(body);
 
 			// add the newMethod to the containing Class
