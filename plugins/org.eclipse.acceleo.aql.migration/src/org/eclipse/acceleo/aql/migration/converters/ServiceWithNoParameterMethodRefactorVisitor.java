@@ -62,7 +62,8 @@ final class ServiceWithNoParameterMethodRefactorVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(MethodDeclaration method) {
-		if (method.getName().getIdentifier().equals(serviceName) && method.parameters().isEmpty()) {
+		if (method.getName().getIdentifier().equals(serviceName) && method.parameters().isEmpty()
+				&& !newMethodExists(method)) {
 			final ASTRewrite rewrite = ASTRewrite.create(method.getAST());
 
 			final MethodDeclaration newMethod = method.getAST().newMethodDeclaration();
@@ -112,4 +113,30 @@ final class ServiceWithNoParameterMethodRefactorVisitor extends ASTVisitor {
 
 		return false;
 	}
+
+	/**
+	 * Tells if the new method we want to create for the given {@link MethodDeclaration} already exists in its
+	 * parent {@link TypeDeclaration}.
+	 * 
+	 * @param method
+	 *            the {@link MethodDeclaration}
+	 * @return <code>true</code> if the new method we want to create for the given {@link MethodDeclaration}
+	 *         already exists in its parent {@link TypeDeclaration}, <code>false</code> otherwise
+	 */
+	private boolean newMethodExists(MethodDeclaration method) {
+		boolean res = false;
+
+		final String newMethodName = serviceName + ExpressionConverter.JAVA_SERVICE;
+		final TypeDeclaration typeDeclaration = (TypeDeclaration)method.getParent();
+		for (MethodDeclaration methodDeclaration : typeDeclaration.getMethods()) {
+			if (newMethodName.equals(methodDeclaration.getName().getIdentifier()) && methodDeclaration
+					.parameters().size() == 1 && "Object".equals(((SingleVariableDeclaration)methodDeclaration
+							.parameters().get(0)).getType().toString())) {
+				res = true;
+				break;
+			}
+		}
+		return res;
+	}
+
 }

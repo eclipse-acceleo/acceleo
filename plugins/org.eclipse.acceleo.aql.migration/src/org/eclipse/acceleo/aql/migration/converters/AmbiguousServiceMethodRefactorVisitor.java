@@ -72,7 +72,7 @@ final class AmbiguousServiceMethodRefactorVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(MethodDeclaration method) {
 		if (method.getName().getIdentifier().equals(serviceName) && parametersAreMatching(method.parameters(),
-				serviceArguments)) {
+				serviceArguments) && !newMethodExists(method)) {
 			final ASTRewrite rewrite = ASTRewrite.create(method.getAST());
 
 			final MethodDeclaration newMethod = method.getAST().newMethodDeclaration();
@@ -125,6 +125,63 @@ final class AmbiguousServiceMethodRefactorVisitor extends ASTVisitor {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Tells if the new method we want to create for the given {@link MethodDeclaration} already exists in its
+	 * parent {@link TypeDeclaration}.
+	 * 
+	 * @param method
+	 *            the {@link MethodDeclaration}
+	 * @return <code>true</code> if the new method we want to create for the given {@link MethodDeclaration}
+	 *         already exists in its parent {@link TypeDeclaration}, <code>false</code> otherwise
+	 */
+	private boolean newMethodExists(MethodDeclaration method) {
+		boolean res = false;
+
+		final String newMethodName = serviceName + ExpressionConverter.JAVA_SERVICE;
+		final TypeDeclaration typeDeclaration = (TypeDeclaration)method.getParent();
+		for (MethodDeclaration methodDeclaration : typeDeclaration.getMethods()) {
+			if (newMethodName.equals(methodDeclaration.getName().getIdentifier()) && haveSameParameterTypes(
+					method, methodDeclaration)) {
+				res = true;
+				break;
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Tells if both given {@link MethodDeclaration} have the same parameter types.
+	 * 
+	 * @param method
+	 *            first {@link MethodDeclaration}
+	 * @param methodDeclaration
+	 *            second {@link MethodDeclaration}
+	 * @return <code>true</code> if both given {@link MethodDeclaration} have the same parameter types,
+	 *         <code>false</code> otherwise
+	 */
+	private boolean haveSameParameterTypes(MethodDeclaration method, MethodDeclaration methodDeclaration) {
+		boolean res;
+
+		if (method.parameters().size() == methodDeclaration.parameters().size()) {
+			res = true;
+			for (int i = 0; i < method.parameters().size(); i++) {
+				final SingleVariableDeclaration methodParameter = (SingleVariableDeclaration)method
+						.parameters().get(i);
+				final SingleVariableDeclaration methodDeclarationParameter = (SingleVariableDeclaration)methodDeclaration
+						.parameters().get(i);
+				if (!methodParameter.getType().toString().equals(methodDeclarationParameter.getType()
+						.toString())) {
+					res = false;
+					break;
+				}
+			}
+		} else {
+			res = false;
+		}
+
+		return res;
 	}
 
 	/**
