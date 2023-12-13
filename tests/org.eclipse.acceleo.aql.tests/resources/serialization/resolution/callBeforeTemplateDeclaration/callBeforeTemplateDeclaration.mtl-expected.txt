@@ -1,0 +1,12 @@
+[module m1('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public mainTemplate(param1 : ecore::EClass)]
+  [file (param1.name + '.txt', overwrite)]
+    [param1.myTemplate()/]
+  [/file]
+[/template]
+
+[template public myTemplate(param1 : ecore::EClass)]
+  [param1.name/]
+[/template]

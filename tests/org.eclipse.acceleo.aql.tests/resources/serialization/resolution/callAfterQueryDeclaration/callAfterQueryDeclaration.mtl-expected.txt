@@ -1,0 +1,10 @@
+[module m1('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public myQuery(param1 : ecore::EClass) : String = param1.name/]
+
+[comment @main /]
+[template public mainTemplate(param1 : ecore::EClass)]
+  [file (param1.name + '.txt', overwrite)]
+    [param1.myQuery()/]
+  [/file]
+[/template]

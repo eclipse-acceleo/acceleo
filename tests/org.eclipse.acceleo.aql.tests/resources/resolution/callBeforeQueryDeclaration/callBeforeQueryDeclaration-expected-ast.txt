@@ -1,0 +1,15 @@
+
+header position 0..53
+module m1
+  metamodel http://www.eclipse.org/emf/2002/Ecore (12..50)
+  [comment @main  (64..70) /] (55..72)
+  
+  public template mainTemplate(param1 : EClass (103..125))
+  @main
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (137..157) mode overwrite
+      [.myQuery(param1) (176..192)/] (newLineNeeded (175..195) (170..197)
+    [/file] (130..204)
+     (newLineNeeded) (204..205) (127..205)
+  [/template] (73..216)
+  public query myQuery(param1 : EClass (240..262)) ) : java.lang.String .aqlFeatureAccess(param1, 'name') (277..288)
+  /] (218..291) (0..291)
