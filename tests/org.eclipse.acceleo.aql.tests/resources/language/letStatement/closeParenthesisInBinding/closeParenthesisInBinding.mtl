@@ -1,0 +1,7 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [let myVariable : ecore::EString = myParam.eClassifiers->first() + ')']
+    some static text.
+  [/let]
+[/template]

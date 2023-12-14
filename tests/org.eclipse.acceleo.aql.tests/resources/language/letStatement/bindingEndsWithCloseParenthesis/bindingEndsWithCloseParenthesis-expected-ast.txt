@@ -1,0 +1,12 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (89..114))
+    [let 
+    myVariable : EString = .aqlFeatureAccess(->first(.aqlFeatureAccess(myParam, 'eClassifiers')), 'name') (154..189) (124..190)
+      some static text. (newLineNeeded) (196..214) (191..216)
+    [/let] (119..222)
+     (newLineNeeded) (222..223) (116..223)
+  [/template] (61..234) (0..234)

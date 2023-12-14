@@ -33,6 +33,7 @@ import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstSerializer;
@@ -73,6 +74,58 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class AQLUtils {
+
+	/**
+	 * Adds the parsing end position to the {@link AstResult}. This can be useful when an {@link Expression}
+	 * ends with a parenthesis expression that has no node in the AST.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	public static class AcceleoAQLResult {
+
+		/**
+		 * The {@link AstResult}.
+		 */
+		private final AstResult astResult;
+
+		/**
+		 * The end position of the parsed expression.
+		 */
+		private final int endPosition;
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param astResult
+		 *            the {@link AstResult}
+		 * @param endPosition
+		 *            the end position of the parsed expression
+		 */
+		public AcceleoAQLResult(AstResult astResult, int endPosition) {
+			super();
+			this.astResult = astResult;
+			this.endPosition = endPosition;
+		}
+
+		/**
+		 * Gets the {@link AstResult}.
+		 * 
+		 * @return the {@link AstResult}
+		 */
+		public AstResult getAstResult() {
+			return astResult;
+		}
+
+		/**
+		 * Gets the expression end position.
+		 * 
+		 * @return the expression end position
+		 */
+		public int getEndPosition() {
+			return endPosition;
+		}
+
+	}
 
 	/**
 	 * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
@@ -182,10 +235,10 @@ public final class AQLUtils {
 	 * 
 	 * @param expression
 	 *            the expression to parse
-	 * @return the corresponding {@link AstResult}
+	 * @return the corresponding {@link AcceleoAQLResult}
 	 */
-	public static AstResult parseWhileAqlExpression(String expression) {
-		final AstResult result;
+	public static AcceleoAQLResult parseWhileAqlExpression(String expression) {
+		final AcceleoAQLResult result;
 
 		if (expression != null && expression.length() > 0) {
 			AstBuilderListener astBuilder = new AstBuilderListener();
@@ -201,7 +254,9 @@ public final class AQLUtils {
 			parser.addErrorListener(astBuilder.getErrorListener());
 			// parser.setTrace(true);
 			parser.expression();
-			result = astBuilder.getAstResult();
+			result = new AcceleoAQLResult(astBuilder.getAstResult(), rewindWhiteSpaces(expression, parser
+					.getCurrentToken().getStartIndex()));
+
 		} else {
 			org.eclipse.acceleo.query.ast.ErrorExpression errorExpression = (org.eclipse.acceleo.query.ast.ErrorExpression)EcoreUtil
 					.create(AstPackage.eINSTANCE.getErrorExpression());
@@ -226,10 +281,39 @@ public final class AQLUtils {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
 					"missing expression", new Object[] {errorExpression }));
-			result = new AstResult(errorExpression, aqlPositions, aqlErrors, diagnostic);
+			result = new AcceleoAQLResult(new AstResult(errorExpression, aqlPositions, aqlErrors, diagnostic),
+					0);
 		}
 
 		return result;
+	}
+
+	/**
+	 * Get the position after rewinding white spaces.
+	 * 
+	 * @param text
+	 *            the input {@link String}
+	 * @param position
+	 *            the current position
+	 * @return the position after rewinding white spaces
+	 */
+	private static int rewindWhiteSpaces(String text, int position) {
+		final int res;
+		if (text != null && !text.isEmpty()) {
+			int index = position - 1;
+			if (Character.isWhitespace(text.charAt(index))) {
+				do {
+					index--;
+				} while (index >= 0 && Character.isWhitespace(text.charAt(index)));
+				res = index + 1;
+			} else {
+				res = position;
+			}
+		} else {
+			res = position;
+		}
+
+		return res;
 	}
 
 	/**

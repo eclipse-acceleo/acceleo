@@ -69,6 +69,7 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.AQLUtils.AcceleoAQLResult;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
@@ -2090,13 +2091,15 @@ public class AcceleoParser {
 	protected Expression parseExpression(int endLimit) {
 		final Expression res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpression();
 
-		final AstResult astResult = parseWhileAqlExpression(text.substring(currentPosition, endLimit));
+		final AcceleoAQLResult acceleoAqlResult = parseWhileAqlExpression(text.substring(currentPosition,
+				endLimit));
+		final AstResult astResult = acceleoAqlResult.getAstResult();
 		final int startPosition = currentPosition;
 		res.setAst(astResult);
 		res.setAql(astResult.getAst());
 		final int endPosition = currentPosition + astResult.getEndPosition(astResult.getAst());
 		setPositions(res, startPosition, endPosition);
-		currentPosition = endPosition;
+		currentPosition = currentPosition + acceleoAqlResult.getEndPosition();
 		astResult.addAllPositonsTo(positions, startPosition, lines[startPosition], columns[startPosition]);
 
 		return res;
@@ -2335,9 +2338,9 @@ public class AcceleoParser {
 	 * 
 	 * @param expression
 	 *            the expression to parse
-	 * @return the corresponding {@link AstResult}
+	 * @return the corresponding {@link AcceleoAQLResult}
 	 */
-	protected AstResult parseWhileAqlExpression(String expression) {
+	protected AcceleoAQLResult parseWhileAqlExpression(String expression) {
 		return AQLUtils.parseWhileAqlExpression(expression);
 	}
 

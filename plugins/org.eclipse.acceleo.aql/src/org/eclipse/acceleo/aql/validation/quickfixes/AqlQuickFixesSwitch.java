@@ -636,7 +636,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	 * @return the corresponding {@link AstResult}
 	 */
 	protected AstResult parseWhileAqlExpression(String expression) {
-		return AQLUtils.parseWhileAqlExpression(expression);
+		return AQLUtils.parseWhileAqlExpression(expression).getAstResult();
 	}
 
 	/**
