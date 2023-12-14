@@ -614,9 +614,17 @@ public final class ModuleConverter extends AbstractConverter {
 	}
 
 	private Object caseComment(org.eclipse.acceleo.model.mtl.Comment inputComment) {
-		Comment outputComment = AcceleoFactory.eINSTANCE.createComment();
-		CommentBody commentBody = AcceleoFactory.eINSTANCE.createCommentBody();
-		commentBody.setValue(inputComment.getBody().getValue().substring(1));
+		final String commentValue;
+		final Comment outputComment;
+		if (inputComment.getBody().getValue().contains("/]")) {
+			outputComment = AcceleoFactory.eINSTANCE.createBlockComment();
+			commentValue = inputComment.getBody().getValue();
+		} else {
+			outputComment = AcceleoFactory.eINSTANCE.createComment();
+			commentValue = inputComment.getBody().getValue().substring(1);
+		}
+		final CommentBody commentBody = AcceleoFactory.eINSTANCE.createCommentBody();
+		commentBody.setValue(commentValue);
 		outputComment.setBody(commentBody);
 		return outputComment;
 	}
