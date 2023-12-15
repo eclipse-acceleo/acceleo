@@ -1,0 +1,8 @@
+[module collectionQueryCallOrderedSet('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [myParam.eClassifiers->calledQuery()/]
+[/template]
+
+
+[query public calledQuery(myParam : OrderedSet(ecore::EClassifier)) : Sequence(OclAny) = myParam.name->sep(', ')/]

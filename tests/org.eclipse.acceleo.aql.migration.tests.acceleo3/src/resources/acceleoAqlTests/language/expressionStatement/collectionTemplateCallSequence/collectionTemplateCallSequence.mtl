@@ -1,0 +1,11 @@
+[module collectionTemplateCallSequence('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [myParam.eClassifiers->asSequence()->calledTemplate()/]
+[/template]
+
+
+[template public calledTemplate(myParam : Sequence(ecore::EClassifier))]
+  [myParam.name->sep(', ')/]
+[/template]
+

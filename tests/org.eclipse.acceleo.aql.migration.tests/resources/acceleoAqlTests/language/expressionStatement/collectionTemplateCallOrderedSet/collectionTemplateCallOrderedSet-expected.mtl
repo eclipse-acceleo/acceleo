@@ -1,0 +1,7 @@
+[module collectionTemplateCallOrderedSet('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+    [myParam.eClassifiers->asOrderedSet()->calledTemplate()/][/template]
+
+[template public calledTemplate(myParam : OrderedSet(ecore::EClassifier))]
+    [myParam->asSequence()->collect(temp1 | temp1.name)->sep(', ')/][/template]

@@ -75,6 +75,7 @@ import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.OrderedSetType;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.RealLiteralExp;
+import org.eclipse.ocl.ecore.SequenceType;
 import org.eclipse.ocl.ecore.SetType;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.TypeExp;
@@ -702,9 +703,13 @@ public final class ExpressionConverter extends AbstractConverter {
 
 	private Expression caseTemplateInvocation(TemplateInvocation input) {
 		Call output = AstFactory.eINSTANCE.createCall();
-		output.setType(CallType.CALLORAPPLY);
 		output.setServiceName(input.getDefinition().getName());
 		map(input.getArgument(), output.getArguments());
+
+		final EClassifier queryReceiverType = input.getDefinition().getParameter().get(0).getEGenericType()
+				.getEClassifier();
+		wrapToCollectionCall(queryReceiverType, output);
+
 		return output;
 	}
 
@@ -713,7 +718,49 @@ public final class ExpressionConverter extends AbstractConverter {
 		output.setType(CallType.CALLORAPPLY);
 		output.setServiceName(input.getDefinition().getName());
 		map(input.getArgument(), output.getArguments());
+
+		final EClassifier queryReceiverType = input.getDefinition().getParameter().get(0).getEGenericType()
+				.getEClassifier();
+		wrapToCollectionCall(queryReceiverType, output);
+
 		return output;
+	}
+
+	/**
+	 * Wraps The given converted {@link Call} to a {@link CallType#COLLECTIONCALL collection call} if the
+	 * given receiver type is a {@link CollectionType}.
+	 * 
+	 * @param receiverType
+	 *            the revceiver {@link EClassifier}
+	 * @param call
+	 *            the converted {@link Call}
+	 */
+	private void wrapToCollectionCall(final EClassifier receiverType, Call call) {
+		if (receiverType instanceof OrderedSetType) {
+			call.setType(CallType.COLLECTIONCALL);
+			final Expression receiver = call.getArguments().remove(0);
+			if (receiver instanceof Call && "asOrderedSet".equals(((Call)receiver).getServiceName())) {
+				call.getArguments().add(0, receiver);
+			} else {
+				final Call asOrderedSetCall = AstFactory.eINSTANCE.createCall();
+				asOrderedSetCall.setServiceName("asOrderedSet");
+				asOrderedSetCall.setType(CallType.COLLECTIONCALL);
+				asOrderedSetCall.getArguments().add(receiver);
+				call.getArguments().add(0, asOrderedSetCall);
+			}
+		} else if (receiverType instanceof SequenceType) {
+			call.setType(CallType.COLLECTIONCALL);
+			final Expression receiver = call.getArguments().remove(0);
+			if (receiver instanceof Call && "asSequence".equals(((Call)receiver).getServiceName())) {
+				call.getArguments().add(0, receiver);
+			} else {
+				final Call asOrderedSetCall = AstFactory.eINSTANCE.createCall();
+				asOrderedSetCall.setServiceName("asSequence");
+				asOrderedSetCall.setType(CallType.COLLECTIONCALL);
+				asOrderedSetCall.getArguments().add(receiver);
+				call.getArguments().add(0, asOrderedSetCall);
+			}
+		}
 	}
 
 	private Expression convertCollectionLiteralExp(CollectionLiteralExp input) {
