@@ -350,6 +350,15 @@ substring()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+toBoolean()
+* Description:
+toBoolean(value: java.lang.String) = Boolean<br><br>Gets the boolean value of the given String.<br><br>  @param value<br>        The current String<br><br>  @return<br>        true if then passed String equals ignoring case to 'true', false otherwise<br><br>
+* Text:
+toBoolean()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 toInteger()
 * Description:
 toInteger(self: java.lang.String) = Integer<br><br>Returns an integer of value equal to self<br><br>  @param self<br>        The current String<br><br>  @return<br>        An integer of value equal to self<br><br>  @throw java.lang.NumberFormatException<br>        Thrown if self does not represent an integer<br><br>

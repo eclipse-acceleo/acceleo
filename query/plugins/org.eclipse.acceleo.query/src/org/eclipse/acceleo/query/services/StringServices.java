@@ -962,6 +962,24 @@ public class StringServices {
 		return System.getProperty("line.separator");
 	}
 
+	// @formatter:off
+	@Documentation(
+		value = "Gets the boolean value of the given String.",
+		params = {
+			@Param(name = "value", value = "The current String"),
+		},
+		result = "true if then passed String equals ignoring case to 'true', false otherwise",
+		examples = {
+				@Example(expression = "'true'.toBoolean()", result = "true"),
+				@Example(expression = "'True'.toBoolean()", result = "true"),
+				@Example(expression = "'Some String'.toBoolean()", result = "false")
+		}
+	)
+	// @formatter:on
+	public Boolean toBoolean(String value) {
+		return Boolean.valueOf(value);
+	}
+
 	/**
 	 * Gets the empty {@link String} if the given {@link String} is <code>null</code>.
 	 * 

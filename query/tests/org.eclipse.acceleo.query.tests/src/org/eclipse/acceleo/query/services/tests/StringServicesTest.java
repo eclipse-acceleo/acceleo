@@ -1592,4 +1592,25 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals(System.getProperty("line.separator"), stringServices.lineSeparator(new Object()));
 	}
 
+	@Test
+	public void toBooleanNull() {
+		assertEquals(false, stringServices.toBoolean(null));
+	}
+
+	@Test
+	public void toBooleanEmptyString() {
+		assertEquals(false, stringServices.toBoolean(""));
+	}
+
+	@Test
+	public void toBooleanFalse() {
+		assertEquals(false, stringServices.toBoolean("Some String"));
+	}
+
+	@Test
+	public void toBooleanTrue() {
+		assertEquals(true, stringServices.toBoolean("true"));
+		assertEquals(true, stringServices.toBoolean("True"));
+	}
+
 }
