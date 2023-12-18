@@ -21,12 +21,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.AcceleoFactory;
+import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
@@ -59,6 +62,8 @@ import org.eclipse.acceleo.model.mtl.IfBlock;
 import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
+import org.eclipse.acceleo.model.mtl.QueryInvocation;
+import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.Call;
@@ -82,6 +87,7 @@ import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
+import org.eclipse.ocl.utilities.PredefinedType;
 
 /**
  * A converter dedicated to MTL elements.
@@ -227,6 +233,9 @@ public final class ModuleConverter extends AbstractConverter {
 		// add imports for invoke()
 		addInvokeImports(inputModule, outputModule);
 
+		// add metamodel imports for called element
+		addCalledMetamodelImports(inputModule, outputModule);
+
 		for (Entry<Call, String> entry : expressionConverter.getJavaServiceCalls().entrySet()) {
 			if (isAmbiguousJavaServiceCall(outputModule, entry.getKey())) {
 				ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
@@ -252,6 +261,53 @@ public final class ModuleConverter extends AbstractConverter {
 		}
 
 		return outputModule;
+	}
+
+	private void addCalledMetamodelImports(org.eclipse.acceleo.model.mtl.Module inputModule,
+			Module outputModule) {
+		final Set<String> knownNsURIs = new HashSet<>();
+
+		for (Metamodel metamodel : outputModule.getMetamodels()) {
+			knownNsURIs.add(metamodel.getReferencedPackage().getNsURI());
+		}
+
+		final Map<String, EPackage> missingEPackages = new LinkedHashMap<>();
+		final Iterator<EObject> it = inputModule.eAllContents();
+		while (it.hasNext()) {
+			final EObject eObject = it.next();
+			if (eObject instanceof TemplateInvocation) {
+				final TemplateInvocation invocation = (TemplateInvocation)eObject;
+				for (org.eclipse.ocl.ecore.Variable parameter : invocation.getDefinition().getParameter()) {
+					final EClassifier eClassifier = parameter.getEGenericType().getEClassifier();
+					if (!(eClassifier instanceof PredefinedType<?>)) {
+						final EPackage ePackage = eClassifier.getEPackage();
+						if (!knownNsURIs.contains(ePackage.getNsURI())) {
+							knownNsURIs.add(ePackage.getNsURI());
+							missingEPackages.put(ePackage.getNsURI(), ePackage);
+						}
+					}
+				}
+			} else if (eObject instanceof QueryInvocation) {
+				final QueryInvocation invocation = (QueryInvocation)eObject;
+				for (org.eclipse.ocl.ecore.Variable parameter : invocation.getDefinition().getParameter()) {
+					final EClassifier eClassifier = parameter.getEGenericType().getEClassifier();
+					if (!(eClassifier instanceof PredefinedType<?>)) {
+						final EPackage ePackage = eClassifier.getEPackage();
+						if (!knownNsURIs.contains(ePackage.getNsURI())) {
+							knownNsURIs.add(ePackage.getNsURI());
+							missingEPackages.put(ePackage.getNsURI(), ePackage);
+						}
+					}
+				}
+			}
+		}
+
+		for (EPackage missingEPackage : missingEPackages.values()) {
+			final Metamodel metamodel = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
+			metamodel.setReferencedPackage(missingEPackage);
+			outputModule.getMetamodels().add(metamodel);
+		}
+
 	}
 
 	/**
