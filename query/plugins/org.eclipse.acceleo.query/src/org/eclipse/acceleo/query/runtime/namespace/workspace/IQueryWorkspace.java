@@ -22,6 +22,13 @@ import java.net.URI;
 public interface IQueryWorkspace<P> {
 
 	/**
+	 * Provides the name of this {@link IQueryWorkspace}.
+	 * 
+	 * @return the (non-{@code null}) name of this {@link IQueryWorkspace}.
+	 */
+	public String getName();
+
+	/**
 	 * Gets the {@link IQueryWorkspaceQualifiedNameResolver} for the given project.
 	 * 
 	 * @param project

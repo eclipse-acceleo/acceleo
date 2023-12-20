@@ -50,9 +50,9 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	private final AcceleoWorkspaceService workspaceService;
 
 	/**
-	 * The root {@link AcceleoLanguageServerContext} of this server.
+	 * The root {@link IAcceleoLanguageServerContext} of this server.
 	 */
-	private final AcceleoLanguageServerContext acceleoLanguageServerContext;
+	private final IAcceleoLanguageServerContext acceleoLanguageServerContext;
 
 	/**
 	 * The {@link Instant} at which this server was created.
@@ -68,9 +68,9 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	 * Creates a new {@link AcceleoLanguageServer}.
 	 * 
 	 * @param acceleoLanguageServerContext
-	 *            the (non-{@code null}) root {@link AcceleoLanguageServerContext} for this server.
+	 *            the (non-{@code null}) root {@link IAcceleoLanguageServerContext} for this server.
 	 */
-	public AcceleoLanguageServer(AcceleoLanguageServerContext acceleoLanguageServerContext) {
+	public AcceleoLanguageServer(IAcceleoLanguageServerContext acceleoLanguageServerContext) {
 		this.creationTimestamp = Instant.now();
 		this.acceleoLanguageServerContext = Objects.requireNonNull(acceleoLanguageServerContext);
 
@@ -99,12 +99,12 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	}
 
 	/**
-	 * Valides all {@link AcceleoTextDocument} in the workspace of this server.
+	 * Publishes all {@link AcceleoTextDocument} validation result in the workspace of this server.
 	 */
-	private void validateAll() {
+	private void publishAll() {
 		if (this.getWorkspace() != null) {
-			this.getWorkspace().getAllTextDocuments().forEach(textDocument -> textDocument
-					.validateAndPublishResults());
+			this.getWorkspace().getAllTextDocuments().forEach(textDocument -> textDocumentService
+					.publishValidationResults(textDocument));
 		}
 	}
 
@@ -116,7 +116,7 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 
 		// The client just changed, re-validate all documents so they publish the validation results to the
 		// client.
-		this.validateAll();
+		this.publishAll();
 
 		newLanguageClient.logMessage(new MessageParams(MessageType.Info,
 				"Connected to the Acceleo Language Server, relying on Acceleo Workspace " + this

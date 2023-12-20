@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import org.eclipse.acceleo.aql.ls.AcceleoLanguageServerContext;
+import org.eclipse.acceleo.aql.ls.IAcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.AcceleoSocketServer;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.lsp4e.server.StreamConnectionProvider;
@@ -48,7 +48,7 @@ public class AcceleoConnectionProvider implements StreamConnectionProvider {
 	 * Constructor.
 	 */
 	public AcceleoConnectionProvider() {
-		AcceleoLanguageServerContext acceleoContext = new EclipseAcceleoLanguageServerContext(ResourcesPlugin
+		IAcceleoLanguageServerContext acceleoContext = new EclipseAcceleoLanguageServerContext(ResourcesPlugin
 				.getWorkspace());
 		this.acceleoSocketServer = new AcceleoSocketServer(acceleoContext);
 	}

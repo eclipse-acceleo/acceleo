@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
-import org.eclipse.acceleo.aql.ls.AcceleoLanguageServerContext;
+import org.eclipse.acceleo.aql.ls.IAcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoProject;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -38,11 +38,11 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Eclipse-specific implementation of {@link AcceleoLanguageServerContext}.
+ * Eclipse-specific implementation of {@link IAcceleoLanguageServerContext}.
  * 
  * @author Florent Latombe
  */
-public class EclipseAcceleoLanguageServerContext implements AcceleoLanguageServerContext {
+public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServerContext {
 
 	/**
 	 * the {@link Synchronizer} for Acceleo.
@@ -129,6 +129,28 @@ public class EclipseAcceleoLanguageServerContext implements AcceleoLanguageServe
 		}
 
 		return null;
+	}
+
+	@Override
+	public AcceleoProject getProject(AcceleoWorkspace workspace, URI resource) {
+		final AcceleoProject res;
+
+		final AcceleSynchronizer synchoniser = synchronizers.get(workspace);
+		synchronized(synchoniser) {
+
+			final IFile file = clientWorkspace.getRoot().getFileForLocation(new Path(resource.getPath()
+					.toString()));
+			final IProject eclipseProject = file.getProject();
+			final AcceleoProject existingProject = synchoniser.getProject(eclipseProject);
+			if (existingProject != null) {
+				res = existingProject;
+			} else {
+				synchoniser.add(file.getProject());
+				res = synchoniser.getProject(eclipseProject);
+			}
+		}
+
+		return res;
 	}
 
 	@Override

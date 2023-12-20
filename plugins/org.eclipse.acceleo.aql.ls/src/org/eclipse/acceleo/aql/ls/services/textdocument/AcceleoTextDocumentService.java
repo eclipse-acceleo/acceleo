@@ -25,9 +25,12 @@ import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerPositionUtils;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerServicesUtils;
 import org.eclipse.acceleo.aql.ls.services.exceptions.LanguageServerProtocolException;
+import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoProject;
+import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.outline.AcceleoOutliner;
 import org.eclipse.acceleo.aql.outline.AcceleoSymbol;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionContext;
 import org.eclipse.lsp4j.CodeActionParams;
@@ -109,17 +112,36 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	// Mandatory TextDocumentService API.
 	@Override
 	public void didOpen(DidOpenTextDocumentParams params) {
-		final URI openedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
-				.getUri());
-		final AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getDocument(
-				openedDocumentUri);
-		if (openedAcceleoTextDocument == null) {
-			throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
-					+ openedDocumentUri);
-		} else {
-			this.openedDocumentsIndex.put(openedDocumentUri, openedAcceleoTextDocument);
-			openedAcceleoTextDocument.open(params.getTextDocument().getText());
+		final AcceleoWorkspace workspace = server.getWorkspace();
+		synchronized(workspace) {
+			final URI openedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
+					.getUri());
+			AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getDocument(
+					openedDocumentUri);
+			// the workspace might not be synchronized yet, try to add the document
+			if (openedAcceleoTextDocument == null) {
+				final AcceleoProject project = workspace.getProject(openedDocumentUri);
+				final IQueryWorkspaceQualifiedNameResolver resolver = workspace.getResolver(project);
+				final URI binaryURI = resolver.getBinaryURI(openedDocumentUri);
+				workspace.addResource(project, binaryURI);
+				openedAcceleoTextDocument = workspace.getDocument(openedDocumentUri);
+			}
+			if (openedAcceleoTextDocument == null) {
+				throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
+						+ openedDocumentUri);
+			} else {
+				open(openedDocumentUri, openedAcceleoTextDocument);
+				openedAcceleoTextDocument.open(params.getTextDocument().getText());
+			}
 		}
+	}
+
+	public void open(URI openedDocumentUri, AcceleoTextDocument acceleoTextDocument) {
+		this.openedDocumentsIndex.put(openedDocumentUri, acceleoTextDocument);
+	}
+
+	public void close(URI closedDocumentUri) {
+		this.openedDocumentsIndex.remove(closedDocumentUri);
 	}
 
 	@Override
@@ -140,15 +162,15 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		final URI closedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
 		checkDocumentIsOpened(closedDocumentUri);
-		final AcceleoTextDocument openedAcceleoTextDocument = this.server.getWorkspace().getDocument(
+		final AcceleoTextDocument closedAcceleoTextDocument = this.server.getWorkspace().getDocument(
 				closedDocumentUri);
-		if (openedAcceleoTextDocument == null) {
+		if (closedAcceleoTextDocument == null) {
 			throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
 					+ closedDocumentUri);
 		} else {
-			openedAcceleoTextDocument.close();
+			closedAcceleoTextDocument.close();
+			close(closedDocumentUri);
 		}
-		this.openedDocumentsIndex.remove(closedDocumentUri);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,9 +33,9 @@ public class AcceleoSocketServer {
 	private static final int BACKLOG = 50;
 
 	/**
-	 * The {@link AcceleoLanguageServerContext} of this server.
+	 * The {@link IAcceleoLanguageServerContext} of this server.
 	 */
-	private final AcceleoLanguageServerContext acceleoLanguageServerContext;
+	private final IAcceleoLanguageServerContext acceleoLanguageServerContext;
 
 	/**
 	 * The {@link ServerSocket}.
@@ -51,9 +51,9 @@ public class AcceleoSocketServer {
 	 * Constructor.
 	 * 
 	 * @param acceleoLanguageServerContext
-	 *            the (non-{@code null}) root {@link AcceleoLanguageServerContext} of this server.
+	 *            the (non-{@code null}) root {@link IAcceleoLanguageServerContext} of this server.
 	 */
-	public AcceleoSocketServer(AcceleoLanguageServerContext acceleoLanguageServerContext) {
+	public AcceleoSocketServer(IAcceleoLanguageServerContext acceleoLanguageServerContext) {
 		this.acceleoLanguageServerContext = acceleoLanguageServerContext;
 
 	}

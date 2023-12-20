@@ -30,8 +30,11 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ICoreRunnable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 
 /**
  * Synchronizer that scan the initial state of the {@link IWorkspace} and listen to its changes.
@@ -72,18 +75,26 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 	 * Starts synchronizing.
 	 */
 	public void synchronize() {
-		try {
-			// walk the workspace for current state
-			eclipseWorkspace.getRoot().accept(this);
+		final Job synchronizeJob = Job.create("Synchronizing " + queryWorkspace.getName(),
+				new ICoreRunnable() {
 
-			// Keeping up-to-date with the workspace changes.
-			eclipseWorkspace.addResourceChangeListener(this);
-		} catch (Exception e) {
-			dispose();
-			QueryPlugin.INSTANCE.log(new Status(IStatus.ERROR, getClass(),
-					"can't visit the workspace current state: " + eclipseWorkspace.getRoot().getLocationURI()
-							.toString(), e));
-		}
+					@Override
+					public void run(IProgressMonitor monitor) throws CoreException {
+						try {
+							// Keeping up-to-date with the workspace changes.
+							eclipseWorkspace.addResourceChangeListener(Synchronizer.this);
+
+							// walk the workspace for current state
+							eclipseWorkspace.getRoot().accept(Synchronizer.this);
+						} catch (Exception e) {
+							dispose();
+							QueryPlugin.INSTANCE.log(new Status(IStatus.ERROR, getClass(),
+									"can't visit the workspace current state: " + eclipseWorkspace.getRoot()
+											.getLocationURI().toString(), e));
+						}
+					}
+				});
+		synchronizeJob.schedule();
 	}
 
 	/**
@@ -197,12 +208,18 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 				this.queryWorkspace.addProject(getProject(eclipseProject));
 			}
 		} else if (delta.getKind() == IResourceDelta.ADDED) {
-			final P project = createProject(queryWorkspace, eclipseProject);
-			eclipseToProject.put(eclipseProject, project);
-			projectToEclipse.put(project, eclipseProject);
-			this.queryWorkspace.addProject(project);
+			synchronized(this) {
+				if (!eclipseToProject.containsKey(eclipseProject)) {
+					final P project = createProject(queryWorkspace, eclipseProject);
+					eclipseToProject.put(eclipseProject, project);
+					projectToEclipse.put(project, eclipseProject);
+					this.queryWorkspace.addProject(project);
+				}
+			}
 		} else if (delta.getKind() == IResourceDelta.REMOVED) {
-			this.queryWorkspace.removeProject(eclipseToProject.remove(eclipseProject));
+			final P removedProject = eclipseToProject.remove(eclipseProject);
+			projectToEclipse.remove(removedProject);
+			this.queryWorkspace.removeProject(removedProject);
 		}
 	}
 
@@ -227,14 +244,18 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 	 * @param resource
 	 *            the (non-{@code null}) {@link IResource} to synchronize.
 	 */
-	private void add(IResource resource) {
+	public void add(IResource resource) {
 		Objects.requireNonNull(resource);
 		if (resource.getType() == IResource.PROJECT) {
 			final IProject eclipseProject = (IProject)resource;
-			final P project = createProject(queryWorkspace, eclipseProject);
-			eclipseToProject.put(eclipseProject, project);
-			projectToEclipse.put(project, eclipseProject);
-			this.queryWorkspace.addProject(project);
+			synchronized(this) {
+				if (!eclipseToProject.containsKey(eclipseProject)) {
+					final P project = createProject(queryWorkspace, eclipseProject);
+					eclipseToProject.put(eclipseProject, project);
+					projectToEclipse.put(project, eclipseProject);
+					this.queryWorkspace.addProject(project);
+				}
+			}
 		} else if (resource.getType() == IResource.FILE) {
 			final IFile file = (IFile)resource;
 			final URI uri = file.getLocationURI();

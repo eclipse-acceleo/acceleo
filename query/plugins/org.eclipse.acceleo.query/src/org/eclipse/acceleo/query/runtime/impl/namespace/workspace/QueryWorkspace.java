@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
@@ -33,6 +34,11 @@ import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQual
 public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 
 	/**
+	 * The name of this workspace.
+	 */
+	private final String name;
+
+	/**
 	 * The mapping from a project to its resolver.
 	 */
 	private final Map<P, IQueryWorkspaceQualifiedNameResolver> projectToResolver = new LinkedHashMap<>();
@@ -41,6 +47,21 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 	 * The mapping from a resolver to its project.
 	 */
 	private final Map<IQueryWorkspaceQualifiedNameResolver, P> resolverToProject = new LinkedHashMap<>();
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param name
+	 *            the workspace name
+	 */
+	public QueryWorkspace(String name) {
+		this.name = Objects.requireNonNull(name);
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
 
 	@Override
 	public IQueryWorkspaceQualifiedNameResolver getResolver(P project) {

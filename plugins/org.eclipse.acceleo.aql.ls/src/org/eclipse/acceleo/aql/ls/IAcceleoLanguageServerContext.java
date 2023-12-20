@@ -26,7 +26,7 @@ import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQual
  * 
  * @author Florent Latombe
  */
-public interface AcceleoLanguageServerContext {
+public interface IAcceleoLanguageServerContext {
 
 	/**
 	 * Creates an {@link AcceleoWorkspace}.
@@ -51,6 +51,16 @@ public interface AcceleoLanguageServerContext {
 	 * @return the contents of the given resource {@link URI}
 	 */
 	String getResourceContents(URI resource);
+
+	/**
+	 * Gets the {@link AcceleoProject} containing the given resource {@link URI}.
+	 * 
+	 * @param resource
+	 *            the resource {@link URI}
+	 * @return the {@link AcceleoProject} containing the given resource {@link URI} if any, <code>null</code>
+	 *         otherwise
+	 */
+	AcceleoProject getProject(AcceleoWorkspace workspace, URI resource);
 
 	/**
 	 * Creates the {@link IQueryWorkspaceQualifiedNameResolver} for the given {@link AcceleoProject}.

@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
-import org.eclipse.acceleo.aql.ls.AcceleoLanguageServerContext;
+import org.eclipse.acceleo.aql.ls.IAcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.query.runtime.impl.namespace.workspace.QueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
@@ -35,11 +35,6 @@ import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQual
 public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 
 	/**
-	 * The name of this workspace.
-	 */
-	private final String name;
-
-	/**
 	 * The owner {@link AcceleoLanguageServer} of this workspace.
 	 */
 	private AcceleoLanguageServer owner;
@@ -50,9 +45,9 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	private final Map<URI, AcceleoTextDocument> uriToDocuments = new LinkedHashMap<>();
 
 	/**
-	 * The {@link AcceleoLanguageServerContext}.
+	 * The {@link IAcceleoLanguageServerContext}.
 	 */
-	private AcceleoLanguageServerContext context;
+	private IAcceleoLanguageServerContext context;
 
 	/**
 	 * Creates a new {@link AcceleoWorkspace}.
@@ -60,18 +55,9 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	 * @param name
 	 *            the (non-{@code null}) name of the {@link AcceleoWorkspace}.
 	 */
-	public AcceleoWorkspace(String name, AcceleoLanguageServerContext context) {
-		this.name = Objects.requireNonNull(name);
+	public AcceleoWorkspace(String name, IAcceleoLanguageServerContext context) {
+		super(name);
 		this.context = Objects.requireNonNull(context);
-	}
-
-	/**
-	 * Provides the name of this {@link AcceleoWorkspace}.
-	 * 
-	 * @return the (non-{@code null}) name of this {@link AcceleoWorkspace}.
-	 */
-	public String getName() {
-		return this.name;
 	}
 
 	/**
@@ -94,7 +80,12 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	}
 
 	@Override
-	public String addResource(AcceleoProject project, URI resource) {
+	public synchronized void addProject(AcceleoProject project) {
+		super.addProject(project);
+	}
+
+	@Override
+	public synchronized String addResource(AcceleoProject project, URI resource) {
 		final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
 		final String qualifiedName = resolver.getQualifiedName(resource);
 		if (qualifiedName != null) {
@@ -105,7 +96,15 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 				final String textDocumentContents = context.getResourceContents(resource);
 				final AcceleoTextDocument acceleoTextDocument = new AcceleoTextDocument(project, resource,
 						qualifiedName, textDocumentContents, (Module)resolved);
-				uriToDocuments.put(resource, acceleoTextDocument);
+				final AcceleoTextDocument oldAcceleoTextDocument = uriToDocuments.put(resource,
+						acceleoTextDocument);
+				if (oldAcceleoTextDocument != null && oldAcceleoTextDocument.isOpened()) {
+					final URI sourceURI = resolver.getSourceURI(qualifiedName);
+					getOwner().getTextDocumentService().close(sourceURI);
+					getOwner().getTextDocumentService().open(sourceURI, acceleoTextDocument);
+					acceleoTextDocument.open(textDocumentContents);
+				}
+
 				final URI sourceURI = resolver.getSourceURI(qualifiedName);
 				if (sourceURI != null) {
 					uriToDocuments.put(sourceURI, acceleoTextDocument);
@@ -213,6 +212,18 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	 */
 	public Set<AcceleoTextDocument> getAllTextDocuments() {
 		return new LinkedHashSet<>(uriToDocuments.values());
+	}
+
+	/**
+	 * Gets the {@link AcceleoProject} containing the given resource {@link URI}.
+	 * 
+	 * @param resource
+	 *            the resource {@link URI}
+	 * @return the {@link AcceleoProject} containing the given resource {@link URI} if any, <code>null</code>
+	 *         otherwise
+	 */
+	public AcceleoProject getProject(URI resource) {
+		return context.getProject(this, resource);
 	}
 
 }

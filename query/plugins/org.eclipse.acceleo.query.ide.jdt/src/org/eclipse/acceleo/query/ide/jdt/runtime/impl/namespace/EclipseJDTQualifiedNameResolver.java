@@ -309,7 +309,7 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 
 		final IWorkspaceRoot workspaceRoot = javaProject.getProject().getWorkspace().getRoot();
 		final IFile sourceFile = workspaceRoot.getFileForLocation(new Path(sourceURI.getPath()));
-		final IClasspathEntry entry = javaProject.findContainingClasspathEntry(sourceFile);
+		final IClasspathEntry entry = getContainingEntry(javaProject, sourceFile);
 		if (entry != null) {
 			if (entry.getContentKind() == IPackageFragmentRoot.K_BINARY) {
 				res = sourceURI;
@@ -328,6 +328,27 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 			}
 		} else {
 			res = null;
+		}
+
+		return res;
+	}
+
+	private IClasspathEntry getContainingEntry(IJavaProject javaProject, final IFile sourceFile)
+			throws JavaModelException {
+		final IClasspathEntry res;
+
+		final IClasspathEntry foundEntry = javaProject.findContainingClasspathEntry(sourceFile);
+		if (foundEntry != null) {
+			res = foundEntry;
+		} else {
+			IClasspathEntry fallbackFound = null;
+			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
+				if (entry.getPath().isPrefixOf(sourceFile.getFullPath())) {
+					fallbackFound = entry;
+					break;
+				}
+			}
+			res = fallbackFound;
 		}
 
 		return res;
