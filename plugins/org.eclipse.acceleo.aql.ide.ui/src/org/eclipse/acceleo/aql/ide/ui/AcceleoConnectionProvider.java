@@ -16,9 +16,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import org.eclipse.acceleo.aql.ls.IAcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.AcceleoSocketServer;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.lsp4e.server.StreamConnectionProvider;
 
 /**
@@ -48,9 +46,7 @@ public class AcceleoConnectionProvider implements StreamConnectionProvider {
 	 * Constructor.
 	 */
 	public AcceleoConnectionProvider() {
-		IAcceleoLanguageServerContext acceleoContext = new EclipseAcceleoLanguageServerContext(ResourcesPlugin
-				.getWorkspace());
-		this.acceleoSocketServer = new AcceleoSocketServer(acceleoContext);
+		this.acceleoSocketServer = new AcceleoSocketServer(Activator.getDefault().getServiceContext());
 	}
 
 	@Override

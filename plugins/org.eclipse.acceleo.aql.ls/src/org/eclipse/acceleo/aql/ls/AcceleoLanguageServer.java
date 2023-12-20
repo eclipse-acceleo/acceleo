@@ -88,12 +88,12 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	}
 
 	/**
-	 * Creates the {@link AcceleoWorkspace}.
+	 * Connects the {@link AcceleoWorkspace}.
 	 * 
-	 * @return the newly-created {@link AcceleoWorkspace}.
+	 * @return the {@link AcceleoWorkspace}.
 	 */
-	public AcceleoWorkspace createWorkspace() {
-		AcceleoWorkspace workspace = this.acceleoLanguageServerContext.createWorkspace();
+	public AcceleoWorkspace connectWorkspace() {
+		final AcceleoWorkspace workspace = this.acceleoLanguageServerContext.getWorkspace();
 		workspace.setOwner(this);
 		return workspace;
 	}
@@ -169,10 +169,14 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 
 	@Override
 	public CompletableFuture<Object> shutdown() {
-		this.acceleoLanguageServerContext.deleteWorkspace(this.getWorkspace());
+		final AcceleoWorkspace workspace = this.acceleoLanguageServerContext.getWorkspace();
+		workspace.setOwner(null);
 		if (this.languageClient != null) {
 			this.languageClient.logMessage(new MessageParams(MessageType.Log,
 					"Acceleo Language Server is shutting down"));
+			this.languageClient = null;
+			this.textDocumentService.disconnect();
+			this.workspaceService.disconnect();
 		}
 		return CompletableFuture.completedFuture(null);
 	}

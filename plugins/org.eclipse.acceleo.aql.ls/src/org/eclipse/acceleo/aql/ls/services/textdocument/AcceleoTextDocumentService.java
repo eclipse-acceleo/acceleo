@@ -109,6 +109,13 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	}
 	////
 
+	/**
+	 * Disconnects from the {@link LanguageClient}.
+	 */
+	public void disconnect() {
+		this.languageClient = null;
+	}
+
 	// Mandatory TextDocumentService API.
 	@Override
 	public void didOpen(DidOpenTextDocumentParams params) {
@@ -125,6 +132,9 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 				final URI binaryURI = resolver.getBinaryURI(openedDocumentUri);
 				workspace.addResource(project, binaryURI);
 				openedAcceleoTextDocument = workspace.getDocument(openedDocumentUri);
+				if (openedAcceleoTextDocument != null) {
+					openedAcceleoTextDocument.validateAndPublishResults();
+				}
 			}
 			if (openedAcceleoTextDocument == null) {
 				throw new IllegalStateException("Could not find the Acceleo Text Document at URI "

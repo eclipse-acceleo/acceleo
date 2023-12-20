@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,12 +52,19 @@ public class AcceleoWorkspaceService implements WorkspaceService, LanguageClient
 	 */
 	public AcceleoWorkspaceService(AcceleoLanguageServer acceleoLanguageServer) {
 		this.server = Objects.requireNonNull(acceleoLanguageServer);
-		this.acceleoWorkspace = this.server.createWorkspace();
+		this.acceleoWorkspace = this.server.connectWorkspace();
 	}
 
 	@Override
 	public void connect(LanguageClient newLanguageClient) {
 		this.languageClient = newLanguageClient;
+	}
+
+	/**
+	 * Disconnects from the {@link LanguageClient}.
+	 */
+	public void disconnect() {
+		this.languageClient = null;
 	}
 
 	/**

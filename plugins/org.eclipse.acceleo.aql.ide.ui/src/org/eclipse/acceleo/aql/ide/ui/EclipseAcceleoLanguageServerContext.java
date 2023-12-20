@@ -14,8 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
@@ -45,13 +43,13 @@ import org.eclipse.core.runtime.Status;
 public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServerContext {
 
 	/**
-	 * the {@link Synchronizer} for Acceleo.
+	 * The {@link Synchronizer} for Acceleo.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static class AcceleSynchronizer extends Synchronizer<AcceleoProject> {
+	private static class AcceleoSynchronizer extends Synchronizer<AcceleoProject> {
 
-		AcceleSynchronizer(IWorkspace eclipseWorkspace, IQueryWorkspace<AcceleoProject> queryWorkspace) {
+		AcceleoSynchronizer(IWorkspace eclipseWorkspace, IQueryWorkspace<AcceleoProject> queryWorkspace) {
 			super(eclipseWorkspace, queryWorkspace);
 		}
 
@@ -78,9 +76,9 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 	private final IWorkspace clientWorkspace;
 
 	/**
-	 * The mapping form an {@link AcceleoWorkspace} to its {@link EclipseWorkspace2AcceleoWorkspace}.
+	 * The {@link AcceleoSynchronizer}.
 	 */
-	private final Map<AcceleoWorkspace, AcceleSynchronizer> synchronizers = new HashMap<>();
+	private final AcceleoSynchronizer synchronizer;
 
 	/**
 	 * The constructor.
@@ -90,22 +88,22 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 	 */
 	public EclipseAcceleoLanguageServerContext(IWorkspace clientWorkspace) {
 		this.clientWorkspace = Objects.requireNonNull(clientWorkspace);
-	}
-
-	@Override
-	public AcceleoWorkspace createWorkspace() {
 		final AcceleoWorkspace acceleoWorkspace = new AcceleoWorkspace(getAcceleoWorkspaceName(
 				clientWorkspace), this);
-		final AcceleSynchronizer syncrhonizer = new AcceleSynchronizer(clientWorkspace, acceleoWorkspace);
-		synchronizers.put(syncrhonizer.getAcceleoWorkspace(), syncrhonizer);
-		syncrhonizer.synchronize();
-		return syncrhonizer.getAcceleoWorkspace();
+		synchronizer = new AcceleoSynchronizer(clientWorkspace, acceleoWorkspace);
+		synchronizer.synchronize();
+	}
+
+	/**
+	 * Disposes this context.
+	 */
+	public void dispose() {
+		synchronizer.dispose();
 	}
 
 	@Override
-	public void deleteWorkspace(AcceleoWorkspace acceleoWorkspaceToDelete) {
-		final AcceleSynchronizer syncronizer = synchronizers.remove(acceleoWorkspaceToDelete);
-		syncronizer.dispose();
+	public AcceleoWorkspace getWorkspace() {
+		return synchronizer.getAcceleoWorkspace();
 	}
 
 	@Override
@@ -135,18 +133,17 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 	public AcceleoProject getProject(AcceleoWorkspace workspace, URI resource) {
 		final AcceleoProject res;
 
-		final AcceleSynchronizer synchoniser = synchronizers.get(workspace);
-		synchronized(synchoniser) {
+		synchronized(synchronizer) {
 
 			final IFile file = clientWorkspace.getRoot().getFileForLocation(new Path(resource.getPath()
 					.toString()));
 			final IProject eclipseProject = file.getProject();
-			final AcceleoProject existingProject = synchoniser.getProject(eclipseProject);
+			final AcceleoProject existingProject = synchronizer.getProject(eclipseProject);
 			if (existingProject != null) {
 				res = existingProject;
 			} else {
-				synchoniser.add(file.getProject());
-				res = synchoniser.getProject(eclipseProject);
+				synchronizer.add(file.getProject());
+				res = synchronizer.getProject(eclipseProject);
 			}
 		}
 
@@ -157,7 +154,6 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 	public IQueryWorkspaceQualifiedNameResolver createResolver(AcceleoProject acceleoProject) {
 		Objects.nonNull(acceleoProject);
 
-		final AcceleSynchronizer synchronizer = synchronizers.get(acceleoProject.getWorkspace());
 		final IProject eclipseProject = synchronizer.getProject(acceleoProject);
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), eclipseProject,

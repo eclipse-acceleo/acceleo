@@ -14,6 +14,7 @@ package org.eclipse.acceleo.aql.ide.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -47,30 +48,38 @@ public class Activator extends AbstractUIPlugin {
 	private static Activator plugin;
 
 	/**
+	 * The {@link EclipseAcceleoLanguageServerContext}.
+	 */
+	private EclipseAcceleoLanguageServerContext serviceContext;
+
+	/**
 	 * The constructor.
 	 */
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework. BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		serviceContext = new EclipseAcceleoLanguageServerContext(ResourcesPlugin.getWorkspace());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework. BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		serviceContext.dispose();
+		serviceContext = null;
 		plugin = null;
 		super.stop(context);
+	}
 
+	/**
+	 * Gets the {@link EclipseAcceleoLanguageServerContext}.
+	 * 
+	 * @return the {@link EclipseAcceleoLanguageServerContext}
+	 */
+	public EclipseAcceleoLanguageServerContext getServiceContext() {
+		return serviceContext;
 	}
 
 	/**

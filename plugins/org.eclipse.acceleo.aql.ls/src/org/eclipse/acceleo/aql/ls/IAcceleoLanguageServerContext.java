@@ -29,19 +29,11 @@ import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQual
 public interface IAcceleoLanguageServerContext {
 
 	/**
-	 * Creates an {@link AcceleoWorkspace}.
+	 * Gets the {@link AcceleoWorkspace}.
 	 * 
-	 * @return the newly-created {@link AcceleoWorkspace}.
+	 * @return the {@link AcceleoWorkspace}.
 	 */
-	AcceleoWorkspace createWorkspace();
-
-	/**
-	 * Called when the owner {@link AcceleoLanguageServer} shutdowns.
-	 * 
-	 * @param workspaceToDelete
-	 *            the (non-{@code null}) {@link AcceleoWorkspace} to delete.
-	 */
-	void deleteWorkspace(AcceleoWorkspace workspaceToDelete);
+	AcceleoWorkspace getWorkspace();
 
 	/**
 	 * Gets the contents of the given resource {@link URI}.
