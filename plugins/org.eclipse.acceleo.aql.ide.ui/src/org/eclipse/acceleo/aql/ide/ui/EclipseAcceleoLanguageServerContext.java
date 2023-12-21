@@ -134,7 +134,6 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 		final AcceleoProject res;
 
 		synchronized(synchronizer) {
-
 			final IFile file = clientWorkspace.getRoot().getFileForLocation(new Path(resource.getPath()
 					.toString()));
 			final IProject eclipseProject = file.getProject();

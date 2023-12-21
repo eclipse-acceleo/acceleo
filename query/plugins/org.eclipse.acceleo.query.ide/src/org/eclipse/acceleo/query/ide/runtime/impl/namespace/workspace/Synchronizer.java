@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 
 /**
@@ -42,6 +43,35 @@ import org.eclipse.core.runtime.jobs.Job;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChangeListener, IResourceDeltaVisitor, IWorkspaceResolverProvider {
+
+	/**
+	 * Counts {@link IResource} i the workspace.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private final class ResourceCounter implements IResourceVisitor {
+
+		private int count;
+
+		@Override
+		public boolean visit(IResource resource) throws CoreException {
+			final boolean res;
+
+			final IProject project = resource.getProject();
+			if (project == null || project.isOpen()) {
+				count++;
+				res = true;
+			} else {
+				res = resource instanceof IWorkspaceRoot;
+			}
+
+			return res;
+		}
+
+		public int getCount() {
+			return count;
+		}
+	}
 
 	/**
 	 * The Eclipse {@link IWorkspace}.
@@ -62,6 +92,11 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 	 * The mapping from project to {@link IProject}.
 	 */
 	private final Map<P, IProject> projectToEclipse = new HashMap<>();
+
+	/**
+	 * The {@link IProgressMonitor}.
+	 */
+	private IProgressMonitor monitor;
 
 	/**
 	 * @param queryWorkspace
@@ -85,7 +120,17 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 							eclipseWorkspace.addResourceChangeListener(Synchronizer.this);
 
 							// walk the workspace for current state
-							eclipseWorkspace.getRoot().accept(Synchronizer.this);
+
+							final ResourceCounter resourceCounter = new ResourceCounter();
+							eclipseWorkspace.getRoot().accept(resourceCounter);
+							final SubMonitor subMonitor = SubMonitor.convert(monitor, "Validating",
+									resourceCounter.getCount());
+							Synchronizer.this.monitor = subMonitor;
+							try {
+								eclipseWorkspace.getRoot().accept(Synchronizer.this);
+							} finally {
+								Synchronizer.this.monitor = null;
+							}
 						} catch (Exception e) {
 							dispose();
 							QueryPlugin.INSTANCE.log(new Status(IStatus.ERROR, getClass(),
@@ -229,7 +274,17 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 
 		final IProject project = resource.getProject();
 		if (project == null || project.isOpen()) {
-			add(resource);
+			final boolean hasMonitor = monitor != null;
+			if (hasMonitor) {
+				monitor.subTask(resource.getFullPath().toString());
+			}
+			try {
+				add(resource);
+			} finally {
+				if (hasMonitor) {
+					monitor.worked(1);
+				}
+			}
 			res = true;
 		} else {
 			res = resource instanceof IWorkspaceRoot;

@@ -278,18 +278,18 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Peeks the last {@link #pushIndentation(Map) pushed} indentation from the stack.
+	 * Peeks the last {@link #pushIndentation(Block, String) pushed} indentation from the stack.
 	 * 
-	 * @return the last {@link #pushIndentation(Map) pushed} indentation from the stack
+	 * @return the last {@link #pushIndentation(Block, String) pushed} indentation from the stack
 	 */
 	protected String peekIndentation() {
 		return indentationStack.peekLast();
 	}
 
 	/**
-	 * Pops the last {@link #pushIndentation(Map) pushed} indentation from the stack.
+	 * Pops the last {@link #pushIndentation(Block, String) pushed} indentation from the stack.
 	 * 
-	 * @return the last {@link #pushIndentation(Map) pushed} indentation from the stack
+	 * @return the last {@link #pushIndentation(Block, String) pushed} indentation from the stack
 	 */
 	protected String popIndentation() {
 		inlinedBlock.removeLast();
