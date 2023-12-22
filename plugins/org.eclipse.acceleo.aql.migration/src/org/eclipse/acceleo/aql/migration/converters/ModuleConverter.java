@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -66,10 +67,12 @@ import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.query.ast.AstFactory;
+import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -77,6 +80,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -142,7 +146,8 @@ public final class ModuleConverter extends AbstractConverter {
 	 */
 	@Override
 	public Object convert(EObject input) {
-		Object res = null;
+		final Object res;
+
 		switch (input.eClass().getClassifierID()) {
 			case MtlPackage.MODULE:
 				res = caseModule((org.eclipse.acceleo.model.mtl.Module)input);
@@ -193,6 +198,131 @@ public final class ModuleConverter extends AbstractConverter {
 				}
 				break;
 		}
+
+		if (res instanceof Module) {
+			final Iterator<EObject> it = ((Module)res).eAllContents();
+			while (it.hasNext()) {
+				final EObject current = it.next();
+				if (current instanceof ProtectedArea) {
+					setTagPrefixes((ProtectedArea)current);
+				}
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Sets the {@link ProtectedArea#getStartTagPrefix() start tag} and {@link ProtectedArea#getEndTagPrefix()
+	 * end tag}.
+	 * 
+	 * @param protectedArea
+	 *            the {@link ProtectedArea}
+	 */
+	private void setTagPrefixes(ProtectedArea protectedArea) {
+		final TextStatement previousText = getPreviousTextStatement(protectedArea);
+		if (previousText != null && !previousText.isNewLineNeeded()) {
+			protectedArea.setStartTagPrefix(extractPrefix(previousText));
+		}
+		final TextStatement lastText = getLastText(protectedArea);
+		if (lastText != null && !lastText.isNewLineNeeded()) {
+			protectedArea.setEndTagPrefix(extractPrefix(lastText));
+		}
+	}
+
+	/**
+	 * Gets the previous {@link Statement} before the given {@link ProtectedArea} if it's a
+	 * {@link TextStatement}.
+	 * 
+	 * @param protectedArea
+	 *            the {@link ProtectedArea}
+	 * @return the previous {@link Statement} before the given {@link ProtectedArea} if it's a
+	 *         {@link TextStatement}, <code>null</code> otherwise
+	 */
+	private TextStatement getPreviousTextStatement(ProtectedArea protectedArea) {
+		final TextStatement res;
+
+		final EStructuralFeature containingFeature = protectedArea.eContainingFeature();
+		final EObject container = protectedArea.eContainer();
+		if (containingFeature != null && container != null) {
+			final Object values = container.eGet(containingFeature);
+			if (values instanceof Collection<?>) {
+				EObject previous = null;
+				for (Object value : (Collection<?>)values) {
+					if (value != protectedArea && value instanceof EObject) {
+						previous = (EObject)value;
+					} else {
+						break;
+					}
+				}
+				if (previous instanceof TextStatement) {
+					res = (TextStatement)previous;
+				} else {
+					res = null;
+				}
+			} else {
+				res = null;
+			}
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the last statement of the given Pro {@link ProtectedArea} if it's a {@link TextStatement}.
+	 * 
+	 * @param protectedArea
+	 *            the {@link ProtectedArea}
+	 * @return the last statement of the given Pro {@link ProtectedArea} if it's a {@link TextStatement},
+	 *         <code>null</code> otherwise
+	 */
+	private TextStatement getLastText(ProtectedArea protectedArea) {
+		final TextStatement res;
+
+		if (!protectedArea.getBody().getStatements().isEmpty()) {
+			final Statement lastStatement = protectedArea.getBody().getStatements().get(protectedArea
+					.getBody().getStatements().size() - 1);
+			if (lastStatement instanceof TextStatement) {
+				res = (TextStatement)lastStatement;
+			} else {
+				res = null;
+			}
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Extracts the {@link ProtectedArea} prefix from the given {@link TextStatement}.
+	 * 
+	 * @param textStatement
+	 *            the {@link TextStatement}
+	 * @return the {@link ProtectedArea} prefix from the given {@link TextStatement} if any, <code>null</code>
+	 *         otherwise
+	 */
+	private org.eclipse.acceleo.Expression extractPrefix(final TextStatement textStatement) {
+		final org.eclipse.acceleo.Expression res;
+
+		final String text = textStatement.getValue();
+		int index = Math.max(text.lastIndexOf(NEW_LINE), 0);
+		while (index < text.length() && Character.isWhitespace(text.charAt(index))) {
+			index++;
+		}
+		if (index < text.length()) {
+			final String startPrefix = text.substring(index);
+			textStatement.setValue(text.substring(0, index));
+			final StringLiteral stringLiteral = AstPackage.eINSTANCE.getAstFactory().createStringLiteral();
+			stringLiteral.setValue(startPrefix);
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpression();
+			res.setAst(new AstResult(stringLiteral, null, null, Diagnostic.OK_INSTANCE));
+		} else {
+			res = null;
+		}
+
 		return res;
 	}
 
