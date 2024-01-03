@@ -3,5 +3,5 @@
 [template public myTemplate(myParam : ecore::EPackage)]
       [protected (myParam.name) startTagPrefix('// ') endTagPrefix('// ')]
                  some static text.
-            [/protected]
+      [/protected]
 [/template]
