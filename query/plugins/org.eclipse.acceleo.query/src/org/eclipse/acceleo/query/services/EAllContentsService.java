@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -147,7 +147,7 @@ class EAllContentsService extends FilterService {
 			}
 			if (result.isEmpty()) {
 				result.add(new SequenceType(queryEnvironment, services.nothing(
-						"%s can't contain %s direclty or indirectly", argTypes.get(0), argTypes.get(1))));
+						"%s can't contain %s directly or indirectly", argTypes.get(0), argTypes.get(1))));
 			}
 		}
 

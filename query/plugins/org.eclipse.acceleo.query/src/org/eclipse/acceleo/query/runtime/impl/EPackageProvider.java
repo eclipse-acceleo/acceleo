@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -704,10 +704,10 @@ public class EPackageProvider implements IEPackageProvider {
 
 	@Override
 	public Set<EClass> getAllContainedEClasses(EClass eCls) {
-		final Set<EClass> direcltyContainedEClasses = getContainedEClasses(eCls);
-		final Set<EClass> result = new LinkedHashSet<EClass>(direcltyContainedEClasses);
+		final Set<EClass> directlyContainedEClasses = getContainedEClasses(eCls);
+		final Set<EClass> result = new LinkedHashSet<EClass>(directlyContainedEClasses);
 
-		Set<EClass> added = new LinkedHashSet<EClass>(direcltyContainedEClasses);
+		Set<EClass> added = new LinkedHashSet<EClass>(directlyContainedEClasses);
 		while (!added.isEmpty()) {
 			final Set<EClass> toDig = new LinkedHashSet<EClass>();
 			for (EClass a : added) {

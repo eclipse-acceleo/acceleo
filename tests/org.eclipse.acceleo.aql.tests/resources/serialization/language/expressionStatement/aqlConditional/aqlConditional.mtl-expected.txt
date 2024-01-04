@@ -1,0 +1,5 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [ if myParam.name = '' then 'No name' else myParam.name endif/]
+[/template]

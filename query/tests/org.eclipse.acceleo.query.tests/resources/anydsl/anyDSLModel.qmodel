@@ -257,7 +257,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>java.lang.Boolean</possibleTypes>
-        <validationMessages severity="INFO" message="Empty collection: Nothing will be left after calling eAllContents:&#xA;EClassifier=Company can't contain EClassifierLiteral=Food direclty or indirectly" startPosition="31" endPosition="58"/>
+        <validationMessages severity="INFO" message="Empty collection: Nothing will be left after calling eAllContents:&#xA;EClassifier=Company can't contain EClassifierLiteral=Food directly or indirectly" startPosition="31" endPosition="58"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when i (EClassifier=Producer) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=EAnnotation) is kind of EClassifierLiteral=Food" startPosition="131" endPosition="158"/>
       </expectedResult>
     </expectations>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,8 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.util.AcceleoSwitch;
@@ -206,6 +208,11 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseExpressionStatement(ExpressionStatement expressionStatement) {
 		builder.append(AcceleoParser.EXPRESSION_STATEMENT_START);
+		if (expressionStatement.getExpression() != null && (expressionStatement.getExpression()
+				.getAql() instanceof Conditional || expressionStatement.getExpression()
+						.getAql() instanceof Let)) {
+			builder.append(SPACE);
+		}
 		doSwitch(expressionStatement.getExpression());
 		builder.append(AcceleoParser.EXPRESSION_STATEMENT_END);
 		if (expressionStatement.isNewLineNeeded()) {

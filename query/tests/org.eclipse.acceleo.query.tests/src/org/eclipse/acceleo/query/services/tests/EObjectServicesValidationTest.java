@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -243,9 +243,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
 					eCls2) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
-					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly or indirectly")) };
 			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
-					"Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+					"Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly or indirectly")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -480,9 +480,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
 					eCls2) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
-					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly or indirectly")) };
 			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
-					"Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty or indirectly")) };
+					"Nothing will be left after calling eAllContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly or indirectly")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eAllContents", parameterTypes);
 		} finally {
@@ -1188,9 +1188,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
 					eCls2) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
-					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly")) };
 			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
-					"Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+					"Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContents", parameterTypes);
 		} finally {
@@ -1495,9 +1495,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
 					eCls2) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType(
-					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+					"EClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly")) };
 			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType(
-					"Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 direclty")) };
+					"Nothing will be left after calling eContents:\nEClassifier=eCls1 can't contain EClassifierLiteral=eCls2 directly")) };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContents", parameterTypes);
 		} finally {
