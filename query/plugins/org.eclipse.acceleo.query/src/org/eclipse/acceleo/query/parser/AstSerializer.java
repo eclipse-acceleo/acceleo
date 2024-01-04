@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -151,7 +151,7 @@ public class AstSerializer extends AstSwitch<Object> {
 		builder.append(bindingName);
 		if (binding.getType() != null) {
 			builder.append(SPACE).append(':').append(SPACE);
-			builder.append(doSwitch(binding.getType()));
+			doSwitch(binding.getType());
 		}
 		builder.append(SPACE).append('=').append(SPACE);
 		doSwitch(binding.getValue());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
@@ -41,6 +42,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -70,6 +72,7 @@ import org.eclipse.ocl.ecore.EnumLiteralExp;
 import org.eclipse.ocl.ecore.IfExp;
 import org.eclipse.ocl.ecore.IntegerLiteralExp;
 import org.eclipse.ocl.ecore.IteratorExp;
+import org.eclipse.ocl.ecore.LetExp;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.OrderedSetType;
@@ -243,12 +246,31 @@ public final class ExpressionConverter extends AbstractConverter {
 			case EcorePackage.COLLECTION_ITEM:
 				output = convert(((CollectionItem)input).getItem());
 				break;
+			case EcorePackage.LET_EXP:
+				output = caseLetExp((LetExp)input);
+				break;
 			// case EcorePackage.COLLECTION_RANGE:
 			// output = convert(((CollectionItem)input).getItem());
 			// break;
 			default:
 				throw new MigrationException(input);
 		}
+		return output;
+	}
+
+	private Object caseLetExp(LetExp input) {
+		final Let output = AstFactory.eINSTANCE.createLet();
+
+		output.setBody((Expression)convert(input.getIn()));
+
+		if (input.getVariable() != null) {
+			final Binding binding = AstFactory.eINSTANCE.createBinding();
+			binding.setName(input.getVariable().getName());
+			binding.setType(TypeUtils.createTypeLiteral(input.getVariable().getType()));
+			binding.setValue((Expression)convert(input.getVariable().getInitExpression()));
+			output.getBindings().add(binding);
+		}
+
 		return output;
 	}
 
