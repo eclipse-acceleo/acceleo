@@ -16,10 +16,12 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -100,6 +102,35 @@ import org.eclipse.ocl.utilities.PredefinedType;
  */
 public final class ModuleConverter extends AbstractConverter {
 
+	public static class ImpliciteSelfFrame {
+
+		private final Object input;
+
+		private final String implicitSelfName;
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param input
+		 *            the Acceleo 3 input
+		 * @param implicitSelfName
+		 *            the implicit self name
+		 */
+		private ImpliciteSelfFrame(Object input, String implicitSelfName) {
+			this.input = input;
+			this.implicitSelfName = implicitSelfName;
+		}
+
+		public Object getInput() {
+			return input;
+		}
+
+		public String getImplicitSelfName() {
+			return implicitSelfName;
+		}
+
+	}
+
 	/**
 	 * The new line string.
 	 */
@@ -126,6 +157,16 @@ public final class ModuleConverter extends AbstractConverter {
 	private final Path targetFolderPath;
 
 	/**
+	 * The index of the current for implicit iterator.
+	 */
+	private int forImpliciteIteratorIndex;
+
+	/**
+	 * The implicit self variable name stack.
+	 */
+	private final Deque<ImpliciteSelfFrame> implicitSelfStack = new ArrayDeque<>();
+
+	/**
 	 * Creates the converter using the given module resolver.
 	 * 
 	 * @param moduleResolver
@@ -137,6 +178,36 @@ public final class ModuleConverter extends AbstractConverter {
 		this.moduleResolver = moduleResolver;
 		this.targetFolderPath = targetFolderPath;
 		expressionConverter = new ExpressionConverter(targetFolderPath);
+	}
+
+	/**
+	 * Pushes the given self implicit variable name into the stack.
+	 * 
+	 * @param input
+	 *            the Acceleo 3 input
+	 * @param selfName
+	 *            the current self implicit variable name
+	 */
+	protected void pushImplicitSelf(Object input, String selfName) {
+		implicitSelfStack.addLast(new ImpliciteSelfFrame(input, selfName));
+	}
+
+	/**
+	 * Peeks the last {@link #pushImplicitSelf(String) pushed} self implicit variable name from the stack.
+	 * 
+	 * @return the last {@link #pushImplicitSelf(String) pushed} self implicit variable name from the stack
+	 */
+	protected ImpliciteSelfFrame peekImplicitSelf() {
+		return implicitSelfStack.peekLast();
+	}
+
+	/**
+	 * Pops the last {@link #pushImplicitSelf(String) pushed} self implicit variable name from the stack.
+	 * 
+	 * @return the last {@link #pushImplicitSelf(String) pushed} self implicit variable name from the stack
+	 */
+	protected ImpliciteSelfFrame popIndentation() {
+		return implicitSelfStack.removeLast();
 	}
 
 	/**
@@ -192,7 +263,7 @@ public final class ModuleConverter extends AbstractConverter {
 				break;
 			default:
 				if (input instanceof OCLExpression) {
-					res = expressionConverter.convertToStatement((OCLExpression)input);
+					res = expressionConverter.convertToStatement((OCLExpression)input, implicitSelfStack);
 				} else {
 					throw new MigrationException(input);
 				}
@@ -564,12 +635,12 @@ public final class ModuleConverter extends AbstractConverter {
 
 		// post
 		if (inputTemplate.getPost() != null) {
-			outputTemplate.setPost(expressionConverter.convertToExpression(inputTemplate.getPost(), true));
+			outputTemplate.setPost(expressionConverter.convertToExpression(inputTemplate.getPost(), null));
 		}
 
 		// guard
 		if (inputTemplate.getGuard() != null) {
-			outputTemplate.setGuard(expressionConverter.convertToExpression(inputTemplate.getGuard(), true));
+			outputTemplate.setGuard(expressionConverter.convertToExpression(inputTemplate.getGuard(), null));
 		}
 
 		// main comment
@@ -583,8 +654,13 @@ public final class ModuleConverter extends AbstractConverter {
 		res.add(outputTemplate);
 
 		// statements
-		final Block body = createBlock(outputTemplate, inputTemplate.getBody());
-		outputTemplate.setBody(body);
+		pushImplicitSelf(inputTemplate, inputTemplate.getParameter().get(0).getName());
+		try {
+			final Block body = createBlock(outputTemplate, inputTemplate.getBody());
+			outputTemplate.setBody(body);
+		} finally {
+			popIndentation();
+		}
 
 		return res;
 	}
@@ -598,7 +674,13 @@ public final class ModuleConverter extends AbstractConverter {
 		outputQuery.setVisibility(VisibilityKind.getByName(inputQuery.getVisibility().getName()
 				.toLowerCase()));
 		map(inputQuery.getParameter(), outputQuery.getParameters());
-		outputQuery.setBody(expressionConverter.convertToExpression(inputQuery.getExpression(), false));
+		pushImplicitSelf(inputQuery, inputQuery.getParameter().get(0).getName());
+		try {
+			outputQuery.setBody(expressionConverter.convertToExpression(inputQuery.getExpression(),
+					implicitSelfStack));
+		} finally {
+			popIndentation();
+		}
 		outputQuery.setType(createAstResult(TypeUtils.createTypeLiteral(inputQuery.getType())));
 		return outputQuery;
 	}
@@ -606,9 +688,9 @@ public final class ModuleConverter extends AbstractConverter {
 	private Object caseFileBlock(FileBlock input) {
 		FileStatement output = AcceleoFactory.eINSTANCE.createFileStatement();
 		if (input.getCharset() != null) {
-			output.setCharset(expressionConverter.convertToExpression(input.getCharset(), false));
+			output.setCharset(expressionConverter.convertToExpression(input.getCharset(), implicitSelfStack));
 		}
-		output.setUrl(expressionConverter.convertToExpression(input.getFileUrl(), false));
+		output.setUrl(expressionConverter.convertToExpression(input.getFileUrl(), implicitSelfStack));
 		output.setMode(OpenModeKind.getByName(input.getOpenMode().getName().toLowerCase()));
 
 		// statements
@@ -631,11 +713,12 @@ public final class ModuleConverter extends AbstractConverter {
 			binding.setType(createAstResult(TypeUtils.createTypeLiteral(input.getLetVariable().getType())));
 		}
 		binding.setInitExpression(expressionConverter.convertToExpression((OCLExpression)input
-				.getLetVariable().getInitExpression(), false));
+				.getLetVariable().getInitExpression(), implicitSelfStack));
 
 		// statements
 		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);
+
 		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
 	}
 
@@ -657,18 +740,22 @@ public final class ModuleConverter extends AbstractConverter {
 			binding.setName(loopVariable.getName());
 			binding.setType(createAstResult(TypeUtils.createTypeLiteral(loopVariable.getType())));
 		} else {
-			// TODO manage implicit for block
-			throw new MigrationException(input);
+			binding.setName("iterator" + forImpliciteIteratorIndex++);
 		}
 		binding.setInitExpression(getInitExpression(input));
 
 		// statements
-		final Block body = createBlock(output, input.getBody());
-		output.setBody(body);
+		pushImplicitSelf(input, binding.getName());
+		try {
+			final Block body = createBlock(output, input.getBody());
+			output.setBody(body);
+		} finally {
+			popIndentation();
+		}
 
 		OCLExpression each = input.getEach();
 		if (each != null) {
-			output.setSeparator(expressionConverter.convertToExpression(each, false));
+			output.setSeparator(expressionConverter.convertToExpression(each, implicitSelfStack));
 		}
 		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
 	}
@@ -677,7 +764,7 @@ public final class ModuleConverter extends AbstractConverter {
 		final org.eclipse.acceleo.Expression res;
 
 		final org.eclipse.acceleo.Expression initExpression = expressionConverter.convertToExpression(input
-				.getIterSet(), false);
+				.getIterSet(), implicitSelfStack);
 		if (input.getGuard() != null) {
 			final Call selectCall = AstFactory.eINSTANCE.createCall();
 			selectCall.setType(CallType.COLLECTIONCALL);
@@ -690,7 +777,7 @@ public final class ModuleConverter extends AbstractConverter {
 			varDeclaration.setName(input.getLoopVariable().getName());
 			lambda.getParameters().add(varDeclaration);
 			final org.eclipse.acceleo.Expression guardExpression = expressionConverter.convertToExpression(
-					input.getGuard(), false);
+					input.getGuard(), implicitSelfStack);
 			lambda.setExpression(guardExpression.getAst().getAst());
 			selectCall.getArguments().add(lambda);
 
@@ -705,7 +792,7 @@ public final class ModuleConverter extends AbstractConverter {
 
 	private List<Statement> caseIfBlock(IfBlock input) {
 		IfStatement output = AcceleoFactory.eINSTANCE.createIfStatement();
-		output.setCondition(expressionConverter.convertToExpression(input.getIfExpr(), false));
+		output.setCondition(expressionConverter.convertToExpression(input.getIfExpr(), implicitSelfStack));
 
 		// then statements
 		final Block thenBlock = createBlock(output, input.getBody());
@@ -818,7 +905,7 @@ public final class ModuleConverter extends AbstractConverter {
 
 	private Object caseProtectedAreaBlock(ProtectedAreaBlock input) {
 		ProtectedArea output = AcceleoFactory.eINSTANCE.createProtectedArea();
-		output.setId(expressionConverter.convertToExpression(input.getMarker(), false));
+		output.setId(expressionConverter.convertToExpression(input.getMarker(), implicitSelfStack));
 		// statements
 		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);

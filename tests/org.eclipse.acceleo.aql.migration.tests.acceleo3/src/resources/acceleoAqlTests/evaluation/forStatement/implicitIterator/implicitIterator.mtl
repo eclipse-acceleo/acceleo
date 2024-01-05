@@ -1,0 +1,9 @@
+[module implicitIterator('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', false)]
+    [for (myParam.eClassifiers)]
+      [name/]
+    [/for]
+  [/file]
+[/template]

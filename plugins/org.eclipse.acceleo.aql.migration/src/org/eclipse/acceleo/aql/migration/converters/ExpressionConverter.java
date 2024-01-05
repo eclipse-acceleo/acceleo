@@ -16,20 +16,22 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.aql.migration.MigrationException;
+import org.eclipse.acceleo.aql.migration.converters.ModuleConverter.ImpliciteSelfFrame;
 import org.eclipse.acceleo.aql.migration.converters.utils.OperationUtils;
 import org.eclipse.acceleo.aql.migration.converters.utils.TypeUtils;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
-import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.AstPackage;
@@ -103,9 +105,9 @@ public final class ExpressionConverter extends AbstractConverter {
 	private static final String SELF_VARIABLE_NAME = "self";
 
 	/**
-	 * The flag stating whether we should resolve the self variable.
+	 * The current implicit self variable name stack.
 	 */
-	private boolean resolveSelf = true;
+	private Deque<ImpliciteSelfFrame> implicitSelfStack;
 
 	/**
 	 * The trget folder {@link Path}.
@@ -146,11 +148,13 @@ public final class ExpressionConverter extends AbstractConverter {
 	 * 
 	 * @param input
 	 *            the expression to convert
+	 * @param implicitSelfStack
+	 *            the current implicit self variable name stack
 	 * @return the statement
 	 */
-	public Statement convertToStatement(OCLExpression input) {
+	public Statement convertToStatement(OCLExpression input, Deque<ImpliciteSelfFrame> implicitSelfStack) {
 		Statement output = AcceleoFactory.eINSTANCE.createExpressionStatement();
-		((ExpressionStatement)output).setExpression(convertToExpression(input, false));
+		((ExpressionStatement)output).setExpression(convertToExpression(input, implicitSelfStack));
 		return output;
 	}
 
@@ -159,19 +163,18 @@ public final class ExpressionConverter extends AbstractConverter {
 	 * 
 	 * @param inputExpression
 	 *            the expression to convert
-	 * @param allowSelf
-	 *            if <true>, won't resolve self for this expression
+	 * @param implicitSelfStack
+	 *            the current implicit self variable name stack
 	 * @return the Acceleo 4 expression
 	 */
 	public org.eclipse.acceleo.Expression convertToExpression(OCLExpression inputExpression,
-			boolean allowSelf) {
+			Deque<ImpliciteSelfFrame> implicitSelfStack) {
 		org.eclipse.acceleo.Expression outputExpression = AcceleoFactory.eINSTANCE.createExpression();
-		if (allowSelf) {
-			this.resolveSelf = false;
-		}
-		outputExpression.setAst(createAstResult((Expression)convert(inputExpression)));
-		if (allowSelf) {
-			this.resolveSelf = true;
+		this.implicitSelfStack = implicitSelfStack;
+		try {
+			outputExpression.setAst(createAstResult((Expression)convert(inputExpression)));
+		} finally {
+
 		}
 		return outputExpression;
 	}
@@ -301,9 +304,8 @@ public final class ExpressionConverter extends AbstractConverter {
 		// } else {
 		output = AstFactory.eINSTANCE.createVarRef();
 		String variableName = input.getReferredVariable().getName();
-		if (resolveSelf && SELF_VARIABLE_NAME.equals(variableName)) {
-			Variable variable = findVariable(input);
-			variableName = variable.getName();
+		if (implicitSelfStack != null && SELF_VARIABLE_NAME.equals(variableName)) {
+			variableName = implicitSelfStack.peekLast().getImplicitSelfName();
 		}
 		((VarRef)output).setVariableName(variableName);
 		// }
@@ -374,10 +376,10 @@ public final class ExpressionConverter extends AbstractConverter {
 		org.eclipse.ocl.expressions.OCLExpression<EClassifier> firstArgument = input.getArgument().get(0);
 		if (firstArgument instanceof IntegerLiteralExp) {
 			int index = ((IntegerLiteralExp)firstArgument).getIntegerSymbol();
-			variableName = getCurrentVariableName(input, index);
+			variableName = getCurrentVariableName(index);
 		} else if (firstArgument instanceof TypeExp) {
 			final EClassifier eClassifier = ((TypeExp)firstArgument).getReferredType();
-			variableName = getCurrentVariableName(input, eClassifier);
+			variableName = getCurrentVariableName(eClassifier);
 		} else {
 			variableName = null;
 		}
@@ -396,48 +398,54 @@ public final class ExpressionConverter extends AbstractConverter {
 		return res;
 	}
 
-	private String getCurrentVariableName(OperationCallExp input, EClassifier eClassifier) {
+	private String getCurrentVariableName(EClassifier eClassifier) {
 		String res = null;
 
-		EObject container = input.eContainer();
-		while (container != null) {
-			if (container instanceof ForBlock) {
-				final ForBlock forBlock = (ForBlock)container;
+		final Iterator<ImpliciteSelfFrame> it = implicitSelfStack.descendingIterator();
+		while (it.hasNext()) {
+			final ImpliciteSelfFrame frame = it.next();
+			if (frame.getInput() instanceof ForBlock) {
+				final ForBlock forBlock = (ForBlock)frame.getInput();
 				final EClassifier forType = forBlock.getLoopVariable().getType();
 				if (eClassifier == forType || (eClassifier instanceof EClass && forType instanceof EClass
 						&& ((EClass)forType).isSuperTypeOf((EClass)eClassifier))) {
-					res = forBlock.getLoopVariable().getName();
+					res = frame.getImplicitSelfName();
 					break;
 				}
 			}
-			container = container.eContainer();
 		}
 
 		return res;
 	}
 
-	private String getCurrentVariableName(OperationCallExp input, int index) {
+	private String getCurrentVariableName(int index) {
 		String res = null;
 
 		int localIndex = index;
-		EObject container = input.eContainer();
-		ForBlock lastFor = null;
-		while (container != null) {
-			if (container instanceof ForBlock) {
-				final ForBlock forBlock = (ForBlock)container;
-				if (localIndex == 0) {
-					res = forBlock.getLoopVariable().getName();
-					break;
-				}
-				localIndex--;
-				lastFor = forBlock;
+		final Iterator<ImpliciteSelfFrame> it = implicitSelfStack.descendingIterator();
+		ImpliciteSelfFrame forParentFrame = null;
+		boolean wasForFrame = false;
+		while (it.hasNext()) {
+			final ImpliciteSelfFrame frame = it.next();
+			if (wasForFrame) {
+				forParentFrame = frame;
 			}
-			container = container.eContainer();
-
-			if (localIndex > 0 && lastFor != null) {
-				res = findVariable(lastFor).getName();
+			if (frame.getInput() instanceof ForBlock) {
+				if (localIndex == 0) {
+					res = frame.getImplicitSelfName();
+					break;
+				} else {
+					localIndex--;
+					wasForFrame = true;
+				}
+			} else {
+				wasForFrame = false;
 			}
 		}
+		if (res == null && forParentFrame != null) {
+			res = forParentFrame.getImplicitSelfName();
+		}
+
 		return res;
 	}
 
@@ -809,21 +817,6 @@ public final class ExpressionConverter extends AbstractConverter {
 				throw new MigrationException(type);
 		}
 		return output;
-	}
-
-	// TODO use accurate rules here
-	private static Variable findVariable(EObject context) {
-		Variable variable = null;
-		EObject validParent = context.eContainer();
-		while (validParent != null && !(validParent instanceof Template || validParent instanceof Query)) {
-			validParent = validParent.eContainer();
-		}
-		if (validParent instanceof Template) {
-			variable = ((Template)validParent).getParameter().get(0);
-		} else if (validParent instanceof Query) {
-			variable = ((Query)validParent).getParameter().get(0);
-		}
-		return variable;
 	}
 
 }
