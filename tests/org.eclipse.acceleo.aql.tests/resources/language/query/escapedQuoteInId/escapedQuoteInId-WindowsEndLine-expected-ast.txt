@@ -1,0 +1,6 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  public query myQuery(myParam : EPackage (85..110)) ) : java.lang.String .add(->first(.aqlFeatureAccess(myParam, 'eClassifiers')), '' ') (123..160)
+  /] (63..162) (0..162)

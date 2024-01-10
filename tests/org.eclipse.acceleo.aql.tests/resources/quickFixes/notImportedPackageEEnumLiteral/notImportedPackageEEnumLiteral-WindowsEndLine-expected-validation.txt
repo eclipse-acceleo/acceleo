@@ -1,0 +1,2 @@
+ERROR invalid enum literal: no literal registered with this name - 127 159
+WARNING java.lang.String is incompatible with Nothing(invalid enum literal: no literal registered with this name) - 63 161

@@ -1,0 +1,71 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main (72..77) /] (63..79)
+  
+  public template myTemplate(myParam : EPackage (109..134))
+  @main
+    [file url 'singleVariable' (147..163) mode overwrite
+      [let 
+      myVariable : Sequence(java.lang.String)java.util.List = Sequence{'a', } (219..232) (187..232)
+        [->sep(myVariable, ',') (242..262)/] (newLineNeeded (241..266) (233..270)
+      [/let] (182..276)
+       (newLineNeeded) (276..278)
+      [let 
+      myVariable : Sequence(java.lang.String)java.util.List = Sequence{'a', 'b', } (319..336) (287..336)
+        [->sep(myVariable, ',') (346..366)/] (newLineNeeded (345..370) (337..374)
+      [/let] (282..380)
+       (newLineNeeded) (380..382)
+      [let 
+      myVariable : Sequence(java.lang.String)java.util.List = Sequence{'a', 'b', 'c', } (423..444) (391..444)
+        [->sep(myVariable, ',') (454..474)/] (newLineNeeded (453..478) (445..482)
+      [/let] (386..488)
+       (newLineNeeded) (488..490) (176..492)
+    [/file] (140..499)
+     (newLineNeeded) (499..501)
+    NEW_LINE  (newLineNeeded) (501..503)
+    [file url 'singleSequence2Variables' (512..538) mode overwrite
+      [let 
+      myVariable : Sequence(Sequence(java.lang.String)java.util.List)java.util.List = Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, } (604..681) (562..681)
+        [->sep(myVariable, ',') (691..711)/] (newLineNeeded (690..715) (682..719)
+      [/let] (557..725)
+       (newLineNeeded) (725..727) (551..729)
+    [/file] (505..736)
+     (newLineNeeded) (736..738)
+    NEW_LINE  (newLineNeeded) (738..740)
+    [file url 'singleSequence3Variables' (749..775) mode overwrite
+      [let 
+      myVariable : Sequence(Sequence(Sequence(java.lang.String)java.util.List)java.util.List)java.util.List = Sequence{Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, }, Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, }, Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, }, } (851..1118) (799..1118)
+        [->sep(myVariable, ',') (1128..1148)/] (newLineNeeded (1127..1152) (1119..1157)
+      [/let] (794..1163)
+       (newLineNeeded) (1163..1165) (788..1167)
+    [/file] (742..1174)
+     (newLineNeeded) (1174..1176)
+    NEW_LINE  (newLineNeeded) (1176..1178)
+    [file url 'multipleVariables' (1187..1206) mode overwrite
+      [let 
+      myVariable1 : Sequence(java.lang.String)java.util.List = Sequence{'a', 'b', 'c', } (1263..1284) (1230..1284)
+      myVariable2 : Sequence(java.lang.String)java.util.List = Sequence{'d', 'e', 'f', } (1330..1351) (1297..1351)
+      myVariable3 : Sequence(java.lang.String)java.util.List = Sequence{'g', 'h', 'i', } (1397..1418) (1364..1418)
+        [->sep(myVariable1, ',') (1428..1449)/] (newLineNeeded (1427..1453)
+        [->sep(myVariable2, ',') (1460..1481)/] (newLineNeeded (1459..1485)
+        [->sep(myVariable3, ',') (1492..1513)/] (newLineNeeded (1491..1517) (1419..1521)
+      [/let] (1225..1527)
+       (newLineNeeded) (1527..1529) (1219..1531)
+    [/file] (1180..1538)
+     (newLineNeeded) (1538..1540)
+    NEW_LINE  (newLineNeeded) (1540..1542)
+    [file url 'multipleSequenceVariables' (1551..1578) mode overwrite
+      [let 
+      myVariable1 : Sequence(java.lang.String)java.util.List = Sequence{'a', 'b', 'c', } (1635..1656) (1602..1656)
+      myVariable2 : Sequence(Sequence(java.lang.String)java.util.List)java.util.List = Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, } (1711..1788) (1668..1788)
+      myVariable3 : Sequence(Sequence(Sequence(java.lang.String)java.util.List)java.util.List)java.util.List = Sequence{Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, }, Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, }, Sequence{Sequence{'a', 'b', 'c', }, Sequence{'d', 'e', 'f', }, Sequence{'g', 'h', 'i', }, }, } (1853..2135) (1800..2135)
+        [->sep(myVariable1, ',') (2145..2166)/] (newLineNeeded (2144..2170)
+        [->sep(myVariable2, ',') (2177..2198)/] (newLineNeeded (2176..2202)
+        [->sep(myVariable3, ',') (2209..2230)/] (newLineNeeded (2208..2234) (2136..2238)
+      [/let] (1597..2244)
+       (newLineNeeded) (2244..2246) (1591..2248)
+    [/file] (1544..2255)
+     (newLineNeeded) (2255..2257) (136..2257)
+  [/template] (81..2268) (0..2268)

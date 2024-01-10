@@ -1,0 +1,17 @@
+//@moduleElements.0/@body/@statements.0/@variables.0/@initExpression/@aql/@arguments.0/@arguments.0
+Add parameter notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [116, 2, 53, 116, 2, 53] , notExisting: String
+Surround with Let: notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [122, 3, 2, 229, 5, 8] [let notExisting : String = '']
+    [let myVariable : ecore::EClassifier = notExisting.eClassifiers->first()]
+      [myVariable.name/]
+    [/let]
+  [/let]
+//@moduleElements.0/@body/@statements.0/@body/@statements.0/@expression/@aql/@arguments.0
+Add parameter myVariable
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [116, 2, 53, 116, 2, 53] , myVariable: String
+Surround with Let: myVariable
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [201, 4, 4, 221, 5, 0] [let myVariable : String = '']
+      [myVariable.name/]
+  
+    [/let]

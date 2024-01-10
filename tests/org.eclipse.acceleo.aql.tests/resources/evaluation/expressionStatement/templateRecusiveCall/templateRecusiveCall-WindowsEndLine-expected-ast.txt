@@ -1,0 +1,27 @@
+
+header position 0..78
+module recursiveTemplateInvocation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (37..75)
+  [comment @main (91..96) /] (82..98)
+  
+  public template recursive_source_is_argument(c : EClass (146..163))
+  @main
+       (169..171)
+    [file url 'recursive_template_invocation_is' (178..212) mode overwrite
+         (233..235)
+      [.recursive_is(c, true) (236..256)/] (newLineNeeded (235..260) (225..264)
+    [/file] (171..271)
+     (newLineNeeded) (271..273) (165..273)
+  [/template] (100..284)
+  
+  public template recursive_is(c : EClass (318..335), b : java.lang.Boolean (337..348))
+      start (newLineNeeded) (354..363)
+       (365..367)
+    [if .not(b) (372..377)
+        stop (newLineNeeded) (387..395) (379..399)
+    [else]
+        continue  (413..424)
+      [.recursive_is(c, false) (425..446)/] (newLineNeeded (424..450) (405..454)
+    [/if] (367..459)
+     (newLineNeeded) (459..461) (350..461)
+  [/template] (288..472) (0..472)

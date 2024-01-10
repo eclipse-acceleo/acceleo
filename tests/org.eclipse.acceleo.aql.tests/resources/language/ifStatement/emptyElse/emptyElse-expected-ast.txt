@@ -5,8 +5,7 @@ module myModule
   
   public template test(anEClass : EClass (83..107))
     [if false (115..120)
-      some text
- (122..132) (122..132)
+      some text (newLineNeeded) (122..131) (122..132)
     [else] (138..138)
     [/if] (110..143)
      (newLineNeeded) (143..144) (109..144)

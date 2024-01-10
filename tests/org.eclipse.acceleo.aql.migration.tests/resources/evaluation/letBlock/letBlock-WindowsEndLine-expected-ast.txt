@@ -1,0 +1,18 @@
+
+header position 0..59
+module letBlock
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main (72..77) /] (63..79)
+  
+  public template testLetBlock(anEClass : EClass (111..135))
+  @main
+    [file url 'testLetBlock' (148..162) mode overwrite charset 'Cp1252' (175..183)
+      [let 
+      str : java.lang.String = 'a' (211..214) (196..214)
+        block_ (223..229)
+        [str (230..233)/] (newLineNeeded (229..237) (215..241)
+      [/let] (191..247)
+       (newLineNeeded) (247..249) (185..251)
+    [/file] (141..258)
+     (newLineNeeded) (258..260) (137..260)
+  [/template] (81..271) (0..271)

@@ -10,8 +10,8 @@ module myModule
       first line (newLineNeeded) (183..194)
       [if .startsWith(.aqlFeatureAccess(myParam, 'name'), 'a') (203..231)
         [.aqlFeatureAccess(myParam, 'name') (234..246)/] (233..248)
-        
-     (248..253) (233..253)
+         (newLineNeeded) (248..248)
+             (249..253) (233..253)
       [/if] (198..258)
        (newLineNeeded) (258..259)
       last line (newLineNeeded) (263..273) (178..275)

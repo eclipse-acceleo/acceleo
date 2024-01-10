@@ -12,8 +12,8 @@ module myModule
       [let 
       name : null = .aqlFeatureAccess(myParam, 'name') (222..234) (215..234)
         [name (236..240)/] (235..242)
-        
-                 (242..259) (235..259)
+         (newLineNeeded) (242..242)
+                         (243..259) (235..259)
       [/let] (210..265)
        AFTER_TEXT (newLineNeeded) (265..277)
       last line (newLineNeeded) (281..291) (178..293)

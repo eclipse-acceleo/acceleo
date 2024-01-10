@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -911,7 +911,8 @@ public class AcceleoTextDocument {
 		final ASTNode astNode = acceleoAstResult.getAstNode(atEndIndex);
 		if (astNode != null) {
 			final AcceleoQuickFixesSwitch quickFixesSwitch = new AcceleoQuickFixesSwitch(
-					getQueryEnvironment(), acceleoValidationResult, getModuleQualifiedName(), getContents());
+					getQueryEnvironment(), acceleoValidationResult, getModuleQualifiedName(), getContents(),
+					System.lineSeparator());
 			final List<IAstQuickFix> quickFixes = quickFixesSwitch.getQuickFixes(astNode);
 			res = quickFixes.stream().map(qf -> transform(qf)).collect(Collectors.toList());
 		} else {

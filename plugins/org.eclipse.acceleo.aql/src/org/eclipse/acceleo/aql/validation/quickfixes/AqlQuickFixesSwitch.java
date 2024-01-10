@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -122,17 +122,27 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	private final Positions<ASTNode> positions;
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
-	 *            the {@link IQualifiedNameQueryEnvironment}
+	 *            the {@link IQualifiedNameQueryEnvironment}.
 	 * @param validationResult
 	 *            the {@link IAcceleoValidationResult}
+	 * @param moduleQualifiedName
+	 *            the {@link Module} qualified name
 	 * @param moduleText
 	 *            the text representation of the {@link Module}
+	 * @param newLine
+	 *            the new line {@link String}
 	 */
 	public AqlQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
-			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText) {
+			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
+			String newLine) {
 		super(validationResult.getAcceleoAstResult().getPositions());
 		this.queryEnvironment = queryEnvironment;
 		this.validationResult = validationResult;
@@ -140,6 +150,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		this.moduleQualifiedName = moduleQualifiedName;
 		this.moduleText = moduleText;
 		this.linesAndColumns = AQLUtils.getLinesAndColumns(moduleText);
+		this.newLine = newLine;
 
 		this.positions = validationResult.getAcceleoAstResult().getPositions();
 	}
@@ -183,7 +194,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final String indent = moduleText.substring(offsetStart - columnStart, offsetStart);
 		final String text = indent + moduleText.substring(positions.getStartPositions(containingStatement),
 				positions.getEndPositions(containingStatement)).replaceAll("\\R\\s*", "$0" + SPACE + SPACE)
-				+ "\n" + indent;
+				+ newLine + indent;
 		textStatement.setValue(text);
 		body.getStatements().add(textStatement);
 		letStatement.setBody(body);
@@ -201,7 +212,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		letStatement.getVariables().add(binding);
 
 		final IAstQuickFix fix = new AstQuickFix("Surround with Let: " + varRef.getVariableName());
-		final String replacement = new AcceleoAstSerializer().serialize(letStatement);
+		final String replacement = new AcceleoAstSerializer(newLine).serialize(letStatement);
 		final AstTextReplacement textReplacement = new AstTextReplacement(uri, replacement, offsetStart,
 				lineStart, columnStart, offsetEnd, lineEnd, columnEnd);
 		fix.getTextReplacements().add(textReplacement);
@@ -503,9 +514,9 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final int column = module.getAst().getEndColumn(module);
 		final String replacement;
 		if (column != 0) {
-			replacement = "\n\n" + new AcceleoAstSerializer().serialize(query);
+			replacement = newLine + newLine + new AcceleoAstSerializer(newLine).serialize(query);
 		} else {
-			replacement = "\n" + new AcceleoAstSerializer().serialize(query);
+			replacement = newLine + new AcceleoAstSerializer(newLine).serialize(query);
 		}
 		final IAstTextReplacement res = new AstTextReplacement(sourceURI, replacement, offset, line, column,
 				offset, line, column);
@@ -533,9 +544,9 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final int column = module.getAst().getEndColumn(module);
 		final String replacement;
 		if (column != 0) {
-			replacement = "\n\n" + new AcceleoAstSerializer().serialize(template);
+			replacement = newLine + newLine + new AcceleoAstSerializer(newLine).serialize(template);
 		} else {
-			replacement = "\n" + new AcceleoAstSerializer().serialize(template);
+			replacement = newLine + new AcceleoAstSerializer(newLine).serialize(template);
 		}
 		final IAstTextReplacement res = new AstTextReplacement(sourceURI, replacement, offset, line, column,
 				offset, line, column);
@@ -565,9 +576,9 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 			joiner.add(getJavaStringType(type) + " parameter" + i++);
 		}
 		replacement.append(joiner.toString());
-		replacement.append(") {\n");
-		replacement.append("\t\treturn null;\n");
-		replacement.append("\t}\n");
+		replacement.append(") {" + newLine);
+		replacement.append("\t\treturn null;" + newLine);
+		replacement.append("\t}" + newLine);
 
 		final int[][] classLinesAndColumns = AQLUtils.getLinesAndColumns(classContent);
 		final int offset = classContent.lastIndexOf("}") - 1;

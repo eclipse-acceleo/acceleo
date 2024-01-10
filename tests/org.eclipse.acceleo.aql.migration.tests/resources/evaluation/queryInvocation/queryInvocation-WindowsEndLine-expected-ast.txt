@@ -1,0 +1,18 @@
+
+header position 0..66
+module queryInvocation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
+  [comment @main (79..84) /] (70..86)
+  
+  public template test(e : EClass (110..127))
+  @main
+    [file url 'query_invocation_wrapping' (140..167) mode overwrite
+      [.report1(e, .add(.add('Attributes ', ->sep(->collect(->asSequence(.AttributesOfEClass(e)), temp1 = ->asSequence(.AttributesOfEClass(e)) | .aqlFeatureAccess(temp1, 'name')), ', ')), ' end')) (187..299)/] (newLineNeeded (186..303)
+      [.report1(e, .add(.concat('Attributes ', ->toString(->sep(->collect(->asSequence(.AttributesOfEClass(e)), temp2 = ->asSequence(.AttributesOfEClass(e)) | .aqlFeatureAccess(temp2, 'name')), ', '))), ' end')) (308..438)/] (newLineNeeded (307..442) (180..444)
+    [/file] (133..451)
+     (newLineNeeded) (451..453) (129..453)
+  [/template] (88..464)
+  public query AttributesOfEClass(anEClass : EClass (501..525)) ) : OrderedSet(EAttribute)java.util.Set .aqlFeatureAccess(anEClass, 'eAllAttributes') (561..584)
+  /] (468..586)
+  public query report1(anEClass : EClass (612..636), message : java.lang.String (638..654)) ) : java.lang.String message (667..674)
+  /] (590..676) (0..676)

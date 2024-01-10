@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -61,6 +61,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,9 +101,19 @@ public abstract class AbstractLanguageTestSuite {
 	protected final AcceleoAstResult astResult;
 
 	/**
+	 * The {@link AcceleoAstResult} for MS Windows end line (\r\n).
+	 */
+	protected final AcceleoAstResult astResultWindowsEndLine;
+
+	/**
 	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
 	protected static IQualifiedNameQueryEnvironment queryEnvironment;
+
+	/**
+	 * The {@link IQualifiedNameQueryEnvironment} for MS Windows end line (\r\n).
+	 */
+	protected static IQualifiedNameQueryEnvironment queryEnvironmentWindowsEndLine;
 
 	/**
 	 * The {@link ResourceSet} for models.
@@ -113,6 +124,11 @@ public abstract class AbstractLanguageTestSuite {
 	 * The {@link AcceleoEvaluator}.
 	 */
 	protected final AcceleoEvaluator evaluator;
+
+	/**
+	 * The {@link AcceleoEvaluator} for MS Windows end line (\r\n).
+	 */
+	protected final AcceleoEvaluator evaluatorWindowsEndLine;
 
 	/**
 	 * The memory destination {@link String}.
@@ -145,9 +161,19 @@ public abstract class AbstractLanguageTestSuite {
 	private final IAcceleoValidationResult validationResult;
 
 	/**
+	 * The {@link IAcceleoValidationResult} for MS Windows end line (\r\n).
+	 */
+	private final IAcceleoValidationResult validationResultWindowsEndLine;
+
+	/**
 	 * The {@link Module} text.
 	 */
 	private final String moduleText;
+
+	/**
+	 * The {@link Module} text for MS Windows end line (\r\n).
+	 */
+	private final String moduleTextWindowsEndLine;
 
 	/**
 	 * Constructor.
@@ -168,12 +194,19 @@ public abstract class AbstractLanguageTestSuite {
 			moduleText = AcceleoUtil.getContent(is, StandardCharsets.UTF_8.name());
 		}
 
+		try (InputStream is = new FileInputStream(moduleFile)) {
+			moduleTextWindowsEndLine = AcceleoUtil.getContent(is, StandardCharsets.UTF_8.name()).replaceAll(
+					"\n", "\r\n");
+		}
+
 		final Path rootPath = testFolderFile.toPath().getName(0);
 		final URL[] urls = new URL[] {testFolderFile.toPath().getName(0).toUri().toURL() };
 
 		final ClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
 				AcceleoParser.QUALIFIER_SEPARATOR);
+		final IQualifiedNameResolver resolverWindowsEndLine = new ClassLoaderQualifiedNameResolver(
+				classLoader, AcceleoParser.QUALIFIER_SEPARATOR);
 
 		// TODO get options form ??? or list all possible options ?
 		// don't add any options ?
@@ -186,22 +219,47 @@ public abstract class AbstractLanguageTestSuite {
 
 		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
 				true);
+		queryEnvironmentWindowsEndLine = AcceleoUtil.newAcceleoQueryEnvironment(options,
+				resolverWindowsEndLine, resourceSetForModels, true);
 
 		evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
+		evaluatorWindowsEndLine = new AcceleoEvaluator(queryEnvironmentWindowsEndLine.getLookupEngine());
+		resolverWindowsEndLine.addLoader(new ModuleLoaderWindowsEndLine(new AcceleoParser(),
+				evaluatorWindowsEndLine));
+		resolverWindowsEndLine.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+
 		String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
 				"::") + "::";
 		qualifiedName = namespace + moduleFile.getName().substring(0, moduleFile.getName().lastIndexOf('.'));
+
 		final Object resolved = resolver.resolve(qualifiedName);
 		if (resolved instanceof Module) {
 			astResult = ((Module)resolved).getAst();
 		} else {
 			astResult = null;
 		}
+
+		final Object resolvedWindowsEndLine = resolverWindowsEndLine.resolve(qualifiedName);
+		if (resolvedWindowsEndLine instanceof Module) {
+			astResultWindowsEndLine = ((Module)resolvedWindowsEndLine).getAst();
+		} else {
+			astResultWindowsEndLine = null;
+		}
+
 		final AcceleoValidator validator = new AcceleoValidator(queryEnvironment);
 		validationResult = validator.validate(astResult, qualifiedName);
+
+		final AcceleoValidator validatorWindowsEndLine = new AcceleoValidator(queryEnvironmentWindowsEndLine);
+		validationResultWindowsEndLine = validatorWindowsEndLine.validate(astResultWindowsEndLine,
+				qualifiedName);
+	}
+
+	@After
+	public void after() {
+		uriHandler.clear();
 	}
 
 	@AfterClass
@@ -209,6 +267,10 @@ public abstract class AbstractLanguageTestSuite {
 		AQLUtils.cleanResourceSetForModels(queryEnvironment.getLookupEngine().getResolver(),
 				resourceSetForModels);
 		AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
+
+		AQLUtils.cleanResourceSetForModels(queryEnvironmentWindowsEndLine.getLookupEngine().getResolver(),
+				resourceSetForModels);
+		AcceleoUtil.cleanServices(queryEnvironmentWindowsEndLine, resourceSetForModels);
 	}
 
 	/**
@@ -257,7 +319,32 @@ public abstract class AbstractLanguageTestSuite {
 		try (FileInputStream stream = new FileInputStream(expectedASTFile)) {
 			final String expectedAst = AcceleoUtil.getContent(stream, UTF_8);
 			assertEquals(expectedAst, actualAst);
-			stream.close();
+		}
+	}
+
+	/**
+	 * Tests the parsing by comparing a textual representation of the AST for MS Windows end line (\r\n).
+	 * 
+	 * @throws IOException
+	 *             if the expected AST file can't be read
+	 * @throws FileNotFoundException
+	 *             if the expected AST file can't be found
+	 */
+	@Test
+	public void parsingWindowsEndLine() throws FileNotFoundException, IOException {
+		final File expectedASTFileWindowsEndLine = getExpectedASTFileWindowsEndLine(new File(testFolderPath));
+		final String actualAst = moduleAstSerializer.serialize(astResultWindowsEndLine);
+		if (!expectedASTFileWindowsEndLine.exists()) {
+			final File actualASTFileWindowsEndLine = getActualASTFileWindowsEndLine(new File(testFolderPath));
+			if (!actualASTFileWindowsEndLine.exists()) {
+				actualASTFileWindowsEndLine.createNewFile();
+			}
+			setContent(new FileOutputStream(actualASTFileWindowsEndLine), UTF_8, actualAst);
+			fail("file doesn't exist.");
+		}
+		try (FileInputStream stream = new FileInputStream(expectedASTFileWindowsEndLine)) {
+			final String expectedAst = AcceleoUtil.getContent(stream, UTF_8);
+			assertEquals(expectedAst, actualAst);
 		}
 	}
 
@@ -294,6 +381,39 @@ public abstract class AbstractLanguageTestSuite {
 	}
 
 	/**
+	 * Tests the validation of a template for MS Windows end line (\r\n).
+	 * 
+	 * @throws FileNotFoundException
+	 *             if the file can't be found
+	 * @throws IOException
+	 *             if the given stream can't be written to
+	 */
+	@Test
+	public void validationWindowsEndLine() throws FileNotFoundException, IOException {
+		final List<IValidationMessage> messages = validationResultWindowsEndLine.getValidationMessages();
+		final String actualContent = getValidationContent(messages);
+		final File expectedFileWindowsEndLine = getExpectedValidationFileWindowsEndLine(new File(
+				testFolderPath));
+		final File actualFileWindowsEndLine = getActualValidationFileWindowsEndLine(new File(testFolderPath));
+
+		if (!expectedFileWindowsEndLine.exists()) {
+			if (!actualFileWindowsEndLine.exists() && !expectedFileWindowsEndLine.exists()) {
+				actualFileWindowsEndLine.createNewFile();
+			}
+			try (FileOutputStream stream = new FileOutputStream(actualFileWindowsEndLine);) {
+				setContent(stream, UTF_8, actualContent);
+			}
+			fail("file doesn't exist.");
+		} else {
+			String expectedContent = "";
+			try (FileInputStream stream = new FileInputStream(expectedFileWindowsEndLine);) {
+				expectedContent = AcceleoUtil.getContent(stream, UTF_8);
+			}
+			assertEquals(expectedContent, actualContent);
+		}
+	}
+
+	/**
 	 * Tests the quick fixes.
 	 * 
 	 * @throws FileNotFoundException
@@ -303,9 +423,41 @@ public abstract class AbstractLanguageTestSuite {
 	 */
 	@Test
 	public void quickFixes() throws FileNotFoundException, IOException {
-		final String actualContent = getQuickFixesContent(validationResult);
+		final String actualContent = getQuickFixesContent(validationResult, "\n", moduleText);
 		final File expectedFile = getExpectedQuickFixesFile(new File(testFolderPath));
 		final File actualFile = getActualQuickFixesFile(new File(testFolderPath));
+
+		if (!expectedFile.exists()) {
+			if (!actualFile.exists() && !expectedFile.exists()) {
+				actualFile.createNewFile();
+			}
+			try (FileOutputStream stream = new FileOutputStream(actualFile);) {
+				setContent(stream, UTF_8, actualContent);
+			}
+			fail("file doesn't exist.");
+		} else {
+			String expectedContent = "";
+			try (FileInputStream stream = new FileInputStream(expectedFile);) {
+				expectedContent = AcceleoUtil.getContent(stream, UTF_8);
+			}
+			assertEquals(getPortableString(expectedContent), getPortableString(actualContent));
+		}
+	}
+
+	/**
+	 * Tests the quick fixes for MS Windows end line (\r\n).
+	 * 
+	 * @throws FileNotFoundException
+	 *             if the file can't be found
+	 * @throws IOException
+	 *             if the given stream can't be written to
+	 */
+	@Test
+	public void quickFixesWindowsEndLine() throws FileNotFoundException, IOException {
+		final String actualContent = getQuickFixesContent(validationResultWindowsEndLine, "\r\n",
+				moduleTextWindowsEndLine).replaceAll("\r\n", "\n");
+		final File expectedFile = getExpectedQuickFixesFileWindowsEndLine(new File(testFolderPath));
+		final File actualFile = getActualQuickFixesFileWindowsEndLine(new File(testFolderPath));
 
 		if (!expectedFile.exists()) {
 			if (!actualFile.exists() && !expectedFile.exists()) {
@@ -359,9 +511,13 @@ public abstract class AbstractLanguageTestSuite {
 	 * 
 	 * @param result
 	 *            the {@link List} of {@link IValidationMessage}
+	 * @param endLine
+	 *            the end line {@link String}
+	 * @param text
+	 *            the module text
 	 * @return the string representation of the {@link IAstQuickFix} for the given {@link IValidationResult}
 	 */
-	private String getQuickFixesContent(IAcceleoValidationResult result) {
+	private String getQuickFixesContent(IAcceleoValidationResult result, String endLine, String text) {
 		final String res;
 
 		final List<EObject> eObjects = new ArrayList<>();
@@ -373,7 +529,7 @@ public abstract class AbstractLanguageTestSuite {
 		}
 
 		final AcceleoQuickFixesSwitch quickFixesSwitch = new AcceleoQuickFixesSwitch(queryEnvironment, result,
-				qualifiedName, moduleText);
+				qualifiedName, text, endLine);
 
 		final StringBuilder builder = new StringBuilder();
 		for (EObject eObject : eObjects) {
@@ -449,6 +605,30 @@ public abstract class AbstractLanguageTestSuite {
 	}
 
 	/**
+	 * Gets the expected AST file from the test folder path for MS Windows end line (\r\n).
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the expected AST file from the test folder path for MS Windows end line (\r\n)
+	 */
+	protected File getExpectedASTFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-expected-ast.txt");
+	}
+
+	/**
+	 * Gets the actual AST file from the test folder path for MS Windows end line (\r\n).
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual AST file from the test folder path for MS Windows end line (\r\n)
+	 */
+	protected File getActualASTFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-actual-ast.txt");
+	}
+
+	/**
 	 * Gets the expected validation file from the test folder path.
 	 * 
 	 * @param testFolder
@@ -468,6 +648,30 @@ public abstract class AbstractLanguageTestSuite {
 	 */
 	protected File getActualValidationFile(File testFolder) {
 		return new File(testFolder + File.separator + testFolder.getName() + "-actual-validation.txt");
+	}
+
+	/**
+	 * Gets the expected validation file from the test folder path for MS Windows end line (\r\n).
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the expected validation file from the test folder path for MS Windows end line (\r\n)
+	 */
+	protected File getExpectedValidationFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-expected-validation.txt");
+	}
+
+	/**
+	 * Gets the actual validation file from the test folder path for MS Windows end line (\r\n).
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual validation file from the test folder path for MS Windows end line (\r\n)
+	 */
+	protected File getActualValidationFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-actual-validation.txt");
 	}
 
 	/**
@@ -493,25 +697,27 @@ public abstract class AbstractLanguageTestSuite {
 	}
 
 	/**
-	 * Gets the actual validated template file from the test folder path.
+	 * Gets the expected quick fixes file from the test folder path for MS Windows end line (\r\n).
 	 * 
 	 * @param testFolder
 	 *            the test folder path
-	 * @return the actual template file from the test folder path
+	 * @return the expected quick fixes file from the test folder path for MS Windows end line (\r\n)
 	 */
-	protected File getExpectedRuntimeMessageFile(File testFolder) {
-		return new File(testFolder + File.separator + testFolder.getName() + "-expected-runtimeMessages.txt");
+	protected File getExpectedQuickFixesFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-expected-quickFixes.txt");
 	}
 
 	/**
-	 * Gets the actual validated template file from the test folder path.
+	 * Gets the actual quick fixes file from the test folder path for MS Windows end line (\r\n).
 	 * 
 	 * @param testFolder
 	 *            the test folder path
-	 * @return the actual template file from the test folder path
+	 * @return the actual quick fixes file from the test folder path for MS Windows end line (\r\n)
 	 */
-	protected File getActualRuntimeMessageFile(File testFolder) {
-		return new File(testFolder + File.separator + testFolder.getName() + "-actual-runtimeMessages.txt");
+	protected File getActualQuickFixesFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-actual-quickFixes.txt");
 	}
 
 	/**

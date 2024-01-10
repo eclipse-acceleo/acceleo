@@ -1,0 +1,33 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main  (72..78) /] (63..80)
+  
+  public template myTemplate(myParam : EPackage (110..135))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (148..169) mode overwrite
+          (188..191)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (231..251) (197..251) separator '
+' (263..267)
+        -  (280..282)
+        [.myTemplate1(myVariable) (283..307)/] (newLineNeeded (282..311) (269..318)
+      [/for] (191..324)
+       (newLineNeeded) (324..326) (182..328)
+    [/file] (141..335)
+     (newLineNeeded) (335..337) (137..337)
+  [/template] (82..348)
+  
+  public template myTemplate1(eClassifier : EClassifier (381..413))
+    *  (419..421)
+    [.aqlFeatureAccess(eClassifier, 'name') (422..438)/] (newLineNeeded (421..442)
+       (444..446)
+    [.myTemplate2(eClassifier) (447..472)/] (newLineNeeded (446..476) (415..476)
+  [/template] (352..487)
+  
+  public template myTemplate2(eClassifier : EClassifier (520..552))
+    .  (558..560)
+    [.aqlFeatureAccess(eClassifier, 'name') (561..577)/] (newLineNeeded (560..581)
+    .  (583..585)
+    [.toUpper(.aqlFeatureAccess(eClassifier, 'name')) (586..612)/] (newLineNeeded (585..616) (554..616)
+  [/template] (491..627) (0..627)

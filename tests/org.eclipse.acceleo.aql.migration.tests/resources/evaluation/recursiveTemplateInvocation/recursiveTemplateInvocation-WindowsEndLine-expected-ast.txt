@@ -1,0 +1,40 @@
+
+header position 0..78
+module recursiveTemplateInvocation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (37..75)
+  [comment @main (91..96) /] (82..98)
+  
+  public template recursive_source_is_argument(c : EClass (146..163))
+  @main
+    [file url 'recursive_template_invocation_is' (176..210) mode overwrite
+      [.recursive_is(c, true) (224..244)/] (223..246) (223..246)
+    [/file] (169..253)
+     (newLineNeeded) (253..255)
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (257..259)
+    [file url 'recursive_template_invocation_not' (268..303) mode overwrite
+      [.recursive_not(c, true) (317..338)/] (316..340) (316..340)
+    [/file] (261..347)
+     (newLineNeeded) (347..349) (165..349)
+  [/template] (100..360)
+  
+  public template recursive_is(c : EClass (394..411), b : java.lang.Boolean (413..424))
+    start (430..435)
+    [if .not(b) (440..445)
+      stop (447..451) (447..451)
+    [else]
+      continue (457..465)
+      [.recursive_is(c, false) (466..487)/] (465..489) (457..489)
+    [/if] (435..494)
+     (newLineNeeded) (494..496) (426..496)
+  [/template] (364..507)
+  
+  public template recursive_not(c : EClass (542..559), b : java.lang.Boolean (561..572))
+    start (578..583)
+    [if .not(b) (588..593)
+      stop (595..599) (595..599)
+    [else]
+      continue (605..613)
+      [.recursive_not(c, false) (614..636)/] (613..638) (605..638)
+    [/if] (583..643)
+     (newLineNeeded) (643..645) (574..645)
+  [/template] (511..656) (0..656)

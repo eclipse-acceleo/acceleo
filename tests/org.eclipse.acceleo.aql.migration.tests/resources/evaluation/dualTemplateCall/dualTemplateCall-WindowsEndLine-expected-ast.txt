@@ -1,0 +1,31 @@
+
+header position 0..67
+module dualTemplateCall
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64)
+  [comment @main (80..85) /] (71..87)
+  
+  public template test(c : EClass (111..128))
+  @main
+    [file url 'dual_template_invocation' (141..167) mode overwrite
+      		 (186..188)
+      [.toUpperLast(.toLowerLast(.aqlFeatureAccess(c, 'name'))) (189..223)/] (newLineNeeded (188..227) (180..229)
+    [/file] (134..236)
+     (newLineNeeded) (236..238)
+    [file url 'dual_query_invocation' (247..270) mode overwrite
+      		 (289..291)
+      [.toUpperLastQuery(.toLowerLastQuery(.aqlFeatureAccess(c, 'name'))) (292..336)/] (newLineNeeded (291..340) (283..342)
+    [/file] (240..349)
+     (newLineNeeded) (349..351) (130..351)
+  [/template] (89..362)
+  
+  public template toUpperLast(s : java.lang.String (395..405))
+    [.concat(.substring(s, 1, .sub(.size(s), 1)), .toUpper(.substring(s, .size(s), .size(s)))) (412..490)/] (411..492) (407..492)
+  [/template] (366..503)
+  
+  public template toLowerLast(s : java.lang.String (536..546))
+    [.concat(.substring(s, 1, .sub(.size(s), 1)), .toLower(.substring(s, .size(s), .size(s)))) (553..631)/] (552..633) (548..633)
+  [/template] (507..644)
+  public query toLowerLastQuery(s : java.lang.String (679..689)) ) : java.lang.String .concat(.substring(s, 1, .sub(.size(s), 1)), .toLower(.substring(s, .size(s), .size(s)))) (702..780)
+  /] (648..782)
+  public query toUpperLastQuery(s : java.lang.String (817..827)) ) : java.lang.String .concat(.substring(s, 1, .sub(.size(s), 1)), .toUpper(.substring(s, .size(s), .size(s)))) (840..918)
+  /] (786..920) (0..920)

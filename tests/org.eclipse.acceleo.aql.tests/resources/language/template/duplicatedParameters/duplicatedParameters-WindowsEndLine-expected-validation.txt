@@ -1,0 +1,4 @@
+WARNING Variable myParam already exists. - 117 142
+ERROR myParam duplicated parameter - 117 142
+ERROR myParam duplicated parameter - 143 168
+WARNING Variable myParam already exists. - 143 168

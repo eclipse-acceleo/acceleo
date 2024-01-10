@@ -50,8 +50,8 @@ module myModule
         ['
 ' (871..875)/] (870..877)
         [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (878..903)/] (877..905)
-        
-                                   (905..940) (852..940)
+         (newLineNeeded) (905..905)
+                                           (906..940) (852..940)
       [/for] (790..946)
        TextAfter1 (946..957)
       ['
@@ -120,8 +120,8 @@ module myModule
         ['
 ' (2095..2099)/] (2094..2101)
         [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (2102..2127)/] (2101..2129)
-        
-                                   (2129..2164) (2076..2164)
+         (newLineNeeded) (2129..2129)
+                                           (2130..2164) (2076..2164)
       [/for] (2014..2170)
        TextAfter1 (2170..2181)
       ['
@@ -200,8 +200,8 @@ module myModule
       ['
 ' (3558..3562)/] (3557..3564)
       [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (3565..3590)/] (3564..3592)
-      
-                                   (3592..3627) (3539..3627)
+       (newLineNeeded) (3592..3592)
+                                         (3593..3627) (3539..3627)
     [/for] (3477..3633)
      TextAfter1 (3633..3644)
     ['
@@ -270,8 +270,8 @@ module myModule
       ['
 ' (4782..4786)/] (4781..4788)
       [.toUpper(.aqlFeatureAccess(myVariable, 'name')) (4789..4814)/] (4788..4816)
-      
-                                   (4816..4851) (4763..4851)
+       (newLineNeeded) (4816..4816)
+                                         (4817..4851) (4763..4851)
     [/for] (4701..4857)
      TextAfter1 (4857..4868)
     ['

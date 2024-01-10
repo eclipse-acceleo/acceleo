@@ -11,8 +11,8 @@ module myModule
       BEFORE_TEXT  (198..210)
       [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (250..270) (216..270)
         [.aqlFeatureAccess(myVariable, 'name') (273..288)/] (272..290)
-        
-                 (290..307) (272..307)
+         (newLineNeeded) (290..290)
+                         (291..307) (272..307)
       [/for] (210..313)
        AFTER_TEXT (newLineNeeded) (313..325)
       last line (newLineNeeded) (329..339) (178..341)

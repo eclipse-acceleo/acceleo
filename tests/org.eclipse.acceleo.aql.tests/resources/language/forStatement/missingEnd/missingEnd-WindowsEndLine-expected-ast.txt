@@ -1,0 +1,17 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (91..116))
+    *** error for statement ***
+    missing open parenthesis: -1
+    missing binding: -1
+    missing close parenthesis: -1
+    missing separator close parenthesis: -1
+    missing end header: -1
+    missing end: 209
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (162..182) (128..182)
+      some static text. (newLineNeeded) (190..209) (184..209)
+    [/for] (122..209) (118..209)
+  [/template] (63..220) (0..220)

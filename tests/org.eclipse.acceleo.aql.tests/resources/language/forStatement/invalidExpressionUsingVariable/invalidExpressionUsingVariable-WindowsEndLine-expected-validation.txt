@@ -1,0 +1,2 @@
+ERROR Couldn't find the 'notExisting' variable - 162 173
+ERROR The myVariable variable has no types - 195 205

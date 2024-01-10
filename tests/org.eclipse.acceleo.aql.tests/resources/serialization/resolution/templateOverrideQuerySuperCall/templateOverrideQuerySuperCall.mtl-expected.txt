@@ -9,5 +9,5 @@
 [/template]
 
 [template public toOverride(param1 : ecore::EClass)]
-  [param1.toOverride()/]
+  [param1.super:toOverride()/]
 [/template]

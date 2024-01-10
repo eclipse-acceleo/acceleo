@@ -1,0 +1,9 @@
+//@moduleElements.0/@body/@statements.0/@url/@aql/@arguments.0/@arguments.0
+Add parameter notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/fileStatement/invalidURL/invalidURL.mtl [116, 2, 53, 116, 2, 53] , notExisting: String
+Surround with Let: notExisting
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/fileStatement/invalidURL/invalidURL.mtl [122, 3, 2, 201, 5, 9] [let notExisting : String = '']
+    [file (notExisting.name + '.txt', overwrite)]
+      some static text.
+    [/file]
+  [/let]

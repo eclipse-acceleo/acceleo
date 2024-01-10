@@ -10,8 +10,8 @@ module myModule
       first line (newLineNeeded) (183..194)
       [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (238..258) (204..258)
         [.aqlFeatureAccess(myVariable, 'name') (261..276)/] (260..278)
-        
-     (278..283) (260..283)
+         (newLineNeeded) (278..278)
+             (279..283) (260..283)
       [/for] (198..289)
        (newLineNeeded) (289..290)
       last line (newLineNeeded) (294..304) (178..306)

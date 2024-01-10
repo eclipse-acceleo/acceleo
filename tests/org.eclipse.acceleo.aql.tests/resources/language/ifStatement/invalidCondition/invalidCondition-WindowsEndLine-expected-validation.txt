@@ -1,0 +1,2 @@
+ERROR Couldn't find the 'notExisting' variable - 127 138
+ERROR The predicate never evaluates to a boolean type ([]). - 127 163

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Obeo.
+ * Copyright (c) 2016, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -158,6 +158,74 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		}
 	}
 
+	/**
+	 * Tests the generation by comparing the result of the generation.
+	 * 
+	 * @throws IOException
+	 *             if a file can't be read or written
+	 */
+	@Test
+	public void evaluationWindowsEndLine() throws IOException {
+		final Module module = astResultWindowsEndLine.getModule();
+		final URI generatedFolderURI = URI.createURI("generated/").resolve(model.getURI());
+
+		// copy protected areas to memory destination
+		final URI protectedAreaFolderURI = URI.createURI("protected-area/").resolve(model.getURI());
+		for (URI protectedAreaURI : getProtectedAreaFiles(protectedAreaFolderURI)) {
+			final URI relativeURI = protectedAreaURI.deresolve(protectedAreaFolderURI);
+			final URI destinationURI = URI.createURI(relativeURI.resolve(memoryDestination).toString()
+					.replaceAll(PROTECTED_AREA_SUFFIX, ""));
+			copy(resourceSetForModels.getURIConverter(), protectedAreaURI, destinationURI);
+		}
+
+		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
+		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
+		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
+				.getURIConverter());
+		AcceleoUtil.generate(evaluatorWindowsEndLine, queryEnvironmentWindowsEndLine, module, model, strategy,
+				memoryDestination);
+
+		assertGenerationMessagesWindowsEndLine(evaluatorWindowsEndLine.getGenerationResult());
+
+		// assert generated content
+		final GenerationResult result = evaluatorWindowsEndLine.getGenerationResult();
+		final List<URI> generatedAndLost = new ArrayList<>();
+		generatedAndLost.addAll(result.getGeneratedFiles());
+		generatedAndLost.addAll(result.getLostFiles());
+		for (URI memoryGeneratedURI : generatedAndLost) {
+			final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(
+					memoryDestinationString.length())).resolve(generatedFolderURI);
+			final URI expectedURI = URI.createURI(generatedURI.toString() + EXPECTED_SUFFIX);
+			expectedGeneratedFiles.remove(expectedURI);
+			final URI actualURI = URI.createURI(generatedURI.toString() + ACTUAL_SUFFIT);
+			if (resourceSetForModels.getURIConverter().exists(expectedURI, null)) {
+				final String expectedContent;
+				try (InputStream expectedStream = resourceSetForModels.getURIConverter().createInputStream(
+						expectedURI)) {
+					expectedContent = AcceleoUtil.getContent(expectedStream, UTF_8); // TODO test other
+																						// encoding
+				}
+				final String actualContent;
+				try (InputStream actualStream = resourceSetForModels.getURIConverter().createInputStream(
+						memoryGeneratedURI)) {
+					actualContent = AcceleoUtil.getContent(actualStream, UTF_8); // TODO test other encoding
+				}
+				assertEquals(getPortableString(expectedContent), getPortableString(actualContent));
+			} else {
+				copy(resourceSetForModels.getURIConverter(), memoryGeneratedURI, actualURI);
+				unexpectedGeneratedFiles.add(actualURI);
+			}
+		}
+
+		if (!unexpectedGeneratedFiles.isEmpty()) {
+			fail("unexpected generated file: " + Arrays.deepToString(unexpectedGeneratedFiles.toArray()));
+		}
+		if (!expectedGeneratedFiles.isEmpty()) {
+			fail("expected generated file are missing: " + Arrays.deepToString(expectedGeneratedFiles.toArray(
+					new URI[expectedGeneratedFiles.size()])));
+		}
+	}
+
 	private List<URI> getExpectedGeneratedFiles(URI generatedFolderURI) {
 		final List<URI> res = new ArrayList<URI>();
 
@@ -230,6 +298,83 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 			}
 			assertEquals(expectedContent, actualContent);
 		}
+	}
+
+	/**
+	 * Gets the actual validated template file from the test folder path.
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual template file from the test folder path
+	 */
+	protected File getExpectedRuntimeMessageFile(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName() + "-expected-runtimeMessages.txt");
+	}
+
+	/**
+	 * Gets the actual validated template file from the test folder path.
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual template file from the test folder path
+	 */
+	protected File getActualRuntimeMessageFile(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName() + "-actual-runtimeMessages.txt");
+	}
+
+	/**
+	 * Asserts the runtime messages for MS Windows end line (\r\n).
+	 * 
+	 * @param generationResult
+	 *            the {@link GenerationResult}
+	 * @throws IOException
+	 */
+	private void assertGenerationMessagesWindowsEndLine(GenerationResult generationResult)
+			throws IOException {
+		final String actualContent = getRuntimeMessages(generationResult.getDiagnostic());
+
+		final File expectedFile = getExpectedRuntimeMessageFileWindowsEndLine(new File(getTestFolderPath()));
+		final File actualFile = getActualRuntimeMessageFileWindowsEndLine(new File(getTestFolderPath()));
+
+		if (!expectedFile.exists()) {
+			if (!actualFile.exists() && !expectedFile.exists()) {
+				actualFile.createNewFile();
+			}
+			try (FileOutputStream stream = new FileOutputStream(actualFile);) {
+				setContent(stream, UTF_8, actualContent);
+			}
+			fail("file doesn't exist.");
+		} else {
+			String expectedContent = "";
+			try (FileInputStream stream = new FileInputStream(expectedFile);) {
+				expectedContent = AcceleoUtil.getContent(stream, UTF_8);
+			}
+			assertEquals(expectedContent, actualContent);
+		}
+	}
+
+	/**
+	 * Gets the actual validated template file from the test folder path for MS Windows end line (\r\n).
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual template file from the test folder path for MS Windows end line (\r\n)
+	 */
+	protected File getExpectedRuntimeMessageFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-expected-runtimeMessages.txt");
+	}
+
+	/**
+	 * Gets the actual validated template file from the test folder path for MS Windows end line (\r\n).
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual template file from the test folder path for MS Windows end line (\r\n)
+	 */
+	protected File getActualRuntimeMessageFileWindowsEndLine(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName()
+				+ "-WindowsEndLine-actual-runtimeMessages.txt");
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,19 +34,24 @@ public class AcceleoQuickFixesSwitch extends ComposedSwitch<List<IAstQuickFix>> 
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
-	 *            the {@link IQualifiedNameQueryEnvironment}
+	 *            the {@link IQualifiedNameQueryEnvironment}.
 	 * @param validationResult
 	 *            the {@link IAcceleoValidationResult}
+	 * @param moduleQualifiedName
+	 *            the {@link Module} qualified name
 	 * @param moduleText
 	 *            the text representation of the {@link Module}
+	 * @param newLine
+	 *            the new line {@link String}
 	 */
 	public AcceleoQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
-			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText) {
+			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
+			String endLine) {
 		super();
-		addSwitch(new AqlQuickFixesSwitch(queryEnvironment, validationResult, moduleQualifiedName,
-				moduleText));
+		addSwitch(new AqlQuickFixesSwitch(queryEnvironment, validationResult, moduleQualifiedName, moduleText,
+				endLine));
 		addSwitch(new ModuleQuickFixesSwitch(queryEnvironment, validationResult, moduleQualifiedName,
-				moduleText));
+				moduleText, endLine));
 		this.validationResult = validationResult;
 	}
 

@@ -1,0 +1,3 @@
+ERROR Could not resolve org::eclipse::acceleo::MyModule - 71 102
+ERROR Could not resolve org::eclipse::acceleo::MyModule - 114 145
+WARNING org::eclipse::acceleo::MyModule already imported - 106 147

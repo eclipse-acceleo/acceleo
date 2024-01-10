@@ -1,0 +1,6 @@
+
+header position 0..139
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  metamodel http://www.eclipse.org/emf/2002/Ecore (58..96)
+  metamodel http://www.eclipse.org/emf/2002/Ecore (98..136) (0..139)

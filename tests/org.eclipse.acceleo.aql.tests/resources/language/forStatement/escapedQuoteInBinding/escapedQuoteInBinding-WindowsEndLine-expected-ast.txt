@@ -1,0 +1,11 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (91..116))
+    [for myVariable : EString = Sequence{''', '', '', } (158..180) (128..180)
+      some static text. (newLineNeeded) (188..207) (182..209)
+    [/for] (122..215)
+     (newLineNeeded) (215..217) (118..217)
+  [/template] (63..228) (0..228)

@@ -1,0 +1,5 @@
+//@moduleElements.0/@body/@aql
+Add template notExistingService(Sequence(EClassifier=EClassifier)) to this module
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/quickFixes/callUnresolvedService/callUnresolvedService.mtl [185, 3, 0, 185, 3, 0] 
+[template public notExistingService(parameter0 : Sequence(ecore::EClassifier))]
+[/template]

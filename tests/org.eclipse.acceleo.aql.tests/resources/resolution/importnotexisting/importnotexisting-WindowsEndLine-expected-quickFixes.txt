@@ -1,0 +1,4 @@
+//@imports.0/@module
+Create Module
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/not/existing.mtl
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/not/existing.mtl [0, 0, 0, 0, 0, 0] [module existing('http://www.eclipse.org/emf/2002/Ecore')/]

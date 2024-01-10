@@ -63,11 +63,6 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	private static final String SPACE = " ";
 
 	/**
-	 * A new line.
-	 */
-	private static final String NEW_LINE = "\n";
-
-	/**
 	 * A dummy {@link Object} to prevent switching in super types.
 	 */
 	private static final Object DUMMY = new Object();
@@ -96,6 +91,15 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	 * The current block header start column.
 	 */
 	private int currentBlockHeaderStartColumn;
+
+	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	public AcceleoAstSerializer(String newLine) {
+		this.newLine = newLine;
+	}
 
 	/**
 	 * Serializes the given {@link AcceleoASTNode}.
@@ -135,12 +139,12 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		final String savedIndentation = currentIndentation;
 		try {
 			final StringBuilder blockIndentation = new StringBuilder();
-			for (int i = 0; i < currentBlockHeaderStartColumn; i++) {
-				blockIndentation.append(SPACE);
-			}
 			if (block.isInlined()) {
 				currentIndentation = "";
 			} else {
+				for (int i = 0; i < currentBlockHeaderStartColumn; i++) {
+					blockIndentation.append(SPACE);
+				}
 				if (block.getStatements().isEmpty()) {
 					currentIndentation = blockIndentation.toString();
 				} else {
@@ -588,12 +592,12 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseNewLineStatement(NewLineStatement newLineStatement) {
-		final int lastIndexOfNewLine = builder.lastIndexOf(NEW_LINE);
+		final int lastIndexOfNewLine = builder.lastIndexOf(newLine);
 		if (!newLineStatement.isIndentationNeeded()) {
 			if (builder.substring(lastIndexOfNewLine).trim().isEmpty()) {
-				builder.setLength(lastIndexOfNewLine + NEW_LINE.length());
+				builder.setLength(lastIndexOfNewLine + newLine.length());
 			} else {
-				builder.append(NEW_LINE);
+				builder.append(newLine);
 			}
 		}
 		insertNewLine();
@@ -604,7 +608,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	 * Inserts a new line.
 	 */
 	private void insertNewLine() {
-		builder.append(NEW_LINE);
+		builder.append(newLine);
 		builder.append(currentIndentation);
 	}
 
@@ -612,11 +616,11 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	 * Updates the current block header start column to the current position.
 	 */
 	private void updateCurrentBlockHeaderStartColumn() {
-		final int lastNewLineIndex = builder.lastIndexOf(NEW_LINE);
+		final int lastNewLineIndex = builder.lastIndexOf(newLine);
 		if (lastNewLineIndex <= 0) {
 			currentBlockHeaderStartColumn = builder.length();
 		} else {
-			currentBlockHeaderStartColumn = builder.length() - (lastNewLineIndex + NEW_LINE.length());
+			currentBlockHeaderStartColumn = builder.length() - (lastNewLineIndex + newLine.length());
 		}
 	}
 

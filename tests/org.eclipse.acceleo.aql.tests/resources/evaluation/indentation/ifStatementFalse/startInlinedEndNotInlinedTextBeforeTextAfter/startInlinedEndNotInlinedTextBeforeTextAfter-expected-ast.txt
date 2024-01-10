@@ -11,8 +11,8 @@ module myModule
       BEFORE_TEXT  (198..210)
       [if .startsWith(.aqlFeatureAccess(myParam, 'name'), 'z') (215..243)
         [.aqlFeatureAccess(myParam, 'name') (246..258)/] (245..260)
-        
-                 (260..277) (245..277)
+         (newLineNeeded) (260..260)
+                         (261..277) (245..277)
       [/if] (210..282)
        AFTER_TEXT (newLineNeeded) (282..294)
       last line (newLineNeeded) (298..308) (178..310)

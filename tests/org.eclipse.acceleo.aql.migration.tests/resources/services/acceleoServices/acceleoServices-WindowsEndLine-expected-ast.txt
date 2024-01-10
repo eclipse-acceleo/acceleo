@@ -1,0 +1,27 @@
+
+header position 0..66
+module acceleoServices
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
+  imports misc::MyService (78..93) (70..95)
+  [comment @main (108..113) /] (99..115)
+  
+  public template test(p : EPackage (139..158))
+  @main
+    [file url 'acceleoServices' (171..188) mode overwrite charset 'UTF-8' (201..208)
+      @Test '\n' + '\t' + '\'' + '\\ ' + '\"' + '"' =>  (216..265)
+      [.add(.add(.add(.add(.add('
+', '	'), '''), '\ '), '"'), '"') (266..304)/] (newLineNeeded (265..308)
+      @Test inligned special text =>  (312..343)
+      ['[' (344..347)/] (newLineNeeded (343..351)
+      @Test let OclAny to EObject =>  (355..386)
+      [let 
+      var : null = p (397..398) (391..398)
+        [.aqlFeatureAccess(.oclAsType(var, EPackage), 'name') (400..435)/] (399..437) (399..437)
+      [/let] (386..443)
+       (newLineNeeded) (443..445)
+      NEW_LINE (indentationNeeded)  (newLineNeeded) (449..451)
+      @Test invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'}) =>  (455..556)
+      [.myService(p, 'test') (557..576)/] (newLineNeeded (556..580) (210..582)
+    [/file] (164..589)
+     (newLineNeeded) (589..591) (160..591)
+  [/template] (117..602) (0..602)

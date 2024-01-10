@@ -1,0 +1,31 @@
+
+header position 0..64
+module fileStatement
+  metamodel http://www.eclipse.org/emf/2002/Ecore (23..61)
+  [comment @main (77..82) /] (68..84)
+  
+  public template testingIf(p : EPackage (113..132))
+  @main
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (138..140)
+    [file url 'testOneLine' (149..162) mode overwrite
+      testOneLine (175..186) (175..186)
+    [/file] (142..193)
+     (newLineNeeded) (193..195)
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (197..199)
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (201..203)
+    [file url 'testNewLineBefore' (212..231) mode overwrite
+      testNewLineBefore (244..261) (244..261)
+    [/file] (205..268)
+     (newLineNeeded) (268..270)
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (272..274)
+    [file url 'testNewLineAfter' (283..301) mode overwrite
+      testNewLineAfter (newLineNeeded) (320..338) (314..340)
+    [/file] (276..347)
+     (newLineNeeded) (347..349)
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (351..353)
+    [file url 'testNewLineBeforeAndAfter' (362..389) mode overwrite
+      testNewLineBeforeAndAfter (newLineNeeded) (408..435) (402..437)
+    [/file] (355..444)
+     (newLineNeeded) (444..446)
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (448..450) (134..450)
+  [/template] (86..461) (0..461)

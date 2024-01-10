@@ -1,0 +1,16 @@
+INFO Always true:
+Nothing inferred when var2 (java.lang.Integer) is not type of ClassLiteral=java.lang.Integer - 405 430
+INFO Always false:
+Nothing inferred when var2 (java.lang.Integer) is type of EClassifierLiteral=EPackage - 479 512
+INFO Always true:
+Nothing inferred when var2 (java.lang.Integer) is not kind of ClassLiteral=java.lang.Integer - 560 585
+INFO Always false:
+Nothing inferred when var2 (java.lang.Integer) is kind of EClassifierLiteral=EPackage - 634 667
+INFO Always true:
+Nothing inferred when var1 (java.lang.Double) is not type of ClassLiteral=java.lang.Double - 2887 2909
+INFO Always false:
+Nothing inferred when var1 (java.lang.Double) is type of EClassifierLiteral=EPackage - 2958 2991
+INFO Always true:
+Nothing inferred when var1 (java.lang.Double) is not kind of ClassLiteral=java.lang.Double - 3036 3058
+INFO Always false:
+Nothing inferred when var1 (java.lang.Double) is kind of EClassifierLiteral=EPackage - 3107 3140

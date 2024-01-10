@@ -1,0 +1,8 @@
+//@moduleElements.1/@body/@statements.0/@body/@statements.0/@body/@statements.0/@expression/@aql
+Add parameter myVariable
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/forStatement/forStatementEmpty/forStatementEmpty.mtl [135, 3, 53, 135, 3, 53] , myVariable: String
+Surround with Let: myVariable
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/forStatement/forStatementEmpty/forStatementEmpty.mtl [227, 6, 6, 242, 7, 0] [let myVariable : String = '']
+        [myVariable/]
+  
+      [/let]

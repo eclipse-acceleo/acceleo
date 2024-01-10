@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -148,7 +148,7 @@ public final class StandaloneMigrator {
 						binFolderPath), targetFolderPath).migrate(emtlFile, mtlFile.toFile());
 
 				// serialize
-				String a4Content = new AcceleoAstSerializer().serialize(module);
+				String a4Content = new AcceleoAstSerializer(System.lineSeparator()).serialize(module);
 
 				// write result
 				Path targetMtlFile = targetFolderPath.resolve(relativePath).getParent().resolve(module

@@ -1,0 +1,11 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (91..116))
+    [protected .aqlFeatureAccess(myParam, 'name') (134..146)
+      some static text. (newLineNeeded) (187..206) (181..208) startTagPrefix .aqlFeatureAccess(notExisting, 'name') (163..179)
+    [/protected] (122..220)
+     (newLineNeeded) (220..222) (118..222)
+  [/template] (63..233) (0..233)

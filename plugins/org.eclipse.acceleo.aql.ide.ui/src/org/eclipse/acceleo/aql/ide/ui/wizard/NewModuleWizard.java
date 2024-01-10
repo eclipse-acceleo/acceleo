@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,11 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 	private static final String OK_MESSAGE = "Acceleo 4 module %s created.";
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private static final String NEW_LINE = System.lineSeparator();
+
+	/**
 	 * The {@link Job} writing the {@link Module} file.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -102,17 +107,17 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			moduleDocumentation.setDocumentedElement(module);
 			final CommentBody moduleDocumentationBody = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 					.createCommentBody();
-			moduleDocumentationBody.setValue("\n * The documentation of the module " + module.getName()
-					+ ".\n");
+			moduleDocumentationBody.setValue(NEW_LINE + " * The documentation of the module " + module
+					.getName() + "." + NEW_LINE);
 			final String username = System.getProperty("user.name");
 			if (username != null && !"".equals(username)) {
 				moduleDocumentationBody.setValue(moduleDocumentationBody.getValue() + " * "
-						+ AcceleoParser.AUTHOR_TAG + username + "\n");
+						+ AcceleoParser.AUTHOR_TAG + username + NEW_LINE);
 			}
 			moduleDocumentationBody.setValue(moduleDocumentationBody.getValue() + " * "
-					+ AcceleoParser.VERSION_TAG + "1.0.0\n");
+					+ AcceleoParser.VERSION_TAG + "1.0.0" + NEW_LINE);
 			moduleDocumentationBody.setValue(moduleDocumentationBody.getValue() + " * "
-					+ AcceleoParser.SINCE_TAG + "1.0.0\n");
+					+ AcceleoParser.SINCE_TAG + "1.0.0" + NEW_LINE);
 			moduleDocumentationBody.setValue(moduleDocumentationBody.getValue() + " *");
 
 			moduleDocumentation.setBody(moduleDocumentationBody);
@@ -134,7 +139,7 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 					template.setDocumentation(createModuleElementDocumentation(template));
 					if (moduleConfiguration.isMainTemplate()) {
 						final CommentBody body = template.getDocumentation().getBody();
-						body.setValue(body.getValue() + " " + AcceleoParser.MAIN_TAG + "\n *");
+						body.setValue(body.getValue() + " " + AcceleoParser.MAIN_TAG + NEW_LINE + " *");
 					}
 				} else if (moduleConfiguration.isMainTemplate()) {
 					final Comment mainComment = AcceleoPackage.eINSTANCE.getAcceleoFactory().createComment();
@@ -167,9 +172,10 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 				module.getModuleElements().add(query);
 			}
 
-			final AcceleoAstSerializer serializer = new AcceleoAstSerializer();
+			final AcceleoAstSerializer serializer = new AcceleoAstSerializer(NEW_LINE);
 			// TODO at some point we should reuse the parser constants for this.
-			final String moduleString = "[comment encoding = UTF-8 /]\n" + serializer.serialize(module);
+			final String moduleString = "[comment encoding = UTF-8 /]" + NEW_LINE + serializer.serialize(
+					module);
 			try {
 				final ByteArrayInputStream moduleInputStream = new ByteArrayInputStream(moduleString.getBytes(
 						"UTF-8"));
@@ -221,9 +227,9 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			res.setInlined(false);
 			final TextStatement text = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
 			if (configuration.isGenerateFile()) {
-				text.setValue("\n");
+				text.setValue(NEW_LINE);
 			} else {
-				text.setValue(initialContent.replaceAll("\n", "\n  ") + "\n");
+				text.setValue(initialContent.replaceAll("\\r\\n|\\n", NEW_LINE + "  ") + NEW_LINE);
 			}
 			if (configuration.isGenerateFile()) {
 				final FileStatement fileStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
@@ -235,7 +241,8 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 				fileBlock.setInlined(false);
 				final TextStatement fileText = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 						.createTextStatement();
-				fileText.setValue(initialContent.replaceAll("\n", "\n    ") + "\n  ");
+				fileText.setValue(initialContent.replaceAll("\\r\\n|\\n", NEW_LINE + "    ") + NEW_LINE
+						+ "  ");
 				fileBlock.getStatements().add(fileText);
 				fileStatement.setBody(fileBlock);
 				res.getStatements().add(fileStatement);
@@ -262,17 +269,17 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			res.setBody(documentationBody);
 			if (moduleElement instanceof Template) {
 				final Template template = (Template)moduleElement;
-				documentationBody.setValue("\n * The documentation of the template " + template.getName()
-						+ ".\n *");
+				documentationBody.setValue(NEW_LINE + " * The documentation of the template " + template
+						.getName() + "." + NEW_LINE + " *");
 				documentationBody.setValue(documentationBody.getValue() + " @param " + template
-						.getParameters().get(0).getName() + "\n *");
+						.getParameters().get(0).getName() + NEW_LINE + " *");
 				res.setDocumentedElement(template);
 			} else if (moduleElement instanceof Query) {
 				final Query query = (Query)moduleElement;
-				documentationBody.setValue("\n * The documentation of the query " + query.getName()
-						+ ".\n *");
+				documentationBody.setValue(NEW_LINE + " * The documentation of the query " + query.getName()
+						+ "." + NEW_LINE + " *");
 				documentationBody.setValue(documentationBody.getValue() + " @param " + query.getParameters()
-						.get(0).getName() + "\n *");
+						.get(0).getName() + NEW_LINE + " *");
 				res.setDocumentedElement(query);
 			}
 

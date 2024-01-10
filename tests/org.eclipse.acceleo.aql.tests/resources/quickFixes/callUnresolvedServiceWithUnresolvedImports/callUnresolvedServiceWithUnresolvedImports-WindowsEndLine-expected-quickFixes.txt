@@ -1,0 +1,18 @@
+//@imports.0/@module
+Create Module
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/notExisting.mtl
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/notExisting.mtl [0, 0, 0, 0, 0, 0] [module notExisting('http://www.eclipse.org/emf/2002/Ecore')/]
+//@imports.1/@module
+Create Class
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/services/notExisting.java
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/services/notExisting.java [0, 0, 0, 0, 0, 0] package org.eclipse.acceleo.services;
+
+public class notExisting {
+
+}
+
+//@moduleElements.0/@body/@aql
+Add template notExistingService(Sequence(EClassifier=EClassifier)) to this module
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/quickFixes/callUnresolvedServiceWithUnresolvedImports/callUnresolvedServiceWithUnresolvedImports.mtl [289, 6, 0, 289, 6, 0] 
+[template public notExistingService(parameter0 : Sequence(ecore::EClassifier))]
+[/template]

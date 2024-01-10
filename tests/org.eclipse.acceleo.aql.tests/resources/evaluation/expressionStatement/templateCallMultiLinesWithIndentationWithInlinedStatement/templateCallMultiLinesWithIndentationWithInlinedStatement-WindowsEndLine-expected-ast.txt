@@ -1,0 +1,102 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  [comment @main  (72..78) /] (63..80)
+  
+  public template myTemplate(pkg : EPackage (110..131))
+  @main
+    [file url .add(.aqlFeatureAccess(pkg, 'name'), '.txt') (144..161) mode overwrite
+      [for cls : null = .aqlFeatureAccess(pkg, 'eClassifiers') (193..209) (187..209)
+        [.generateClassifier(cls) (220..244)/] (newLineNeeded (219..248) (211..252)
+      [/for] (180..258)
+       (newLineNeeded) (258..260) (174..262)
+    [/file] (137..269)
+     (newLineNeeded) (269..271) (133..271)
+  [/template] (82..282)
+  
+ * Generates the Python class for the given EClassifier.
+ * @param cls the classifier
+ * (383..381)
+  cls the classifier (359..377)[comment cls the classifier (359..377) /] (359..377)[comment 
+ * Generates the Python class for the given EClassifier.
+ * @param cls the classifier
+ * (383..381) /] (286..383)
+  
+ * Generates the Python class for the given EClassifier.
+ * @param cls the classifier
+ * (383..381)
+  cls the classifier (359..377)[comment cls the classifier (359..377) /] (359..377)[comment 
+ * Generates the Python class for the given EClassifier.
+ * @param cls the classifier
+ * (383..381) /] (286..383)
+  public template generateClassifier(cls : EClassifier (421..445))
+    # TODO generateClassifier( (451..477)
+    [.aqlFeatureAccess(.eClass(cls), 'name') (478..495)/] (477..497)
+    ) (newLineNeeded) (497..500) (447..500)
+  [/template] (385..511)
+  
+ * Generates the Python class for the given EClass.
+ * @param cls the class
+ * (602..600)
+  cls the class (583..596)[comment cls the class (583..596) /] (583..596)[comment 
+ * Generates the Python class for the given EClass.
+ * @param cls the class
+ * (602..600) /] (515..602)
+  
+ * Generates the Python class for the given EClass.
+ * @param cls the class
+ * (602..600)
+  cls the class (583..596)[comment cls the class (583..596) /] (583..596)[comment 
+ * Generates the Python class for the given EClass.
+ * @param cls the class
+ * (602..600) /] (515..602)
+  public template generateClassifier(cls : EClass (640..659))
+    class  (665..671)
+    [.aqlFeatureAccess(cls, 'name') (672..680)/] (671..682)
+    ( (682..683)
+    [if .not(->isEmpty(.aqlFeatureAccess(cls, 'eSuperTypes'))) (688..718)
+      [->sep(.aqlFeatureAccess(.aqlFeatureAccess(cls, 'eSuperTypes'), 'name'), ', ') (721..752)/] (720..754) (720..754)
+    [else]
+      EObject (760..767) (760..767)
+    [/if] (683..772)
+    ): (newLineNeeded) (772..776)
+        """ (newLineNeeded) (778..787)
+        Java class:  (789..805)
+    [.aqlFeatureAccess(cls, 'name') (806..814)/] (newLineNeeded (805..818)
+        """ (newLineNeeded) (820..829)
+         (831..835)
+    [.generateConstructor(cls) (836..861)/] (newLineNeeded (835..865) (661..865)
+  [/template] (604..876)
+  
+ * Generates the Python class constructor for the given EClass.
+ * @param cls the class
+ * (979..977)
+  cls the class (960..973)[comment cls the class (960..973) /] (960..973)[comment 
+ * Generates the Python class constructor for the given EClass.
+ * @param cls the class
+ * (979..977) /] (880..979)
+  
+ * Generates the Python class constructor for the given EClass.
+ * @param cls the class
+ * (979..977)
+  cls the class (960..973)[comment cls the class (960..973) /] (960..973)[comment 
+ * Generates the Python class constructor for the given EClass.
+ * @param cls the class
+ * (979..977) /] (880..979)
+  public template generateConstructor(cls : EClass (1018..1037))
+    e_class = get_e_classifier(" (1043..1071)
+    [.aqlFeatureAccess(.aqlFeatureAccess(cls, 'ePackage'), 'nsURI') (1072..1090)/] (1071..1092)
+    ", " (1092..1096)
+    [.aqlFeatureAccess(cls, 'name') (1097..1105)/] (1096..1107)
+    ") (newLineNeeded) (1107..1111)
+    def __init__(self, java_object = None): (newLineNeeded) (1113..1154)
+        if java_object is None: (newLineNeeded) (1156..1185)
+            JavaObject.__init__(self, create_e_object_from_e_classifier(self.e_class)) (newLineNeeded) (1187..1271)
+        elif isinstance(java_object, CapellaElement): (newLineNeeded) (1273..1324)
+            JavaObject.__init__(self, java_object.get_java_object()) (newLineNeeded) (1326..1392)
+        elif self.e_class.isInstance(java_object): (newLineNeeded) (1394..1442)
+            JavaObject.__init__(self, java_object) (newLineNeeded) (1444..1492)
+        else: (newLineNeeded) (1494..1505)
+            raise AttributeError("Passed object is not compatible with " + self.__class__.__name__ + ": " + str(java_object)) (newLineNeeded) (1507..1630) (1039..1630)
+  [/template] (981..1641) (0..1643)

@@ -1,0 +1,2 @@
+ERROR Missing parameter - 103 103
+ERROR Couldn't find the 'myParam' variable - 128 135

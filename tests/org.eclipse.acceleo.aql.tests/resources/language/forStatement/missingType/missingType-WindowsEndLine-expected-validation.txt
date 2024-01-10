@@ -1,0 +1,2 @@
+ERROR Missing type literal - 142 142
+WARNING Nothing(missing type literal) is incompatible with Sequence(EClassifier=EClassifier) - 128 164

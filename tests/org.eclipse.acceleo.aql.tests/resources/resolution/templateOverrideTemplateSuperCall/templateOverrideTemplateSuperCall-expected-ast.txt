@@ -15,5 +15,5 @@ module templateOverrideTemplate
   [/template] (155..323)
   
   public template toOverride(param1 : EClass (353..375))
-    [.toOverride(param1) (381..406)/] (newLineNeeded (380..409) (377..409)
+    [.super:toOverride(param1) (381..406)/] (newLineNeeded (380..409) (377..409)
   [/template] (325..420) (0..420)

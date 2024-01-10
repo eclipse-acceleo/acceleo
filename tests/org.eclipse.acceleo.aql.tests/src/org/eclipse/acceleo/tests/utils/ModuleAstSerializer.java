@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -176,6 +176,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 				builder.append("->");
 			} else {
 				builder.append('.');
+			}
+			if (call.isSuperCall()) {
+				builder.append("super:");
 			}
 			builder.append(call.getServiceName());
 			builder.append('(');
@@ -655,7 +658,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	@Override
 	public Void caseCommentBody(CommentBody commentBody) {
-		builder.append(commentBody.getValue());
+		builder.append(commentBody.getValue().replaceAll("\r\n", "\n"));
 
 		return null;
 	}
@@ -871,9 +874,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	@Override
 	public Void caseTextStatement(TextStatement text) {
-		builder.append(text.getValue().replaceAll("\r\n",
-				AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation).replaceAll("\r",
-						AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + indentation));
+		builder.append(text.getValue());
 		if (text.isNewLineNeeded()) {
 			builder.append(" (newLineNeeded)");
 		}

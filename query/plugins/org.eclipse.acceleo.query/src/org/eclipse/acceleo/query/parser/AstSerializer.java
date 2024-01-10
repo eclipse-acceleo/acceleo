@@ -697,6 +697,9 @@ public class AstSerializer extends AstSwitch<Object> {
 			builder.append('.');
 			serviceName = AstBuilder.protectWithUnderscore(call.getServiceName());
 		}
+		if (call.isSuperCall()) {
+			builder.append("super:");
+		}
 		builder.append(serviceName);
 		builder.append('(');
 		if (!arguments.isEmpty()) {

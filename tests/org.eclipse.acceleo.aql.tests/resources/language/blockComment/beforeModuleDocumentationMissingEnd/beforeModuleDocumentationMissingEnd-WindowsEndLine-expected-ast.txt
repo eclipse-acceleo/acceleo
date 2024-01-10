@@ -1,0 +1,8 @@
+*** error module ***
+missing open parenthesis: -1
+missing EPackage: -1
+missing close parenthesis: -1
+missing end header: -1
+
+header position 0..0
+module null (-1..-1)

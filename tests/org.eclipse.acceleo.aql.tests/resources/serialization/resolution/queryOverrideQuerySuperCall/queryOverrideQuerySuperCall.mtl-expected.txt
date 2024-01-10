@@ -8,4 +8,4 @@
   [/file]
 [/template]
 
-[query public toOverride(param1 : ecore::EClass) : String = param1.toOverride()/]
+[query public toOverride(param1 : ecore::EClass) : String = param1.super:toOverride()/]

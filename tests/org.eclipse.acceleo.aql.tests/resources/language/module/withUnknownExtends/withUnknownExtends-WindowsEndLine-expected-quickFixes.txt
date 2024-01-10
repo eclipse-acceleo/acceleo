@@ -1,0 +1,4 @@
+//@extends
+Create Module
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/withUnknownExtends/extendedModule.mtl
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/withUnknownExtends/extendedModule.mtl [0, 0, 0, 0, 0, 0] [module extendedModule('http://www.eclipse.org/emf/2002/Ecore')/]

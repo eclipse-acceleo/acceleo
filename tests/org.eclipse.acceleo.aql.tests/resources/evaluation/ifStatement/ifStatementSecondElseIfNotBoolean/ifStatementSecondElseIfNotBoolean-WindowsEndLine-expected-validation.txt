@@ -1,0 +1,1 @@
+ERROR The predicate never evaluates to a boolean type ([java.lang.String]). - 283 285

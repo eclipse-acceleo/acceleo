@@ -1,0 +1,11 @@
+
+header position 132..191
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (150..188)
+  [comment a basic comment
+[**	
+ * My module has a nice comment.
+ * @author Yvan Lussaud
+ * @version 0.1.0
+ * @since 0.0.1
+* (9..128) /] (0..130) (0..191)

@@ -15,5 +15,5 @@ module templateOverrideQuery
   [/template] (149..317)
   
   public template toOverride(param1 : EClass (347..369))
-    [.toOverride(param1) (375..400)/] (newLineNeeded (374..403) (371..403)
+    [.super:toOverride(param1) (375..400)/] (newLineNeeded (374..403) (371..403)
   [/template] (319..414) (0..414)

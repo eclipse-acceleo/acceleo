@@ -13,5 +13,5 @@ module queryOverrideQuery
     [/file] (191..299)
      (newLineNeeded) (299..300) (188..300)
   [/template] (143..311)
-  public query toOverride(param1 : EClass (338..360)) ) : java.lang.String .toOverride(param1) (375..400)
+  public query toOverride(param1 : EClass (338..360)) ) : java.lang.String .super:toOverride(param1) (375..400)
   /] (313..403) (0..403)

@@ -1,0 +1,10 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  public query myQuery(*** error variable ***
+  missing name: -1
+  missing colon: 94
+  missing type: -1
+   (85..109)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (134..163)
+  /] (63..165) (0..165)

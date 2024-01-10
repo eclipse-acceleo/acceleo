@@ -1,0 +1,43 @@
+
+header position 0..60
+module variables
+  metamodel http://www.eclipse.org/emf/2002/Ecore (19..57)
+  [comment @main (73..78) /] (64..80)
+  
+  public template test(p : EPackage (104..123))
+  @main
+    [file url 'implicit_self_query' (136..157) mode overwrite
+      		 (176..178)
+      [.packageNameImplicitQuery(p) (179..207)/] (newLineNeeded (178..211) (170..213)
+    [/file] (129..220)
+     (newLineNeeded) (220..222)
+    [file url 'implicit_self_template' (231..255) mode overwrite
+      		 (274..276)
+      [.packageNameImplicitTemplate(p) (277..308)/] (newLineNeeded (276..312) (268..314)
+    [/file] (224..321)
+     (newLineNeeded) (321..323)
+    [file url 'self_query' (332..344) mode overwrite
+      		 (363..365)
+      [.packageNameQuery(p) (366..386)/] (newLineNeeded (365..390) (357..392)
+    [/file] (325..399)
+     (newLineNeeded) (399..401)
+    [file url 'self_template' (410..425) mode overwrite
+      		 (444..446)
+      [.packageNameTemplate(p) (447..470)/] (newLineNeeded (446..474) (438..476)
+    [/file] (403..483)
+     (newLineNeeded) (483..485) (125..485)
+  [/template] (82..496)
+  private query packageNameImplicitQuery(package : EPackage (540..565)) ) : java.lang.String .aqlFeatureAccess(package, 'name') (578..590)
+  /] (500..592)
+  private query packageNameQuery(package : EPackage (628..653)) ) : java.lang.String .aqlFeatureAccess(package, 'name') (666..678)
+  /] (596..680)
+  
+  private template packageNameImplicitTemplate(package : EPackage (730..755))
+    	 (761..762)
+    [.aqlFeatureAccess(package, 'name') (763..775)/] (762..777) (757..777)
+  [/template] (684..788)
+  
+  private template packageNameTemplate(package : EPackage (830..855))
+    	 (861..862)
+    [.aqlFeatureAccess(package, 'name') (863..875)/] (862..877) (857..877)
+  [/template] (792..888) (0..888)

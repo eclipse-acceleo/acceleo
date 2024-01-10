@@ -1,0 +1,12 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template generateBody(pkg : EPackage (93..114)) (116..118)
+  [/template] (63..129)
+  
+  public template generateBody(pkg : EPackage (163..184)) (186..188)
+  [/template] (133..199)
+  public query generateBody(pkg : EPackage (230..251)) ) : java.lang.String '' (268..270)
+  /] (203..274) (0..278)

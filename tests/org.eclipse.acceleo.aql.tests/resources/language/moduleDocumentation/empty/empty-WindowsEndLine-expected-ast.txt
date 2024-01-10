@@ -1,0 +1,13 @@
+ (3..3)
+author: null
+version: null
+since: null
+[comment  (3..3) /] (0..5)
+header position 7..66
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
+   (3..3)
+  author: null
+  version: null
+  since: null
+  [comment  (3..3) /] (0..5) (0..66)

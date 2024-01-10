@@ -1,0 +1,16 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : Sequence(java.lang.String)java.util.List (91..117)) (119..119)
+  [/template] (63..130)
+  
+  public template myTemplate(myParam : Sequence(EPackage)java.util.List (160..195)) (197..197)
+  [/template] (132..208)
+  
+  public template myTemplate(myParam : OrderedSet(java.lang.String)java.util.Set (240..268)) (270..270)
+  [/template] (212..281)
+  
+  public template myTemplate(myParam : OrderedSet(EPackage)java.util.Set (311..348)) (350..350)
+  [/template] (283..361) (0..361)

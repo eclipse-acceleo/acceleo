@@ -1,0 +1,6 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  public query myQuery(myParam : EPackage (85..110)) ) : EClassifier ***ERROR*** (135..135)
+  /] (63..137) (0..137)

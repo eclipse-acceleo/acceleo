@@ -1,0 +1,20 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  *** error template ***
+  missing visibility: -1
+  missing name: -1
+  missing open parenthesis: -1
+  missing parameters: -1
+  missing close parenthesis: -1
+  missing guard open parenthesis: 120
+  missing guard close parenthesis: -1
+  missing post close parenthesis: -1
+  missing post end header: -1
+  missing post end: -1
+  
+  public template myTemplate(myParam : EPackage (91..116))
+  guard .equals(.aqlFeatureAccess(myParam, 'name'), '') (120..137)
+    some static text. (newLineNeeded) (143..162) (139..162)
+  [/template] (63..173) (0..173)

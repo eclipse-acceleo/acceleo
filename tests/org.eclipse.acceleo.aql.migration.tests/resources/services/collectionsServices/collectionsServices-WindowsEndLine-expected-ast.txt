@@ -1,0 +1,32 @@
+
+header position 0..70
+module collectionsServices
+  metamodel http://www.eclipse.org/emf/2002/Ecore (29..67)
+  [comment @main (83..88) /] (74..90)
+  
+  public template test(p : EPackage (114..133))
+  @main
+    [file url 'testCollectionTypeMigration' (146..175) mode overwrite
+      [let 
+      var : Sequence(EPackage)java.util.List = null (233..237) (199..237) (238..244)
+      [/let] (194..250)
+       (newLineNeeded) (250..252)
+      [let 
+      var : Sequence(EPackage)java.util.List = null (295..299) (261..299) (300..306)
+      [/let] (256..312)
+       (newLineNeeded) (312..314)
+      [let 
+      var : Sequence(EPackage)java.util.List = null (357..361) (323..361) (362..368)
+      [/let] (318..374)
+       (newLineNeeded) (374..376)
+      [let 
+      var : OrderedSet(EPackage)java.util.Set = null (421..425) (385..425) (426..432)
+      [/let] (380..438)
+       (newLineNeeded) (438..440)
+      [let 
+      var : OrderedSet(EPackage)java.util.Set = null (485..489) (449..489) (490..496)
+      [/let] (444..502)
+       (newLineNeeded) (502..504) (188..506)
+    [/file] (139..513)
+     (newLineNeeded) (513..515) (135..515)
+  [/template] (92..526) (0..526)

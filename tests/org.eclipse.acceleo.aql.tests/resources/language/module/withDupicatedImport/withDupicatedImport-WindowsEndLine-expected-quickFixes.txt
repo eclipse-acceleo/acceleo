@@ -1,0 +1,8 @@
+//@imports.0/@module
+Create Module
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/MyModule.mtl
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/MyModule.mtl [0, 0, 0, 0, 0, 0] [module MyModule('http://www.eclipse.org/emf/2002/Ecore')/]
+//@imports.1/@module
+Create Module
+Create file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/MyModule.mtl
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/org/eclipse/acceleo/MyModule.mtl [0, 0, 0, 0, 0, 0] [module MyModule('http://www.eclipse.org/emf/2002/Ecore')/]

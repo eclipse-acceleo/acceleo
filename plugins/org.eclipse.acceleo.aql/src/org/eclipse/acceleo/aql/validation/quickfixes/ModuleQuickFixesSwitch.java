@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,27 +85,34 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 	private final URI uri;
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IQualifiedNameQueryEnvironment}.
 	 * @param validationResult
 	 *            the {@link IAcceleoValidationResult}
-	 * @param moduleText
-	 *            the text representation of the {@link Module}
 	 * @param moduleQualifiedName
 	 *            the {@link Module} qualified name
-	 * @param positions
-	 *            the {@link Positions}.
+	 * @param moduleText
+	 *            the text representation of the {@link Module}
+	 * @param newLine
+	 *            the new line {@link String}
 	 */
 	public ModuleQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
-			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText) {
+			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
+			String newLine) {
 		this.queryEnvironment = queryEnvironment;
 		this.validationResult = validationResult;
 		this.module = validationResult.getAcceleoAstResult().getModule();
 		this.moduleQualifiedName = moduleQualifiedName;
 		this.moduleText = moduleText;
 		this.linesAndColumns = AQLUtils.getLinesAndColumns(moduleText);
+		this.newLine = newLine;
 
 		this.positions = validationResult.getAcceleoAstResult().getPositions();
 
@@ -174,7 +181,7 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 		newModule.setName(moduleName);
 		final Collection<Metamodel> metamodels = EcoreUtil.copyAll(module.getMetamodels());
 		newModule.getMetamodels().addAll(metamodels);
-		final String replacement = new AcceleoAstSerializer().serialize(newModule);
+		final String replacement = new AcceleoAstSerializer(newLine).serialize(newModule);
 		final AstTextReplacement contentReplacement = new AstTextReplacement(moduleURI, replacement, 0, 0, 0,
 				0, 0, 0);
 		fix.getTextReplacements().add(contentReplacement);
@@ -205,8 +212,8 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 				lastQualifierSeparatorIndex).replace(AcceleoParser.QUALIFIER_SEPARATOR, ILoader.DOT);
 		final String className = moduleReference.getQualifiedName().substring(lastQualifierSeparatorIndex
 				+ AcceleoParser.QUALIFIER_SEPARATOR.length(), moduleReference.getQualifiedName().length());
-		final String replacement = "package " + packageName + ";\n" + "\n" + "public class " + className
-				+ " {\n" + "\n" + "}\n";
+		final String replacement = "package " + packageName + ";" + newLine + newLine + "public class "
+				+ className + " {" + newLine + newLine + "}" + newLine;
 		final AstTextReplacement contentReplacement = new AstTextReplacement(classURI, replacement, 0, 0, 0,
 				0, 0, 0);
 		fix.getTextReplacements().add(contentReplacement);

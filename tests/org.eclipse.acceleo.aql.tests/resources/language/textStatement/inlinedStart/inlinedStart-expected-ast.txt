@@ -4,8 +4,7 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(myParam : EPackage (89..114))
-      some static text 1.
-  some static text 2.
-  some static text 3.
- (116..182) (116..182)
+      some static text 1. (newLineNeeded) (116..137)
+      some static text 2. (newLineNeeded) (138..159)
+      some static text 3. (newLineNeeded) (160..181) (116..182)
   [/template] (61..193) (0..193)

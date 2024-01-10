@@ -1,0 +1,36 @@
+	
+ * My module has a nice comment.
+ * @author Yvan Lussaud
+ * @version 0.1.0
+ * @since 0.0.1
+* (3..102)
+author: Yvan Lussaud
+version: 0.1.0
+since: 0.0.1
+[comment 	
+ * My module has a nice comment.
+ * @author Yvan Lussaud
+ * @version 0.1.0
+ * @since 0.0.1
+* (3..102) /] (0..104)
+header position 106..165
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (124..162)
+  	
+ * My module has a nice comment.
+ * @author Yvan Lussaud
+ * @version 0.1.0
+ * @since 0.0.1
+* (3..102)
+  author: Yvan Lussaud
+  version: 0.1.0
+  since: 0.0.1
+  [comment 	
+ * My module has a nice comment.
+ * @author Yvan Lussaud
+ * @version 0.1.0
+ * @since 0.0.1
+* (3..102) /] (0..104)
+  [blockComment][comment 
+  a block comment
+ (176..197) /] (167..207) (0..209)
