@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -184,6 +184,16 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private final AcceleoCompletionProposalsProvider acceleoCompletionProposalProvider;
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
+	 * The {@link AcceleoCodeTemplates} with {@link #newLine}.
+	 */
+	private final AcceleoCodeTemplates acceleoCodeTemplates;
+
+	/**
 	 * The computed module name.
 	 */
 	private String computedModuleName;
@@ -200,15 +210,19 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
 	 * @param acceleoValidationResult
 	 *            the (non-{@code null}) contextual {@link IAcceleoValidationResult}.
+	 * @param newLine
+	 *            the new line {@link String}
 	 */
 	public AcceleoAstCompletor(IQualifiedNameQueryEnvironment queryEnvironment,
-			IAcceleoValidationResult acceleoValidationResult) {
+			IAcceleoValidationResult acceleoValidationResult, String newLine) {
 		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
 		this.acceleoValidationResult = Objects.requireNonNull(acceleoValidationResult);
 
 		this.astCompletor = new AstCompletor(new CompletionServices(this.queryEnvironment));
 		this.aqlCompletionEngine = new QueryCompletionEngine(queryEnvironment);
-		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider();
+		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider(newLine);
+		this.newLine = newLine;
+		this.acceleoCodeTemplates = new AcceleoCodeTemplates(newLine);
 	}
 
 	/**
@@ -857,43 +871,39 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private List<AcceleoCompletionProposal> getBodyCompletionProposals(int column) {
 		final List<AcceleoCompletionProposal> res = new ArrayList<>();
 
-		String newLinePrefix = AcceleoCodeTemplates.NEWLINE;
+		String newLinePrefix = newLine;
 		for (int i = 0; i < column; i++) {
 			newLinePrefix += AcceleoCodeTemplates.SPACE;
 		}
 
 		res.add(new AcceleoCodeTemplateCompletionProposal("New For", "Inserts the following For Statement:"
 				+ AcceleoCompletionProposal.DESCRIPTION_NEWLINE
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + AcceleoCodeTemplates.NEW_FOR_STATEMENT
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, AcceleoCodeTemplates.NEW_FOR_STATEMENT
-						.replaceAll(AcceleoCodeTemplates.NEWLINE, newLinePrefix),
-				AcceleoPackage.Literals.FOR_STATEMENT));
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + acceleoCodeTemplates.newForStatement()
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, acceleoCodeTemplates.newForStatement()
+						.replaceAll(newLine, newLinePrefix), AcceleoPackage.Literals.FOR_STATEMENT));
 		res.add(new AcceleoCodeTemplateCompletionProposal("New If", "Inserts the following If Statement:"
 				+ AcceleoCompletionProposal.DESCRIPTION_NEWLINE
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + AcceleoCodeTemplates.NEW_IF_STATEMENT
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, AcceleoCodeTemplates.NEW_IF_STATEMENT
-						.replaceAll(AcceleoCodeTemplates.NEWLINE, newLinePrefix),
-				AcceleoPackage.Literals.IF_STATEMENT));
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + acceleoCodeTemplates.newIfStatement()
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, acceleoCodeTemplates.newIfStatement()
+						.replaceAll(newLine, newLinePrefix), AcceleoPackage.Literals.IF_STATEMENT));
 		res.add(new AcceleoCodeTemplateCompletionProposal("New Let", "Inserts the following Let Statement:"
 				+ AcceleoCompletionProposal.DESCRIPTION_NEWLINE
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + AcceleoCodeTemplates.NEW_LET_STATEMENT
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, AcceleoCodeTemplates.NEW_LET_STATEMENT
-						.replaceAll(AcceleoCodeTemplates.NEWLINE, newLinePrefix),
-				AcceleoPackage.Literals.LET_STATEMENT));
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + acceleoCodeTemplates.newLetStatement()
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, acceleoCodeTemplates.newLetStatement()
+						.replaceAll(newLine, newLinePrefix), AcceleoPackage.Literals.LET_STATEMENT));
 		res.add(new AcceleoCodeTemplateCompletionProposal("New File", "Inserts the following File Statement:"
 				+ AcceleoCompletionProposal.DESCRIPTION_NEWLINE
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + AcceleoCodeTemplates.NEW_FILE_STATEMENT
-				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, AcceleoCodeTemplates.NEW_FILE_STATEMENT
-						.replaceAll(AcceleoCodeTemplates.NEWLINE, newLinePrefix),
-				AcceleoPackage.Literals.FILE_STATEMENT));
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + acceleoCodeTemplates.newFileStatement()
+				+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, acceleoCodeTemplates.newFileStatement()
+						.replaceAll(newLine, newLinePrefix), AcceleoPackage.Literals.FILE_STATEMENT));
 		res.add(new AcceleoCodeTemplateCompletionProposal("New Protected Area",
 				"Inserts the following Protected Area Statement:"
 						+ AcceleoCompletionProposal.DESCRIPTION_NEWLINE
-						+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN
-						+ AcceleoCodeTemplates.NEW_PROTECTED_AREA_STATEMENT
-						+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE,
-				AcceleoCodeTemplates.NEW_PROTECTED_AREA_STATEMENT.replaceAll(AcceleoCodeTemplates.NEWLINE,
-						newLinePrefix), AcceleoPackage.Literals.PROTECTED_AREA));
+						+ AcceleoCompletionProposal.DESCRIPTION_CODE_OPEN + acceleoCodeTemplates
+								.newProtectedAreaStatement()
+						+ AcceleoCompletionProposal.DESCRIPTION_CODE_CLOSE, acceleoCodeTemplates
+								.newProtectedAreaStatement().replaceAll(newLine, newLinePrefix),
+				AcceleoPackage.Literals.PROTECTED_AREA));
 
 		return res;
 	}

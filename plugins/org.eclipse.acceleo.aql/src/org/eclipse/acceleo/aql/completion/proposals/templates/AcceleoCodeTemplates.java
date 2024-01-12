@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,11 +34,6 @@ public final class AcceleoCodeTemplates {
 	 * A space.
 	 */
 	public static final String SPACE = " ";
-
-	/**
-	 * A new line.
-	 */
-	public static final String NEWLINE = "\n";
 
 	/**
 	 * A tabulation.
@@ -200,20 +195,6 @@ public final class AcceleoCodeTemplates {
 			+ DEFAULT_NEW_QUERY_BODY + AcceleoParser.QUERY_END;
 
 	/**
-	 * Code template for creating a new empty Acceleo Template.<br/>
-	 * <code>
-	 * [template public myTemplate(myParameter : MyParameterType)]
-	 *     My template with a static text.
-	 * [/template]
-	 * </code>
-	 */
-	public static final String NEW_TEMPLATE = AcceleoParser.TEMPLATE_HEADER_START
-			+ DEFAULT_NEW_TEMPLATE_VISIBILITY + SPACE + DEFAULT_NEW_TEMPLATE_NAME + "("
-			+ DEFAULT_NEW_TEMPLATE_PARAMETER_NAME + " : " + DEFAULT_NEW_TEMPLATE_PARAMETER_TYPE + ")"
-			+ AcceleoParser.TEMPLATE_HEADER_END + NEWLINE + TABULATION + DEFAULT_NEW_TEMPLATE_BODY + NEWLINE
-			+ AcceleoParser.TEMPLATE_END;
-
-	/**
 	 * Code template for creating a new Acceleo comment.<br/>
 	 * <code>
 	 * [comment My comment./]
@@ -223,17 +204,6 @@ public final class AcceleoCodeTemplates {
 			+ AcceleoParser.COMMENT_END;
 
 	/**
-	 * Code template for creating a new Acceleo {@link BlockComment}.<br/>
-	 * <code>
-	 * [comment]
-	 * My comment.
-	 * [/comment]
-	 * </code>
-	 */
-	public static final String NEW_BLOCK_COMMENT = AcceleoParser.BLOCK_COMMENT_START + NEWLINE
-			+ DEFAULT_NEW_COMMENT_BODY + NEWLINE + AcceleoParser.BLOCK_COMMENT_END;
-
-	/**
 	 * Code template for creating a new Acceleo main comment.<br/>
 	 * <code>
 	 * [comment @main/]
@@ -241,6 +211,58 @@ public final class AcceleoCodeTemplates {
 	 */
 	public static final String NEW_COMMENT_MAIN = AcceleoParser.COMMENT_START + AcceleoParser.MAIN_TAG
 			+ AcceleoParser.COMMENT_END;
+
+	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param newLine
+	 *            the new line {@link String}
+	 */
+	public AcceleoCodeTemplates(String newLine) {
+		this.newLine = newLine;
+	}
+
+	/**
+	 * Code template for creating a new empty Acceleo Template.<br/>
+	 * <code>
+	 * [template public myTemplate(myParameter : MyParameterType)]
+	 *     My template with a static text.
+	 * [/template]
+	 * </code>
+	 */
+	public String newTemplate() {
+		return AcceleoParser.TEMPLATE_HEADER_START + DEFAULT_NEW_TEMPLATE_VISIBILITY + SPACE
+				+ DEFAULT_NEW_TEMPLATE_NAME + "(" + DEFAULT_NEW_TEMPLATE_PARAMETER_NAME + " : "
+				+ DEFAULT_NEW_TEMPLATE_PARAMETER_TYPE + ")" + AcceleoParser.TEMPLATE_HEADER_END + newLine
+				+ TABULATION + DEFAULT_NEW_TEMPLATE_BODY + newLine + AcceleoParser.TEMPLATE_END;
+	}
+
+	/**
+	 * Code template for creating a new Acceleo {@link BlockComment}.<br/>
+	 * <code>
+	 * [comment]
+	 * My comment.
+	 * [/comment]
+	 * </code>
+	 */
+	public String newBlockComment() {
+		return AcceleoParser.BLOCK_COMMENT_START + newLine + DEFAULT_NEW_COMMENT_BODY + newLine
+				+ AcceleoParser.BLOCK_COMMENT_END;
+	}
+
+	/**
+	 * Code template for creating a new import.<br/>
+	 * <code>
+	 * [import imported::module::qualified::name/]
+	 * </code>
+	 */
+	public static final String NEW_IMPORT = AcceleoParser.IMPORT_START + DEFAULT_NEW_IMPORT_BODY
+			+ AcceleoParser.IMPORT_END;
 
 	/**
 	 * Code template for creating a new Acceleo {@link ForStatement}.<br/>
@@ -253,10 +275,12 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_FOR_STATEMENT = AcceleoParser.FOR_HEADER_START
-			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE + AcceleoParser.PIPE
-			+ SPACE + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END
-			+ NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.FOR_END;
+	public String newForStatement() {
+		return AcceleoParser.FOR_HEADER_START + AcceleoParser.OPEN_PARENTHESIS
+				+ DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE + AcceleoParser.PIPE + SPACE + DEFAULT_EXPRESSION
+				+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END + newLine + SPACE + SPACE
+				+ newLine + AcceleoParser.FOR_END;
+	}
 
 	/**
 	 * Code template for creating a new Acceleo {@link IfStatement}.<br/>
@@ -269,9 +293,11 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_IF_STATEMENT = AcceleoParser.IF_HEADER_START
-			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS
-			+ AcceleoParser.IF_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.IF_END;
+	public String newIfStatement() {
+		return AcceleoParser.IF_HEADER_START + AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION
+				+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.IF_HEADER_END + newLine + SPACE + SPACE
+				+ newLine + AcceleoParser.IF_END;
+	}
 
 	/**
 	 * Code template for creating a new Acceleo {@link FileStatement}.<br/>
@@ -284,11 +310,12 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_FILE_STATEMENT = AcceleoParser.FILE_HEADER_START
-			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.COMMA + SPACE
-			+ OpenModeKind.OVERWRITE.getName() + AcceleoParser.COMMA + SPACE + "'UTF-8'"
-			+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FILE_HEADER_END + NEWLINE + SPACE + SPACE
-			+ NEWLINE + AcceleoParser.FILE_END;
+	public String newFileStatement() {
+		return AcceleoParser.FILE_HEADER_START + AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION
+				+ AcceleoParser.COMMA + SPACE + OpenModeKind.OVERWRITE.getName() + AcceleoParser.COMMA + SPACE
+				+ "'UTF-8'" + AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FILE_HEADER_END + newLine
+				+ SPACE + SPACE + newLine + AcceleoParser.FILE_END;
+	}
 
 	/**
 	 * Code template for creating a new Acceleo {@link ProtectedArea}.<br/>
@@ -301,10 +328,11 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_PROTECTED_AREA_STATEMENT = AcceleoParser.PROTECTED_AREA_HEADER_START
-			+ AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION + AcceleoParser.CLOSE_PARENTHESIS
-			+ AcceleoParser.PROTECTED_AREA_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE
-			+ AcceleoParser.PROTECTED_AREA_END;
+	public String newProtectedAreaStatement() {
+		return AcceleoParser.PROTECTED_AREA_HEADER_START + AcceleoParser.OPEN_PARENTHESIS + DEFAULT_EXPRESSION
+				+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.PROTECTED_AREA_HEADER_END + newLine + SPACE
+				+ SPACE + newLine + AcceleoParser.PROTECTED_AREA_END;
+	}
 
 	/**
 	 * Code template for creating a new Acceleo {@link ForStatement}.<br/>
@@ -317,9 +345,11 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_LET_STATEMENT = AcceleoParser.LET_HEADER_START
-			+ DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE + AcceleoParser.EQUAL + SPACE + DEFAULT_EXPRESSION
-			+ AcceleoParser.LET_HEADER_END + NEWLINE + SPACE + SPACE + NEWLINE + AcceleoParser.LET_END;
+	public String newLetStatement() {
+		return AcceleoParser.LET_HEADER_START + DEFAULT_NEW_BINDING_VARIABLE_NAME + SPACE
+				+ AcceleoParser.EQUAL + SPACE + DEFAULT_EXPRESSION + AcceleoParser.LET_HEADER_END + newLine
+				+ SPACE + SPACE + newLine + AcceleoParser.LET_END;
+	}
 
 	/**
 	 * Code template for creating a new Acceleo module documentation.<br/>
@@ -336,22 +366,14 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_MODULE_DOCUMENTATION = AcceleoParser.DOCUMENTATION_START + NEWLINE + SPACE
-			+ STAR + SPACE + DEFAULT_NEW_MODULE_DOCUMENTATION_BODY + NEWLINE + SPACE + STAR + SPACE + NEWLINE
-			+ SPACE + STAR + SPACE + AcceleoParser.AUTHOR_TAG + DEFAULT_NEW_MODULE_DOCUMENTATION_AUTHOR
-			+ NEWLINE + SPACE + STAR + SPACE + AcceleoParser.VERSION_TAG
-			+ DEFAULT_NEW_MODULE_DOCUMENTATION_VERSION + NEWLINE + SPACE + STAR + SPACE
-			+ AcceleoParser.SINCE_TAG + DEFAULT_NEW_MODULE_DOCUMENTATION_SINCE + NEWLINE + STAR
-			+ AcceleoParser.DOCUMENTATION_END;
-
-	/**
-	 * Code template for creating a new import.<br/>
-	 * <code>
-	 * [import imported::module::qualified::name/]
-	 * </code>
-	 */
-	public static final String NEW_IMPORT = AcceleoParser.IMPORT_START + DEFAULT_NEW_IMPORT_BODY
-			+ AcceleoParser.IMPORT_END;
+	public String newModuleDocumentation() {
+		return AcceleoParser.DOCUMENTATION_START + newLine + SPACE + STAR + SPACE
+				+ DEFAULT_NEW_MODULE_DOCUMENTATION_BODY + newLine + SPACE + STAR + SPACE + newLine + SPACE
+				+ STAR + SPACE + AcceleoParser.AUTHOR_TAG + DEFAULT_NEW_MODULE_DOCUMENTATION_AUTHOR + newLine
+				+ SPACE + STAR + SPACE + AcceleoParser.VERSION_TAG + DEFAULT_NEW_MODULE_DOCUMENTATION_VERSION
+				+ newLine + SPACE + STAR + SPACE + AcceleoParser.SINCE_TAG
+				+ DEFAULT_NEW_MODULE_DOCUMENTATION_SINCE + newLine + STAR + AcceleoParser.DOCUMENTATION_END;
+	}
 
 	/**
 	 * Code template for creating a new module element documentation.<br/>
@@ -366,15 +388,12 @@ public final class AcceleoCodeTemplates {
 	 * </code>
 	 * </pre>
 	 */
-	public static final String NEW_MODULE_ELEMENT_DOCUMENTATION = AcceleoParser.DOCUMENTATION_START + NEWLINE
-			+ SPACE + STAR + SPACE + DEFAULT_NEW_MODULE_ELEMENT_DOCUMENTATION_BODY + NEWLINE + SPACE + STAR
-			+ SPACE + NEWLINE + SPACE + STAR + SPACE + AcceleoParser.PARAM_TAG
-			+ DEFAULT_NEW_MODULE_ELEMENT_VARIABLE_NAME + SPACE
-			+ DEFAULT_NEW_MODULE_ELEMENT_DOCUMENTATION_PARAM_BODY + NEWLINE + STAR
-			+ AcceleoParser.DOCUMENTATION_END;
-
-	private AcceleoCodeTemplates() {
-		// Utility class.
+	public String newModuleElementDocumentation() {
+		return AcceleoParser.DOCUMENTATION_START + newLine + SPACE + STAR + SPACE
+				+ DEFAULT_NEW_MODULE_ELEMENT_DOCUMENTATION_BODY + newLine + SPACE + STAR + SPACE + newLine
+				+ SPACE + STAR + SPACE + AcceleoParser.PARAM_TAG + DEFAULT_NEW_MODULE_ELEMENT_VARIABLE_NAME
+				+ SPACE + DEFAULT_NEW_MODULE_ELEMENT_DOCUMENTATION_PARAM_BODY + newLine + STAR
+				+ AcceleoParser.DOCUMENTATION_END;
 	}
 
 	/**

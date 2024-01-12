@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -254,7 +254,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			canceler.checkCanceled();
 
 			// Acceleo provides an API to access completion proposals.
-			final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
+			final AcceleoCompletor acceleoCompletor = new AcceleoCompletor(System.lineSeparator());
 			final String source = acceleoTextDocument.getContents();
 			final int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
 					source);

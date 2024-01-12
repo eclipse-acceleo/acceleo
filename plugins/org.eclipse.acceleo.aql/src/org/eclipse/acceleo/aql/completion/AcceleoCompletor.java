@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,21 @@ import org.eclipse.emf.ecore.EObject;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AcceleoCompletor {
+
+	/**
+	 * The new line {@link String}.
+	 */
+	private String newLine;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param newLine
+	 *            the new line {@link String}
+	 */
+	public AcceleoCompletor(String newLine) {
+		this.newLine = newLine;
+	}
 
 	/**
 	 * The name space for completion.
@@ -115,7 +130,7 @@ public class AcceleoCompletor {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		AcceleoAstCompletor acceleoSyntaxCompletor = new AcceleoAstCompletor(queryEnvironment,
-				acceleoValidationResult);
+				acceleoValidationResult, newLine);
 
 		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(computedModuleName, sourceFragment,
 				acceleoElementToComplete));

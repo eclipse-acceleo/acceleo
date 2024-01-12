@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,12 +53,22 @@ public class AcceleoCompletionProposalsProvider extends AcceleoSwitch<List<Accel
 	 * The {@link AcceleoCodeTemplateCompletionProposalsProvider} that provides code template completion
 	 * proposals.
 	 */
-	private final AcceleoCodeTemplateCompletionProposalsProvider acceleoCodeTemplatesProvider = new AcceleoCodeTemplateCompletionProposalsProvider();
+	private final AcceleoCodeTemplateCompletionProposalsProvider acceleoCodeTemplatesProvider;
 
 	/**
 	 * The computed module name.
 	 */
 	private String computedModuleName;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param newLine
+	 *            the new line {@link String}
+	 */
+	public AcceleoCompletionProposalsProvider(String newLine) {
+		this.acceleoCodeTemplatesProvider = new AcceleoCodeTemplateCompletionProposalsProvider(newLine);
+	}
 
 	/**
 	 * Provides the syntactic and code template completion proposals for a position where the given Acceleo

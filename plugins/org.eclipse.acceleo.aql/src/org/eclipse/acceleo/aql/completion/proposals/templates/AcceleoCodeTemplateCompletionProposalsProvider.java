@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,23 +68,6 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 			AcceleoPackage.Literals.IMPORT);
 
 	/**
-	 * Code template completion proposal for a new {@link ModuleElementDocumentation}.
-	 */
-	public static final AcceleoCodeTemplateCompletionProposal NEW_MODULE_ELEMENT_DOCUMENTATION = new AcceleoCodeTemplateCompletionProposal(
-			"New Module Element Documentation", "Inserts the following sample Module Element Documentation:\n"
-					+ AcceleoCodeTemplates.NEW_MODULE_ELEMENT_DOCUMENTATION,
-			AcceleoCodeTemplates.NEW_MODULE_ELEMENT_DOCUMENTATION,
-			AcceleoPackage.Literals.MODULE_ELEMENT_DOCUMENTATION);
-
-	/**
-	 * Code template completion proposal for a new {@link ModuleDocumentation}.
-	 */
-	public static final AcceleoCodeTemplateCompletionProposal NEW_MODULE_DOCUMENTATION = new AcceleoCodeTemplateCompletionProposal(
-			"New Module Documentation", "Inserts the following sample Module Documentation:\n"
-					+ AcceleoCodeTemplates.NEW_MODULE_DOCUMENTATION,
-			AcceleoCodeTemplates.NEW_MODULE_DOCUMENTATION, AcceleoPackage.Literals.MODULE_DOCUMENTATION);
-
-	/**
 	 * Code template completion proposal for a new {@link Query}.
 	 */
 	public static final AcceleoCodeTemplateCompletionProposal NEW_QUERY = new AcceleoCodeTemplateCompletionProposal(
@@ -93,28 +76,12 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 			AcceleoPackage.Literals.QUERY);
 
 	/**
-	 * Code template completion proposal for a new {@link Template}.
-	 */
-	public static final AcceleoCodeTemplateCompletionProposal NEW_TEMPLATE = new AcceleoCodeTemplateCompletionProposal(
-			"New Template", "Inserts the following sample Acceleo Template:" + NEWLINE + CODE_OPEN
-					+ AcceleoCodeTemplates.NEW_TEMPLATE + CODE_CLOSE, AcceleoCodeTemplates.NEW_TEMPLATE,
-			AcceleoPackage.Literals.TEMPLATE);
-
-	/**
 	 * Code template completion proposal for a new {@link Comment}.
 	 */
 	public static final AcceleoCodeTemplateCompletionProposal NEW_COMMENT = new AcceleoCodeTemplateCompletionProposal(
 			"New Comment", "Inserts the following sample Comment:" + NEWLINE + CODE_OPEN
 					+ AcceleoCodeTemplates.NEW_COMMENT + CODE_CLOSE, AcceleoCodeTemplates.NEW_COMMENT,
 			AcceleoPackage.Literals.COMMENT);
-
-	/**
-	 * Code template completion proposal for a new {@link BlockComment}.
-	 */
-	public static final AcceleoCodeTemplateCompletionProposal NEW_BLOCK_COMMENT = new AcceleoCodeTemplateCompletionProposal(
-			"New Block Comment", "Inserts the following sample Block Comment:" + NEWLINE + CODE_OPEN
-					+ AcceleoCodeTemplates.NEW_BLOCK_COMMENT + CODE_CLOSE,
-			AcceleoCodeTemplates.NEW_BLOCK_COMMENT, AcceleoPackage.Literals.BLOCK_COMMENT);
 
 	/**
 	 * Code template completion proposal for a new '@main' {@link Comment}.
@@ -130,6 +97,27 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 	private String computedModuleName;
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
+	 * The {@link AcceleoCodeTemplates} with the {@link #newLine}.
+	 */
+	private final AcceleoCodeTemplates acceleoCodeTemplates;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param newLine
+	 *            the new line {@link String}
+	 */
+	public AcceleoCodeTemplateCompletionProposalsProvider(String newLine) {
+		this.newLine = newLine;
+		this.acceleoCodeTemplates = new AcceleoCodeTemplates(newLine);
+	}
+
+	/**
 	 * Provides the code template completion proposals for a position where the given Acceleo type is
 	 * syntactically allowed.
 	 * 
@@ -143,6 +131,47 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 	public List<AcceleoCompletionProposal> getProposalsFor(String computedModuleName, EClass acceleoEClass) {
 		this.computedModuleName = computedModuleName;
 		return this.doSwitch(acceleoEClass, null);
+	}
+
+	/**
+	 * Code template completion proposal for a new {@link ModuleElementDocumentation}.
+	 */
+	public AcceleoCodeTemplateCompletionProposal newModuleElementDocumentation() {
+		return new AcceleoCodeTemplateCompletionProposal("New Module Element Documentation",
+				"Inserts the following sample Module Element Documentation:" + newLine + acceleoCodeTemplates
+						.newModuleElementDocumentation(), acceleoCodeTemplates
+								.newModuleElementDocumentation(),
+				AcceleoPackage.Literals.MODULE_ELEMENT_DOCUMENTATION);
+	}
+
+	/**
+	 * Code template completion proposal for a new {@link ModuleDocumentation}.
+	 */
+	public AcceleoCodeTemplateCompletionProposal newModuleDocumentation() {
+		return new AcceleoCodeTemplateCompletionProposal("New Module Documentation",
+				"Inserts the following sample Module Documentation:" + newLine + acceleoCodeTemplates
+						.newModuleDocumentation(), acceleoCodeTemplates.newModuleDocumentation(),
+				AcceleoPackage.Literals.MODULE_DOCUMENTATION);
+	}
+
+	/**
+	 * Code template completion proposal for a new {@link Template}.
+	 */
+	public AcceleoCodeTemplateCompletionProposal newTemplate() {
+		return new AcceleoCodeTemplateCompletionProposal("New Template",
+				"Inserts the following sample Acceleo Template:" + NEWLINE + CODE_OPEN + acceleoCodeTemplates
+						.newTemplate() + CODE_CLOSE, acceleoCodeTemplates.newTemplate(),
+				AcceleoPackage.Literals.TEMPLATE);
+	}
+
+	/**
+	 * Code template completion proposal for a new {@link BlockComment}.
+	 */
+	public AcceleoCodeTemplateCompletionProposal newBlockComment() {
+		return new AcceleoCodeTemplateCompletionProposal("New Block Comment",
+				"Inserts the following sample Block Comment:" + NEWLINE + CODE_OPEN + acceleoCodeTemplates
+						.newBlockComment() + CODE_CLOSE, acceleoCodeTemplates.newBlockComment(),
+				AcceleoPackage.Literals.BLOCK_COMMENT);
 	}
 
 	@Override
@@ -172,7 +201,7 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 	public List<AcceleoCompletionProposal> caseTemplate(Template object) {
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
-		completionProposals.add(NEW_TEMPLATE);
+		completionProposals.add(newTemplate());
 
 		return completionProposals;
 	}
@@ -214,7 +243,7 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 	public List<AcceleoCompletionProposal> caseBlockComment(BlockComment object) {
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
-		completionProposals.add(NEW_BLOCK_COMMENT);
+		completionProposals.add(newBlockComment());
 
 		return completionProposals;
 	}
@@ -230,7 +259,7 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 	public List<AcceleoCompletionProposal> caseModuleDocumentation(ModuleDocumentation object) {
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
-		completionProposals.add(NEW_MODULE_DOCUMENTATION);
+		completionProposals.add(newModuleDocumentation());
 
 		return completionProposals;
 	}
@@ -239,7 +268,7 @@ public class AcceleoCodeTemplateCompletionProposalsProvider extends AcceleoSwitc
 	public List<AcceleoCompletionProposal> caseModuleElementDocumentation(ModuleElementDocumentation object) {
 		List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
-		completionProposals.add(NEW_MODULE_ELEMENT_DOCUMENTATION);
+		completionProposals.add(newModuleElementDocumentation());
 
 		return completionProposals;
 	}

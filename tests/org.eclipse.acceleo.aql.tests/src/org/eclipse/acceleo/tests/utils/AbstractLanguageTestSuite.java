@@ -229,7 +229,7 @@ public abstract class AbstractLanguageTestSuite {
 		evaluatorWindowsEndLine = new AcceleoEvaluator(queryEnvironmentWindowsEndLine.getLookupEngine());
 		resolverWindowsEndLine.addLoader(new ModuleLoaderWindowsEndLine(new AcceleoParser(),
 				evaluatorWindowsEndLine));
-		resolverWindowsEndLine.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+		resolverWindowsEndLine.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 		String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
 				"::") + "::";
