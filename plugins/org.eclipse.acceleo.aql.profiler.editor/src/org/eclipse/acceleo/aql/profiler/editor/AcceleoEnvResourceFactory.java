@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Huawei.
+ * Copyright (c) 2020, 2024 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -85,7 +85,8 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
 				true);
 
-		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
+		final String newLine = options.getOrDefault(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), newLine);
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, true));
 	}

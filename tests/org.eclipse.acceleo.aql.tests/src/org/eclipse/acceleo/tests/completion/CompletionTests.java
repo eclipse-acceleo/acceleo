@@ -139,7 +139,9 @@ public class CompletionTests {
 		final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
 				options, resolver, resourceSetForModels, true);
 		try {
-			final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
+			final String newLine = options.getOrDefault(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+			final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(),
+					newLine);
 			final AcceleoParser parser = new AcceleoParser();
 			resolver.addLoader(new ModuleLoader(parser, evaluator));
 			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, true));

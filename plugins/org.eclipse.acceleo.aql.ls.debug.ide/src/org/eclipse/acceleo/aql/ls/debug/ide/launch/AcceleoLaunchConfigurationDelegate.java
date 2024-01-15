@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,10 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 			}
 			final URI destinationUri = destination.getLocation().toFile().getAbsoluteFile().toURI();
 			param.addProperty(AcceleoDebugger.DESTINATION, destinationUri.toString());
+		}
+		if (wc.hasAttribute(AcceleoDebugger.OPTIONS)) {
+			param.addProperty(AcceleoDebugger.OPTIONS, wc.getAttribute(AcceleoDebugger.OPTIONS,
+					(String)null));
 		}
 		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
 			if (wc.hasAttribute(AcceleoDebugger.PROFILE_MODEL)) {

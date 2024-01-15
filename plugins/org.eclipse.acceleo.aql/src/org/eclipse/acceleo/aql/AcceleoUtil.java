@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,11 @@ public final class AcceleoUtil {
 	 * The language name for Acceleo {@link IServicesConfigurator}.
 	 */
 	public static final String LANGUAGE_NAME = "org.eclipse.acceleo.aql";
+
+	/**
+	 * The new line {@link String} option name.
+	 */
+	public static final String NEW_LINE_OPTION = "newLine";
 
 	/**
 	 * "self".

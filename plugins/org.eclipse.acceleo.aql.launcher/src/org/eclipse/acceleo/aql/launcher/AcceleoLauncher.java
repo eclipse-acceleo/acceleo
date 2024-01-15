@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -227,7 +227,8 @@ public class AcceleoLauncher implements IApplication {
 				options, resolver, resourceSetForModels, false);
 
 		try {
-			AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
+			final String newLine = options.getOrDefault(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+			AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), newLine);
 
 			resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 			resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR,

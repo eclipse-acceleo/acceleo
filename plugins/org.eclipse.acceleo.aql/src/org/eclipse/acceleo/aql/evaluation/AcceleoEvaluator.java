@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023  Obeo.
+ * Copyright (c) 2016, 2024  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,11 +86,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private static final String EMPTY_RESULT = "";
 
 	/**
-	 * A new line.
-	 */
-	private static final String NEW_LINE = "\n";
-
-	/**
 	 * The {@link DateFormat} used to log lost {@link UserContent}.
 	 */
 	private static final DateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -150,13 +145,18 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private GenerationResult generationResult;
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private String newLine;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param other
 	 *            the other {@link AcceleoEvaluator}.
 	 */
 	public AcceleoEvaluator(AcceleoEvaluator other) {
-		this(other.lookupEngine);
+		this(other.lookupEngine, other.newLine);
 		destination = other.destination;
 		generationStrategy = other.generationStrategy;
 		generationResult = other.generationResult;
@@ -167,10 +167,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 * 
 	 * @param lookupEngine
 	 *            the {@link IQualifiedNameLookupEngine}
+	 * @param newLine
+	 *            the new line {@link String}
 	 */
-	public AcceleoEvaluator(IQualifiedNameLookupEngine lookupEngine) {
+	public AcceleoEvaluator(IQualifiedNameLookupEngine lookupEngine, String newLine) {
 		this.aqlEngine = QueryEvaluation.newEngine((IQueryEnvironment)lookupEngine.getQueryEnvironment());
 		this.lookupEngine = lookupEngine;
+		this.newLine = newLine;
 	}
 
 	/**
@@ -376,9 +379,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 		// TODO replace all possible new lines with the right one
 		String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
-		final boolean endsWithNewLine = expressionValue.endsWith(NEW_LINE);
+		final boolean endsWithNewLine = expressionValue.endsWith(newLine);
 		if (!indentation.isEmpty()) {
-			expressionValue = expressionValue.replace(NEW_LINE, NEW_LINE + indentation);
+			expressionValue = expressionValue.replace(newLine, newLine + indentation);
 			if (endsWithNewLine) {
 				expressionValue = expressionValue.substring(0, expressionValue.length() - indentation
 						.length());
@@ -386,9 +389,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 		if (expressionStatement.isNewLineNeeded() && !endsWithNewLine) {
 			if (lastLineOfLastStatement.isEmpty()) {
-				res = indentation + expressionValue + NEW_LINE;
+				res = indentation + expressionValue + newLine;
 			} else {
-				res = expressionValue + NEW_LINE;
+				res = expressionValue + newLine;
 			}
 			lastLineOfLastStatement = "";
 		} else {
@@ -397,9 +400,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			} else {
 				res = expressionValue;
 			}
-			final int lastIndexOfNewLine = res.lastIndexOf(NEW_LINE);
+			final int lastIndexOfNewLine = res.lastIndexOf(newLine);
 			if (lastIndexOfNewLine != -1) {
-				lastLineOfLastStatement = res.substring(lastIndexOfNewLine + NEW_LINE.length(), res.length());
+				lastLineOfLastStatement = res.substring(lastIndexOfNewLine + newLine.length(), res.length());
 			} else {
 				lastLineOfLastStatement = lastLineOfLastStatement + res;
 			}
@@ -483,14 +486,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		if (textStatement.isNewLineNeeded()) {
 			if (lastLineOfLastStatement.isEmpty()) {
 				if (!textStatement.getValue().isEmpty()) {
-					res = peekIndentation() + textStatement.getValue() + NEW_LINE;
+					res = peekIndentation() + textStatement.getValue() + newLine;
 				} else {
 					// empty text with new line at the beginning of a line is a no operation
 					// see NewLineStatement
 					res = EMPTY_RESULT;
 				}
 			} else {
-				res = textStatement.getValue() + NEW_LINE;
+				res = textStatement.getValue() + newLine;
 				lastLineOfLastStatement = "";
 			}
 		} else {
@@ -511,9 +514,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		if (newLineStatement.isIndentationNeeded()) {
-			res = peekIndentation() + NEW_LINE;
+			res = peekIndentation() + newLine;
 		} else {
-			res = NEW_LINE;
+			res = newLine;
 		}
 
 		return res;
@@ -535,16 +538,16 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					} else {
 						lastText = EMPTY_RESULT;
 					}
-					final int lastNewLineIndex = lastText.lastIndexOf(NEW_LINE);
+					final int lastNewLineIndex = lastText.lastIndexOf(newLine);
 					final String prefix;
 					if (lastNewLineIndex >= 0) {
-						prefix = lastText.substring(0, lastNewLineIndex + NEW_LINE.length());
+						prefix = lastText.substring(0, lastNewLineIndex + newLine.length());
 					} else {
 						prefix = EMPTY_RESULT;
 					}
 					final String suffix;
-					if (text.startsWith(NEW_LINE)) {
-						suffix = text.substring(NEW_LINE.length());
+					if (text.startsWith(newLine)) {
+						suffix = text.substring(newLine.length());
 					} else {
 						if (lastRemovedIndentation != null) {
 							suffix = lastRemovedIndentation + text;
@@ -571,10 +574,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					} else {
 						lastText = EMPTY_RESULT;
 					}
-					final int lastNewLineIndex = lastText.lastIndexOf(NEW_LINE);
+					final int lastNewLineIndex = lastText.lastIndexOf(newLine);
 					final String newText;
 					if (lastNewLineIndex >= 0) {
-						final int index = lastNewLineIndex + NEW_LINE.length();
+						final int index = lastNewLineIndex + newLine.length();
 						newText = lastText.substring(0, index);
 						lastRemovedIndentation = lastText.substring(index, lastText.length());
 					} else {
@@ -646,7 +649,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
 			try {
 				// FIXME line delimiter
-				openWriter(uri, mode, charset, NEW_LINE);
+				openWriter(uri, mode, charset, newLine);
 				lastLineOfLastStatement = "";
 				pushIndentation(fileStatement.getBody(), lastLineOfLastStatement);
 				pushProtectedAreaContent();
@@ -656,9 +659,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				} finally {
 					for (Entry<String, String> entry : popProtectedAreaContent().entrySet()) {
 						final String protectedAreaContentsRegex = IAcceleoGenerationStrategy.USER_CODE_START
-								+ " " + Pattern.quote(entry.getKey()) + NEW_LINE + "((?!"
-								+ IAcceleoGenerationStrategy.USER_CODE_END + ").|" + NEW_LINE + ")*"
-								+ IAcceleoGenerationStrategy.USER_CODE_END + NEW_LINE;
+								+ " " + Pattern.quote(entry.getKey()) + newLine + "((?!"
+								+ IAcceleoGenerationStrategy.USER_CODE_END + ").|" + newLine + ")*"
+								+ IAcceleoGenerationStrategy.USER_CODE_END + newLine;
 						content = content.replaceFirst(protectedAreaContentsRegex, entry.getValue());
 					}
 					write(content);
@@ -738,16 +741,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		for (Entry<String, List<String>> entry : remainingProtectedAreas.entrySet()) {
 			String lostID = entry.getKey();
 			final IAcceleoWriter lostWriter = strategy.createWriterForLostContent(targetURI, lostID,
-					targetCharset, NEW_LINE);
+					targetCharset, newLine);
 			try {
 				for (String lostContent : entry.getValue()) {
 					final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0,
 							"Lost file generated: " + lostWriter.getTargetURI(), new Object[] {fileStatement,
 									new HashMap<String, Object>(peekVariables()) });
 					generationResult.addDiagnostic(diagnostic);
-					lostWriter.append(FORMAT.format(new Date()) + " - Lost user content " + lostID
-							+ NEW_LINE);
-					lostWriter.append(lostContent + NEW_LINE);
+					lostWriter.append(FORMAT.format(new Date()) + " - Lost user content " + lostID + newLine);
+					lostWriter.append(lostContent + newLine);
 					generationResult.getLostFiles().add(lostWriter.getTargetURI());
 				}
 			} finally {
@@ -934,12 +936,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		if (protectedAreaContent != null) {
 			putProtectedAreaContent(id, protectedAreaContent);
 			// We just mark the protected area, the contents will be set at the end of the FileStatement.
-			res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + NEW_LINE);
-			res.append(IAcceleoGenerationStrategy.USER_CODE_END + NEW_LINE);
+			res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine);
+			res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 		} else {
 			pushIndentation(protectedArea.getBody(), lastLineOfLastStatement);
 			try {
-				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + NEW_LINE
+				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine
 						+ peekIndentation());
 
 				final String text = (String)doSwitch(protectedArea.getBody());
@@ -952,7 +954,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					Object endTagPrefixObject = doSwitch(protectedArea.getEndTagPrefix());
 					res.append(toString(endTagPrefixObject));
 				}
-				res.append(IAcceleoGenerationStrategy.USER_CODE_END + NEW_LINE);
+				res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 			} finally {
 				popIndentation();
 			}

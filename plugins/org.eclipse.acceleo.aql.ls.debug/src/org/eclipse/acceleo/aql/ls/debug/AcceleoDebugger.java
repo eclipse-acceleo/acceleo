@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -79,7 +83,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				if (isNoDebug()) {
 					generateNoDebug(queryEnvironment, module, model);
 				} else {
-					evaluator = new AcceleoDebugEvaluator(queryEnvironment);
+					evaluator = new AcceleoDebugEvaluator(queryEnvironment, newLine);
 
 					final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 					resolver.clearLoaders();
@@ -135,9 +139,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		 * 
 		 * @param queryEnvironment
 		 *            the {@link IQualifiedNameQueryEnvironment}
+		 * @param newLine
+		 *            the new line {@link String}
 		 */
-		AcceleoDebugEvaluator(IQualifiedNameQueryEnvironment queryEnvironment) {
-			super(queryEnvironment.getLookupEngine());
+		AcceleoDebugEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, String newLine) {
+			super(queryEnvironment.getLookupEngine(), newLine);
 		}
 
 		@Override
@@ -183,6 +189,17 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	public static final String DESTINATION = "destination";
 
 	/**
+	 * The JSON map of options.
+	 */
+	public static final String OPTIONS = "options";
+
+	/**
+	 * The option map type.
+	 */
+	public static final Type OPTION_MAP_TYPE = new TypeToken<LinkedHashMap<String, String>>() {
+	}.getType();
+
+	/**
 	 * The profile model
 	 */
 	public static final String PROFILE_MODEL = "profileModel";
@@ -207,6 +224,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	 */
 	private URI destination;
 
+	private Map<String, String> options;
+
 	/**
 	 * The profile model {@link URI}.
 	 */
@@ -226,6 +245,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	 * The {@link Resource} containing the model.
 	 */
 	private Resource model;
+
+	/**
+	 * The new line {@link String}.
+	 */
+	private String newLine;
 
 	/**
 	 * The {@link AcceleoDebugEvaluator}.
@@ -251,6 +275,13 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final URI modelURI = URI.createURI((String)arguments.get(MODEL));
 		destination = URI.createURI((String)arguments.get(DESTINATION));
 
+		final String optionString = (String)arguments.get(OPTIONS);
+		if (optionString != null) {
+			options = new Gson().fromJson(optionString, OPTION_MAP_TYPE);
+		} else {
+			options = new LinkedHashMap<>();
+		}
+
 		final String profileModel = (String)arguments.get(PROFILE_MODEL);
 		if (profileModel != null) {
 			profileModelURI = URI.createFileURI(URI.decode(profileModel));
@@ -265,8 +296,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR, false);
 
-		// TODO get options form the launch configuration
-		final Map<String, String> options = new LinkedHashMap<>();
+		newLine = options.getOrDefault(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
 		final ArrayList<Exception> exceptions = new ArrayList<>();
 		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, new ResourceSetImpl(),
 				options);
@@ -327,9 +357,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		if (profileModelURI != null && profilerModelRepresentation != null) {
 			profiler = ProfilerUtils.getProfiler(profilerModelRepresentation, ProfilerPackage.eINSTANCE
 					.getProfilerFactory());
-			noDebugEvaluator = new AcceleoProfilerEvaluator(queryEnvironment, profiler);
+			noDebugEvaluator = new AcceleoProfilerEvaluator(queryEnvironment, newLine, profiler);
 		} else {
-			noDebugEvaluator = new AcceleoEvaluator(environment.getLookupEngine());
+			noDebugEvaluator = new AcceleoEvaluator(environment.getLookupEngine(), newLine);
 			profiler = null;
 		}
 

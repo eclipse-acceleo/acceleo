@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 
+import com.google.gson.Gson;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
@@ -49,6 +55,21 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	protected static final String BROWSE = "Browse...";
 
 	/**
+	 * New line.
+	 */
+	protected static final String NEW_LINE = "\n";
+
+	/**
+	 * New line.
+	 */
+	protected static final String WINDOWS_NEW_LINE = "\r\n";
+
+	/**
+	 * The {@link Gson} instance.
+	 */
+	protected static final Gson GSON = new Gson();
+
+	/**
 	 * The module resource.
 	 */
 	protected String module;
@@ -62,6 +83,16 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	 * The destination.
 	 */
 	protected String destination;
+
+	/**
+	 * The options {@link Map}.
+	 */
+	protected Map<String, String> options;
+
+	/**
+	 * The options.
+	 */
+	private String optionsString;
 
 	/**
 	 * The initial module.
@@ -79,6 +110,11 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	private String initialDestination;
 
 	/**
+	 * The initial options.
+	 */
+	private String initialOptionsString;
+
+	/**
 	 * The module {@link Text}.
 	 */
 	private Text moduleText;
@@ -87,6 +123,16 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	 * The model {@link Text}.
 	 */
 	private Text modelText;
+
+	/**
+	 * The Unix end line radio {@link Button}.
+	 */
+	private Button unixEndLineButton;
+
+	/**
+	 * The Windows end line radio {@link Button}.
+	 */
+	private Button windowsEndLineButton;
 
 	/**
 	 * The destination {@link Text}.
@@ -103,6 +149,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(AcceleoDebugger.MODULE, module);
 		configuration.setAttribute(AcceleoDebugger.MODEL, model);
 		configuration.setAttribute(AcceleoDebugger.DESTINATION, destination);
+		configuration.setAttribute(AcceleoDebugger.OPTIONS, optionsString);
 	}
 
 	@Override
@@ -120,6 +167,20 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 				destinationText.setText(configuration.getAttribute(AcceleoDebugger.DESTINATION, ""));
 				initialDestination = destination;
 			}
+			if (configuration.hasAttribute(AcceleoDebugger.OPTIONS)) {
+				options = GSON.fromJson(configuration.getAttribute(AcceleoDebugger.OPTIONS, ""),
+						AcceleoDebugger.OPTION_MAP_TYPE);
+			} else {
+				options = new LinkedHashMap<>();
+				if (!options.containsKey(AcceleoUtil.NEW_LINE_OPTION)) {
+					options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+				}
+			}
+			optionsString = GSON.toJson(options);
+			initialOptionsString = optionsString;
+			final String newLine = options.get(AcceleoUtil.NEW_LINE_OPTION);
+			unixEndLineButton.setSelection(NEW_LINE.equals(newLine));
+			windowsEndLineButton.setSelection(WINDOWS_NEW_LINE.equals(newLine));
 		} catch (CoreException e) {
 			AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
 					"couldn't initialize from launch configuration", e));
@@ -132,6 +193,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		initialModule = module;
 		initialModel = model;
 		initialDestination = destination;
+		initialOptionsString = optionsString;
 		setDirty(isDirty());
 	}
 
@@ -143,7 +205,10 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 			if (launchConfig.hasAttribute(AcceleoDebugger.MODULE)) {
 				final IFile resource = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(launchConfig
 						.getAttribute(AcceleoDebugger.MODULE, "")));
-				if (!AcceleoPlugin.isAcceleoMain(resource)) {
+				if (!resource.exists()) {
+					setErrorMessage("The selected Acceleo module doesn't exists.");
+					res = false;
+				} else if (!AcceleoPlugin.isAcceleoMain(resource)) {
 					setErrorMessage("The selected Acceleo module doesn't contain a main template.");
 					res = false;
 				}
@@ -193,6 +258,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		moduleText = createModuleComposite(control);
 		modelText = createModelComposite(control);
 		destinationText = createDestinationComposite(control);
+		createNewLine(control);
 
 		setControl(control);
 	}
@@ -294,8 +360,36 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		return res;
 	}
 
+	/**
+	 * Creates the new line selection {@link Composite}.
+	 * 
+	 * @param parent
+	 *            the parent
+	 */
+	private void createNewLine(final Composite parent) {
+		final Group group = new Group(parent, parent.getStyle());
+		group.setLayout(new GridLayout(2, false));
+		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		group.setText("Enf of line:");
+		unixEndLineButton = new Button(group, SWT.RADIO);
+		unixEndLineButton.setText("Unix");
+		unixEndLineButton.addListener(SWT.Selection, e -> {
+			if (unixEndLineButton.getSelection()) {
+				putOption(AcceleoUtil.NEW_LINE_OPTION, NEW_LINE);
+			}
+		});
+		windowsEndLineButton = new Button(group, SWT.RADIO);
+		windowsEndLineButton.setText("Windows");
+		windowsEndLineButton.addListener(SWT.Selection, e -> {
+			if (windowsEndLineButton.getSelection()) {
+				putOption(AcceleoUtil.NEW_LINE_OPTION, WINDOWS_NEW_LINE);
+			}
+		});
+	}
+
 	protected boolean isDirty() {
-		return module != initialModule || model != initialModel || destination != initialDestination;
+		return module != initialModule || model != initialModel || destination != initialDestination
+				|| !optionsString.equals(initialOptionsString);
 	}
 
 	private void handleBrowseModuleButton() {
@@ -306,6 +400,22 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 			moduleText.setText(dialog.getFileName());
 			setDirty(isDirty());
 		}
+	}
+
+	/**
+	 * Puts the given option.
+	 * 
+	 * @param name
+	 *            the option name
+	 * @param value
+	 *            the option value
+	 */
+	protected void putOption(String name, String value) {
+		options.put(name, value);
+		optionsString = GSON.toJson(options);
+		setDirty(isDirty());
+		updateLaunchConfigurationDialog();
+
 	}
 
 	private void handleBrowseModelButton() {

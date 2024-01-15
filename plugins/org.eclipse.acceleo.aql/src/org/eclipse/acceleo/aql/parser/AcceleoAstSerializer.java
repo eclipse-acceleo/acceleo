@@ -187,7 +187,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseCommentBody(CommentBody commentBody) {
-		builder.append(commentBody.getValue());
+		builder.append(commentBody.getValue().replaceAll("(\\r\\n)|\\n", newLine));
 
 		return DUMMY;
 	}
@@ -571,7 +571,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseTextStatement(TextStatement textStatement) {
-		builder.append(textStatement.getValue());
+		builder.append(textStatement.getValue().replaceAll("(\\r\\n)|\\n", newLine));
 		if (textStatement.isNewLineNeeded()) {
 			insertNewLine();
 		}

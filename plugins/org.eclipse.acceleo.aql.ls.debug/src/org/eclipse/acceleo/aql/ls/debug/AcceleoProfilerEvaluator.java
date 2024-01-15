@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Huawei.
+ * Copyright (c) 2020, 2024 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -29,11 +29,14 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param newLine
+	 *            the new line {@link String}
 	 * @param profiler
 	 *            the {@link IProfiler}
 	 */
-	public AcceleoProfilerEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, IProfiler profiler) {
-		super(queryEnvironment.getLookupEngine());
+	public AcceleoProfilerEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, String newLine,
+			IProfiler profiler) {
+		super(queryEnvironment.getLookupEngine(), newLine);
 		this.profiler = profiler;
 	}
 

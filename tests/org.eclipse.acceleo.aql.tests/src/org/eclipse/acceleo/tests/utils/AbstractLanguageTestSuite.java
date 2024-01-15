@@ -222,11 +222,13 @@ public abstract class AbstractLanguageTestSuite {
 		queryEnvironmentWindowsEndLine = AcceleoUtil.newAcceleoQueryEnvironment(options,
 				resolverWindowsEndLine, resourceSetForModels, true);
 
-		evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine());
+		evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), "\n");
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
-		evaluatorWindowsEndLine = new AcceleoEvaluator(queryEnvironmentWindowsEndLine.getLookupEngine());
+		// We generate with Unix end line even if the module source has been converted to Windows end line
+		evaluatorWindowsEndLine = new AcceleoEvaluator(queryEnvironmentWindowsEndLine.getLookupEngine(),
+				"\n");
 		resolverWindowsEndLine.addLoader(new ModuleLoaderWindowsEndLine(new AcceleoParser(),
 				evaluatorWindowsEndLine));
 		resolverWindowsEndLine.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
