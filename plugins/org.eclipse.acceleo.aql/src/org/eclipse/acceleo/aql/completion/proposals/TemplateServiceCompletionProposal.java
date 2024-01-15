@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,8 @@ public class TemplateServiceCompletionProposal implements IServiceCompletionProp
 		final String res;
 
 		if (service.getOrigin().getDocumentation() != null) {
-			res = service.getOrigin().getDocumentation().getBody().getValue().replace("\n", "<br>");
+			res = service.getOrigin().getDocumentation().getBody().getValue().replaceAll("(\\r\\n)|\\n",
+					"<br>");
 		} else {
 			res = "";
 		}
