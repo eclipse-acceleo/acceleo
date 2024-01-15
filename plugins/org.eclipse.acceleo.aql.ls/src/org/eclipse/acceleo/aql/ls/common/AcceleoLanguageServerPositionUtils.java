@@ -25,6 +25,16 @@ import org.eclipse.lsp4j.Range;
  */
 public final class AcceleoLanguageServerPositionUtils {
 
+	/**
+	 * New line.
+	 */
+	public static final String NEW_LINE = "\n";
+
+	/**
+	 * New line.
+	 */
+	public static final String WINDOWS_NEW_LINE = "\r\n";
+
 	private AcceleoLanguageServerPositionUtils() {
 		// Utility class.
 	}
@@ -412,13 +422,14 @@ public final class AcceleoLanguageServerPositionUtils {
 
 		int currentLine = 0;
 		int currentIndex = 0;
-		char currentCharacter;
 		while (currentLine != positionLine && currentIndex < text.length()) {
-			currentCharacter = text.charAt(currentIndex);
-			if (currentCharacter == '\n') {
+			final int newLineLength = startsWithNewLine(text.substring(currentIndex));
+			if (newLineLength != 0) {
 				currentLine++;
+				currentIndex += newLineLength;
+			} else {
+				currentIndex++;
 			}
-			currentIndex++;
 		}
 		if (currentLine == positionLine) {
 			return currentIndex + positionOffset;
@@ -427,6 +438,27 @@ public final class AcceleoLanguageServerPositionUtils {
 			throw new IllegalArgumentException("Could not find line " + positionLine
 					+ " in the given text. This should never happen.");
 		}
+	}
+
+	/**
+	 * Tells if the given text starts with a new line and return if length.
+	 * 
+	 * @param text
+	 *            the text
+	 * @return the length of the new line if the given text starts with a new line, <code>0</code> otherwise
+	 */
+	private static int startsWithNewLine(String text) {
+		final int res;
+
+		if (text.startsWith(WINDOWS_NEW_LINE)) {
+			res = WINDOWS_NEW_LINE.length();
+		} else if (text.startsWith(NEW_LINE)) {
+			res = NEW_LINE.length();
+		} else {
+			res = 0;
+		}
+
+		return res;
 	}
 
 	/**
@@ -459,25 +491,21 @@ public final class AcceleoLanguageServerPositionUtils {
 	public static Position getCorrespondingPosition(int characterIndex, String text) {
 		Objects.requireNonNull(text);
 
-		int lineNumber = 0;
-		int indexOfLastNewLine = -1;
-		for (int currentIndex = 0; currentIndex < characterIndex; currentIndex++) {
-			Character currentCharacter = text.charAt(currentIndex);
-			if (currentCharacter == '\n') {
-				lineNumber++;
-				indexOfLastNewLine = currentIndex;
+		int currentLine = 0;
+		int currentColumn = 0;
+		int i = 0;
+		while (i < characterIndex) {
+			final int newLineLength = startsWithNewLine(text.substring(i));
+			if (newLineLength != 0) {
+				currentLine++;
+				currentColumn = 0;
+				i += newLineLength;
+			} else {
+				currentColumn++;
+				i++;
 			}
 		}
-		int offset;
-		if (lineNumber == 0) {
-			// The text is only one line, so the offset is the same as the character index.
-			offset = characterIndex;
-		} else {
-			// The text is on a line that starts at character index "indexOfLastNewLine", but the newline is a
-			// character so we subtract 1.
-			offset = characterIndex - indexOfLastNewLine - 1;
-		}
 
-		return new Position(lineNumber, offset);
+		return new Position(currentLine, currentColumn);
 	}
 }
