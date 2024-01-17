@@ -428,6 +428,11 @@ public class AcceleoParser {
 	private String text;
 
 	/**
+	 * The text length.
+	 */
+	private int textLength;
+
+	/**
 	 * The {@link List} of {@link Error}.
 	 */
 	private List<Error> errors;
@@ -461,11 +466,12 @@ public class AcceleoParser {
 	 */
 	public AcceleoAstResult parse(String source, String qualifiedName) {
 		this.currentPosition = 0;
-		this.lines = new int[source.length() + 1];
-		this.columns = new int[source.length() + 1];
-		this.positions = new Positions<>();
 		this.text = source;
-		computeLinesAndColumns(text);
+		this.textLength = text.length();
+		this.lines = new int[textLength + 1];
+		this.columns = new int[textLength + 1];
+		this.positions = new Positions<>();
+		computeLinesAndColumns(text, textLength);
 		this.errors = new ArrayList<Error>();
 
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
@@ -485,15 +491,15 @@ public class AcceleoParser {
 	 *            the source
 	 */
 	// TODO do it on the fly to prevent reading the input twice
-	private void computeLinesAndColumns(String str) {
+	private void computeLinesAndColumns(String str, int textLength) {
 		int currentLine = 0;
 		int currentColumn = 0;
 		int i = 0;
-		while (i < str.length()) {
+		while (i < textLength) {
 			lines[i] = currentLine;
 			columns[i] = currentColumn;
 
-			final int newLineLength = startsWithNewLine(str.substring(i));
+			final int newLineLength = newLineAt(str, textLength, i);
 			if (newLineLength != 0) {
 				currentLine++;
 				currentColumn = 0;
@@ -509,19 +515,28 @@ public class AcceleoParser {
 	}
 
 	/**
-	 * Tells if the given text starts with a new line and return if length.
+	 * Tells if the given text has a new line at the given index and return the new line length if found.
 	 * 
 	 * @param text
 	 *            the text
-	 * @return the length of the new line if the given text starts with a new line, <code>0</code> otherwise
+	 * @param textLength
+	 *            the text length
+	 * @param index
+	 *            the index
+	 * @return the length of the new line if the given text has a new line at the given index, <code>0</code>
+	 *         otherwise
 	 */
-	private int startsWithNewLine(String text) {
+	private int newLineAt(String text, int textLength, int index) {
 		final int res;
 
-		if (text.startsWith(WINDOWS_NEW_LINE)) {
-			res = WINDOWS_NEW_LINE.length();
-		} else if (text.startsWith(NEW_LINE)) {
-			res = NEW_LINE.length();
+		if (index < textLength) {
+			if (text.charAt(index) == '\r' && index + 1 < textLength && text.charAt(index + 1) == '\n') {
+				res = 2;
+			} else if (text.charAt(index) == '\n') {
+				res = 1;
+			} else {
+				res = 0;
+			}
 		} else {
 			res = 0;
 		}
@@ -534,18 +549,20 @@ public class AcceleoParser {
 	 * 
 	 * @param text
 	 *            the text
+	 * @param textLength
+	 *            the terxt length
 	 * @param start
 	 *            the start position
 	 * @return the next new line index in the given text starting at the given position
 	 */
-	private int nextNewLineIndex(String text, int start) {
-		final int res;
+	private int nextNewLineIndex(String text, int textLength, int start) {
+		int res = -1;
 
-		final int windowsNewLineIndex = text.indexOf(WINDOWS_NEW_LINE, start);
-		if (windowsNewLineIndex != -1) {
-			res = Math.min(windowsNewLineIndex, text.indexOf(NEW_LINE, start));
-		} else {
-			res = text.indexOf(NEW_LINE, start);
+		for (int i = start; i < textLength; i++) {
+			if (newLineAt(text, textLength, i) != 0) {
+				res = i;
+				break;
+			}
 		}
 
 		return res;
@@ -768,6 +785,7 @@ public class AcceleoParser {
 				currentPosition = endPosition + DOCUMENTATION_END.length();
 			}
 			final String docString = text.substring(startPosition, endPosition);
+			final int docStringLength = docString.length();
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
 			setPositions(commentBody, startPosition, endPosition);
 			commentBody.setValue(docString);
@@ -775,19 +793,19 @@ public class AcceleoParser {
 			final int authorPosition = docString.indexOf(AUTHOR_TAG);
 			if (authorPosition >= 0) {
 				final int authorStart = authorPosition + AUTHOR_TAG.length();
-				int authorEnd = nextNewLineIndex(docString, authorStart);
+				int authorEnd = nextNewLineIndex(docString, docStringLength, authorStart);
 				res.setAuthor(docString.substring(authorStart, authorEnd));
 			}
 			final int versionPosition = docString.indexOf(VERSION_TAG);
 			if (versionPosition >= 0) {
 				final int versionStart = versionPosition + VERSION_TAG.length();
-				int versionEnd = nextNewLineIndex(docString, versionStart);
+				int versionEnd = nextNewLineIndex(docString, docStringLength, versionStart);
 				res.setVersion(docString.substring(versionStart, versionEnd));
 			}
 			final int sincePosition = docString.indexOf(SINCE_TAG);
 			if (sincePosition >= 0) {
 				final int sinceStart = sincePosition + SINCE_TAG.length();
-				int sinceEnd = nextNewLineIndex(docString, sinceStart);
+				int sinceEnd = nextNewLineIndex(docString, docStringLength, sinceStart);
 				if (sinceEnd >= 0) {
 					res.setSince(docString.substring(sinceStart, sinceEnd));
 				} else {
@@ -826,6 +844,7 @@ public class AcceleoParser {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleElementDocumentation();
 			}
 			final String docString = text.substring(startPosition, endPosition);
+			final int docStringLength = docString.length();
 			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
 			setPositions(commentBody, currentPosition, endPosition);
 			commentBody.setValue(docString);
@@ -835,7 +854,7 @@ public class AcceleoParser {
 				final ParameterDocumentation paramDoc = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 						.createParameterDocumentation();
 				final int paramStart = paramPosition + PARAM_TAG.length();
-				int paramEnd = nextNewLineIndex(docString, paramStart);
+				int paramEnd = nextNewLineIndex(docString, docStringLength, paramStart);
 				if (paramEnd < 0) {
 					paramPosition = -1;
 					paramEnd = docString.length();
@@ -1451,7 +1470,7 @@ public class AcceleoParser {
 		final Block res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBlock();
 
 		final int startPosition = currentPosition;
-		boolean inlined = startsWithNewLine(text.substring(currentPosition)) == 0
+		boolean inlined = newLineAt(text, textLength, currentPosition) == 0
 				&& headerStartLine == lines[currentPosition];
 		skipNewLine();
 		int beforeStatementPosition = currentPosition;
@@ -1463,14 +1482,14 @@ public class AcceleoParser {
 			if (statement != null) {
 				if (statement instanceof Comment) {
 					if (onlyCommentsFromStart) {
-						inlined = startsWithNewLine(text.substring(currentPosition)) == 0
+						inlined = newLineAt(text, textLength, currentPosition) == 0
 								&& headerStartLine == lines[currentPosition];
 						// we skip the new line after a start of block header
 						skipNewLine();
 					}
 					if (lastLeafStatement != null) {
 						lastLeafStatement.setNewLineNeeded(lastLeafStatement.isNewLineNeeded() || (!inlined
-								&& startsWithNewLine(text.substring(currentPosition)) != 0));
+								&& newLineAt(text, textLength, currentPosition) != 0));
 					}
 				} else if (statement instanceof LeafStatement) {
 					lastLeafStatement = (LeafStatement)statement;
@@ -1500,7 +1519,7 @@ public class AcceleoParser {
 	 * Skips the new line at current position if any, no operation otherwise.
 	 */
 	private void skipNewLine() {
-		currentPosition += startsWithNewLine(text.substring(currentPosition));
+		currentPosition += newLineAt(text, textLength, currentPosition);
 	}
 
 	/**
@@ -2110,7 +2129,7 @@ public class AcceleoParser {
 			final Expression expression = parseExpression(expressionEndLimit);
 			skipSpaces();
 			final int missingEndHeader = readMissingString(EXPRESSION_STATEMENT_END);
-			final int newLineLength = startsWithNewLine(text.substring(currentPosition));
+			final int newLineLength = newLineAt(text, textLength, currentPosition);
 			if (missingEndHeader != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorExpressionStatement();
 				((ErrorExpressionStatement)res).setMissingEndHeader(missingEndHeader);
@@ -2248,12 +2267,12 @@ public class AcceleoParser {
 		if (currentPosition != endOfText) {
 			if (inlined) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
-				final int nextNewLine = nextNewLineIndex(text, currentPosition);
+				final int nextNewLine = nextNewLineIndex(text, textLength, currentPosition);
 				if (nextNewLine > -1 && nextNewLine < endOfText) {
 					setPositions(res, currentPosition, nextNewLine);
 					res.setValue(text.substring(currentPosition, nextNewLine));
 					res.setNewLineNeeded(true);
-					currentPosition = nextNewLine + startsWithNewLine(text.substring(nextNewLine));
+					currentPosition = nextNewLine + newLineAt(text, textLength, nextNewLine);
 				} else {
 					setPositions(res, currentPosition, endOfText);
 					res.setValue(text.substring(currentPosition, endOfText));
@@ -2283,7 +2302,7 @@ public class AcceleoParser {
 		final TextStatement res;
 
 		int localStartOfText = currentPosition;
-		final int newLineLength = startsWithNewLine(text.substring(localStartOfText));
+		final int newLineLength = newLineAt(text, textLength, localStartOfText);
 		if (columns[localStartOfText] == 0 && newLineLength != 0) {
 			final NewLineStatement newLineStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 					.createNewLineStatement();
@@ -2313,7 +2332,7 @@ public class AcceleoParser {
 		final TextStatement res;
 
 		final int localStartOfText = currentPosition;
-		final int newLineLength = startsWithNewLine(text.substring(localStartOfText));
+		final int newLineLength = newLineAt(text, textLength, localStartOfText);
 		if (newLineLength != 0) {
 			if (columns[localStartOfText] > significantTextColumn) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
@@ -2348,7 +2367,7 @@ public class AcceleoParser {
 		while (localStartOfText < endOfText && columns[localStartOfText] < significantTextColumn) {
 			localStartOfText++;
 		}
-		final int newLineLength = startsWithNewLine(text.substring(localStartOfText));
+		final int newLineLength = newLineAt(text, textLength, localStartOfText);
 		if (newLineLength != 0 && columns[localStartOfText] == significantTextColumn) {
 			final NewLineStatement newLineStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 					.createNewLineStatement();
@@ -2376,7 +2395,7 @@ public class AcceleoParser {
 				res.setValue(text.substring(localStartOfText, localEndOfText));
 				res.setNewLineNeeded(needNewLine);
 				if (needNewLine) {
-					localEndOfText += startsWithNewLine(text.substring(localEndOfText));
+					localEndOfText += newLineAt(text, textLength, localEndOfText);
 				}
 				setPositions(res, localStartOfText, localEndOfText);
 				currentPosition = localEndOfText;
