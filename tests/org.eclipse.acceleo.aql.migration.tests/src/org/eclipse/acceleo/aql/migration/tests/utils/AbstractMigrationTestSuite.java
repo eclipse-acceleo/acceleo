@@ -87,11 +87,10 @@ public abstract class AbstractMigrationTestSuite {
 	 */
 	public AbstractMigrationTestSuite(String testFolderPath) throws IOException {
 		testFolder = new File(testFolderPath);
-		module = MODULE_MIGRATOR.migrate(getFile(".emtl"), getFile("-origin.mtl"));
+		final String newLine = "\n";
+		module = MODULE_MIGRATOR.migrate(getFile(".emtl"), getFile("-origin.mtl"), newLine);
 		try {
-			moduleContent = new AcceleoAstSerializer("\n").serialize(module);
-			// TODO fix eol issues
-			moduleContent = moduleContent.replaceAll("\r\n", "\n");
+			moduleContent = new AcceleoAstSerializer(newLine).serialize(module);
 		} catch (Exception e) {
 			System.err.println("Serialization issue:");
 			e.printStackTrace();

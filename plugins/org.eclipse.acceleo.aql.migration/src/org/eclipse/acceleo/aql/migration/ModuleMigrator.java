@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,14 +87,15 @@ public final class ModuleMigrator {
 	 *            the emtl file
 	 * @param originMTLFile
 	 *            optional, allow to retrieve any comments above the module declaration
+	 * @param newLine
+	 *            the new line {@link String}
 	 * @return the AST module
 	 * @throws IOException
 	 */
-	public Module migrate(File emtlFile, File originMTLFile) throws IOException {
+	public Module migrate(File emtlFile, File originMTLFile, String newLine) throws IOException {
 		org.eclipse.acceleo.model.mtl.Module legacyModule = (org.eclipse.acceleo.model.mtl.Module)ModelUtils
 				.load(emtlFile, resourceSet);
-
-		ModuleConverter moduleConverter = new ModuleConverter(moduleResolver, targetFolderPath);
+		ModuleConverter moduleConverter = new ModuleConverter(moduleResolver, targetFolderPath, newLine);
 		Module convertedModule = (Module)moduleConverter.convert(legacyModule);
 		if (originMTLFile != null) {
 			parseModuleDocumentation(convertedModule, originMTLFile);

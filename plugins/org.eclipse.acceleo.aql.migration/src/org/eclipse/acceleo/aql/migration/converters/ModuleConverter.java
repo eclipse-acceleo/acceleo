@@ -132,11 +132,6 @@ public final class ModuleConverter extends AbstractConverter {
 	}
 
 	/**
-	 * The new line string.
-	 */
-	private static final String NEW_LINE = "\n";
-
-	/**
 	 * A converter dedicated to expressions.
 	 */
 	private ExpressionConverter expressionConverter;
@@ -157,6 +152,11 @@ public final class ModuleConverter extends AbstractConverter {
 	private final Path targetFolderPath;
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
 	 * The index of the current for implicit iterator.
 	 */
 	private int forImpliciteIteratorIndex;
@@ -173,11 +173,14 @@ public final class ModuleConverter extends AbstractConverter {
 	 *            the module resolver
 	 * @param targetFolderPath
 	 *            the target folder {@link Path}
+	 * @param newLine
+	 *            the new line {@link String}
 	 */
-	public ModuleConverter(IModuleResolver moduleResolver, Path targetFolderPath) {
+	public ModuleConverter(IModuleResolver moduleResolver, Path targetFolderPath, String newLine) {
 		this.moduleResolver = moduleResolver;
 		this.targetFolderPath = targetFolderPath;
 		expressionConverter = new ExpressionConverter(targetFolderPath);
+		this.newLine = newLine;
 	}
 
 	/**
@@ -380,7 +383,7 @@ public final class ModuleConverter extends AbstractConverter {
 		final org.eclipse.acceleo.Expression res;
 
 		final String text = textStatement.getValue();
-		int index = Math.max(text.lastIndexOf(NEW_LINE), 0);
+		int index = Math.max(text.lastIndexOf(newLine), 0);
 		while (index < text.length() && Character.isWhitespace(text.charAt(index))) {
 			index++;
 		}
@@ -826,24 +829,25 @@ public final class ModuleConverter extends AbstractConverter {
 		final List<TextStatement> outputs = new ArrayList<TextStatement>();
 
 		final String text = input.getStringSymbol().replace("[", "['['/]");
+		final int textLength = text.length();
 		int startOfText = 0;
 		int endOfText;
 		do {
-			endOfText = text.indexOf(NEW_LINE, startOfText);
+			endOfText = AcceleoParser.nextNewLineIndex(text, textLength, startOfText);
 			if (endOfText < 0) {
 				endOfText = text.length();
 				final TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
-				output.setValue(text.substring(startOfText, endOfText));
+				output.setValue(text.substring(startOfText, endOfText).replaceAll("(\\r\\n)|\\n", newLine));
 				output.setNewLineNeeded(false);
 				outputs.add(output);
 			} else {
 				final TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
-				output.setValue(text.substring(startOfText, endOfText));
+				output.setValue(text.substring(startOfText, endOfText).replaceAll("(\\r\\n)|\\n", newLine));
 				output.setNewLineNeeded(true);
 				outputs.add(output);
 			}
-			startOfText = endOfText + NEW_LINE.length();
-		} while (endOfText < text.length() && startOfText < text.length());
+			startOfText = endOfText + AcceleoParser.newLineAt(text, textLength, endOfText);
+		} while (endOfText < textLength && startOfText < textLength);
 		return outputs;
 	}
 
@@ -875,10 +879,10 @@ public final class ModuleConverter extends AbstractConverter {
 		Documentation output = AcceleoFactory.eINSTANCE.createModuleElementDocumentation();
 		CommentBody body = AcceleoFactory.eINSTANCE.createCommentBody();
 		StringBuilder formatValue = new StringBuilder();
-		formatValue.append(NEW_LINE);
-		for (String line : input.getBody().getValue().split(NEW_LINE)) {
+		formatValue.append(newLine);
+		for (String line : input.getBody().getValue().split("(\\r\\n)|\\n")) {
 			if (!line.trim().isEmpty()) {
-				formatValue.append(" * " + line + NEW_LINE);
+				formatValue.append(" * " + line + newLine);
 			}
 		}
 		formatValue.append("*");

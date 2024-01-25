@@ -98,16 +98,6 @@ public class AcceleoParser {
 	public static final String MODULE_FILE_EXTENSION = "mtl";
 
 	/**
-	 * New line.
-	 */
-	public static final String NEW_LINE = "\n";
-
-	/**
-	 * New line.
-	 */
-	public static final String WINDOWS_NEW_LINE = "\r\n";
-
-	/**
 	 * In line end delimiter.
 	 */
 	public static final String NO_SLASH_END = "]";
@@ -526,7 +516,7 @@ public class AcceleoParser {
 	 * @return the length of the new line if the given text has a new line at the given index, <code>0</code>
 	 *         otherwise
 	 */
-	private int newLineAt(String text, int textLength, int index) {
+	public static int newLineAt(String text, int textLength, int index) {
 		final int res;
 
 		if (index < textLength) {
@@ -555,7 +545,7 @@ public class AcceleoParser {
 	 *            the start position
 	 * @return the next new line index in the given text starting at the given position
 	 */
-	private int nextNewLineIndex(String text, int textLength, int start) {
+	public static int nextNewLineIndex(String text, int textLength, int start) {
 		int res = -1;
 
 		for (int i = start; i < textLength; i++) {

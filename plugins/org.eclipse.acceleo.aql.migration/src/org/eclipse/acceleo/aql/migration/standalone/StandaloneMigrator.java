@@ -143,12 +143,13 @@ public final class StandaloneMigrator {
 				EMTL_FILE_EXTENSION)).toFile();
 		if (emtlFile.exists()) {
 			try {
+				final String newLine = System.lineSeparator();
 				// migrate AST
 				org.eclipse.acceleo.Module module = new ModuleMigrator(new StandaloneModuleResolver(
-						binFolderPath), targetFolderPath).migrate(emtlFile, mtlFile.toFile());
+						binFolderPath), targetFolderPath).migrate(emtlFile, mtlFile.toFile(), newLine);
 
 				// serialize
-				String a4Content = new AcceleoAstSerializer(System.lineSeparator()).serialize(module);
+				String a4Content = new AcceleoAstSerializer(newLine).serialize(module);
 
 				// write result
 				Path targetMtlFile = targetFolderPath.resolve(relativePath).getParent().resolve(module
