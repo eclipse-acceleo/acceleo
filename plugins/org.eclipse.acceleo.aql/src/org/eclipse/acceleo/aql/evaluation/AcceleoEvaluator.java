@@ -513,11 +513,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public String caseNewLineStatement(NewLineStatement newLineStatement) {
 		final String res;
 
-		if (newLineStatement.isIndentationNeeded()) {
+		if (newLineStatement.isIndentationNeeded() && lastLineOfLastStatement.isEmpty()) {
 			res = peekIndentation() + newLine;
 		} else {
 			res = newLine;
 		}
+		lastLineOfLastStatement = "";
 
 		return res;
 	}
