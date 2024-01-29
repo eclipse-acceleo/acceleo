@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,14 +65,27 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 
 	@Override
 	public IQueryWorkspaceQualifiedNameResolver getResolver(P project) {
-		return projectToResolver.get(project);
+		return getOrCreateResolver(project);
+	}
+
+	protected IQueryWorkspaceQualifiedNameResolver getOrCreateResolver(P project) {
+		final IQueryWorkspaceQualifiedNameResolver res;
+
+		if (projectToResolver.containsKey(project)) {
+			res = projectToResolver.get(project);
+		} else {
+			res = createResolver(project);
+			final IQueryWorkspaceQualifiedNameResolver oldResolver = projectToResolver.put(project, res);
+			resolverToProject.remove(oldResolver);
+			resolverToProject.put(res, project);
+		}
+
+		return res;
 	}
 
 	@Override
 	public void addProject(P project) {
-		final IQueryWorkspaceQualifiedNameResolver resolver = createResolver(project);
-		projectToResolver.put(project, resolver);
-		resolverToProject.put(resolver, project);
+		final IQueryWorkspaceQualifiedNameResolver resolver = getOrCreateResolver(project);
 		for (IQueryWorkspaceQualifiedNameResolver dependencyResolver : resolver.getResolversDependOn()) {
 			P dependency = resolverToProject.get(dependencyResolver);
 			// at this point we don't know what is in the added project
@@ -177,7 +190,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 			for (String dependent : dependsOn) {
 				resolverToUpdate.resolve(dependent);
 			}
-			validate(project, resolverToUpdate, dependsOn);
+			validate(projectToUpdate, resolverToUpdate, dependsOn);
 		}
 	}
 
@@ -290,7 +303,8 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 				newResolver.register(qualifiedName, resolved);
 			}
 		}
-		projectToResolver.put(project, newResolver);
+		final IQueryWorkspaceQualifiedNameResolver oldResolver = projectToResolver.put(project, newResolver);
+		resolverToProject.remove(oldResolver);
 		resolverToProject.put(newResolver, project);
 	}
 

@@ -102,7 +102,12 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	/**
 	 * The mapping from services to its contextual qualified name (class, module, ... qualified name).
 	 */
-	private final Map<IService<?>, String> contextQualifiedNames = new HashMap<>();
+	private final Map<IService<?>, String> serviceToContextQualifiedName = new HashMap<>();
+
+	/**
+	 * The mapping from services to its contextual qualified name (class, module, ... qualified name).
+	 */
+	private final Map<String, Set<IService<?>>> contextQualifiedNameToServices = new HashMap<>();
 
 	/**
 	 * Mapping from qualifiedName to qualified names that import it.
@@ -394,9 +399,10 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		if (loader != null) {
 			res.addAll(loader.getServices(lookupEngine, object, contextQualifiedName));
 			for (IService<?> serivce : res) {
-				contextQualifiedNames.put(serivce, contextQualifiedName);
+				serviceToContextQualifiedName.put(serivce, contextQualifiedName);
 			}
 		}
+		contextQualifiedNameToServices.put(contextQualifiedName, res);
 
 		return res;
 	}
@@ -408,7 +414,17 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 */
 	@Override
 	public String getContextQualifiedName(IService<?> service) {
-		return contextQualifiedNames.get(service);
+		return serviceToContextQualifiedName.get(service);
+	}
+
+	@Override
+	public void cleanContextQualifiedName(String qualifiedName) {
+		final Set<IService<?>> services = contextQualifiedNameToServices.remove(qualifiedName);
+		if (services != null) {
+			for (IService<?> service : services) {
+				serviceToContextQualifiedName.remove(service);
+			}
+		}
 	}
 
 	@Override

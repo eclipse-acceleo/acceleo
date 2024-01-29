@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -153,7 +153,7 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 	public IQueryWorkspaceQualifiedNameResolver createResolver(AcceleoProject acceleoProject) {
 		Objects.nonNull(acceleoProject);
 
-		final IProject eclipseProject = synchronizer.getProject(acceleoProject);
+		final IProject eclipseProject = synchronizer.getOrCreateProject(acceleoProject);
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), eclipseProject,
 				AcceleoParser.QUALIFIER_SEPARATOR, true);

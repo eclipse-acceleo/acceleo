@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryProject;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 
 /**
@@ -25,7 +26,7 @@ import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQual
  * 
  * @author Florent Latombe
  */
-public class AcceleoProject {
+public class AcceleoProject implements IQueryProject {
 
 	/**
 	 * The project name.
@@ -55,11 +56,7 @@ public class AcceleoProject {
 		this.workspace = workspace;
 	}
 
-	/**
-	 * Gets the project name.
-	 * 
-	 * @return the project name
-	 */
+	@Override
 	public String getName() {
 		return name;
 	}

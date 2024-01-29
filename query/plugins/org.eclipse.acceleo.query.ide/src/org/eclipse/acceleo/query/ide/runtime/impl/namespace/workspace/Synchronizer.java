@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.namespace.workspace.IWorkspaceResolverProvider;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryProject;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
@@ -42,7 +43,7 @@ import org.eclipse.core.runtime.jobs.Job;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChangeListener, IResourceDeltaVisitor, IWorkspaceResolverProvider {
+public abstract class Synchronizer<P extends IQueryProject> implements IResourceVisitor, IResourceChangeListener, IResourceDeltaVisitor, IWorkspaceResolverProvider {
 
 	/**
 	 * Counts {@link IResource} i the workspace.
@@ -254,12 +255,7 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 			}
 		} else if (delta.getKind() == IResourceDelta.ADDED) {
 			synchronized(this) {
-				if (!eclipseToProject.containsKey(eclipseProject)) {
-					final P project = createProject(queryWorkspace, eclipseProject);
-					eclipseToProject.put(eclipseProject, project);
-					projectToEclipse.put(project, eclipseProject);
-					this.queryWorkspace.addProject(project);
-				}
+				getOrCreateProject(queryWorkspace, eclipseProject);
 			}
 		} else if (delta.getKind() == IResourceDelta.REMOVED) {
 			final P removedProject = eclipseToProject.remove(eclipseProject);
@@ -304,12 +300,7 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 		if (resource.getType() == IResource.PROJECT) {
 			final IProject eclipseProject = (IProject)resource;
 			synchronized(this) {
-				if (!eclipseToProject.containsKey(eclipseProject)) {
-					final P project = createProject(queryWorkspace, eclipseProject);
-					eclipseToProject.put(eclipseProject, project);
-					projectToEclipse.put(project, eclipseProject);
-					this.queryWorkspace.addProject(project);
-				}
+				getOrCreateProject(queryWorkspace, eclipseProject);
 			}
 		} else if (resource.getType() == IResource.FILE) {
 			final IFile file = (IFile)resource;
@@ -320,7 +311,8 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 
 	@Override
 	public IQueryWorkspaceQualifiedNameResolver getResolver(IProject project) {
-		return queryWorkspace.getResolver(eclipseToProject.get(project));
+		return queryWorkspace.getResolver(eclipseToProject.getOrDefault(project, getOrCreateProject(
+				queryWorkspace, project)));
 	}
 
 	/**
@@ -361,6 +353,37 @@ public abstract class Synchronizer<P> implements IResourceVisitor, IResourceChan
 	 */
 	public IWorkspace getEclipseWorkspace() {
 		return eclipseWorkspace;
+	}
+
+	public P getOrCreateProject(IQueryWorkspace<P> queryWorkspace, IProject eclipseProject) {
+		final P res;
+
+		if (eclipseToProject.containsKey(eclipseProject)) {
+			res = eclipseToProject.get(eclipseProject);
+		} else {
+			res = createProject(queryWorkspace, eclipseProject);
+			final P oldProject = eclipseToProject.put(eclipseProject, res);
+			projectToEclipse.remove(oldProject);
+			projectToEclipse.put(res, eclipseProject);
+			queryWorkspace.addProject(res);
+		}
+
+		return res;
+	}
+
+	public IProject getOrCreateProject(P project) {
+		final IProject res;
+
+		if (projectToEclipse.containsKey(project)) {
+			res = projectToEclipse.get(project);
+		} else {
+			res = eclipseWorkspace.getRoot().getProject(project.getName());
+			final P oldProject = eclipseToProject.put(res, project);
+			projectToEclipse.remove(oldProject);
+			projectToEclipse.put(project, res);
+		}
+
+		return res;
 	}
 
 	/**

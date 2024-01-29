@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.acceleo.query.ide.runtime.impl.namespace.EclipseQualifiedName
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -107,7 +108,7 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 
 		if (project.exists() && project.isOpen()) {
 			final IJavaProject javaProject = JavaCore.create(project);
-			if (javaProject != null) {
+			if (javaProject != null && javaProject.exists()) {
 				try {
 					final String[] classPathEntries = getClassPathes(javaProject, forWorspace,
 							dependencyProjectEntries);
@@ -140,7 +141,7 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 
 	// copied from JavaRuntime.computeDefaultRuntimeClassPath()
 	private static String[] getClassPathes(IJavaProject javaProject, boolean forWorkspace,
-			List<String> acceleoRes) throws CoreException {
+			List<String> dependencyProjectEntries) throws CoreException {
 		IRuntimeClasspathEntry[] unresolved = JavaRuntime.computeUnresolvedRuntimeClasspath(javaProject);
 
 		// 1. remove bootpath entries
@@ -152,14 +153,11 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 				IRuntimeClasspathEntry[] entries = JavaRuntime.resolveRuntimeClasspathEntry(entry,
 						javaProject);
 				for (int j = 0; j < entries.length; j++) {
-					if (isDependencyProjectEntry(javaProject, forWorkspace, entries[j])) {
-						String location = entries[j].getLocation();
-						if (location != null) {
-							acceleoRes.add(location);
-						}
-					}
 					String location = entries[j].getLocation();
 					if (location != null) {
+						if (isDependencyProjectEntry(javaProject, forWorkspace, entries[j])) {
+							dependencyProjectEntries.add(location);
+						}
 						resolved.add(location);
 					}
 				}
@@ -184,8 +182,26 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 	 */
 	private static boolean isDependencyProjectEntry(IJavaProject javaProject, boolean forWorkspace,
 			IRuntimeClasspathEntry entry) {
-		return forWorkspace && entry.getType() == IRuntimeClasspathEntry.PROJECT && javaProject
-				.getProject() != entry.getResource();
+		final boolean res;
+
+		if (forWorkspace) {
+			if (entry.getType() == IRuntimeClasspathEntry.PROJECT && javaProject.getProject() != entry
+					.getResource()) {
+				res = true;
+			} else {
+				final IResource entryResource = entry.getResource();
+				if (entryResource != null && entryResource.exists() && entryResource.getProject() != null
+						&& !entryResource.getProject().equals(javaProject.getProject())) {
+					res = true;
+				} else {
+					res = false;
+				}
+			}
+		} else {
+			res = false;
+		}
+
+		return res;
 	}
 
 	@Override
@@ -269,7 +285,7 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 						break found;
 					}
 				}
-			} else if (!forWorkspace && entry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+			} else if (entry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
 				final IProject childProject = ResourcesPlugin.getWorkspace().getRoot().getProject(entry
 						.getPath().lastSegment());
 				if (childProject != null) {

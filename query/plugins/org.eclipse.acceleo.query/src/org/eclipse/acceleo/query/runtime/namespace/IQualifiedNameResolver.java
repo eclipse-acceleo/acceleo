@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -148,6 +148,14 @@ public interface IQualifiedNameResolver {
 	 * @return the context qualified name for the given {@link IService} if nay, <code>null</code> otherwise
 	 */
 	String getContextQualifiedName(IService<?> service);
+
+	/**
+	 * Clears the context qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 */
+	void cleanContextQualifiedName(String qualifiedName);
 
 	/**
 	 * Gets the super qualified name of the given qualified name.

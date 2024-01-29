@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,11 +80,6 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	}
 
 	@Override
-	public synchronized void addProject(AcceleoProject project) {
-		super.addProject(project);
-	}
-
-	@Override
 	public synchronized String addResource(AcceleoProject project, URI resource) {
 		final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
 		final String qualifiedName = resolver.getQualifiedName(resource);
@@ -120,6 +115,7 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 		final AcceleoTextDocument removedDocument = uriToDocuments.remove(resource);
 		if (removedDocument != null) {
 			project.removeDocument(removedDocument);
+			uriToDocuments.remove(getResolver(project).getURI(removedDocument.getModuleQualifiedName()));
 			uriToDocuments.remove(getResolver(project).getSourceURI(removedDocument
 					.getModuleQualifiedName()));
 		}
@@ -132,6 +128,8 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 		final AcceleoTextDocument removedDocument = uriToDocuments.remove(sourceResource);
 		if (removedDocument != null) {
 			sourceProject.removeDocument(removedDocument);
+			uriToDocuments.remove(getResolver(sourceProject).getURI(removedDocument
+					.getModuleQualifiedName()));
 			uriToDocuments.remove(getResolver(sourceProject).getSourceURI(removedDocument
 					.getModuleQualifiedName()));
 		}
