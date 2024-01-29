@@ -457,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_parsing">Parsing</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">URI destination = URI.createURI(...);
+<pre class="highlight"><code class="language-java" data-lang="java">URI destination = URI.createURI(...);
 
 final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
 final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
@@ -481,7 +481,7 @@ if (resolved instanceof Module) {
 <h3 id="_validation">Validation</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment, queryEnvironment.getLookupEngine());
+<pre class="highlight"><code class="language-java" data-lang="java">final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment, queryEnvironment.getLookupEngine());
 final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(mainModule.getAst(), moduleQualifiedNameForCompletion);</code></pre>
 </div>
 </div>
@@ -490,7 +490,7 @@ final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.valida
 <h3 id="_completion">Completion</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
+<pre class="highlight"><code class="language-java" data-lang="java">final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
 String source = ...;
 int position = ...;
 List&lt;AcceleoCompletionProposal&gt; completionProposals = acceleoCompletor.getProposals(acceleoEnvironment, acceleoEnvironment.getQueryEnvironment().getLookupEngine(), qualifiedName, source, position);</code></pre>
@@ -501,7 +501,7 @@ List&lt;AcceleoCompletionProposal&gt; completionProposals = acceleoCompletor.get
 <h3 id="_generation">Generation</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final ResourceSetImpl rs = new ResourceSetImpl();
+<pre class="highlight"><code class="language-java" data-lang="java">final ResourceSetImpl rs = new ResourceSetImpl();
 final Resource model = rs.getResource(..., true);
 AcceleoUtil.generate(evaluator, environment, module, model);</code></pre>
 </div>
@@ -516,11 +516,8 @@ AcceleoUtil.generate(evaluator, environment, module, model);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-09-03 09:45:18 +0200
+Last updated 2023-05-09 16:19:19 +0200
 </div>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
 </body>
 </html>

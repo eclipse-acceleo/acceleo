@@ -11,9 +11,12 @@ The module editor provides the following features:
 * Syntax highlighting;
 * Content assistant (`Ctrl + Space`);
 * Error detection;
+* Quick fixes;
 * Outlines;
 * Quick outline (`Ctrl + O`);
-* Open declaration (either with `Ctrl + Left Click` or `F3`),
+* Open declaration (either with `Ctrl + Left Click` or `F3`);
+* Show references (`Ctrl + Shift + G`);
+* Rename (`Ctrl + Alt + R`);
 * White spaces.
 
 ==== Syntax Highlighting
@@ -51,6 +54,15 @@ Just hover the marker in the editor margin with the mouse to get a tooltip to ap
 
 image::images/ErrorTooltip.png[Error Tooltip]
 
+==== Quick fixes
+
+For some errors the Acceleo 4 editor can provide quick fixes to help you fix them. To access *Quick Fixes* you need to over the error with the mouse. If quick fixes are available you should see the following popup:
+
+image::images/QuickFixes.png[Quick Fixes]
+
+
+You can then select the quick fix you want to apply in the list.
+
 ==== Outlines
 One of the great benefits of modern IDE tooling is the capacity to easily navigate in code from elements to their declarations and, vice-versa, from declarations to usages.
 
@@ -73,6 +85,20 @@ The traditional shortcut `F3` is supported by Acceleo, along with `Ctrl + click`
 This is supported for all kinds of elements: templates, queries, metamodels, metamodel elements, EOperations, etc.
 
 image::images/OpenDeclaration.png[Open Declaration]
+
+==== Show references
+
+You can show references to a service or a variable by either selecting its declaration or one of its reference an using the `Ctrl + Shift + G` shortcut. It will show all references in the search view.
+
+image::images/ShowReferences.png[Show References]
+
+You can then double click enties in the search view to navigate to a reference.
+
+==== Rename
+
+You can use the rename shortcut `Ctrl + Alt + R` to rename all references to a service or a variable in the workspace.
+
+image::images/RefactorRename.png[Refactor Rename]
 
 === The Acceleo Debugger
 

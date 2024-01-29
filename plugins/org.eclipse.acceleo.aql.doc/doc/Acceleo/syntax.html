@@ -493,7 +493,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_comment">Comment</a> = '[comment ' ... '/]'</code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_comment">Comment</a> = '[comment ' ... '/]'</code></pre>
 </div>
 </div>
 </div>
@@ -504,7 +504,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module">Module</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module">Module</a> =
 
 (<a href="#_module_documentation">Module Documentation</a>)* '[module ' <a href="#_identifier">Identifier</a> '(' <a href="#_metamodel">Metamodel</a> ',' (<a href="#_metamodel">Metamodel</a>)* ')' ('extends ' <a href="#_module_reference">Module Reference</a>)? '/]'
 
@@ -521,7 +521,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_identifier">Identifier</a> = [a-zA-Z_][a-zA-Z_0-9]*</code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_identifier">Identifier</a> = [a-zA-Z_][a-zA-Z_0-9]*</code></pre>
 </div>
 </div>
 </div>
@@ -535,7 +535,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_documentation">Module Documentation</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_documentation">Module Documentation</a> =
 
 '[**'
 
@@ -560,7 +560,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_metamodel">Metamodel</a> = '\'' ... '\''</code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_metamodel">Metamodel</a> = '\'' ... '\''</code></pre>
 </div>
 </div>
 </div>
@@ -571,7 +571,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_import">Import</a> = '[import ' <a href="#_module_reference">Module Reference</a> '/]'</code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_import">Import</a> = '[import ' <a href="#_module_reference">Module Reference</a> '/]'</code></pre>
 </div>
 </div>
 </div>
@@ -582,7 +582,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_reference">Module Reference</a> = <a href="#_module_qualified_name">Module Qualified Name</a></code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_reference">Module Reference</a> = <a href="#_module_qualified_name">Module Qualified Name</a></code></pre>
 </div>
 </div>
 </div>
@@ -593,7 +593,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_qualified_name">Module Qualified Name</a> = <a href="#_identifier">Identifier</a> ('::' <a href="#_identifier">Identifier</a>)*</code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_qualified_name">Module Qualified Name</a> = <a href="#_identifier">Identifier</a> ('::' <a href="#_identifier">Identifier</a>)*</code></pre>
 </div>
 </div>
 </div>
@@ -604,7 +604,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_element">Module Element</a> = <a href="#_template">Template</a> | <a href="#_query">Query</a></code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_element">Module Element</a> = <a href="#_template">Template</a> | <a href="#_query">Query</a></code></pre>
 </div>
 </div>
 </div>
@@ -618,7 +618,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_template">Template</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_template">Template</a> =
 
 '[template ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ('?' <a href="#_aql_expression">AQL Expression</a>)? ('post (' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
 
@@ -635,7 +635,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_visibility">Visibility</a> = 'private' | 'protected' | 'public'</code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_visibility">Visibility</a> = 'private' | 'protected' | 'public'</code></pre>
 </div>
 </div>
 </div>
@@ -646,7 +646,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_parameter">Parameter</a> = <a href="#_identifier">Identifier</a> ':' <a href="#_aql_type_literal">AQL Type Literal</a></code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_parameter">Parameter</a> = <a href="#_identifier">Identifier</a> ':' <a href="#_aql_type_literal">AQL Type Literal</a></code></pre>
 </div>
 </div>
 </div>
@@ -657,7 +657,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_statement">Statement</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_statement">Statement</a> =
 
 <a href="#_file_statement">File Statement</a> | <a href="#_for_statement">For Statement</a> | <a href="#_if_statement">If Statement</a> | <a href="#_let_statement">Let Statement</a> | <a href="#_protected_area">Protected Area</a> | <a href="#_expression_statement">Expression Statement</a> | <a href="#_text_statement">Text Statement</a></code></pre>
 </div>
@@ -672,7 +672,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_file_statement">File Statement</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_file_statement">File Statement</a> =
 
 '[file ' '(' <a href="#_aql_expression">AQL Expression</a> ',' <a href="#Open Mode Kind">[Open Mode Kind]</a> (',' <a href="#_aql_expression">AQL Expression</a>)? ')' ']'
 
@@ -689,7 +689,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_for_statement">For Statement</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_for_statement">For Statement</a> =
 
 '[for ' '(' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '|' <a href="#_aql_expression">AQL Expression</a> ')' ('separator(' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
 
@@ -706,7 +706,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_if_statement">If Statement</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_if_statement">If Statement</a> =
 
 '[if ' '(' <a href="#_aql_expression">AQL Expression</a> ')' ']'
 
@@ -731,7 +731,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_let_statement">Let Statement</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_let_statement">Let Statement</a> =
 
 '[let ' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '=' <a href="#_aql_expression">AQL Expression</a> (',' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '=' <a href="#_aql_expression">AQL Expression</a>)* ']'
 
@@ -748,7 +748,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_protected_area">Protected Area</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_protected_area">Protected Area</a> =
 
 '[protected ' '(' <a href="#_aql_expression">AQL Expression</a> ')'  ('startTagPrefix(' <a href="#_aql_expression">AQL Expression</a> ')')?  ('endTagPrefix(' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
 
@@ -769,7 +769,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_expression_statement">Expression Statement</a> = '[' <a href="#_aql_expression">AQL Expression</a> '/]'</code></pre>
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_expression_statement">Expression Statement</a> = '[' <a href="#_aql_expression">AQL Expression</a> '/]'</code></pre>
 </div>
 </div>
 </div>
@@ -802,7 +802,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_query">Query</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_query">Query</a> =
 
 '[query ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ':' <a href="#_aql_type_literal">AQL Type Literal</a> '=' <a href="#_aql_expression">AQL Expression</a> '/]'</code></pre>
 </div>
@@ -815,7 +815,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_element_documentation">Module Element documentation</a> =
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_module_element_documentation">Module Element documentation</a> =
 
 '[**'
 
@@ -834,12 +834,9 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-02 11:39:28 +0100
+Last updated 2023-05-09 16:19:19 +0200
 </div>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
 <-- TODO there should be a better way to add the BNF language support... -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/languages/ebnf.min.js"></script>
