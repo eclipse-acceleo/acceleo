@@ -116,6 +116,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private String lastLineOfLastStatement;
 
 	/**
+	 * Tells if we should keep the current indentation regardless of the {@link #lastLineOfLastStatement}.
+	 */
+	private boolean keepIndentation;
+
+	/**
 	 * The {@link IQualifiedNameLookupEngine}.
 	 */
 	private final IQualifiedNameLookupEngine lookupEngine;
@@ -199,6 +204,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		final String savedLastLineOfLastStatement = lastLineOfLastStatement;
 		lastLineOfLastStatement = "";
+		final boolean keepIndentationSave = keepIndentation;
+		keepIndentation = false;
 		if (generationResult == null) {
 			generationResult = new GenerationResult();
 		}
@@ -211,6 +218,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			popVariables();
 			inlinedBlock.removeLast();
 			lastLineOfLastStatement = savedLastLineOfLastStatement;
+			keepIndentation = keepIndentationSave;
 		}
 
 		return res;
@@ -276,7 +284,17 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			indentationStack.addLast("");
 		} else {
 			inlinedBlock.addLast(false);
-			indentationStack.addLast(indentation);
+			if (keepIndentation && indentation.isEmpty()) {
+				final String currentIndentation = peekIndentation();
+				if (currentIndentation != null) {
+					indentationStack.addLast(currentIndentation);
+				} else {
+					indentationStack.addLast(indentation);
+				}
+				keepIndentation = false;
+			} else {
+				indentationStack.addLast(indentation);
+			}
 		}
 	}
 
@@ -519,6 +537,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			res = newLine;
 		}
 		lastLineOfLastStatement = "";
+		keepIndentation = true;
 
 		return res;
 	}
@@ -942,25 +961,27 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		} else {
 			pushIndentation(protectedArea.getBody(), lastLineOfLastStatement);
 			try {
-				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine
-						+ peekIndentation());
+				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine);
+				lastLineOfLastStatement = "";
+				keepIndentation = true;
 
 				final String text = (String)doSwitch(protectedArea.getBody());
 				res.append(text);
 
-				if (!text.isEmpty() && lastLineOfLastStatement.isEmpty()) {
+				if (lastLineOfLastStatement.isEmpty()) {
 					res.append(peekIndentation());
 				}
-				if (protectedArea.getEndTagPrefix() != null) {
-					Object endTagPrefixObject = doSwitch(protectedArea.getEndTagPrefix());
-					res.append(toString(endTagPrefixObject));
-				}
-				res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 			} finally {
 				popIndentation();
 			}
+			if (protectedArea.getEndTagPrefix() != null) {
+				Object endTagPrefixObject = doSwitch(protectedArea.getEndTagPrefix());
+				res.append(toString(endTagPrefixObject));
+			}
+			res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 		}
 		lastLineOfLastStatement = "";
+		keepIndentation = true;
 
 		return res.toString();
 	}
