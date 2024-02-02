@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
@@ -34,7 +39,10 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
+import org.eclipse.acceleo.query.runtime.impl.NullValue;
 import org.eclipse.acceleo.query.tests.Setup;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
@@ -141,8 +149,11 @@ public class EvaluationServicesTest {
 		attribute.setName("attr0");
 
 		Diagnostic status = new BasicDiagnostic();
-		assertEquals("attr0", services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {attribute, "name" }, status));
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		assertEquals("attr0", services.call(call, new Object[] {attribute, "name" }, status));
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertTrue(status.getChildren().isEmpty());
 	}
@@ -156,8 +167,11 @@ public class EvaluationServicesTest {
 		attribute.setName("attr0");
 
 		Diagnostic status = new BasicDiagnostic();
-		assertTrue(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {
-				attribute, "noname" }, status) instanceof Nothing);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		assertTrue(services.call(call, new Object[] {attribute, "noname" }, status) instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
@@ -172,8 +186,12 @@ public class EvaluationServicesTest {
 	@Test
 	public void testFeatureAccessOnObject() {
 		Diagnostic status = new BasicDiagnostic();
-		assertTrue(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {
-				Integer.valueOf(3), "noname" }, status) instanceof Nothing);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		assertTrue(services.call(call, new Object[] {Integer.valueOf(3), "noname" },
+				status) instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
@@ -193,8 +211,20 @@ public class EvaluationServicesTest {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 
 		Diagnostic status = new BasicDiagnostic();
-		assertNull(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {
-				attribute, "eType" }, status));
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		final NullLiteral nullLiteral = AstPackage.eINSTANCE.getAstFactory().createNullLiteral();
+		call.getArguments().add(nullLiteral);
+		final StringLiteral stringLiteral = AstPackage.eINSTANCE.getAstFactory().createStringLiteral();
+		stringLiteral.setValue("eType");
+		call.getArguments().add(stringLiteral);
+		final Object result = services.call(call, new Object[] {attribute, "eType" }, status);
+		assertEquals(NullValue.class, result.getClass());
+		assertEquals(EClassifierType.class, ((NullValue)result).getType().getClass());
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), ((NullValue)result).getType().getType());
+
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertTrue(status.getChildren().isEmpty());
 	}
@@ -217,8 +247,11 @@ public class EvaluationServicesTest {
 		list.add(attribute1);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list, "name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {list, "name" }, status);
 		assertTrue(result instanceof List);
 		assertEquals("attr0", ((List<Object>)result).get(0));
 		assertEquals("attr1", ((List<Object>)result).get(1));
@@ -240,8 +273,11 @@ public class EvaluationServicesTest {
 
 		Set<Object> set = createSet(attribute0, attribute1);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {set, "name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {set, "name" }, status);
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
@@ -259,8 +295,11 @@ public class EvaluationServicesTest {
 		List<EAttribute> list = new ArrayList<EAttribute>();
 
 		Diagnostic status = new BasicDiagnostic();
-		final Object listResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list, "noname" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		final Object listResult = services.call(call, new Object[] {list, "noname" }, status);
 		assertEquals(true, listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
 		assertEquals(Diagnostic.OK, status.getSeverity());
@@ -275,8 +314,11 @@ public class EvaluationServicesTest {
 		Set<EAttribute> set = new LinkedHashSet<EAttribute>();
 
 		Diagnostic status = new BasicDiagnostic();
-		final Object setResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {set, "noname" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		final Object setResult = services.call(call, new Object[] {set, "noname" }, status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
@@ -298,8 +340,11 @@ public class EvaluationServicesTest {
 		list.add(attribute0);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object listResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list, "name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object listResult = services.call(call, new Object[] {list, "name" }, status);
 
 		assertEquals(true, listResult instanceof List);
 		assertEquals(2, ((List<?>)listResult).size());
@@ -334,8 +379,11 @@ public class EvaluationServicesTest {
 		list.add(attribute1);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object listResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list, "name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object listResult = services.call(call, new Object[] {list, "name" }, status);
 
 		assertEquals(true, listResult instanceof List);
 		assertEquals(3, ((List<?>)listResult).size());
@@ -362,8 +410,11 @@ public class EvaluationServicesTest {
 		Set<Object> set = createSet(1);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object setResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {set, "noname" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object setResult = services.call(call, new Object[] {set, "noname" }, status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
@@ -384,8 +435,11 @@ public class EvaluationServicesTest {
 
 		List<EStructuralFeature> list = new ArrayList<EStructuralFeature>(Arrays.asList(attr, ref));
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list, "containment" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {list, "containment" }, status);
 		assertTrue(result instanceof List);
 		assertEquals(1, ((List<Object>)result).size());
 		assertTrue((Boolean)((List<Object>)result).get(0));
@@ -407,8 +461,11 @@ public class EvaluationServicesTest {
 
 		Set<Object> set = createSet(attr, ref);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {set, "containment" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {set, "containment" }, status);
 		assertTrue(result instanceof Set);
 		assertEquals(1, ((Set<Object>)result).size());
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
@@ -432,8 +489,11 @@ public class EvaluationServicesTest {
 		List<Object> list1 = new ArrayList<Object>(Arrays.asList((Object)attribute1));
 		List<Object> list0 = new ArrayList<Object>(Arrays.asList(attribute0, list1));
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list0, "name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {list0, "name" }, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
@@ -458,8 +518,11 @@ public class EvaluationServicesTest {
 		Set<Object> list1 = createSet(attribute1);
 		List<Object> list0 = new ArrayList<Object>(Arrays.asList(attribute0, list1));
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list0, "name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {list0, "name" }, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
@@ -481,8 +544,11 @@ public class EvaluationServicesTest {
 		List<Object> list1 = new ArrayList<Object>(Arrays.asList((Object)1));
 		List<Object> list0 = new ArrayList<Object>(Arrays.asList(attribute0, list1));
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {list0, "name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {list0, "name" }, status);
 		assertTrue(result instanceof List);
 		List<?> listResult = (List<?>)result;
 		assertEquals(1, listResult.size());
@@ -495,7 +561,16 @@ public class EvaluationServicesTest {
 	@Test
 	public void serviceReturnsNullTest() {
 		Diagnostic status = new BasicDiagnostic();
-		assertNull(services.call("serviceReturnsNull", false, new Object[] {1 }, status));
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("serviceReturnsNull");
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {1 }, status);
+		assertEquals(NullValue.class, result.getClass());
+		assertEquals(ClassType.class, ((NullValue)result).getType().getClass());
+		assertEquals(Object.class, ((NullValue)result).getType().getType());
+
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
@@ -504,7 +579,10 @@ public class EvaluationServicesTest {
 	@Test
 	public void serviceNotFoundReturnsNothing() {
 		Diagnostic status = new BasicDiagnostic();
-		assertTrue(services.call("noService", false, new Object[] {1 }, status) instanceof Nothing);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("noService");
+		call.setSuperCall(false);
+		assertTrue(services.call(call, new Object[] {1 }, status) instanceof Nothing);
 	}
 
 	/**
@@ -513,8 +591,10 @@ public class EvaluationServicesTest {
 	@Test
 	public void serviceThrowsException() {
 		Diagnostic status = new BasicDiagnostic();
-		assertTrue(services.call("serviceThrowsException", false, new Object[] {1 },
-				status) instanceof Nothing);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("serviceThrowsException");
+		call.setSuperCall(false);
+		assertTrue(services.call(call, new Object[] {1 }, status) instanceof Nothing);
 
 	}
 
@@ -525,7 +605,10 @@ public class EvaluationServicesTest {
 	public void serviceCallTest() {
 		Object[] args = {Integer.valueOf(1), Integer.valueOf(2) };
 		Diagnostic status = new BasicDiagnostic();
-		assertEquals(3, services.call("add", false, args, status));
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("add");
+		call.setSuperCall(false);
+		assertEquals(3, services.call(call, args, status));
 	}
 
 	/**
@@ -536,7 +619,11 @@ public class EvaluationServicesTest {
 	public void callOrApplyOnScalarValueTest() {
 		Object[] args = {Integer.valueOf(1), Integer.valueOf(2) };
 		Diagnostic status = new BasicDiagnostic();
-		assertEquals(3, services.callOrApply("add", false, args, status));
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("add");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		assertEquals(3, services.call(call, args, status));
 
 	}
 
@@ -548,7 +635,11 @@ public class EvaluationServicesTest {
 		Object[] args = {new ArrayList<Object>() };
 
 		Diagnostic status = new BasicDiagnostic();
-		final Object listResult = services.callOrApply("add", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("add");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		final Object listResult = services.call(call, args, status);
 
 		assertTrue(listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
@@ -562,7 +653,11 @@ public class EvaluationServicesTest {
 		Object[] args = {new LinkedHashSet<Object>() };
 
 		Diagnostic status = new BasicDiagnostic();
-		final Object setResult = services.callOrApply("add", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("add");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		final Object setResult = services.call(call, args, status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
@@ -576,7 +671,11 @@ public class EvaluationServicesTest {
 		List<Integer> list = new ArrayList<Integer>(Arrays.asList(1, 2));
 		Object[] args = {list };
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply("toString", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, args, status);
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
@@ -593,7 +692,11 @@ public class EvaluationServicesTest {
 		Set<Object> set = createSet(1, 2);
 		Object[] args = {set };
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply("toString", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, args, status);
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Set<Object> setResult = (Set<Object>)result;
@@ -613,7 +716,11 @@ public class EvaluationServicesTest {
 		List<Object> list1 = new ArrayList<Object>(Arrays.asList(1, 2, list2));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply("toString", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, args, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(4, listResult.size());
@@ -632,7 +739,11 @@ public class EvaluationServicesTest {
 		List<Object> list1 = new ArrayList<Object>(Arrays.asList(1, 2, list2));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply("toString", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, args, status);
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
@@ -654,7 +765,11 @@ public class EvaluationServicesTest {
 		List<Object> list1 = new ArrayList<Object>(Arrays.asList(1, 2, list2));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply("special", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("special");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, args, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
@@ -671,7 +786,11 @@ public class EvaluationServicesTest {
 		List<Integer> list1 = new ArrayList<Integer>(Arrays.asList(1, 2, 3));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply("special", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("special");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, args, status);
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
@@ -689,7 +808,11 @@ public class EvaluationServicesTest {
 		Set<Object> set = createSet(1, 2, 3);
 		Object[] args = {set };
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.callOrApply("special", false, args, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("special");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		Object result = services.call(call, args, status);
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Set<Object> setResult = (Set<Object>)result;
@@ -705,7 +828,10 @@ public class EvaluationServicesTest {
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testEmptyArgumentCall() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call("toString", false, new Object[] {}, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setSuperCall(false);
+		services.call(call, new Object[] {}, status);
 	}
 
 	/**
@@ -714,7 +840,11 @@ public class EvaluationServicesTest {
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testEmptyArgumentCallOrApply() {
 		Diagnostic status = new BasicDiagnostic();
-		services.callOrApply("toString", false, new Object[] {}, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		services.call(call, new Object[] {}, status);
 	}
 
 	/**
@@ -723,7 +853,10 @@ public class EvaluationServicesTest {
 	@Test
 	public void testNullArgumentCall() {
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("toString", false, new Object[] {null }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
 		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -737,7 +870,11 @@ public class EvaluationServicesTest {
 	@Test
 	public void testNullArgumentCallOrApply() {
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.callOrApply("toString", false, new Object[] {null }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
 		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -751,8 +888,16 @@ public class EvaluationServicesTest {
 	@Test
 	public void testNullArgumentFeatureAccess() {
 		Diagnostic status = new BasicDiagnostic();
-		services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {null,
-				"name" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		final NullLiteral nullLiteral = AstPackage.eINSTANCE.getAstFactory().createNullLiteral();
+		call.getArguments().add(nullLiteral);
+		final StringLiteral stringLiteral = AstPackage.eINSTANCE.getAstFactory().createStringLiteral();
+		stringLiteral.setValue("name");
+		call.getArguments().add(stringLiteral);
+		services.call(call, new Object[] {null, "name" }, status);
 	}
 
 	/**
@@ -761,7 +906,11 @@ public class EvaluationServicesTest {
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testEmptyArgumentCollectionServiceCall() {
 		Diagnostic status = new BasicDiagnostic();
-		services.collectionServiceCall("toString", false, new Object[] {}, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.COLLECTIONCALL);
+		call.setSuperCall(false);
+		services.call(call, new Object[] {}, status);
 	}
 
 	/**
@@ -770,7 +919,11 @@ public class EvaluationServicesTest {
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testNullArgumentCollectionServiceCall() {
 		Diagnostic status = new BasicDiagnostic();
-		services.collectionServiceCall("toString", false, null, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.COLLECTIONCALL);
+		call.setSuperCall(false);
+		services.call(call, null, status);
 	}
 
 	/**
@@ -780,16 +933,33 @@ public class EvaluationServicesTest {
 	@Test
 	public void testNullLiteralAsArgumentListCollectionServiceCall() {
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.collectionServiceCall("toString", false, new Object[] {null, }, status);
+		Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("toString");
+		call.setType(CallType.COLLECTIONCALL);
+		call.setSuperCall(false);
+		Object result = services.call(call, new Object[] {null, }, status);
 		assertEquals("[]", result);
 		assertEquals(Diagnostic.OK, status.getSeverity());
 
-		result = services.collectionServiceCall("size", false, new Object[] {null, }, status);
+		call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("size");
+		call.setType(CallType.COLLECTIONCALL);
+		call.setSuperCall(false);
+		result = services.call(call, new Object[] {null, }, status);
 		assertEquals(Integer.valueOf(0), result);
 		assertEquals(Diagnostic.OK, status.getSeverity());
 
-		result = services.collectionServiceCall("first", false, new Object[] {null, }, status);
-		assertNull(result);
+		call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("first");
+		call.setType(CallType.COLLECTIONCALL);
+		call.setSuperCall(false);
+		final NullLiteral nullLiteral = AstPackage.eINSTANCE.getAstFactory().createNullLiteral();
+		call.getArguments().add(nullLiteral);
+		result = services.call(call, new Object[] {null, }, status);
+		assertEquals(NullValue.class, result.getClass());
+		assertEquals(ClassType.class, ((NullValue)result).getType().getClass());
+		assertEquals(Object.class, ((NullValue)result).getType().getType());
+
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertEquals(0, status.getChildren().size());
 	}
@@ -807,16 +977,21 @@ public class EvaluationServicesTest {
 		EAnnotation annotation = (EAnnotation)((List<?>)target).get(0);
 		Entry<String, String> entry = annotation.getDetails().get(0);
 		Diagnostic status = new BasicDiagnostic();
-		assertEquals("archetype", services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false,
-				new Object[] {entry, "key" }, status));
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setType(CallType.CALLORAPPLY);
+		call.setSuperCall(false);
+		assertEquals("archetype", services.call(call, new Object[] {entry, "key" }, status));
 	}
 
 	@Test
 	public void testEOperationGeneratedClass() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("getEClassifier", false, new Object[] {EcorePackage.eINSTANCE,
-				"EClass", }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("getEClassifier");
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {EcorePackage.eINSTANCE, "EClass", }, status);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), result);
 	}
 
@@ -824,8 +999,11 @@ public class EvaluationServicesTest {
 	public void testEOperationGeneratedClassWithEObjectParameter() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("isSuperTypeOf", false, new Object[] {EcorePackage.eINSTANCE
-				.getEClass(), EcorePackage.eINSTANCE.getEPackage(), }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("isSuperTypeOf");
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {EcorePackage.eINSTANCE.getEClass(),
+				EcorePackage.eINSTANCE.getEPackage(), }, status);
 		assertEquals(false, result);
 	}
 
@@ -852,8 +1030,10 @@ public class EvaluationServicesTest {
 		final EObject receiver = EcoreUtil.create(eCls);
 
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("aqlFeatureAccess", false, new Object[] {receiver,
-				"dynamicEAttribute", }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("aqlFeatureAccess");
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {receiver, "dynamicEAttribute", }, status);
 
 		queryEnvironment.removeEPackage(ePkg);
 
@@ -890,8 +1070,10 @@ public class EvaluationServicesTest {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		final EObject receiver = EcoreUtil.create(eCls);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("dynamicEOperation", false, new Object[] {receiver, "EClass", },
-				status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("dynamicEOperation");
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {receiver, "EClass", }, status);
 		assertEquals(eCls, result);
 	}
 
@@ -924,8 +1106,10 @@ public class EvaluationServicesTest {
 		queryEnvironment.registerEPackage(ePkg);
 		final EObject receiver = EcoreUtil.create(eCls);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("dynamicEOperation", false, new Object[] {receiver, receiver, },
-				status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("dynamicEOperation");
+		call.setSuperCall(false);
+		final Object result = services.call(call, new Object[] {receiver, receiver, }, status);
 		assertEquals(eCls, result);
 	}
 

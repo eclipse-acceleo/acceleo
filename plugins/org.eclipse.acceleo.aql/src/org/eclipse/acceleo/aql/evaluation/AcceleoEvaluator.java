@@ -25,6 +25,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,7 +61,9 @@ import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
+import org.eclipse.acceleo.query.runtime.impl.NullValue;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -373,7 +376,16 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			generationResult.addDiagnostic(diagnostic);
 		}
 
-		return evalResult.getResult();
+		final Object res;
+		if (evalResult.getResult() == null) {
+			Set<IType> types = new LinkedHashSet<>();
+			types.add(evalResult.getNullType());
+			res = new NullValue(types);
+		} else {
+			res = evalResult.getResult();
+		}
+
+		return res;
 	}
 
 	/**
@@ -803,7 +815,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final Charset charset;
 		if (fileStatement.getCharset() != null) {
 			final Object charsetValue = doSwitch(fileStatement.getCharset());
-			if (charsetValue != null) {
+			if (charsetValue != null && charsetValue.getClass() != NullValue.class) {
 				final String charsetString = toString(charsetValue);
 				Charset defaultCharset = StandardCharsets.UTF_8;
 				try {
@@ -870,7 +882,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final Object value = doSwitch(forStatement.getBinding().getInitExpression());
 		if (value instanceof Collection) {
 			iteration.addAll((Collection<?>)value);
-		} else if (value != null) {
+		} else if (value != null && value.getClass() != NullValue.class) {
 			iteration.add(value);
 		} else {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0,
@@ -1045,7 +1057,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			while (childrenIterator.hasNext()) {
 				buffer.append(toString(childrenIterator.next()));
 			}
-		} else if (object != null) {
+		} else if (object != null && object.getClass() != NullValue.class) {
 			buffer.append(object.toString());
 		}
 

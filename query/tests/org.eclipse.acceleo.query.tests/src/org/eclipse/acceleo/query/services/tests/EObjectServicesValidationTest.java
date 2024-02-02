@@ -703,9 +703,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(
 					eCls1) };
 			final IType[] expectedReturnTypes = new IType[] {nothingType(
-					"EClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
+					"[EClassifierLiteral=eCls1] can't contain directly or indirectly EClassifier=eCls2") };
 			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
-					"Nothing will be left after calling eContainer:\nEClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2") };
+					"Nothing will be left after calling eContainer:\n[EClassifierLiteral=eCls1] can't contain directly or indirectly EClassifier=eCls2") };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {
@@ -878,9 +878,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(
 					eCls2) };
 			final IType[] expectedReturnTypes = new IType[] {nothingType(
-					"EClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
+					"[EClassifierLiteral=eCls2] can't contain directly or indirectly EClassifier=eCls1") };
 			final IType[] expectedAllReturnTypes = new IType[] {nothingType(
-					"Nothing will be left after calling eContainer:\nEClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1") };
+					"Nothing will be left after calling eContainer:\n[EClassifierLiteral=eCls2] can't contain directly or indirectly EClassifier=eCls1") };
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {

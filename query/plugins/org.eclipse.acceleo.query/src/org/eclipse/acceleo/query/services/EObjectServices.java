@@ -26,7 +26,11 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.StringLiteral;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
@@ -349,7 +353,8 @@ public class EObjectServices extends AbstractServiceProvider {
 									.get(1)).getType()));
 						}
 					} else {
-						result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
+						result.addAll(getTypeForSpecificType(call, services, queryEnvironment, argTypes,
+								eCls));
 					}
 				}
 			} else {
@@ -375,7 +380,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services,
+		private Set<IType> getTypeForSpecificType(Call call, ValidationServices services,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
 				final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
@@ -389,18 +394,31 @@ public class EObjectServices extends AbstractServiceProvider {
 					result.add(services.nothing("%s can't be contained", argTypes.get(0)));
 				}
 			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
+				final Set<IType> filterTypes = new LinkedHashSet<>();
+				if (call != null) {
+					final Expression typeExpression = call.getArguments().get(1);
+					if (typeExpression instanceof EClassifierTypeLiteral
+							|| typeExpression instanceof TypeSetLiteral) {
+						filterTypes.addAll(getTypes(queryEnvironment, typeExpression));
+					} else {
+						filterTypes.add(argTypes.get(1));
+					}
+				} else {
+					filterTypes.add(argTypes.get(1));
+				}
 				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
 						.getAllContainingEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containingEClass), filterType);
-					if (lowerType != null) {
-						result.add(lowerType);
+					for (IType filterType : filterTypes) {
+						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+								containingEClass), filterType);
+						if (lowerType != null) {
+							result.add(lowerType);
+						}
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(services.nothing(S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, filterType, argTypes
-							.get(0)));
+					result.add(services.nothing(S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, filterTypes,
+							argTypes.get(0)));
 				}
 			}
 
@@ -1746,6 +1764,41 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IType} for the given {@link Expression}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param typeExpression
+	 *            the {@link Expression}
+	 * @return the {@link Set} of {@link IType} for the given {@link Expression}
+	 */
+	public static Set<IType> getTypes(IReadOnlyQueryEnvironment queryEnvironment,
+			final Expression typeExpression) {
+		final Set<IType> filterTypes = new LinkedHashSet<>();
+
+		if (typeExpression instanceof EClassifierTypeLiteral) {
+			final EClassifierTypeLiteral typeLiteral = (EClassifierTypeLiteral)typeExpression;
+			for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getTypes(typeLiteral
+					.getEPackageName(), typeLiteral.getEClassifierName())) {
+				filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+			}
+		} else if (typeExpression instanceof TypeSetLiteral) {
+			final TypeSetLiteral typeLiteral = (TypeSetLiteral)typeExpression;
+			for (TypeLiteral type : typeLiteral.getTypes()) {
+				if (type instanceof EClassifierTypeLiteral) {
+					for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getTypes(
+							((EClassifierTypeLiteral)type).getEPackageName(), ((EClassifierTypeLiteral)type)
+									.getEClassifierName())) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				}
+			}
+		}
+
+		return filterTypes;
 	}
 
 }

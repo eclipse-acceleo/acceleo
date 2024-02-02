@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Obeo.
+ * Copyright (c) 2016, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,15 @@
 package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.query.runtime.impl.NullValue;
 import org.eclipse.acceleo.query.runtime.impl.namespace.AbstractQualifiedNameService;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -164,6 +168,29 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	@Override
 	public int hashCode() {
 		return getOrigin().hashCode();
+	}
+
+	/**
+	 * Gets the variable value for the given {@link Variable} and value.
+	 * 
+	 * @param variable
+	 *            the {@link Variable}
+	 * @param value
+	 *            the value
+	 * @return the variable value for the given {@link Variable} and value
+	 */
+	protected Object getArgumentValue(Variable variable, Object value) {
+		final Object res;
+
+		if (value == null) {
+			final Set<IType> types = EObjectServices.getTypes(getLookupEngine().getQueryEnvironment(),
+					variable.getTypeAql());
+			res = new NullValue(types);
+		} else {
+			res = value;
+		}
+
+		return res;
 	}
 
 }

@@ -1,0 +1,16 @@
+[module m1('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public main(param1 : ecore::EPackage)]
+  [file (param1.name + '.txt', overwrite)]
+    [param1.eClassifiers.called()/]
+  [/file]
+[/template]
+
+[template public called(param1 : ecore::EClassifier)]
+  [param1.ePackage.eSuperPackage.called()/]
+[/template]
+
+[template public called(param1 : ecore::EPackage)]
+  called EPackage
+[/template]

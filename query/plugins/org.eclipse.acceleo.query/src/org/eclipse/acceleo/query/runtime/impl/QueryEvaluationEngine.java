@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
+import org.eclipse.acceleo.query.validation.type.NothingType;
 
 /**
  * {@link QueryEvaluationEngine} is the default query evaluation engine.
@@ -51,7 +52,8 @@ public class QueryEvaluationEngine implements IQueryEvaluationEngine {
 			AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(queryEnvironment));
 			result = evaluator.eval(environment, ast);
 			if (result.getResult() instanceof Nothing) {
-				result = new EvaluationResult(null, result.getDiagnostic());
+				result = new EvaluationResult(null, new NothingType(((Nothing)result.getResult())
+						.getMessage()), result.getDiagnostic());
 			}
 		}
 		return result;

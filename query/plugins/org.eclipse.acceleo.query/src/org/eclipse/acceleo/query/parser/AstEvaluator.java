@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,9 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
+import org.eclipse.acceleo.query.runtime.impl.NullValue;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
@@ -136,12 +139,25 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 * @return the evaluation of the specified ast.
 	 */
 	public EvaluationResult eval(Map<String, Object> varDefinitions, Expression ast) {
+		final Object result;
+
 		pushVariables(varDefinitions);
 		diagnostic = new BasicDiagnostic();
-		final Object result = doSwitch(ast);
+		final Object value = doSwitch(ast);
+		final IType nullType;
+		if (value != null && value.getClass() == NullValue.class) {
+			result = null;
+			nullType = ((NullValue)value).getType();
+		} else if (value == null) {
+			result = value;
+			nullType = new ClassType(services.getQueryEnvironment(), null);
+		} else {
+			result = value;
+			nullType = null;
+		}
 		popVariables();
 
-		return new EvaluationResult(result, diagnostic);
+		return new EvaluationResult(result, nullType, diagnostic);
 	}
 
 	/**
@@ -225,22 +241,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 			args[i++] = doSwitch(arg);
 		}
 
-		// call the service.
-		switch (object.getType()) {
-			case CALLSERVICE:
-				result = services.call(object.getServiceName(), object.isSuperCall(), args, diagnostic);
-				break;
-			case CALLORAPPLY:
-				result = services.callOrApply(object.getServiceName(), object.isSuperCall(), args,
-						diagnostic);
-				break;
-			case COLLECTIONCALL:
-				result = services.collectionServiceCall(object.getServiceName(), object.isSuperCall(), args,
-						diagnostic);
-				break;
-			default:
-				throw new UnsupportedOperationException("should never happen");
-		}
+		result = services.call(object, args, diagnostic);
 
 		return result;
 	}
@@ -260,7 +261,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 			result = Boolean.FALSE;
 		} else {
 			args[1] = doSwitch(object.getArguments().get(1));
-			result = services.call(object.getServiceName(), object.isSuperCall(), args, diagnostic);
+			result = services.call(object, args, diagnostic);
 		}
 
 		return result;
@@ -281,7 +282,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 			result = Boolean.TRUE;
 		} else {
 			args[1] = doSwitch(object.getArguments().get(1));
-			result = services.call(object.getServiceName(), object.isSuperCall(), args, diagnostic);
+			result = services.call(object, args, diagnostic);
 		}
 
 		return result;
@@ -302,7 +303,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 			result = Boolean.TRUE;
 		} else {
 			args[1] = doSwitch(object.getArguments().get(1));
-			result = services.call(object.getServiceName(), object.isSuperCall(), args, diagnostic);
+			result = services.call(object, args, diagnostic);
 		}
 
 		return result;

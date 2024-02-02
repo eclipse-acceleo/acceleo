@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,17 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
+import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -98,42 +101,35 @@ public class EvaluationServices extends AbstractLanguageServices {
 	}
 
 	/**
-	 * Build the argument {@link IType} array that corresponds to the specified arguments array.
-	 * 
-	 * @param arguments
-	 *            the argument from which types are required
-	 * @return the argument {@link IType} array that corresponds to the specified arguments array
-	 */
-	private IType[] getArgumentTypes(Object[] arguments) {
-		IType[] argumentTypes = new IType[arguments.length];
-		for (int i = 0; i < arguments.length; i++) {
-			if (arguments[i] == null) {
-				argumentTypes[i] = new ClassType(queryEnvironment, null);
-			} else if (arguments[i] instanceof EObject) {
-				argumentTypes[i] = new EClassifierType(queryEnvironment, ((EObject)arguments[i]).eClass());
-			} else {
-				argumentTypes[i] = new ClassType(queryEnvironment, arguments[i].getClass());
-			}
-		}
-		return argumentTypes;
-	}
-
-	/**
 	 * Do a service call.
 	 * 
+	 * @param call
+	 *            the initial {@link Call}
 	 * @param service
 	 *            the specification of the service to call.
 	 * @param arguments
 	 *            the arguments of the service call.
+	 * @param argumentTypes
+	 *            the array of {@link IType}
 	 * @param diagnostic
 	 *            The status to update in case of warnings or errors during this call.
 	 * @return the value produced by the service execution.
 	 */
-	private Object callService(IService<?> service, Object[] arguments, Diagnostic diagnostic) {
+	private Object internalCallService(Call call, IService<?> service, Object[] arguments,
+			IType[] argumentTypes, Diagnostic diagnostic) {
 		try {
-			final Object result = service.invoke(arguments);
-			if (result instanceof Nothing) {
-				addDiagnosticFor(diagnostic, Diagnostic.WARNING, (Nothing)result);
+			final Object result;
+			final Object value = service.invoke(arguments);
+			if (value instanceof Nothing) {
+				addDiagnosticFor(diagnostic, Diagnostic.WARNING, (Nothing)value);
+				result = value;
+			} else if (value == null && !isLambda(call)) {
+				final List<IType> types = Arrays.asList(argumentTypes);
+				final Set<IType> serviceTypes = service.getType(call, new ValidationServices(
+						queryEnvironment), null, queryEnvironment, types);
+				result = new NullValue(serviceTypes);
+			} else {
+				result = value;
 			}
 			return result;
 		} catch (AcceleoQueryEvaluationException e) {
@@ -148,46 +144,86 @@ public class EvaluationServices extends AbstractLanguageServices {
 	}
 
 	/**
-	 * Evaluate a service call.
-	 * 
-	 * @param serviceName
-	 *            the @link IService#getName() service name}.
-	 * @param arguments
-	 *            the arguments to pass to the service evaluation.
-	 * @param diagnostic
-	 *            The status to update in case of warnings or errors during this call.
-	 * @return the value resulting from evaluating the service given the specified arguments.
-	 * @deprecated see {@link #call(String, boolean, Object[], Diagnostic)}
+	 * @param call
+	 * @return
 	 */
-	public Object call(String serviceName, Object[] arguments, Diagnostic diagnostic) {
-		return call(serviceName, false, arguments, diagnostic);
+	private boolean isLambda(Call call) {
+		return call.getArguments().size() == 2 && call.getArguments().get(1) instanceof Lambda;
 	}
 
 	/**
 	 * Evaluate a service call.
 	 * 
-	 * @param serviceName
-	 *            the @link IService#getName() service name}.
-	 * @param isSuperCall
-	 *            tells if a super call should be performed
+	 * @param call
+	 *            the {@link Call}
 	 * @param arguments
 	 *            the arguments to pass to the service evaluation.
 	 * @param diagnostic
 	 *            The status to update in case of warnings or errors during this call.
 	 * @return the value resulting from evaluating the service given the specified arguments.
 	 */
-	public Object call(String serviceName, boolean isSuperCall, Object[] arguments, Diagnostic diagnostic) {
+	public Object call(Call call, Object[] arguments, Diagnostic diagnostic) {
 		final Object result;
 
+		switch (call.getType()) {
+			case CALLSERVICE:
+				result = internalCall(call, arguments, diagnostic);
+				break;
+			case CALLORAPPLY:
+				result = internalCallOrApply(call, arguments, diagnostic);
+				break;
+			case COLLECTIONCALL:
+				result = internalCollectionServiceCall(call, arguments, diagnostic);
+				break;
+			default:
+				throw new UnsupportedOperationException("should never happen");
+		}
+
+		return result;
+	}
+
+	/**
+	 * Evaluate a service call.
+	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param arguments
+	 *            the arguments to pass to the service evaluation.
+	 * @param diagnostic
+	 *            The status to update in case of warnings or errors during this call.
+	 * @return the value resulting from evaluating the service given the specified arguments.
+	 */
+	private Object internalCall(Call call, Object[] arguments, Diagnostic diagnostic) {
+		final Object result;
+
+		final String serviceName = call.getServiceName();
 		if (arguments.length == 0) {
 			throw new AcceleoQueryEvaluationException(
 					"An internal error occured during evaluation of a query : at least one argument must be specified for service "
 							+ serviceName + ".");
 		}
 		try {
-			IType[] argumentTypes = getArgumentTypes(arguments);
+			final IType[] argumentTypes = new IType[arguments.length];
+			final Object[] localArguments = new Object[arguments.length];
+			for (int i = 0; i < arguments.length; i++) {
+				if (arguments[i] == null) {
+					argumentTypes[i] = new ClassType(queryEnvironment, null);
+					localArguments[i] = null;
+				} else if (arguments[i].getClass() == NullValue.class) {
+					argumentTypes[i] = ((NullValue)arguments[i]).getType();
+					localArguments[i] = null;
+				} else if (arguments[i] instanceof EObject) {
+					argumentTypes[i] = new EClassifierType(queryEnvironment, ((EObject)arguments[i])
+							.eClass());
+					localArguments[i] = arguments[i];
+				} else {
+					argumentTypes[i] = new ClassType(queryEnvironment, arguments[i].getClass());
+					localArguments[i] = arguments[i];
+				}
+			}
+
 			IService<?> service;
-			if (isSuperCall) {
+			if (call.isSuperCall()) {
 				service = ((IQualifiedNameLookupEngine)queryEnvironment.getLookupEngine()).superServiceLookup(
 						serviceName, argumentTypes);
 			} else {
@@ -199,7 +235,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
 				result = placeHolder;
 			} else {
-				result = callService(service, arguments, diagnostic);
+				result = internalCallService(call, service, localArguments, argumentTypes, diagnostic);
 			}
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
@@ -216,29 +252,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * then callOrApply is applied recursively to all elements of the collection thus returning a collection
 	 * of the result of this application(nothing values not being added).
 	 * 
-	 * @param serviceName
-	 *            the name of the service to call.
-	 * @param arguments
-	 *            the arguments to pass to the called service.
-	 * @param diagnostic
-	 *            The status to update in case of warnings or errors during this call.
-	 * @return the result of evaluating the specified service on the specified arguments.
-	 * @deprecated see {@link #callOrApply(String, boolean, Object[], Diagnostic)}
-	 */
-	public Object callOrApply(String serviceName, Object[] arguments, Diagnostic diagnostic) {
-		return callOrApply(serviceName, false, arguments, diagnostic);
-	}
-
-	/**
-	 * The callOrApply method evaluates an expression of the form "<exp>.<service name>(<exp>*)" The first
-	 * argument in the arguments array is considered the receiver of the call. If the receiver is a collection
-	 * then callOrApply is applied recursively to all elements of the collection thus returning a collection
-	 * of the result of this application(nothing values not being added).
-	 * 
-	 * @param serviceName
-	 *            the name of the service to call.
-	 * @param isSuperCall
-	 *            tells if a super call should be performed
+	 * @param call
+	 *            the {@link Call}
 	 * @param arguments
 	 *            the arguments to pass to the called service.
 	 * @param diagnostic
@@ -246,18 +261,17 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @return the result of evaluating the specified service on the specified arguments.
 	 */
 	@SuppressWarnings("unchecked")
-	public Object callOrApply(String serviceName, boolean isSuperCall, Object[] arguments,
-			Diagnostic diagnostic) {
+	private Object internalCallOrApply(Call call, Object[] arguments, Diagnostic diagnostic) {
 		try {
 			Object result;
 			if (arguments[0] instanceof List) {
 				List<Object> list = (List<Object>)arguments[0];
-				result = applyCallOnSequence(serviceName, isSuperCall, list, arguments, diagnostic);
+				result = applyCallOnSequence(call, list, arguments, diagnostic);
 			} else if (arguments[0] instanceof Set) {
 				Set<Object> set = (Set<Object>)arguments[0];
-				result = applyCallOnSet(serviceName, isSuperCall, set, arguments, diagnostic);
+				result = applyCallOnSet(call, set, arguments, diagnostic);
 			} else {
-				result = call(serviceName, isSuperCall, arguments, diagnostic);
+				result = internalCall(call, arguments, diagnostic);
 			}
 			return result;
 			// CHECKSTYLE:OFF
@@ -270,34 +284,15 @@ public class EvaluationServices extends AbstractLanguageServices {
 	/**
 	 * Calls a collection's service.
 	 * 
-	 * @param serviceName
-	 *            the name of the service.
-	 * @param arguments
-	 *            the service's arguments.
-	 * @param diagnostic
-	 *            The status to update in case of warnings or errors during this call.
-	 * @return the result of evaluating the specified service on the specified arguments.
-	 * @deprecated see {@link #collectionServiceCall(String, boolean, Object[], Diagnostic)}
-	 */
-	public Object collectionServiceCall(String serviceName, Object[] arguments, Diagnostic diagnostic) {
-		return collectionServiceCall(serviceName, false, arguments, diagnostic);
-	}
-
-	/**
-	 * Calls a collection's service.
-	 * 
-	 * @param serviceName
-	 *            the name of the service.
-	 * @param isSuperCall
-	 *            tells if a super call should be performed
+	 * @param call
+	 *            the {@link Call}
 	 * @param arguments
 	 *            the service's arguments.
 	 * @param diagnostic
 	 *            The status to update in case of warnings or errors during this call.
 	 * @return the result of evaluating the specified service on the specified arguments.
 	 */
-	public Object collectionServiceCall(String serviceName, boolean isSuperCall, Object[] arguments,
-			Diagnostic diagnostic) {
+	private Object internalCollectionServiceCall(Call call, Object[] arguments, Diagnostic diagnostic) {
 		Object[] newArguments;
 		try {
 			Object receiver = arguments[0];
@@ -314,7 +309,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 			} else {
 				newArguments = arguments;
 			}
-			return call(serviceName, isSuperCall, newArguments, diagnostic);
+			return internalCall(call, newArguments, diagnostic);
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
@@ -325,10 +320,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 	/**
 	 * Applies a service call on a sequence of objects.
 	 * 
-	 * @param serviceName
-	 *            the name of the service to be called.
-	 * @param isSuperCall
-	 *            tells if a super call should be performed
+	 * @param call
+	 *            the {@link Call}
 	 * @param origin
 	 *            the sequence on which elements to apply the service
 	 * @param arguments
@@ -338,14 +331,14 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @return a sequence made of the result of calling the specified service on the specified arguments on
 	 *         the origin list elements.
 	 */
-	private Object applyCallOnSequence(String serviceName, boolean isSuperCall, List<Object> origin,
-			Object[] arguments, Diagnostic diagnostic) {
+	private Object applyCallOnSequence(Call call, List<Object> origin, Object[] arguments,
+			Diagnostic diagnostic) {
 		try {
 			List<Object> result = new ArrayList<Object>(origin.size());
 			Object[] innerArguments = arguments.clone();
 			for (Object obj : origin) {
 				innerArguments[0] = obj;
-				final Object newResult = callOrApply(serviceName, isSuperCall, innerArguments, diagnostic);
+				final Object newResult = internalCallOrApply(call, innerArguments, diagnostic);
 				flattenList(result, newResult);
 			}
 
@@ -353,8 +346,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
-			throw new AcceleoQueryEvaluationException("empty argument array passed to callOrApply "
-					+ serviceName, e);
+			throw new AcceleoQueryEvaluationException("empty argument array passed to callOrApply " + call
+					.getServiceName(), e);
 		}
 	}
 
@@ -370,7 +363,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 		if (!(object instanceof Nothing)) {
 			if (object instanceof Collection) {
 				list.addAll((Collection<?>)object);
-			} else if (object != null) {
+			} else if (object != null && object.getClass() != NullValue.class) {
 				list.add(object);
 			}
 		}
@@ -379,10 +372,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 	/**
 	 * Applies a service call on a set of objects.
 	 * 
-	 * @param serviceName
-	 *            the name of the service to be called.
-	 * @param isSuperCall
-	 *            tells if a super call should be performed
+	 * @param call
+	 *            the {@link Call}
 	 * @param origin
 	 *            the sequence on which elements to apply the service
 	 * @param arguments
@@ -392,14 +383,13 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @return a sequence made of the result of calling the specified service on the specified arguments on
 	 *         the origin set elements.
 	 */
-	private Object applyCallOnSet(String serviceName, boolean isSuperCall, Set<Object> origin,
-			Object[] arguments, Diagnostic diagnostic) {
+	private Object applyCallOnSet(Call call, Set<Object> origin, Object[] arguments, Diagnostic diagnostic) {
 		try {
 			Set<Object> result = new LinkedHashSet<Object>(origin.size());
 			Object[] innerArguments = arguments.clone();
 			for (Object obj : origin) {
 				innerArguments[0] = obj;
-				final Object newResult = callOrApply(serviceName, isSuperCall, innerArguments, diagnostic);
+				final Object newResult = internalCallOrApply(call, innerArguments, diagnostic);
 				flattenSet(result, newResult);
 			}
 
@@ -424,7 +414,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 		if (!(object instanceof Nothing)) {
 			if (object instanceof Collection) {
 				set.addAll((Collection<?>)object);
-			} else if (object != null) {
+			} else if (object != null && object.getClass() != NullValue.class) {
 				set.add(object);
 			}
 		}

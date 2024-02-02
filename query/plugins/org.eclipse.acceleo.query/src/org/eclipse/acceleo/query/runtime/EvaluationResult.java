@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.Diagnostic;
 
 /**
@@ -25,16 +26,24 @@ public class EvaluationResult {
 	private final Diagnostic diagnostic;
 
 	/**
+	 * The <code>null</code> {@link IType} if any.
+	 */
+	private final IType nullType;
+
+	/**
 	 * Creates an evaluation result given the actual Object result of said evaluation, and the diagnostic to
 	 * associate to it.
 	 * 
 	 * @param result
 	 *            The actual result of this evaluation.
+	 * @param nullType
+	 *            the <code>null</code> {@link IType}
 	 * @param diagnostic
 	 *            Diagnostic of the evaluation.
 	 */
-	public EvaluationResult(Object result, Diagnostic diagnostic) {
+	public EvaluationResult(Object result, IType nullType, Diagnostic diagnostic) {
 		this.result = result;
+		this.nullType = nullType;
 		this.diagnostic = diagnostic;
 	}
 
@@ -45,6 +54,15 @@ public class EvaluationResult {
 	 */
 	public Object getResult() {
 		return result;
+	}
+
+	/**
+	 * Gets the <code>null</code> {@link IType}.
+	 * 
+	 * @return the <code>null</code> {@link IType} if any, <code>null</code> otherwise
+	 */
+	public IType getNullType() {
+		return nullType;
 	}
 
 	/**

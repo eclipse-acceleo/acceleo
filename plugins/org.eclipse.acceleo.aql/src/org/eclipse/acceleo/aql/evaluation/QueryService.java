@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023  Obeo.
+ * Copyright (c) 2016, 2024  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,7 +95,7 @@ public class QueryService extends AbstractModuleElementService<Query> {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		for (int i = 0; i < arguments.length; i++) {
 			Variable var = getOrigin().getParameters().get(i);
-			variables.put(var.getName(), arguments[i]);
+			variables.put(var.getName(), getArgumentValue(var, arguments[i]));
 		}
 
 		final AcceleoEvaluator evaluator = getEvaluator();

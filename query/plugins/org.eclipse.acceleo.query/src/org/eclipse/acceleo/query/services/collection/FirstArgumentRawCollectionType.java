@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -51,7 +52,12 @@ public class FirstArgumentRawCollectionType extends AbstractCollectionService {
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		result.add(((ICollectionType)argTypes.get(0)).getCollectionType());
+		final IType receiverType = argTypes.get(0);
+		if (receiverType instanceof ICollectionType) {
+			result.add(((ICollectionType)receiverType).getCollectionType());
+		} else {
+			result.add(new ClassType(queryEnvironment, Object.class));
+		}
 
 		return result;
 	}

@@ -353,8 +353,8 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>Nothing(Nothing will be left after calling eContainer:
-EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)</possibleTypes>
-        <validationMessages severity="ERROR" message="Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress" startPosition="4" endPosition="29"/>
+[EClassifier=Food] can't contain directly or indirectly EClassifier=Adress)</possibleTypes>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling eContainer:&#xA;[EClassifier=Food] can't contain directly or indirectly EClassifier=Adress" startPosition="4" endPosition="29"/>
       </expectedResult>
     </expectations>
   </queries>

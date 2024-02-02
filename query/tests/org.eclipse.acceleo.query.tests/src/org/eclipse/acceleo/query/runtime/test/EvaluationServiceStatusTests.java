@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -86,8 +88,10 @@ public class EvaluationServiceStatusTests {
 		attribute.setName("attr0");
 
 		Diagnostic status = new BasicDiagnostic();
-		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {attribute,
-				"noname" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setSuperCall(false);
+		services.call(call, new Object[] {attribute, "noname" }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -100,8 +104,10 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void featureAccessOnObjectStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, false, new Object[] {Integer.valueOf(1),
-				"containment" }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME);
+		call.setSuperCall(false);
+		services.call(call, new Object[] {Integer.valueOf(1), "containment" }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -114,7 +120,10 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void serviceNotFoundStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call("noservice", false, new Object[] {1 }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("noservice");
+		call.setSuperCall(false);
+		services.call(call, new Object[] {1 }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -127,7 +136,10 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void serviceReturnsNullStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call("serviceReturnsNull", false, new Object[] {1 }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("serviceReturnsNull");
+		call.setSuperCall(false);
+		services.call(call, new Object[] {1 }, status);
 
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertEquals(0, status.getChildren().size());
@@ -136,7 +148,10 @@ public class EvaluationServiceStatusTests {
 	@Test
 	public void serviceThrowsExceptionStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.call("serviceThrowsException", false, new Object[] {1 }, status);
+		final Call call = AstPackage.eINSTANCE.getAstFactory().createCall();
+		call.setServiceName("serviceThrowsException");
+		call.setSuperCall(false);
+		services.call(call, new Object[] {1 }, status);
 
 		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
