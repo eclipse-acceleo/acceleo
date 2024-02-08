@@ -120,7 +120,7 @@ public class ValidationTest {
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"null or empty string.", -1, -1);
-		
+
 		assertEquals(1, validationResult.getMessages(ast).size());
 		assertValidationMessage(validationResult.getMessages(ast).get(0), ValidationMessageLevel.ERROR,
 				"null or empty string.", -1, -1);
@@ -538,7 +538,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof ClassType);
 		assertEquals(Boolean.class, possibleType.getType());
-	
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -721,7 +721,7 @@ public class ValidationTest {
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
-	
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"Couldn't find the 'getEClassifier(EClassifier=EPackage,java.lang.Integer)' service", 5, 23);
@@ -778,7 +778,7 @@ public class ValidationTest {
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
-	
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"invalid type literal anydsl::EClass", 0, 14);
@@ -796,7 +796,7 @@ public class ValidationTest {
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
-	
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"invalid type literal anydsl:", 0, 7);
@@ -817,7 +817,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(AnydslPackage.eINSTANCE.getPart(), possibleType.getType());
-	
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -832,7 +832,7 @@ public class ValidationTest {
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
-		
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"invalid enum literal: no literal registered with this name", 0, 25);
@@ -917,7 +917,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SetType);
 		assertNothingType("Empty OrderedSet defined in extension", ((SetType)possibleType)
 				.getCollectionType());
-	
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -943,7 +943,7 @@ public class ValidationTest {
 		assertEquals(Boolean.class, ((ClassType)((SequenceType)possibleType).getCollectionType()).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
-		
+
 		assertEquals(0, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((SequenceInExtensionLiteral)ast).getValues().get(0))
 				.size());
@@ -985,7 +985,7 @@ public class ValidationTest {
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
-		
+
 		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"nothing", 3, 11);
@@ -1205,7 +1205,7 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
-}
+	}
 
 	@Test
 	public void typeSetLiteralDuplicates() {
@@ -1226,7 +1226,7 @@ public class ValidationTest {
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), itECls.next());
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), itECls.next());
 		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), itECls.next());
-		
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifierLiteral=EPackage is duplicated in the type set literal.", 0, 71);
@@ -1249,7 +1249,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -1271,7 +1271,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -1637,7 +1637,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SetType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -1671,7 +1671,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SetType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -1705,7 +1705,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SetType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
-		
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage].", 40, 46);
@@ -1744,7 +1744,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SetType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
-		
+
 		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"invalid type literal invalid::Type", 22, 35);
@@ -1789,7 +1789,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SetType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
 				.getType());
-		
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage, EClassifier=EReference].",
@@ -1842,7 +1842,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof ClassType);
 		assertEquals(Integer.class, possibleType.getType());
-	
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -1885,7 +1885,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), possibleType.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -1908,7 +1908,7 @@ public class ValidationTest {
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
-		
+
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"Couldn't find the 'triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query)' service",
@@ -2123,7 +2123,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof ClassType);
 		assertEquals(String.class, possibleType.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -2147,7 +2147,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof ClassType);
 		assertEquals(String.class, possibleType.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -2191,7 +2191,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(eCls, possibleType.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -2233,7 +2233,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -2276,7 +2276,7 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());
@@ -2304,7 +2304,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof SequenceType);
 		assertNothingType("Nothing will be left after calling allInstances:\n"
 				+ "No IRootEObjectProvider registered", ((SequenceType)possibleType).getCollectionType());
-	
+
 		assertNothingType("Nothing will be left after calling allInstances:\n"
 				+ "No IRootEObjectProvider registered", ((SequenceType)possibleType).getCollectionType());
 		assertEquals(1, validationResult.getMessages().size());
@@ -2333,7 +2333,7 @@ public class ValidationTest {
 		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), ((EClassifierType)((SequenceType)possibleType)
 				.getCollectionType()).getType());
-		
+
 		assertEquals(0, validationResult.getMessages().size());
 
 		assertEquals(0, validationResult.getMessages(ast).size());

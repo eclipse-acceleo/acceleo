@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,8 +79,8 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
 					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
-							EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
-									EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
 											EcorePackage.eINSTANCE.getEEnum())), sequenceType(eClassifierType(
 													EcorePackage.eINSTANCE.getEClass())), sequenceType(
 															eClassifierType(EcorePackage.eINSTANCE
@@ -104,8 +104,8 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 					EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
 					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
-							EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
-									EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
 											EcorePackage.eINSTANCE.getEEnum())), sequenceType(eClassifierType(
 													EcorePackage.eINSTANCE.getEClass())), sequenceType(
 															eClassifierType(EcorePackage.eINSTANCE
@@ -129,8 +129,8 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 					setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
 					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
-							EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
-									EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
 											EcorePackage.eINSTANCE.getEEnum())), sequenceType(eClassifierType(
 													EcorePackage.eINSTANCE.getEClass())), sequenceType(
 															eClassifierType(EcorePackage.eINSTANCE
@@ -154,8 +154,8 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 					EcorePackage.eINSTANCE.getEClass())) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
 					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
-							EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
-									EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+							EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
 											EcorePackage.eINSTANCE.getEEnum())), sequenceType(eClassifierType(
 													EcorePackage.eINSTANCE.getEClass())), sequenceType(
 															eClassifierType(EcorePackage.eINSTANCE
@@ -177,9 +177,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
-					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
 							EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
-									EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
 											EcorePackage.eINSTANCE.getEEnum())), sequenceType(eClassifierType(
 													EcorePackage.eINSTANCE.getEClass())), sequenceType(
 															eClassifierType(EcorePackage.eINSTANCE
@@ -201,9 +201,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			final IType[] parameterTypes = new IType[] {classType(EClass.class) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
-					EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
+					EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
 							EcorePackage.eINSTANCE.getEAnnotation())), sequenceType(eClassifierType(
-									EcorePackage.eINSTANCE.getEModelElement())), sequenceType(eClassifierType(
+									EcorePackage.eINSTANCE.getEPackage())), sequenceType(eClassifierType(
 											EcorePackage.eINSTANCE.getEEnum())), sequenceType(eClassifierType(
 													EcorePackage.eINSTANCE.getEClass())), sequenceType(
 															eClassifierType(EcorePackage.eINSTANCE

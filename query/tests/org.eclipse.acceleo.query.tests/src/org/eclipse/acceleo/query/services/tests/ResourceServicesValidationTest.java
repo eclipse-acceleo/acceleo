@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -166,7 +166,7 @@ public class ResourceServicesValidationTest extends AbstractServicesValidationTe
 
 	@Test
 	public void testLastSegment() {
-		final IService<?> service = serviceLookUp("lastSegment", new Object[] {URI.createFileURI("") });
+		final IService<?> service = serviceLookUp("lastSegment", new Object[] {URI.createURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(classType(URI.class));
@@ -194,7 +194,7 @@ public class ResourceServicesValidationTest extends AbstractServicesValidationTe
 
 	@Test
 	public void testFileExtension() {
-		final IService<?> service = serviceLookUp("fileExtension", new Object[] {URI.createFileURI("") });
+		final IService<?> service = serviceLookUp("fileExtension", new Object[] {URI.createURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
@@ -222,8 +222,7 @@ public class ResourceServicesValidationTest extends AbstractServicesValidationTe
 
 	@Test
 	public void testIsPlatformResource() {
-		final IService<?> service = serviceLookUp("isPlatformResource", new Object[] {URI.createFileURI(
-				"") });
+		final IService<?> service = serviceLookUp("isPlatformResource", new Object[] {URI.createURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(classType(URI.class));
@@ -251,7 +250,7 @@ public class ResourceServicesValidationTest extends AbstractServicesValidationTe
 
 	@Test
 	public void testIsPlatformPlugin() {
-		final IService<?> service = serviceLookUp("isPlatformPlugin", new Object[] {URI.createFileURI("") });
+		final IService<?> service = serviceLookUp("isPlatformPlugin", new Object[] {URI.createURI("") });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(classType(URI.class));

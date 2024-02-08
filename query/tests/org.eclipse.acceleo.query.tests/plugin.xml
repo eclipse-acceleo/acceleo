@@ -30,4 +30,12 @@
             genModel="model/Real.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated container -->
+      <package
+            uri="http://www.eclipse.org/acceleo/container"
+            class="container.ContainerPackage"
+            genModel="model/container.genmodel"/>
+   </extension>
+
 </plugin>

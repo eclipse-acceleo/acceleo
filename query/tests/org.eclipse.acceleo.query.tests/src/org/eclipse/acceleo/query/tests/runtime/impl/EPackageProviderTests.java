@@ -326,8 +326,8 @@ public class EPackageProviderTests {
 		assertEquals(7, eClasses.size());
 		final Iterator<EClass> it = eClasses.iterator();
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), it.next());
-		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEModelElement(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEEnum(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEOperation(), it.next());
@@ -620,8 +620,8 @@ public class EPackageProviderTests {
 		assertEquals(10, features.size());
 		final Iterator<EStructuralFeature> it = features.iterator();
 		assertEquals(EcorePackage.eINSTANCE.getEPackage_ESubpackages(), it.next());
-		assertEquals(EcorePackage.eINSTANCE.getEAnnotation_Contents(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEModelElement_EAnnotations(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation_Contents(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEPackage_EClassifiers(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEEnum_ELiterals(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEClass_EOperations(), it.next());

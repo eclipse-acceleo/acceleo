@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.acceleo.query.tests.qmodel.QmodelPackage;
 import org.eclipse.acceleo.query.tests.qmodel.Queries;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -42,7 +43,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,6 +54,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import container.ContainerPackage;
 
 /**
  * EObject services tests.
@@ -1090,4 +1095,25 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		assertEquals("ecore", result);
 	}
 
+	@Test
+	public void eAllContentsNotContainedSuperClassFilter() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		getQueryEnvironment().registerEPackage(ContainerPackage.eINSTANCE);
+
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		final ResourceSetImpl resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",
+				new XMIResourceFactoryImpl());
+
+		final Resource resource = resourceSet.getResource(URI.createURI("resources/container/container.xmi"),
+				true);
+		EObject root = resource.getContents().get(0);
+
+		final List<EObject> result = eObjectServices.eAllContents(root, ContainerPackage.eINSTANCE
+				.getAbstract());
+
+		assertEquals(1, result.size());
+		assertEquals(ContainerPackage.eINSTANCE.getConcrete(), result.get(0).eClass());
+	}
 }

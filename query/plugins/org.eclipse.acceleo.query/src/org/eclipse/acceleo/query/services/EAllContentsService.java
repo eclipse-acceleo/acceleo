@@ -138,10 +138,10 @@ class EAllContentsService extends FilterService {
 			for (IType filterType : filterTypes) {
 				for (EClass containedEClass : queryEnvironment.getEPackageProvider().getAllContainedEClasses(
 						receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containedEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SequenceType(queryEnvironment, lowerType));
+					final Set<IType> intersectionTypes = services.intersection(new EClassifierType(
+							queryEnvironment, containedEClass), filterType);
+					for (IType type : intersectionTypes) {
+						result.add(new SequenceType(queryEnvironment, type));
 					}
 				}
 			}

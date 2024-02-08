@@ -593,6 +593,7 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
+	@Override
 	public Set<EStructuralFeature> getAllContainingEStructuralFeatures(EClass type) {
 		Set<EStructuralFeature> result = allContainingFeatures.get(type);
 
@@ -602,14 +603,14 @@ public class EPackageProvider implements IEPackageProvider {
 
 			final Set<EClass> knownECls = new HashSet<EClass>();
 			Set<EStructuralFeature> previousAdded = new LinkedHashSet<EStructuralFeature>(
-					getContainingEStructuralFeatures(type));
+					getAllContainingEStructuralFeaturesInternal(type));
 			result.addAll(previousAdded);
 			while (!previousAdded.isEmpty()) {
 				Set<EStructuralFeature> currentAdded = new LinkedHashSet<EStructuralFeature>();
 				for (EStructuralFeature feature : previousAdded) {
 					final EClass eContainingClass = feature.getEContainingClass();
 					if (!knownECls.contains(eContainingClass)) {
-						for (EStructuralFeature parentFeature : getContainingEStructuralFeatures(
+						for (EStructuralFeature parentFeature : getAllContainingEStructuralFeaturesInternal(
 								eContainingClass)) {
 							if (result.add(parentFeature)) {
 								knownECls.add(eContainingClass);
@@ -625,6 +626,29 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
+	private Set<EStructuralFeature> getAllContainingEStructuralFeaturesInternal(EClass eCls) {
+		Set<EStructuralFeature> result = containingFeatures.get(eCls);
+
+		if (result == null) {
+			result = new LinkedHashSet<EStructuralFeature>();
+			containingFeatures.put(eCls, result);
+
+			result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(eCls));
+			for (EClass superType : eCls.getEAllSuperTypes()) {
+				result.addAll(getAllContainingEStructuralFeaturesInternal(superType));
+			}
+			for (EClass subType : getAllSubTypes(eCls)) {
+				result.addAll(getAllContainingEStructuralFeaturesInternal(subType));
+			}
+			// always add EObject EClass containing EStructuralFeatures
+			result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(EcorePackage.eINSTANCE
+					.getEObject()));
+		}
+
+		return result;
+	}
+
+	@Override
 	public Set<EStructuralFeature> getContainingEStructuralFeatures(EClass eCls) {
 		Set<EStructuralFeature> result = containingFeatures.get(eCls);
 

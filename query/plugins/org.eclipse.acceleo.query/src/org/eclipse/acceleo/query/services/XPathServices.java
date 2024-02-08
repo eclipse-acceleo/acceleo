@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -163,10 +163,10 @@ public class XPathServices extends AbstractServiceProvider {
 				for (IType filterType : filterTypes) {
 					for (EClass containingEClass : queryEnvironment.getEPackageProvider()
 							.getAllContainingEClasses(receiverEClass)) {
-						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-								containingEClass), filterType);
-						if (lowerType != null) {
-							result.add(new SequenceType(queryEnvironment, lowerType));
+						final Set<IType> intersectionTypes = services.intersection(new EClassifierType(
+								queryEnvironment, containingEClass), filterType);
+						for (IType type : intersectionTypes) {
+							result.add(new SequenceType(queryEnvironment, type));
 						}
 					}
 				}
@@ -285,10 +285,10 @@ public class XPathServices extends AbstractServiceProvider {
 				for (IType filterType : filterTypes) {
 					for (EClass followingEClass : queryEnvironment.getEPackageProvider()
 							.getFollowingSiblingsEClasses(receiverEClass)) {
-						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-								followingEClass), filterType);
-						if (lowerType != null) {
-							result.add(new SequenceType(queryEnvironment, lowerType));
+						final Set<IType> intersectionTypes = services.intersection(new EClassifierType(
+								queryEnvironment, followingEClass), filterType);
+						for (IType type : intersectionTypes) {
+							result.add(new SequenceType(queryEnvironment, type));
 						}
 					}
 					// for siblings root of a resource (filtered EObject)
@@ -405,10 +405,10 @@ public class XPathServices extends AbstractServiceProvider {
 				for (IType filterType : filterTypes) {
 					for (EClass precedingEClass : queryEnvironment.getEPackageProvider()
 							.getPrecedingSiblingsEClasses(receiverEClass)) {
-						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-								precedingEClass), filterType);
-						if (lowerType != null) {
-							result.add(new SequenceType(queryEnvironment, lowerType));
+						final Set<IType> intersectionTypes = services.intersection(new EClassifierType(
+								queryEnvironment, precedingEClass), filterType);
+						for (IType type : intersectionTypes) {
+							result.add(new SequenceType(queryEnvironment, type));
 						}
 					}
 					// for siblings root of a resource (filtered EObject)
@@ -525,10 +525,10 @@ public class XPathServices extends AbstractServiceProvider {
 				for (IType filterType : filterTypes) {
 					for (EClass siblingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
 							receiverEClass)) {
-						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-								siblingEClass), filterType);
-						if (lowerType != null) {
-							result.add(new SequenceType(queryEnvironment, lowerType));
+						final Set<IType> intersectionTypes = services.intersection(new EClassifierType(
+								queryEnvironment, siblingEClass), filterType);
+						for (IType type : intersectionTypes) {
+							result.add(new SequenceType(queryEnvironment, type));
 						}
 					}
 					// for siblings root of a resource (filtered EObject)

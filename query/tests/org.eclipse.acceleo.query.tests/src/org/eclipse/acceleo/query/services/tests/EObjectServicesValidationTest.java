@@ -31,6 +31,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
+import container.ContainerPackage;
+
 /**
  * EObject services validation tests.
  * 
@@ -1951,6 +1953,23 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EObject.class)) };
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
+		}
+	}
+
+	@Test
+	public void eAllContentsNotContainedSuperClassFilter() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			getQueryEnvironment().registerEPackage(ContainerPackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {eClassifierType(ContainerPackage.eINSTANCE
+					.getContainer()), eClassifierLiteralType(ContainerPackage.eINSTANCE.getAbstract()) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(
+					ContainerPackage.eINSTANCE.getConcrete())) };
+
+			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}

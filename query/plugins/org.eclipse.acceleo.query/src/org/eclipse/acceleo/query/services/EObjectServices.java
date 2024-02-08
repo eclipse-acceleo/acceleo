@@ -409,11 +409,9 @@ public class EObjectServices extends AbstractServiceProvider {
 				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
 						.getAllContainingEClasses(receiverEClass)) {
 					for (IType filterType : filterTypes) {
-						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-								containingEClass), filterType);
-						if (lowerType != null) {
-							result.add(lowerType);
-						}
+						final Set<IType> intersectionTypes = services.intersection(new EClassifierType(
+								queryEnvironment, containingEClass), filterType);
+						result.addAll(intersectionTypes);
 					}
 				}
 				if (result.isEmpty()) {
@@ -499,18 +497,14 @@ public class EObjectServices extends AbstractServiceProvider {
 				final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final IType lowerSelfType = services.lower(argTypes.get(0), argTypes.get(1));
-			if (lowerSelfType != null) {
-				result.add(lowerSelfType);
-			}
+			final Set<IType> intersectionSelfTypes = services.intersection(argTypes.get(0), argTypes.get(1));
+			result.addAll(intersectionSelfTypes);
 			final IType filterType = argTypes.get(1);
 			for (EClass containingEClass : queryEnvironment.getEPackageProvider().getAllContainingEClasses(
 					receiverEClass)) {
-				final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-						containingEClass), filterType);
-				if (lowerType != null) {
-					result.add(lowerType);
-				}
+				final Set<IType> intersectionTypes = services.intersection(new EClassifierType(
+						queryEnvironment, containingEClass), filterType);
+				result.addAll(intersectionTypes);
 			}
 			if (result.isEmpty()) {
 				result.add(services.nothing(S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, filterType, argTypes
