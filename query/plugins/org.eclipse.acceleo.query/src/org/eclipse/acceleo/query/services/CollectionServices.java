@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,9 @@ public class CollectionServices extends AbstractServiceProvider {
 				|| "reverse".equals(publicMethod.getName())) {
 			result = new FirstCollectionTypeService(publicMethod, this, forWorkspace);
 		} else if ("sortedBy".equals(publicMethod.getName())) {
-			result = new FirstCollectionTypeService(publicMethod, this, forWorkspace);
+			result = new SortedByService(publicMethod, this, forWorkspace);
+		} else if ("isUnique".equals(publicMethod.getName())) {
+			result = new IsUniqueService(publicMethod, this, forWorkspace);
 		} else if ("reject".equals(publicMethod.getName())) {
 			result = new RejectService(publicMethod, this, forWorkspace);
 		} else if ("select".equals(publicMethod.getName())) {

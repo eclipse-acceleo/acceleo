@@ -1,7 +1,7 @@
 // Generated from Query.g4 by ANTLR 4.10.1
 
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -293,18 +293,6 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIterationCall(QueryParser.IterationCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIterationCall(QueryParser.IterationCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterServiceCall(QueryParser.ServiceCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -329,13 +317,13 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCollectionIterator(QueryParser.CollectionIteratorContext ctx) { }
+	@Override public void enterArguments(QueryParser.ArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCollectionIterator(QueryParser.CollectionIteratorContext ctx) { }
+	@Override public void exitArguments(QueryParser.ArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -348,6 +336,18 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpressionSequence(QueryParser.ExpressionSequenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLambda(QueryParser.LambdaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLambda(QueryParser.LambdaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

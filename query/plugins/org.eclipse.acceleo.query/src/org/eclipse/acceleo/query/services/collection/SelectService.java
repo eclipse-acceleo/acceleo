@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,34 +51,41 @@ public class SelectService extends AbstractCollectionService {
 	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
-		final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-		final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
-		if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
-			final Expression expression;
-			if (call != null) {
-				expression = ((Lambda)call.getArguments().get(1)).getExpression();
-			} else {
-				expression = null;
-			}
-			final Set<IType> inferredTypes;
-			if (validationResult != null) {
-				inferredTypes = validationResult.getInferredVariableTypes(expression, Boolean.TRUE).get(
-						lambdaType.getLambdaEvaluatorName());
-			} else {
-				inferredTypes = null;
-			}
-			if (inferredTypes == null) {
-				result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-			} else {
-				for (IType inferredType : inferredTypes) {
-					result.add(createReturnCollectionWithType(queryEnvironment, inferredType));
+
+		if (argTypes.get(1) instanceof LambdaType) {
+			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
+			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
+				final Expression expression;
+				if (call != null) {
+					expression = ((Lambda)call.getArguments().get(1)).getExpression();
+				} else {
+					expression = null;
 				}
+				final Set<IType> inferredTypes;
+				if (validationResult != null) {
+					inferredTypes = validationResult.getInferredVariableTypes(expression, Boolean.TRUE).get(
+							lambdaType.getLambdaEvaluatorName());
+				} else {
+					inferredTypes = null;
+				}
+				if (inferredTypes == null) {
+					result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes
+							.get(0)).getCollectionType()));
+				} else {
+					for (IType inferredType : inferredTypes) {
+						result.add(createReturnCollectionWithType(queryEnvironment, inferredType));
+					}
+				}
+			} else {
+				result.add(createReturnCollectionWithType(queryEnvironment, services.nothing(
+						"expression in a select must return a boolean")));
 			}
 		} else {
 			result.add(createReturnCollectionWithType(queryEnvironment, services.nothing(
-					"expression in a select must return a boolean")));
+					"The %s service takes a lambda as parameter: v | v...", call.getServiceName())));
 		}
+
 		return result;
 	}
 }

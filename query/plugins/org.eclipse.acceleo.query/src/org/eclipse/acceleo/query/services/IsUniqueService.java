@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.query.services.collection;
+package org.eclipse.acceleo.query.services;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
@@ -19,49 +19,47 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.LambdaType;
 
 /**
- * Exists {@link IService}.
+ * {@link JavaMethodService} for services taking a {@link LambdaValue} as second parameter.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class BooleanLambdaService extends AbstractCollectionService {
+public class IsUniqueService extends JavaMethodService {
 
 	/**
-	 * Constructor.
+	 * Creates a new service instance given a method and an instance.
 	 * 
-	 * @param serviceMethod
+	 * @param method
 	 *            the method that realizes the service
 	 * @param serviceInstance
 	 *            the instance on which the service must be called
 	 * @param forWorkspace
 	 *            tells if the {@link IService} will be used in a workspace
 	 */
-	public BooleanLambdaService(Method serviceMethod, Object serviceInstance, boolean forWorkspace) {
-		super(serviceMethod, serviceInstance, forWorkspace);
+	public IsUniqueService(Method method, Object serviceInstance, boolean forWorkspace) {
+		super(method, serviceInstance, forWorkspace);
 	}
 
 	@Override
 	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
-		final Set<IType> result = new LinkedHashSet<IType>();
+		final Set<IType> result;
 
 		if (argTypes.get(1) instanceof LambdaType) {
-			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
-			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
-				result.addAll(super.getType(call, services, validationResult, queryEnvironment, argTypes));
-			} else {
-				result.add(services.nothing("expression in %s must return a boolean", getName()));
-			}
+			result = super.getType(call, services, validationResult, queryEnvironment, argTypes);
 		} else {
+			result = new LinkedHashSet<>();
 			result.add(services.nothing("The %s service takes a lambda as parameter: v | v...", call
 					.getServiceName()));
 		}
 
 		return result;
 	}
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -144,11 +144,11 @@ public class AstSerializerTests {
 		res.add("1 - -1");
 		res.add("1 / -1");
 
-		res.add("self._isUnique");
-		res.add("self._isUnique()");
-		res.add("self._isUnique(a)");
-		res.add("self->_isUnique()");
-		res.add("self->_isUnique(a)");
+		res.add("self._endif");
+		res.add("self._endif()");
+		res.add("self._endif(a)");
+		res.add("self->_endif()");
+		res.add("self->_endif(a)");
 		res.add("_Real::_String");
 		res.add("_Real::_String::_Integer");
 

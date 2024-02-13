@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,11 +59,17 @@ public class CollectService extends AbstractCollectionService {
 				.getCollectionType() instanceof NothingType) {
 			result.add(receiverType);
 		} else {
-			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-			// flatten if needed
-			result.add(createReturnCollectionWithType(queryEnvironment, flatten(lambdaType
-					.getLambdaExpressionType())));
+			if (argTypes.get(1) instanceof LambdaType) {
+				final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+				// flatten if needed
+				result.add(createReturnCollectionWithType(queryEnvironment, flatten(lambdaType
+						.getLambdaExpressionType())));
+			} else {
+				result.add(createReturnCollectionWithType(queryEnvironment, services.nothing(
+						"The %s service takes a lambda as parameter: v | v...", call.getServiceName())));
+			}
 		}
+
 		return result;
 	}
 

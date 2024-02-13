@@ -51,30 +51,37 @@ public class AnyService extends AbstractCollectionService {
 	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
-		final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-		final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
-		if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
-			final Expression expression;
-			if (call != null) {
-				expression = ((Lambda)call.getArguments().get(1)).getExpression();
+
+		if (argTypes.get(1) instanceof LambdaType) {
+			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
+			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
+				final Expression expression;
+				if (call != null) {
+					expression = ((Lambda)call.getArguments().get(1)).getExpression();
+				} else {
+					expression = null;
+				}
+				final Set<IType> inferredTypes;
+				if (validationResult != null) {
+					inferredTypes = validationResult.getInferredVariableTypes(expression, Boolean.TRUE).get(
+							lambdaType.getLambdaEvaluatorName());
+				} else {
+					inferredTypes = null;
+				}
+				if (inferredTypes == null) {
+					result.add(((ICollectionType)argTypes.get(0)).getCollectionType());
+				} else {
+					result.addAll(inferredTypes);
+				}
 			} else {
-				expression = null;
-			}
-			final Set<IType> inferredTypes;
-			if (validationResult != null) {
-				inferredTypes = validationResult.getInferredVariableTypes(expression, Boolean.TRUE).get(
-						lambdaType.getLambdaEvaluatorName());
-			} else {
-				inferredTypes = null;
-			}
-			if (inferredTypes == null) {
-				result.add(((ICollectionType)argTypes.get(0)).getCollectionType());
-			} else {
-				result.addAll(inferredTypes);
+				result.add(services.nothing("expression in an any must return a boolean"));
 			}
 		} else {
-			result.add(services.nothing("expression in an any must return a boolean"));
+			result.add(services.nothing("The %s service takes a lambda as parameter: v | v...", call
+					.getServiceName()));
 		}
+
 		return result;
 	}
 }

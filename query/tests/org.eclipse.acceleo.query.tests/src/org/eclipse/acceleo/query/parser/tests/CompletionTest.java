@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -331,9 +331,9 @@ public class CompletionTest {
 	public void selfSelectTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, variableTypes);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myEClass | ");
+		assertCompletion(completionResult, 132, "", "", 13, 0, "myEClass | ");
 		final ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
-				.get(0);
+				.get(131);
 		assertEquals(true, proposal instanceof VariableDeclarationCompletionProposal);
 		assertEquals("myEClass | ".length(), proposal.getCursorOffset());
 	}
@@ -650,11 +650,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 1, "", "", 14, 0, "myEObject | ");
+		assertCompletion(completionResult, 131, "", "", 14, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -666,11 +665,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 1, "", "", 14, 0, "myEObject | ");
+		assertCompletion(completionResult, 131, "", "", 14, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -682,11 +680,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 1, "", "", 14, 0, "myNothing | ");
+		assertCompletion(completionResult, 131, "", "", 14, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -698,11 +695,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 1, "", "", 14, 0, "myNothing | ");
+		assertCompletion(completionResult, 131, "", "", 14, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -714,11 +710,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -730,11 +725,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -746,11 +740,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -762,11 +755,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -778,11 +770,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -794,11 +785,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -810,11 +800,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -826,11 +815,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -1044,7 +1032,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(a | true ", 22, types);
 
-		assertCompletion(completionResult, 12, "", "", 22, 0, "and ", "or ", "implies ");
+		assertCompletion(completionResult, 11, "", "", 22, 0, "and ", "or ", "implies ");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
@@ -1310,7 +1298,7 @@ public class CompletionTest {
 
 		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
 
-		assertCompletion(completionResult, 1, "isUni", "", 5, 5, "_isUnique");
+		assertCompletion(completionResult, 1, "isUni", "", 5, 5, "isUnique");
 	}
 
 	@Test
@@ -1327,7 +1315,7 @@ public class CompletionTest {
 
 		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
 
-		assertCompletion(completionResult, 1, "_isUni", "", 5, 6, "_isUnique");
+		assertCompletion(completionResult, 1, "_isUni", "", 5, 6, "isUnique");
 	}
 
 	@Test
@@ -1344,7 +1332,7 @@ public class CompletionTest {
 
 		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
 
-		assertCompletion(completionResult, 1, "selec", "", 5, 5, "_select()");
+		assertCompletion(completionResult, 1, "selec", "", 5, 5, "select()");
 	}
 
 	@Test
@@ -1361,7 +1349,7 @@ public class CompletionTest {
 
 		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
 
-		assertCompletion(completionResult, 1, "_selec", "", 5, 6, "_select()");
+		assertCompletion(completionResult, 1, "_selec", "", 5, 6, "select()");
 	}
 
 	@Test

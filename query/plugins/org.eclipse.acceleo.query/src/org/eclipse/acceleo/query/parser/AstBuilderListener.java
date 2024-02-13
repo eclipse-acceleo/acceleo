@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,9 +63,9 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.QueryParser.AddContext;
 import org.eclipse.acceleo.query.parser.QueryParser.AndContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ArgumentsContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BindingContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BooleanTypeContext;
-import org.eclipse.acceleo.query.parser.QueryParser.CallExpContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallOrApplyContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ClassifierSetTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeContext;
@@ -85,7 +85,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.FeatureContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ImpliesContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IntTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IntegerLitContext;
-import org.eclipse.acceleo.query.parser.QueryParser.IterationCallContext;
+import org.eclipse.acceleo.query.parser.QueryParser.LambdaContext;
 import org.eclipse.acceleo.query.parser.QueryParser.LetExprContext;
 import org.eclipse.acceleo.query.parser.QueryParser.LiteralContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MinContext;
@@ -365,8 +365,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line,
 				int charPositionInLine, String msg, RecognitionException e) {
 			if (e != null) {
-				if (e.getCtx() instanceof IterationCallContext) {
-					iterationCallContextError(e);
+				if (e.getCtx() instanceof ArgumentsContext) {
+					argumentsContextError(e);
 				} else if (e.getCtx() instanceof TypeLiteralContext) {
 					typeLiteralContextError(offendingSymbol, msg, e);
 				} else if (e.getCtx() instanceof LiteralContext) {
@@ -375,8 +375,8 @@ public class AstBuilderListener extends QueryBaseListener {
 					classifierTypeRuleContextError(offendingSymbol, msg, e);
 				} else if (e.getCtx() instanceof VariableDefinitionContext) {
 					variableDefinitionContextError(offendingSymbol, e);
-				} else if (e.getCtx() instanceof CallExpContext) {
-					callExpContextError(offendingSymbol, e);
+				} else if (e.getCtx() instanceof ServiceCallContext) {
+					serviceCallContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof NavigationSegmentContext) {
 					navigationSegmentContextError(offendingSymbol);
 				} else if (e.getCtx() instanceof BindingContext) {
@@ -427,7 +427,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
 						INVALID_TYPE_LITERAL, ctx.getText()), new Object[] {errorEClassifierTypeLiteral }));
 				errors.add(errorEClassifierTypeLiteral);
-				final Expression variableExpression = popExpression();
+				final Expression variableExpression = lambdaVariableExpression.peek();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
 						errorEClassifierTypeLiteral, variableExpression);
 				setPositions(variableDeclaration, ctx.start, (Token)offendingSymbol);
@@ -450,22 +450,24 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 
 		/**
-		 * {@link IterationCallContext} error case.
+		 * {@link ArgumentsContext} error case.
 		 * 
 		 * @param e
-		 *            the {@link RecognitionException}
+		 *            the {@link ArgumentsContext}
 		 */
-		private void iterationCallContextError(RecognitionException e) {
-			if (e.getCtx().getChildCount() == 0) {
-				errorRule = QueryParser.RULE_expression;
-				final ErrorExpression errorExpression = builder.errorExpression();
-				pushError(errorExpression, MISSING_EXPRESSION);
-				final int position = ((IterationCallContext)e.getCtx()).start.getStartIndex();
-				final int line = ((IterationCallContext)e.getCtx()).start.getLine() - 1;
-				final int column = ((IterationCallContext)e.getCtx()).start.getCharPositionInLine();
-				setIdentifierPositions(errorExpression, position, line, column);
-				setPositions(errorExpression, position, line, column);
-			}
+		private void argumentsContextError(RecognitionException e) {
+			errorRule = QueryParser.RULE_expression;
+			final ErrorExpression errorExpression = builder.errorExpression();
+			pushError(errorExpression, MISSING_EXPRESSION);
+
+			final ArgumentsContext ctx = ((ArgumentsContext)e.getCtx());
+			final Token lastToken = ((TerminalNode)ctx.getChild(ctx.getChildCount() - 1)).getSymbol();
+			final int position = lastToken.getStartIndex() + lastToken.getText().length();
+			final int line = lastToken.getLine() - 1;
+			final int column = lastToken.getCharPositionInLine() + lastToken.getText().length();
+
+			setIdentifierPositions(errorExpression, position, line, column);
+			setPositions(errorExpression, position, line, column);
 		}
 
 		/**
@@ -487,7 +489,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
 						INVALID_TYPE_LITERAL, msg), new Object[] {type }));
 				errors.add(type);
-				final Expression variableExpression = popExpression();
+				final Expression variableExpression = lambdaVariableExpression.peek();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
 						type, variableExpression);
 				setPositions(variableDeclaration, ((TypeLiteralContext)e.getCtx()).start,
@@ -566,7 +568,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				} else {
 					type = null;
 				}
-				final Expression variableExpression = popExpression();
+				final Expression variableExpression = lambdaVariableExpression.peek();
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						variableName, type, variableExpression);
 				setIdentifierPositions(errorVariableDeclaration, (Token)e.getCtx().getChild(0).getPayload());
@@ -574,7 +576,7 @@ public class AstBuilderListener extends QueryBaseListener {
 						(Token)offendingSymbol);
 				pushError(errorVariableDeclaration, "incomplete variable definition");
 			} else {
-				final Expression variableExpression = popExpression();
+				final Expression variableExpression = lambdaVariableExpression.peek();
 				errorRule = QueryParser.RULE_variableDefinition;
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						null, null, variableExpression);
@@ -609,14 +611,14 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 
 		/**
-		 * {@link CallExpContext} error case.
+		 * {@link SerCalContext} error case.
 		 * 
 		 * @param offendingSymbol
 		 *            the offending symbol
 		 * @param e
 		 *            the {@link RecognitionException}
 		 */
-		private void callExpContextError(Object offendingSymbol, RecognitionException e) {
+		private void serviceCallContextError(Object offendingSymbol, RecognitionException e) {
 			errorRule = QueryParser.RULE_navigationSegment;
 			final String name;
 			if (e.getCtx().getChildCount() > 0) {
@@ -794,6 +796,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * Ast Builder.
 	 */
 	private final AstBuilder builder = new AstBuilder();
+
+	/**
+	 * The {@link Lambda} {@link VariableDeclaration#getExpression() variable declaration expression}.
+	 */
+	private Stack<Expression> lambdaVariableExpression = new Stack<>();
 
 	/**
 	 * Creates a new {@link AstBuilderListener}.
@@ -1220,11 +1227,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		push(stringLiteral);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitErrorStringLit(org.eclipse.acceleo.query.parser.QueryParser.ErrorStringLitContext)
-	 */
 	@Override
 	public void exitErrorStringLit(ErrorStringLitContext ctx) {
 		final String text = ctx.getText();
@@ -1401,7 +1403,19 @@ public class AstBuilderListener extends QueryBaseListener {
 			call.setSuperCall(isSuperCall);
 			setIdentifierPositions(call, (Token)ctx.getChild(0).getPayload());
 			setPositions(call, args[0], ctx.stop);
+		} else {
+			errorRule = NO_ERROR;
 		}
+	}
+
+	@Override
+	public void enterArguments(ArgumentsContext ctx) {
+		lambdaVariableExpression.push((Expression)stack.peek());
+	}
+
+	@Override
+	public void exitArguments(ArgumentsContext ctx) {
+		lambdaVariableExpression.pop();
 	}
 
 	/**
@@ -1490,11 +1504,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		peekCall().setType(CallType.CALLORAPPLY);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitVariableDefinition(org.eclipse.acceleo.query.parser.QueryParser.VariableDefinitionContext)
-	 */
 	@Override
 	public void exitVariableDefinition(VariableDefinitionContext ctx) {
 		// If the error flag is raised an error occurred and the variable is already
@@ -1504,12 +1513,12 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Token stop;
 			if (ctx.getChildCount() == 4) {
 				final TypeLiteral typeLiteral = popTypeLiteral();
-				final Expression variableExpression = popExpression();
+				final Expression variableExpression = lambdaVariableExpression.peek();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(), typeLiteral,
 						variableExpression);
 				stop = ((ParserRuleContext)ctx.getChild(2)).stop;
 			} else {
-				final Expression variableExpression = popExpression();
+				final Expression variableExpression = lambdaVariableExpression.peek();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(),
 						variableExpression);
 				stop = ((TerminalNode)ctx.getChild(0)).getSymbol();
@@ -1523,59 +1532,18 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitSelect(org.eclipse.acceleo.query.parser.QueryParser.SelectContext)
-	 */
 	@Override
-	public void exitIterationCall(IterationCallContext ctx) {
-		// the stack contains [variableDef, expression]
-		final String serviceName = ctx.getChild(0).getText();
-		final Expression ast = popExpression();
+	public void exitLambda(LambdaContext ctx) {
+		final Expression expression = popExpression();
 		popErrorExpression();
-		final VariableDeclaration iterator;
-		final Call call;
-		if (ast instanceof ErrorVariableDeclaration) {
-			iterator = (VariableDeclaration)ast;
-			final Lambda lambda = builder.lambda(ast, iterator);
-			setIdentifierPositions(lambda, iterator, iterator);
-			setPositions(lambda, iterator, ast);
-			call = builder.callService(serviceName, iterator.getExpression(), lambda);
-			push(call);
-		} else {
-			iterator = popVariableDeclaration();
-			final Lambda lambda = builder.lambda(ast, iterator);
-			setIdentifierPositions(lambda, iterator, iterator);
-			setPositions(lambda, iterator, ast);
-			if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
-				// at this point ANTLR can report a missing ')' even is the closing parenthesis is present
-				// so we check by hand
-				final ParserRuleContext parenthesisNode = (ParserRuleContext)ctx.getChild(ctx.getChildCount()
-						- 2).getChild(0);
-				final boolean missingParenthesis = parenthesisNode != null && !")".equals(parenthesisNode.stop
-						.getText());
-				call = builder.errorCall(serviceName, missingParenthesis, iterator.getExpression(), lambda);
-				if (missingParenthesis) {
-					pushError((Error)call, "missing ')'");
-				} else {
-					pushError((Error)call, "invalid iteration call");
-				}
-			} else {
-				call = builder.callService(serviceName, iterator.getExpression(), lambda);
-				push(call);
-			}
-		}
+		final VariableDeclaration declaration = popVariableDeclaration();
 
-		setIdentifierPositions(call, (Token)ctx.getChild(0).getChild(0).getPayload());
-		setPositions(call, iterator.getExpression(), ctx.stop);
+		final Lambda lambda = builder.lambda(expression, declaration);
+		setIdentifierPositions(lambda, declaration, declaration);
+		setPositions(lambda, declaration, expression);
+		push(lambda);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEnumLit(org.eclipse.acceleo.query.parser.QueryParser.EnumLitContext)
-	 */
 	@Override
 	public void exitEnumLit(EnumLitContext ctx) {
 		if (ctx.getChildCount() >= 5) {
@@ -1595,11 +1563,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitErrorEnumLit(org.eclipse.acceleo.query.parser.QueryParser.ErrorEnumLitContext)
-	 */
 	@Override
 	public void exitErrorEnumLit(ErrorEnumLitContext ctx) {
 		if (errorRule == NO_ERROR) {
@@ -1616,11 +1579,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitClassifierType(org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeContext)
-	 */
 	@Override
 	public void exitClassifierType(ClassifierTypeContext ctx) {
 		if (errorRule == NO_ERROR) {
@@ -1639,11 +1597,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitErrorClassifierType(org.eclipse.acceleo.query.parser.QueryParser.ErrorClassifierTypeContext)
-	 */
 	@Override
 	public void exitErrorClassifierType(ErrorClassifierTypeContext ctx) {
 		final String ePackageName = ctx.getChild(0).getText();
@@ -1665,11 +1618,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		return errorListener;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitNullLit(org.eclipse.acceleo.query.parser.QueryParser.NullLitContext)
-	 */
 	@Override
 	public void exitNullLit(NullLitContext ctx) {
 		final NullLiteral nullLiteral = builder.nullLiteral();
@@ -1679,11 +1627,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		push(nullLiteral);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitExplicitSetLit(org.eclipse.acceleo.query.parser.QueryParser.ExplicitSetLitContext)
-	 */
 	@Override
 	public void exitExplicitSetLit(ExplicitSetLitContext ctx) {
 		final SetInExtensionLiteral setInExtension = builder.setInExtension(getExpressions(ctx));
@@ -1716,11 +1659,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		return Arrays.asList(expressions);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitExplicitSeqLit(org.eclipse.acceleo.query.parser.QueryParser.ExplicitSeqLitContext)
-	 */
 	@Override
 	public void exitExplicitSeqLit(ExplicitSeqLitContext ctx) {
 		final SequenceInExtensionLiteral sequenceInExtension = builder.sequenceInExtension(getExpressions(
@@ -1731,11 +1669,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		push(sequenceInExtension);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitConditional(org.eclipse.acceleo.query.parser.QueryParser.ConditionalContext)
-	 */
 	@Override
 	public void exitConditional(ConditionalContext ctx) {
 		final int count = ctx.getChildCount();
@@ -1770,11 +1703,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		setPositions(conditional, ctx.start, ctx.stop);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitBinding(org.eclipse.acceleo.query.parser.QueryParser.BindingContext)
-	 */
 	@Override
 	public void exitBinding(BindingContext ctx) {
 		// If the error flag is raised an error occurred and the binding is already
@@ -1799,11 +1727,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitLetExpr(org.eclipse.acceleo.query.parser.QueryParser.LetExprContext)
-	 */
 	@Override
 	public void exitLetExpr(LetExprContext ctx) {
 		final Expression body;
@@ -1836,11 +1759,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		push(let);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitClassifierSetType(org.eclipse.acceleo.query.parser.QueryParser.ClassifierSetTypeContext)
-	 */
 	@Override
 	public void exitClassifierSetType(ClassifierSetTypeContext ctx) {
 		final int nbTypes = (ctx.getChildCount() + 1) / 2 - 1;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
+import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
@@ -173,11 +174,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		Collections.sort(variableNames);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorExpression(org.eclipse.acceleo.query.ast.ErrorExpression)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorExpression(ErrorExpression object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -203,11 +199,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorTypeLiteral(org.eclipse.acceleo.query.ast.ErrorTypeLiteral)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorTypeLiteral(ErrorTypeLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -224,14 +215,23 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEClassifierTypeLiteral(org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorEClassifierTypeLiteral(ErrorEClassifierTypeLiteral object) {
-		return getEClassifierCompletion(object.getEPackageName(), object.getEClassifierName(), null);
+		final List<ICompletionProposal> result = new ArrayList<>();
+
+		if (object.getEPackageName() != null && object.eContainer() instanceof ErrorCall && ((ErrorCall)object
+				.eContainer()).isMissingEndParenthesis()) {
+			result.add(new TextCompletionProposal(AstSerializer.STRING_TYPE, 0));
+			result.add(new TextCompletionProposal(AstSerializer.INTEGER_TYPE, 0));
+			result.add(new TextCompletionProposal(AstSerializer.REAL_TYPE, 0));
+			result.add(new TextCompletionProposal(AstSerializer.BOOLEAN_TYPE, 0));
+			result.add(new TextCompletionProposal("Sequence()", 1));
+			result.add(new TextCompletionProposal("OrderedSet()", 1));
+			result.add(new TextCompletionProposal("{}", 1));
+		}
+		result.addAll(getEClassifierCompletion(object.getEPackageName(), object.getEClassifierName(), null));
+
+		return result;
 	}
 
 	/**
@@ -262,11 +262,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEnumLiteral(org.eclipse.acceleo.query.ast.ErrorEnumLiteral)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -276,11 +271,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorCollectionCall(org.eclipse.acceleo.query.ast.ErrorCall)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorCall(ErrorCall object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -302,17 +292,27 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		} else {
 			if (object.getArguments().size() == 1) {
 				result.addAll(getExpressionProposals());
+				result.addAll(services.getVariableDeclarationProposals(validationResult.getPossibleTypes(
+						object.getArguments().get(0))));
 			} else {
 				final Expression firstArg = object.getArguments().get(1);
 				if (firstArg instanceof Lambda) {
 					final Lambda lambda = (Lambda)firstArg;
 					result.addAll(getExpressionTextFollows(validationResult.getPossibleTypes(lambda
 							.getExpression())));
-				} else {
-					result.add(new TextCompletionProposal(", ", 0));
+				} else if (!object.getArguments().isEmpty()) {
+					final Expression lastArgument = object.getArguments().get(object.getArguments().size()
+							- 1);
+					if (lastArgument instanceof VarRef && !variableNames.contains(((VarRef)lastArgument)
+							.getVariableName())) {
+						result.add(new TextCompletionProposal(": ", 0));
+						result.add(new TextCompletionProposal("| ", 0));
+					} else {
+						result.add(new TextCompletionProposal(", ", 0));
+						result.add(new TextCompletionProposal(")", 0));
+					}
 				}
 			}
-			result.add(new TextCompletionProposal(")", 0));
 		}
 
 		return result;
@@ -348,11 +348,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorVariableDeclaration(org.eclipse.acceleo.query.ast.ErrorVariableDeclaration)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorVariableDeclaration(ErrorVariableDeclaration object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -372,11 +367,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorStringLiteral(org.eclipse.acceleo.query.ast.ErrorStringLiteral)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorStringLiteral(ErrorStringLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -384,11 +374,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorBinding(org.eclipse.acceleo.query.ast.ErrorBinding)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorBinding(ErrorBinding object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -412,11 +397,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorConditional(org.eclipse.acceleo.query.ast.ErrorConditional)
-	 */
 	@Override
 	public List<ICompletionProposal> caseErrorConditional(ErrorConditional object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();

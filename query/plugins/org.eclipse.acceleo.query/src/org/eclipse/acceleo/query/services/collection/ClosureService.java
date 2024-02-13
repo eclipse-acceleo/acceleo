@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,21 +59,26 @@ public class ClosureService extends AbstractCollectionService {
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		final IType lambdaExpressionType = ((LambdaType)argTypes.get(1)).getLambdaExpressionType();
+		if (argTypes.get(1) instanceof LambdaType) {
+			final IType lambdaExpressionType = ((LambdaType)argTypes.get(1)).getLambdaExpressionType();
 
-		// FIXME need to make the closure on type as well... it's not possible for the moment because we
-		// need variable types...
-		final IType receiverType = argTypes.get(0);
-		if (receiverType instanceof NothingType) {
-			result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
-		} else if (receiverType instanceof ICollectionType && ((ICollectionType)receiverType)
-				.getCollectionType() instanceof NothingType) {
-			result.add(receiverType);
-		} else if (lambdaExpressionType instanceof ICollectionType) {
-			result.add(new SetType(queryEnvironment, ((ICollectionType)lambdaExpressionType)
-					.getCollectionType()));
+			// FIXME need to make the closure on type as well... it's not possible for the moment because we
+			// need variable types...
+			final IType receiverType = argTypes.get(0);
+			if (receiverType instanceof NothingType) {
+				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
+			} else if (receiverType instanceof ICollectionType && ((ICollectionType)receiverType)
+					.getCollectionType() instanceof NothingType) {
+				result.add(receiverType);
+			} else if (lambdaExpressionType instanceof ICollectionType) {
+				result.add(new SetType(queryEnvironment, ((ICollectionType)lambdaExpressionType)
+						.getCollectionType()));
+			} else {
+				result.add(new SetType(queryEnvironment, lambdaExpressionType));
+			}
 		} else {
-			result.add(new SetType(queryEnvironment, lambdaExpressionType));
+			result.add(services.nothing("The %s service takes a lambda as parameter: v | v...", call
+					.getServiceName()));
 		}
 
 		return result;

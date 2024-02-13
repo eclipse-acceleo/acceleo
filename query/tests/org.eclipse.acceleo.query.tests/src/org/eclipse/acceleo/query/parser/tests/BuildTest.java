@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
-import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -2027,26 +2026,14 @@ public class BuildTest {
 		assertEquals("select", ((Call)ast).getServiceName());
 		assertFalse(((Call)ast).isSuperCall());
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
-		assertEquals(2, ((Call)ast).getArguments().size());
+		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 13, 0, 13, 13, 0, 13, ((Call)ast).getArguments().get(1));
-		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
-		assertExpression(build, ErrorExpression.class, 13, 0, 13, 13, 0, 13, lambda.getExpression());
-		assertEquals(1, lambda.getParameters().size());
-		assertEquals(1, lambda.getParameters().size());
-		assertVariableDeclaration(build, 13, 13, (VariableDeclaration)lambda.getParameters().get(0));
-		assertEquals(3, build.getErrors().size());
+		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(3, build.getDiagnostic().getChildren().size());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing variable declaration", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
-		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
-		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
-		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
-		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -2129,27 +2116,18 @@ public class BuildTest {
 		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 0, 0, 4, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 17, 0, 17, 17, 0, 17, ((Call)ast).getArguments().get(1));
-		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
-				.get(0)).getName());
-		assertExpression(build, ErrorTypeLiteral.class, 17, 0, 17, 17, 0, 17,
-				((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters().get(0))
-						.getType());
-		assertExpression(build, ErrorExpression.class, 17, 0, 17, 17, 0, 17, ((Lambda)((Call)ast)
-				.getArguments().get(1)).getExpression());
-		assertEquals(3, build.getErrors().size());
+		assertExpression(build, ErrorEClassifierTypeLiteral.class, 14, 0, 14, 17, 0, 17, ((Call)ast)
+				.getArguments().get(1));
+		assertEquals("a", ((ErrorEClassifierTypeLiteral)((Call)ast).getArguments().get(1)).getEPackageName());
+		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(3, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal no viable alternative at input '<EOF>'", build.getDiagnostic()
-				.getChildren().get(0).getMessage());
+		assertEquals("invalid type literal a:", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
-		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
-		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
-		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -3140,9 +3118,9 @@ public class BuildTest {
 		assertExpression(build, ErrorEClassifierTypeLiteral.class, 44, 0, 44, 56, 0, 56, lambda
 				.getParameters().get(0).getType());
 
-		assertEquals(4, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(4, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal ecore::|a", build.getDiagnostic().getChildren().get(0)
 				.getMessage());
@@ -3212,7 +3190,7 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid iteration call", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
@@ -3227,19 +3205,11 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 0, 0, 19, 0, 19, ((Call)ast).getArguments()
 				.get(0));
-		assertExpression(build, Lambda.class, 25, 0, 25, 26, 0, 26, ((Call)ast).getArguments().get(1));
-		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
-		assertExpression(build, IntegerLiteral.class, 25, 0, 25, 26, 0, 26, lambda.getExpression());
-		assertEquals(1, ((IntegerLiteral)lambda.getExpression()).getValue());
-		assertEquals(1, lambda.getParameters().size());
-		assertTrue(lambda.getParameters().get(0) instanceof ErrorVariableDeclaration);
+		assertExpression(build, IntegerLiteral.class, 25, 0, 25, 26, 0, 26, ((Call)ast).getArguments().get(
+				1));
 
-		assertEquals(1, build.getErrors().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing variable declaration", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 	}
 
 	@Test
@@ -3287,10 +3257,22 @@ public class BuildTest {
 		AstResult build = engine.build("var->select(oclIsKindOf(String) or oclIsKindOf(Integer))");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorCall.class, 0, 0, 0, 56, 0, 56, ast);
-		assertEquals("select", ((ErrorCall)ast).getServiceName());
-		assertEquals(CallType.COLLECTIONCALL, ((ErrorCall)ast).getType());
-		assertFalse(((ErrorCall)ast).isMissingEndParenthesis());
+		assertExpression(build, Or.class, 0, 0, 0, 46, 0, 46, ast);
+		assertEquals("or", ((Or)ast).getServiceName());
+		assertEquals(CallType.CALLSERVICE, ((Or)ast).getType());
+
+		final Expression arg1 = ((Or)ast).getArguments().get(0);
+		assertExpression(build, ErrorCall.class, 0, 0, 0, 24, 0, 24, arg1);
+		assertEquals("select", ((ErrorCall)arg1).getServiceName());
+		assertEquals(2, ((ErrorCall)arg1).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 3, 0, 3, ((ErrorCall)arg1).getArguments().get(0));
+		assertEquals("var", ((VarRef)((ErrorCall)arg1).getArguments().get(0)).getVariableName());
+		assertExpression(build, VarRef.class, 12, 0, 12, 23, 0, 23, ((ErrorCall)arg1).getArguments().get(1));
+		assertEquals("oclIsKindOf", ((VarRef)((ErrorCall)arg1).getArguments().get(1)).getVariableName());
+
+		final Expression arg2 = ((Or)ast).getArguments().get(1);
+		assertExpression(build, VarRef.class, 35, 0, 35, 46, 0, 46, arg2);
+		assertEquals("oclIsKindOf", ((VarRef)arg2).getVariableName());
 	}
 
 	@Test
@@ -3298,18 +3280,14 @@ public class BuildTest {
 		AstResult build = engine.build("var->select()");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorCall.class, 0, 0, 0, 13, 0, 13, ast);
-		assertEquals("select", ((ErrorCall)ast).getServiceName());
-		assertEquals(CallType.COLLECTIONCALL, ((ErrorCall)ast).getType());
-		assertFalse(((ErrorCall)ast).isMissingEndParenthesis());
-		assertEquals(2, ((ErrorCall)ast).getArguments().size());
-		assertExpression(build, VarRef.class, 0, 0, 0, 3, 0, 3, ((ErrorCall)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 12, 0, 12, 12, 0, 12, ((ErrorCall)ast).getArguments().get(1));
-		final Lambda lambda = (Lambda)((ErrorCall)ast).getArguments().get(1);
-		assertEquals(1, lambda.getParameters().size());
-		assertTrue(lambda.getParameters().get(0) instanceof ErrorVariableDeclaration);
-		assertEquals(null, ((ErrorVariableDeclaration)lambda.getParameters().get(0)).getName());
-		assertExpression(build, ErrorExpression.class, 12, 0, 12, 12, 0, 12, lambda.getExpression());
+		assertExpression(build, Call.class, 0, 0, 0, 13, 0, 13, ast);
+		assertEquals("select", ((Call)ast).getServiceName());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 0, 0, 3, 0, 3, ((Call)ast).getArguments().get(0));
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 	}
 
 	@Test
@@ -3424,15 +3402,7 @@ public class BuildTest {
 	public void missingLambdaVariableWithExpression() {
 		AstResult build = engine.build("self->select(a.startsWith(' '))");
 
-		// TODO the returned AST is the startWith call. It should not be a problem since and error is
-		// reported.
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("incomplete variable definition", build.getDiagnostic().getChildren().get(0)
-				.getMessage());
-		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-		assertExpression(build, ErrorVariableDeclaration.class, 13, 0, 13, 15, 0, 15, build.getErrors().get(
-				0));
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test

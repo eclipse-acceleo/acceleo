@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ grammar Query;
 
 @header {
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,17 +60,18 @@ compOp :     '<='
 	  		|'>'
 ;
 navigationSegment :     '.'Ident #Feature
-				      | '.' callExp  #CallOrApply
-				      | '->' callExp #CollectionCall
+				      | '.' serviceCall  #CallOrApply
+				      | '->' serviceCall #CollectionCall
 ;      
-callExp :     collectionIterator '(' variableDefinition lambdaExpression ')'  #IterationCall
-			| 'super:'?Ident'(' expressionSequence ')'    #ServiceCall
+serviceCall : 'super:'?Ident'(' arguments ')'
 ;
 lambdaExpression : expression
 ;
-collectionIterator : 'select' | 'reject' | 'collect' | 'any' | 'exists' | 'forAll' | 'isUnique' | 'one' | 'sortedBy' | 'closure'
+arguments : ((expression | lambda) (',' (expression | lambda))*)?
 ;
 expressionSequence : (expression (',' expression)*)?
+;
+lambda : variableDefinition lambdaExpression
 ;
 variableDefinition : Ident (':' typeLiteral)? '|'
 ;

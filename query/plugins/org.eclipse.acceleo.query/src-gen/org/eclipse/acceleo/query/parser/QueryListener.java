@@ -1,7 +1,7 @@
 // Generated from Query.g4 by ANTLR 4.10.1
 
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -277,26 +277,12 @@ public interface QueryListener extends ParseTreeListener {
 	 */
 	void exitCollectionCall(QueryParser.CollectionCallContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code IterationCall}
-	 * labeled alternative in {@link QueryParser#callExp}.
-	 * @param ctx the parse tree
-	 */
-	void enterIterationCall(QueryParser.IterationCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code IterationCall}
-	 * labeled alternative in {@link QueryParser#callExp}.
-	 * @param ctx the parse tree
-	 */
-	void exitIterationCall(QueryParser.IterationCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code ServiceCall}
-	 * labeled alternative in {@link QueryParser#callExp}.
+	 * Enter a parse tree produced by {@link QueryParser#serviceCall}.
 	 * @param ctx the parse tree
 	 */
 	void enterServiceCall(QueryParser.ServiceCallContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ServiceCall}
-	 * labeled alternative in {@link QueryParser#callExp}.
+	 * Exit a parse tree produced by {@link QueryParser#serviceCall}.
 	 * @param ctx the parse tree
 	 */
 	void exitServiceCall(QueryParser.ServiceCallContext ctx);
@@ -311,15 +297,15 @@ public interface QueryListener extends ParseTreeListener {
 	 */
 	void exitLambdaExpression(QueryParser.LambdaExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link QueryParser#collectionIterator}.
+	 * Enter a parse tree produced by {@link QueryParser#arguments}.
 	 * @param ctx the parse tree
 	 */
-	void enterCollectionIterator(QueryParser.CollectionIteratorContext ctx);
+	void enterArguments(QueryParser.ArgumentsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link QueryParser#collectionIterator}.
+	 * Exit a parse tree produced by {@link QueryParser#arguments}.
 	 * @param ctx the parse tree
 	 */
-	void exitCollectionIterator(QueryParser.CollectionIteratorContext ctx);
+	void exitArguments(QueryParser.ArgumentsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link QueryParser#expressionSequence}.
 	 * @param ctx the parse tree
@@ -330,6 +316,16 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpressionSequence(QueryParser.ExpressionSequenceContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link QueryParser#lambda}.
+	 * @param ctx the parse tree
+	 */
+	void enterLambda(QueryParser.LambdaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#lambda}.
+	 * @param ctx the parse tree
+	 */
+	void exitLambda(QueryParser.LambdaContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link QueryParser#variableDefinition}.
 	 * @param ctx the parse tree

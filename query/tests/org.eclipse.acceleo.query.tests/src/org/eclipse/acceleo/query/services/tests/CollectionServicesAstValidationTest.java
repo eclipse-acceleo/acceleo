@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -2568,19 +2568,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello'}->sortedBy(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The sortedBy service takes a lambda as parameter: v | v...",
+				19, 35);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		assertEquals(newSet(setType(classType(String.class))), types);
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals("The sortedBy service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -2823,19 +2826,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello'}->sortedBy(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The sortedBy service takes a lambda as parameter: v | v...",
+				17, 33);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		assertEquals(newSet(sequenceType(classType(String.class))), types);
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals("The sortedBy service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -2931,23 +2937,19 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
-				17, 31);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The select service takes a lambda as parameter: v | v...", 17, 31);
 
 		assertEquals(1, validationResult.getMessages(ast).size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
-				17, 31);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The select service takes a lambda as parameter: v | v...", 17, 31);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		String message = "expression in a select must return a boolean";
+		String message = "The select service takes a lambda as parameter: v | v...";
 		assertEquals(1, types.size());
 		IType type = types.iterator().next();
 		assertTrue(type instanceof SequenceType);
@@ -3117,23 +3119,19 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
-				19, 33);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The select service takes a lambda as parameter: v | v...", 19, 33);
 
 		assertEquals(1, validationResult.getMessages(ast).size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
-				19, 33);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The select service takes a lambda as parameter: v | v...", 19, 33);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		String message = "expression in a select must return a boolean";
+		String message = "The select service takes a lambda as parameter: v | v...";
 		assertEquals(1, types.size());
 		IType type = types.iterator().next();
 		assertTrue(type instanceof SetType);
@@ -3206,23 +3204,19 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
-				17, 31);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The reject service takes a lambda as parameter: v | v...", 17, 31);
 
 		assertEquals(1, validationResult.getMessages(ast).size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
-				17, 31);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The reject service takes a lambda as parameter: v | v...", 17, 31);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		String message = "expression in a reject must return a boolean";
+		String message = "The reject service takes a lambda as parameter: v | v...";
 		assertEquals(1, types.size());
 		IType type = types.iterator().next();
 		assertTrue(type instanceof SequenceType);
@@ -3332,23 +3326,19 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
-				19, 33);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The reject service takes a lambda as parameter: v | v...", 19, 33);
 
 		assertEquals(1, validationResult.getMessages(ast).size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages(ast).get(0),
-				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
-				19, 33);
+				ValidationMessageLevel.INFO,
+				"Empty collection: The reject service takes a lambda as parameter: v | v...", 19, 33);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		String message = "expression in a reject must return a boolean";
+		String message = "The reject service takes a lambda as parameter: v | v...";
 		assertEquals(1, types.size());
 		IType type = types.iterator().next();
 		assertTrue(type instanceof SetType);
@@ -3439,27 +3429,23 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello'}->collect(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The collect service takes a lambda as parameter: v | v...", 17, 32);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME this shouldn't even parse in the first place
-		assertEquals(newSet(), types);
-
-		// String message = "expression in a reject must return a boolean";
-		// assertEquals(1, types.size());
-		// IType type = types.iterator().next();
-		// assertTrue(type instanceof SequenceType);
-		// assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
-		// assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+		String message = "The collect service takes a lambda as parameter: v | v...";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
 	}
 
 	@Test
@@ -3628,27 +3614,23 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello'}->collect(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The collect service takes a lambda as parameter: v | v...", 19, 34);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME this shouldn't even parse in the first place
-		assertEquals(newSet(), types);
-
-		// String message = "expression in a reject must return a boolean";
-		// assertEquals(1, types.size());
-		// IType type = types.iterator().next();
-		// assertTrue(type instanceof SetType);
-		// assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
-		// assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+		String message = "The collect service takes a lambda as parameter: v | v...";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
 	}
 
 	@Test
@@ -3894,20 +3876,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 						.build());
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The closure service takes a lambda as parameter: v | v...", 13,
+				28);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME shouldn't parse
-		assertEquals(newSet(setType(classType(null))), types);
+		assertEquals(1, types.size());
+		final IType type = types.iterator().next();
+		assertEquals(NothingType.class, type.getClass());
+		assertEquals("The closure service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -3917,20 +3901,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The closure service takes a lambda as parameter: v | v...", 13,
+				28);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME shouldn't parse
-		assertEquals(newSet(setType(classType(null))), types);
+		assertEquals(1, types.size());
+		final IType type = types.iterator().next();
+		assertEquals(NothingType.class, type.getClass());
+		assertEquals("The closure service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -3941,20 +3927,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 						.getEPackage())).build());
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The closure service takes a lambda as parameter: v | v...", 13,
+				28);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME shouldn't parse
-		assertEquals(newSet(setType(classType(null))), types);
+		assertEquals(1, types.size());
+		final IType type = types.iterator().next();
+		assertEquals(NothingType.class, type.getClass());
+		assertEquals("The closure service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -4102,20 +4090,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 						.build());
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The closure service takes a lambda as parameter: v | v...", 15,
+				30);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME shouldn't parse
-		assertEquals(newSet(setType(classType(null))), types);
+		assertEquals(1, types.size());
+		final IType type = types.iterator().next();
+		assertEquals(NothingType.class, type.getClass());
+		assertEquals("The closure service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -4125,20 +4115,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				new VariableBuilder().addVar("pkg", classType(EPackage.class)).build());
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The closure service takes a lambda as parameter: v | v...", 15,
+				30);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME shouldn't parse
-		assertEquals(newSet(setType(classType(null))), types);
+		assertEquals(1, types.size());
+		final IType type = types.iterator().next();
+		assertEquals(NothingType.class, type.getClass());
+		assertEquals("The closure service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -4149,20 +4141,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 						.getEPackage())).build());
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The closure service takes a lambda as parameter: v | v...", 15,
+				30);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		// FIXME shouldn't parse
-		assertEquals(newSet(setType(classType(null))), types);
+		assertEquals(1, types.size());
+		final IType type = types.iterator().next();
+		assertEquals(NothingType.class, type.getClass());
+		assertEquals("The closure service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -5729,7 +5723,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->any(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in an any must return a boolean";
+		String message = "The any service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 26, 37);
@@ -5739,10 +5733,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 26, 37);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
@@ -5958,7 +5948,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->any(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in an any must return a boolean";
+		String message = "The any service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 28, 39);
@@ -5968,10 +5958,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 28, 39);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
@@ -6272,7 +6258,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->exists(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in exists must return a boolean";
+		String message = "The exists service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 26, 40);
@@ -6282,10 +6268,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 26, 40);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
@@ -6492,7 +6474,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->exists(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in exists must return a boolean";
+		String message = "The exists service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 28, 42);
@@ -6502,10 +6484,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 28, 42);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
@@ -6688,7 +6666,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in forAll must return a boolean";
+		String message = "The forAll service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 26, 40);
@@ -6698,10 +6676,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 26, 40);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
@@ -6908,7 +6882,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in forAll must return a boolean";
+		String message = "The forAll service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 28, 42);
@@ -6918,10 +6892,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 28, 42);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
@@ -7762,19 +7732,22 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->isUnique(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "The isUnique service takes a lambda as parameter: v | v...",
+				26, 42);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		assertEquals(newSet(classType(Boolean.class)), types);
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals("The isUnique service takes a lambda as parameter: v | v...", ((NothingType)type)
+				.getMessage());
 	}
 
 	@Test
@@ -7966,19 +7939,21 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->isUnique(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getMessages().size());
+		String message = "The isUnique service takes a lambda as parameter: v | v...";
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, message, 28, 44);
 
-		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(ast).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
-		assertEquals(newSet(classType(Boolean.class)), types);
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
 	}
 
 	@Test
@@ -8153,7 +8128,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->one(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in one must return a boolean";
+		String message = "The one service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 26, 37);
@@ -8163,10 +8138,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 26, 37);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
@@ -8373,7 +8344,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->one(null)");
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		String message = "expression in one must return a boolean";
+		String message = "The one service takes a lambda as parameter: v | v...";
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, message, 28, 39);
@@ -8383,10 +8354,6 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				ValidationMessageLevel.ERROR, message, 28, 39);
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(1)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).size());
-		assertEquals(0, validationResult.getMessages(((Lambda)((Call)ast).getArguments().get(1))
-				.getExpression()).size());
 
 		Set<IType> types = validationResult.getPossibleTypes(ast);
 
