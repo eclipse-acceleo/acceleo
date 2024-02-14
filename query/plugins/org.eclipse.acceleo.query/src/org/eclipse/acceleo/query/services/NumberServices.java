@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,13 +59,13 @@ public class NumberServices {
 	}
 
 	/**
-	 * Performs the substraction of the specified arguments.
+	 * Performs the subtraction of the specified arguments.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
-	 * @return the substraction of the arguments.
+	 * @return the subtraction of the arguments.
 	 */
 	public Integer sub(Integer a, Integer b) {
 		return Integer.valueOf(a.intValue() - b.intValue());
@@ -114,13 +114,13 @@ public class NumberServices {
 	}
 
 	/**
-	 * Performs the substraction of the specified arguments.
+	 * Performs the subtraction of the specified arguments.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
-	 * @return the substraction of the arguments.
+	 * @return the subtraction of the arguments.
 	 */
 
 	public Double sub(Double a, Double b) {
@@ -467,13 +467,13 @@ public class NumberServices {
 	}
 
 	/**
-	 * Performs the substraction of the specified arguments.
+	 * Performs the subtraction of the specified arguments.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
-	 * @return the substraction of the arguments.
+	 * @return the subtraction of the arguments.
 	 */
 	public Long sub(Long a, Long b) {
 		return Long.valueOf(a.longValue() - b.longValue());
@@ -522,13 +522,13 @@ public class NumberServices {
 	}
 
 	/**
-	 * Performs the substraction of the specified arguments.
+	 * Performs the subtraction of the specified arguments.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
-	 * @return the substraction of the arguments.
+	 * @return the subtraction of the arguments.
 	 */
 
 	public Float sub(Float a, Float b) {
@@ -754,7 +754,7 @@ public class NumberServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the long quotient of the division of self by i.",
+		value = "Returns the integer quotient of the division of self by i.",
 		params = {
 				@Param(name = "self", value = "The current value."),
 				@Param(name = "i", value = "The divider.")
@@ -893,6 +893,22 @@ public class NumberServices {
 
 	// @formatter:off
 	@Documentation(
+		value = "Returns the double value of the given long.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The double value.",
+		examples = {
+			@Example(expression = "1.toDouble()", result = "1.0")
+		}
+	)
+	// @formatter:on
+	public Double toDouble(Long self) {
+		return Double.valueOf(self.floatValue());
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Returns the long value of the given long.",
 		params = {
 				@Param(name = "self", value = "The current value."),
@@ -921,6 +937,166 @@ public class NumberServices {
 	// @formatter:on
 	public Long toLong(Integer self) {
 		return Long.valueOf(self.intValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the long value of the given float.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The long value.",
+		examples = {
+			@Example(expression = "1.0.toLong()", result = "1")
+		}
+	)
+	// @formatter:on
+	public Long toLong(Float self) {
+		return Long.valueOf(self.intValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the long value of the given double.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The long value.",
+		examples = {
+			@Example(expression = "1.0.toLong()", result = "1")
+		}
+	)
+	// @formatter:on
+	public Long toLong(Double self) {
+		return Long.valueOf(self.intValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the float value of the given float.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.0.toFloat()", result = "1.0")
+		}
+	)
+	// @formatter:on
+	public Float toFloat(Float self) {
+		return Float.valueOf(self.floatValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the float value of the given double.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.0.toFloat()", result = "1.0")
+		}
+	)
+	// @formatter:on
+	public Float toFloat(Double self) {
+		return Float.valueOf(self.floatValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the float value of the given Integer.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.toFloat()", result = "1.0")
+		}
+	)
+	// @formatter:on
+	public Float toFloat(Integer self) {
+		return Float.valueOf(self.floatValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the float value of the given long.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.toFloat()", result = "1.0")
+		}
+	)
+	// @formatter:on
+	public Float toFloat(Long self) {
+		return Float.valueOf(self.floatValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the Integer value of the given Integer.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.toInteger()", result = "1")
+		}
+	)
+	// @formatter:on
+	public Integer toInteger(Integer self) {
+		return Integer.valueOf(self.intValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the Integer value of the given long.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.toInteger()", result = "1")
+		}
+	)
+	// @formatter:on
+	public Integer toInteger(Long self) {
+		return Integer.valueOf(self.intValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the Integer value of the given float.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.0.toInteger()", result = "1")
+		}
+	)
+	// @formatter:on
+	public Integer toInteger(Float self) {
+		return Integer.valueOf(self.intValue());
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the Integer value of the given double.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+		},
+		result = "The float value.",
+		examples = {
+			@Example(expression = "1.0.toInteger()", result = "1")
+		}
+	)
+	// @formatter:on
+	public Integer toInteger(Double self) {
+		return Integer.valueOf(self.intValue());
 	}
 
 }
