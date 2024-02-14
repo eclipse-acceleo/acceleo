@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1014,8 +1014,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SetType(services.getQueryEnvironment(), services.nothing(
-					"Empty OrderedSet defined in extension")));
+			possibleTypes.add(new SetType(services.getQueryEnvironment(), new ClassType(services
+					.getQueryEnvironment(), null)));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
@@ -1032,8 +1032,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SequenceType(services.getQueryEnvironment(), services.nothing(
-					"Empty Sequence defined in extension")));
+			possibleTypes.add(new SequenceType(services.getQueryEnvironment(), new ClassType(services
+					.getQueryEnvironment(), null)));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);

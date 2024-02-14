@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -915,8 +915,8 @@ public class ValidationTest {
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
-		assertNothingType("Empty OrderedSet defined in extension", ((SetType)possibleType)
-				.getCollectionType());
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof ClassType);
+		assertEquals(null, ((ClassType)((SetType)possibleType).getCollectionType()).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
 
@@ -965,8 +965,8 @@ public class ValidationTest {
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof SequenceType);
-		assertNothingType("Empty Sequence defined in extension", ((SequenceType)possibleType)
-				.getCollectionType());
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof ClassType);
+		assertEquals(null, ((ClassType)((SequenceType)possibleType).getCollectionType()).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
 
