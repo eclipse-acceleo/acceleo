@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.EmptyStackException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.BaseErrorListener;
@@ -395,8 +396,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				final Integer startPosition = Integer.valueOf(((EnumLitContext)parser.getContext()).start
 						.getStartIndex());
 				final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
-				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
-						startPosition, endPosition, }));
+				diagnosticStack.addLast(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg,
+						new Object[] {startPosition, endPosition, }));
 			}
 		}
 
@@ -427,7 +428,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
 						INVALID_TYPE_LITERAL, ctx.getText()), new Object[] {errorEClassifierTypeLiteral }));
 				errors.add(errorEClassifierTypeLiteral);
-				final Expression variableExpression = lambdaVariableExpression.peek();
+				final Expression variableExpression = lambdaVariableExpression.getLast();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
 						errorEClassifierTypeLiteral, variableExpression);
 				setPositions(variableDeclaration, ctx.start, (Token)offendingSymbol);
@@ -489,7 +490,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
 						INVALID_TYPE_LITERAL, msg), new Object[] {type }));
 				errors.add(type);
-				final Expression variableExpression = lambdaVariableExpression.peek();
+				final Expression variableExpression = lambdaVariableExpression.getLast();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
 						type, variableExpression);
 				setPositions(variableDeclaration, ((TypeLiteralContext)e.getCtx()).start,
@@ -498,16 +499,16 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorExpression errorExpression = builder.errorExpression();
 				pushError(errorExpression, MISSING_EXPRESSION);
 				setPositions(errorExpression, ((TypeLiteralContext)e.getCtx()).start, (Token)offendingSymbol);
-			} else if (stack.isEmpty() || !(stack.peek() instanceof TypeLiteral)) {
+			} else if (stack.isEmpty() || !(stack.getLast() instanceof TypeLiteral)) {
 				errorRule = QueryParser.RULE_typeLiteral;
 				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral();
 				setPositions(errorTypeLiteral, ((TypeLiteralContext)e.getCtx()).start,
 						(Token)offendingSymbol);
 				pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
 			} else {
-				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
-						((TypeLiteralContext)e.getCtx()).start.getStartIndex(), ((Token)offendingSymbol)
-								.getStopIndex() + 1, }));
+				diagnosticStack.addLast(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg,
+						new Object[] {((TypeLiteralContext)e.getCtx()).start.getStartIndex(),
+								((Token)offendingSymbol).getStopIndex() + 1, }));
 			}
 		}
 
@@ -568,7 +569,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				} else {
 					type = null;
 				}
-				final Expression variableExpression = lambdaVariableExpression.peek();
+				final Expression variableExpression = lambdaVariableExpression.getLast();
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						variableName, type, variableExpression);
 				setIdentifierPositions(errorVariableDeclaration, (Token)e.getCtx().getChild(0).getPayload());
@@ -576,7 +577,7 @@ public class AstBuilderListener extends QueryBaseListener {
 						(Token)offendingSymbol);
 				pushError(errorVariableDeclaration, "incomplete variable definition");
 			} else {
-				final Expression variableExpression = lambdaVariableExpression.peek();
+				final Expression variableExpression = lambdaVariableExpression.getLast();
 				errorRule = QueryParser.RULE_variableDefinition;
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						null, null, variableExpression);
@@ -744,7 +745,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Integer startPosition = Integer.valueOf(((ParserRuleContext)parser.getContext()).start
 					.getStartIndex());
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
-			diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
+			diagnosticStack.addLast(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
 					startPosition, endPosition, }));
 		}
 	}
@@ -762,7 +763,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * The evaluation stack used to hold temporary results.
 	 */
-	private Stack<Object> stack = new Stack<Object>();
+	private Deque<Object> stack = new ArrayDeque<Object>();
 
 	/**
 	 * The last rule index if any error. see {@link QueryParser}.
@@ -782,7 +783,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * Temporary lexing warnings waiting for their {@link Expression}.
 	 */
-	private Stack<Diagnostic> diagnosticStack = new Stack<Diagnostic>();
+	private Deque<Diagnostic> diagnosticStack = new ArrayDeque<Diagnostic>();
 
 	/** Aggregated status of the parsing. */
 	private final List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
@@ -800,7 +801,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * The {@link Lambda} {@link VariableDeclaration#getExpression() variable declaration expression}.
 	 */
-	private Stack<Expression> lambdaVariableExpression = new Stack<>();
+	private Deque<Expression> lambdaVariableExpression = new ArrayDeque<>();
 
 	/**
 	 * Creates a new {@link AstBuilderListener}.
@@ -1031,10 +1032,10 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Expression expression = (Expression)pop();
 
 			if (!diagnosticStack.isEmpty()) {
-				final List<?> data = diagnosticStack.peek().getData();
+				final List<?> data = diagnosticStack.getLast().getData();
 				if (data.get(0).equals(positions.getStartPositions(expression)) && data.get(1).equals(
 						positions.getEndPositions(expression))) {
-					final Diagnostic tmpDiagnostic = diagnosticStack.pop();
+					final Diagnostic tmpDiagnostic = diagnosticStack.removeLast();
 					diagnostics.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(), tmpDiagnostic
 							.getSource(), tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(), new Object[] {
 									expression }));
@@ -1100,7 +1101,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @return the current {@link Call} at the top of the stack
 	 */
 	private Call peekCall() {
-		return (Call)stack.peek();
+		return (Call)stack.getLast();
 	}
 
 	/**
@@ -1110,7 +1111,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 *            the pushed object.
 	 */
 	private void push(Object obj) {
-		this.stack.push(obj);
+		this.stack.addLast(obj);
 	}
 
 	/**
@@ -1119,7 +1120,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @return the element at the top of the stack if any
 	 */
 	protected Object pop() {
-		final Object element = stack.pop();
+		final Object element = stack.removeLast();
 		return element;
 	}
 
@@ -1141,7 +1142,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * Pops the last {@link ErrorExpression}.
 	 */
 	private void popErrorExpression() {
-		if (!stack.isEmpty() && stack.peek() instanceof ErrorExpression) {
+		if (!stack.isEmpty() && stack.getLast() instanceof ErrorExpression) {
 			final ErrorExpression error = (ErrorExpression)pop();
 			errors.remove(error);
 			positions.remove(error);
@@ -1410,12 +1411,12 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void enterArguments(ArgumentsContext ctx) {
-		lambdaVariableExpression.push((Expression)stack.peek());
+		lambdaVariableExpression.addLast((Expression)stack.getLast());
 	}
 
 	@Override
 	public void exitArguments(ArgumentsContext ctx) {
-		lambdaVariableExpression.pop();
+		lambdaVariableExpression.removeLast();
 	}
 
 	/**
@@ -1513,12 +1514,12 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Token stop;
 			if (ctx.getChildCount() == 4) {
 				final TypeLiteral typeLiteral = popTypeLiteral();
-				final Expression variableExpression = lambdaVariableExpression.peek();
+				final Expression variableExpression = lambdaVariableExpression.getLast();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(), typeLiteral,
 						variableExpression);
 				stop = ((ParserRuleContext)ctx.getChild(2)).stop;
 			} else {
-				final Expression variableExpression = lambdaVariableExpression.peek();
+				final Expression variableExpression = lambdaVariableExpression.getLast();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(),
 						variableExpression);
 				stop = ((TerminalNode)ctx.getChild(0)).getSymbol();
@@ -1740,7 +1741,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final int column = ctx.stop.getCharPositionInLine() + ctx.stop.getText().length();
 			setPositions(body, position, line, column);
 			final List<Binding> bindingList = new ArrayList<Binding>();
-			while (!stack.isEmpty() && stack.peek() instanceof Binding) {
+			while (!stack.isEmpty() && stack.getLast() instanceof Binding) {
 				bindingList.add(popBinding());
 			}
 			bindings = bindingList.toArray(new Binding[bindingList.size()]);
