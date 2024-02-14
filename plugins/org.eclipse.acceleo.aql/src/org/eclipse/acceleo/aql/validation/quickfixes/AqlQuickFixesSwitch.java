@@ -17,6 +17,8 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -46,6 +48,7 @@ import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCall;
@@ -66,6 +69,7 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -312,13 +316,52 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
 		final IType returnType = new ClassType(queryEnvironment, String.class);
-		final List<Set<IType>> argumentTypes = new ArrayList<>();
-		for (Expression argument : call.getArguments()) {
-			argumentTypes.add(validationResult.getPossibleTypes(argument));
+		final List<Set<IType>> argumentTypes = getArgumentPossibleTypes(call);
+		final CombineIterator<IType> combineIt = new CombineIterator<>(argumentTypes);
+		while (combineIt.hasNext()) {
+			res.addAll(getAddServiceQuickFixes(call.getServiceName(), returnType, combineIt.next()));
 		}
-		final CombineIterator<IType> it = new CombineIterator<>(argumentTypes);
+
+		return res;
+	}
+
+	/**
+	 * Gets the argument possible {@link IType} for the given {@link Call}.
+	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @return the argument possible {@link IType} for the given {@link Call}
+	 */
+	private List<Set<IType>> getArgumentPossibleTypes(Call call) {
+		final List<Set<IType>> res = new ArrayList<>();
+
+		final Iterator<Expression> it = call.getArguments().iterator();
+		final Expression receiver = it.next();
+		final Set<IType> receiverPossibleTypes = validationResult.getPossibleTypes(receiver);
+		if (call.getType() == CallType.COLLECTIONCALL) {
+			final Set<IType> receiverCollectionTypes = new LinkedHashSet<>();
+			for (IType receiverPossibleType : receiverPossibleTypes) {
+				if (receiverPossibleType instanceof ICollectionType) {
+					receiverCollectionTypes.add(receiverPossibleType);
+				} else {
+					receiverCollectionTypes.add(new SetType(queryEnvironment, receiverPossibleType));
+				}
+			}
+			res.add(receiverCollectionTypes);
+		} else {
+			final Set<IType> receiverRawTypes = new LinkedHashSet<>();
+			for (IType receiverPossibleType : receiverPossibleTypes) {
+				if (receiverPossibleType instanceof ICollectionType) {
+					receiverRawTypes.add(((ICollectionType)receiverPossibleType).getCollectionType());
+				} else {
+					receiverRawTypes.add(receiverPossibleType);
+				}
+			}
+			res.add(receiverRawTypes);
+		}
 		while (it.hasNext()) {
-			res.addAll(getAddServiceQuickFixes(call.getServiceName(), returnType, it.next()));
+			final Expression argument = it.next();
+			res.add(validationResult.getPossibleTypes(argument));
 		}
 
 		return res;
