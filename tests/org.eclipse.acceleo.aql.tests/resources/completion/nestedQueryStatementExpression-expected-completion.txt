@@ -35,11 +35,29 @@ myVariable3
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+myVariable3Index
+* Description:
+Variable myVariable3Index
+* Text:
+myVariable3Index
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 myVariable4
 * Description:
 Variable myVariable4
 * Text:
 myVariable4
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+myVariable4Index
+* Description:
+Variable myVariable4Index
+* Text:
+myVariable4Index
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 

@@ -57,6 +57,7 @@ import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplat
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposalsProvider;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplates;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
@@ -577,6 +578,10 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			} else if (currentScope instanceof ForStatement) {
 				final ForStatement forStatement = (ForStatement)currentScope;
 				res.put(forStatement.getBinding().getName(), getPossibleTypes(forStatement.getBinding()));
+				final Set<IType> possibleIndexTypes = new LinkedHashSet<>();
+				possibleIndexTypes.add(new ClassType(queryEnvironment, Integer.class));
+				res.put(forStatement.getBinding().getName() + AcceleoValidator.INDEX_SUFFIX,
+						possibleIndexTypes);
 			}
 
 			if (currentScope.eContainer() instanceof AcceleoASTNode) {
@@ -615,7 +620,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 *            the {@link Variable}
 	 * @return the {@link Set} of possible {@link IType} for the given {@link Variable}
 	 */
-	private LinkedHashSet<IType> getPossibleTypes(Binding binding) {
+	private Set<IType> getPossibleTypes(Binding binding) {
 		final LinkedHashSet<IType> res;
 
 		if (binding.getInitExpression() != null) {
@@ -653,8 +658,10 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 					.getMissingAffectationSymbole() + SPACE, AcceleoPackage.Literals.BINDING));
 		} else if (errorBinding.getInitExpression().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			res.addAll(this.getAqlCompletionProposals(getVariables(errorBinding), acceleoValidationResult
-					.getValidationResult(errorBinding.getInitExpression().getAst())));
+			final AcceleoASTNode context = (AcceleoASTNode)errorBinding.eContainer()
+							.eContainer();
+			res.addAll(this.getAqlCompletionProposals(getVariables(context), acceleoValidationResult.getValidationResult(errorBinding
+							.getInitExpression().getAst())));
 		}
 
 		return res;

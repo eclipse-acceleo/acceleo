@@ -8,15 +8,6 @@ myParam
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
-myVariable
-* Description:
-Variable myVariable
-* Text:
-myVariable
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
 ecore::EAnnotation
 * Description:
 EClass named EAnnotation in ecore(http://www.eclipse.org/emf/2002/Ecore)
