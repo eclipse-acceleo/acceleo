@@ -172,9 +172,9 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 						AcceleoDebugger.OPTION_MAP_TYPE);
 			} else {
 				options = new LinkedHashMap<>();
-				if (!options.containsKey(AcceleoUtil.NEW_LINE_OPTION)) {
-					options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
-				}
+				options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+				// TODO add GUI
+				options.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
 			}
 			optionsString = GSON.toJson(options);
 			initialOptionsString = optionsString;

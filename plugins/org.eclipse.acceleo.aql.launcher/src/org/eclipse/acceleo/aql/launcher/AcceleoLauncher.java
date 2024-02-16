@@ -98,11 +98,27 @@ public class AcceleoLauncher implements IApplication {
 	@Option(name = "-consoleLog", usage = "Log messages in the console.")
 	private boolean consoleLog;
 
+	/**
+	 * Output log URI.
+	 */
+	@Option(name = "-log", usage = "Specifies the module which main template will be executed.", metaVar = "LOG", handler = StringOptionHandler.class, required = false)
+	private String log;
+
 	/** List of URIs parsed from the {@link #models} argument. */
 	private List<URI> modelURIs;
 
 	/** Bundle containing our main module for this generation. */
 	private Bundle bundle;
+
+	/**
+	 * The target {@link URI}.
+	 */
+	private URI targetURI;
+
+	/**
+	 * The log {@link URI} if any, <code>null</code> otherwise.
+	 */
+	private URI logURI;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -141,7 +157,9 @@ public class AcceleoLauncher implements IApplication {
 						applicationResult = APPLICATION_ERROR;
 						break;
 				}
-				printDiagnostic(stream, result.getDiagnostic(), "");
+				if (consoleLog) {
+					printDiagnostic(stream, result.getDiagnostic(), "");
+				}
 			}
 			Set<URI> generatedFiles = result.getGeneratedFiles();
 			System.out.println("Generated " + generatedFiles.size() + " in " + target);
@@ -183,7 +201,13 @@ public class AcceleoLauncher implements IApplication {
 					+ " must be available in the target platform.");
 		}
 		try {
-			URI.createURI(target);
+			targetURI = URI.createURI(target);
+		} catch (IllegalArgumentException e) {
+			throw new CmdLineException(parser, e);
+		}
+
+		try {
+			logURI = AcceleoUtil.getlogURI(targetURI, log);
 		} catch (IllegalArgumentException e) {
 			throw new CmdLineException(parser, e);
 		}
@@ -241,7 +265,8 @@ public class AcceleoLauncher implements IApplication {
 			} else {
 				mainModule = null;
 			}
-			evaluate(evaluator, queryEnvironment, mainModule, resourceSetForModels);
+
+			evaluate(evaluator, queryEnvironment, mainModule, resourceSetForModels, targetURI, logURI);
 			return evaluator.getGenerationResult();
 		} finally {
 			AQLUtils.cleanResourceSetForModels(resolver, resourceSetForModels);
@@ -250,11 +275,11 @@ public class AcceleoLauncher implements IApplication {
 	}
 
 	private void evaluate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
-			Module mainModule, ResourceSet modelResourceSet) {
+			Module mainModule, ResourceSet modelResourceSet, URI targetURI, URI logURI) {
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResourceSet
 				.getURIConverter());
-		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, strategy, URI
-				.createURI(target));
+		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, strategy, targetURI,
+				logURI);
 	}
 
 	private void printDiagnostic(PrintStream stream, Diagnostic diagnostic, String indentation) {

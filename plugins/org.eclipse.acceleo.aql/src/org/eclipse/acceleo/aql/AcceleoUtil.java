@@ -14,6 +14,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +31,7 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
@@ -41,6 +43,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.acceleo.util.AcceleoSwitch;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -64,6 +67,11 @@ public final class AcceleoUtil {
 	 * The new line {@link String} option name.
 	 */
 	public static final String NEW_LINE_OPTION = "newLine";
+
+	/**
+	 * The log URI {@link URI} {@link String} option name.
+	 */
+	public static final String LOG_URI_OPTION = "logURI";
 
 	/**
 	 * "self".
@@ -123,11 +131,14 @@ public final class AcceleoUtil {
 	 *            the {@link IAcceleoGenerationStrategy}
 	 * @param destination
 	 *            destination {@link URI}
+	 * @param logURI
+	 *            the {@link URI} for loggin if nay, <code>null</code> otherwise
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
-			Module module, Resource model, IAcceleoGenerationStrategy generationStrategy, URI destination) {
+			Module module, Resource model, IAcceleoGenerationStrategy generationStrategy, URI destination,
+			URI logURI) {
 		generate(evaluator, queryEnvironment, module, Collections.singletonList(model), generationStrategy,
-				destination);
+				destination, logURI);
 	}
 
 	/**
@@ -145,17 +156,19 @@ public final class AcceleoUtil {
 	 *            the {@link IAcceleoGenerationStrategy}
 	 * @param destination
 	 *            the destination {@link URI}
+	 * @param logURI
+	 *            the {@link URI} for loggin if nay, <code>null</code> otherwise
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, ResourceSet resourceSet, IAcceleoGenerationStrategy generationStrategy,
-			URI destination) {
+			URI destination, URI logURI) {
 		generate(evaluator, queryEnvironment, module, resourceSet.getResources(), generationStrategy,
-				destination);
+				destination, logURI);
 	}
 
 	private static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, List<Resource> resources, IAcceleoGenerationStrategy generationStrategy,
-			URI destination) {
+			URI destination, URI logURI) {
 
 		final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
 		final Template main = getMainTemplate(module);
@@ -187,7 +200,35 @@ public final class AcceleoUtil {
 				variables.put(parameterName, value);
 				evaluator.generate(module, variables, generationStrategy, destination);
 			}
+
+			if (logURI != null && evaluator.getGenerationResult().getDiagnostic()
+					.getSeverity() != Diagnostic.OK) {
+				// TODO provide Charset and line delimiter
+				try {
+					final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
+							StandardCharsets.UTF_8, parameterName);
+					printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "", System
+							.lineSeparator());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
 			generationStrategy.terminate();
+		}
+	}
+
+	private static void printDiagnostic(IAcceleoWriter writer, Diagnostic diagnostic, String indentation,
+			String newLine) {
+		String nextIndentation = indentation;
+		if (diagnostic.getMessage() != null) {
+			writer.append(indentation);
+			writer.append(diagnostic.getMessage() + newLine);
+			nextIndentation += "\t";
+		}
+		for (Diagnostic child : diagnostic.getChildren()) {
+			printDiagnostic(writer, child, nextIndentation, newLine);
 		}
 	}
 
@@ -331,6 +372,38 @@ public final class AcceleoUtil {
 	public static void cleanServices(IReadOnlyQueryEnvironment queryEnvironment,
 			ResourceSet resourceSetForModels) {
 		AQLUtils.cleanServices(LANGUAGE_NAME, queryEnvironment, resourceSetForModels);
+	}
+
+	/**
+	 * Gets the log {@link URI} for the given target {@link URI} and log {@link String}.
+	 * 
+	 * @param targetURI
+	 *            the target {@link URI}
+	 * @param log
+	 *            the log {@link String}
+	 * @return the log {@link URI} for the given target {@link URI} and log {@link String}
+	 * @throws IllegalArgumentException
+	 *             if {@link URI} convertion fails
+	 */
+	public static URI getlogURI(URI targetURI, String log) throws IllegalArgumentException {
+		final URI res;
+
+		if (log != null) {
+			final URI uri = URI.createURI(log);
+			if (uri.isRelative()) {
+				if (targetURI.isRelative()) {
+					res = targetURI.appendSegments(uri.segments());
+				} else {
+					res = uri.resolve(targetURI);
+				}
+			} else {
+				res = uri;
+			}
+		} else {
+			res = null;
+		}
+
+		return res;
 	}
 
 }

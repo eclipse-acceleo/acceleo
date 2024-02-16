@@ -94,7 +94,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model
 							.getResourceSet().getURIConverter());
 					AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy,
-							getDestination());
+							getDestination(), logURI);
 				}
 			} finally {
 				// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
@@ -252,6 +252,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	private String newLine;
 
 	/**
+	 * The log {@link URI} if any, <code>null</code> otherwise.
+	 */
+	private URI logURI;
+
+	/**
 	 * The {@link AcceleoDebugEvaluator}.
 	 */
 	private AcceleoDebugEvaluator evaluator;
@@ -297,6 +302,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				AcceleoParser.QUALIFIER_SEPARATOR, false);
 
 		newLine = options.getOrDefault(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+		logURI = AcceleoUtil.getlogURI(destination, options.get(AcceleoUtil.LOG_URI_OPTION));
 		final ArrayList<Exception> exceptions = new ArrayList<>();
 		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, new ResourceSetImpl(),
 				options);
@@ -371,8 +377,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResource
 				.getResourceSet().getURIConverter());
-		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, strategy,
-				getDestination());
+		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, strategy, getDestination(),
+				logURI);
 
 		if (profiler != null) {
 			try {

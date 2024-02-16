@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.emf.common.util.URI;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public interface IAcceleoGenerationStrategy {
+
 	/** The start of user code String. Marks the start of a protected area. */
 	String USER_CODE_START = AcceleoMessages.getString("usercode.start"); //$NON-NLS-1$
 
@@ -73,6 +74,21 @@ public interface IAcceleoGenerationStrategy {
 	Map<String, List<String>> consumeAllProtectedAreas(URI uri);
 
 	/**
+	 * Creates an {@link IAcceleoWriter} for the log content for the given destination {@link URI}.
+	 * 
+	 * @param uri
+	 *            the log {@link URI}
+	 * @param charset
+	 *            the {@link Charset} of the stream that's to be saved
+	 * @param lineDelimiter
+	 *            the line delimiter that was demanded by the user for this writer.
+	 * @throws IOException
+	 *             if the writer can't be created
+	 * @return the created writer. It can't be <code>null</code> use {@link NullWriter} instead.
+	 */
+	IAcceleoWriter createWriterForLog(URI uri, Charset charset, String lineDelimiter) throws IOException;
+
+	/**
 	 * Creates an {@link IAcceleoWriter} for the lost content for the given generated {@link URI} with the
 	 * given protected area ID.
 	 * 
@@ -83,6 +99,7 @@ public interface IAcceleoGenerationStrategy {
 	 * @param charset
 	 *            the {@link Charset} of the stream that's to be saved
 	 * @param lineDelimiter
+	 *            the line delimiter that was demanded by the user for this writer.
 	 * @throws IOException
 	 *             if the writer can't be created
 	 * @return the created writer. It can't be <code>null</code> use {@link NullWriter} instead.

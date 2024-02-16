@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,12 @@ public class NullGenerationStrategy implements IAcceleoGenerationStrategy {
 	@Override
 	public Map<String, List<String>> consumeAllProtectedAreas(URI uri) {
 		return Collections.emptyMap();
+	}
+
+	@Override
+	public IAcceleoWriter createWriterForLog(URI uri, Charset charset, String lineDelimiter)
+			throws IOException {
+		return new NullWriter(uri, charset);
 	}
 
 	@Override

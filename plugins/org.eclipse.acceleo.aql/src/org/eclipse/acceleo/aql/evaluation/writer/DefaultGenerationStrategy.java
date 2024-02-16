@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 
 	/** Used to call URIConverter methods with no options. */
-	private static final Map<String, Object> EMPTY_OPTION_MAP = new HashMap<>();
+	private static final Map<String, Object> EMPTY_OPTION_MAP = Collections.emptyMap();
 
 	/**
 	 * Keeps track of the contents of all protected areas from the files we've created writers for.
@@ -113,6 +112,12 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 		}
 
 		return res;
+	}
+
+	@Override
+	public IAcceleoWriter createWriterForLog(URI uri, Charset charset, String lineDelimiter)
+			throws IOException {
+		return createWriterFor(uri, OpenModeKind.APPEND, charset, lineDelimiter);
 	}
 
 	@Override

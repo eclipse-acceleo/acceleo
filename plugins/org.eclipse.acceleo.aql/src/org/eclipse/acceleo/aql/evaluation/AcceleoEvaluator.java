@@ -160,19 +160,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	/**
 	 * Constructor.
 	 * 
-	 * @param other
-	 *            the other {@link AcceleoEvaluator}.
-	 */
-	public AcceleoEvaluator(AcceleoEvaluator other) {
-		this(other.lookupEngine, other.newLine);
-		destination = other.destination;
-		generationStrategy = other.generationStrategy;
-		generationResult = other.generationResult;
-	}
-
-	/**
-	 * Constructor.
-	 * 
 	 * @param lookupEngine
 	 *            the {@link IQualifiedNameLookupEngine}
 	 * @param newLine
