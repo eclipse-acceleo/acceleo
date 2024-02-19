@@ -847,18 +847,21 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		final List<Object> arguments = prepareInvocation(invocation);
 
+		final Query dynamicQuery = prepareInvocation(invocation, arguments);
+
 		// If the query has already been run with these arguments, return the cached result
-		Object cachedResult = delegateGetCachedResult(query, arguments);
+		Object cachedResult = delegateGetCachedResult(dynamicQuery, arguments);
 		if (QueryCache.isCachedResult(cachedResult)) {
 			// We no longer need the variables at their current value.
-			for (Variable var : query.getParameter()) {
+			for (Variable var : dynamicQuery.getParameter()) {
 				getEvaluationEnvironment().remove(var.getName());
 			}
 			if (QueryCache.isInvalid(cachedResult) && EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences
 					.isDebugMessagesEnabled()) {
 				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-				final AcceleoEvaluationException exception = getContext().createAcceleoException(query,
-						(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
+				final AcceleoEvaluationException exception = getContext().createAcceleoException(dynamicQuery,
+						(OCLExpression<C>)dynamicQuery.getExpression(),
+						"AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
 						currentSelf);
 				throw exception;
 			}
@@ -876,10 +879,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		Object result = null;
 		try {
-			result = visitExpression((OCLExpression<C>)query.getExpression());
+			result = visitExpression((OCLExpression<C>)dynamicQuery.getExpression());
 		} finally {
 			// restores parameters as they were prior to the call
-			for (Variable var : query.getParameter()) {
+			for (Variable var : dynamicQuery.getParameter()) {
 				getEvaluationEnvironment().remove(var.getName());
 			}
 			// [255379] restore context if need be
@@ -891,11 +894,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		// Store result of the query invocation
-		delegateCacheResult(query, arguments, result);
+		delegateCacheResult(dynamicQuery, arguments, result);
 		if (isInvalid(result) && AcceleoPreferences.isDebugMessagesEnabled()) {
 			final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-			final AcceleoEvaluationException exception = getContext().createAcceleoException(query,
-					(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(dynamicQuery,
+					(OCLExpression<C>)dynamicQuery.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
 					currentSelf);
 			throw exception;
 		}
@@ -1697,8 +1700,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).createVariableScope();
 
 			if (applicableCandidates.iterator().hasNext()) {
-				actualTemplate = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
-						.getMostSpecificTemplate(applicableCandidates, argValues);
+				actualTemplate = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).getMostSpecific(
+						applicableCandidates, argValues);
 
 				// Determine argument values and context
 				for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
@@ -1727,6 +1730,38 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		return actualTemplate;
+	}
+
+	/**
+	 * This will be in charge of retrieving the actual template that is to be called for the evaluation of the
+	 * given <code>invocation</code> and evaluate its arguments to set their values in the environment.
+	 * 
+	 * @param invocation
+	 *            The template invocation which evaluation is to be prepared.
+	 * @param arguments
+	 * @return The actual template referenced by this invocation.
+	 */
+	@SuppressWarnings("unchecked")
+	private Query prepareInvocation(QueryInvocation invocation, List<Object> arguments) {
+		final Query query = invocation.getDefinition();
+		Object[] argValues = arguments.toArray();
+		// retrieve all applicable candidates of the call
+		final List<Query> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
+				.getAllCandidates((Module)EcoreUtil.getRootContainer(invocation), query, argValues);
+
+		Query actualQuery;
+		if (applicableCandidates.iterator().hasNext()) {
+			actualQuery = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).getMostSpecific(
+					applicableCandidates, argValues);
+		} else
+
+		{
+			// No template remains after guard evaluation. Create an empty template so no
+			// text will be generated from this call.
+			actualQuery = MtlFactory.eINSTANCE.createQuery();
+		}
+
+		return actualQuery;
 	}
 
 	/**

@@ -161,6 +161,13 @@ public class AcceleoEnginePlugin extends Plugin {
 	public void start(final BundleContext context) throws Exception {
 		plugin = this;
 		super.start(context);
+		parseExtensionPoints();
+	}
+
+	/**
+	 * Parse extension points
+	 */
+	public void parseExtensionPoints() {
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addListener(dynamicTemplatesListener,
 				DynamicTemplatesRegistryListener.DYNAMIC_TEMPLATES_EXTENSION_POINT);
