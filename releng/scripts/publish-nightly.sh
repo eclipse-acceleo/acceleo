@@ -32,6 +32,10 @@ QUALIFIER=$(echo ${UPDATE_ZIP} | sed 's/.*org.eclipse.acceleo-\(.*\).zip$/\1/')
 
 P2_TIMESTAMP=$(date +"%s000")
 
+# parameter for nightly clean up, keeps NIGHTLY_COUNT for the current version.
+NIGHTLY_COUNT=10
+VERSION=$(echo ${QUALIFIER} | cut -d"." -f1-3)
+
 # Transfer the zipped update site
 ssh "${SSH_ACCOUNT}" mkdir -p ${NIGHTLIES_FOLDER}/${QUALIFIER}
 scp -rp ${UPDATE_ZIP} "${SSH_ACCOUNT}:${NIGHTLIES_FOLDER}/${QUALIFIER}"
@@ -50,5 +54,10 @@ ssh "${SSH_ACCOUNT}" -T <<EOF
   pushd ${NIGHTLIES_FOLDER}/latest
     rm -r *
     cp -r ../${QUALIFIER}/* .
+  popd
+  
+  # remove older nightly
+  pushd ${NIGHTLIES_FOLDER}
+    ls -tr | grep -F ${VERSION} | head -n $(expr $(ls -tr | grep -F ${VERSION} | wc -l) - ${NIGHTLY_COUNT}) | xargs echo rm -rf
   popd
 EOF
