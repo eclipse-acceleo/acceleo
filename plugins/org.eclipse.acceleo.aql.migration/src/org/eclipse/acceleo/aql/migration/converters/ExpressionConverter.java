@@ -637,7 +637,13 @@ public final class ExpressionConverter extends AbstractConverter {
 		res.setType(CallType.CALLSERVICE);
 		final String serviceSignature = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
 				.getArgument().get(1)).getStringSymbol();
-		final String serviceName = serviceSignature.substring(0, serviceSignature.indexOf("("));
+		final int openParenthesisIndex = serviceSignature.indexOf("(");
+		final String serviceName;
+		if (openParenthesisIndex >= 0) {
+			serviceName = serviceSignature.substring(0, openParenthesisIndex);
+		} else {
+			serviceName = serviceSignature;
+		}
 		res.setServiceName(serviceName);
 		map(((CollectionLiteralExp)input.getArgument().get(2)).getPart(), res.getArguments());
 		final String serviceClassName = ((org.eclipse.ocl.expressions.StringLiteralExp<EClassifier>)input
