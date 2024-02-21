@@ -758,6 +758,9 @@
 					"include": "#statement-expression-tag-close"
 				},
 				{
+					"include": "#statement-expression-tag-double"
+				},
+				{
 					"include": "#statement-expression-expression"
 				}
 			]
@@ -768,10 +771,13 @@
 		},
 		"statement-expression-expression": {
 			"name": "meta.expression.aql",
-			"begin": "(?<=\\[)",
-			"end": "(?=/\\])"
+			"match": "(?<=\\[).*?(?=/\\])"
 		},
 		"statement-expression-tag-close": {
+			"name": "keyword.other.statement.expression.acceleo",
+			"match": "/\\]\\[(?!/)"
+		},
+		"statement-expression-tag-double": {
 			"name": "keyword.other.statement.expression.acceleo",
 			"match": "/\\]"
 		}	
