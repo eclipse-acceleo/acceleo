@@ -277,7 +277,22 @@
 		"query-body" : {
 			"name": "meta.expression.aql",
 			"begin": "(?<==)(?:\\s*)",
-			"end": "(?=/\\])"
+			"end": "(?=/\\])",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"query-tag-close": {
 			"name": "keyword.other.query.acceleo",
@@ -427,7 +442,22 @@
 		"template-pre-condition-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\()",
-			"end": "(?=\\)\\s*(\\bpost\\b|\\]))"
+			"end": "(?=\\)\\s*(\\bpost\\b|\\]))",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},		
 		"template-pre-condition-ender": {
 			"name": "keyword.other.template.precondition.acceleo",
@@ -456,7 +486,22 @@
 		"template-post-treatment-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\()",
-			"end": "(?=\\)\\s*\\])"
+			"end": "(?=\\)\\s*\\])",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"template-post-treatment-ender": {
 			"name": "keyword.other.template.posttreatment.acceleo",
@@ -501,7 +546,22 @@
 		"statement-file-destination-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\()",
-			"end": "(?=,)"
+			"end": "(?=,)",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-file-mode": {
 			"name": "keyword.other.statement.file.mode.acceleo",
@@ -510,7 +570,22 @@
 		"statement-file-encoding-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=,)",
-			"end": "(?=\\)\\s*\\])"
+			"end": "(?=\\)\\s*\\])",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-file-header-tag-close": {
 			"name": "keyword.other.statement.file.acceleo",
@@ -581,7 +656,22 @@
 		"statement-for-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\|)",
-			"end": "(?=\\))"
+			"end": "(?=\\))",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-for-separator": {
 			"name": "keyword.other.statement.for.acceleo",
@@ -590,7 +680,22 @@
 		"statement-for-separator-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\()",
-			"end": "(?=\\)\\s*\\])"
+			"end": "(?=\\)\\s*\\])",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-for-footer": {
 			"name": "keyword.other.statement.for.acceleo",
@@ -615,7 +720,22 @@
 		"statement-if-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\()",
-			"end": "(?=\\)\\s*\\])"
+			"end": "(?=\\)\\s*\\])",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-if-header-tag-close": {
 			"name": "keyword.other.statement.if.acceleo",
@@ -642,7 +762,22 @@
 		"statement-elseif-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\()",
-			"end": "(?=\\)\\s*\\])"
+			"end": "(?=\\)\\s*\\])",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-elseif-tag-close": {
 			"name": "keyword.other.statement.elseif.acceleo",
@@ -696,7 +831,22 @@
 		"statement-let-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<==)",
-			"end": "(?=(,|\\]))"
+			"end": "(?=(,|\\]))",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-let-footer": {
 			"name": "keyword.other.statement.let.acceleo",
@@ -730,7 +880,22 @@
 		"statement-protected-expression": {
 			"name": "meta.expression.aql",
 			"begin": "(?<=\\()",
-			"end": "(?=\\)\\s*(?=(\\]|\\bstartTagPrefix\\b|\\bendTagPrefix\\b)))"
+			"end": "(?=\\)\\s*(?=(\\]|\\bstartTagPrefix\\b|\\bendTagPrefix\\b)))",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+
 		},
 		"statement-protected-start-prefix": {
 			"name": "keyword.other.statement.protected.acceleo",
@@ -771,7 +936,38 @@
 		},
 		"statement-expression-expression": {
 			"name": "meta.expression.aql",
-			"match": "(?<=\\[).*?(?=/\\])"
+			"begin": "(?<=\\[)",
+			"end": "(?=/\\])",
+			"patterns": [
+				{
+					"include": "#expression-keyword"
+				},
+				{
+					"include": "#expression-string"
+				},
+				{
+					"include": "#expression-real"
+				},
+				{
+					"include": "#expression-type"
+				}
+			]
+		},
+		"expression-keyword": {
+			"name": "meta.expression.aql.keyword.acceleo",
+			"match": "\\b(if|then|else|endif|let|in|true|false|null|not|and|or)\\b"
+		},
+		"expression-string": {
+			"name": "meta.expression.aql.string.acceleo",
+			"match": "'([^'\\\\]|\\\\.)*'"
+		},
+		"expression-real": {
+			"name": "meta.expression.aql.real.acceleo",
+			"match": "[0-9]+(\\.[0-9]+)*"
+		},
+		"expression-type": {
+			"name": "meta.expression.aql.type.acceleo",
+			"match": "((Sequence|OrderedSet)\\((String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})"
 		},
 		"statement-expression-tag-close": {
 			"name": "keyword.other.statement.expression.acceleo",
