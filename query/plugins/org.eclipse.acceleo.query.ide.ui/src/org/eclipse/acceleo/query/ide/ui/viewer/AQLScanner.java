@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ public class AQLScanner implements ITokenScanner {
 	/**
 	 * Keyword regular expression.
 	 */
-	private static final String KEYWORD_REGEX = "if|then|else|endif|let|in|true|false|null|not";
+	private static final String KEYWORD_REGEX = "if|then|else|endif|let|in|true|false|null|not|and|or";
 
 	/**
 	 * String literal regular expression.
@@ -51,8 +51,9 @@ public class AQLScanner implements ITokenScanner {
 	/**
 	 * Scanner {@link Pattern}.
 	 */
-	private static final Pattern SCANNER = Pattern.compile("(\\s+)|((?<![a-zA-Z])(" + KEYWORD_REGEX + ")(?![a-zA-Z]))|("
-			+ STRING_LITERAL_REGEX + ")|((?<![a-zA-Z])((String|Integer|Real|Boolean)(?![a-zA-Z]))|Sequence(?=\\()|OrderedSet(?=\\()|"
+	private static final Pattern SCANNER = Pattern.compile("(\\s+)|((?<![a-zA-Z])(" + KEYWORD_REGEX
+			+ ")(?![a-zA-Z]))|(" + STRING_LITERAL_REGEX
+			+ ")|((?<![a-zA-Z])((String|Integer|Real|Boolean)(?![a-zA-Z]))|Sequence(?=\\()|OrderedSet(?=\\()|"
 			+ ECLASSIFIER_SET_TYPE_REGEX + "|" + ECLASSIFIER_TYPE_REGEX + ")");
 
 	/**
@@ -129,8 +130,8 @@ public class AQLScanner implements ITokenScanner {
 	public AQLScanner(ColorManager colorManager) {
 		keywordToken = new Token(new TextAttribute(colorManager.getColor(IAQLColorConstants.KEYWORD)));
 		stringToken = new Token(new TextAttribute(colorManager.getColor(IAQLColorConstants.STRING)));
-		typeLiteralToken = new Token(
-				new TextAttribute(colorManager.getColor(IAQLColorConstants.TYPE_LITERAL)));
+		typeLiteralToken = new Token(new TextAttribute(colorManager.getColor(
+				IAQLColorConstants.TYPE_LITERAL)));
 	}
 
 	/**
