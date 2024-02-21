@@ -52,6 +52,6 @@ ssh "${SSH_ACCOUNT}" -T <<EOF
 
   # remove older nightly
   pushd ${NIGHTLIES_FOLDER}
-    ls -tr | grep -F ${VERSION} | head -n $(expr $(ls -tr | grep -F ${VERSION} | wc -l) - ${NIGHTLY_COUNT}) | xargs echo rm -rf
+    ls -tr | grep -F ${VERSION} | head -n $(expr $(ls -tr | grep -F ${VERSION} | wc -l) - ${NIGHTLY_COUNT}) | xargs rm -rf
   popd
 EOF
