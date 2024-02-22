@@ -186,7 +186,7 @@ public class AcceleoTextDocument {
 	 * @return the file name of this text document.
 	 */
 	public String getFileNameWithoutExtension() {
-		return this.uri.toString().substring(this.uri.toString().lastIndexOf('/'), this.uri.toString()
+		return this.uri.toString().substring(this.uri.toString().lastIndexOf('/') + 1, this.uri.toString()
 				.lastIndexOf('.'));
 	}
 
