@@ -1,0 +1,9 @@
+* Label:
+/]
+* Description:
+Inserts the end of an Import:<br/><pre>/]</pre>
+* Text:
+/]
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Import
+

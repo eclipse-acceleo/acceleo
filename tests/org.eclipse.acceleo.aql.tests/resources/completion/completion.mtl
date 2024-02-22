@@ -4,7 +4,10 @@
  * <<moduleCommentAfterAuthor>>@version 0.1.0
  * <<moduleCommentAfterAuthorAndVersion>>@since 0.0.1<<moduleCommentAfterAuthorAndVersionAndSince>>
 */]
-<<beforeModuleHeader>>[module <<beforeModuleName>>completion('http://www.eclipse.org/emf/2002/Ecore'<<afterModuleMetamodel>>)/]
+<<beforeModuleHeader>>[module <<beforeModuleName>>completion('http://www.eclipse.org/emf/2002/Ecore'<<afterModuleMetamodel>>) <<beforeModuleExtends>>extends <<beforeModuleExtendsModuleReference>>org::eclipse::acceleo::<<betweenModuleExtendsModuleReference>>AcceleoPackage<<afterModuleExtendsModuleReference>>/]
+
+[import <<beforeImportModuleReference>>org::eclipse::acceleo::<<betweenImportModuleReference>>AcceleoPackage<<afterImportModuleReference>>/]
+
 [comment a simple comment<<commentBeforeEnd>>/]
 [**
  * My query has a nice comment.

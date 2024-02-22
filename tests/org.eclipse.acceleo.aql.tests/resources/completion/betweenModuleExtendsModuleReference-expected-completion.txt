@@ -1,0 +1,4968 @@
+* Label:
+org::eclipse::acceleo::AcceleoASTNode
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::AcceleoASTNode</pre>
+* Text:
+org::eclipse::acceleo::AcceleoASTNode
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::AcceleoFactory
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::AcceleoFactory</pre>
+* Text:
+org::eclipse::acceleo::AcceleoFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::AcceleoPackage
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::AcceleoPackage</pre>
+* Text:
+org::eclipse::acceleo::AcceleoPackage
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::AcceleoPackage$Literals
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::AcceleoPackage$Literals</pre>
+* Text:
+org::eclipse::acceleo::AcceleoPackage$Literals
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Binding
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Binding</pre>
+* Text:
+org::eclipse::acceleo::Binding
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Block
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Block</pre>
+* Text:
+org::eclipse::acceleo::Block
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::BlockComment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::BlockComment</pre>
+* Text:
+org::eclipse::acceleo::BlockComment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Comment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Comment</pre>
+* Text:
+org::eclipse::acceleo::Comment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::CommentBody
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::CommentBody</pre>
+* Text:
+org::eclipse::acceleo::CommentBody
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Documentation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Documentation</pre>
+* Text:
+org::eclipse::acceleo::Documentation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::DocumentedElement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::DocumentedElement</pre>
+* Text:
+org::eclipse::acceleo::DocumentedElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Error
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Error</pre>
+* Text:
+org::eclipse::acceleo::Error
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorBinding
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorBinding</pre>
+* Text:
+org::eclipse::acceleo::ErrorBinding
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorBlockComment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorBlockComment</pre>
+* Text:
+org::eclipse::acceleo::ErrorBlockComment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorComment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorComment</pre>
+* Text:
+org::eclipse::acceleo::ErrorComment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorExpression
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorExpression</pre>
+* Text:
+org::eclipse::acceleo::ErrorExpression
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorExpressionStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorExpressionStatement</pre>
+* Text:
+org::eclipse::acceleo::ErrorExpressionStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorFileStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorFileStatement</pre>
+* Text:
+org::eclipse::acceleo::ErrorFileStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorForStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorForStatement</pre>
+* Text:
+org::eclipse::acceleo::ErrorForStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorIfStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorIfStatement</pre>
+* Text:
+org::eclipse::acceleo::ErrorIfStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorImport
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorImport</pre>
+* Text:
+org::eclipse::acceleo::ErrorImport
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorLetStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorLetStatement</pre>
+* Text:
+org::eclipse::acceleo::ErrorLetStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorMetamodel
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorMetamodel</pre>
+* Text:
+org::eclipse::acceleo::ErrorMetamodel
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorModule
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorModule</pre>
+* Text:
+org::eclipse::acceleo::ErrorModule
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorModuleDocumentation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorModuleDocumentation</pre>
+* Text:
+org::eclipse::acceleo::ErrorModuleDocumentation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorModuleElementDocumentation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorModuleElementDocumentation</pre>
+* Text:
+org::eclipse::acceleo::ErrorModuleElementDocumentation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorModuleReference
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorModuleReference</pre>
+* Text:
+org::eclipse::acceleo::ErrorModuleReference
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorProtectedArea
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorProtectedArea</pre>
+* Text:
+org::eclipse::acceleo::ErrorProtectedArea
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorQuery
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorQuery</pre>
+* Text:
+org::eclipse::acceleo::ErrorQuery
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorTemplate
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorTemplate</pre>
+* Text:
+org::eclipse::acceleo::ErrorTemplate
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ErrorVariable
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ErrorVariable</pre>
+* Text:
+org::eclipse::acceleo::ErrorVariable
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Expression
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Expression</pre>
+* Text:
+org::eclipse::acceleo::Expression
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ExpressionStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ExpressionStatement</pre>
+* Text:
+org::eclipse::acceleo::ExpressionStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::FileStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::FileStatement</pre>
+* Text:
+org::eclipse::acceleo::FileStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ForStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ForStatement</pre>
+* Text:
+org::eclipse::acceleo::ForStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::IfStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::IfStatement</pre>
+* Text:
+org::eclipse::acceleo::IfStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Import
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Import</pre>
+* Text:
+org::eclipse::acceleo::Import
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::LeafStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::LeafStatement</pre>
+* Text:
+org::eclipse::acceleo::LeafStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::LetStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::LetStatement</pre>
+* Text:
+org::eclipse::acceleo::LetStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Metamodel
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Metamodel</pre>
+* Text:
+org::eclipse::acceleo::Metamodel
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Module
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Module</pre>
+* Text:
+org::eclipse::acceleo::Module
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ModuleDocumentation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ModuleDocumentation</pre>
+* Text:
+org::eclipse::acceleo::ModuleDocumentation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ModuleElement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ModuleElement</pre>
+* Text:
+org::eclipse::acceleo::ModuleElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ModuleElementDocumentation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ModuleElementDocumentation</pre>
+* Text:
+org::eclipse::acceleo::ModuleElementDocumentation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ModuleReference
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ModuleReference</pre>
+* Text:
+org::eclipse::acceleo::ModuleReference
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::NamedElement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::NamedElement</pre>
+* Text:
+org::eclipse::acceleo::NamedElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::NewLineStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::NewLineStatement</pre>
+* Text:
+org::eclipse::acceleo::NewLineStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::OpenModeKind
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::OpenModeKind</pre>
+* Text:
+org::eclipse::acceleo::OpenModeKind
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ParameterDocumentation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ParameterDocumentation</pre>
+* Text:
+org::eclipse::acceleo::ParameterDocumentation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::ProtectedArea
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::ProtectedArea</pre>
+* Text:
+org::eclipse::acceleo::ProtectedArea
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Query
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Query</pre>
+* Text:
+org::eclipse::acceleo::Query
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Statement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Statement</pre>
+* Text:
+org::eclipse::acceleo::Statement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Template
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Template</pre>
+* Text:
+org::eclipse::acceleo::Template
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::TextStatement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::TextStatement</pre>
+* Text:
+org::eclipse::acceleo::TextStatement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::TypedElement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::TypedElement</pre>
+* Text:
+org::eclipse::acceleo::TypedElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::Variable
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::Variable</pre>
+* Text:
+org::eclipse::acceleo::Variable
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::VisibilityKind
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::VisibilityKind</pre>
+* Text:
+org::eclipse::acceleo::VisibilityKind
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::annotations::api::documentation::Documentation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::annotations::api::documentation::Documentation</pre>
+* Text:
+org::eclipse::acceleo::annotations::api::documentation::Documentation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::annotations::api::documentation::Example
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::annotations::api::documentation::Example</pre>
+* Text:
+org::eclipse::acceleo::annotations::api::documentation::Example
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::annotations::api::documentation::Other
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::annotations::api::documentation::Other</pre>
+* Text:
+org::eclipse::acceleo::annotations::api::documentation::Other
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::annotations::api::documentation::Param
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::annotations::api::documentation::Param</pre>
+* Text:
+org::eclipse::acceleo::annotations::api::documentation::Param
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::annotations::api::documentation::ServiceProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::annotations::api::documentation::ServiceProvider</pre>
+* Text:
+org::eclipse::acceleo::annotations::api::documentation::ServiceProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::annotations::api::documentation::Throw
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::annotations::api::documentation::Throw</pre>
+* Text:
+org::eclipse::acceleo::annotations::api::documentation::Throw
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::AcceleoUtil
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::AcceleoUtil</pre>
+* Text:
+org::eclipse::acceleo::aql::AcceleoUtil
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::AcceleoAstCompletor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::AcceleoAstCompletor</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::AcceleoAstCompletor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::AcceleoAstCompletor$ProposalComparator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::AcceleoAstCompletor$ProposalComparator</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::AcceleoAstCompletor$ProposalComparator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::AcceleoCompletor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::AcceleoCompletor</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::AcceleoCompletor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::AcceleoCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::AcceleoCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::AcceleoCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::AcceleoCompletionProposalsProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::AcceleoCompletionProposalsProvider</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::AcceleoCompletionProposalsProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::QueryServiceCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::QueryServiceCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::QueryServiceCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::TemplateServiceCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::TemplateServiceCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::TemplateServiceCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::syntax::AcceleoSyntacticCompletionProposals
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::syntax::AcceleoSyntacticCompletionProposals</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::syntax::AcceleoSyntacticCompletionProposals
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplateCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplateCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplateCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplateCompletionProposalsProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplateCompletionProposalsProvider</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplateCompletionProposalsProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplates
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplates</pre>
+* Text:
+org::eclipse::acceleo::aql::completion::proposals::templates::AcceleoCodeTemplates
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::AbstractModuleElementService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::AbstractModuleElementService</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::AbstractModuleElementService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::AcceleoCallStack
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::AcceleoCallStack</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::AcceleoCallStack
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::AcceleoEvaluator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::AcceleoEvaluator</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::AcceleoEvaluator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::GenerationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::GenerationResult</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::GenerationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::QueryService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::QueryService</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::QueryService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::TemplateService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::TemplateService</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::TemplateService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::AbstractAcceleoWriter
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::AbstractAcceleoWriter</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::AbstractAcceleoWriter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::AcceleoFileWriter
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::AcceleoFileWriter</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::AcceleoFileWriter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::AcceleoURIWriter
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::AcceleoURIWriter</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::AcceleoURIWriter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::DefaultGenerationStrategy
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::DefaultGenerationStrategy</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::DefaultGenerationStrategy
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::IAcceleoGenerationStrategy
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::IAcceleoGenerationStrategy</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::IAcceleoGenerationStrategy
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::IAcceleoWriter
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::IAcceleoWriter</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::IAcceleoWriter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::NullGenerationStrategy
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::NullGenerationStrategy</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::NullGenerationStrategy
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::evaluation::writer::NullWriter
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::evaluation::writer::NullWriter</pre>
+* Text:
+org::eclipse::acceleo::aql::evaluation::writer::NullWriter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::internal::AcceleoMessages
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::internal::AcceleoMessages</pre>
+* Text:
+org::eclipse::acceleo::aql::internal::AcceleoMessages
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::outline::AcceleoAstOutliner
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::outline::AcceleoAstOutliner</pre>
+* Text:
+org::eclipse::acceleo::aql::outline::AcceleoAstOutliner
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::outline::AcceleoOutliner
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::outline::AcceleoOutliner</pre>
+* Text:
+org::eclipse::acceleo::aql::outline::AcceleoOutliner
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::outline::AcceleoSymbol
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::outline::AcceleoSymbol</pre>
+* Text:
+org::eclipse::acceleo::aql::outline::AcceleoSymbol
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::parser::AcceleoAstResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::parser::AcceleoAstResult</pre>
+* Text:
+org::eclipse::acceleo::aql::parser::AcceleoAstResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::parser::AcceleoAstSerializer
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::parser::AcceleoAstSerializer</pre>
+* Text:
+org::eclipse::acceleo::aql::parser::AcceleoAstSerializer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::parser::AcceleoAstUtils
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::parser::AcceleoAstUtils</pre>
+* Text:
+org::eclipse::acceleo::aql::parser::AcceleoAstUtils
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::parser::AcceleoAstUtils$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::parser::AcceleoAstUtils$1</pre>
+* Text:
+org::eclipse::acceleo::aql::parser::AcceleoAstUtils$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::parser::AcceleoAstUtils$2
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::parser::AcceleoAstUtils$2</pre>
+* Text:
+org::eclipse::acceleo::aql::parser::AcceleoAstUtils$2
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::parser::AcceleoParser
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::parser::AcceleoParser</pre>
+* Text:
+org::eclipse::acceleo::aql::parser::AcceleoParser
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::parser::ModuleLoader
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::parser::ModuleLoader</pre>
+* Text:
+org::eclipse::acceleo::aql::parser::ModuleLoader
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::AcceleoValidationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::AcceleoValidationResult</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::AcceleoValidationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::AcceleoValidationUtils
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::AcceleoValidationUtils</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::AcceleoValidationUtils
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::AcceleoValidator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::AcceleoValidator</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::AcceleoValidator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::DeclarationSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::DeclarationSwitch</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::DeclarationSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::DeclarationSwitch$AQLDeclarationSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::DeclarationSwitch$AQLDeclarationSwitch</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::DeclarationSwitch$AQLDeclarationSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::DeclarationSwitch$AcceleoDeclarationSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::DeclarationSwitch$AcceleoDeclarationSwitch</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::DeclarationSwitch$AcceleoDeclarationSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::IAcceleoValidationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::IAcceleoValidationResult</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::IAcceleoValidationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::quickfixes::AcceleoQuickFixesSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::quickfixes::AcceleoQuickFixesSwitch</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::quickfixes::AcceleoQuickFixesSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::quickfixes::AqlQuickFixesSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::quickfixes::AqlQuickFixesSwitch</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::quickfixes::AqlQuickFixesSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::aql::validation::quickfixes::ModuleQuickFixesSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::aql::validation::quickfixes::ModuleQuickFixesSwitch</pre>
+* Text:
+org::eclipse::acceleo::aql::validation::quickfixes::ModuleQuickFixesSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::AcceleoFactoryImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::AcceleoFactoryImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::AcceleoFactoryImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::AcceleoPackageImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::AcceleoPackageImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::AcceleoPackageImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::BindingImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::BindingImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::BindingImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::BlockCommentImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::BlockCommentImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::BlockCommentImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::BlockImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::BlockImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::BlockImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::CommentBodyImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::CommentBodyImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::CommentBodyImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::CommentImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::CommentImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::CommentImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorBindingImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorBindingImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorBindingImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorBlockCommentImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorBlockCommentImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorBlockCommentImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorCommentImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorCommentImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorCommentImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorExpressionImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorExpressionImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorExpressionImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorExpressionStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorExpressionStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorExpressionStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorFileStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorFileStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorFileStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorForStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorForStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorForStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorIfStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorIfStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorIfStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorImportImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorImportImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorImportImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorLetStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorLetStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorLetStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorMetamodelImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorMetamodelImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorMetamodelImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorModuleDocumentationImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorModuleDocumentationImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorModuleDocumentationImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorModuleElementDocumentationImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorModuleElementDocumentationImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorModuleElementDocumentationImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorModuleImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorModuleImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorModuleImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorModuleReferenceImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorModuleReferenceImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorModuleReferenceImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorProtectedAreaImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorProtectedAreaImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorProtectedAreaImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorQueryImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorQueryImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorQueryImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorTemplateImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorTemplateImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorTemplateImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ErrorVariableImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ErrorVariableImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ErrorVariableImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ExpressionImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ExpressionImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ExpressionImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ExpressionStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ExpressionStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ExpressionStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::FileStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::FileStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::FileStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ForStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ForStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ForStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::IfStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::IfStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::IfStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ImportImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ImportImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ImportImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::LeafStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::LeafStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::LeafStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::LetStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::LetStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::LetStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::MetamodelImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::MetamodelImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::MetamodelImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ModuleDocumentationImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ModuleDocumentationImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ModuleDocumentationImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ModuleElementDocumentationImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ModuleElementDocumentationImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ModuleElementDocumentationImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ModuleElementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ModuleElementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ModuleElementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ModuleImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ModuleImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ModuleImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ModuleReferenceImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ModuleReferenceImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ModuleReferenceImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::NamedElementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::NamedElementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::NamedElementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::NewLineStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::NewLineStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::NewLineStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ParameterDocumentationImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ParameterDocumentationImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ParameterDocumentationImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::ProtectedAreaImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::ProtectedAreaImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::ProtectedAreaImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::QueryImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::QueryImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::QueryImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::TemplateImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::TemplateImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::TemplateImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::TextStatementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::TextStatementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::TextStatementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::TypedElementImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::TypedElementImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::TypedElementImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::impl::VariableImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::impl::VariableImpl</pre>
+* Text:
+org::eclipse::acceleo::impl::VariableImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::AQLUtils
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::AQLUtils</pre>
+* Text:
+org::eclipse::acceleo::query::AQLUtils
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::AQLUtils$AcceleoAQLResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::AQLUtils$AcceleoAQLResult</pre>
+* Text:
+org::eclipse::acceleo::query::AQLUtils$AcceleoAQLResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ASTNode
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ASTNode</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ASTNode
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::And
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::And</pre>
+* Text:
+org::eclipse::acceleo::query::ast::And
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::AstFactory
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::AstFactory</pre>
+* Text:
+org::eclipse::acceleo::query::ast::AstFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::AstPackage
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::AstPackage</pre>
+* Text:
+org::eclipse::acceleo::query::ast::AstPackage
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::AstPackage$Literals
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::AstPackage$Literals</pre>
+* Text:
+org::eclipse::acceleo::query::ast::AstPackage$Literals
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Binding
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Binding</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Binding
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::BooleanLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::BooleanLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::BooleanLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Call
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Call</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Call
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::CallType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::CallType</pre>
+* Text:
+org::eclipse::acceleo::query::ast::CallType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ClassTypeLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ClassTypeLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ClassTypeLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::CollectionTypeLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::CollectionTypeLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::CollectionTypeLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Conditional
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Conditional</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Conditional
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Declaration
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Declaration</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Declaration
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::EClassifierTypeLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::EClassifierTypeLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::EClassifierTypeLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::EnumLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::EnumLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::EnumLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Error
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Error</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Error
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorBinding
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorBinding</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorBinding
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorCall
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorCall</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorCall
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorConditional
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorConditional</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorConditional
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorEClassifierTypeLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorEClassifierTypeLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorEClassifierTypeLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorEnumLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorEnumLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorEnumLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorExpression
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorExpression</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorExpression
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorStringLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorStringLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorStringLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorTypeLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorTypeLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorTypeLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::ErrorVariableDeclaration
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::ErrorVariableDeclaration</pre>
+* Text:
+org::eclipse::acceleo::query::ast::ErrorVariableDeclaration
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Expression
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Expression</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Expression
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Implies
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Implies</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Implies
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::IntegerLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::IntegerLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::IntegerLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Lambda
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Lambda</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Lambda
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Let
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Let</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Let
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Literal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Literal</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Literal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::NullLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::NullLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::NullLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::Or
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::Or</pre>
+* Text:
+org::eclipse::acceleo::query::ast::Or
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::RealLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::RealLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::RealLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::SequenceInExtensionLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::SequenceInExtensionLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::SequenceInExtensionLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::SetInExtensionLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::SetInExtensionLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::SetInExtensionLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::StringLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::StringLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::StringLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::TypeLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::TypeLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::TypeLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::TypeSetLiteral
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::TypeSetLiteral</pre>
+* Text:
+org::eclipse::acceleo::query::ast::TypeSetLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::VarRef
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::VarRef</pre>
+* Text:
+org::eclipse::acceleo::query::ast::VarRef
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::VariableDeclaration
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::VariableDeclaration</pre>
+* Text:
+org::eclipse::acceleo::query::ast::VariableDeclaration
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::AndImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::AndImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::AndImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::AstFactoryImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::AstFactoryImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::AstFactoryImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::AstPackageImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::AstPackageImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::AstPackageImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::BindingImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::BindingImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::BindingImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::BooleanLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::BooleanLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::BooleanLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::CallImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::CallImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::CallImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ClassTypeLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ClassTypeLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ClassTypeLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::CollectionTypeLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::CollectionTypeLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::CollectionTypeLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ConditionalImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ConditionalImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ConditionalImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::EClassifierTypeLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::EClassifierTypeLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::EClassifierTypeLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::EnumLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::EnumLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::EnumLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorBindingImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorBindingImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorBindingImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorCallImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorCallImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorCallImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorConditionalImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorConditionalImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorConditionalImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorEClassifierTypeLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorEClassifierTypeLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorEClassifierTypeLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorEnumLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorEnumLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorEnumLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorExpressionImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorExpressionImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorExpressionImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorStringLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorStringLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorStringLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorTypeLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorTypeLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorTypeLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ErrorVariableDeclarationImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ErrorVariableDeclarationImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ErrorVariableDeclarationImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ExpressionImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ExpressionImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ExpressionImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::ImpliesImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::ImpliesImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::ImpliesImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::IntegerLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::IntegerLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::IntegerLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::LambdaImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::LambdaImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::LambdaImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::LetImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::LetImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::LetImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::LiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::LiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::LiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::NullLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::NullLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::NullLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::OrImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::OrImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::OrImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::RealLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::RealLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::RealLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::SequenceInExtensionLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::SequenceInExtensionLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::SequenceInExtensionLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::SetInExtensionLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::SetInExtensionLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::SetInExtensionLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::StringLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::StringLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::StringLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::TypeLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::TypeLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::TypeLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::TypeSetLiteralImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::TypeSetLiteralImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::TypeSetLiteralImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::VarRefImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::VarRefImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::VarRefImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::impl::VariableDeclarationImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::impl::VariableDeclarationImpl</pre>
+* Text:
+org::eclipse::acceleo::query::ast::impl::VariableDeclarationImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::util::AstAdapterFactory
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::util::AstAdapterFactory</pre>
+* Text:
+org::eclipse::acceleo::query::ast::util::AstAdapterFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::util::AstAdapterFactory$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::util::AstAdapterFactory$1</pre>
+* Text:
+org::eclipse::acceleo::query::ast::util::AstAdapterFactory$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::util::AstSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::util::AstSwitch</pre>
+* Text:
+org::eclipse::acceleo::query::ast::util::AstSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::ast::validation::ConditionalValidator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::ast::validation::ConditionalValidator</pre>
+* Text:
+org::eclipse::acceleo::query::ast::validation::ConditionalValidator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AQLInvocationDelegate
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AQLInvocationDelegate</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AQLInvocationDelegate
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AQLInvocationDelegateFactory
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AQLInvocationDelegateFactory</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AQLInvocationDelegateFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AQLQueryDelegate
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AQLQueryDelegate</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AQLQueryDelegate
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AQLQueryDelegateFactory
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AQLQueryDelegateFactory</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AQLQueryDelegateFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AQLSettingDelegate
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AQLSettingDelegate</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AQLSettingDelegate
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AQLSettingDelegateFactory
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AQLSettingDelegateFactory</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AQLSettingDelegateFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AQLValidationDelegate
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AQLValidationDelegate</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AQLValidationDelegate
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::AbstractEnvironmentProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::AbstractEnvironmentProvider</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::AbstractEnvironmentProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::delegates::DelegateUtils
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::delegates::DelegateUtils</pre>
+* Text:
+org::eclipse::acceleo::query::delegates::DelegateUtils
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstBuilder
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstBuilder</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstBuilder
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstBuilderListener
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstBuilderListener</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstBuilderListener
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstBuilderListener$QueryErrorListener
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstBuilderListener$QueryErrorListener</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstBuilderListener$QueryErrorListener
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstCompletor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstCompletor</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstCompletor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstEvaluator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstEvaluator</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstEvaluator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstResult</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstSerializer
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstSerializer</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstSerializer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::AstValidator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::AstValidator</pre>
+* Text:
+org::eclipse::acceleo::query::parser::AstValidator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::CombineIterator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::CombineIterator</pre>
+* Text:
+org::eclipse::acceleo::query::parser::CombineIterator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::Positions
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::Positions</pre>
+* Text:
+org::eclipse::acceleo::query::parser::Positions
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryAstSerializer
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryAstSerializer</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryAstSerializer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryBaseListener
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryBaseListener</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryBaseListener
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryLexer
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryLexer</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryLexer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryListener
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryListener</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryListener
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$AddContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$AddContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$AddContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$AddOpContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$AddOpContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$AddOpContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$AndContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$AndContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$AndContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ArgumentsContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ArgumentsContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ArgumentsContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$BindingContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$BindingContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$BindingContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$BooleanTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$BooleanTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$BooleanTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$CallOrApplyContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$CallOrApplyContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$CallOrApplyContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ClassifierSetTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ClassifierSetTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ClassifierSetTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ClassifierTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ClassifierTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ClassifierTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ClassifierTypeRuleContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ClassifierTypeRuleContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ClassifierTypeRuleContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ClsTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ClsTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ClsTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$CollectionCallContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$CollectionCallContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$CollectionCallContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$CompContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$CompContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$CompContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$CompOpContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$CompOpContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$CompOpContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ConditionalContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ConditionalContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ConditionalContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$EntryContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$EntryContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$EntryContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$EnumLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$EnumLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$EnumLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ErrorClassifierTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ErrorClassifierTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ErrorClassifierTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ErrorEnumLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ErrorEnumLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ErrorEnumLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ErrorStringLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ErrorStringLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ErrorStringLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ExplicitSeqLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ExplicitSeqLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ExplicitSeqLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ExplicitSetLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ExplicitSetLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ExplicitSetLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ExpressionContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ExpressionContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ExpressionContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ExpressionSequenceContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ExpressionSequenceContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ExpressionSequenceContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$FalseLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$FalseLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$FalseLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$FeatureContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$FeatureContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$FeatureContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ImpliesContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ImpliesContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ImpliesContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$IntTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$IntTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$IntTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$IntegerLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$IntegerLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$IntegerLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$LambdaContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$LambdaContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$LambdaContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$LambdaExpressionContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$LambdaExpressionContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$LambdaExpressionContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$LetExprContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$LetExprContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$LetExprContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$LitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$LitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$LitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$LiteralContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$LiteralContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$LiteralContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$MinContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$MinContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$MinContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$MultContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$MultContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$MultContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$NavContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$NavContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$NavContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$NavigationSegmentContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$NavigationSegmentContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$NavigationSegmentContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$NotContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$NotContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$NotContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$NullLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$NullLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$NullLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$OrContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$OrContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$OrContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ParenContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ParenContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ParenContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$RealLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$RealLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$RealLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$RealTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$RealTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$RealTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$SeqTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$SeqTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$SeqTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$ServiceCallContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$ServiceCallContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$ServiceCallContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$SetTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$SetTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$SetTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$StrTypeContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$StrTypeContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$StrTypeContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$StringLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$StringLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$StringLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$TrueLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$TrueLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$TrueLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$TypeLitContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$TypeLitContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$TypeLitContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$TypeLiteralContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$TypeLiteralContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$TypeLiteralContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$VarRefContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$VarRefContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$VarRefContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$VariableDefinitionContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$VariableDefinitionContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$VariableDefinitionContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::QueryParser$XorContext
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::QueryParser$XorContext</pre>
+* Text:
+org::eclipse::acceleo::query::parser::QueryParser$XorContext
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::AstQuickFix
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::AstQuickFix</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::AstQuickFix
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::AstQuickFixesSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::AstQuickFixesSwitch</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::AstQuickFixesSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::AstTextReplacement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::AstTextReplacement</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::AstTextReplacement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::CreateResource
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::CreateResource</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::CreateResource
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::DeleteResource
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::DeleteResource</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::DeleteResource
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::IAstQuickFix
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::IAstQuickFix</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::IAstQuickFix
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::IAstResourceChange
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::IAstResourceChange</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::IAstResourceChange
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::IAstTextReplacement
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::IAstTextReplacement</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::IAstTextReplacement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::parser::quickfixes::MoveResource
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::parser::quickfixes::MoveResource</pre>
+* Text:
+org::eclipse::acceleo::query::parser::quickfixes::MoveResource
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::AcceleoQueryEvaluationException
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::AcceleoQueryEvaluationException</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::AcceleoQueryEvaluationException
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::AcceleoQueryValidationException
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::AcceleoQueryValidationException</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::AcceleoQueryValidationException
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::CrossReferenceProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::CrossReferenceProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::CrossReferenceProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::EvaluationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::EvaluationResult</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::EvaluationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::ICompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::ICompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::ICompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::ICompletionResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::ICompletionResult</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::ICompletionResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IEPackageProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IEPackageProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IEPackageProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::ILookupEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::ILookupEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::ILookupEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IProposalFilter
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IProposalFilter</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IProposalFilter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IQueryBuilderEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IQueryBuilderEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IQueryBuilderEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IQueryCompletionEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IQueryCompletionEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IQueryCompletionEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IQueryEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IQueryEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IQueryEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IQueryEnvironment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IQueryEnvironment</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IQueryEnvironment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IQueryEnvironmentListener
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IQueryEnvironmentListener</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IQueryEnvironmentListener
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IQueryEvaluationEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IQueryEvaluationEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IQueryEvaluationEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IQueryValidationEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IQueryValidationEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IQueryValidationEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IReadOnlyQueryEnvironment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IReadOnlyQueryEnvironment</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IReadOnlyQueryEnvironment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IRootEObjectProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IRootEObjectProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IRootEObjectProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IService</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IService$Visibility
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IService$Visibility</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IService$Visibility
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IServiceCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IServiceCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IServiceCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IServiceProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IServiceProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IServiceProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IValidationMessage
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IValidationMessage</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IValidationMessage
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::IValidationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::IValidationResult</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::IValidationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::Query
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::Query</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::Query
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::QueryCompletion
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::QueryCompletion</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::QueryCompletion
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::QueryEvaluation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::QueryEvaluation</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::QueryEvaluation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::QueryParsing
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::QueryParsing</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::QueryParsing
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::QueryValidation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::QueryValidation</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::QueryValidation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::RootEObjectProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::RootEObjectProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::RootEObjectProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::ServiceRegistrationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::ServiceRegistrationResult</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::ServiceRegistrationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::ServiceUtils
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::ServiceUtils</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::ServiceUtils
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::ValidationMessageLevel
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::ValidationMessageLevel</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::ValidationMessageLevel
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::AbstractLanguageServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::AbstractLanguageServices</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::AbstractLanguageServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::AbstractService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::AbstractService</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::AbstractService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::AbstractServiceProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::AbstractServiceProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::AbstractServiceProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::BasicFilter
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::BasicFilter</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::BasicFilter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::CompletionResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::CompletionResult</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::CompletionResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::CompletionServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::CompletionServices</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::CompletionServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::CrossReferencerToAQL
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::CrossReferencerToAQL</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::CrossReferencerToAQL
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::ECrossReferenceAdapterCrossReferenceProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::ECrossReferenceAdapterCrossReferenceProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::ECrossReferenceAdapterCrossReferenceProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::EOperationService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::EOperationService</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::EOperationService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::EPackageProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::EPackageProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::EPackageProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::EvaluationServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::EvaluationServices</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::EvaluationServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::JavaMethodReceiverService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::JavaMethodReceiverService</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::JavaMethodReceiverService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::JavaMethodService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::JavaMethodService</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::JavaMethodService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::LambdaValue
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::LambdaValue</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::LambdaValue
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::Nothing
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::Nothing</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::Nothing
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::NullValue
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::NullValue</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::NullValue
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::ProposalComparator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::ProposalComparator</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::ProposalComparator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::QueryBuilderEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::QueryBuilderEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::QueryBuilderEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::QueryBuilderEngine$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::QueryBuilderEngine$1</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::QueryBuilderEngine$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::QueryCompletionEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::QueryCompletionEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::QueryCompletionEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::QueryEnvironment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::QueryEnvironment</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::QueryEnvironment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::QueryEvaluationEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::QueryEvaluationEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::QueryEvaluationEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::QueryValidationEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::QueryValidationEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::QueryValidationEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::ResourceSetRootEObjectProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::ResourceSetRootEObjectProvider</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::ResourceSetRootEObjectProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::ServicesValidationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::ServicesValidationResult</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::ServicesValidationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::ValidationMessage
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::ValidationMessage</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::ValidationMessage
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::ValidationResult
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::ValidationResult</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::ValidationResult
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::ValidationServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::ValidationServices</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::ValidationServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::EClassifierCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::EClassifierCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::EClassifierCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::EEnumLiteralCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::EEnumLiteralCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::EEnumLiteralCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::EFeatureCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::EFeatureCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::EFeatureCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::EOperationServiceCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::EOperationServiceCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::EOperationServiceCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::JavaMethodServiceCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::JavaMethodServiceCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::JavaMethodServiceCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::TextCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::TextCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::TextCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::VariableCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::VariableCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::VariableCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::completion::VariableDeclarationCompletionProposal
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::completion::VariableDeclarationCompletionProposal</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::completion::VariableDeclarationCompletionProposal
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::AbstractLoader
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::AbstractLoader</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::AbstractLoader
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::AbstractQualifiedNameService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::AbstractQualifiedNameService</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::AbstractQualifiedNameService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::CallStack
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::CallStack</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::CallStack
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::ClassLoaderQualifiedNameResolver
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::ClassLoaderQualifiedNameResolver</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::ClassLoaderQualifiedNameResolver
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::JavaLoader
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::JavaLoader</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::JavaLoader
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::Position
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::Position</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::Position
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::QualifiedNameLookupEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::QualifiedNameLookupEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::QualifiedNameLookupEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::QualifiedNameQueryEnvironment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::QualifiedNameQueryEnvironment</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::QualifiedNameQueryEnvironment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::Range
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::Range</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::Range
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::SourceLocation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::SourceLocation</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::SourceLocation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::workspace::QueryWorkspace
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::workspace::QueryWorkspace</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::workspace::QueryWorkspace
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::impl::namespace::workspace::QueryWorkspaceQualifiedNameResolver
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::impl::namespace::workspace::QueryWorkspaceQualifiedNameResolver</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::impl::namespace::workspace::QueryWorkspaceQualifiedNameResolver
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::lookup::basic::BasicLookupEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::lookup::basic::BasicLookupEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::lookup::basic::BasicLookupEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::lookup::basic::CacheLookupEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::lookup::basic::CacheLookupEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::lookup::basic::CacheLookupEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::lookup::basic::CacheLookupEngine$Node
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::lookup::basic::CacheLookupEngine$Node</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::lookup::basic::CacheLookupEngine$Node
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::lookup::basic::ServiceStore
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::lookup::basic::ServiceStore</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::lookup::basic::ServiceStore
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::ILoader
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::ILoader</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::ILoader
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameLookupEngine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameLookupEngine</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameLookupEngine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameQueryEnvironment
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameQueryEnvironment</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameQueryEnvironment
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameResolver
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameResolver</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::IQualifiedNameResolver
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::ISourceLocation
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::ISourceLocation</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::ISourceLocation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::ISourceLocation$IPosition
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::ISourceLocation$IPosition</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::ISourceLocation$IPosition
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::ISourceLocation$IRange
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::ISourceLocation$IRange</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::ISourceLocation$IRange
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryProject
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryProject</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryProject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryWorkspace
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryWorkspace</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryWorkspace
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryWorkspaceQualifiedNameResolver
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryWorkspaceQualifiedNameResolver</pre>
+* Text:
+org::eclipse::acceleo::query::runtime::namespace::workspace::IQueryWorkspaceQualifiedNameResolver
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::AnyServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::AnyServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::AnyServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::AnyServices$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::AnyServices$1</pre>
+* Text:
+org::eclipse::acceleo::query::services::AnyServices$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::AnyServices$OCLAsTypeService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::AnyServices$OCLAsTypeService</pre>
+* Text:
+org::eclipse::acceleo::query::services::AnyServices$OCLAsTypeService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::BooleanServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::BooleanServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::BooleanServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::CollectionServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::CollectionServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::CollectionServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::CollectionServices$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::CollectionServices$1</pre>
+* Text:
+org::eclipse::acceleo::query::services::CollectionServices$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::CollectionServices$2
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::CollectionServices$2</pre>
+* Text:
+org::eclipse::acceleo::query::services::CollectionServices$2
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::ComparableServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::ComparableServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::ComparableServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EAllContentsService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EAllContentsService</pre>
+* Text:
+org::eclipse::acceleo::query::services::EAllContentsService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$AllInstancesService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$AllInstancesService</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$AllInstancesService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$EContainerOrSelfService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$EContainerOrSelfService</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$EContainerOrSelfService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$EContainerService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$EContainerService</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$EContainerService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$EContentsService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$EContentsService</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$EContentsService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$EGetService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$EGetService</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$EGetService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$EInverseService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$EInverseService</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$EInverseService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$EObjectFeatureAccess
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$EObjectFeatureAccess</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$EObjectFeatureAccess
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::EObjectServices$FilteredContentIterator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::EObjectServices$FilteredContentIterator</pre>
+* Text:
+org::eclipse::acceleo::query::services::EObjectServices$FilteredContentIterator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::FilterService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::FilterService</pre>
+* Text:
+org::eclipse::acceleo::query::services::FilterService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::IsUniqueService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::IsUniqueService</pre>
+* Text:
+org::eclipse::acceleo::query::services::IsUniqueService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::LambdaComparator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::LambdaComparator</pre>
+* Text:
+org::eclipse::acceleo::query::services::LambdaComparator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::NumberServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::NumberServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::NumberServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::PromptServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::PromptServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::PromptServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::PropertiesServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::PropertiesServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::PropertiesServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::ResourceServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::ResourceServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::ResourceServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::ResourceServices$GetContentsService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::ResourceServices$GetContentsService</pre>
+* Text:
+org::eclipse::acceleo::query::services::ResourceServices$GetContentsService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::SortedByService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::SortedByService</pre>
+* Text:
+org::eclipse::acceleo::query::services::SortedByService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::StringServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::StringServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::StringServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::XPathServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::XPathServices</pre>
+* Text:
+org::eclipse::acceleo::query::services::XPathServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::XPathServices$AncestorsService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::XPathServices$AncestorsService</pre>
+* Text:
+org::eclipse::acceleo::query::services::XPathServices$AncestorsService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::XPathServices$FollowingSiblingsService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::XPathServices$FollowingSiblingsService</pre>
+* Text:
+org::eclipse::acceleo::query::services::XPathServices$FollowingSiblingsService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::XPathServices$PrecedingSiblingsService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::XPathServices$PrecedingSiblingsService</pre>
+* Text:
+org::eclipse::acceleo::query::services::XPathServices$PrecedingSiblingsService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::XPathServices$SiblingsService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::XPathServices$SiblingsService</pre>
+* Text:
+org::eclipse::acceleo::query::services::XPathServices$SiblingsService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::AbstractCollectionService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::AbstractCollectionService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::AbstractCollectionService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::AnyService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::AnyService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::AnyService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::BooleanLambdaService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::BooleanLambdaService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::BooleanLambdaService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::ClosureService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::ClosureService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::ClosureService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::CollectService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::CollectService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::CollectService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::FirstArgumentRawCollectionType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::FirstArgumentRawCollectionType</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::FirstArgumentRawCollectionType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::FirstCollectionTypeService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::FirstCollectionTypeService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::FirstCollectionTypeService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::IncludingService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::IncludingService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::IncludingService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::InsertAtService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::InsertAtService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::InsertAtService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::IntersectionService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::IntersectionService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::IntersectionService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::NumberService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::NumberService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::NumberService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::RejectService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::RejectService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::RejectService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::ReturnCollectionTypeWithFirstArgumentRawCollectionType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::ReturnCollectionTypeWithFirstArgumentRawCollectionType</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::ReturnCollectionTypeWithFirstArgumentRawCollectionType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::SecondArgumentTypeInFirstArgumentCollectionType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::SecondArgumentTypeInFirstArgumentCollectionType</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::SecondArgumentTypeInFirstArgumentCollectionType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::collection::SelectService
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::collection::SelectService</pre>
+* Text:
+org::eclipse::acceleo::query::services::collection::SelectService
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::HTTPServiceConfigurator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::HTTPServiceConfigurator</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::HTTPServiceConfigurator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::IOptionProvider
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::IOptionProvider</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::IOptionProvider
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::IResourceSetConfigurator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::IResourceSetConfigurator</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::IResourceSetConfigurator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::IResourceSetConfiguratorDescriptor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::IResourceSetConfiguratorDescriptor</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::IResourceSetConfiguratorDescriptor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::IServicesConfigurator
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::IServicesConfigurator</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::IServicesConfigurator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::IServicesConfiguratorDescriptor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::IServicesConfiguratorDescriptor</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::IServicesConfiguratorDescriptor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::ResourceSetConfiguratorDescriptor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::ResourceSetConfiguratorDescriptor</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::ResourceSetConfiguratorDescriptor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::services::configurator::ServicesConfiguratorDescriptor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::services::configurator::ServicesConfiguratorDescriptor</pre>
+* Text:
+org::eclipse::acceleo::query::services::configurator::ServicesConfiguratorDescriptor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::util::DataURIHandler
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::util::DataURIHandler</pre>
+* Text:
+org::eclipse::acceleo::query::util::DataURIHandler
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::util::HttpURIHandler
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::util::HttpURIHandler</pre>
+* Text:
+org::eclipse::acceleo::query::util::HttpURIHandler
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::AbstractCollectionType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::AbstractCollectionType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::AbstractCollectionType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::AbstractJavaType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::AbstractJavaType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::AbstractJavaType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::AbstractType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::AbstractType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::AbstractType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::ClassLiteralType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::ClassLiteralType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::ClassLiteralType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::ClassType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::ClassType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::ClassType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::EClassifierLiteralType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::EClassifierLiteralType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::EClassifierLiteralType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::EClassifierSetLiteralType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::EClassifierSetLiteralType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::EClassifierSetLiteralType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::EClassifierType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::EClassifierType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::EClassifierType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::ICollectionType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::ICollectionType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::ICollectionType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::IJavaType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::IJavaType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::IJavaType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::IType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::IType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::IType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::LambdaType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::LambdaType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::LambdaType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::NothingType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::NothingType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::NothingType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::SequenceType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::SequenceType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::SequenceType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::query::validation::type::SetType
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::query::validation::type::SetType</pre>
+* Text:
+org::eclipse::acceleo::query::validation::type::SetType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::AllTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::AllTests</pre>
+* Text:
+org::eclipse::acceleo::tests::AllTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::completion::CompletionTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::completion::CompletionTests</pre>
+* Text:
+org::eclipse::acceleo::tests::completion::CompletionTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::CommentTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::CommentTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::CommentTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::EvaluationTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::EvaluationTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::EvaluationTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::ExpressionStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::ExpressionStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::ExpressionStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::FileStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::FileStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::FileStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::ForStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::ForStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::ForStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::IfStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::IfStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::IfStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::LetStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::LetStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::LetStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::ProtectedAreaTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::ProtectedAreaTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::ProtectedAreaTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::TextStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::TextStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::TextStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::indentation::ForStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::indentation::ForStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::indentation::ForStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::indentation::IfStatementFalseTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::indentation::IfStatementFalseTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::indentation::IfStatementFalseTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::indentation::IfStatementTrueTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::indentation::IfStatementTrueTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::indentation::IfStatementTrueTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::indentation::IndentationTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::indentation::IndentationTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::indentation::IndentationTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::indentation::LetStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::indentation::LetStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::indentation::LetStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::evaluation::indentation::ProtectedAreaTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::evaluation::indentation::ProtectedAreaTests</pre>
+* Text:
+org::eclipse::acceleo::tests::evaluation::indentation::ProtectedAreaTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::BlockCommentTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::BlockCommentTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::BlockCommentTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::CommentTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::CommentTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::CommentTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::ExpressionStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::ExpressionStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::ExpressionStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::FileStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::FileStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::FileStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::ForStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::ForStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::ForStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::IfStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::IfStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::IfStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::LanguageTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::LanguageTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::LanguageTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::LetStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::LetStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::LetStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::ModuleDocumentationTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::ModuleDocumentationTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::ModuleDocumentationTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::ModuleElementDocumentationTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::ModuleElementDocumentationTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::ModuleElementDocumentationTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::ModuleTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::ModuleTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::ModuleTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::ProtectedAreaTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::ProtectedAreaTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::ProtectedAreaTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::QueryTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::QueryTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::QueryTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::TemplateTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::TemplateTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::TemplateTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::language::TextStatementTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::language::TextStatementTests</pre>
+* Text:
+org::eclipse::acceleo::tests::language::TextStatementTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::parser::AcceleoAstSerializerTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::parser::AcceleoAstSerializerTests</pre>
+* Text:
+org::eclipse::acceleo::tests::parser::AcceleoAstSerializerTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::quickfixes::QuickFixesTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::quickfixes::QuickFixesTests</pre>
+* Text:
+org::eclipse::acceleo::tests::quickfixes::QuickFixesTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::resolution::ResolutionTests
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::resolution::ResolutionTests</pre>
+* Text:
+org::eclipse::acceleo::tests::resolution::ResolutionTests
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::resolver::TestsServices
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::resolver::TestsServices</pre>
+* Text:
+org::eclipse::acceleo::tests::resolver::TestsServices
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite$1</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite$2
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite$2</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::AbstractEvaluationTestSuite$2
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::AbstractLanguageTestSuite
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::AbstractLanguageTestSuite</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::AbstractLanguageTestSuite
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::AbstractLanguageTestSuite$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::AbstractLanguageTestSuite$1</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::AbstractLanguageTestSuite$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::MemoryURIHandler
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::MemoryURIHandler</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::MemoryURIHandler
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::MemoryURIHandler$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::MemoryURIHandler$1</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::MemoryURIHandler$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::MemoryURIHandler$2
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::MemoryURIHandler$2</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::MemoryURIHandler$2
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::ModuleAstSerializer
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::ModuleAstSerializer</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::ModuleAstSerializer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::ModuleAstSerializer$QueryAstSerializer
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::ModuleAstSerializer$QueryAstSerializer</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::ModuleAstSerializer$QueryAstSerializer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::tests::utils::ModuleLoaderWindowsEndLine
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::tests::utils::ModuleLoaderWindowsEndLine</pre>
+* Text:
+org::eclipse::acceleo::tests::utils::ModuleLoaderWindowsEndLine
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::util::AcceleoAdapterFactory
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::util::AcceleoAdapterFactory</pre>
+* Text:
+org::eclipse::acceleo::util::AcceleoAdapterFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::util::AcceleoAdapterFactory$1
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::util::AcceleoAdapterFactory$1</pre>
+* Text:
+org::eclipse::acceleo::util::AcceleoAdapterFactory$1
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::util::AcceleoResourceFactoryImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::util::AcceleoResourceFactoryImpl</pre>
+* Text:
+org::eclipse::acceleo::util::AcceleoResourceFactoryImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::util::AcceleoResourceImpl
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::util::AcceleoResourceImpl</pre>
+* Text:
+org::eclipse::acceleo::util::AcceleoResourceImpl
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::util::AcceleoSwitch
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::util::AcceleoSwitch</pre>
+* Text:
+org::eclipse::acceleo::util::AcceleoSwitch
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+
+* Label:
+org::eclipse::acceleo::util::AcceleoXMLProcessor
+* Description:
+Inserts the following text: <pre>org::eclipse::acceleo::util::AcceleoXMLProcessor</pre>
+* Text:
+org::eclipse::acceleo::util::AcceleoXMLProcessor
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ModuleReference
+

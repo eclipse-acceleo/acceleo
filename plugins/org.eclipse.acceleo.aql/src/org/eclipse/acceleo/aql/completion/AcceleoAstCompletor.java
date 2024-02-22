@@ -333,9 +333,18 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
 			res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
 		} else if (errorModule.getMissingEndHeader() != -1) {
-			res.add(AcceleoSyntacticCompletionProposals.MODULE_HEADER_END);
 			if (errorModule.getExtends() == null) {
+				res.add(AcceleoSyntacticCompletionProposals.MODULE_HEADER_END);
 				res.add(AcceleoSyntacticCompletionProposals.MODULE_EXTENSION);
+			} else {
+				final String referenceQualifiedName = errorModule.getExtends().getQualifiedName();
+				final List<AcceleoCompletionProposal> refenceCompletions = getReferenceCompletion(
+						referenceQualifiedName);
+				if (!refenceCompletions.isEmpty()) {
+					res.addAll(refenceCompletions);
+				} else {
+					res.add(AcceleoSyntacticCompletionProposals.MODULE_HEADER_END);
+				}
 			}
 		} else {
 			// We do not even have a module header.
@@ -372,7 +381,39 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 
 		if (errorImport.getMissingEnd() != -1) {
-			res.add(AcceleoSyntacticCompletionProposals.IMPORT_END);
+			final String referenceQualifiedName = errorImport.getModule().getQualifiedName();
+			final List<AcceleoCompletionProposal> refenceCompletions = getReferenceCompletion(
+					referenceQualifiedName);
+			if (!refenceCompletions.isEmpty()) {
+				res.addAll(refenceCompletions);
+			} else {
+				res.add(AcceleoSyntacticCompletionProposals.IMPORT_END);
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of {@link AcceleoCompletionProposal} for the given reference qualified name.
+	 * 
+	 * @param referenceQualifiedName
+	 *            the reference qualified name
+	 * @return the {@link List} of {@link AcceleoCompletionProposal} for the given reference qualified name
+	 */
+	private List<AcceleoCompletionProposal> getReferenceCompletion(String referenceQualifiedName) {
+		final List<AcceleoCompletionProposal> res = new ArrayList<>();
+
+		if (queryEnvironment.getLookupEngine().getResolver().resolve(referenceQualifiedName) == null) {
+			final List<String> availableQualifiedNames = new ArrayList<String>(queryEnvironment
+					.getLookupEngine().getResolver().getAvailableQualifiedNames());
+			Collections.sort(availableQualifiedNames);
+			for (String qualifiedName : availableQualifiedNames) {
+				if (referenceQualifiedName == null || qualifiedName.contains(referenceQualifiedName)) {
+					res.add(new AcceleoCodeTemplateCompletionProposal(qualifiedName, qualifiedName,
+							AcceleoPackage.Literals.MODULE_REFERENCE));
+				}
+			}
 		}
 
 		return res;
@@ -658,10 +699,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 					.getMissingAffectationSymbole() + SPACE, AcceleoPackage.Literals.BINDING));
 		} else if (errorBinding.getInitExpression().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
-			final AcceleoASTNode context = (AcceleoASTNode)errorBinding.eContainer()
-							.eContainer();
-			res.addAll(this.getAqlCompletionProposals(getVariables(context), acceleoValidationResult.getValidationResult(errorBinding
-							.getInitExpression().getAst())));
+			final AcceleoASTNode context = (AcceleoASTNode)errorBinding.eContainer().eContainer();
+			res.addAll(this.getAqlCompletionProposals(getVariables(context), acceleoValidationResult
+					.getValidationResult(errorBinding.getInitExpression().getAst())));
 		}
 
 		return res;
