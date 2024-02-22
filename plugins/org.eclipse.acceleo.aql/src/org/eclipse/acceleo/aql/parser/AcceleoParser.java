@@ -1299,7 +1299,8 @@ public class AcceleoParser {
 		}
 
 		if (missingName == -1) {
-			if (missingType != -1 || missingColon != -1) {
+			if (missingType != -1 || missingColon != -1 || type
+					.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorVariable();
 				((ErrorVariable)res).setMissingName(missingName);
 				((ErrorVariable)res).setMissingColon(missingColon);

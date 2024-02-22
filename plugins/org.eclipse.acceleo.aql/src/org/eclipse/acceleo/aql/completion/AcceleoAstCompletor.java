@@ -49,6 +49,7 @@ import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposalsProvider;
@@ -76,6 +77,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationComp
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -454,8 +456,22 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.add(new AcceleoCodeTemplateCompletionProposal(sampleParameterName, sampleParameterName,
 					AcceleoPackage.Literals.TEMPLATE));
 		} else if (errorTemplate.getMissingCloseParenthesis() != -1) {
-			res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
-			res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
+			if (!errorTemplate.getParameters().isEmpty()) {
+				final Variable parameter = errorTemplate.getParameters().get(errorTemplate.getParameters()
+						.size() - 1);
+				final Set<IType> types = getPossibleTypes(parameter);
+				if (types.stream().filter(t -> !(t instanceof NothingType)).collect(Collectors.toList())
+						.isEmpty()) {
+					res.addAll(this.getAqlCompletionProposals(Collections.emptyMap(), acceleoValidationResult
+							.getValidationResult(parameter.getType())));
+				} else {
+					res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
+					res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
+				}
+			} else {
+				res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
+				res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
+			}
 		} else if (errorTemplate.getMissingGuardOpenParenthesis() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 		} else if (errorTemplate.getGuard() != null && errorTemplate.getGuard().getAst()
@@ -535,8 +551,22 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.add(new AcceleoCodeTemplateCompletionProposal(sampleParameterName, sampleParameterName,
 					AcceleoPackage.Literals.TEMPLATE));
 		} else if (errorQuery.getMissingCloseParenthesis() != -1) {
-			res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
-			res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
+			if (!errorQuery.getParameters().isEmpty()) {
+				final Variable parameter = errorQuery.getParameters().get(errorQuery.getParameters().size()
+						- 1);
+				final Set<IType> types = getPossibleTypes(parameter);
+				if (types.stream().filter(t -> !(t instanceof NothingType)).collect(Collectors.toList())
+						.isEmpty()) {
+					res.addAll(this.getAqlCompletionProposals(Collections.emptyMap(), acceleoValidationResult
+							.getValidationResult(parameter.getType())));
+				} else {
+					res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
+					res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
+				}
+			} else {
+				res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
+				res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
+			}
 		} else if (errorQuery.getMissingColon() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.COLON_SPACE);
 		} else if (errorQuery.getMissingType() != -1) {
@@ -545,7 +575,14 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.addAll(astCompletor.getProposals(Collections.emptySet(), typeValidation).stream().map(
 					AcceleoAstCompletor::transform).collect(Collectors.toList()));
 		} else if (errorQuery.getMissingEqual() != -1) {
-			res.add(AcceleoSyntacticCompletionProposals.EQUAL_SPACE);
+			final Set<IType> types = getPossibleTypes(errorQuery);
+			if (types.stream().filter(t -> !(t instanceof NothingType)).collect(Collectors.toList())
+					.isEmpty()) {
+				res.addAll(this.getAqlCompletionProposals(Collections.emptyMap(), acceleoValidationResult
+						.getValidationResult(errorQuery.getType())));
+			} else {
+				res.add(AcceleoSyntacticCompletionProposals.EQUAL_SPACE);
+			}
 		} else if (errorQuery.getBody().getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(this.getAqlCompletionProposals(getVariables(errorQuery), acceleoValidationResult
 					.getValidationResult(errorQuery.getBody().getAst())));
@@ -572,6 +609,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 					.getType());
 			res.addAll(astCompletor.getProposals(Collections.emptySet(), typeValidation).stream().map(
 					AcceleoAstCompletor::transform).collect(Collectors.toList()));
+		} else {
+			res.addAll(this.getAqlCompletionProposals(Collections.emptyMap(), acceleoValidationResult
+					.getValidationResult(errorVariable.getType())));
 		}
 
 		return res;
@@ -638,13 +678,13 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	}
 
 	/**
-	 * Gets the {@link Set} of possible {@link IType} for the given {@link Variable}.
+	 * Gets the {@link Set} of possible {@link IType} for the given {@link TypedElement}.
 	 * 
 	 * @param variable
 	 *            the {@link Variable}
-	 * @return the {@link Set} of possible {@link IType} for the given {@link Variable}
+	 * @return the {@link Set} of possible {@link IType} for the given {@link TypedElement}
 	 */
-	private LinkedHashSet<IType> getPossibleTypes(Variable variable) {
+	private LinkedHashSet<IType> getPossibleTypes(TypedElement variable) {
 		final LinkedHashSet<IType> res = new LinkedHashSet<IType>();
 
 		final IValidationResult validationResult = acceleoValidationResult.getValidationResult(variable
@@ -672,7 +712,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res = new LinkedHashSet<IType>();
 			res.addAll(validationResult.getPossibleTypes(binding.getInitExpression().getAst().getAst()));
 		} else {
-			res = getPossibleTypes((Variable)binding);
+			res = getPossibleTypes((TypedElement)binding);
 		}
 
 		return res;
