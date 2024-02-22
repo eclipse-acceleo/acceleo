@@ -928,14 +928,18 @@ public class AcceleoParser {
 			final int missingEndHeader = readMissingString(MODULE_HEADER_END);
 			final int endHeaderPosition = currentPosition;
 			skipSpaces();
+			List<Comment> elementComments = parseCommentsOrModuleElementDocumentations();
+			skipSpaces();
 			final List<Import> imports = new ArrayList<Import>();
 			Import imported = parseImport();
 			while (imported != null) {
 				imports.add(imported);
 				skipSpaces();
+				elementComments = parseCommentsOrModuleElementDocumentations();
+				skipSpaces();
 				imported = parseImport();
 			}
-			final List<ModuleElement> moduleElements = parseModuleElements();
+			final List<ModuleElement> moduleElements = parseModuleElements(elementComments);
 			final int endPosition = currentPosition;
 			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1;
 			if (missingParenthesis || missingEPackage != -1 || missingEndHeader != -1) {
@@ -1072,16 +1076,15 @@ public class AcceleoParser {
 	 * 
 	 * @return the created {@link List} of {@link ModuleElement}
 	 */
-	protected List<ModuleElement> parseModuleElements() {
+	protected List<ModuleElement> parseModuleElements(List<Comment> comments) {
 		final List<ModuleElement> res = new ArrayList<ModuleElement>();
 
 		ModuleElement moduleElement;
+		List<Comment> localComments = comments;
 		do {
-			skipSpaces();
-			final List<Comment> comments = parseCommentsOrModuleElementDocumentations();
-			res.addAll(comments);
-			final Documentation documentation = getLastDocumentation(comments);
-			final Template template = parseTemplate(documentation, hasMain(comments));
+			res.addAll(localComments);
+			final Documentation documentation = getLastDocumentation(localComments);
+			final Template template = parseTemplate(documentation, hasMain(localComments));
 			if (template != null) {
 				moduleElement = template;
 			} else {
@@ -1090,6 +1093,8 @@ public class AcceleoParser {
 			if (moduleElement != null) {
 				res.add(moduleElement);
 			}
+			skipSpaces();
+			localComments = parseCommentsOrModuleElementDocumentations();
 		} while (moduleElement != null);
 
 		return res;

@@ -8,12 +8,18 @@
 
 [import <<beforeImportModuleReference>>org::eclipse::acceleo::<<betweenImportModuleReference>>AcceleoPackage<<afterImportModuleReference>>/]
 
-[comment a simple comment<<commentBeforeEnd>>/]
+[comment /]
+[**
+*/]
+[import <<beforeImportModuleReference>>org::eclipse::acceleo::<<betweenImportModuleReference>>AcceleoPackage<<afterImportModuleReference>>/]
+
 [**
  * My query has a nice comment.
  * <<queryComment>>@param myParam the input EPackage<<queryCommentAfterParameters>>
 */]
 <<moduleElementAndImport>>
+
+
 [query <<queryVisibility>>public <<queryName>>myQuery<<queryOpenParenthesis>>(<<queryVariableName>>myParam <<queryVariableColon>>: <<queryVariableType>>ecore::EPackage<<queryCloseParenthesis>>) <<queryColon>>: <<queryType>>ecore::EClassifier <<queryEqual>>= <<queryExpression>>myParam.<<queryExpressionAfterDot>>eClassifiers->first()<<queryEndHeader>> <<queryEndHeaderAfterSpace>>/]
 
 [**
