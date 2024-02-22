@@ -367,7 +367,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 
 		if (errorMetamodel.getFragment() != null) {
 			for (String nsURI : EPackage.Registry.INSTANCE.keySet()) {
-				res.add(new AcceleoCompletionProposal(nsURI, nsURI, AcceleoPackage.Literals.METAMODEL));
+				if (nsURI.contains(errorMetamodel.getFragment())) {
+					res.add(new AcceleoCompletionProposal(nsURI, nsURI, AcceleoPackage.Literals.METAMODEL));
+				}
 			}
 		} else if (errorMetamodel.getMissingEndQuote() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.QUOTE_DOUBLE);

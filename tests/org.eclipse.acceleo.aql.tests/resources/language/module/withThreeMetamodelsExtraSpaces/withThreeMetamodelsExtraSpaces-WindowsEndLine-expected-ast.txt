@@ -3,6 +3,4 @@ header position 0..170
 module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
   metamodel http://www.eclipse.org/acceleo/query/1.0 (73..114)
-  *** error metamodel ***
-  missing end quote: -1
-  metamodel null (122..163) (0..170)
+  metamodel http://www.eclipse.org/emf/2002/GenModel (122..163) (0..170)

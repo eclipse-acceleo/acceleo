@@ -2208,6 +2208,7 @@ public class AcceleoParser {
 			final int missingEndQuote = readMissingString(QUOTE);
 			if (ePackage == null || missingEndQuote != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorMetamodel();
+				((ErrorMetamodel)res).setFragment(nsURI);
 				((ErrorMetamodel)res).setMissingEndQuote(missingEndQuote);
 				errors.add((ErrorMetamodel)res);
 			} else {

@@ -1,0 +1,27 @@
+* Label:
+http://www.eclipse.org/emf/2002/GenModel
+* Description:
+Inserts the following text: <pre>http://www.eclipse.org/emf/2002/GenModel</pre>
+* Text:
+http://www.eclipse.org/emf/2002/GenModel
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Metamodel
+
+* Label:
+http://www.eclipse.org/emf/2002/Ecore
+* Description:
+Inserts the following text: <pre>http://www.eclipse.org/emf/2002/Ecore</pre>
+* Text:
+http://www.eclipse.org/emf/2002/Ecore
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Metamodel
+
+* Label:
+http://www.eclipse.org/emf/2003/XMLType
+* Description:
+Inserts the following text: <pre>http://www.eclipse.org/emf/2003/XMLType</pre>
+* Text:
+http://www.eclipse.org/emf/2003/XMLType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Metamodel
+

@@ -55,6 +55,7 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedName
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -184,6 +185,7 @@ public abstract class AbstractLanguageTestSuite {
 	 *             if the tested template can't be read
 	 */
 	public AbstractLanguageTestSuite(String testFolder) throws IOException {
+		GenModelPackage.eINSTANCE.getName(); // initialize the GenModelPackage
 		this.memoryDestinationString = "acceleotests://" + testFolder + "/";
 		this.memoryDestination = URI.createURI(memoryDestinationString);
 		this.testFolderPath = testFolder;

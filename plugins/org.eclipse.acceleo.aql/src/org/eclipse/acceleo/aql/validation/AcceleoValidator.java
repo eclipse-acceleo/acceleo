@@ -416,7 +416,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
-		if (errorMetamodel.getFragment() != null) {
+		if (errorMetamodel.getFragment() != null && !EPackage.Registry.INSTANCE.containsKey(errorMetamodel
+				.getFragment())) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, "Invalid metamodel " + errorMetamodel
 					.getFragment(), acceleoAstResult.getStartPosition(errorMetamodel), acceleoAstResult
