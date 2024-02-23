@@ -1682,14 +1682,14 @@ public class EObjectServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns all instances of any EClass from the OrderedSet",
+		value = "Returns all instances of each EClass from the OrderedSet",
 		params = {
 			@Param(name = "types", value = "The OrderedSet of EClass"),
 		},
-		result = "all instances of any EClass from the OrderedSet",
+		result = "all instances of each EClass from the OrderedSet",
 		examples = {
 			@Example(
-				expression = "anEClass.allInstances({ecore::EPackage | ecore::EClass})",
+				expression = "{ecore::EPackage | ecore::EClass}->allInstances()",
 				result = "Sequence{ePackage, eClass, ...}"
 			)
 		}

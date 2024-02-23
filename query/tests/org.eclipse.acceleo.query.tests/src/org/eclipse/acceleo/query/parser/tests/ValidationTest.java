@@ -2340,6 +2340,33 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 	}
 
+	@Test
+	public void allInstancesSetTest() {
+		final IValidationResult validationResult = engine.validate(
+				"{ecore::EPackage | ecore::EClass}->allInstances()", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), ((EClassifierType)((SequenceType)possibleType)
+				.getCollectionType()).getType());
+
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)((SequenceType)possibleType)
+				.getCollectionType()).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+	}
+
 	/**
 	 * Asserts the given {@link IValidationMessage} against expected values.
 	 * 
