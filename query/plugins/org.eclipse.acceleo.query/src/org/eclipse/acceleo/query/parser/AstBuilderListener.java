@@ -438,15 +438,18 @@ public class AstBuilderListener extends QueryBaseListener {
 				setPositions(errorExpression, (Token)offendingSymbol, (Token)offendingSymbol);
 			} else {
 				errorRule = QueryParser.RULE_classifierTypeRule;
-				final ErrorEClassifierTypeLiteral errorEClassifierTypeLiteral;
-				if (ctx.getChildCount() > 0) {
-					errorEClassifierTypeLiteral = builder.errorEClassifierTypeLiteral(false, ctx.getChild(0)
-							.getText());
+				final Error error;
+				if (ctx.getParent() instanceof ClassifierSetTypeContext) {
+					if (ctx.getChildCount() > 0) {
+						error = builder.errorEClassifierTypeLiteral(false, ctx.getChild(0).getText());
+					} else {
+						error = builder.errorEClassifierTypeLiteral(false, null);
+					}
 				} else {
-					errorEClassifierTypeLiteral = builder.errorEClassifierTypeLiteral(false, null);
+					error = builder.errorTypeLiteral();
 				}
-				setPositions(errorEClassifierTypeLiteral, ctx.start, (Token)offendingSymbol);
-				pushError(errorEClassifierTypeLiteral, "missing classifier literal");
+				setPositions(error, ctx.start, (Token)offendingSymbol);
+				pushError(error, "missing classifier literal");
 			}
 		}
 

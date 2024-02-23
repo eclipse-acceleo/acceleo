@@ -56,7 +56,7 @@ import Real.RealPackage;
 
 public class CompletionTest {
 
-	private static final int TOTAL_NUMBER_OF_PROPOSAL = 131;
+	private static final int TOTAL_NUMBER_OF_PROPOSAL = 135;
 
 	QueryCompletionEngine engine;
 
@@ -331,9 +331,9 @@ public class CompletionTest {
 	public void selfSelectTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, variableTypes);
 
-		assertCompletion(completionResult, 132, "", "", 13, 0, "myEClass | ");
+		assertCompletion(completionResult, 136, "", "", 13, 0, "myEClass | ");
 		final ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
-				.get(131);
+				.get(135);
 		assertEquals(true, proposal instanceof VariableDeclarationCompletionProposal);
 		assertEquals("myEClass | ".length(), proposal.getCursorOffset());
 	}
@@ -454,7 +454,7 @@ public class CompletionTest {
 	public void testConditionalIfCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("i", 1, variableTypes);
 
-		assertCompletion(completionResult, 2, "i", "", 0, 1, "if ", "anydsl::Kind::Inflorescence");
+		assertCompletion(completionResult, 3, "i", "", 0, 1, "Integer", "if ", "anydsl::Kind::Inflorescence");
 	}
 
 	@Test
@@ -650,7 +650,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 131, "", "", 14, 0, "myEObject | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 14, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -665,7 +665,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 131, "", "", 14, 0, "myEObject | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 14, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -680,7 +680,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 131, "", "", 14, 0, "myNothing | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 14, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -695,7 +695,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertCompletion(completionResult, 131, "", "", 14, 0, "myNothing | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 14, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -710,7 +710,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -725,7 +725,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -740,7 +740,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -755,7 +755,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -770,7 +770,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -785,7 +785,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myEObject | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -800,7 +800,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -815,7 +815,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertCompletion(completionResult, 131, "", "", 13, 0, "myNothing | ");
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -895,7 +895,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{}-", 13, types);
 
-		assertCompletion(completionResult, 129, "", "", 13, 0, "OrderedSet{}", "ecore::EPackage");
+		assertCompletion(completionResult, 133, "", "", 13, 0, "OrderedSet{}", "ecore::EPackage");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -1104,7 +1104,7 @@ public class CompletionTest {
 			}
 		}
 		assertFalse(variableAFound);
-		assertCompletion(completionResult, 130, "", "", 18, 0, "self");
+		assertCompletion(completionResult, 134, "", "", 18, 0, "self");
 	}
 
 	@Test

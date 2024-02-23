@@ -834,7 +834,7 @@ public abstract class AbstractLanguageTestSuite {
 	 * @throws IOException
 	 *             if the copy can't be done
 	 */
-	protected static long copy(URIConverter uriConverter, URI sourceURI, URI destURI) throws IOException {
+	public static long copy(URIConverter uriConverter, URI sourceURI, URI destURI) throws IOException {
 		try (InputStream source = uriConverter.createInputStream(sourceURI);
 				OutputStream dest = uriConverter.createOutputStream(destURI);) {
 			long nread = 0L;

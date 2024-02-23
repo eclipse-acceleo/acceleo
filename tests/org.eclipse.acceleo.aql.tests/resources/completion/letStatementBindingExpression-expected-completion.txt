@@ -503,6 +503,24 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+Boolean
+* Description:
+Boolean
+* Text:
+Boolean
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+Integer
+* Description:
+Integer
+* Text:
+Integer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 OrderedSet{}
 * Description:
 OrderedSet{}
@@ -512,11 +530,29 @@ OrderedSet{}
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+Real
+* Description:
+Real
+* Text:
+Real
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 Sequence{}
 * Description:
 Sequence{}
 * Text:
 Sequence{}
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+String
+* Description:
+String
+* Text:
+String
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 
