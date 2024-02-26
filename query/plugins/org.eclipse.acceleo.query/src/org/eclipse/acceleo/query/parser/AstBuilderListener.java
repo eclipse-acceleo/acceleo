@@ -807,6 +807,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	private Deque<Expression> lambdaVariableExpression = new ArrayDeque<>();
 
 	/**
+	 * Tells if the last argument was a {@link Lambda}.
+	 */
+	private boolean lastArgumentIsLambda;
+
+	/**
 	 * Creates a new {@link AstBuilderListener}.
 	 * 
 	 * @param environment
@@ -1380,6 +1385,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitServiceCall(ServiceCallContext ctx) {
 		if (errorRule != QueryParser.RULE_navigationSegment) {
+			boolean missinEndParenthesis = ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode || !")"
+					.equals(ctx.getChild(ctx.getChildCount() - 1).getText());
+			if (missinEndParenthesis && lastArgumentIsLambda) {
+				popErrorExpression();
+			}
 			final int argc = getNumberOfArgs(ctx.getChild(2).getChildCount());
 			final Expression[] args = new Expression[argc];
 			for (int i = argc - 1; i >= 0; i--) {
@@ -1396,7 +1406,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			}
 
 			final Call call;
-			if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
+			if (missinEndParenthesis) {
 				call = builder.errorCall(serviceName, true, args);
 				pushError((Error)call, "missing ')'");
 			} else {
@@ -1414,11 +1424,13 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void enterArguments(ArgumentsContext ctx) {
+		lastArgumentIsLambda = false;
 		lambdaVariableExpression.addLast((Expression)stack.getLast());
 	}
 
 	@Override
 	public void exitArguments(ArgumentsContext ctx) {
+		lastArgumentIsLambda = stack.getLast() instanceof Lambda;
 		lambdaVariableExpression.removeLast();
 	}
 

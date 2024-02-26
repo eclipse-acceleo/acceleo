@@ -824,6 +824,28 @@ public class ValidationTest {
 	}
 
 	@Test
+	public void enumLiteralInSelectWithMissingClosingParenthesis() {
+		final IValidationResult validationResult = engine.validate(
+				"self->select(s | s = anydsl::Color::black", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof NothingType);
+		assertEquals("missing ')'", ((NothingType)possibleType).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"missing ')'", 4, 41);
+
+		assertEquals(1, validationResult.getMessages(ast).size());
+		assertValidationMessage(validationResult.getMessages(ast).get(0), ValidationMessageLevel.ERROR,
+				"missing ')'", 4, 41);
+	}
+
+	@Test
 	public void enumLiteralError() {
 		final IValidationResult validationResult = engine.validate("anydsl::Part::NotExisting",
 				variableTypes);
