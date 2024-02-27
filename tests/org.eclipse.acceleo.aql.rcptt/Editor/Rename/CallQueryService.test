@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _rBrPQO48Ee2tuaw94kZDDQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 6/21/23, 11:38 AM
+Save-Time: 2/27/24, 9:28 AM
 Tags: fail
 Testcase-Type: ecl
 
@@ -178,4 +178,7 @@ get-editor "importC.mtl" | get-text-viewer | get-property text
     + "  [myParam.eClassifiers->filter(ecore::EClass).templateExtends()/]\n"
     + "  [myParam.myTemplate()/]\n"
     + "[/template]" | verify-true
+get-eclipse-window | key-type "M1+M2+s"
+get-view Problems | click
+get-view Problems | get-tree | get-property itemCount | equals 0 | verify-true
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
