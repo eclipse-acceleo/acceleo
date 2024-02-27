@@ -412,12 +412,20 @@ public class CompletionTest {
 	}
 
 	@Test
-	public void testBindingCompletionWithTypeNoSpace() {
+	public void testBindingCompletionWithInvalidTypeNoSpace() {
+		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::EClas", 20,
+				variableTypes);
+
+		assertCompletion(completionResult, 2, "ecore::EClas", "", 8, 12, "ecore::EClass",
+				"ecore::EClassifier");
+	}
+
+	@Test
+	public void testBindingCompletionWithValidTypeNoSpace() {
 		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::EClass", 21,
 				variableTypes);
 
-		assertCompletion(completionResult, 2, "ecore::EClass", "", 8, 13, "ecore::EClass",
-				"ecore::EClassifier");
+		assertCompletion(completionResult, 1, "", "", 21, 0, "= ");
 	}
 
 	@Test
@@ -1032,7 +1040,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(a | true ", 22, types);
 
-		assertCompletion(completionResult, 11, "", "", 22, 0, "and ", "or ", "implies ");
+		assertCompletion(completionResult, 13, "", "", 22, 0, "and ", "or ", "implies ", ")", ", ");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
@@ -1412,6 +1420,14 @@ public class CompletionTest {
 		queryEnvironment.removeEPackage(ePkg);
 
 		assertCompletion(completionResult, 1, "dynamicEOper", "", 5, 12, "dynamicEOperation()");
+	}
+
+	@Test
+	public void enumLiteralInSelectWithMissingClosingParenthesisAfterCall() {
+		final ICompletionResult completionResult = engine.getCompletion(
+				"self.toString()->select(s | s = anydsl::Color::black", 52, variableTypes);
+
+		assertCompletion(completionResult, 13, "", "", 52, 0, ")", ", ");
 	}
 
 	public static void assertCompletion(ICompletionResult completionResult, int size, String prefix,

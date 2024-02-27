@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -102,7 +102,8 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			int start = offset;
 			while (start - 1 >= 0) {
 				char charAt = expression.charAt(start - 1);
-				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_' || charAt == ':') {
+				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_'
+						|| charAt == ':') {
 					--start;
 				} else {
 					break;
@@ -111,6 +112,27 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			final String prefix = expression.substring(start, offset);
 			if (COLON.equals(prefix)) {
 				result = "";
+			} else if (!prefix.endsWith(COLON)) {
+				// special case of valid EClassifier and EEnumLiteral
+				final String[] splited = prefix.split(COLON + COLON);
+				if (splited.length == 2) {
+					// EClassifier
+					if (!queryEnvironment.getEPackageProvider().getTypes(splited[0], splited[1]).isEmpty()) {
+						result = "";
+					} else {
+						result = prefix;
+					}
+				} else if (splited.length == 3) {
+					// EEnumLiteral
+					if (!queryEnvironment.getEPackageProvider().getEnumLiterals(splited[0], splited[1],
+							splited[2]).isEmpty()) {
+						result = "";
+					} else {
+						result = prefix;
+					}
+				} else {
+					result = prefix;
+				}
 			} else {
 				result = prefix;
 			}

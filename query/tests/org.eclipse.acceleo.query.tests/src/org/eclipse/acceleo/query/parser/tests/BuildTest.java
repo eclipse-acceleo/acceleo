@@ -3446,4 +3446,30 @@ public class BuildTest {
 				.getArguments().get(1));
 	}
 
+	@Test
+	public void enumLiteralInSelectWithMissingClosingParenthesisAfterCall() {
+		AstResult build = engine.build("self.toString()->select(s | s = anydsl::Color::black");
+		Expression ast = build.getAst();
+
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertExpression(build, ErrorCall.class, 0, 0, 0, 52, 0, 52, ast);
+		assertEquals("select", ((ErrorCall)ast).getServiceName());
+		assertFalse(((ErrorCall)ast).isSuperCall());
+		assertTrue(((ErrorCall)ast).isMissingEndParenthesis());
+		assertEquals(CallType.COLLECTIONCALL, ((ErrorCall)ast).getType());
+		assertEquals(2, ((ErrorCall)ast).getArguments().size());
+		assertExpression(build, Call.class, 0, 0, 0, 15, 0, 15, ((ErrorCall)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 24, 0, 24, 52, 0, 52, ((ErrorCall)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((ErrorCall)ast).getArguments().get(1);
+		assertExpression(build, Call.class, 28, 0, 28, 52, 0, 52, lambda.getExpression());
+		assertFalse(((Call)lambda.getExpression()).isSuperCall());
+		assertEquals("equals", ((Call)lambda.getExpression()).getServiceName());
+		assertEquals(2, ((Call)lambda.getExpression()).getArguments().size());
+		assertExpression(build, VarRef.class, 28, 0, 28, 29, 0, 29, ((Call)lambda.getExpression())
+				.getArguments().get(0));
+		assertExpression(build, EnumLiteral.class, 32, 0, 32, 52, 0, 52, ((Call)lambda.getExpression())
+				.getArguments().get(1));
+	}
+
 }

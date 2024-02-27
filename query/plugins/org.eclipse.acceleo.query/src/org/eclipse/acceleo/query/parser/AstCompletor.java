@@ -297,6 +297,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			} else {
 				final Expression firstArg = object.getArguments().get(1);
 				if (firstArg instanceof Lambda) {
+					result.add(new TextCompletionProposal(", ", 0));
+					result.add(new TextCompletionProposal(")", 0));
 					final Lambda lambda = (Lambda)firstArg;
 					result.addAll(getExpressionTextFollows(validationResult.getPossibleTypes(lambda
 							.getExpression())));
