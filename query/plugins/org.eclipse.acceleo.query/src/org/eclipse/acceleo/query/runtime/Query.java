@@ -193,7 +193,7 @@ public final class Query {
 	 *            an instance to inspect cross references at evaluation time
 	 * @return a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default
 	 *         with Acceleo Query
-	 * @since 9.0
+	 * @since 8.0.2
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
 			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider) {
@@ -214,7 +214,7 @@ public final class Query {
 	 *            tells if the {@link IService} will be used in a workspace
 	 * @return a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default
 	 *         with Acceleo Query
-	 * @since 9.0
+	 * @since 8.0.2
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
 			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider,
@@ -232,7 +232,7 @@ public final class Query {
 	 * @param resolver
 	 *            the {@link IQualifiedNameResolver}
 	 * @return a new {@link IQualifiedNameQueryEnvironment} with no services configured.
-	 * @since 9.0
+	 * @since 8.0.2
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironment(
 			IQualifiedNameResolver resolver) {
