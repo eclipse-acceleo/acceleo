@@ -85,7 +85,7 @@ public class EPackageProvider implements IEPackageProvider {
 	private final Map<EClass, Set<EClass>> subTypes = new HashMap<EClass, Set<EClass>>();
 
 	@Override
-	public Collection<EPackage> getEPackage(String name) {
+	public Set<EPackage> getEPackage(String name) {
 		final Set<EPackage> res = new LinkedHashSet<EPackage>();
 
 		final Set<EPackage> set = ePackages.get(name);
@@ -344,7 +344,7 @@ public class EPackageProvider implements IEPackageProvider {
 	}
 
 	@Override
-	public Collection<EClassifier> getTypes(String name, String classifierName) {
+	public Set<EClassifier> getTypes(String name, String classifierName) {
 		final Set<EClassifier> classifiers = new LinkedHashSet<EClassifier>();
 
 		final Set<EPackage> set = ePackages.get(name);
@@ -371,8 +371,8 @@ public class EPackageProvider implements IEPackageProvider {
 	}
 
 	@Override
-	public Collection<EEnumLiteral> getEnumLiterals(String name, String enumName, String literalName) {
-		Collection<EEnumLiteral> result = new LinkedHashSet<EEnumLiteral>();
+	public Set<EEnumLiteral> getEnumLiterals(String name, String enumName, String literalName) {
+		Set<EEnumLiteral> result = new LinkedHashSet<EEnumLiteral>();
 
 		final Set<EPackage> set = ePackages.get(name);
 		if (set != null) {
@@ -415,7 +415,7 @@ public class EPackageProvider implements IEPackageProvider {
 	}
 
 	@Override
-	public Collection<EClassifier> getTypes(String classifierName) {
+	public Set<EClassifier> getTypes(String classifierName) {
 		Set<EClassifier> result = new LinkedHashSet<EClassifier>();
 		for (Set<EPackage> ePkgs : ePackages.values()) {
 			for (EPackage ePackage : ePkgs) {

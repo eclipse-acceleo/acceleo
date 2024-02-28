@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,9 +33,9 @@ public interface IEPackageProvider {
 	 * @param name
 	 *            the name of the requested package.
 	 * @return the {@link Collection} of {@link EPackage} registered with the specified name
-	 * @since 4.1
+	 * @since 8.0.2
 	 */
-	Collection<EPackage> getEPackage(String name);
+	Set<EPackage> getEPackage(String name);
 
 	/**
 	 * the classifier with the specified name in the package registered with the specified name.
@@ -45,9 +45,9 @@ public interface IEPackageProvider {
 	 * @param classifierName
 	 *            the name of the searched classifier
 	 * @return the list of classifiers matching the given {@link EClassifier} and {@link EPackage} names.
-	 * @since 4.1
+	 * @since 8.0.2
 	 */
-	Collection<EClassifier> getTypes(String name, String classifierName);
+	Set<EClassifier> getTypes(String name, String classifierName);
 
 	/**
 	 * the list of classifiers known to the package provider with the specified name.
@@ -55,9 +55,9 @@ public interface IEPackageProvider {
 	 * @param name
 	 *            the name of the searched classifier
 	 * @return the list of classifiers matching the given {@link EClassifier} names.
-	 * @since 4.1
+	 * @since 8.0.2
 	 */
-	Collection<EClassifier> getTypes(String name);
+	Set<EClassifier> getTypes(String name);
 
 	/**
 	 * the classifier with the specified name in the package registered with the specified name.

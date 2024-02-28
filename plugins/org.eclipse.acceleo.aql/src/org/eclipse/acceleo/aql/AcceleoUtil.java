@@ -16,11 +16,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -103,13 +103,12 @@ public final class AcceleoUtil {
 	 * @return the {@link Template#isMain() main} {@link Template} of the given {@link Module} if any,
 	 *         <code>null</code> otherwise
 	 */
-	public static Template getMainTemplate(Module module) {
-		Template res = null;
+	public static List<Template> getMainTemplate(Module module) {
+		List<Template> res = new ArrayList<>();
 
 		for (ModuleElement moduleElement : module.getModuleElements()) {
 			if (moduleElement instanceof Template && ((Template)moduleElement).isMain()) {
-				res = (Template)moduleElement;
-				break;
+				res.add((Template)moduleElement);
 			}
 		}
 
@@ -171,51 +170,56 @@ public final class AcceleoUtil {
 			URI destination, URI logURI) {
 
 		final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
-		final Template main = getMainTemplate(module);
-		// TODO more than one parameter is allowed ?
-		// TODO not EClass type ?
-		// TODO more than one EClass type ?
-		final String parameterName = main.getParameters().get(0).getName();
-		// TODO use IType ?
-		// TODO this is really quick and dirty
-		final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)main.getParameters()
-				.get(0).getType().getAst();
-		final Collection<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(
-				eClassifierTypeLiteral.getEPackageName(), eClassifierTypeLiteral.getEClassifierName());
-		if (!eClassifiers.isEmpty()) {
-			final EClass parameterType = (EClass)eClassifiers.iterator().next();
-			final List<EObject> values = new ArrayList<EObject>();
-			for (Resource model : resources) {
-				for (EObject root : model.getContents()) {
-					if (parameterType.isInstance(root)) {
-						values.add(root);
+		final Map<EClassifier, List<EObject>> valuesCache = new HashMap<>();
+		for (Template main : getMainTemplate(module)) {
+			// TODO more than one parameter is allowed ?
+			// TODO not EClass type ?
+			// TODO more than one EClass type ?
+			final String parameterName = main.getParameters().get(0).getName();
+			// TODO use IType ?
+			// TODO this is really quick and dirty
+			final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)main.getParameters()
+					.get(0).getType().getAst();
+			final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(
+					eClassifierTypeLiteral.getEPackageName(), eClassifierTypeLiteral.getEClassifierName());
+			if (!eClassifiers.isEmpty()) {
+				final EClass parameterType = (EClass)eClassifiers.iterator().next();
+				final List<EObject> values = valuesCache.computeIfAbsent(parameterType, type -> {
+					final List<EObject> res = new ArrayList<EObject>();
+					for (Resource model : resources) {
+						for (EObject root : model.getContents()) {
+							if (parameterType.isInstance(root)) {
+								res.add(root);
+							}
+							res.addAll(services.eAllContents(root, parameterType));
+						}
 					}
-					values.addAll(services.eAllContents(root, parameterType));
+					return res;
+				});
+
+				generationStrategy.start(destination);
+				final Map<String, Object> variables = new HashMap<String, Object>();
+				for (EObject value : values) {
+					variables.put(parameterName, value);
+					evaluator.generate(module, variables, generationStrategy, destination);
 				}
-			}
 
-			generationStrategy.start(destination);
-			final Map<String, Object> variables = new HashMap<String, Object>();
-			for (EObject value : values) {
-				variables.put(parameterName, value);
-				evaluator.generate(module, variables, generationStrategy, destination);
-			}
-
-			if (logURI != null && evaluator.getGenerationResult().getDiagnostic()
-					.getSeverity() != Diagnostic.OK) {
-				// TODO provide Charset
-				try {
-					final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
-							StandardCharsets.UTF_8, parameterName);
-					printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "", evaluator
-							.getNewLine());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (logURI != null && evaluator.getGenerationResult().getDiagnostic()
+						.getSeverity() != Diagnostic.OK) {
+					// TODO provide Charset
+					try {
+						final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
+								StandardCharsets.UTF_8, parameterName);
+						printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "",
+								evaluator.getNewLine());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
 
-			generationStrategy.terminate();
+				generationStrategy.terminate();
+			}
 		}
 	}
 
