@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,7 +120,7 @@ public final class Query {
 	 * @param rootProvider
 	 *            an instance to search all instances at evaluation time
 	 * @param properties
-	 *            the {@link Properties}
+	 *            the {@link Properties} used by the {@link PropertiesServices}
 	 * @since 7.1
 	 */
 	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
@@ -197,7 +197,8 @@ public final class Query {
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
 			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider) {
-		return newQualifiedNameEnvironmentWithDefaultServices(resolver, xRefProvider, null, false);
+		return newQualifiedNameEnvironmentWithDefaultServices(resolver, xRefProvider, null, new Properties(),
+				false);
 	}
 
 	/**
@@ -210,6 +211,8 @@ public final class Query {
 	 *            an instance to inspect cross references at evaluation time
 	 * @param rootProvider
 	 *            an instance to search all instances at evaluation time
+	 * @param properties
+	 *            the {@link Properties} used be {@link PropertiesServices}
 	 * @param forWorkspace
 	 *            tells if the {@link IService} will be used in a workspace
 	 * @return a new {@link IQualifiedNameQueryEnvironment} configured with the services provided by default
@@ -218,10 +221,10 @@ public final class Query {
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironmentWithDefaultServices(
 			IQualifiedNameResolver resolver, CrossReferenceProvider xRefProvider,
-			IRootEObjectProvider rootProvider, boolean forWorkspace) {
+			IRootEObjectProvider rootProvider, Properties properties, boolean forWorkspace) {
 		final IQualifiedNameQueryEnvironment env = newQualifiedNameEnvironment(resolver);
 
-		configureEnvironment(env, xRefProvider, rootProvider, forWorkspace);
+		configureEnvironment(env, xRefProvider, rootProvider, properties, forWorkspace);
 
 		return env;
 	}

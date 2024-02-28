@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -40,7 +42,6 @@ import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -62,11 +63,13 @@ import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -148,6 +151,11 @@ public final class AQLUtils {
 	 * The install {@link ECrossReferenceAdapter} option.
 	 */
 	public static final String BASE_URI_OPTION = "BaseURI";
+
+	/**
+	 * The install {@link ECrossReferenceAdapter} option.
+	 */
+	public static final String PROPERTIES_URIS_OPTION = "PropertiesURIs";
 
 	/**
 	 * The AQL language name for {@link IServicesConfigurator}.
@@ -691,41 +699,6 @@ public final class AQLUtils {
 	}
 
 	/**
-	 * Creates a new {@link IQueryEnvironment} for the given language name and options.
-	 * 
-	 * @param language
-	 *            the language name
-	 * @param options
-	 *            the {@link Map} of options
-	 * @param resourceSetForModels
-	 *            the {@link ResourceSet} for models
-	 * @param forWorkspace
-	 *            tells if the {@link IService} will be used in a workspace
-	 * @return a new {@link IQueryEnvironment} for the given language name and options
-	 * @see #cleanServices(String, IReadOnlyQueryEnvironment, ResourceSet)
-	 */
-	public static IQueryEnvironment newEnvironmentWithDefaultServices(String language,
-			Map<String, String> options, ResourceSet resourceSetForModels, boolean forWorkspace) {
-		final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
-				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
-		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
-				resourceSetForModels);
-		final IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(
-				crossReferenceProvider, rootProvider);
-
-		for (IServicesConfigurator configurator : getServicesConfigurators(AQL_LANGUAGE)) {
-			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
-					resourceSetForModels, options, forWorkspace));
-		}
-		for (IServicesConfigurator configurator : getServicesConfigurators(language)) {
-			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
-					resourceSetForModels, options, forWorkspace));
-		}
-
-		return queryEnvironment;
-	}
-
-	/**
 	 * Creates a new {@link IQualifiedNameQueryEnvironment} for the given language name and options.
 	 * 
 	 * @param language
@@ -746,9 +719,12 @@ public final class AQLUtils {
 				ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
 		final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(
 				resourceSetForModels);
+
+		final Properties properties = getProperties(resourceSetForModels.getURIConverter(), options);
+
 		final IQualifiedNameQueryEnvironment queryEnvironment = Query
 				.newQualifiedNameEnvironmentWithDefaultServices(resolver, crossReferenceProvider,
-						rootProvider, forWorkspace);
+						rootProvider, properties, forWorkspace);
 
 		for (IServicesConfigurator configurator : getServicesConfigurators(AQL_LANGUAGE)) {
 			ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment,
@@ -760,6 +736,43 @@ public final class AQLUtils {
 		}
 
 		return queryEnvironment;
+	}
+
+	/**
+	 * Gets the {@link Properties} from the given options using the given {@link URIConverter}.
+	 * 
+	 * @param uriConverter
+	 *            the {@link URIConverter}
+	 * @param options
+	 *            the map of options
+	 * @return the {@link Properties} from the given options using the given {@link URIConverter}
+	 */
+	private static Properties getProperties(final URIConverter uriConverter, Map<String, String> options) {
+		final Properties properties = new Properties();
+		final String propertiesURIsOption = options.get(PROPERTIES_URIS_OPTION);
+		if (propertiesURIsOption != null) {
+			final String[] uris = propertiesURIsOption.split(",");
+			final String baseURIString = options.get(BASE_URI_OPTION);
+			final URI baseURI;
+			if (baseURIString != null) {
+				baseURI = URI.createURI(baseURIString, true);
+			} else {
+				baseURI = null;
+			}
+			for (String uriString : uris) {
+				URI uri = URI.createURI(uriString, true);
+				if (uri.isRelative() && baseURI != null) {
+					uri = uri.resolve(baseURI);
+				}
+				try (final InputStream is = uriConverter.createInputStream(uri)) {
+					properties.load(is);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return properties;
 	}
 
 	/**
