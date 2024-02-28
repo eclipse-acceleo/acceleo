@@ -203,12 +203,12 @@ public final class AcceleoUtil {
 
 			if (logURI != null && evaluator.getGenerationResult().getDiagnostic()
 					.getSeverity() != Diagnostic.OK) {
-				// TODO provide Charset and line delimiter
+				// TODO provide Charset
 				try {
 					final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
 							StandardCharsets.UTF_8, parameterName);
-					printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "", System
-							.lineSeparator());
+					printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "", evaluator
+							.getNewLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

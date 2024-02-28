@@ -172,6 +172,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
+	 * Gets the new line {@link String}.
+	 * 
+	 * @return the new line {@link String}
+	 */
+	public String getNewLine() {
+		return newLine;
+	}
+
+	/**
 	 * Generates the given {@link AcceleoASTNode} with the given variables.
 	 * 
 	 * @param node
