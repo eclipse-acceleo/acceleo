@@ -53,7 +53,7 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.parser.AstResult;
@@ -674,9 +674,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		} else {
 			final OpenModeKind mode = fileStatement.getMode();
 			final Charset charset = getCharset(fileStatement);
-			final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
 			try {
-				// FIXME line delimiter
+				final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
 				openWriter(uri, mode, charset, newLine);
 				lastLineOfLastStatement = "";
 				pushIndentation(fileStatement.getBody(), lastLineOfLastStatement);
@@ -700,6 +699,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0, e
 						.getMessage(), new Object[] {fileStatement, new HashMap<String, Object>(
 								peekVariables()) });
+				generationResult.addDiagnostic(diagnostic);
+			} catch (IllegalArgumentException e) {
+				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0, e.getMessage()
+						+ " " + destination + " " + uriObject, new Object[] {fileStatement,
+								new HashMap<String, Object>(peekVariables()) });
 				generationResult.addDiagnostic(diagnostic);
 			}
 

@@ -30,7 +30,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
@@ -131,7 +131,7 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            destination {@link URI}
 	 * @param logURI
-	 *            the {@link URI} for loggin if nay, <code>null</code> otherwise
+	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, Resource model, IAcceleoGenerationStrategy generationStrategy, URI destination,
@@ -156,7 +156,7 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            the destination {@link URI}
 	 * @param logURI
-	 *            the {@link URI} for loggin if nay, <code>null</code> otherwise
+	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, ResourceSet resourceSet, IAcceleoGenerationStrategy generationStrategy,

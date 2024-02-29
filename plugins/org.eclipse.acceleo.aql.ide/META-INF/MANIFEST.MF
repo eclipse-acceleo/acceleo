@@ -13,5 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.acceleo.query
 Bundle-Activator: org.eclipse.acceleo.aql.ide.AcceleoPlugin$Implementation
-Export-Package: org.eclipse.acceleo.aql.ide
+Export-Package: org.eclipse.acceleo.aql.ide,
+ org.eclipse.acceleo.aql.ide.evaluation.strategy,
+ org.eclipse.acceleo.aql.ide.evaluation.writer
 Automatic-Module-Name: org.eclipse.acceleo.aql.ide

@@ -28,9 +28,10 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
-import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
+import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceURIWriterFactory;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -92,7 +93,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 							AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 					final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model
-							.getResourceSet().getURIConverter());
+							.getResourceSet().getURIConverter(), new AcceleoWorkspaceURIWriterFactory());
 					AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy,
 							getDestination(), logURI);
 				}
@@ -376,7 +377,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				false));
 
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResource
-				.getResourceSet().getURIConverter());
+				.getResourceSet().getURIConverter(), new AcceleoWorkspaceURIWriterFactory());
 		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, strategy, getDestination(),
 				logURI);
 

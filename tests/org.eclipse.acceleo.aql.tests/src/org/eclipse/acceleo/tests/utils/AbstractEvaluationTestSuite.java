@@ -29,8 +29,9 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
-import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.DefaultURIWriterFactory;
+import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -114,7 +115,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
-				.getURIConverter());
+				.getURIConverter(), new DefaultURIWriterFactory());
 		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy, memoryDestination, null);
 
 		assertGenerationMessages(evaluator.getGenerationResult());
@@ -181,7 +182,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
-				.getURIConverter());
+				.getURIConverter(), new DefaultURIWriterFactory());
 		AcceleoUtil.generate(evaluatorWindowsEndLine, queryEnvironmentWindowsEndLine, module, model, strategy,
 				memoryDestination, null);
 

@@ -22,8 +22,9 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
-import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
-import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceURIWriterFactory;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.AQLUtils;
@@ -277,7 +278,7 @@ public class AcceleoLauncher implements IApplication {
 	private void evaluate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module mainModule, ResourceSet modelResourceSet, URI targetURI, URI logURI) {
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResourceSet
-				.getURIConverter());
+				.getURIConverter(), new AcceleoWorkspaceURIWriterFactory());
 		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, strategy, targetURI,
 				logURI);
 	}

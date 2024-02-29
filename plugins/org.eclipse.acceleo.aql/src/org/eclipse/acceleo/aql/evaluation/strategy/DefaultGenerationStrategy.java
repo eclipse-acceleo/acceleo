@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.evaluation.writer;
+package org.eclipse.acceleo.aql.evaluation.strategy;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,6 +26,9 @@ import java.util.Map;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.aql.AcceleoUtil;
+import org.eclipse.acceleo.aql.evaluation.writer.AcceleoFileWriter;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
+import org.eclipse.acceleo.aql.evaluation.writer.NullWriter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
@@ -60,14 +63,20 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 	protected final URIConverter uriConverter;
 
 	/**
+	 * The {@link IURIWriterFactory}.
+	 */
+	private final IURIWriterFactory uriWriterFactory;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param uriConverter
 	 *            the {@link URIConverter}
 	 */
-	public DefaultGenerationStrategy(URIConverter uriConverter) {
+	public DefaultGenerationStrategy(URIConverter uriConverter, IURIWriterFactory uriWriterFactory) {
 		protectedAreaContents = new LinkedHashMap<URI, Map<String, List<String>>>();
 		this.uriConverter = uriConverter;
+		this.uriWriterFactory = uriWriterFactory;
 	}
 
 	@Override
@@ -138,7 +147,8 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 				if (exists) {
 					writer = new NullWriter(uri, charset);
 				} else {
-					writer = new AcceleoURIWriter(uri, uriConverter, charset);
+					writer = uriWriterFactory.createWriter(OpenModeKind.CREATE, uri, uriConverter, charset,
+							lineDelimiter);
 				}
 				break;
 			case OVERWRITE:
@@ -153,14 +163,16 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 					}
 				}
 
-				writer = new AcceleoURIWriter(uri, uriConverter, charset);
+				writer = uriWriterFactory.createWriter(OpenModeKind.OVERWRITE, uri, uriConverter, charset,
+						lineDelimiter);
 				break;
 			case APPEND:
 				final String fileString = uri.toFileString();
 				if (fileString != null) {
 					writer = new AcceleoFileWriter(new File(fileString), charset, true);
 				} else {
-					writer = new AcceleoURIWriter(uri, uriConverter, charset);
+					writer = uriWriterFactory.createWriter(OpenModeKind.APPEND, uri, uriConverter, charset,
+							lineDelimiter);
 					if (exists) {
 						try (InputStream contentInputStream = uriConverter.createInputStream(uri)) {
 							final String content = AcceleoUtil.getContent(contentInputStream, charset.name());

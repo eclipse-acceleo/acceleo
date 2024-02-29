@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.evaluation.writer;
+package org.eclipse.acceleo.aql.evaluation.strategy;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
+import org.eclipse.acceleo.aql.evaluation.writer.NullWriter;
 import org.eclipse.emf.common.util.URI;
 
 /**

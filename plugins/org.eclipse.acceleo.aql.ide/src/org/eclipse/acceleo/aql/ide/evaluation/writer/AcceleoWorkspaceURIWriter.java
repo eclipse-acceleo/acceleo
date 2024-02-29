@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ide;
+package org.eclipse.acceleo.aql.ide.evaluation.writer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,13 +20,12 @@ import java.util.LinkedHashMap;
 
 import org.eclipse.acceleo.aql.evaluation.writer.AcceleoURIWriter;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
-import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
-import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -41,32 +40,29 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 	/** Size to use for our buffers. */
 	private static final int BUFFER_SIZE = 8192;
 
-	public AcceleoWorkspaceURIWriter(URI targetURI, URIConverter uriConverter, Charset charset)
-			throws IOException {
+	/**
+	 * The line delimiter.
+	 */
+	private final String lineDelimiter;
+
+	public AcceleoWorkspaceURIWriter(URI targetURI, URIConverter uriConverter, Charset charset,
+			String lineDelimiter) {
 		super(targetURI, uriConverter, charset);
+		this.lineDelimiter = lineDelimiter;
 	}
 
 	@Override
 	public void close() throws IOException {
-		if (!EMFPlugin.IS_ECLIPSE_RUNNING || !JavaLoader.JAVA.equals(getTargetURI().fileExtension())
-				|| !uriConverter.exists(getTargetURI(), new LinkedHashMap<>())) {
+		if (!uriConverter.exists(getTargetURI(), new LinkedHashMap<>())) {
 			super.close();
 		} else {
-			try {
-				Class.forName("org.eclipse.emf.codegen.merge.java.JMerger"); //$NON-NLS-1$
-
-				final String mergedContent = mergeURIContent(getTargetURI(), getBuilder(), getCharset());
-				OutputStream output = uriConverter.createOutputStream(getTargetURI());
-				if (mergedContent != null) {
-					OutputStreamWriter writer = new OutputStreamWriter(output, getCharset());
-					writer.append(mergedContent);
-					writer.close();
-				} else {
-					super.close();
-				}
-			} catch (ClassNotFoundException e) {
-				AcceleoPlugin.getPlugin().log(new Status(IStatus.WARNING, AcceleoPlugin.PLUGIN_ID,
-						"Cannot find org.eclipse.emf.codegen.merge.java.JMerger in the classpath.", e));
+			final String mergedContent = mergeURIContent(getTargetURI(), getBuilder(), getCharset());
+			final OutputStream output = uriConverter.createOutputStream(getTargetURI());
+			if (mergedContent != null) {
+				OutputStreamWriter writer = new OutputStreamWriter(output, getCharset());
+				writer.append(mergedContent);
+				writer.close();
+			} else {
 				super.close();
 			}
 		}
@@ -74,16 +70,16 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 
 	private String mergeURIContent(URI targetURI, StringBuilder stringBuilder, Charset contentCharset)
 			throws IOException {
-		String jmergeFile = URI.createPlatformPluginURI(
+		final String jmergeFile = URI.createPlatformPluginURI(
 				"org.eclipse.emf.codegen.ecore/templates/emf-merge.xml", false).toString(); //$NON-NLS-1$
-		JControlModel model = new JControlModel();
+		final JControlModel model = new JControlModel();
 		model.initialize(new ASTFacadeHelper(), jmergeFile);
 		if (model.canMerge()) {
 			try (final InputStream existingContent = uriConverter.createInputStream(targetURI)) {
 				final String source = stringBuilder.toString();
 
 				try {
-					JMerger jMerger = new JMerger(model);
+					final JMerger jMerger = new JMerger(model);
 					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(source));
 					jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(
 							existingContent, contentCharset.toString()));
@@ -124,12 +120,12 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 				OutputStream destination = uriConverter.createOutputStream(lostURI)) {
 
 			// Print a time stamp of the current copy
-			// FIXME use delimiter specified by file block
 			StringBuilder timestamp = new StringBuilder();
-			timestamp.append('\n').append(Calendar.getInstance().getTime().toString()).append('\n');
+			timestamp.append(lineDelimiter).append(Calendar.getInstance().getTime().toString()).append(
+					lineDelimiter);
 			timestamp.append(
 					"================================================================================"); //$NON-NLS-1$
-			timestamp.append('\n');
+			timestamp.append(lineDelimiter);
 
 			destination.write(timestamp.toString().getBytes(getCharset()));
 
