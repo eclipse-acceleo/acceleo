@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.acceleo.debug.event.model;
 import org.eclipse.acceleo.debug.event.IDSLDebugEvent;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.event.debugger.BreakpointReply;
+import org.eclipse.acceleo.debug.event.debugger.ConsolePrintReply;
 import org.eclipse.acceleo.debug.event.debugger.DeleteVariableReply;
 import org.eclipse.acceleo.debug.event.debugger.ResumingReply;
 import org.eclipse.acceleo.debug.event.debugger.SetCurrentInstructionReply;
@@ -57,6 +58,8 @@ public abstract class AbstractModelEventProcessor implements IDSLDebugEventProce
 			notifyClientSetCurrentInstructionReply((SetCurrentInstructionReply)event);
 		} else if (event instanceof SetVariableValueReply) {
 			notifyClientSetVariableValueReply((SetVariableValueReply)event);
+		} else if (event instanceof ConsolePrintReply) {
+			notifyClientConsolePrintReply((ConsolePrintReply)event);
 		}
 
 		return res;
@@ -69,6 +72,14 @@ public abstract class AbstractModelEventProcessor implements IDSLDebugEventProce
 	 *            the {@link SetVariableValueReply}
 	 */
 	protected abstract void notifyClientSetVariableValueReply(SetVariableValueReply variableValueReply);
+
+	/**
+	 * Notifies the client of a {@link ConsolePrintReply}.
+	 * 
+	 * @param variableValueReply
+	 *            the {@link ConsolePrintReply}
+	 */
+	protected abstract void notifyClientConsolePrintReply(ConsolePrintReply consolePrintReply);
 
 	/**
 	 * Notifies the client of a {@link SetCurrentInstructionReply}.

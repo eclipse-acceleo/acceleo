@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -416,5 +416,13 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 *            the value to validate
 	 */
 	void setVariableValue(Long threadID, String stackName, String variableName, Object value);
+
+	/**
+	 * Prints the given text to the console.
+	 * 
+	 * @param text
+	 *            the text to print
+	 */
+	void consolePrint(String text);
 
 }

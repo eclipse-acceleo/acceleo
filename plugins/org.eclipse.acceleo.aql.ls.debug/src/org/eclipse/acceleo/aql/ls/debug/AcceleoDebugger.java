@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.URIUtil;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -66,6 +68,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * Debugger implementation for Acceleo.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
 public class AcceleoDebugger extends AbstractDSLDebugger {
 
 	/**
@@ -96,6 +103,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 							.getResourceSet().getURIConverter(), new AcceleoWorkspaceURIWriterFactory());
 					AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy,
 							getDestination(), logURI);
+					if (evaluator.getGenerationResult().getDiagnostic().getSeverity() != Diagnostic.OK) {
+						printDiagnostic(evaluator.getGenerationResult().getDiagnostic(), "");
+					}
 				}
 			} finally {
 				// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
@@ -380,6 +390,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				.getResourceSet().getURIConverter(), new AcceleoWorkspaceURIWriterFactory());
 		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, strategy, getDestination(),
 				logURI);
+		if (noDebugEvaluator.getGenerationResult().getDiagnostic().getSeverity() != Diagnostic.OK) {
+			printDiagnostic(noDebugEvaluator.getGenerationResult().getDiagnostic(), "");
+		}
 
 		if (profiler != null) {
 			try {
@@ -543,6 +556,41 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	 */
 	protected URI getDestination() {
 		return destination;
+	}
+
+	/**
+	 * Prints the given {@link Diagnostic}.
+	 * 
+	 * @param stream
+	 *            the {@link PrintStream}
+	 * @param diagnostic
+	 *            the {@link Diagnostic}
+	 * @param indentation
+	 *            the current indentation
+	 */
+	protected void printDiagnostic(Diagnostic diagnostic, String indentation) {
+		String nextIndentation = indentation;
+		if (diagnostic.getMessage() != null) {
+			consolePrint(indentation);
+			switch (diagnostic.getSeverity()) {
+				case Diagnostic.INFO:
+					consolePrint("INFO: ");
+					break;
+
+				case Diagnostic.WARNING:
+					consolePrint("WARNING: ");
+					break;
+
+				case Diagnostic.ERROR:
+					consolePrint("ERROR: ");
+					break;
+			}
+			consolePrint(diagnostic.getMessage() + newLine);
+			nextIndentation += "\t";
+		}
+		for (Diagnostic child : diagnostic.getChildren()) {
+			printDiagnostic(child, nextIndentation);
+		}
 	}
 
 }

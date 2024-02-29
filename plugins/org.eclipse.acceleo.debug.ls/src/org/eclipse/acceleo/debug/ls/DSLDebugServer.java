@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.IDSLDebugger;
 import org.eclipse.acceleo.debug.event.debugger.BreakpointReply;
+import org.eclipse.acceleo.debug.event.debugger.ConsolePrintReply;
 import org.eclipse.acceleo.debug.event.debugger.DeleteVariableReply;
 import org.eclipse.acceleo.debug.event.debugger.ResumingReply;
 import org.eclipse.acceleo.debug.event.debugger.SetCurrentInstructionReply;
@@ -895,6 +896,15 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	@Override
 	protected void notifyClientSetVariableValueReply(SetVariableValueReply variableValueReply) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void notifyClientConsolePrintReply(ConsolePrintReply consolePrintReply) {
+		final OutputEventArguments arg = new OutputEventArguments();
+
+		arg.setOutput(consolePrintReply.getText());
+
+		client.output(arg);
 	}
 
 	@Override

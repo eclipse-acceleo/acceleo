@@ -228,6 +228,19 @@ public final class AcceleoUtil {
 		String nextIndentation = indentation;
 		if (diagnostic.getMessage() != null) {
 			writer.append(indentation);
+			switch (diagnostic.getSeverity()) {
+				case Diagnostic.INFO:
+					writer.append("INFO: ");
+					break;
+
+				case Diagnostic.WARNING:
+					writer.append("WARNING: ");
+					break;
+
+				case Diagnostic.ERROR:
+					writer.append("ERROR: ");
+					break;
+			}
 			writer.append(diagnostic.getMessage() + newLine);
 			nextIndentation += "\t";
 		}
