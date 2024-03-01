@@ -10,22 +10,23 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation.strategy;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.eclipse.acceleo.OpenModeKind;
-import org.eclipse.acceleo.aql.evaluation.writer.AcceleoURIWriter;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
- * The factory for {@link AcceleoURIWriter}.
+ * The factory for {@link IAcceleoWriter}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface IURIWriterFactory {
+public interface IWriterFactory {
 
 	/**
-	 * Creates the {@link AcceleoURIWriter} for the given target {@link URI} and {@link Charset}.
+	 * Creates the {@link IAcceleoWriter} for the given target {@link URI} and {@link Charset}.
 	 * 
 	 * @param openModeKind
 	 *            the {@link OpenModeKind}
@@ -37,9 +38,11 @@ public interface IURIWriterFactory {
 	 *            the {@link Charset}
 	 * @param lineDelimiter
 	 *            the line delimiter that was demanded by the user for this writer.
-	 * @return the created {@link AcceleoURIWriter} for the given target {@link URI} and {@link Charset}
+	 * @return the created {@link IAcceleoWriter} for the given target {@link URI} and {@link Charset}
+	 * @throws IOException
+	 *             if the {@link IAcceleoWriter} can't be created
 	 */
-	AcceleoURIWriter createWriter(OpenModeKind openModeKind, URI uri, URIConverter uriConverter,
-			Charset charset, String lineDelimiter);
+	IAcceleoWriter createWriter(OpenModeKind openModeKind, URI uri, URIConverter uriConverter,
+			Charset charset, String lineDelimiter) throws IOException;
 
 }

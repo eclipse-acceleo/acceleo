@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.evaluation.strategy;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.eclipse.acceleo.OpenModeKind;
-import org.eclipse.acceleo.aql.evaluation.strategy.DefaultURIWriterFactory;
-import org.eclipse.acceleo.aql.evaluation.strategy.IURIWriterFactory;
-import org.eclipse.acceleo.aql.evaluation.writer.AcceleoURIWriter;
+import org.eclipse.acceleo.aql.evaluation.strategy.DefaultWriterFactory;
+import org.eclipse.acceleo.aql.evaluation.strategy.IWriterFactory;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.aql.ide.evaluation.writer.AcceleoWorkspaceURIWriter;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.emf.common.EMFPlugin;
@@ -23,25 +24,25 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
- * The default {@link IURIWriterFactory}.
+ * The default {@link IWriterFactory}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AcceleoWorkspaceURIWriterFactory extends DefaultURIWriterFactory {
+public class AcceleoWorkspaceURIWriterFactory extends DefaultWriterFactory {
 
 	@Override
-	public AcceleoURIWriter createWriter(OpenModeKind openModeKind, URI uri, URIConverter uriConverter,
-			Charset charset, String lineDelimiter) {
-		final AcceleoURIWriter res;
+	public IAcceleoWriter createWriter(OpenModeKind openModeKind, URI uri, URIConverter uriConverter,
+			Charset charset, String lineDelimiter) throws IOException {
+		final IAcceleoWriter res;
 
 		if (openModeKind == OpenModeKind.OVERWRITE) {
 			if (EMFPlugin.IS_ECLIPSE_RUNNING && JavaLoader.JAVA.equals(uri.fileExtension())) {
 				res = new AcceleoWorkspaceURIWriter(uri, uriConverter, charset, lineDelimiter);
 			} else {
-				res = new AcceleoURIWriter(uri, uriConverter, charset);
+				res = super.createWriter(openModeKind, uri, uriConverter, charset, lineDelimiter);
 			}
 		} else {
-			res = new AcceleoURIWriter(uri, uriConverter, charset);
+			res = super.createWriter(openModeKind, uri, uriConverter, charset, lineDelimiter);
 		}
 
 		return res;
