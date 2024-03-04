@@ -16,7 +16,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
+import java.util.Collections;
+import java.util.Map;
 
 import org.eclipse.acceleo.aql.evaluation.writer.AcceleoURIWriter;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
@@ -40,6 +41,9 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 	/** Size to use for our buffers. */
 	private static final int BUFFER_SIZE = 8192;
 
+	/** Used to call URIConverter methods with no options. */
+	private static final Map<String, Object> EMPTY_OPTION_MAP = Collections.emptyMap();
+
 	/**
 	 * The line delimiter.
 	 */
@@ -53,15 +57,15 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 
 	@Override
 	public void close() throws IOException {
-		if (!uriConverter.exists(getTargetURI(), new LinkedHashMap<>())) {
+		if (!uriConverter.exists(getTargetURI(), EMPTY_OPTION_MAP)) {
 			super.close();
 		} else {
 			final String mergedContent = mergeURIContent(getTargetURI(), getBuilder(), getCharset());
-			final OutputStream output = uriConverter.createOutputStream(getTargetURI());
 			if (mergedContent != null) {
-				OutputStreamWriter writer = new OutputStreamWriter(output, getCharset());
-				writer.append(mergedContent);
-				writer.close();
+				try (final OutputStream output = uriConverter.createOutputStream(getTargetURI());
+						final OutputStreamWriter writer = new OutputStreamWriter(output, getCharset());) {
+					writer.append(mergedContent);
+				}
 			} else {
 				super.close();
 			}

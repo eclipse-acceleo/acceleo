@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[**
+ * Requests module.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module requests('http://www.eclipse.org/acceleo/4.0')/]
+
+
+[query public getClassName(module : acceleo::Module) : String = module.name.toUpperFirst() + 'Generator'/]

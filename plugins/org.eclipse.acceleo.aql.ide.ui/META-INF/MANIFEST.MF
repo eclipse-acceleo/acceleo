@@ -3,6 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.aql.ide.ui;singleton:=true
 Bundle-Version: 4.0.0.qualifier
+Export-Package: org.eclipse.acceleo.aql.ide.ui,
+ org.eclipse.acceleo.aql.ide.ui.handlers,
+ org.eclipse.acceleo.aql.ide.ui.message,
+ org.eclipse.acceleo.aql.ide.ui.module.main,
+ org.eclipse.acceleo.aql.ide.ui.module.services,
+ org.eclipse.acceleo.aql.ide.ui.property,
+ org.eclipse.acceleo.aql.ide.ui.wizard
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
@@ -26,5 +33,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.query.ide,
  org.eclipse.ui.ide,
  org.eclipse.emf.ecore.editor,
- org.eclipse.acceleo.query.ide.ui
+ org.eclipse.acceleo.query.ide.ui,
+ org.eclipse.core.expressions
 Automatic-Module-Name: org.eclipse.acceleo.aql.ide.ui

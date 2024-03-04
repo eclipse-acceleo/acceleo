@@ -24,11 +24,11 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
- * The default {@link IWriterFactory}.
+ * The workspace {@link IWriterFactory}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AcceleoWorkspaceURIWriterFactory extends DefaultWriterFactory {
+public class AcceleoWorkspaceWriterFactory extends DefaultWriterFactory {
 
 	@Override
 	public IAcceleoWriter createWriter(OpenModeKind openModeKind, URI uri, URIConverter uriConverter,

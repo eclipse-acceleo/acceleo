@@ -89,4 +89,68 @@
             name="Acceleo Module File">
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.eclipse.acceleo.aql.ide.ui.property.PropertyTester"
+            id="org.eclipse.acceleo.aql.ide.ui.property.propertyTester"
+            namespace="org.eclipse.acceleo.aql.ide.ui.property"
+            properties="isMain"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="Acceleo 4 Model to Text Category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            name="Acceleo 4">
+      </category>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand"
+            name="Create Generator Class">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateGeneratorClassHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFile">
+                     </instanceof>
+                     <test
+                           forcePluginActivation="true"
+                           property="org.eclipse.acceleo.aql.ide.ui.property.isMain">
+                     </test>
+                  </and>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu
+               icon="icons/AcceleoEditor.gif"
+               id="org.eclipse.acceleo.aql.ide.ui.menus.createGeneratorClassMenu"
+               label="Acceleo 4">
+            <command
+                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand"
+                  icon="icons/AcceleoEditor.gif"
+                  id="org.eclipse.acceleo.aql.ide.ui.menus.createGeneratorClassCommand">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
 </plugin>
