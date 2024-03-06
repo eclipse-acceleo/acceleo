@@ -269,6 +269,8 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			res = res.replaceAll("(\\r\\n|\\n)", NEW_LINE + "    ");
 			res = res.replace(emptyLineReplacement, NEW_LINE + NEW_LINE + "    ");
 
+			res = res.replace("[", "['['/]");
+
 			return res + NEW_LINE + "  ";
 		}
 
