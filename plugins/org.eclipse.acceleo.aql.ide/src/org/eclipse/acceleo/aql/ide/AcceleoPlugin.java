@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2021 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -146,21 +146,25 @@ public class AcceleoPlugin extends EMFPlugin {
 
 		final AcceleoParser parser = new AcceleoParser();
 		final IFile file = (IFile)resource;
-		try (InputStream contents = file.getContents()) {
-			final Module module = parser.parse(contents, Charset.forName(file.getCharset()), "none")
-					.getModule();
-			for (ModuleElement element : module.getModuleElements()) {
-				if (element instanceof Template && ((Template)element).isMain()) {
-					res = true;
-					break;
+		if (file.isAccessible()) {
+			try (InputStream contents = file.getContents()) {
+				final Module module = parser.parse(contents, Charset.forName(file.getCharset()), "none")
+						.getModule();
+				for (ModuleElement element : module.getModuleElements()) {
+					if (element instanceof Template && ((Template)element).isMain()) {
+						res = true;
+						break;
+					}
 				}
+			} catch (IOException e) {
+				AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
+						"couldn't parse module " + resource.getFullPath(), e));
+			} catch (CoreException e) {
+				AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
+						"couldn't parse module " + resource.getFullPath(), e));
 			}
-		} catch (IOException e) {
-			AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
-					"couldn't parse module " + resource.getFullPath(), e));
-		} catch (CoreException e) {
-			AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
-					"couldn't parse module " + resource.getFullPath(), e));
+		} else {
+			res = false;
 		}
 
 		return res;
