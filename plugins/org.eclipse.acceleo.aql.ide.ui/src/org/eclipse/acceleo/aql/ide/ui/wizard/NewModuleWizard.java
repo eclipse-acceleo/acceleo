@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.ide.ui.wizard;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Block;
@@ -241,8 +242,7 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 				fileBlock.setInlined(false);
 				final TextStatement fileText = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 						.createTextStatement();
-				fileText.setValue(initialContent.replaceAll("\\r\\n|\\n", NEW_LINE + "    ") + NEW_LINE
-						+ "  ");
+				fileText.setValue(getTextStatementValue(initialContent));
 				fileBlock.getStatements().add(fileText);
 				fileStatement.setBody(fileBlock);
 				res.getStatements().add(fileStatement);
@@ -250,6 +250,26 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			res.getStatements().add(text);
 
 			return res;
+		}
+
+		/**
+		 * Gets the {@link TextStatement} value for the given initial content.
+		 * 
+		 * @param initialContent
+		 *            the initial content
+		 * @return the {@link TextStatement} value for the given initial content
+		 */
+		private String getTextStatementValue(final String initialContent) {
+			String res;
+
+			final String emptyLineReplacement = UUID.randomUUID().toString() + UUID.randomUUID().toString()
+					+ UUID.randomUUID().toString();
+
+			res = initialContent.replaceAll("(\\r\\n|\\n)(\\r\\n|\\n)", emptyLineReplacement);
+			res = res.replaceAll("(\\r\\n|\\n)", NEW_LINE + "    ");
+			res = res.replace(emptyLineReplacement, NEW_LINE + NEW_LINE + "    ");
+
+			return res + NEW_LINE + "  ";
 		}
 
 		/**
