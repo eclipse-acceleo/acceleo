@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Huawei.
+ * Copyright (c) 2020, 2024 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -7,10 +7,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.debug.ide.ui.launch;
 
+import org.eclipse.acceleo.aql.ide.ui.dialog.AbstractResourceSelectionDialog;
+import org.eclipse.acceleo.aql.ide.ui.dialog.FileSelectionDialog;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FileSelectionDialog;
 import org.eclipse.acceleo.aql.profiler.ProfilerUtils;
 import org.eclipse.acceleo.aql.profiler.ProfilerUtils.Representation;
 import org.eclipse.core.runtime.CoreException;

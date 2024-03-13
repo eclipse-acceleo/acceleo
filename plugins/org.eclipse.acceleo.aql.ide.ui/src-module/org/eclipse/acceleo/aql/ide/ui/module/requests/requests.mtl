@@ -8,4 +8,32 @@
 [module requests('http://www.eclipse.org/acceleo/4.0')/]
 
 
+[**
+ * Gets the standalone generator class name.
+ * @param module the module
+ */]
 [query public getClassName(module : acceleo::Module) : String = module.name.toUpperFirst() + 'Generator'/]
+
+[**
+ * Gets the base project name.
+ * @param projectUIName the Eclipse UI project name
+ */]
+[query public baseProjectName(projectUIName : String) : String = projectUIName.substring(1, projectUIName.size() - '.ide.ui'.size())/]
+
+[**
+ * Gets the Eclipse command handler class name.
+ * @param module the module
+ */]
+[query public getEclipseHandlerClassName(module : acceleo::Module) : String = module.name.toUpperFirst() + 'GeneratorHandler'/]
+
+[**
+ * Gets the Eclipse command ID name.
+ * @param module the module
+ */]
+[query public getCommandID(module : acceleo::Module) : String = module.name + 'GeneratorCommand'/]
+
+[**
+ * Gets the Eclipse generator class name.
+ * @param module the module
+ */]
+[query public getEclipseClassName(module : acceleo::Module) : String = module.name.toUpperFirst() + 'GeneratorEclipse'/]

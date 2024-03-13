@@ -1,0 +1,19 @@
+[comment encoding = UTF-8 /]
+[**
+ * Generate the Java main class for a main module.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module standalone('http://www.eclipse.org/acceleo/4.0')/]
+
+[import org::eclipse::acceleo::aql::ide::ui::module::files::standaloneMain/]
+
+[**
+ * Generate the Java main class for a main module.
+ * @param module the module containing a main template
+ * @main
+ */]
+[template public standalone(module : acceleo::Module)]
+  [module.standaloneMainFile()/]
+[/template]

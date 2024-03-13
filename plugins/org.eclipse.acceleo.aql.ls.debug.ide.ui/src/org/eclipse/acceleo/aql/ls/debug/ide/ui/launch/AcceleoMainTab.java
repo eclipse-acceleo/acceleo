@@ -17,11 +17,11 @@ import java.util.Map;
 
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
+import org.eclipse.acceleo.aql.ide.ui.dialog.AbstractResourceSelectionDialog;
+import org.eclipse.acceleo.aql.ide.ui.dialog.FileSelectionDialog;
+import org.eclipse.acceleo.aql.ide.ui.dialog.FolderSelectionDialog;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FileSelectionDialog;
-import org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.FolderSelectionDialog;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;

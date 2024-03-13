@@ -111,12 +111,39 @@
             id="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand"
             name="Create Generator Class">
       </command>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIGeneratorProjectCommand"
+            name="Create Eclipse UI Generator Project">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateGeneratorClassHandler"
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateStandaloneClassHandler"
             commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFile">
+                     </instanceof>
+                     <test
+                           forcePluginActivation="true"
+                           property="org.eclipse.acceleo.aql.ide.ui.property.isMain">
+                     </test>
+                  </and>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateEclipseUIProjectHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIGeneratorProjectCommand">
          <enabledWhen>
             <with
                   variable="selection">
@@ -149,6 +176,11 @@
                   commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand"
                   icon="icons/AcceleoEditor.gif"
                   id="org.eclipse.acceleo.aql.ide.ui.menus.createGeneratorClassCommand">
+            </command>
+            <command
+                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIGeneratorProjectCommand"
+                  icon="icons/AcceleoEditor.gif"
+                  id="org.eclipse.acceleo.aql.ide.ui.menus.createEclipseUIGeneratorProjectCommand">
             </command>
          </menu>
       </menuContribution>

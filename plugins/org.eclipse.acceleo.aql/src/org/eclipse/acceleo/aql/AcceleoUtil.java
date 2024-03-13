@@ -18,13 +18,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Statement;
@@ -35,6 +34,7 @@ import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -42,12 +42,12 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironmen
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
-import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
@@ -165,62 +165,144 @@ public final class AcceleoUtil {
 				destination, logURI);
 	}
 
-	private static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
+	/**
+	 * @param evaluator
+	 *            the {@link AcceleoEvaluator}
+	 * @param queryEnvironment
+	 *            the {@link IQueryEnvironment}
+	 * @param module
+	 *            the {@link Module}
+	 * @param resources
+	 *            the {@link List} of {@link Resource} containing the input model(s)
+	 * @param generationStrategy
+	 *            the {@link IAcceleoGenerationStrategy}
+	 * @param destination
+	 *            the destination {@link URI}
+	 * @param logURI
+	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
+	 */
+	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, List<Resource> resources, IAcceleoGenerationStrategy generationStrategy,
 			URI destination, URI logURI) {
 
-		final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
-		final Map<EClassifier, List<EObject>> valuesCache = new HashMap<>();
+		final Map<EClass, List<EObject>> valuesCache = new HashMap<>();
 		for (Template main : getMainTemplate(module)) {
 			// TODO more than one parameter is allowed ?
 			// TODO not EClass type ?
 			// TODO more than one EClass type ?
-			final String parameterName = main.getParameters().get(0).getName();
 			// TODO use IType ?
 			// TODO this is really quick and dirty
 			final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)main.getParameters()
 					.get(0).getType().getAst();
-			final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(
-					eClassifierTypeLiteral.getEPackageName(), eClassifierTypeLiteral.getEClassifierName());
-			if (!eClassifiers.isEmpty()) {
-				final EClass parameterType = (EClass)eClassifiers.iterator().next();
-				final List<EObject> values = valuesCache.computeIfAbsent(parameterType, type -> {
-					final List<EObject> res = new ArrayList<EObject>();
-					for (Resource model : resources) {
-						for (EObject root : model.getContents()) {
-							if (parameterType.isInstance(root)) {
-								res.add(root);
-							}
-							res.addAll(services.eAllContents(root, parameterType));
-						}
-					}
-					return res;
-				});
+			final List<EObject> values = getValues(eClassifierTypeLiteral, queryEnvironment, resources,
+					valuesCache);
 
-				generationStrategy.start(destination);
-				final Map<String, Object> variables = new HashMap<String, Object>();
-				for (EObject value : values) {
-					variables.put(parameterName, value);
-					evaluator.generate(module, variables, generationStrategy, destination);
-				}
-
-				if (logURI != null && evaluator.getGenerationResult().getDiagnostic()
-						.getSeverity() != Diagnostic.OK) {
-					// TODO provide Charset
-					try {
-						final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
-								StandardCharsets.UTF_8, parameterName);
-						printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "",
-								evaluator.getNewLine());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
-				generationStrategy.terminate();
+			final String parameterName = main.getParameters().get(0).getName();
+			Map<String, Object> variables = new LinkedHashMap<>();
+			for (EObject value : values) {
+				variables.put(parameterName, value);
+				generate(main, variables, evaluator, queryEnvironment, generationStrategy, destination,
+						logURI);
 			}
 		}
+
+	}
+
+	/**
+	 * Generates the given {@link Template} for the given {@link List} of {@link EObject}.
+	 * 
+	 * @param template
+	 *            the {@link Template} to generate
+	 * @param variables
+	 *            the variables
+	 * @param evaluator
+	 *            the {@link AcceleoEvaluator}
+	 * @param queryEnvironment
+	 *            the {@link IQueryEnvironment}
+	 * @param module
+	 *            the {@link Module}
+	 * @param resources
+	 *            the {@link List} of {@link Resource} containing the input model(s)
+	 * @param generationStrategy
+	 *            the {@link IAcceleoGenerationStrategy}
+	 * @param destination
+	 *            the destination {@link URI}
+	 * @param logURI
+	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
+	 */
+	public static void generate(Template template, Map<String, Object> variables, AcceleoEvaluator evaluator,
+			IQualifiedNameQueryEnvironment queryEnvironment, IAcceleoGenerationStrategy generationStrategy,
+			URI destination, URI logURI) {
+		generationStrategy.start(destination);
+		final String moduleQualifiedName = queryEnvironment.getLookupEngine().getResolver().getQualifiedName(
+				getContainingModule(template));
+		queryEnvironment.getLookupEngine().pushImportsContext(moduleQualifiedName, moduleQualifiedName);
+		try {
+			evaluator.generate(template, variables, generationStrategy, destination);
+		} finally {
+			queryEnvironment.getLookupEngine().popContext(moduleQualifiedName);
+		}
+
+		if (logURI != null && evaluator.getGenerationResult().getDiagnostic()
+				.getSeverity() != Diagnostic.OK) {
+			// TODO provide Charset
+			try {
+				final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
+						StandardCharsets.UTF_8, evaluator.getNewLine());
+				printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "", evaluator
+						.getNewLine());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		generationStrategy.terminate();
+	}
+
+	/**
+	 * Gets the {@link List} of {@link EObject} that can be used as values for the given {@link TypeLiteral}
+	 * in the given {@link List} of {@link EReference}.
+	 * 
+	 * @param type
+	 *            the type we are searching values for
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param resources
+	 *            the {@link List} of {@link Resource} to search
+	 * @param valuesCache
+	 *            the cache of any previous values
+	 * @return the {@link List} of {@link EObject} that can be used as values for the given
+	 *         {@link TypeLiteral} in the given {@link List} of {@link EReference}
+	 */
+	public static List<EObject> getValues(TypeLiteral type, IQualifiedNameQueryEnvironment queryEnvironment,
+			List<Resource> resources, Map<EClass, List<EObject>> valuesCache) {
+		final List<EObject> res;
+
+		// TODO handle other types
+		final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)type;
+		final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getTypes(
+				eClassifierTypeLiteral.getEPackageName(), eClassifierTypeLiteral.getEClassifierName());
+		if (!eClassifiers.isEmpty()) {
+			final EObjectServices services = new EObjectServices(queryEnvironment, null, null);
+			final EClass parameterType = (EClass)eClassifiers.iterator().next();
+			res = valuesCache.computeIfAbsent(parameterType, t -> {
+				final List<EObject> values = new ArrayList<EObject>();
+				for (Resource model : resources) {
+					for (EObject root : model.getContents()) {
+						if (parameterType.isInstance(root)) {
+							values.add(root);
+						}
+						values.addAll(services.eAllContents(root, t));
+					}
+				}
+				return values;
+			});
+		} else {
+			res = Collections.emptyList();
+		}
+
+		return res;
 	}
 
 	private static void printDiagnostic(IAcceleoWriter writer, Diagnostic diagnostic, String indentation,
@@ -247,35 +329,6 @@ public final class AcceleoUtil {
 		for (Diagnostic child : diagnostic.getChildren()) {
 			printDiagnostic(writer, child, nextIndentation, newLine);
 		}
-	}
-
-	/**
-	 * Provides the concrete Acceleo {@link EClass EClasses} that are, inherit or extend the given Acceleo
-	 * {@link EClass}. This is useful to use an {@link AcceleoSwitch} on non-instantiable EClasses.
-	 * 
-	 * @param superType
-	 *            the (non-{@code null}) {@link AcceleoPackage Acceleo} {@link EClass}.
-	 * @return the {@link List} of concrete (i.e. both {@link EClass#isInterface()} and
-	 *         {@link EClass#isAbstract()} return {@code false}) {@link EClass EClasses} from
-	 *         {@link AcceleoPackage} that are, inherit, or extend, the given Acceleo {@link EClass}.
-	 */
-	public static List<EClass> getConcreteAcceleoTypesInheriting(EClass superType) {
-		if (!superType.getEPackage().equals(AcceleoPackage.eINSTANCE)) {
-			throw new IllegalArgumentException(
-					"This can only be used for EClasses from the Acceleo EPackage. " + superType
-							+ " is from EPackage " + superType.getEPackage() + ".");
-		}
-		List<EClass> eClasses = new ArrayList<>();
-		if (!superType.isAbstract() && !superType.isInterface()) {
-			eClasses.add(superType);
-		}
-		List<EClass> allAcceleoConcreteEClasses = AcceleoPackage.eINSTANCE.getEClassifiers().stream().filter(
-				EClass.class::isInstance).map(EClass.class::cast).filter(eClass -> !eClass.isInterface()
-						&& !eClass.isAbstract()).collect(Collectors.toList());
-		List<EClass> acceleoConcreteSubTypes = allAcceleoConcreteEClasses.stream().filter(eClass -> eClass
-				.getESuperTypes().contains(superType)).collect(Collectors.toList());
-		eClasses.addAll(acceleoConcreteSubTypes);
-		return eClasses;
 	}
 
 	/**
@@ -329,6 +382,17 @@ public final class AcceleoUtil {
 	 */
 	public static Statement getContainingStatement(ASTNode node) {
 		return (Statement)getContainer(node, n -> n instanceof Statement);
+	}
+
+	/**
+	 * Gets the containing {@link Module} of the given {@link ASTNode}.
+	 * 
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the containing {@link Module} of the given {@link ASTNode} if any, <code>null</code> otherwise
+	 */
+	public static Module getContainingModule(ASTNode node) {
+		return (Module)getContainer(node, n -> n instanceof Module);
 	}
 
 	/**

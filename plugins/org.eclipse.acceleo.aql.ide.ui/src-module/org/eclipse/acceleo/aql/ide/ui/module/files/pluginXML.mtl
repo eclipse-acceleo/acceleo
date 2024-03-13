@@ -1,0 +1,93 @@
+[comment encoding = UTF-8 /]
+[module pluginXML('http://www.eclipse.org/acceleo/4.0')/]
+
+[import org::eclipse::acceleo::aql::ide::ui::module::requests::requests/]
+[import org::eclipse::acceleo::aql::ide::ui::module::services::Services/]
+
+[**
+ * Generate the plugin.xml file.
+ * @param projectUIName the UI project name
+ */]
+[template public pluginXMLFile(projectModules : Sequence(acceleo::Module), projectUIName : String)]
+  [file (projectUIName + '/plugin.xml', overwrite, 'UTF-8')]
+    <?xml version="1.0" encoding="UTF-8"?>
+    <?eclipse version="3.4"?>
+    <plugin>
+       <extension
+             point="org.eclipse.ui.handlers">
+          [projectModules.generateHandler(projectUIName)/]
+       </extension>
+       <extension
+             point="org.eclipse.ui.menus">
+          <menuContribution
+                locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+             <menu
+                   id="[projectUIName/].menus.generators"
+                   label="Generators">
+                [projectModules.generateCommandMenu(projectUIName)/]
+             </menu>
+          </menuContribution>
+       </extension>
+       <extension
+             point="org.eclipse.ui.commands">
+          <category
+                id="[projectUIName/].commands.generatorsCategory"
+                name="Generators">
+          </category>
+          [projectModules.generateCommand(projectUIName)/]
+       </extension>
+    
+    </plugin>
+  [/file]
+[/template]
+
+[**
+ * Generate the handler declaration.
+ * @param module the module
+ * @param projectUIName the UI project name
+ */]
+[template public generateHandler(module : acceleo::Module, projectUIName : String)]
+  <handler
+        class="[projectUIName/].handlers.[module.getEclipseHandlerClassName()/]"
+        commandId="[projectUIName/].commands.[module.getCommandID()/]">
+  </handler>
+[/template]
+
+[**
+ * Generate the command menu declaration.
+ * @param module the module
+ * @param projectUIName the UI project name
+ */]
+[template public generateCommandMenu(module : acceleo::Module, projectUIName : String)]
+  <command
+        commandId="[projectUIName/].commands.[module.getCommandID()/]"
+        id="[projectUIName/].menus.[module.getCommandID()/]"
+        label="[module.getQualifiedName()/]">
+     <visibleWhen
+           checkEnabled="false">
+        <with
+              variable="selection">
+           <iterate
+                 ifEmpty="false"
+                 operator="and">
+              <instanceof
+                    value="[module.getReceiverQualifiedClassName()/]">
+              </instanceof>
+           </iterate>
+        </with>
+     </visibleWhen>
+  </command>
+[/template]
+
+[**
+ * Generate the command declaration.
+ * @param module the module
+ * @param projectUIName the UI project name
+ */]
+[template public generateCommand(module : acceleo::Module, projectUIName : String)]
+  <command
+        categoryId="[projectUIName/].commands.generatorsCategory"
+        id="[projectUIName/].commands.[module.getCommandID()/]"
+        name="[module.getQualifiedName()/]">
+  </command>
+[/template]

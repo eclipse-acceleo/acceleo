@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog;
+package org.eclipse.acceleo.aql.ide.ui.dialog;
 
 import java.util.ArrayList;
 import java.util.List;

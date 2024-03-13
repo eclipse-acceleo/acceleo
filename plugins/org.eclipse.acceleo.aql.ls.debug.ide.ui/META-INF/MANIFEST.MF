@@ -26,8 +26,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.common,
  org.eclipse.emf.common.ui,
  org.eclipse.acceleo.aql.profiler,
- com.google.gson
+ com.google.gson,
+ org.eclipse.acceleo.aql.ide.ui
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls.debug.ide.ui
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog,
- org.eclipse.acceleo.aql.ls.debug.ide.ui.launch
+Export-Package: org.eclipse.acceleo.aql.ls.debug.ide.ui.launch

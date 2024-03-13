@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog;
+package org.eclipse.acceleo.aql.ide.ui.dialog;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -41,7 +41,7 @@ public class FolderSelectionDialog extends AbstractResourceSelectionDialog {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog#findResource(java.lang.String)
+	 * @see org.eclipse.acceleo.aql.ide.ui.dialog.AbstractResourceSelectionDialog#findResource(java.lang.String)
 	 */
 	@Override
 	protected IResource findResource(String defaultResourceName) {
@@ -51,7 +51,7 @@ public class FolderSelectionDialog extends AbstractResourceSelectionDialog {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.aql.ls.debug.ide.ui.dialog.AbstractResourceSelectionDialog#isValid(org.eclipse.core.resources.IResource)
+	 * @see org.eclipse.acceleo.aql.ide.ui.dialog.AbstractResourceSelectionDialog#isValid(org.eclipse.core.resources.IResource)
 	 */
 	@Override
 	protected boolean isValid(IResource resource) {

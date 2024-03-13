@@ -4,6 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.aql.ide.ui;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Export-Package: org.eclipse.acceleo.aql.ide.ui,
+ org.eclipse.acceleo.aql.ide.ui.dialog,
  org.eclipse.acceleo.aql.ide.ui.handlers,
  org.eclipse.acceleo.aql.ide.ui.message,
  org.eclipse.acceleo.aql.ide.ui.module.main,

@@ -1,0 +1,35 @@
+[comment encoding = UTF-8 /]
+[**
+ * Generate the Java main class for a main module.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module eclipseUIProject('http://www.eclipse.org/acceleo/4.0')/]
+
+[import org::eclipse::acceleo::aql::ide::ui::module::files::classpath/]
+[import org::eclipse::acceleo::aql::ide::ui::module::files::project/]
+[import org::eclipse::acceleo::aql::ide::ui::module::files::manifest/]
+[import org::eclipse::acceleo::aql::ide::ui::module::files::buildProperties/]
+[import org::eclipse::acceleo::aql::ide::ui::module::files::pluginXML/]
+[import org::eclipse::acceleo::aql::ide::ui::module::files::activator/]
+[import org::eclipse::acceleo::aql::ide::ui::module::files::eclipseGenerator/]
+[import org::eclipse::acceleo::aql::ide::ui::module::files::eclipseGeneratorHandler/]
+
+
+[**
+ * Generate the Eclipse UI project for a main module.
+ * @param projectModules the Sequence of module contained in the same IProject
+ * @param projectUIName the UI project name
+ * @main
+ */]
+[template public eclipseUIProject(projectModules : Sequence(acceleo::Module), projectUIName : String)]
+  [projectUIName.classpathFile()/]
+  [projectUIName.projectFile()/]
+  [projectUIName.manifestFile()/]
+  [projectUIName.buildPropertiesFile()/]
+  [projectModules->pluginXMLFile(projectUIName)/]
+  [projectUIName.activatorFile()/]
+  [projectModules.eclipseGeneratorFile(projectUIName)/]
+  [projectModules.generatorHandlerFile(projectUIName)/]
+[/template]

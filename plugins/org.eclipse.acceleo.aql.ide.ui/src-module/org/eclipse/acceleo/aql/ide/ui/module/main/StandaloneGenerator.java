@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.ide.ui.module.main;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.Module;
@@ -44,11 +45,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 /**
- * Eclipse launcher for org::eclipse::python4capella::ecore::gen::python::main::main.
+ * Eclipse launcher for org::eclipse::python4capella::ecore::gen::python::main::standalone.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class MainGenerator {
+public class StandaloneGenerator {
 
 	/**
 	 * The main {@link Module} {@link IFile}.
@@ -61,7 +62,7 @@ public class MainGenerator {
 	 * @param moduleFile
 	 *            the module {@link IFile}
 	 */
-	public MainGenerator(IFile moduleFile) {
+	public StandaloneGenerator(IFile moduleFile) {
 		this.moduleFile = moduleFile;
 	}
 
@@ -91,7 +92,7 @@ public class MainGenerator {
 		final Map<String, String> options = getOptions();
 
 		// create the resource set used to load models (not used in this case)
-		final ArrayList<Exception> exceptions = new ArrayList<>();
+		final List<Exception> exceptions = new ArrayList<>();
 		final ResourceSet resourceSetForModels = new ResourceSetImpl();
 
 		// prepare Acceleo environment
@@ -114,24 +115,15 @@ public class MainGenerator {
 		final Module modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
 
 		synchronized(this) {
-			beforeGeneration(workspaceResolver);
+			beforeGeneration(queryEnvironment, workspaceResolver);
 			try {
 				AcceleoUtil.generate(evaluator, queryEnvironment, module, modelModule.eResource(), strategy,
 						targetURI, logURI);
 			} finally {
 				AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
+				printDiagnostics(evaluator.getGenerationResult());
+				afterGeneration(evaluator.getGenerationResult());
 			}
-
-			try {
-				moduleFile.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-			} catch (CoreException e) {
-				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), "could not refresh "
-						+ moduleFile.getParent().getFullPath(), e));
-			}
-
-			printDiagnostics(evaluator.getGenerationResult());
-
-			afterGeneration(evaluator.getGenerationResult());
 		}
 	}
 
@@ -141,7 +133,7 @@ public class MainGenerator {
 	 * @return the module qualified name
 	 */
 	protected String getModuleQualifiedName() {
-		return "org::eclipse::acceleo::aql::ide::ui::module::main::main";
+		return "org::eclipse::acceleo::aql::ide::ui::module::main::standalone";
 	}
 
 	/**
@@ -180,8 +172,8 @@ public class MainGenerator {
 	 *            the {@link ResourceSet} for models
 	 * @return the created {@link IQualifiedNameQueryEnvironment}
 	 */
-	protected IQualifiedNameQueryEnvironment createAcceleoQueryEnvironment(final Map<String, String> options,
-			final IQualifiedNameResolver resolver, final ResourceSet resourceSetForModels) {
+	protected IQualifiedNameQueryEnvironment createAcceleoQueryEnvironment(Map<String, String> options,
+			final IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
 		final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
 				options, resolver, resourceSetForModels, false);
 		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
@@ -200,7 +192,7 @@ public class MainGenerator {
 	 * @return the created {@link AcceleoEvaluator}
 	 */
 	protected AcceleoEvaluator createAcceleoEvaluator(final IQualifiedNameResolver resolver,
-			final IQualifiedNameQueryEnvironment queryEnvironment) {
+			IQualifiedNameQueryEnvironment queryEnvironment) {
 		AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), System
 				.lineSeparator());
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
@@ -217,11 +209,14 @@ public class MainGenerator {
 	/**
 	 * Before the generation starts.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param workspaceResolver
 	 *            the workspace {@link IQualifiedNameResolver}
 	 */
-	protected void beforeGeneration(IQualifiedNameResolver workspaceResolver) {
-		Services.setResolver(workspaceResolver);
+	protected void beforeGeneration(IQualifiedNameQueryEnvironment queryEnvironment,
+			IQualifiedNameResolver workspaceResolver) {
+		Services.initialize(queryEnvironment, workspaceResolver);
 	}
 
 	/**
@@ -277,7 +272,13 @@ public class MainGenerator {
 	 *            the {@link GenerationResult}
 	 */
 	protected void afterGeneration(GenerationResult generationResult) {
-		Services.setResolver(null);
+		Services.initialize(null, null);
+		try {
+			moduleFile.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), "could not refresh "
+					+ moduleFile.getParent().getFullPath(), e));
+		}
 	}
 
 }

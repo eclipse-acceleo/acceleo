@@ -1,0 +1,16 @@
+[comment encoding = UTF-8 /]
+[module buildProperties('http://www.eclipse.org/acceleo/4.0')/]
+
+[**
+ * Generate the build.properties file.
+ * @param projectUIName the UI project name
+ */]
+[template public buildPropertiesFile(projectUIName : String)]
+  [file (projectUIName + '/build.properties', overwrite, 'UTF-8')]
+    output.. = bin/
+    bin.includes = META-INF/,\
+                   .,\
+                   plugin.xml
+    source.. = src/
+  [/file]
+[/template]

@@ -1,0 +1,58 @@
+[comment encoding = UTF-8 /]
+[module eclipseGenerator('http://www.eclipse.org/acceleo/4.0')/]
+
+[import org::eclipse::acceleo::aql::ide::ui::module::requests::requests/]
+[import org::eclipse::acceleo::aql::ide::ui::module::services::Services/]
+
+[**
+ * Generate the plugin.xml file.
+ * @param projectUIName the UI project name
+ */]
+[template public generatorHandlerFile(module : acceleo::Module, projectUIName : String)]
+  [file (projectUIName + '/src/' + projectUIName.replaceAll('\\.', '/') + '/handlers/' + module.getEclipseHandlerClassName() + '.java', overwrite, 'UTF-8')]
+    [protected ('copyright') startTagPrefix('//') endTagPrefix('//')]
+    [/protected]
+
+    package [projectUIName/].handlers;
+
+    [protected ('imports') startTagPrefix('//') endTagPrefix('//')]
+
+      import java.util.Iterator;
+
+      import org.eclipse.core.commands.AbstractHandler;
+      import org.eclipse.core.commands.ExecutionEvent;
+      import org.eclipse.core.commands.ExecutionException;
+      import [module.getReceiverQualifiedClassName()/];
+      import org.eclipse.jface.viewers.IStructuredSelection;
+      import [projectUIName/].[module.getEclipseClassName()/];
+      import org.eclipse.ui.handlers.HandlerUtil;
+
+    [/protected]
+
+    /**
+     * Command handler for [module.getQualifiedName()/].
+     * 
+     * @author [''.getUserName()/]
+     * @generated
+     */
+    public class [module.getEclipseHandlerClassName()/] extends AbstractHandler {
+
+    	@Override
+    	public Object execute(ExecutionEvent event) throws ExecutionException {
+    		final IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
+
+    		final Iterator<?> it = selection.iterator();
+    		while (it.hasNext()) {
+    			final Object selected = it.next();
+    			if (selected instanceof [module.getReceiverClassName()/]) {
+    				final [module.getEclipseClassName()/] generator = new [module.getEclipseClassName()/](([module.getReceiverClassName()/])selected);
+    				generator.generate();
+    			}
+    		}
+
+    		return null;
+    	}
+
+    }
+  [/file]
+[/template]

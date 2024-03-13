@@ -11,12 +11,19 @@
 package org.eclipse.acceleo.aql.ide.ui.module.services;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -27,18 +34,27 @@ import org.eclipse.emf.ecore.EPackage;
 public class Services {
 
 	/**
-	 * The {@link IQualifiedNameResolver} to resolve {@link Module}.
+	 * The {@link IQualifiedNameQueryEnvironment}.
 	 */
-	private static IQualifiedNameResolver resolver;
+	private static IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
-	 * Sets the {@link IQualifiedNameResolver}.
-	 * 
-	 * @param resolver
-	 *            the {@link IQualifiedNameResolver}
+	 * The workspace {@link IQualifiedNameResolver}.
 	 */
-	public static void setResolver(IQualifiedNameResolver resolver) {
-		Services.resolver = resolver;
+	private static IQualifiedNameResolver workspaceResolver;
+
+	/**
+	 * Sets the {@link IQualifiedNameQueryEnvironment}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param workspaceResolver
+	 *            the workspace {@link IQualifiedNameQueryEnvironment}
+	 */
+	public static void initialize(IQualifiedNameQueryEnvironment queryEnvironment,
+			IQualifiedNameResolver workspaceResolver) {
+		Services.queryEnvironment = queryEnvironment;
+		Services.workspaceResolver = workspaceResolver;
 	}
 
 	/**
@@ -131,12 +147,12 @@ public class Services {
 		final Set<EPackage> res = new LinkedHashSet<>();
 
 		final Set<String> qualifiedNames = new LinkedHashSet<>();
-		final String moduleQualifiedName = resolver.getQualifiedName(module);
+		final String moduleQualifiedName = workspaceResolver.getQualifiedName(module);
 		qualifiedNames.add(moduleQualifiedName);
-		qualifiedNames.addAll(resolver.getDependOn(moduleQualifiedName));
+		qualifiedNames.addAll(workspaceResolver.getDependOn(moduleQualifiedName));
 
 		for (String qualifiedName : qualifiedNames) {
-			final Object resolved = resolver.resolve(qualifiedName);
+			final Object resolved = workspaceResolver.resolve(qualifiedName);
 			if (resolved instanceof Module) {
 				final Module child = (Module)resolved;
 				for (Metamodel metamodel : child.getMetamodels()) {
@@ -149,4 +165,59 @@ public class Services {
 
 		return res;
 	}
+
+	/**
+	 * Gets the receiver qualified {@link Class} name for the given {@link Module}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return the receiver qualified {@link Class} name for the given {@link Module}
+	 */
+	public String getReceiverQualifiedClassName(Module module) {
+		final String res;
+
+		final List<Template> mains = AcceleoUtil.getMainTemplate(module);
+		if (!mains.isEmpty()) {
+			final Template main = mains.get(0);
+			if (!main.getParameters().isEmpty()) {
+				final Variable receiver = main.getParameters().get(0);
+				if (receiver.getTypeAql() instanceof EClassifierTypeLiteral) {
+					final EClassifierTypeLiteral type = (EClassifierTypeLiteral)receiver.getTypeAql();
+					final EClassifier eClassifier = queryEnvironment.getEPackageProvider().getTypes(type
+							.getEPackageName(), type.getEClassifierName()).iterator().next();
+					res = eClassifier.getInstanceClassName();
+				} else {
+					res = "";
+				}
+			} else {
+				res = "";
+			}
+		} else {
+			res = "";
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the receiver {@link Class} name for the given {@link Module}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return the receiver {@link Class} name for the given {@link Module}
+	 */
+	public String getReceiverClassName(Module module) {
+		final String res;
+
+		final String qualifiedClassName = getReceiverQualifiedClassName(module);
+		final int lastDotIndex = qualifiedClassName.lastIndexOf(".");
+		if (lastDotIndex >= 0) {
+			res = qualifiedClassName.substring(lastDotIndex + 1);
+		} else {
+			res = "";
+		}
+
+		return res;
+	}
+
 }
