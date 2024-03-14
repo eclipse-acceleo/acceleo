@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.acceleo.aql.ide.ui;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.jface.text.BadLocationException;
@@ -24,8 +25,21 @@ import org.eclipse.jface.text.TextUtilities;
 
 public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 
+	/**
+	 * The {@link Set} of all possible block starts.
+	 */
 	private static final Set<String> BLOCK_STARTS = initBlockStarts();
 
+	/**
+	 * The new line {@link String}.
+	 */
+	private static final String NEW_LINE = System.lineSeparator();
+
+	/**
+	 * Initializes the block starts.
+	 * 
+	 * @return the {@link Set} of all possible block starts.
+	 */
 	private static Set<String> initBlockStarts() {
 		final Set<String> res = new HashSet<>();
 
@@ -174,9 +188,20 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 			final IRegion lineInfo = document.getLineInformationOfOffset(command.offset);
 			final String indentation = document.get(lineInfo.getOffset(), lineInfo.getLength());
 			command.text = command.text.substring(blockIndentation.length());
+			final String emptyLineReplacement;
+			if (blockIndentation.isEmpty()) {
+				emptyLineReplacement = UUID.randomUUID().toString() + UUID.randomUUID().toString() + UUID
+						.randomUUID().toString();
+				command.text = command.text.replaceAll("(\\r\\n|\\n)(\\r\\n|\\n)", emptyLineReplacement);
+			} else {
+				emptyLineReplacement = null;
+			}
 			for (String lineDelimiter : document.getLegalLineDelimiters()) {
 				command.text = command.text.replace(lineDelimiter + blockIndentation, lineDelimiter
 						+ indentation);
+			}
+			if (emptyLineReplacement != null) {
+				command.text = command.text.replace(emptyLineReplacement, NEW_LINE + NEW_LINE + indentation);
 			}
 			if (TextUtilities.endsWith(document.getLegalLineDelimiters(), command.text) != -1) {
 				command.text = command.text + indentation;
