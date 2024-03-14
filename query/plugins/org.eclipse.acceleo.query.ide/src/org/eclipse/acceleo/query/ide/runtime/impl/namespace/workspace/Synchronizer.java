@@ -46,7 +46,7 @@ import org.eclipse.core.runtime.jobs.Job;
 public abstract class Synchronizer<P extends IQueryProject> implements IResourceVisitor, IResourceChangeListener, IResourceDeltaVisitor, IWorkspaceResolverProvider {
 
 	/**
-	 * Counts {@link IResource} i the workspace.
+	 * Counts {@link IResource} in the workspace.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
@@ -117,6 +117,12 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 					@Override
 					public void run(IProgressMonitor monitor) throws CoreException {
 						try {
+							for (IProject project : eclipseWorkspace.getRoot().getProjects()) {
+								if (project.isAccessible()) {
+									getOrCreateProject(getQueryWorkspace(), project);
+								}
+							}
+
 							// Keeping up-to-date with the workspace changes.
 							eclipseWorkspace.addResourceChangeListener(Synchronizer.this);
 
