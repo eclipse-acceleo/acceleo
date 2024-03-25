@@ -495,7 +495,29 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Show references (<code>Ctrl + Shift + G</code>);</p>
 </li>
 <li>
+<p>Refactoring:</p>
+<div class="ulist">
+<ul>
+<li>
 <p>Rename (<code>Ctrl + Alt + R</code>);</p>
+</li>
+<li>
+<p>Extract template (<code>Alt + Shift + T</code>);</p>
+</li>
+<li>
+<p>Wrap in if (<code>Alt + Shift + I</code>);</p>
+</li>
+<li>
+<p>Wrap in for (<code>Alt + Shift + F</code>);</p>
+</li>
+<li>
+<p>Wrap in let (<code>Alt + Shift + L</code>);</p>
+</li>
+<li>
+<p>Wrap in protected (<code>Alt + Shift + P</code>);</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>White spaces.</p>
@@ -647,13 +669,111 @@ This is supported for all kinds of elements: templates, queries, metamodels, met
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rename">Rename</h4>
+<h4 id="_refactoring">Refactoring</h4>
+<div class="sect4">
+<h5 id="_rename">Rename</h5>
 <div class="paragraph">
 <p>You can use the rename shortcut <code>Ctrl + Alt + R</code> to rename all references to a service or a variable in the workspace.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/RefactorRename.png" alt="Refactor Rename">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_extract_template">Extract template</h5>
+<div class="paragraph">
+<p>You can use the extract template short cut <code>Alt + Shift + T</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new template and the selected text will be replaced by a call to this template.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorExtractTemplate.png" alt="Extract Template">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_if">Wrap in if</h5>
+<div class="paragraph">
+<p>You can use the wrap in if short cut <code>Alt + Shift + I</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new if statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInIf.png" alt="Wrap in If">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_for">Wrap in for</h5>
+<div class="paragraph">
+<p>You can use the wrap in for short cut <code>Alt + Shift + F</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new for statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInFor.png" alt="Wrap in For">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_let">Wrap in let</h5>
+<div class="paragraph">
+<p>You can use the wrap in let short cut <code>Alt + Shift + L</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new let statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInLet.png" alt="Wrap in Let">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_protected">Wrap in protected</h5>
+<div class="paragraph">
+<p>You can use the wrap in protected short cut <code>Alt + Shift + P</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new protected statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInProtected.png" alt="Wrap in Protected">
+</div>
 </div>
 </div>
 </div>
@@ -840,7 +960,7 @@ You can simply select a folder in this dialog, in which the profile file will be
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-29 18:12:54 +0100
+Last updated 2024-03-22 15:54:21 +0100
 </div>
 </div>
 </body>

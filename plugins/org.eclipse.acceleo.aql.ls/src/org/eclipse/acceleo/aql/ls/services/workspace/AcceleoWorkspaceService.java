@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,38 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.services.workspace;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
+import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerServicesUtils;
+import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
+import org.eclipse.acceleo.aql.ls.services.workspace.command.DocumentRangeParams;
+import org.eclipse.acceleo.aql.ls.services.workspace.command.ExtractQueryCommand;
+import org.eclipse.acceleo.aql.ls.services.workspace.command.ExtractTemplateCommand;
+import org.eclipse.acceleo.aql.ls.services.workspace.command.WrapInForCommand;
+import org.eclipse.acceleo.aql.ls.services.workspace.command.WrapInIfCommand;
+import org.eclipse.acceleo.aql.ls.services.workspace.command.WrapInLetCommand;
+import org.eclipse.acceleo.aql.ls.services.workspace.command.WrapInProtectedCommand;
+import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams;
 import org.eclipse.lsp4j.DidChangeWorkspaceFoldersParams;
 import org.eclipse.lsp4j.ExecuteCommandParams;
+import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolInformation;
+import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
+import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageClientAware;
@@ -96,8 +116,86 @@ public class AcceleoWorkspaceService implements WorkspaceService, LanguageClient
 
 	@Override
 	public CompletableFuture<Object> executeCommand(ExecuteCommandParams params) {
-		// TODO Auto-generated method stub
-		return WorkspaceService.super.executeCommand(params);
+		final CompletableFuture<Object> res;
+
+		final DocumentRangeParams documentRangeParams = new Gson().fromJson((JsonObject)params.getArguments()
+				.get(0), DocumentRangeParams.class);
+		final Range range = documentRangeParams.getRange();
+		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(documentRangeParams
+				.getTextDocument().getUri());
+		final AcceleoTextDocument document = getWorkspace().getDocument(textDocumentUri);
+
+		final CompletableFuture<Object> workspaceEdit;
+		final String label;
+		switch (params.getCommand()) {
+			case AcceleoLanguageServer.EXTRACT_QUERY_COMMAND:
+				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
+					canceler.checkCanceled();
+					return new ExtractQueryCommand().exec(document, range);
+				});
+				label = "Extract Query";
+				break;
+
+			case AcceleoLanguageServer.EXTRACT_TEMPLATE_COMMAND:
+				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
+					canceler.checkCanceled();
+					return new ExtractTemplateCommand().exec(document, range);
+				});
+				label = "Extract Template";
+				break;
+
+			case AcceleoLanguageServer.WRAP_IN_FOR_COMMAND:
+				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
+					canceler.checkCanceled();
+					return new WrapInForCommand().exec(document, range);
+				});
+				label = "Wrap in For";
+				break;
+
+			case AcceleoLanguageServer.WRAP_IN_IF_COMMAND:
+				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
+					canceler.checkCanceled();
+					return new WrapInIfCommand().exec(document, range);
+				});
+				label = "Wrap in If";
+				break;
+
+			case AcceleoLanguageServer.WRAP_IN_LET_COMMAND:
+				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
+					canceler.checkCanceled();
+					return new WrapInLetCommand().exec(document, range);
+				});
+				label = "Wrap in Let";
+				break;
+
+			case AcceleoLanguageServer.WRAP_IN_PROTECTED_COMMAND:
+				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
+					canceler.checkCanceled();
+					return new WrapInProtectedCommand().exec(document, range);
+				});
+				label = "Wrap in Protected";
+				break;
+
+			default:
+				WorkspaceService.super.executeCommand(params);
+				workspaceEdit = null;
+				label = null;
+				break;
+		}
+
+		if (workspaceEdit != null) {
+			workspaceEdit.thenAccept(we -> {
+				try {
+					languageClient.applyEdit(new ApplyWorkspaceEditParams((WorkspaceEdit)we, label)).get(1,
+							TimeUnit.SECONDS);
+				} catch (InterruptedException | ExecutionException | TimeoutException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		}
+
+		return workspaceEdit;
 	}
 
 	@Override

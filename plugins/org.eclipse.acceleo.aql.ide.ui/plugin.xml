@@ -116,6 +116,31 @@
             id="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIGeneratorProjectCommand"
             name="Create Eclipse UI Generator Project">
       </command>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.extractTemplate"
+            name="Extract Template">
+      </command>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.wrapInFor"
+            name="Wrap in For">
+      </command>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.wrapInIf"
+            name="Wrap in If">
+      </command>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.wrapInLet"
+            name="Wrap in Let">
+      </command>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.wrapInProtected"
+            name="Wrap in Protected">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -163,6 +188,26 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.ExtractTemplateHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.extractTemplate">
+      </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.WrapInForHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInFor">
+      </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.WrapInIfHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInIf">
+      </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.WrapInLetHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInLet">
+      </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.WrapInProtectedHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInProtected">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -184,5 +229,38 @@
             </command>
          </menu>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.extractTemplate"
+            contextId="org.eclipse.ui.genericeditor.genericEditorContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+T">
+      </key>
+      <key
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInFor"
+            contextId="org.eclipse.ui.genericeditor.genericEditorContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+F">
+      </key>
+      <key
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInIf"
+            contextId="org.eclipse.ui.genericeditor.genericEditorContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+I">
+      </key>
+      <key
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInLet"
+            contextId="org.eclipse.ui.genericeditor.genericEditorContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+L">
+      </key>
+      <key
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInProtected"
+            contextId="org.eclipse.ui.genericeditor.genericEditorContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+P">
+      </key>
    </extension>
 </plugin>

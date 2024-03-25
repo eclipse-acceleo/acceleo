@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,23 @@
 package org.eclipse.acceleo.aql.ls;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.acceleo.ForStatement;
+import org.eclipse.acceleo.IfStatement;
+import org.eclipse.acceleo.LetStatement;
+import org.eclipse.acceleo.ProtectedArea;
+import org.eclipse.acceleo.Query;
+import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocumentService;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspaceService;
 import org.eclipse.lsp4j.CompletionOptions;
+import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.MessageParams;
@@ -38,6 +47,36 @@ import org.eclipse.lsp4j.services.LanguageServer;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AcceleoLanguageServer implements LanguageServer, LanguageClientAware {
+
+	/**
+	 * Wrap in {@link ProtectedArea} command.
+	 */
+	public static final String WRAP_IN_PROTECTED_COMMAND = "wrapInProtected";
+
+	/**
+	 * Wrap in {@link LetStatement} command.
+	 */
+	public static final String WRAP_IN_LET_COMMAND = "wrapInLet";
+
+	/**
+	 * Wrap in {@link ForStatement} command.
+	 */
+	public static final String WRAP_IN_FOR_COMMAND = "wrapInFor";
+
+	/**
+	 * Wrap in {@link IfStatement} command.
+	 */
+	public static final String WRAP_IN_IF_COMMAND = "wrapInIf";
+
+	/**
+	 * Extract {@link Query} command.
+	 */
+	public static final String EXTRACT_QUERY_COMMAND = "extractQuery";
+
+	/**
+	 * Extract {@link Template} command.
+	 */
+	public static final String EXTRACT_TEMPLATE_COMMAND = "extractTemplate";
 
 	/**
 	 * The text-document-related service.
@@ -146,6 +185,15 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 		capabilities.setRenameProvider(new RenameOptions(true));
 
 		capabilities.setCodeActionProvider(true);
+
+		final List<String> commands = new ArrayList<>();
+		commands.add(EXTRACT_TEMPLATE_COMMAND);
+		commands.add(EXTRACT_QUERY_COMMAND);
+		commands.add(WRAP_IN_IF_COMMAND);
+		commands.add(WRAP_IN_FOR_COMMAND);
+		commands.add(WRAP_IN_LET_COMMAND);
+		commands.add(WRAP_IN_PROTECTED_COMMAND);
+		capabilities.setExecuteCommandProvider(new ExecuteCommandOptions(commands));
 
 		final InitializeResult res = new InitializeResult(capabilities);
 		return CompletableFuture.completedFuture(res);

@@ -16,7 +16,13 @@ The module editor provides the following features:
 * Quick outline (`Ctrl + O`);
 * Open declaration (either with `Ctrl + Left Click` or `F3`);
 * Show references (`Ctrl + Shift + G`);
-* Rename (`Ctrl + Alt + R`);
+* Refactoring:
+** Rename (`Ctrl + Alt + R`);
+** Extract template (`Alt + Shift + T`);
+** Wrap in if (`Alt + Shift + I`);
+** Wrap in for (`Alt + Shift + F`);
+** Wrap in let (`Alt + Shift + L`);
+** Wrap in protected (`Alt + Shift + P`);
 * White spaces.
 
 ==== Syntax Highlighting
@@ -94,11 +100,63 @@ image::images/ShowReferences.png[Show References]
 
 You can then double click enties in the search view to navigate to a reference.
 
-==== Rename
+==== Refactoring
+
+===== Rename
 
 You can use the rename shortcut `Ctrl + Alt + R` to rename all references to a service or a variable in the workspace.
 
 image::images/RefactorRename.png[Refactor Rename]
+
+===== Extract template
+
+You can use the extract template short cut `Alt + Shift + T` after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.
+
+The selection will be wrapped in a new template and the selected text will be replaced by a call to this template.
+
+image::images/RefactorOrigin.png[Origin]
+
+image::images/RefactorExtractTemplate.png[Extract Template]
+
+===== Wrap in if
+
+You can use the wrap in if short cut `Alt + Shift + I` after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.
+
+The selection will be wrapped in a new if statement.
+
+image::images/RefactorOrigin.png[Origin]
+
+image::images/RefactorWrapInIf.png[Wrap in If]
+
+===== Wrap in for
+
+You can use the wrap in for short cut `Alt + Shift + F` after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.
+
+The selection will be wrapped in a new for statement.
+
+image::images/RefactorOrigin.png[Origin]
+
+image::images/RefactorWrapInFor.png[Wrap in For]
+
+===== Wrap in let
+
+You can use the wrap in let short cut `Alt + Shift + L` after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.
+
+The selection will be wrapped in a new let statement.
+
+image::images/RefactorOrigin.png[Origin]
+
+image::images/RefactorWrapInLet.png[Wrap in Let]
+
+===== Wrap in protected
+
+You can use the wrap in protected short cut `Alt + Shift + P` after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.
+
+The selection will be wrapped in a new protected statement.
+
+image::images/RefactorOrigin.png[Origin]
+
+image::images/RefactorWrapInProtected.png[Wrap in Protected]
 
 === The Acceleo Debugger
 

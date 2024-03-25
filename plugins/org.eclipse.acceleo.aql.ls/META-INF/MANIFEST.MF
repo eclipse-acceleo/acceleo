@@ -13,10 +13,12 @@ Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.antlr.runtime;bundle-version="[4.10.1,4.10.2)",
  org.eclipse.lsp4j;bundle-version="0.8.1",
  org.eclipse.lsp4j.jsonrpc;bundle-version="0.8.1",
- org.eclipse.acceleo.aql
+ org.eclipse.acceleo.aql,
+ com.google.gson
 Export-Package: org.eclipse.acceleo.aql.ls,
  org.eclipse.acceleo.aql.ls.common,
  org.eclipse.acceleo.aql.ls.services.exceptions,
  org.eclipse.acceleo.aql.ls.services.textdocument,
- org.eclipse.acceleo.aql.ls.services.workspace
+ org.eclipse.acceleo.aql.ls.services.workspace,
+ org.eclipse.acceleo.aql.ls.services.workspace.command
 Automatic-Module-Name: org.eclipse.acceleo.aql.ls
