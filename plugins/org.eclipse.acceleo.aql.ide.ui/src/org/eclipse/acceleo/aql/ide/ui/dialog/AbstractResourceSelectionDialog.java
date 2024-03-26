@@ -194,7 +194,7 @@ public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 		containerTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
 		if (defaultResourceName != null && !defaultResourceName.isEmpty()) {
 			IResource resource = findResource(defaultResourceName);
-			if (!resource.exists()) {
+			if (resource != null && !resource.exists()) {
 				resource = resource.getParent();
 			}
 			containerTreeViewer.setSelection(new StructuredSelection(resource));
