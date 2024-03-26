@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public abstract class AbstractService<O> implements IService<O> {
 
 	/**
 	 * Known {@link IReadOnlyQueryEnvironment} to invalidate cached {@link #returnTypes} and
-	 * {@link #res}.
+	 * {@link #parameterTypes}.
 	 */
 	private IReadOnlyQueryEnvironment knwonEnvironment;
 
@@ -54,7 +54,7 @@ public abstract class AbstractService<O> implements IService<O> {
 	/**
 	 * Parameters {@link IType} cache.
 	 */
-	private List<IType> res;
+	private List<IType> parameterTypes;
 
 	/**
 	 * Constructor with an {@link Object origin}.
@@ -80,10 +80,10 @@ public abstract class AbstractService<O> implements IService<O> {
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		if (knwonEnvironment != queryEnvironment || returnTypes == null) {
 			knwonEnvironment = queryEnvironment;
-			res = computeParameterTypes(queryEnvironment);
+			parameterTypes = computeParameterTypes(queryEnvironment);
 		}
 
-		return res;
+		return parameterTypes;
 	}
 
 	/**
