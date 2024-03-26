@@ -114,62 +114,56 @@ public abstract class AbstractService<O> implements IService<O> {
 	 */
 	protected abstract Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment);
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#isEqualParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
-	 *      org.eclipse.acceleo.query.runtime.IService)
-	 */
 	@Override
 	public boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService<?> service) {
 		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
 		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
-		boolean result = paramTypes1.size() == paramTypes2.size();
+		boolean result;
 
-		final Iterator<IType> it1 = paramTypes1.iterator();
-		final Iterator<IType> it2 = paramTypes2.iterator();
-		while (result && it1.hasNext()) {
-			IType paramType1 = it1.next();
-			IType paramType2 = it2.next();
-			if (!paramType2.equals(paramType1)) {
-				result = false;
+		if (paramTypes1.size() == paramTypes2.size()) {
+			final Iterator<IType> it1 = paramTypes1.iterator();
+			final Iterator<IType> it2 = paramTypes2.iterator();
+			result = true;
+			while (it1.hasNext()) {
+				IType paramType1 = it1.next();
+				IType paramType2 = it2.next();
+				if (!paramType2.equals(paramType1)) {
+					result = false;
+					break;
+				}
 			}
+		} else {
+			result = false;
 		}
 
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#isLowerOrEqualParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
-	 *      org.eclipse.acceleo.query.runtime.IService)
-	 */
 	public boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment,
 			IService<?> service) {
 		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
 		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
-		boolean result = paramTypes1.size() == paramTypes2.size();
+		boolean result;
 
-		final Iterator<IType> it1 = paramTypes1.iterator();
-		final Iterator<IType> it2 = paramTypes2.iterator();
-		while (result && it1.hasNext()) {
-			IType paramType1 = it1.next();
-			IType paramType2 = it2.next();
-			if (!paramType2.isAssignableFrom(paramType1)) {
-				result = false;
+		if (paramTypes1.size() == paramTypes2.size()) {
+			final Iterator<IType> it1 = paramTypes1.iterator();
+			final Iterator<IType> it2 = paramTypes2.iterator();
+			result = true;
+			while (it1.hasNext()) {
+				IType paramType1 = it1.next();
+				IType paramType2 = it2.next();
+				if (!paramType2.isAssignableFrom(paramType1)) {
+					result = false;
+					break;
+				}
 			}
+		} else {
+			result = false;
 		}
 
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#matches(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
-	 *      org.eclipse.acceleo.query.validation.type.IType[])
-	 */
 	public boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes) {
 		assert getNumberOfParameters() == argumentTypes.length;
 
@@ -185,12 +179,6 @@ public abstract class AbstractService<O> implements IService<O> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
-	 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
-	 */
 	@Override
 	public Set<IType> validateAllType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
 			Map<List<IType>, Set<IType>> allTypes) {
@@ -204,11 +192,6 @@ public abstract class AbstractService<O> implements IService<O> {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#invoke(java.lang.Object[])
-	 */
 	@Override
 	public Object invoke(Object... arguments) throws AcceleoQueryEvaluationException {
 		final Object result;
@@ -275,22 +258,11 @@ public abstract class AbstractService<O> implements IService<O> {
 		return builder.append(')').toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return getLongSignature();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getProposals(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
-	 *      java.util.Set)
-	 */
 	@Override
 	public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
 			Set<IType> receiverTypes) {
@@ -308,22 +280,12 @@ public abstract class AbstractService<O> implements IService<O> {
 		return getType(queryEnvironment);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof IService<?> && (getOrigin() == null && ((IService<?>)obj).getOrigin() == null
 				|| getOrigin().equals(((IService<?>)obj).getOrigin()));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int res;
