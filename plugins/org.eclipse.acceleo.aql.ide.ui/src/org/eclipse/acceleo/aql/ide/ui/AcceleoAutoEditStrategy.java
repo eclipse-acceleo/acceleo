@@ -183,26 +183,19 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 	 *            the {@link DocumentCommand}
 	 */
 	private void shiftBlock(IDocument document, DocumentCommand command) {
-		final String blockIndentation = getBlockIndentation(document, command.text);
+		final String blockIndentation = getBlockIndentation(command.text);
 		try {
 			final IRegion lineInfo = document.getLineInformationOfOffset(command.offset);
 			final String indentation = document.get(lineInfo.getOffset(), lineInfo.getLength());
 			command.text = command.text.substring(blockIndentation.length());
-			final String emptyLineReplacement;
-			if (blockIndentation.isEmpty()) {
-				emptyLineReplacement = UUID.randomUUID().toString() + UUID.randomUUID().toString() + UUID
-						.randomUUID().toString();
-				command.text = command.text.replaceAll("(\\r\\n|\\n)(\\r\\n|\\n)", emptyLineReplacement);
-			} else {
-				emptyLineReplacement = null;
-			}
+			final String emptyLineReplacement = UUID.randomUUID().toString() + UUID.randomUUID().toString()
+					+ UUID.randomUUID().toString();
+			command.text = command.text.replaceAll("(\\r\\n|\\n)(\\r\\n|\\n)", emptyLineReplacement);
 			for (String lineDelimiter : document.getLegalLineDelimiters()) {
 				command.text = command.text.replace(lineDelimiter + blockIndentation, lineDelimiter
 						+ indentation);
 			}
-			if (emptyLineReplacement != null) {
-				command.text = command.text.replace(emptyLineReplacement, NEW_LINE + NEW_LINE + indentation);
-			}
+			command.text = command.text.replace(emptyLineReplacement, NEW_LINE + NEW_LINE + indentation);
 			if (TextUtilities.endsWith(document.getLegalLineDelimiters(), command.text) != -1) {
 				command.text = command.text + indentation;
 			}
@@ -211,7 +204,7 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 		}
 	}
 
-	private String getBlockIndentation(IDocument document, String text) {
+	private String getBlockIndentation(String text) {
 		int offset = 0;
 		while (offset < text.length()) {
 			final char charAt = text.charAt(offset);
