@@ -395,7 +395,14 @@
 
     	protected IAcceleoGenerationStrategy createGenerationStrategy(final ResourceSet resourceSetForModels) {
     		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels
-    				.getURIConverter(), new DefaultWriterFactory());
+    				.getURIConverter(), new DefaultWriterFactory()) {
+    			@Override
+    			public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
+    					String lineDelimiter) throws IOException {
+    				System.out.println(uri.toString());
+    				return super.createWriterFor(uri, openMode, charset, lineDelimiter);
+    			}
+    		};
 
     		return strategy;
     	}

@@ -11,7 +11,9 @@
 package org.eclipse.acceleo.aql.launcher;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,11 +21,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -234,7 +238,6 @@ public class AcceleoLauncher implements IApplication {
 	}
 
 	private GenerationResult launchGeneration() {
-
 		IQualifiedNameResolver resolver = new OSGiQualifiedNameResolver(bundle,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 
@@ -278,7 +281,14 @@ public class AcceleoLauncher implements IApplication {
 	private void evaluate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module mainModule, ResourceSet modelResourceSet, URI targetURI, URI logURI) {
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResourceSet
-				.getURIConverter(), new AcceleoWorkspaceWriterFactory());
+				.getURIConverter(), new AcceleoWorkspaceWriterFactory()) {
+			@Override
+			public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
+					String lineDelimiter) throws IOException {
+				System.out.println(uri);
+				return super.createWriterFor(uri, openMode, charset, lineDelimiter);
+			}
+		};
 		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, strategy, targetURI,
 				logURI);
 	}
