@@ -29,7 +29,7 @@
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-  </pluginRepositories> 
+  </pluginRepositories>
 
   <properties>
     <rcptt-maven-version>2.5.4</rcptt-maven-version>
@@ -47,6 +47,9 @@
           </runner>
           <aut>
             <explicit>${project.basedir}/../org.eclipse.acceleo.aql.rcpttproduct/target/products/Acceleo-linux.gtk.x86_64.tar.gz</explicit>
+            <vmArgs>
+              <vmArg>-Xmx2048m</vmArg>
+            </vmArgs>
           </aut>
           <skipTags>
             <skipTag>fail</skipTag>
