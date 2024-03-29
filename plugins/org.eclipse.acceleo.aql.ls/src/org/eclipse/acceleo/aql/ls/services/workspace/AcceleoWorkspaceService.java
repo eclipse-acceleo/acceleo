@@ -25,7 +25,6 @@ import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.common.AcceleoLanguageServerServicesUtils;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.aql.ls.services.workspace.command.DocumentRangeParams;
-import org.eclipse.acceleo.aql.ls.services.workspace.command.ExtractQueryCommand;
 import org.eclipse.acceleo.aql.ls.services.workspace.command.ExtractTemplateCommand;
 import org.eclipse.acceleo.aql.ls.services.workspace.command.WrapInForCommand;
 import org.eclipse.acceleo.aql.ls.services.workspace.command.WrapInIfCommand;
@@ -116,8 +115,6 @@ public class AcceleoWorkspaceService implements WorkspaceService, LanguageClient
 
 	@Override
 	public CompletableFuture<Object> executeCommand(ExecuteCommandParams params) {
-		final CompletableFuture<Object> res;
-
 		final DocumentRangeParams documentRangeParams = new Gson().fromJson((JsonObject)params.getArguments()
 				.get(0), DocumentRangeParams.class);
 		final Range range = documentRangeParams.getRange();
@@ -128,14 +125,6 @@ public class AcceleoWorkspaceService implements WorkspaceService, LanguageClient
 		final CompletableFuture<Object> workspaceEdit;
 		final String label;
 		switch (params.getCommand()) {
-			case AcceleoLanguageServer.EXTRACT_QUERY_COMMAND:
-				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
-					canceler.checkCanceled();
-					return new ExtractQueryCommand().exec(document, range);
-				});
-				label = "Extract Query";
-				break;
-
 			case AcceleoLanguageServer.EXTRACT_TEMPLATE_COMMAND:
 				workspaceEdit = CompletableFutures.computeAsync(canceler -> {
 					canceler.checkCanceled();

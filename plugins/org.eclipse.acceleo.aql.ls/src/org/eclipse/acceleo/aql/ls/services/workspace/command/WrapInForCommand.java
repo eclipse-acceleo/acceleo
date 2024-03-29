@@ -44,7 +44,8 @@ public class WrapInForCommand extends AbstractDocumentRangeCommand {
 					.getStart(), document.getContents());
 			final int endIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(range
 					.getEnd(), document.getContents());
-			if (isSameBlock(document, startIndex, endIndex)) {
+			final String text = document.getContents().substring(startIndex, endIndex);
+			if (!text.isEmpty() && isSameBlock(document, startIndex, endIndex)) {
 				final Map<String, List<TextEdit>> changes = new LinkedHashMap<>();
 
 				final ForStatement statement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
@@ -61,7 +62,6 @@ public class WrapInForCommand extends AbstractDocumentRangeCommand {
 
 				// TODO pass the new line String
 				final String lineDelimiter = System.lineSeparator();
-				final String text = document.getContents().substring(startIndex, endIndex);
 				final String blockIndentation = getBlockIndentation(text);
 				statement.setBody(createBlock(text, blockIndentation, "  ", lineDelimiter, false));
 

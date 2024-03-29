@@ -20,7 +20,6 @@ import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.ProtectedArea;
-import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocumentService;
@@ -67,11 +66,6 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	 * Wrap in {@link IfStatement} command.
 	 */
 	public static final String WRAP_IN_IF_COMMAND = "wrapInIf";
-
-	/**
-	 * Extract {@link Query} command.
-	 */
-	public static final String EXTRACT_QUERY_COMMAND = "extractQuery";
 
 	/**
 	 * Extract {@link Template} command.
@@ -188,7 +182,6 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 
 		final List<String> commands = new ArrayList<>();
 		commands.add(EXTRACT_TEMPLATE_COMMAND);
-		commands.add(EXTRACT_QUERY_COMMAND);
 		commands.add(WRAP_IN_IF_COMMAND);
 		commands.add(WRAP_IN_FOR_COMMAND);
 		commands.add(WRAP_IN_LET_COMMAND);

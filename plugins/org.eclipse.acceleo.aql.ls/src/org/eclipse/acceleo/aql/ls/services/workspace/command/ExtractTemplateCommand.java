@@ -46,7 +46,8 @@ public class ExtractTemplateCommand extends AbstractDocumentRangeCommand {
 					.getStart(), document.getContents());
 			final int endIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(range
 					.getEnd(), document.getContents());
-			if (isSameBlock(document, startIndex, endIndex)) {
+			final String text = document.getContents().substring(startIndex, endIndex);
+			if (!text.isEmpty() && isSameBlock(document, startIndex, endIndex)) {
 				final Map<String, List<TextEdit>> changes = new LinkedHashMap<>();
 
 				final Template template = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTemplate();
@@ -56,7 +57,6 @@ public class ExtractTemplateCommand extends AbstractDocumentRangeCommand {
 				// TODO pass the new line String
 				// create the template
 				final String lineDelimiter = System.lineSeparator();
-				final String text = document.getContents().substring(startIndex, endIndex);
 				final String blockIndentation = getBlockIndentation(text);
 				template.setBody(createBlock(text, blockIndentation, "  ", lineDelimiter, true));
 				final List<Variable> parameters = getVariablesDeclaredOutSide(document, startIndex, endIndex);

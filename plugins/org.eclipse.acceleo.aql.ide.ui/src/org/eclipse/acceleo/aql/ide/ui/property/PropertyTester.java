@@ -12,6 +12,12 @@ package org.eclipse.acceleo.aql.ide.ui.property;
 
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.TextEditor;
 
 public class PropertyTester extends org.eclipse.core.expressions.PropertyTester {
 
@@ -23,6 +29,32 @@ public class PropertyTester extends org.eclipse.core.expressions.PropertyTester 
 			case "isMain":
 				if (receiver instanceof IFile) {
 					res = AcceleoPlugin.isAcceleoMain((IFile)receiver);
+				} else {
+					res = false;
+				}
+				break;
+
+			case "isBlockSelection":
+				if (receiver instanceof ITextSelection) {
+					final ITextSelection selection = (ITextSelection)receiver;
+					final IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow();
+					if (activeWorkbenchWindow != null) {
+						final IEditorPart activeEditor = activeWorkbenchWindow.getActivePage()
+								.getActiveEditor();
+						if (activeEditor instanceof TextEditor) {
+							final IDocument document = ((TextEditor)activeEditor).getDocumentProvider()
+									.getDocument(activeEditor.getEditorInput());
+							final boolean startAtNewLine = selection.getOffset() == 0 || document.get()
+									.charAt(selection.getOffset() - 1) == '\n';
+							res = startAtNewLine && !selection.isEmpty() && selection.getText().endsWith(
+									"\n");
+						} else {
+							res = false;
+						}
+					} else {
+						res = false;
+					}
 				} else {
 					res = false;
 				}
