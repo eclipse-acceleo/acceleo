@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Obeo.
+ * Copyright (c) 2016, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -236,13 +236,19 @@ class QueryAstSerializer extends AstSwitch<Void> {
 	@Override
 	public Void caseTypeSetLiteral(TypeSetLiteral typeSetLiteral) {
 		builder.append("{");
-		final StringBuilder previousBuilder = builder;
-		builder = new StringBuilder();
-		for (TypeLiteral type : typeSetLiteral.getTypes()) {
-			doSwitch(type);
-			builder.append(" | ");
+		if (!typeSetLiteral.getTypes().isEmpty()) {
+			final StringBuilder previousBuilder = builder;
+			builder = new StringBuilder();
+			try {
+				for (TypeLiteral type : typeSetLiteral.getTypes()) {
+					doSwitch(type);
+					builder.append(" | ");
+				}
+				previousBuilder.append(builder.substring(0, builder.length() - 3));
+			} finally {
+				builder = previousBuilder;
+			}
 		}
-		previousBuilder.append(builder.substring(0, builder.length() - 3));
 		builder.append(CLOSING_BRACKET);
 		return null;
 	}

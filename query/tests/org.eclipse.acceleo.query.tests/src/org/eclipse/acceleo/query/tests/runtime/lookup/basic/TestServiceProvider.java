@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.tests.runtime.lookup.basic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -55,10 +56,10 @@ public class TestServiceProvider implements IServiceProvider {
 		}
 
 		@Override
-		public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-			final List<IType> result = new ArrayList<IType>();
+		public List<Set<IType>> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+			final List<Set<IType>> result = new ArrayList<>();
 
-			result.add(new ClassType(queryEnvironment, type1));
+			result.add(Collections.singleton(new ClassType(queryEnvironment, type1)));
 
 			return result;
 		}
@@ -110,10 +111,10 @@ public class TestServiceProvider implements IServiceProvider {
 		}
 
 		@Override
-		public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-			final List<IType> result = new ArrayList<IType>();
+		public List<Set<IType>> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+			final List<Set<IType>> result = new ArrayList<>();
 
-			result.add(new ClassType(queryEnvironment, type2));
+			result.add(Collections.singleton(new ClassType(queryEnvironment, type2)));
 
 			return result;
 		}

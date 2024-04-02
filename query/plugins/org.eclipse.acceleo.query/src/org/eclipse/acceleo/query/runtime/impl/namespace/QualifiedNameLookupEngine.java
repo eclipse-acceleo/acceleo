@@ -166,8 +166,11 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 		for (IType type : receiverTypes) {
 			if (type != null) {
 				for (IService<?> service : storedServices) {
-					if (service.getParameterTypes(queryEnvironment).get(0).isAssignableFrom(type)) {
-						result.add(service);
+					for (IType parameterType : service.getParameterTypes(queryEnvironment).get(0)) {
+						if (parameterType.isAssignableFrom(type)) {
+							result.add(service);
+							break;
+						}
 					}
 				}
 			}

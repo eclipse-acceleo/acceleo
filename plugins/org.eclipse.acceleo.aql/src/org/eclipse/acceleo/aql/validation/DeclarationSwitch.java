@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.validation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.Module;
@@ -276,16 +277,26 @@ public class DeclarationSwitch extends ComposedSwitch<List<Object>> {
 			List<IService<?>> newCompatibleServices = new ArrayList<>();
 			do {
 				for (IService<?> currentCompatibleService : currentCompatibleServices) {
-					final List<IType> serviceParameterTypes = currentCompatibleService.getParameterTypes(
+					final List<Set<IType>> serviceParameterTypes = currentCompatibleService.getParameterTypes(
 							queryEnvironment);
-					nextservice: for (IService<?> registeredService : possibleServices) {
-						final List<IType> registeredServiceParameterTypes = registeredService
+					nextService: for (IService<?> registeredService : possibleServices) {
+						final List<Set<IType>> registeredServiceParameterTypes = registeredService
 								.getParameterTypes(queryEnvironment);
 						for (int i = 0; i < currentCompatibleService.getNumberOfParameters(); i++) {
-							if (!serviceParameterTypes.get(i).isAssignableFrom(registeredServiceParameterTypes
-									.get(i)) && !registeredServiceParameterTypes.get(i).isAssignableFrom(
-											serviceParameterTypes.get(i))) {
-								continue nextservice;
+							boolean isAssignable = false;
+							for (IType serviceParameterType : serviceParameterTypes.get(i)) {
+								for (IType registeredServiceParameterType : registeredServiceParameterTypes
+										.get(i)) {
+									if (serviceParameterType.isAssignableFrom(registeredServiceParameterType)
+											|| registeredServiceParameterType.isAssignableFrom(
+													serviceParameterType)) {
+										isAssignable = true;
+										break;
+									}
+								}
+								if (!isAssignable) {
+									continue nextService;
+								}
 							}
 						}
 						if (!res.contains(registeredService)) {

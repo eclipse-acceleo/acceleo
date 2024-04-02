@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Obeo.
+ * Copyright (c) 2016, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -117,16 +118,17 @@ public class EOperationService extends AbstractService<EOperation> {
 	}
 
 	@Override
-	public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-		final List<IType> result = new ArrayList<IType>();
+	public List<Set<IType>> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		final List<Set<IType>> result = new ArrayList<>();
 
-		result.add(new EClassifierType(queryEnvironment, getOrigin().getEContainingClass()));
+		result.add(Collections.singleton(new EClassifierType(queryEnvironment, getOrigin()
+				.getEContainingClass())));
 		for (EParameter parameter : getOrigin().getEParameters()) {
 			final EClassifierType rawType = new EClassifierType(queryEnvironment, parameter.getEType());
 			if (parameter.isMany()) {
-				result.add(new SequenceType(queryEnvironment, rawType));
+				result.add(Collections.singleton(new SequenceType(queryEnvironment, rawType)));
 			} else {
-				result.add(rawType);
+				result.add(Collections.singleton(rawType));
 			}
 		}
 
@@ -306,8 +308,8 @@ public class EOperationService extends AbstractService<EOperation> {
 
 	@Override
 	public String getShortSignature() {
-		final List<IType> parameterTypes = getParameterTypes(null);
-		final IType[] argumentTypes = parameterTypes.toArray(new IType[parameterTypes.size()]);
+		final List<Set<IType>> parameterTypes = getParameterTypes(null);
+		final Object[] argumentTypes = parameterTypes.toArray(new Object[parameterTypes.size()]);
 
 		return serviceShortSignature(argumentTypes);
 	}

@@ -1,0 +1,13 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+    [myParam.myOtherTemplate()/]
+      - [myParam.eClassifiers.myOtherTemplate()/]
+  [/file]
+[/template]
+
+[template public myOtherTemplate(myParam : {ecore::EPackage | ecore::EClassifier})]
+  [myParam.name/]
+[/template]

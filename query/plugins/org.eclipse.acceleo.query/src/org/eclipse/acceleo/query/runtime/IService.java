@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,14 +74,14 @@ public interface IService<O> {
 	String getLongSignature();
 
 	/**
-	 * Gets the {@link List} of parameter {@link IType}.
+	 * Gets the {@link List} of parameter possible {@link IType}.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @return the {@link List} of parameter {@link IType}
-	 * @since 4.1
+	 * @return the {@link List} of parameter possible {@link IType}
+	 * @since 8.0.0
 	 */
-	List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment);
+	List<Set<IType>> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment);
 
 	/**
 	 * Gets the number of parameters including the receiver.

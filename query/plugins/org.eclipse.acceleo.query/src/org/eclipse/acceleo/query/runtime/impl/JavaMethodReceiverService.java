@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -65,11 +67,11 @@ public class JavaMethodReceiverService extends JavaMethodService {
 	}
 
 	@Override
-	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-		final List<IType> result = new ArrayList<IType>();
+	public List<Set<IType>> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		final List<Set<IType>> result = new ArrayList<>();
 
 		for (Class<?> cls : getParameterTypes()) {
-			result.add(getClassType(queryEnvironment, cls));
+			result.add(Collections.singleton(getClassType(queryEnvironment, cls)));
 		}
 
 		return result;

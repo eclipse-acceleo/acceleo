@@ -1509,8 +1509,15 @@ public class CompletionTest {
 					} else {
 						iType = new ClassType(environment, (Class<?>)type);
 					}
-					assertTrue(((JavaMethodServiceCompletionProposal)prop).getObject().getParameterTypes(
-							environment).get(0).isAssignableFrom(iType));
+					boolean isAssignable = false;
+					for (IType parameterType : ((JavaMethodServiceCompletionProposal)prop).getObject()
+							.getParameterTypes(environment).get(0)) {
+						if (parameterType.isAssignableFrom(iType)) {
+							isAssignable = true;
+							break;
+						}
+					}
+					assertTrue(isAssignable);
 				}
 			}
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,17 +56,6 @@ public class JavaMethodService extends AbstractService<Method> {
 	private final Object instance;
 
 	/**
-	 * Known {@link IReadOnlyQueryEnvironment} to invalidate {@link JavaMethodService#returnTypes cached
-	 * return types}.
-	 */
-	private IReadOnlyQueryEnvironment knwonEnvironment;
-
-	/**
-	 * Return {@link IType} cache.
-	 */
-	private Set<IType> returnTypes;
-
-	/**
 	 * Tells if the {@link IService} will be used in a workspace.
 	 */
 	private boolean forWorkspace;
@@ -92,11 +82,11 @@ public class JavaMethodService extends AbstractService<Method> {
 	}
 
 	@Override
-	public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-		final List<IType> res = new ArrayList<IType>();
+	public List<Set<IType>> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		final List<Set<IType>> res = new ArrayList<>();
 
 		for (Class<?> cls : getOrigin().getParameterTypes()) {
-			res.add(getClassType(queryEnvironment, cls));
+			res.add(Collections.singleton(getClassType(queryEnvironment, cls)));
 		}
 
 		return res;

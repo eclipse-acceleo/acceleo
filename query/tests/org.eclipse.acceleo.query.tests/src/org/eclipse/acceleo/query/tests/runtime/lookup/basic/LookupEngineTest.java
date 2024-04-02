@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -1377,12 +1378,16 @@ public class LookupEngineTest {
 	public void lookupPerf() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
-		final Map<String, IType[]> services = new LinkedHashMap<String, IType[]>();
+		final Map<String, IType[]> services = new LinkedHashMap<>();
 
 		registerServices(engine);
 		for (IService<?> service : engine.getRegisteredServices()) {
-			services.put(service.getName(), service.getParameterTypes(engine.getQueryEnvironment()).toArray(
-					new IType[service.getNumberOfParameters()]));
+			CombineIterator<IType> it = new CombineIterator<>(service.getParameterTypes(engine
+					.getQueryEnvironment()));
+			while (it.hasNext()) {
+				services.put(service.getName(), it.next().toArray(new IType[service
+						.getNumberOfParameters()]));
+			}
 		}
 
 		for (int i = 0; i < 10000; i++) {

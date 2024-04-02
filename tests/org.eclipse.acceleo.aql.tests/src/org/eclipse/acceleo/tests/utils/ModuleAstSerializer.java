@@ -322,11 +322,15 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			if (!typeSetLiteral.getTypes().isEmpty()) {
 				final StringBuilder previousBuilder = builder;
 				builder = new StringBuilder();
-				for (TypeLiteral type : typeSetLiteral.getTypes()) {
-					doSwitch(type);
-					builder.append(" | ");
+				try {
+					for (TypeLiteral type : typeSetLiteral.getTypes()) {
+						doSwitch(type);
+						builder.append(" | ");
+					}
+					previousBuilder.append(builder.substring(0, builder.length() - 3));
+				} finally {
+					builder = previousBuilder;
 				}
-				previousBuilder.append(builder.substring(0, builder.length() - 3));
 			}
 			builder.append('}');
 			return null;
@@ -334,7 +338,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 		@Override
 		public Void caseClassTypeLiteral(ClassTypeLiteral object) {
-			builder.append(object.getValue().getName());
+			if (object.getValue() != null) {
+				builder.append(object.getValue().getName());
+			}
 			return null;
 		}
 

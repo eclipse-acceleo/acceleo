@@ -64,14 +64,13 @@ public class TemplateService extends AbstractModuleElementService<Template> {
 	}
 
 	@Override
-	public List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-		final List<IType> result = new ArrayList<IType>();
+	public List<Set<IType>> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+		final List<Set<IType>> result = new ArrayList<>();
 		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		for (Variable var : getOrigin().getParameters()) {
-			IType rawType = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
-					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst())).iterator().next();
-			// TODO for now, using only the raw variable type, do we need special handling for collections?
-			result.add(rawType);
+			Set<IType> types = validator.getDeclarationTypes(queryEnvironment, validator.validate(Collections
+					.emptyMap(), var.getType()).getPossibleTypes(var.getType().getAst()));
+			result.add(types);
 		}
 		return result;
 	}

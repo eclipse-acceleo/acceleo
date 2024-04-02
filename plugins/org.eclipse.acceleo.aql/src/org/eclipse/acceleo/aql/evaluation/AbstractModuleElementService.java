@@ -119,8 +119,8 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	 */
 	@Override
 	public String getShortSignature() {
-		final List<IType> parameterTypes = getParameterTypes(getLookupEngine().getQueryEnvironment());
-		final IType[] argumentTypes = parameterTypes.toArray(new IType[parameterTypes.size()]);
+		final List<Set<IType>> parameterTypes = getParameterTypes(getLookupEngine().getQueryEnvironment());
+		final Object[] argumentTypes = parameterTypes.toArray(new Object[parameterTypes.size()]);
 
 		return serviceShortSignature(argumentTypes);
 	}
