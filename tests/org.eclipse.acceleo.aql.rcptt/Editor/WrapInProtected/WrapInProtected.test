@@ -1,13 +1,13 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _aGsEAOqTEe6_HI2dufwUIA,_Ayow4KrpEeqpkej7GeVvKQ
-Element-Name: Nominal
+Contexts: _T2ToEOq0Ee6_HI2dufwUIA,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: WrapInProtected
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
-Id: _ifUnQOqxEe6_HI2dufwUIA
+Id: _T2f1UOq0Ee6_HI2dufwUIA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 3/25/24, 3:24 PM
+Save-Time: 4/2/24, 3:26 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -21,7 +21,7 @@ with [get-editor "test.mtl" | get-text-viewer] {
 }
 get-view "Package Explorer" | get-tree | select "test/src/test/otherModule.mtl"
 with [get-editor "test.mtl" | get-text-viewer] {
-    key-type "M2+M3+t"
+    key-type "M2+M3+p"
 }
 get-editor "test.mtl" | get-text-viewer | get-property text 
     | equals "[module test('http://www.eclipse.org/emf/2002/Ecore')/]\n\n"
@@ -31,16 +31,15 @@ get-editor "test.mtl" | get-text-viewer | get-property text
     + "[template public myTemplate(myParam : ecore::EPackage)]\n"
     + "  [file (myParam.name + '.txt', overwrite)]\n"
     + "     - [for (myVariable1 : ecore::EClassifier | myParam.eClassifiers)]\n"
-    + "         [myVariable1.myTemplate()/]\n"
+    + "         [protected (expression)]\n"
+    + "           some text [myVariable1.name/]\n"
+    + "           [myVariable1.myOtherTemplate()/]\n"
+    + "           some text [myVariable1.name.getMessage()/]\n"
+    + "         [/protected]\n"
     + "       [/for]\n"
     + "       [let eClassifiers = myParam.eClassifiers]\n"
     + "         [eClassifiers.name.getMessage()/]\n"
     + "       [/let]\n"
     + "  [/file]\n"
-    + "[/template]\n\n"
-    + "[template public myTemplate(myVariable1 : ecore::EClassifier)]\n"
-    + "  some text [myVariable1.name/]\n"
-    + "  [myVariable1.myOtherTemplate()/]\n"
-    + "  some text [myVariable1.name.getMessage()/]\n"
     + "[/template]" | verify-true
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
