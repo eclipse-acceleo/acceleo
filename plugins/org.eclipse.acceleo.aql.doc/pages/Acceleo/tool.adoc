@@ -216,7 +216,7 @@ The Acceleo 4 Profiler allows you to keep track of executions and see where time
 
 The first thing to do to profile an Acceleo generation is to create a Profile Configuration, which is as we will see very similar to a Launch Configuration. To create a Profile Configuration, right-click on an Acceleo module file, and select Profile As > Profile Configurations....
 
-image::images/ProfileAs.png[Profile As] 
+image::images/ProfileAs.png[Profile As]
 
 A configuration page appears, which looks very much like the traditional launch configuration page.
 
@@ -229,7 +229,7 @@ You can simply select a folder in this dialog, in which the profile file will be
 
 Acceleo stores the result of a profiled execution in a file which extension is .mtlp. This file is actually just a serialized EMF model. Let's take a closer look at it.
 
-image::images/ProfileFile.png[Profile File] 
+image::images/ProfileFile.png[Profile File]
 
 The above image shows the content of an mtlp file, and correspondances between the profiled data and the Acceleo template elements.
 
@@ -243,6 +243,23 @@ The profile editor also provides coverage informations based on the profiling re
 
 You can double-click on the module in the profile editor (or on any module element in the profile model) to accurately see what has been used in a given module. It shows in green what has been covered by the execution and in red what has been ignored.
 
-image::images/Coverage.png[Coverage] 
+image::images/Coverage.png[Coverage]
 
 To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.
+
+=== Java launchers
+
+You can select a module file that contains a main template to generate the Java code that will launch your module. There are two menus:
+
+* *Generate Generator Class* that will generate a Java class that can be used in standalone
+** It creates a Java main class next to your module
+** It can be integrated in other application outside or inside of Eclipse
+* *Create Eclipse UI Generator Project* that will generate an Eclipse plugin
+** It creates an Eclipse plugin projet next to your generator project
+** It extends the standalone class (the standalone main class will be generated)
+** It contribute a menu to objects that can be passed to your main template
+
+
+image::images/JavaGenerators.png[Java Generators]
+
+All the code above is generated using Acceleo 4. You can extend and override the content of the generated files like you would with any Acceleo 4 generator. The source code is in this https://github.com/eclipse-acceleo/acceleo/tree/master/plugins/org.eclipse.acceleo.aql.ide.ui/src-module/[source folder].

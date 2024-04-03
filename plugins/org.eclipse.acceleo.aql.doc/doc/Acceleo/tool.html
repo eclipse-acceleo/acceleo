@@ -444,6 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_the_acceleo_editor">The Acceleo Editor</a></li>
 <li><a href="#_the_acceleo_debugger">The Acceleo Debugger</a></li>
 <li><a href="#_acceleo_profiler">Acceleo Profiler</a></li>
+<li><a href="#_java_launchers">Java launchers</a></li>
 </ul>
 </div>
 </div>
@@ -957,10 +958,57 @@ You can simply select a folder in this dialog, in which the profile file will be
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_java_launchers">Java launchers</h3>
+<div class="paragraph">
+<p>You can select a module file that contains a main template to generate the Java code that will launch your module. There are two menus:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Generate Generator Class</strong> that will generate a Java class that can be used in standalone</p>
+<div class="ulist">
+<ul>
+<li>
+<p>It creates a Java main class next to your module</p>
+</li>
+<li>
+<p>It can be integrated in other application outside or inside of Eclipse</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Create Eclipse UI Generator Project</strong> that will generate an Eclipse plugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>It creates an Eclipse plugin projet next to your generator project</p>
+</li>
+<li>
+<p>It extends the standalone class (the standalone main class will be generated)</p>
+</li>
+<li>
+<p>It contribute a menu to objects that can be passed to your main template</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/JavaGenerators.png" alt="Java Generators">
+</div>
+</div>
+<div class="paragraph">
+<p>All the code above is generated using Acceleo 4. You can extend and override the content of the generated files like you would with any Acceleo 4 generator. The source code is in this <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/plugins/org.eclipse.acceleo.aql.ide.ui/src-module/">source folder</a>.</p>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-22 15:54:21 +0100
+Last updated 2024-04-03 14:50:49 +0200
 </div>
 </div>
 </body>
