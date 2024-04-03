@@ -393,7 +393,15 @@
     		return evaluator;
     	}
 
-    	protected IAcceleoGenerationStrategy createGenerationStrategy(final ResourceSet resourceSetForModels) {
+    	/**
+    	 * Creates the {@link IAcceleoGenerationStrategy}
+    	 * 
+    	 * @param resourceSetForModels
+    	 *            the {@link ResourceSet} containing loaded models
+    	 * @return the created {@link IAcceleoGenerationStrategy}
+    	 * @generated
+    	 */
+    	protected IAcceleoGenerationStrategy createGenerationStrategy(ResourceSet resourceSetForModels) {
     		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels
     				.getURIConverter(), new DefaultWriterFactory()) {
     			@Override
