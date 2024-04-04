@@ -1,0 +1,33 @@
+target "Acceleo 2024-03 Target Platform"
+
+include "../common/orbit.tpd"
+include "../common/license.tpd"
+include "../common/lsp.tpd"
+include "../common/rcptt.tpd"
+include "../common/cdo.tpd"
+
+with requirements
+
+location Eclipse_2024-03 "https://download.eclipse.org/releases/2024-03" {
+	org.eclipse.sdk.feature.group lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
+	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
+	
+	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.jdt.feature.group lazy
+	org.eclipse.pde.feature.group lazy
+	org.eclipse.uml2.feature.group lazy
+	
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius.specifier.feature.group lazy
+	org.eclipse.acceleo.query.feature.group [7.0.0,7.0.1)
+	
+	org.eclipse.jface lazy
+	org.eclipse.tm4e.core lazy
+	org.eclipse.tm4e.ui lazy
+	org.eclipse.tm4e.languageconfiguration lazy
+}

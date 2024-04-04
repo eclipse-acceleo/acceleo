@@ -2,7 +2,7 @@ target "CDO"
 
 with requirements
 
-location CDO "https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
+location CDO "https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126/" {
 	org.eclipse.emf.cdo.sdk.feature.group lazy
 	org.eclipse.net4j.feature.group lazy
 }

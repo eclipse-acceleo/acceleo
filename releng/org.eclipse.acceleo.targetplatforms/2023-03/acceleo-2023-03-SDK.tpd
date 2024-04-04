@@ -1,5 +1,0 @@
-target "Acceleo 2022-12 Target Platform SDK"
-
-include "acceleo-2023-03.tpd"
-
-with source requirements

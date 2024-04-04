@@ -1,0 +1,5 @@
+target "Acceleo RCPTT Target Platform SDK"
+
+include "acceleo-rcptt.tpd"
+
+with source requirements

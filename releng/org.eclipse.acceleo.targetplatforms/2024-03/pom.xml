@@ -11,7 +11,7 @@
   </parent>
 
   <groupId>org.eclipse.acceleo</groupId>
-  <artifactId>acceleo-2023-03</artifactId>
+  <artifactId>acceleo-2024-03</artifactId>
   <version>4.0.0-SNAPSHOT</version>
   <packaging>eclipse-target-definition</packaging>
 

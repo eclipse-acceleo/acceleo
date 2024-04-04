@@ -1,4 +1,4 @@
-target "Acceleo 2022-12 Target Platform"
+target "Acceleo RCPTT Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"

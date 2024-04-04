@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -142,11 +142,6 @@ public final class AcceleoLanguageServerServicesUtils {
 		Range range = AcceleoLanguageServerPositionUtils.getCorrespondingRange(startPosition, endPosition,
 				acceleoSourceContents);
 		String symbolName = acceleoSymbol.getName();
-
-		// FIXME: workaround to lsp4e not adding separator between symbol and details.
-		if (acceleoSymbol.getDetails() != null) {
-			symbolName += " : ";
-		}
 
 		// FIXME: for now we don't make a difference between range and selectionRange.
 		DocumentSymbol documentSymbol = new DocumentSymbol(symbolName, getKind(acceleoSymbol), range, range,

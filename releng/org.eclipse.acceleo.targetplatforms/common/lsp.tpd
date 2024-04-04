@@ -4,19 +4,17 @@ include "orbit.tpd"
 
 with requirements
 
-location "https://download.eclipse.org/lsp4e/releases/0.22.0/" {
+location "https://download.eclipse.org/lsp4e/releases/0.25.0/" {
 	org.eclipse.lsp4j lazy
 	org.eclipse.lsp4j.debug lazy
 	org.eclipse.lsp4j.jsonrpc lazy
 	org.eclipse.lsp4j.jsonrpc.debug lazy
-
-	org.eclipse.xtext.xbase.lib lazy
 
 	org.eclipse.lsp4e lazy
 	org.eclipse.lsp4e.debug lazy
 	a.jre.javase lazy
 }
 
-location "https://download.eclipse.org/mylyn/docs/releases/3.0.45/" {
+location "https://download.eclipse.org/mylyn/docs/releases/3.0.48/" {
 	org.eclipse.mylyn.wikitext.markdown lazy
 }

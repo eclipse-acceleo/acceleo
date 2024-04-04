@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (C) 2011, 2023 Obeo
+   Copyright (C) 2011, 2024 Obeo
 
    All rights reserved. This program and the accompanying materials
    are made available under the terms of the Eclipse Public License v2.0
@@ -38,8 +38,8 @@
   </licenses>
 
   <properties>
-    <tycho-version>3.0.2</tycho-version>
-    <tycho-extras-version>3.0.2</tycho-extras-version>
+    <tycho-version>4.0.7</tycho-version>
+    <tycho-extras-version>4.0.7</tycho-extras-version>
 
     <java-resource-encoding>UTF-8</java-resource-encoding>
     <resource-encoding>UTF-8</resource-encoding>
@@ -74,7 +74,7 @@
   </scm>
 
   <modules>
-    <module>releng/org.eclipse.acceleo.targetplatforms/2023-03</module>
+    <module>releng/org.eclipse.acceleo.targetplatforms/2024-03</module>
     
     <module>plugins/org.eclipse.acceleo.ui.interpreter</module>
     <module>features/org.eclipse.acceleo.ui.interpreter-feature</module>
@@ -136,10 +136,6 @@
     <module>plugins/org.eclipse.acceleo.aql.profiler</module>
     <module>plugins/org.eclipse.acceleo.aql.profiler.edit</module>
     <module>plugins/org.eclipse.acceleo.aql.profiler.editor</module>
-
-    <!--module>tests/org.eclipse.acceleo.aql.rcpttproduct</module>
-    <module>query/tests/org.eclipse.acceleo.query.ide.ui.tests.rcptt</module>
-    <module>tests/org.eclipse.acceleo.aql.rcptt</module-->
 
     <module>releng/org.eclipse.acceleo.aql.update</module>
   </modules>
@@ -369,12 +365,12 @@
 
   <profiles>
     <profile>
-      <id>platform-2023-03</id>
+      <id>platform-2024-03</id>
       <activation>
         <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
-          <value>2023-03</value>
+          <value>2024-03</value>
         </property>
       </activation>
       <build>
@@ -386,7 +382,41 @@
               <target>
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
-                  <artifactId>acceleo-2023-03</artifactId>
+                  <artifactId>acceleo-2024-03</artifactId>
+                  <version>4.0.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>platform-rcptt</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>rcptt</value>
+        </property>
+      </activation>
+      <modules>
+        <module>releng/org.eclipse.acceleo.targetplatforms/rcptt</module>
+        <module>tests/org.eclipse.acceleo.aql.rcpttproduct</module>
+        <module>query/tests/org.eclipse.acceleo.query.ide.ui.tests.rcptt</module>
+        <module>tests/org.eclipse.acceleo.aql.rcptt</module>
+      </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.eclipse.acceleo</groupId>
+                  <artifactId>acceleo-rcptt</artifactId>
                   <version>4.0.0-SNAPSHOT</version>
                 </artifact>
               </target>

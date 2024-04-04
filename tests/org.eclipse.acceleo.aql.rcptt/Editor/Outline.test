@@ -6,7 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _tXG8wMEXEeqnvrRXFZRi1w
-Save-Time: 5/26/21 5:20 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 4/4/24, 4:45 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,10 +17,10 @@ Entry-Name: .content
 get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | double-click
 
 wait 500
-get-view Outline | get-tree | select "ecore : http:\\/\\/www.eclipse.org\\/emf\\/2002\\/Ecore"
+get-view Outline | get-tree | select "ecore http:\\/\\/www.eclipse.org\\/emf\\/2002\\/Ecore"
 get-editor "test.mtl" | get-text-viewer | get-property "getSelectionText()" 
     | equals "http://www.eclipse.org/emf/2002/Ecore'" | verify-true
-get-view Outline | get-tree | select "myTemplate\\(ecore::EPackage\\) : String"
+get-view Outline | get-tree | select "myTemplate\\(ecore::EPackage\\) String"
 get-editor "test.mtl" | get-text-viewer | get-property "getSelectionText()" 
     | equals "[template public myTemplate(myParam : ecore::EPackage)]\n"
     + "  [file (myParam.name + '.txt', overwrite)]\n"
@@ -31,7 +32,7 @@ get-editor "test.mtl" | get-text-viewer | get-property "getSelectionText()"
     + "        [myParam.eClassifiers.name.getMessage()/]\n"
     + "  [/file]\n"
     + "[/template]" | verify-true
-get-view Outline | get-tree | select "myTemplate\\(ecore::EPackage\\) : String/myParam : ecore::EPackage"
+get-view Outline | get-tree | select "myTemplate\\(ecore::EPackage\\) String/myParam ecore::EPackage"
 get-editor "test.mtl" | get-text-viewer | get-property "getSelectionText()" | equals "myParam : ecore::EPackage" 
     | verify-true
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
