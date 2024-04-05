@@ -92,10 +92,10 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="org.eclipse.acceleo.aql.ide.ui.property.PropertyTester"
+            class="org.eclipse.acceleo.aql.ide.ui.property.AcceleoPropertyTester"
             id="org.eclipse.acceleo.aql.ide.ui.property.propertyTester"
             namespace="org.eclipse.acceleo.aql.ide.ui.property"
-            properties="isMain,isBlockSelection"
+            properties="isMain,isBlockSelection,isAcceleoTextSelection"
             type="java.lang.Object">
       </propertyTester>
    </extension>
@@ -108,13 +108,13 @@
       </category>
       <command
             categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
-            id="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand"
-            name="Create Generator Class">
+            id="org.eclipse.acceleo.aql.ide.ui.commands.createJavaMainClassCommand"
+            name="Java Main Class">
       </command>
       <command
             categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
-            id="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIGeneratorProjectCommand"
-            name="Create Eclipse UI Generator Project">
+            id="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIProjectCommand"
+            name="Eclipse UI Project">
       </command>
       <command
             categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
@@ -145,8 +145,8 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateStandaloneClassHandler"
-            commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand">
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateJavaMainClassHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.createJavaMainClassCommand">
          <enabledWhen>
             <with
                   variable="selection">
@@ -168,7 +168,7 @@
       </handler>
       <handler
             class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateEclipseUIProjectHandler"
-            commandId="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIGeneratorProjectCommand">
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIProjectCommand">
          <enabledWhen>
             <with
                   variable="selection">
@@ -260,99 +260,108 @@
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <menu
                icon="icons/AcceleoEditor.gif"
-               id="org.eclipse.acceleo.aql.ide.ui.menus.createGeneratorClassMenu"
-               label="Acceleo 4">
+               id="org.eclipse.acceleo.aql.ide.ui.menus.initializeGeneratorLauncher"
+               label="Initialize Generator Launcher">
             <command
-                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGeneratorClassCommand"
+                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.createJavaMainClassCommand"
                   icon="icons/AcceleoEditor.gif"
-                  id="org.eclipse.acceleo.aql.ide.ui.menus.createGeneratorClassCommand">
+                  id="org.eclipse.acceleo.aql.ide.ui.menus.createJavaMainClassCommand">
             </command>
             <command
-                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIGeneratorProjectCommand"
+                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIProjectCommand"
                   icon="icons/AcceleoEditor.gif"
-                  id="org.eclipse.acceleo.aql.ide.ui.menus.createEclipseUIGeneratorProjectCommand">
-            </command>
-            <command
-                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.extractTemplate"
-                  icon="icons/AcceleoEditor.gif"
-                  id="org.eclipse.acceleo.aql.ide.ui.menus.extractTemplate"
-                  style="push"
-                  tooltip="Extract the selection to a template">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <instanceof
-                           value="org.eclipse.jface.text.TextSelection">
-                     </instanceof>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInFor"
-                  icon="icons/AcceleoEditor.gif"
-                  id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInFor"
-                  style="push"
-                  tooltip="Wrap the selection in a for statement">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <instanceof
-                           value="org.eclipse.jface.text.TextSelection">
-                     </instanceof>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInIf"
-                  icon="icons/AcceleoEditor.gif"
-                  id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInIf"
-                  style="push"
-                  tooltip="Wrap the selection in a if statement">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <instanceof
-                           value="org.eclipse.jface.text.TextSelection">
-                     </instanceof>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInLet"
-                  icon="icons/AcceleoEditor.gif"
-                  id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInLet"
-                  style="push"
-                  tooltip="Wrap the selection in a let statement">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <instanceof
-                           value="org.eclipse.jface.text.TextSelection">
-                     </instanceof>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInProtected"
-                  icon="icons/AcceleoEditor.gif"
-                  id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInProtected"
-                  style="push"
-                  tooltip="Wrap the selection in a protected statement">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <instanceof
-                           value="org.eclipse.jface.text.TextSelection">
-                     </instanceof>
-                  </with>
-               </visibleWhen>
+                  id="org.eclipse.acceleo.aql.ide.ui.menus.createEclipseUIProjectCommand">
             </command>
          </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.genericeditor.source.menu?after=additions">
+         <command
+               commandId="org.eclipse.acceleo.aql.ide.ui.commands.extractTemplate"
+               icon="icons/AcceleoEditor.gif"
+               id="org.eclipse.acceleo.aql.ide.ui.menus.extractTemplate"
+               style="push"
+               tooltip="Extract the selection to a template">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="org.eclipse.acceleo.aql.ide.ui.property.isAcceleoTextSelection">
+                  </test>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInFor"
+               icon="icons/AcceleoEditor.gif"
+               id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInFor"
+               style="push"
+               tooltip="Wrap the selection in a for statement">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="org.eclipse.acceleo.aql.ide.ui.property.isAcceleoTextSelection">
+                  </test>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInIf"
+               icon="icons/AcceleoEditor.gif"
+               id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInIf"
+               style="push"
+               tooltip="Wrap the selection in a if statement">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="org.eclipse.acceleo.aql.ide.ui.property.isAcceleoTextSelection">
+                  </test>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInLet"
+               icon="icons/AcceleoEditor.gif"
+               id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInLet"
+               style="push"
+               tooltip="Wrap the selection in a let statement">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="org.eclipse.acceleo.aql.ide.ui.property.isAcceleoTextSelection">
+                  </test>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.acceleo.aql.ide.ui.commands.wrapInProtected"
+               icon="icons/AcceleoEditor.gif"
+               id="org.eclipse.acceleo.aql.ide.ui.menus.wrapInProtected"
+               style="push"
+               tooltip="Wrap the selection in a protected statement">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="org.eclipse.acceleo.aql.ide.ui.property.isAcceleoTextSelection">
+                  </test>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension

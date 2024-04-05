@@ -249,12 +249,12 @@ To get rid of the coverage highlighting you can simply close the editor and reop
 
 === Java launchers
 
-You can select a module file that contains a main template to generate the Java code that will launch your module. There are two menus:
+You can select a module file that contains a main template to generate the Java code that will launch your module. There are two menus under *Initialize Generator Launcher*:
 
-* *Generate Generator Class* that will generate a Java class that can be used in standalone
+* *Java Main Class* that will generate a Java class that can be used in standalone
 ** It creates a Java main class next to your module
 ** It can be integrated in other application outside or inside of Eclipse
-* *Create Eclipse UI Generator Project* that will generate an Eclipse plugin
+* *Eclipse UI Project* that will generate an Eclipse plugin
 ** It creates an Eclipse plugin projet next to your generator project
 ** It extends the standalone class (the standalone main class will be generated)
 ** It contribute a menu to objects that can be passed to your main template

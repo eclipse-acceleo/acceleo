@@ -30,7 +30,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class CreateStandaloneClassHandler extends AbstractHandler {
+public class CreateJavaMainClassHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

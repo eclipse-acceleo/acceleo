@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui.property;
 
+import java.util.List;
+
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
 
-public class PropertyTester extends org.eclipse.core.expressions.PropertyTester {
+public class AcceleoPropertyTester extends org.eclipse.core.expressions.PropertyTester {
 
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
@@ -49,6 +53,37 @@ public class PropertyTester extends org.eclipse.core.expressions.PropertyTester 
 									.charAt(selection.getOffset() - 1) == '\n';
 							res = startAtNewLine && !selection.isEmpty() && selection.getText().endsWith(
 									"\n");
+						} else {
+							res = false;
+						}
+					} else {
+						res = false;
+					}
+				} else {
+					res = false;
+				}
+				break;
+
+			case "isAcceleoTextSelection":
+				if (receiver instanceof ITextSelection) {
+					final IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow();
+					if (activeWorkbenchWindow != null) {
+						final IEditorPart activeEditor = activeWorkbenchWindow.getActivePage()
+								.getActiveEditor();
+						if (activeEditor instanceof TextEditor) {
+							final IDocument document = ((TextEditor)activeEditor).getDocumentProvider()
+									.getDocument(activeEditor.getEditorInput());
+							final List<IContentType> contentTypes = LSPEclipseUtils.getDocumentContentTypes(
+									document);
+							boolean foundAcceleoContentType = false;
+							for (IContentType contentType : contentTypes) {
+								if ("Acceleo".equals(contentType.getName())) {
+									foundAcceleoContentType = true;
+									break;
+								}
+							}
+							res = foundAcceleoContentType;
 						} else {
 							res = false;
 						}
