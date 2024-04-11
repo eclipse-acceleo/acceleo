@@ -2389,6 +2389,25 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
 	}
 
+	@Test
+	public void bug152() {
+		final IValidationResult validationResult = engine.validate(
+				"Sequence{'1','2'}.toInteger()->first() > '1'.toInteger()", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Boolean.class, possibleType.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+	}
+
 	/**
 	 * Asserts the given {@link IValidationMessage} against expected values.
 	 * 

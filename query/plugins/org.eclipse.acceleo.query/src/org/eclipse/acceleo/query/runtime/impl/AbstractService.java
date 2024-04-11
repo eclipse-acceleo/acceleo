@@ -103,7 +103,7 @@ public abstract class AbstractService<O> implements IService<O> {
 			returnTypes = computeType(queryEnvironment);
 		}
 
-		return returnTypes;
+		return new LinkedHashSet<>(returnTypes);
 	}
 
 	/**
