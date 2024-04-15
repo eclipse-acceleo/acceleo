@@ -37,6 +37,9 @@
      */
     public class [module.getEclipseHandlerClassName()/] extends AbstractHandler {
 
+    	/**
+    	 * @generated
+    	 */
     	@Override
     	public Object execute(ExecutionEvent event) throws ExecutionException {
     		final IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);

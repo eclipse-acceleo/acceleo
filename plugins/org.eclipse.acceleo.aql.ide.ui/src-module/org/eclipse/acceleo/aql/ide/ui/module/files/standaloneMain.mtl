@@ -105,6 +105,7 @@
     	 * 
     	 * @param args
     	 *            resources separated by a comma, target folder
+    	 * @generated
     	 */
     	public static void main(String['['/]] args) {
     		if (args.length == 2) {
@@ -211,6 +212,7 @@
     	 * @param module
     	 *            the {@link Module}
     	 * @return the {@link List} of {@link Template} to generate for the given {@link Module}
+    	 * @generated
     	 */
     	protected List<Template> getTemplates(Module module) {
     		return AcceleoUtil.getMainTemplate(module);
@@ -228,6 +230,7 @@
     	 * @param resourceSetForModels
     	 *            the {@link ResourceServices} for models
     	 * @return the {@link List} of {@link EObject} values to use
+    	 * @generated
     	 */
     	protected List<EObject> getValues(IQualifiedNameQueryEnvironment queryEnvironment,
     			final Map<EClass, List<EObject>> valuesCache, TypeLiteral type,
@@ -476,6 +479,7 @@
     	 *            the {@link Diagnostic}
     	 * @param indentation
     	 *            the current indentation
+    	 * @generated
     	 */
     	protected void printDiagnostic(PrintStream stream, Diagnostic diagnostic, String indentation) {
     		String nextIndentation = indentation;

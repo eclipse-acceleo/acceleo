@@ -66,6 +66,7 @@
     
     	/**
     	 * The selected value.
+    	 * @generated
     	 */
     	private final List<EObject> value;
     
@@ -73,10 +74,10 @@
     	 * Constructor.
     	 * 
     	 * @param selected
-    	 *            the selected {@link EPackage}
+    	 *            the selected {@link [module.getReceiverClassName()/]}
     	 * @generated
     	 */
-    	public MainGeneratorEclipse(EPackage selected) {
+    	public MainGeneratorEclipse([module.getReceiverClassName()/] selected) {
     		super(Collections.emptyList(), getTarget(selected));
     		this.value = Collections.singletonList(selected);
     	}
@@ -91,14 +92,14 @@
     	}
     
     	/**
-    	 * Gets the target folder for the selected {@link EPackage}.
+    	 * Gets the target folder for the selected {@link [module.getReceiverClassName()/]}.
     	 * 
     	 * @param selected
-    	 *            the model {@link EPackage}
-    	 * @return the target folder for the selected {@link EPackage}
+    	 *            the model {@link [module.getReceiverClassName()/]}
+    	 * @return the target folder for the selected {@link [module.getReceiverClassName()/]}
     	 * @generated
     	 */
-    	private static String getTarget(EPackage selected) {
+    	private static String getTarget([module.getReceiverClassName()/] selected) {
     		final String res;
     
     		final AbstractResourceSelectionDialog dialog = new FolderSelectionDialog(PlatformUI.getWorkbench()
