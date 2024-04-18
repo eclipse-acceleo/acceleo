@@ -15,6 +15,7 @@ import java.util.Deque;
 import java.util.Map;
 
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
+import org.eclipse.acceleo.debug.util.FrameVariable;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -424,5 +425,16 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 *            the text to print
 	 */
 	void consolePrint(String text);
+
+	/**
+	 * Creates the {@link FrameVariable} for the given {@link Object value}.
+	 * 
+	 * @param name
+	 *            the variable name
+	 * @param value
+	 *            the {@link Object value}
+	 * @return the {@link FrameVariable} for the given {@link Object value}
+	 */
+	FrameVariable getFrameVariable(String name, Object value);
 
 }

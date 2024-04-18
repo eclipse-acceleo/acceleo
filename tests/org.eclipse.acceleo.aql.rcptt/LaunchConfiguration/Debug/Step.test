@@ -1,13 +1,14 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Contexts: _d8d2kKyFEeqylZAj0d4Xnw,_rNkUAMEwEeqjcPTfvO5d8Q
-Element-Name: LaunchShortcutDebug
+Element-Name: Step
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
-Id: _azpG8MEqEeqjcPTfvO5d8Q
+Id: __-jkIP2DEe6uiPAyHyMDHA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 4/18/24, 3:42 PM
+Save-Time: 4/18/24, 5:14 PM
+Tags: fail
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -23,6 +24,8 @@ with [get-window "New Folder"] {
     get-editbox -after [get-label "Folder name:"] | set-text generated
     get-button Finish | click -metaKeys ""
 }
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | double-click
+get-editor "test.mtl" | get-left-ruler | get-ruler-column AnnotationColumn | double-click-ruler 11
 get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
     -path "Debug As/1 Debug Acceleo 4 generation" | click -metaKeys ""
 with [get-window "Debug Configurations"] {
@@ -54,6 +57,34 @@ with [get-window "Debug Configurations"] {
     get-button Apply | click -metaKeys ""
     get-button Debug | click -metaKeys ""
 }
+
+with [get-view Debug | get-tree | get-item -path "test.mtl \\[Acceleo 4\\]"] {
+    get-property caption | equals "test.mtl [Acceleo 4]" | verify-true
+    get-property "getItems().TreeItem[0].getText()" | equals "Debug Adapter Target" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[0].getText()" 
+        | equals "template myTemplate(ecore::EPackage)" | verify-true
+}
+
+get-button "Step Into (F5)" | click -metaKeys ""
+
+with [get-view Debug | get-tree | get-item -path "test.mtl \\[Acceleo 4\\]"] {
+    get-property caption | equals "test.mtl [Acceleo 4]" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[0].getText()" 
+        | equals "template myOtherTemplate(ecore::EClassifier)" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[1].getText()" 
+        | equals "template myTemplate(ecore::EPackage)" | verify-true
+}
+
+get-button "Step Return (F7)" | click -metaKeys ""
+
+with [get-view Debug | get-tree | get-item -path "test.mtl \\[Acceleo 4\\]"] {
+    get-property "getText()" | equals "test.mtl [Acceleo 4]" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[0].getText()" 
+        | equals "template myTemplate(ecore::EPackage)" | verify-true
+}
+
+get-editor "test.mtl" | get-left-ruler | get-ruler-column AnnotationColumn | double-click-ruler 11
+get-button "Resume (F8)" | click -metaKeys ""
 get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
     -path "Debug As/Debug Configurations..." | click -metaKeys ""
 with [get-window "Debug Configurations"] {
@@ -63,9 +94,6 @@ with [get-window "Debug Configurations"] {
 }
 with [get-view Debug] {
     click
-    get-tree | select "<unknown>" | key-type Del
-}
-with [get-window "Terminate and Remove"] {
-    get-button Yes | click -metaKeys ""
+    get-tree | select "<terminated><unknown>" | key-type Del
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

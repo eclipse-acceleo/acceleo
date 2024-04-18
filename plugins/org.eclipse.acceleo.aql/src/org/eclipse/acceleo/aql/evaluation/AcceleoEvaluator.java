@@ -552,7 +552,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 	@Override
 	public String caseBlock(Block block) {
-		final List<String> texts = new ArrayList<>();
+		final List<String> texts = createBlockTextsList(block);
 
 		boolean lastIsEmptyBlock = false;
 		String lastRemovedIndentation = null;
@@ -624,6 +624,17 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			builder.append(text);
 		}
 		return builder.toString();
+	}
+
+	/**
+	 * Creates the {@link List} of {@link String} for the given {@link Block}.
+	 * 
+	 * @param block
+	 *            the {@link Block}
+	 * @return the created {@link List} of {@link String} for the given {@link Block}
+	 */
+	protected List<String> createBlockTextsList(Block block) {
+		return new ArrayList<>();
 	}
 
 	@Override

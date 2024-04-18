@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.debug.ls;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,7 +39,9 @@ import org.eclipse.acceleo.debug.event.debugger.SuspendedReply;
 import org.eclipse.acceleo.debug.event.debugger.TerminatedReply;
 import org.eclipse.acceleo.debug.event.debugger.VariableReply;
 import org.eclipse.acceleo.debug.event.model.AbstractModelEventProcessor;
+import org.eclipse.acceleo.debug.util.FrameVariable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -116,6 +119,8 @@ import org.eclipse.lsp4j.debug.ThreadEventArguments;
 import org.eclipse.lsp4j.debug.ThreadEventArgumentsReason;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.Variable;
+import org.eclipse.lsp4j.debug.VariablePresentationHint;
+import org.eclipse.lsp4j.debug.VariablePresentationHintAttributes;
 import org.eclipse.lsp4j.debug.VariablesArguments;
 import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
@@ -146,7 +151,12 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 	/**
 	 * Mapping from a frame ID to its variables.
 	 */
-	private final Map<Integer, Map<String, Object>> frameIDToVariables = new HashMap<Integer, Map<String, Object>>();
+	private final Map<Integer, Map<String, FrameVariable>> frameIDToVariables = new HashMap<>();
+
+	/**
+	 * Reference ID to {@link FrameVariable}.
+	 */
+	private final Map<Integer, FrameVariable> referenceToVariables = new HashMap<>();
 
 	/**
 	 * The EMF {@link ILabelProvider}.
@@ -868,17 +878,98 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		final VariablesResponse res = new VariablesResponse();
 
 		List<Variable> variables = new ArrayList<Variable>();
-		final Map<String, Object> vars = frameIDToVariables.get(args.getVariablesReference() - 1);
-		for (Entry<String, Object> entry : vars.entrySet()) {
-			final Variable variable = new Variable();
-			variable.setName(entry.getKey());
-			variable.setEvaluateName(entry.getKey());
-			variable.setType(entry.getValue().getClass().getSimpleName());
-			variable.setValue(entry.getValue().toString());
-			variables.add(variable);
+		if (frameIDToVariables.containsKey(args.getVariablesReference() - 1)) {
+			// returns all variables form the stack frame
+			final Map<String, FrameVariable> vars = frameIDToVariables.get(args.getVariablesReference() - 1);
+			// TODO filter and pagination
+			for (FrameVariable frameVariable : vars.values()) {
+				final Variable variable = transform(frameVariable);
+				variables.add(variable);
+			}
+		} else {
+			final FrameVariable parentFrameVariable = referenceToVariables.get(args.getVariablesReference());
+			if (parentFrameVariable != null) {
+				final Object value = parentFrameVariable.getValue();
+				if (value instanceof EObject) {
+					// TODO filter and pagination
+					for (EStructuralFeature feature : ((EObject)value).eClass().getEAllStructuralFeatures()) {
+						final FrameVariable frameVariable = debugger.getFrameVariable(feature.getName(),
+								((EObject)value).eGet(feature));
+						final Variable variable = transform(frameVariable);
+						variables.add(variable);
+					}
+				} else if (value instanceof Map<?, ?>) {
+					// TODO filter and pagination
+					for (Entry<?, ?> entry : ((Map<?, ?>)value).entrySet()) {
+						final FrameVariable frameVariable = debugger.getFrameVariable(entry.getKey()
+								.toString(), entry.getValue());
+						final Variable variable = transform(frameVariable);
+						variables.add(variable);
+					}
+				} else if (value instanceof Collection<?>) {
+					// TODO filter and pagination
+					int i = 1;
+					for (Object child : (Collection<?>)value) {
+						final FrameVariable frameVariable = debugger.getFrameVariable(String.valueOf(i++),
+								child);
+						final Variable variable = transform(frameVariable);
+						variables.add(variable);
+					}
+				}
+			}
 		}
 
 		res.setVariables(variables.toArray(new Variable[variables.size()]));
+
+		return res;
+	}
+
+	/**
+	 * Transforms a {@link FrameVariable} to a {@link Variable}.
+	 * 
+	 * @param frameVariable
+	 *            the {@link FrameVariable}
+	 * @return the created {@link FrameVariable} to a {@link Variable}
+	 */
+	// TODO filter and pagination
+	private Variable transform(FrameVariable frameVariable) {
+		final Variable res = new Variable();
+
+		res.setName(frameVariable.getName());
+		res.setEvaluateName(frameVariable.getName());
+		final Object value = frameVariable.getValue();
+		if (value != null) {
+			res.setType(value.getClass().getSimpleName());
+		}
+		final VariablePresentationHint presentationHint = new VariablePresentationHint();
+		final List<String> attributes = new ArrayList<String>();
+		if (frameVariable.isReadOnly()) {
+			attributes.add(VariablePresentationHintAttributes.READ_ONLY);
+		}
+		if (value instanceof EObject) {
+			final int reference = System.identityHashCode(value);
+			res.setVariablesReference(reference);
+			referenceToVariables.put(reference, frameVariable);
+			res.setValue(eLabelProvider.getText(value));
+			res.setNamedVariables(((EObject)value).eClass().getEAllStructuralFeatures().size());
+		} else if (value instanceof Map<?, ?>) {
+			final int reference = System.identityHashCode(value);
+			res.setVariablesReference(reference);
+			referenceToVariables.put(reference, frameVariable);
+			res.setIndexedVariables(((Map<?, ?>)value).size());
+		} else if (value instanceof Collection<?>) {
+			final int reference = System.identityHashCode(value);
+			res.setVariablesReference(reference);
+			referenceToVariables.put(reference, frameVariable);
+			res.setIndexedVariables(((Collection<?>)value).size());
+		} else if (value instanceof String) {
+			attributes.add(VariablePresentationHintAttributes.RAW_STRING);
+			res.setValue(value.toString());
+		} else if (value != null) {
+			res.setValue(value.toString());
+		}
+		presentationHint.setAttributes(attributes.toArray(new String[attributes.size()]));
+		res.setPresentationHint(presentationHint);
 
 		return res;
 	}

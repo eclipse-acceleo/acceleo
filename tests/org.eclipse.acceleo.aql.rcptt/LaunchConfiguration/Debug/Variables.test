@@ -1,13 +1,14 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Contexts: _d8d2kKyFEeqylZAj0d4Xnw,_rNkUAMEwEeqjcPTfvO5d8Q
-Element-Name: LaunchShortcutDebug
+Element-Name: Variables
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
-Id: _azpG8MEqEeqjcPTfvO5d8Q
+Id: _9cF08P1jEe6uiPAyHyMDHA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 4/18/24, 3:42 PM
+Save-Time: 4/18/24, 5:13 PM
+Tags: fail
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -23,6 +24,8 @@ with [get-window "New Folder"] {
     get-editbox -after [get-label "Folder name:"] | set-text generated
     get-button Finish | click -metaKeys ""
 }
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | double-click
+get-editor "test.mtl" | get-left-ruler | get-ruler-column AnnotationColumn | double-click-ruler 11
 get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
     -path "Debug As/1 Debug Acceleo 4 generation" | click -metaKeys ""
 with [get-window "Debug Configurations"] {
@@ -54,6 +57,49 @@ with [get-window "Debug Configurations"] {
     get-button Apply | click -metaKeys ""
     get-button Debug | click -metaKeys ""
 }
+get-view Debug | get-tree 
+    | select "test.mtl [Acceleo 4]/Debug Adapter Target/Thread #.*/template myTemplate(ecore::EPackage)" -all
+
+with [get-view Variables | get-tree | get-item -path "Variables/myVariable1Index"] {
+    get-property "getData().getName()" | equals myVariable1Index | verify-true
+    get-property "getData().getValue().getValueString()" | equals 1 | verify-true
+}
+with [get-view Variables | get-tree] {
+    with [get-item -path "Variables/myParam"] {
+        get-property "getData().getName()" | equals myParam | verify-true
+        get-property "getData().getValue().getValueString()" | equals anydsl | verify-true
+    }
+    with [get-item -path "Variables/myVariable1"] {
+        get-property "getData().getName()" | equals myVariable1 | verify-true
+        get-property "getData().getValue().getValueString()" | equals World | verify-true
+    }
+    with [get-item -path "Variables/blockOutput"] {
+        get-property "getItems().TreeItem[0].getData().getName()" | equals 1 | verify-true
+        get-property "getItems().TreeItem[0].getData().getValue().getValueString()" | equals "some text" | verify-true
+        get-property "getItems().TreeItem[1].getData().getName()" | equals 2 | verify-true
+        get-property "getItems().TreeItem[1].getData().getValue().getValueString()" | equals World | verify-true
+    }
+}
+
+get-button "Resume (F8)" | click -metaKeys ""
+
+with [get-view Variables | get-tree | get-item -path "Variables/myVariable1Index"] {
+    get-property "getData().getName()" | equals myVariable1Index | verify-true
+    get-property "getData().getValue().getValueString()" | equals 3 | verify-true
+}
+with [get-view Variables | get-tree] {
+    with [get-item -path "Variables/myParam"] {
+        get-property "getData().getName()" | equals myParam | verify-true
+        get-property "getData().getValue().getValueString()" | equals anydsl | verify-true
+    }
+    with [get-item -path "Variables/myVariable1"] {
+        get-property "getData().getName()" | equals myVariable1 | verify-true
+        get-property "getData().getValue().getValueString()" | equals NamedElement | verify-true
+    }
+}
+
+get-editor "test.mtl" | get-left-ruler | get-ruler-column AnnotationColumn | double-click-ruler 11
+get-button "Resume (F8)" | click -metaKeys ""
 get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
     -path "Debug As/Debug Configurations..." | click -metaKeys ""
 with [get-window "Debug Configurations"] {
@@ -63,9 +109,6 @@ with [get-window "Debug Configurations"] {
 }
 with [get-view Debug] {
     click
-    get-tree | select "<unknown>" | key-type Del
-}
-with [get-window "Terminate and Remove"] {
-    get-button Yes | click -metaKeys ""
+    get-tree | select "<terminated><unknown>" | key-type Del
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

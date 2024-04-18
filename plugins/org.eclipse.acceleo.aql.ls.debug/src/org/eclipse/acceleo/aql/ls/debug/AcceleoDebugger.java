@@ -18,11 +18,16 @@ import java.io.PrintStream;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.acceleo.AcceleoASTNode;
+import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.OpenModeKind;
@@ -46,6 +51,7 @@ import org.eclipse.acceleo.aql.profiler.ProfilerUtils.Representation;
 import org.eclipse.acceleo.debug.AbstractDSLDebugger;
 import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
+import org.eclipse.acceleo.debug.util.FrameVariable;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
@@ -156,6 +162,16 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	private final class AcceleoDebugEvaluator extends AcceleoEvaluator {
 
 		/**
+		 * The {@link Block} output variable name.
+		 */
+		private static final String BLOCK_OUTPUT_VARIABLE = "blockOutput";
+
+		/**
+		 * The stack of {@link Block} texts {@link List}.
+		 */
+		private Deque<List<String>> blockTextLists = new ArrayDeque<>();
+
+		/**
 		 * Constructor.
 		 * 
 		 * @param queryEnvironment
@@ -167,6 +183,22 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			super(queryEnvironment.getLookupEngine(), newLine);
 		}
 
+		/**
+		 * Pushes a new {@link Block} text {@link List}.
+		 */
+		private void pushBlockTextList() {
+			blockTextLists.addLast(new ArrayList<>());
+		}
+
+		/**
+		 * Pops the last {@link Block} text {@link List}.
+		 * 
+		 * @return the last {@link Block} text {@link List}
+		 */
+		private List<String> popBlockTextList() {
+			return blockTextLists.removeLast();
+		}
+
 		@Override
 		public Object doSwitch(EObject eObject) {
 			if (isTerminated()) {
@@ -174,12 +206,20 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			}
 			if (eObject instanceof Template || eObject instanceof Query) {
 				pushStackFrame(Thread.currentThread().getId(), eObject);
+			} else if (eObject instanceof Block) {
+				pushBlockTextList();
 			}
 			try {
 				if (isAcceleoInstruction(eObject)) {
 					final StackFrame currentFrame = peekStackFrame(Thread.currentThread().getId());
 					currentFrame.setInstruction(eObject);
-					currentFrame.setVariables(peekVariables());
+					final LinkedHashMap<String, FrameVariable> variables = new LinkedHashMap<>();
+					for (Entry<String, Object> entry : peekVariables().entrySet()) {
+						variables.put(entry.getKey(), getFrameVariable(entry.getKey(), entry.getValue()));
+					}
+					currentFrame.setVariables(variables);
+					currentFrame.getVariables().put(BLOCK_OUTPUT_VARIABLE, getFrameVariable(
+							BLOCK_OUTPUT_VARIABLE, blockTextLists.peekLast()));
 					if (!AcceleoDebugger.this.control(Thread.currentThread().getId(), eObject)) {
 						Thread.currentThread().interrupt();
 					}
@@ -188,8 +228,15 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			} finally {
 				if (eObject instanceof Template || eObject instanceof Query) {
 					popStackFrame(Thread.currentThread().getId());
+				} else if (eObject instanceof Block) {
+					popBlockTextList();
 				}
 			}
+		}
+
+		@Override
+		protected List<String> createBlockTextsList(Block block) {
+			return blockTextLists.peekLast();
 		}
 
 	}
@@ -459,7 +506,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		try {
 			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
-			final String moduleQualifiedName = resolver.getQualifiedName(new java.net.URI("file://" + path));
+			final java.net.URI binaryURI = resolver.getBinaryURI(new java.net.URI("file://" + path));
+			final String moduleQualifiedName = resolver.getQualifiedName(binaryURI);
 			if (moduleQualifiedName != null) {
 				final Object resolved = resolver.resolve(moduleQualifiedName);
 				if (resolved instanceof Module) {
@@ -515,7 +563,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			final AcceleoAstResult moduleAstResult = module.getAst();
 			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 			final String moduleQualifiedName = resolver.getQualifiedName(moduleAstResult.getModule());
-			java.net.URI moduleSourceURI = resolver.getSourceURI(moduleQualifiedName);
+			final java.net.URI moduleSourceURI = resolver.getSourceURI(moduleQualifiedName);
 			path = URIUtil.toFile(moduleSourceURI).toString();
 
 			if (instruction instanceof AcceleoASTNode) {
@@ -608,6 +656,17 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		for (Diagnostic child : diagnostic.getChildren()) {
 			printDiagnostic(child, nextIndentation);
 		}
+	}
+
+	@Override
+	public FrameVariable getFrameVariable(String name, Object value) {
+		final FrameVariable res = new FrameVariable();
+
+		res.setName(name);
+		res.setValue(value);
+		res.setReadOnly(true);
+
+		return res;
 	}
 
 }
