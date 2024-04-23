@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.debug;
 
-import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -87,7 +86,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	/**
 	 * Instructions marked as breakpoints with their attributes.
 	 */
-	private final Map<URI, Map<String, Serializable>> breakpoints = new HashMap<URI, Map<String, Serializable>>();
+	private final Map<URI, Map<String, String>> breakpoints = new HashMap<URI, Map<String, String>>();
 
 	/**
 	 * Mapping from the thread id to is {@link StackFrame}.
@@ -116,7 +115,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 * 
 	 * @return the mapping of instructions marked as breakpoints to their attributes
 	 */
-	protected Map<URI, Map<String, Serializable>> getBreakpoints() {
+	protected Map<URI, Map<String, String>> getBreakpoints() {
 		return breakpoints;
 	}
 
@@ -331,10 +330,10 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	 *            the attribute
 	 * @return the value of the given breakpoint attribute if any, <code>null</code> otherwise
 	 */
-	protected Serializable getBreakpointAttributes(EObject instruction, String attribute) {
-		final Serializable res;
+	protected String getBreakpointAttributes(EObject instruction, String attribute) {
+		final String res;
 
-		Map<String, Serializable> attributes = breakpoints.get(EcoreUtil.getURI(instruction));
+		Map<String, String> attributes = breakpoints.get(EcoreUtil.getURI(instruction));
 		if (attributes != null) {
 			res = attributes.get(attribute);
 		} else {
@@ -345,7 +344,7 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 	}
 
 	public void addBreakPoint(URI instruction) {
-		breakpoints.put(instruction, new HashMap<String, Serializable>());
+		breakpoints.put(instruction, new LinkedHashMap<>());
 	}
 
 	public void removeBreakPoint(URI instruction) {
@@ -356,8 +355,8 @@ public abstract class AbstractDSLDebugger implements IDSLDebugger {
 		breakpoints.clear();
 	}
 
-	public void changeBreakPoint(URI instruction, String attribute, Serializable value) {
-		final Map<String, Serializable> attributes = breakpoints.get(instruction);
+	public void changeBreakPoint(URI instruction, String attribute, String value) {
+		final Map<String, String> attributes = breakpoints.get(instruction);
 		attributes.put(attribute, value);
 	}
 

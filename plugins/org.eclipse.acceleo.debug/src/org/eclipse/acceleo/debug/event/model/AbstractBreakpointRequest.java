@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,11 @@ public abstract class AbstractBreakpointRequest implements IDSLModelRequest {
 		this.uri = uri;
 	}
 
+	/**
+	 * Gets the {@link URI} pointing the {@link rg.eclipse.emf.ecore.EObject instruction}.
+	 * 
+	 * @return the {@link URI} pointing the {@link rg.eclipse.emf.ecore.EObject instruction}
+	 */
 	public URI getURI() {
 		return uri;
 	}

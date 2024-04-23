@@ -40,6 +40,7 @@ import org.eclipse.acceleo.debug.event.debugger.TerminatedReply;
 import org.eclipse.acceleo.debug.event.debugger.VariableReply;
 import org.eclipse.acceleo.debug.event.model.AbstractModelEventProcessor;
 import org.eclipse.acceleo.debug.util.FrameVariable;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -129,6 +130,21 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
 public class DSLDebugServer extends AbstractModelEventProcessor implements IDebugProtocolServer {
 
 	/**
+	 * The condition breakpoint attribute name.
+	 */
+	public static final String CONDITION_BREAKPOINT_ATTRIBUTE = "condition";
+
+	/**
+	 * The hit condition breakpoint attribute name.
+	 */
+	public static final String HIT_CONDITION_BREAKPOINT_ATTRIBUTE = "hitCondition";
+
+	/**
+	 * The log message breakpoint attribute name.
+	 */
+	public static final String LOG_MESSAGE_BREAKPOINT_ATTRIBUTE = "logMessage";
+
+	/**
 	 * The {@link IDebugProtocolClient}.
 	 */
 	private IDebugProtocolClient client;
@@ -214,31 +230,50 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 		final Capabilities res = new Capabilities();
 
 		// TODO
-		res.setSupportsCompletionsRequest(true);
-		res.setSupportsConditionalBreakpoints(true);
 		res.setSupportsConfigurationDoneRequest(true);
-		res.setSupportsDataBreakpoints(false);
-		res.setSupportsDelayedStackTraceLoading(false);
-		res.setSupportsDisassembleRequest(false);
-		res.setSupportsEvaluateForHovers(false);
-		res.setSupportsExceptionInfoRequest(false);
-		res.setSupportsExceptionOptions(false);
 		res.setSupportsFunctionBreakpoints(false);
-		res.setSupportsGotoTargetsRequest(false);
+		res.setSupportsConditionalBreakpoints(true);
 		res.setSupportsHitConditionalBreakpoints(true);
-		res.setSupportsLoadedSourcesRequest(false);
-		res.setSupportsLogPoints(false);
-		res.setSupportsModulesRequest(false);
-		res.setSupportsReadMemoryRequest(false);
-		res.setSupportsRestartFrame(false);
-		res.setSupportsRestartRequest(false);
-		res.setSupportsSetExpression(false);
-		res.setSupportsSetVariable(false);
+		res.setSupportsEvaluateForHovers(false);
+		// ExceptionBreakpointsFilter[]
+		res.setExceptionBreakpointFilters(null);
 		res.setSupportsStepBack(false);
+		res.setSupportsSetVariable(false);
+		res.setSupportsRestartFrame(false);
+		res.setSupportsGotoTargetsRequest(false);
 		res.setSupportsStepInTargetsRequest(false);
-		res.setSupportsTerminateRequest(true);
+		res.setSupportsCompletionsRequest(true);
+		// String[]
+		res.setCompletionTriggerCharacters(null);
+		res.setSupportsModulesRequest(false);
+		// ColumnDescriptor[]
+		res.setAdditionalModuleColumns(null);
+		// ChecksumAlgorithm[]
+		res.setSupportedChecksumAlgorithms(null);
+		res.setSupportsRestartRequest(false);
+		res.setSupportsExceptionOptions(false);
+		res.setSupportsValueFormattingOptions(true);
+		res.setSupportsExceptionInfoRequest(false);
+		res.setSupportTerminateDebuggee(null);
+		res.setSupportSuspendDebuggee(null);
+		res.setSupportsDelayedStackTraceLoading(false);
+		res.setSupportsLoadedSourcesRequest(false);
+		res.setSupportsLogPoints(true);
 		res.setSupportsTerminateThreadsRequest(true);
-		res.setSupportsValueFormattingOptions(false);
+		res.setSupportsSetExpression(false);
+		res.setSupportsTerminateRequest(true);
+		res.setSupportsDataBreakpoints(false);
+		res.setSupportsReadMemoryRequest(false);
+		res.setSupportsWriteMemoryRequest(null);
+		res.setSupportsDisassembleRequest(false);
+		res.setSupportsCancelRequest(null);
+		res.setSupportsBreakpointLocationsRequest(null);
+		res.setSupportsClipboardContext(null);
+		res.setSupportsSteppingGranularity(null);
+		res.setSupportsInstructionBreakpoints(null);
+		res.setSupportsExceptionFilterOptions(null);
+		res.setSupportsSingleThreadExecutionRequests(null);
+
 		return res;
 	}
 
@@ -284,7 +319,21 @@ public class DSLDebugServer extends AbstractModelEventProcessor implements IDebu
 			final EObject instruction = debugger.getInstruction(args.getSource().getPath(),
 					requestedBreakpoint.getLine(), column);
 			if (instruction != null) {
-				debugger.addBreakPoint(EcoreUtil.getURI(instruction));
+				final URI instructionURI = EcoreUtil.getURI(instruction);
+				debugger.addBreakPoint(instructionURI);
+				final String condition = requestedBreakpoint.getCondition();
+				if (condition != null) {
+					debugger.changeBreakPoint(instructionURI, CONDITION_BREAKPOINT_ATTRIBUTE, condition);
+				}
+				final String hitCondition = requestedBreakpoint.getHitCondition();
+				if (hitCondition != null) {
+					debugger.changeBreakPoint(instructionURI, HIT_CONDITION_BREAKPOINT_ATTRIBUTE,
+							hitCondition);
+				}
+				final String logMessage = requestedBreakpoint.getLogMessage();
+				if (logMessage != null) {
+					debugger.changeBreakPoint(instructionURI, LOG_MESSAGE_BREAKPOINT_ATTRIBUTE, logMessage);
+				}
 				final Breakpoint responseBreakpoint = new Breakpoint();
 				final DSLSource dslSource = debugger.getSource(instruction);
 				if (dslSource != null) {

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.debug;
 
-import java.io.Serializable;
 import java.util.Deque;
 import java.util.Map;
 
@@ -247,7 +246,7 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 * @param value
 	 *            the value
 	 */
-	void changeBreakPoint(URI instruction, String attribute, Serializable value);
+	void changeBreakPoint(URI instruction, String attribute, String value);
 
 	/**
 	 * The thread suspended on a breakpoint with the given state.

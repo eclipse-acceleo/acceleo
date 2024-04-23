@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.acceleo.debug.event.model;
-
-import java.io.Serializable;
 
 import org.eclipse.emf.common.util.URI;
 
@@ -29,7 +27,7 @@ public class ChangeBreakPointRequest extends AbstractBreakpointRequest {
 	/**
 	 * The new value of the attribute.
 	 */
-	private final Serializable value;
+	private final String value;
 
 	/**
 	 * Constructor.
@@ -41,7 +39,7 @@ public class ChangeBreakPointRequest extends AbstractBreakpointRequest {
 	 * @param value
 	 *            the new value of the attribute
 	 */
-	public ChangeBreakPointRequest(URI uri, String attribute, Serializable value) {
+	public ChangeBreakPointRequest(URI uri, String attribute, String value) {
 		super(uri);
 		this.attribute = attribute;
 		this.value = value;
@@ -61,7 +59,7 @@ public class ChangeBreakPointRequest extends AbstractBreakpointRequest {
 	 * 
 	 * @return the new value of the attribute
 	 */
-	public Serializable getValue() {
+	public String getValue() {
 		return value;
 	}
 

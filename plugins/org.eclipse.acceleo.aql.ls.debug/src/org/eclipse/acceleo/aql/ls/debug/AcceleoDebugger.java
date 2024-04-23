@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +52,14 @@ import org.eclipse.acceleo.aql.profiler.ProfilerUtils.Representation;
 import org.eclipse.acceleo.debug.AbstractDSLDebugger;
 import org.eclipse.acceleo.debug.DSLSource;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
+import org.eclipse.acceleo.debug.ls.DSLDebugServer;
 import org.eclipse.acceleo.debug.util.FrameVariable;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.AQLUtils.AcceleoAQLResult;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IContainer;
@@ -74,6 +78,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.swt.widgets.Display;
 
@@ -100,7 +105,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				if (isNoDebug()) {
 					generateNoDebug(queryEnvironment, module, model);
 				} else {
-					evaluator = new AcceleoDebugEvaluator(queryEnvironment, newLine);
+					evaluator = new AcceleoDebugEvaluator(queryEnvironment, newLine,
+							getBreakPointsHitCounts());
 
 					final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 					resolver.clearLoaders();
@@ -129,6 +135,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				// process. By launching the termination in the UI thread in sync we allow the jobs to
 				// finish first.
 				Display.getDefault().syncExec(new Runnable() {
+
 					@Override
 					public void run() {
 						terminate(threadID);
@@ -152,6 +159,29 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				}
 			}
 		}
+
+		/**
+		 * Gets the breakpoint hit counts map.
+		 * 
+		 * @return the breakpoint hit counts map
+		 */
+		private Map<URI, Integer> getBreakPointsHitCounts() {
+			final Map<URI, Integer> res = new HashMap<>();
+
+			for (Entry<URI, Map<String, String>> entry : getBreakpoints().entrySet()) {
+				final String hitCondition = entry.getValue().get(
+						DSLDebugServer.HIT_CONDITION_BREAKPOINT_ATTRIBUTE);
+				if (hitCondition != null) {
+					try {
+						res.put(entry.getKey(), Integer.valueOf(hitCondition));
+					} catch (NumberFormatException e) {
+						consolePrint("hit condition is not an integer: " + hitCondition);
+					}
+				}
+			}
+
+			return res;
+		}
 	}
 
 	/**
@@ -172,15 +202,24 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		private Deque<List<String>> blockTextLists = new ArrayDeque<>();
 
 		/**
+		 * The mapping from an instruction {@link URI} to its hit count.
+		 */
+		private final Map<URI, Integer> breakPointHitCounts;
+
+		/**
 		 * Constructor.
 		 * 
 		 * @param queryEnvironment
 		 *            the {@link IQualifiedNameQueryEnvironment}
 		 * @param newLine
 		 *            the new line {@link String}
+		 * @param breakPointHitCounts
+		 *            the break point hit count map
 		 */
-		AcceleoDebugEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, String newLine) {
+		AcceleoDebugEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, String newLine,
+				Map<URI, Integer> breakPointHitCounts) {
 			super(queryEnvironment.getLookupEngine(), newLine);
+			this.breakPointHitCounts = breakPointHitCounts;
 		}
 
 		/**
@@ -237,6 +276,83 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		@Override
 		protected List<String> createBlockTextsList(Block block) {
 			return blockTextLists.peekLast();
+		}
+
+		/**
+		 * Tells if we should break on the given {@link EObject instruction}.
+		 * 
+		 * @param instruction
+		 *            the {@link EObject instruction}
+		 * @return <code>true</code> if we should break on the given {@link EObject instruction},
+		 *         <code>false</code> otherwise
+		 */
+		public boolean shouldBreak(EObject instruction) {
+			boolean res;
+
+			// check the condition expression
+			final String conditionExpression = getBreakpointAttributes(instruction,
+					DSLDebugServer.CONDITION_BREAKPOINT_ATTRIBUTE);
+			if (conditionExpression != null) {
+				final Object value = evaluateExpression(conditionExpression);
+				res = value == null || (value instanceof Boolean && ((Boolean)value));
+			} else {
+				res = true;
+			}
+
+			// check hit count
+			if (res) {
+				final URI uri = EcoreUtil.getURI(instruction);
+				final Integer count = breakPointHitCounts.get(uri);
+				if (count != null && count > 0) {
+					breakPointHitCounts.put(uri, count - 1);
+					res = false;
+				}
+			}
+
+			// check log expression
+			if (res) {
+				final String logExpression = getBreakpointAttributes(instruction,
+						DSLDebugServer.LOG_MESSAGE_BREAKPOINT_ATTRIBUTE);
+				if (logExpression != null) {
+					final Object value = evaluateExpression(logExpression);
+					if (value != null) {
+						consolePrint(value.toString());
+					}
+					res = false;
+				}
+			}
+
+			return res;
+		}
+
+		/**
+		 * Parses and evaluate the given AQL expression in the current debug context.
+		 * 
+		 * @param expression
+		 *            the AQL expression
+		 * @return the evaluated {@link Object}
+		 */
+		private Object evaluateExpression(final String expression) {
+			final Object res;
+
+			final AcceleoAQLResult result = AQLUtils.parseWhileAqlExpression(expression.toString());
+			if (result.getAstResult().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
+				consolePrint("parsing error: " + expression);
+				printDiagnostic(result.getAstResult().getDiagnostic(), "");
+				res = null;
+			} else {
+				final EvaluationResult value = evaluator.getAqlEngine().eval(result.getAstResult(),
+						peekVariables());
+				if (value.getDiagnostic().getSeverity() == Diagnostic.ERROR) {
+					consolePrint("evaluation error: " + expression);
+					printDiagnostic(result.getAstResult().getDiagnostic(), "");
+					res = null;
+				} else {
+					res = value.getResult();
+				}
+			}
+
+			return res;
 		}
 
 	}
@@ -665,6 +781,19 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		res.setName(name);
 		res.setValue(value);
 		res.setReadOnly(true);
+
+		return res;
+	}
+
+	@Override
+	public boolean shouldBreak(EObject instruction) {
+		final boolean res;
+
+		if (super.shouldBreak(instruction)) {
+			res = evaluator.shouldBreak(instruction);
+		} else {
+			res = false;
+		}
 
 		return res;
 	}
