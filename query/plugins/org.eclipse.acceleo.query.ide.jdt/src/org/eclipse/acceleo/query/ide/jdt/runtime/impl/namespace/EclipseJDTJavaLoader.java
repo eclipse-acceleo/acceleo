@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -316,25 +316,29 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 	 */
 	private ISourceLocation getIdentifierLocation(URI sourceURI, final ASTParser parser,
 			final ISourceRange javaIdentifierRange, final ISourceRange javaSourceRange) {
-		final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
-		final int identifierStartOffset = javaIdentifierRange.getOffset();
-		final Position identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
-				.getColumnNumber(identifierStartOffset), identifierStartOffset);
-		final int identifierEndOffset = identifierStartOffset + javaIdentifierRange.getLength();
-		final Position identifierEnd = new Position(cu.getLineNumber(identifierEndOffset) - 1, cu
-				.getColumnNumber(identifierEndOffset), identifierEndOffset);
+		try {
+			final CompilationUnit cu = (CompilationUnit)parser.createAST(null);
+			final int identifierStartOffset = javaIdentifierRange.getOffset();
+			final Position identifierStart = new Position(cu.getLineNumber(identifierStartOffset) - 1, cu
+					.getColumnNumber(identifierStartOffset), identifierStartOffset);
+			final int identifierEndOffset = identifierStartOffset + javaIdentifierRange.getLength();
+			final Position identifierEnd = new Position(cu.getLineNumber(identifierEndOffset) - 1, cu
+					.getColumnNumber(identifierEndOffset), identifierEndOffset);
 
-		final int startOffset = javaSourceRange.getOffset();
-		final Position start = new Position(cu.getLineNumber(startOffset) - 1, cu.getColumnNumber(
-				startOffset), startOffset);
-		final int endOffset = startOffset + javaSourceRange.getLength();
-		final Position end = new Position(cu.getLineNumber(endOffset) - 1, cu.getColumnNumber(endOffset),
-				endOffset);
+			final int startOffset = javaSourceRange.getOffset();
+			final Position start = new Position(cu.getLineNumber(startOffset) - 1, cu.getColumnNumber(
+					startOffset), startOffset);
+			final int endOffset = startOffset + javaSourceRange.getLength();
+			final Position end = new Position(cu.getLineNumber(endOffset) - 1, cu.getColumnNumber(endOffset),
+					endOffset);
 
-		final Range identifierRange = new Range(identifierStart, identifierEnd);
-		final Range range = new Range(start, end);
+			final Range identifierRange = new Range(identifierStart, identifierEnd);
+			final Range range = new Range(start, end);
 
-		return new SourceLocation(sourceURI, identifierRange, range);
+			return new SourceLocation(sourceURI, identifierRange, range);
+		} catch (IllegalStateException e) {
+			return null;
+		}
 	}
 
 	private String[] getParamterTypes(Method method) {
