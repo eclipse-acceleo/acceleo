@@ -310,7 +310,7 @@ public class AcceleoTextDocument {
 	 */
 	public List<LocationLink> getDefinitionLocations(int position) {
 		// In the case of Acceleo and AQL all definition are located at the declaration.
-		return getDeclarationLocations(position, false);
+		return getDeclarationLocations(position, true);
 	}
 
 	/**

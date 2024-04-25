@@ -312,7 +312,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 					acceleoTextDocument.getContents());
 
 			canceler.checkCanceled();
-			return Either.forRight(acceleoTextDocument.getDeclarationLocations(atIndex, false));
+			return Either.forRight(acceleoTextDocument.getDeclarationLocations(atIndex, true));
 		});
 	}
 
