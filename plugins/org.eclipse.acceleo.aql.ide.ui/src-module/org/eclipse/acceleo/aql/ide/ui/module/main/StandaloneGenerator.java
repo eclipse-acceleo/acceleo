@@ -12,9 +12,12 @@ package org.eclipse.acceleo.aql.ide.ui.module.main;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
@@ -49,12 +52,27 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class StandaloneGenerator {
+public class StandaloneGenerator extends AbstractGenerator {
 
 	/**
 	 * The main {@link Module} {@link IFile}.
 	 */
 	private final IFile moduleFile;
+
+	/**
+	 * The model {@link Module} qualified name.
+	 */
+	protected String modelModuleQualifiedName;
+
+	/**
+	 * The model {@link Module}.
+	 */
+	protected Module modelModule;
+
+	/**
+	 * The {@link Set} of model {@link Module} parameter bundle dependencies.
+	 */
+	protected Set<String> dependencyBundleNames;
 
 	/**
 	 * Constructor.
@@ -111,8 +129,12 @@ public class StandaloneGenerator {
 		final java.net.URI binaryURI = workspaceResolver.getBinaryURI(moduleFile.getLocation().toFile()
 				.toURI());
 		workspaceResolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
-		final String modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
-		final Module modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
+		modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
+		modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
+		dependencyBundleNames = new LinkedHashSet<>();
+		dependencyBundleNames.add("org.eclipse.acceleo.query");
+		dependencyBundleNames.add("org.eclipse.acceleo.aql");
+		dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 
 		synchronized(this) {
 			beforeGeneration(queryEnvironment, workspaceResolver);
@@ -275,6 +297,11 @@ public class StandaloneGenerator {
 		Services.initialize(null, null);
 		try {
 			moduleFile.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+			addPluginDependencies(moduleFile.getProject(), dependencyBundleNames);
+			final String packageName = new Services().getJavaPackage(modelModule);
+			if (!packageName.isEmpty()) {
+				addexportPackages(moduleFile.getProject(), Collections.singleton(packageName));
+			}
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), "could not refresh "
 					+ moduleFile.getParent().getFullPath(), e));

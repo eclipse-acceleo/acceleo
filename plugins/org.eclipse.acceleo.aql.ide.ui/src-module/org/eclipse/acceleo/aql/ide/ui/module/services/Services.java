@@ -176,7 +176,7 @@ public class Services {
 	public String getReceiverQualifiedClassName(Module module) {
 		final String res;
 
-		final List<Template> mains = AcceleoUtil.getMainTemplate(module);
+		final List<Template> mains = AcceleoUtil.getMainTemplates(module);
 		if (!mains.isEmpty()) {
 			final Template main = mains.get(0);
 			if (!main.getParameters().isEmpty()) {

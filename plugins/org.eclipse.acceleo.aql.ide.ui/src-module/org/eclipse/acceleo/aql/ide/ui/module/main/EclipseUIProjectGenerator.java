@@ -14,8 +14,10 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Template;
@@ -55,7 +57,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class EclipseUIProjectGenerator {
+public class EclipseUIProjectGenerator extends AbstractGenerator {
 
 	/**
 	 * The {@link List} of module {@link IFile} for the {@link IProject}.
@@ -71,6 +73,11 @@ public class EclipseUIProjectGenerator {
 	 * The absolute path to the destination folder.
 	 */
 	private final String destinationFolder;
+
+	/**
+	 * The {@link Set} of model {@link Module} parameter bundle dependencies.
+	 */
+	protected Set<String> dependencyBundleNames;
 
 	/**
 	 * Constructor.
@@ -122,7 +129,7 @@ public class EclipseUIProjectGenerator {
 		final IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);
 
 		final Module module = (Module)resolver.resolve(moduleQualifiedName);
-		final Template main = AcceleoUtil.getMainTemplate(module).iterator().next();
+		final Template main = AcceleoUtil.getMainTemplates(module).iterator().next();
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
 		final IQualifiedNameResolver workspaceResolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
@@ -130,6 +137,7 @@ public class EclipseUIProjectGenerator {
 				AcceleoParser.QUALIFIER_SEPARATOR, true);
 
 		final List<Module> modelModules = new ArrayList<>();
+		dependencyBundleNames = new LinkedHashSet<>();
 		for (IFile file : projectModuleFiles) {
 			final java.net.URI binaryURI = workspaceResolver.getBinaryURI(file.getLocation().toFile()
 					.toURI());
@@ -137,6 +145,7 @@ public class EclipseUIProjectGenerator {
 			final String modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
 			final Module modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
 			modelModules.add(modelModule);
+			dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 		}
 
 		synchronized(this) {
@@ -314,14 +323,15 @@ public class EclipseUIProjectGenerator {
 				}
 			}
 		} else {
-			final String projectUIAbsolutePath = destinationFolder + File.pathSeparator + projectUIName;
+			final String projectUIAbsolutePath = destinationFolder + File.separatorChar + projectUIName;
 			try {
-				final String projectFilePath = projectUIAbsolutePath + File.pathSeparator + ".project";
+				final String projectFilePath = projectUIAbsolutePath + File.separatorChar + ".project";
 				final IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(
 						new Path(projectFilePath));
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(description.getName());
 				project.create(description, null);
 				project.open(null);
+				addPluginDependencies(project, dependencyBundleNames);
 			} catch (CoreException e) {
 				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						"couldn't import project " + projectUIAbsolutePath, e));

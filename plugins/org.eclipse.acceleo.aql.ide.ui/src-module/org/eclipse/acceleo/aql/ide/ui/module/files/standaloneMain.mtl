@@ -27,13 +27,16 @@
     [protected ('imports') startTagPrefix('//') endTagPrefix('//')]
 
       import java.io.File;
+      import java.io.IOException;
       import java.io.PrintStream;
+      import java.nio.charset.Charset;
       import java.util.ArrayList;
       import java.util.LinkedHashMap;
       import java.util.List;
       import java.util.Map;
 
       import org.eclipse.acceleo.Module;
+      import org.eclipse.acceleo.OpenModeKind;
       import org.eclipse.acceleo.Template;
       import org.eclipse.acceleo.aql.AcceleoUtil;
       import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
@@ -41,6 +44,7 @@
       import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
       import org.eclipse.acceleo.aql.evaluation.strategy.DefaultWriterFactory;
       import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
+      import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
       import org.eclipse.acceleo.aql.parser.AcceleoParser;
       import org.eclipse.acceleo.aql.parser.ModuleLoader;
       import org.eclipse.acceleo.query.AQLUtils;
@@ -95,7 +99,7 @@
     	 *            the target folder for the generation
     	 * @generated
     	 */
-    	public MainGenerator(List<String> resources, String target) {
+    	public [module.getClassName()/](List<String> resources, String target) {
     		this.resources = resources;
     		this.target = target;
     	}
@@ -215,7 +219,7 @@
     	 * @generated
     	 */
     	protected List<Template> getTemplates(Module module) {
-    		return AcceleoUtil.getMainTemplate(module);
+    		return AcceleoUtil.getMainTemplates(module);
     	}
 
     	/**

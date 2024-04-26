@@ -103,7 +103,7 @@ public final class AcceleoUtil {
 	 * @return the {@link Template#isMain() main} {@link Template} of the given {@link Module} if any,
 	 *         <code>null</code> otherwise
 	 */
-	public static List<Template> getMainTemplate(Module module) {
+	public static List<Template> getMainTemplates(Module module) {
 		List<Template> res = new ArrayList<>();
 
 		for (ModuleElement moduleElement : module.getModuleElements()) {
@@ -186,7 +186,7 @@ public final class AcceleoUtil {
 			URI destination, URI logURI) {
 
 		final Map<EClass, List<EObject>> valuesCache = new HashMap<>();
-		for (Template main : getMainTemplate(module)) {
+		for (Template main : getMainTemplates(module)) {
 			// TODO more than one parameter is allowed ?
 			// TODO not EClass type ?
 			// TODO more than one EClass type ?

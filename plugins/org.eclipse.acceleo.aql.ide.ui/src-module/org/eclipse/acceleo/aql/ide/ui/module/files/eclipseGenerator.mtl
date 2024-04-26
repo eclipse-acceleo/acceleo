@@ -77,7 +77,7 @@
     	 *            the selected {@link [module.getReceiverClassName()/]}
     	 * @generated
     	 */
-    	public MainGeneratorEclipse([module.getReceiverClassName()/] selected) {
+    	public [module.getEclipseClassName()/]([module.getReceiverClassName()/] selected) {
     		super(Collections.emptyList(), getTarget(selected));
     		this.value = Collections.singletonList(selected);
     	}
