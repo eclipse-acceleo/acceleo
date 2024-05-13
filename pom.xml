@@ -19,7 +19,7 @@
 
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo-parent</artifactId>
-  <version>3.7.15-SNAPSHOT</version>
+  <version>3.7.16-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Acceleo Parent</name>
 

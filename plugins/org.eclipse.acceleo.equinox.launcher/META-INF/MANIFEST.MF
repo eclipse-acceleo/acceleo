@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.7.15.qualifier
+Bundle-Version: 3.7.16.qualifier
 Bundle-SymbolicName: org.eclipse.acceleo.equinox.launcher;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.kohsuke.args4j;bundle-version="2.0.21",

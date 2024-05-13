@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.equinox.launcher"
       label="%featureName"
-      version="3.7.15.qualifier"
+      version="3.7.16.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1">

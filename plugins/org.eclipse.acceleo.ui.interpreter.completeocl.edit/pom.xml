@@ -16,12 +16,12 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>3.7.15-SNAPSHOT</version>
+    <version>3.7.16-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.ui.interpreter.completeocl.edit</artifactId>
-  <version>3.7.15-SNAPSHOT</version>
+  <version>3.7.16-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
   <name>CompleteOCL Interpreter Edit</name>
