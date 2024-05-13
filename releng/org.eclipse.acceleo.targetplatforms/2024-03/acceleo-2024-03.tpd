@@ -1,4 +1,4 @@
-target "Acceleo 2023-12 Target Platform"
+target "Acceleo 2024-03 Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"
@@ -6,7 +6,7 @@ include "../common/swtbot.tpd"
 
 with source requirements
 
-location "https://download.eclipse.org/releases/2023-12" {
+location "https://download.eclipse.org/releases/2024-03" {
 	org.eclipse.platform.feature.group lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	

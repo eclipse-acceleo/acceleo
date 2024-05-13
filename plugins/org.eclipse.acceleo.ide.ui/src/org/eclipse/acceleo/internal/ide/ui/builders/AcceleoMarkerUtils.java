@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
@@ -156,8 +157,7 @@ public final class AcceleoMarkerUtils {
 		List<IProject> recursivelyAccessibleProjects = acceleoProject.getRecursivelyAccessibleProjects();
 		for (IProject iProject : recursivelyAccessibleProjects) {
 			if (iProject.isAccessible() && iProject.hasNature(JavaCore.NATURE_ID)) {
-				JavaProject javaProject = new JavaProject();
-				javaProject.setProject(iProject);
+				IJavaProject javaProject = JavaCore.create(iProject);
 
 				IType type = null;
 
