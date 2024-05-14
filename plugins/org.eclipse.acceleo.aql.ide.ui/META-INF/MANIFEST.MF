@@ -4,6 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.aql.ide.ui;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Export-Package: org.eclipse.acceleo.aql.ide.ui,
+ org.eclipse.acceleo.aql.ide.ui.declaration,
  org.eclipse.acceleo.aql.ide.ui.dialog,
  org.eclipse.acceleo.aql.ide.ui.handlers,
  org.eclipse.acceleo.aql.ide.ui.message,
@@ -17,7 +18,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.acceleo.aql.ide.ui.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.aql;bundle-version="[4.0.0,5.0.0)",
  org.eclipse.acceleo.aql.ls;bundle-version="[4.0.0,5.0.0)",
@@ -39,5 +40,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.query.ide.ui,
  org.eclipse.core.expressions,
  org.eclipse.ui.editors,
- org.eclipse.pde.core
+ org.eclipse.pde.core,
+ org.eclipse.ui.workbench.texteditor
 Automatic-Module-Name: org.eclipse.acceleo.aql.ide.ui
