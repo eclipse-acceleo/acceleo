@@ -1,5 +1,5 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  imports language::module::withUnknownImport::importedModule (69..120) (61..122) (0..122)
+header position 0..68
+module withUnknownImport
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
+  imports language::module::withUnknownImport::importedModule (78..129) (70..131) (0..131)

@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..62
+module extraSpaces
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (168..188) (134..188)
-      some static text. (newLineNeeded) (202..221) (196..223)
-    [/for] (122..229)
-     (newLineNeeded) (229..231) (118..231)
-  [/template] (63..242) (0..242)
+  public template myTemplate(myParam : EPackage (94..119))
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (171..191) (137..191)
+      some static text. (newLineNeeded) (205..224) (199..226)
+    [/for] (125..232)
+     (newLineNeeded) (232..234) (121..234)
+  [/template] (66..245) (0..245)

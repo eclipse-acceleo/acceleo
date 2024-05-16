@@ -1,33 +1,33 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..84
+module forStatementMultiLineTemplateCall
+  metamodel http://www.eclipse.org/emf/2002/Ecore (43..81)
+  [comment @main  (95..101) /] (86..103)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (132..157))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-          (183..186)
-      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (226..246) (192..246) separator '
-' (258..262)
-        -  (274..276)
-        [.myTemplate1(myVariable) (277..301)/] (newLineNeeded (276..304) (264..311)
-      [/for] (186..317)
-       (newLineNeeded) (317..318) (178..320)
-    [/file] (137..327)
-     (newLineNeeded) (327..328) (134..328)
-  [/template] (79..339)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (169..190) mode overwrite
+          (208..211)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (251..271) (217..271) separator '
+' (283..287)
+        -  (299..301)
+        [.myTemplate1(myVariable) (302..326)/] (newLineNeeded (301..329) (289..336)
+      [/for] (211..342)
+       (newLineNeeded) (342..343) (203..345)
+    [/file] (162..352)
+     (newLineNeeded) (352..353) (159..353)
+  [/template] (104..364)
   
-  public template myTemplate1(eClassifier : EClassifier (370..402))
-    *  (407..409)
-    [.aqlFeatureAccess(eClassifier, 'name') (410..426)/] (newLineNeeded (409..429)
-       (431..433)
-    [.myTemplate2(eClassifier) (434..459)/] (newLineNeeded (433..462) (404..462)
-  [/template] (341..473)
+  public template myTemplate1(eClassifier : EClassifier (395..427))
+    *  (432..434)
+    [.aqlFeatureAccess(eClassifier, 'name') (435..451)/] (newLineNeeded (434..454)
+       (456..458)
+    [.myTemplate2(eClassifier) (459..484)/] (newLineNeeded (458..487) (429..487)
+  [/template] (366..498)
   
-  public template myTemplate2(eClassifier : EClassifier (504..536))
-    .  (541..543)
-    [.aqlFeatureAccess(eClassifier, 'name') (544..560)/] (newLineNeeded (543..563)
-    .  (565..567)
-    [.toUpper(.aqlFeatureAccess(eClassifier, 'name')) (568..594)/] (newLineNeeded (567..597) (538..597)
-  [/template] (475..608) (0..608)
+  public template myTemplate2(eClassifier : EClassifier (529..561))
+    .  (566..568)
+    [.aqlFeatureAccess(eClassifier, 'name') (569..585)/] (newLineNeeded (568..588)
+    .  (590..592)
+    [.toUpper(.aqlFeatureAccess(eClassifier, 'name')) (593..619)/] (newLineNeeded (592..622) (563..622)
+  [/template] (500..633) (0..633)

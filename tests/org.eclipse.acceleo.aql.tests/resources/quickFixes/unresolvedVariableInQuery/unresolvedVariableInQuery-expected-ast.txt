@@ -1,6 +1,6 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  public query calledQuery(myParam : EPackage (87..112)) ) : EClassifier ->first(.aqlFeatureAccess(notExistingVariable, 'eClassifiers')) (137..178)
-  /] (61..180) (0..181)
+header position 0..76
+module unresolvedVariableInQuery
+  metamodel http://www.eclipse.org/emf/2002/Ecore (35..73)
+  public query calledQuery(myParam : EPackage (104..129)) ) : EClassifier ->first(.aqlFeatureAccess(notExistingVariable, 'eClassifiers')) (154..195)
+  /] (78..197) (0..198)

@@ -1,16 +1,16 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (72..78) /] (63..80)
+header position 0..68
+module forStatementEmpty
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
+  [comment @main  (81..87) /] (72..89)
   
-  public template myTemplate(myParam : EPackage (110..135))
+  public template myTemplate(myParam : EPackage (119..144))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (148..169) mode overwrite
-      [for myVariable : null = Sequence{} (207..217) (194..217)
-        [myVariable (228..238)/] (newLineNeeded (227..242) (219..246)
-      [/for] (188..252)
-       (newLineNeeded) (252..254) (182..256)
-    [/file] (141..263)
-     (newLineNeeded) (263..265) (137..265)
-  [/template] (82..276) (0..276)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (157..178) mode overwrite
+      [for myVariable : null = Sequence{} (216..226) (203..226)
+        [myVariable (237..247)/] (newLineNeeded (236..251) (228..255)
+      [/for] (197..261)
+       (newLineNeeded) (261..263) (191..265)
+    [/file] (150..272)
+     (newLineNeeded) (272..274) (146..274)
+  [/template] (91..285) (0..285)

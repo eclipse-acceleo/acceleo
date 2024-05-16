@@ -1,16 +1,16 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..77
+module threeBindingsUsingVariable
+  metamodel http://www.eclipse.org/emf/2002/Ecore (36..74)
   
-  public template myTemplate(myParam : EPackage (91..116))
+  public template myTemplate(myParam : EPackage (109..134))
     [let 
-    myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (161..190) (127..190)
-    myVariable1 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (226..255) (191..255)
-    myVariable2 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (291..320) (256..320)
-      [.aqlFeatureAccess(myVariable, 'name') (328..343)/] (newLineNeeded (327..347)
-      [.aqlFeatureAccess(myVariable1, 'name') (352..368)/] (newLineNeeded (351..372)
-      [.aqlFeatureAccess(myVariable2, 'name') (377..393)/] (newLineNeeded (376..397) (321..399)
-    [/let] (122..405)
-     (newLineNeeded) (405..407) (118..407)
-  [/template] (63..418) (0..418)
+    myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (179..208) (145..208)
+    myVariable1 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (244..273) (209..273)
+    myVariable2 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (309..338) (274..338)
+      [.aqlFeatureAccess(myVariable, 'name') (346..361)/] (newLineNeeded (345..365)
+      [.aqlFeatureAccess(myVariable1, 'name') (370..386)/] (newLineNeeded (369..390)
+      [.aqlFeatureAccess(myVariable2, 'name') (395..411)/] (newLineNeeded (394..415) (339..417)
+    [/let] (140..423)
+     (newLineNeeded) (423..425) (136..425)
+  [/template] (81..436) (0..436)

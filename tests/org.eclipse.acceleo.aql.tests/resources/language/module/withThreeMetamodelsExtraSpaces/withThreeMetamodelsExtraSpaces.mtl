@@ -1,1 +1,1 @@
-[module    myModule   (   'http://www.eclipse.org/emf/2002/Ecore'   ,   'http://www.eclipse.org/acceleo/query/1.0'   ,   'http://www.eclipse.org/emf/2002/GenModel'  )  /]
+[module    withThreeMetamodelsExtraSpaces   (   'http://www.eclipse.org/emf/2002/Ecore'   ,   'http://www.eclipse.org/acceleo/query/1.0'   ,   'http://www.eclipse.org/emf/2002/GenModel'  )  /]

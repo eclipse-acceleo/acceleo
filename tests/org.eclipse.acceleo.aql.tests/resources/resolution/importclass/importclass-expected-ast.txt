@@ -1,15 +1,15 @@
 
-header position 0..53
-module m1
-  metamodel http://www.eclipse.org/emf/2002/Ecore (12..50)
-  imports org::eclipse::acceleo::tests::resolver::TestsServices (63..116) (55..118)
-  [comment @main  (129..135) /] (120..137)
+header position 0..62
+module importclass
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
+  imports org::eclipse::acceleo::tests::resolver::TestsServices (72..125) (64..127)
+  [comment @main  (138..144) /] (129..146)
   
-  public template t11(param1 : EClass (159..181))
+  public template t11(param1 : EClass (168..190))
   @main
-    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (193..213) mode overwrite
-      A message from a service: (newLineNeeded) (231..257)
-      [.getMessage(param1) (262..281)/] (newLineNeeded (261..284) (226..286)
-    [/file] (186..293)
-     (newLineNeeded) (293..294) (183..294)
-  [/template] (138..305) (0..306)
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (202..222) mode overwrite
+      A message from a service: (newLineNeeded) (240..266)
+      [.getMessage(param1) (271..290)/] (newLineNeeded (270..293) (235..295)
+    [/file] (195..302)
+     (newLineNeeded) (302..303) (192..303)
+  [/template] (147..314) (0..315)

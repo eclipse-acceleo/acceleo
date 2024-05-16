@@ -1,13 +1,13 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..66
+module notOpenableFile
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
+  [comment @main  (77..83) /] (68..85)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (114..139))
   @main
-    [file url 'notOpenable.txt' (144..161) mode overwrite
-      some static text. (newLineNeeded) (179..197) (174..199)
-    [/file] (137..206)
-     (newLineNeeded) (206..207) (134..207)
-  [/template] (79..218) (0..218)
+    [file url 'notOpenable.txt' (151..168) mode overwrite
+      some static text. (newLineNeeded) (186..204) (181..206)
+    [/file] (144..213)
+     (newLineNeeded) (213..214) (141..214)
+  [/template] (86..225) (0..225)

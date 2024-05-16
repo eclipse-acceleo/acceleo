@@ -1,8 +1,8 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..66
+module threeParameters
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
   
-  public template myTemplate(myParam : EPackage (89..114), myParam1 : EPackage (115..141), myParam2 : EPackage (142..168))
-    some static text. (newLineNeeded) (173..191) (170..191)
-  [/template] (61..202) (0..202)
+  public template myTemplate(myParam : EPackage (96..121), myParam1 : EPackage (122..148), myParam2 : EPackage (149..175))
+    some static text. (newLineNeeded) (180..198) (177..198)
+  [/template] (68..209) (0..209)

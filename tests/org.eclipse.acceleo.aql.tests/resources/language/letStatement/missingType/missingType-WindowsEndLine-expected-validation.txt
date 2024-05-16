@@ -1,2 +1,2 @@
-ERROR Missing type literal - 141 141
-WARNING Nothing(missing type literal) is incompatible with EClassifier=EClassifier - 127 172
+ERROR Missing type literal - 144 144
+WARNING Nothing(missing type literal) is incompatible with EClassifier=EClassifier - 130 175

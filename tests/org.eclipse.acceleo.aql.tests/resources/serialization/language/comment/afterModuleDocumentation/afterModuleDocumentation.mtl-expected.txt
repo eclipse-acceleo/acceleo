@@ -4,6 +4,6 @@
  * @version 0.1.0
  * @since 0.0.1
 */]
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module afterModuleDocumentation('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [comment a basic comment/]

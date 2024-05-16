@@ -1,1 +1,1 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::notExisting/]
+[module invalidExtends('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::notExisting/]

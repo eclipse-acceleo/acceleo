@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..84
+module withStartTagPrefixAndEndTagPrefix
+  metamodel http://www.eclipse.org/emf/2002/Ecore (43..81)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [protected .aqlFeatureAccess(myParam, 'name') (134..146)
-      some static text. (newLineNeeded) (210..229) (204..231) startTagPrefix .aqlFeatureAccess(myParam, 'name') (163..175) endTagPrefix .aqlFeatureAccess(myParam, 'name') (190..202)
-    [/protected] (122..243)
-     (newLineNeeded) (243..245) (118..245)
-  [/template] (63..256) (0..256)
+  public template myTemplate(myParam : EPackage (116..141))
+    [protected .aqlFeatureAccess(myParam, 'name') (159..171)
+      some static text. (newLineNeeded) (235..254) (229..256) startTagPrefix .aqlFeatureAccess(myParam, 'name') (188..200) endTagPrefix .aqlFeatureAccess(myParam, 'name') (215..227)
+    [/protected] (147..268)
+     (newLineNeeded) (268..270) (143..270)
+  [/template] (88..281) (0..281)

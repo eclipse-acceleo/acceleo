@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module withPost('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template public myTemplate(myParam : ecore::EPackage) post(self.trim())]
   some static text.

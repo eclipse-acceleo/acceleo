@@ -1,16 +1,16 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..62
+module emptyElseIf
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
   
-  public template myTemplate(myParam : EClassifier (89..117))
-    [if .equals(.aqlFeatureAccess(myParam, 'name'), '') (127..144)
-      some static text. (newLineNeeded) (151..169) (146..171)
+  public template myTemplate(myParam : EClassifier (92..120))
+    [if .equals(.aqlFeatureAccess(myParam, 'name'), '') (130..147)
+      some static text. (newLineNeeded) (154..172) (149..174)
     [else]
-      [if .not(.oclIsKindOf(myParam, EClass)) (180..218) (220..220)
+      [if .not(.oclIsKindOf(myParam, EClass)) (183..221) (223..223)
       [else]
-        [.aqlFeatureAccess(myParam, 'eSuperTypes') (232..251)/] (newLineNeeded (231..254) (226..256)
-      [/if] (171..261) (-1..-1)
-    [/if] (122..261)
-     (newLineNeeded) (261..262) (119..262)
-  [/template] (61..273) (0..273)
+        [.aqlFeatureAccess(myParam, 'eSuperTypes') (235..254)/] (newLineNeeded (234..257) (229..259)
+      [/if] (174..264) (-1..-1)
+    [/if] (125..264)
+     (newLineNeeded) (264..265) (122..265)
+  [/template] (64..276) (0..276)

@@ -30,6 +30,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,6 +78,7 @@ public class AcceleoAstSerializerTests {
 	public AcceleoAstSerializerTests(String modulePath) throws FileNotFoundException, IOException {
 		this.modulePath = modulePath;
 		EcorePackage.eINSTANCE.getName(); // initialize Ecore package
+		GenModelPackage.eINSTANCE.getName();
 		AcceleoParser parser = new AcceleoParser();
 		try (InputStream stream = new FileInputStream(ROOT + File.separator + modulePath)) {
 			source = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);

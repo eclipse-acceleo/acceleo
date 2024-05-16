@@ -1,12 +1,12 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..60
+module emptyElse
+  metamodel http://www.eclipse.org/emf/2002/Ecore (19..57)
   
-  public template test(anEClass : EClass (83..107))
-    [if false (115..120)
-      some text (newLineNeeded) (122..131) (122..132)
-    [else] (138..138)
-    [/if] (110..143)
-     (newLineNeeded) (143..144) (109..144)
-  [/template] (61..155) (0..155)
+  public template test(anEClass : EClass (84..108))
+    [if false (116..121)
+      some text (newLineNeeded) (123..132) (123..133)
+    [else] (139..139)
+    [/if] (111..144)
+     (newLineNeeded) (144..145) (110..145)
+  [/template] (62..156) (0..156)

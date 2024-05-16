@@ -1,6 +1,6 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  imports org::eclipse::acceleo::MyModule (69..100) (61..102)
-  imports org::eclipse::acceleo::MyModule (111..142) (103..144) (0..144)
+header position 0..70
+module withDupicatedImport
+  metamodel http://www.eclipse.org/emf/2002/Ecore (29..67)
+  imports org::eclipse::acceleo::MyModule (80..111) (72..113)
+  imports org::eclipse::acceleo::MyModule (122..153) (114..155) (0..155)

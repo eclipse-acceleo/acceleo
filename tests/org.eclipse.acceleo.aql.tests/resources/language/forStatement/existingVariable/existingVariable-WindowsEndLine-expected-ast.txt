@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..67
+module existingVariable
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [for myParam : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (159..179) (128..179)
-      some static text. (newLineNeeded) (187..206) (181..208)
-    [/for] (122..214)
-     (newLineNeeded) (214..216) (118..216)
-  [/template] (63..227) (0..227)
+  public template myTemplate(myParam : EPackage (99..124))
+    [for myParam : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (167..187) (136..187)
+      some static text. (newLineNeeded) (195..214) (189..216)
+    [/for] (130..222)
+     (newLineNeeded) (222..224) (126..224)
+  [/template] (71..235) (0..235)

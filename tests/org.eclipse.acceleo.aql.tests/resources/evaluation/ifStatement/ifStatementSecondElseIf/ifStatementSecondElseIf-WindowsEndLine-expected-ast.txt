@@ -1,26 +1,26 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (72..78) /] (63..80)
+header position 0..74
+module ifStatementSecondElseIf
+  metamodel http://www.eclipse.org/emf/2002/Ecore (33..71)
+  [comment @main  (87..93) /] (78..95)
   
-  public template myTemplate(myParam : EPackage (110..135))
+  public template myTemplate(myParam : EPackage (125..150))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (148..169) mode overwrite
-      [if false (193..198)
-        then block. (newLineNeeded) (208..221) (200..225)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (163..184) mode overwrite
+      [if false (208..213)
+        then block. (newLineNeeded) (223..236) (215..240)
       [else]
-        [if false (234..239)
-          first elseif block. (newLineNeeded) (249..270) (241..274)
+        [if false (249..254)
+          first elseif block. (newLineNeeded) (264..285) (256..289)
         [else]
-          [if true (283..287)
-            second elseif block. (newLineNeeded) (297..319) (289..323)
+          [if true (298..302)
+            second elseif block. (newLineNeeded) (312..334) (304..338)
           [else]
-            else block. (newLineNeeded) (337..350) (329..354)
-          [/if] (274..359) (-1..-1)
-        [/if] (225..359) (-1..-1)
-      [/if] (188..359)
-       (newLineNeeded) (359..361) (182..363)
-    [/file] (141..370)
-     (newLineNeeded) (370..372) (137..372)
-  [/template] (82..383) (0..383)
+            else block. (newLineNeeded) (352..365) (344..369)
+          [/if] (289..374) (-1..-1)
+        [/if] (240..374) (-1..-1)
+      [/if] (203..374)
+       (newLineNeeded) (374..376) (197..378)
+    [/file] (156..385)
+     (newLineNeeded) (385..387) (152..387)
+  [/template] (97..398) (0..398)

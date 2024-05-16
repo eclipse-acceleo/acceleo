@@ -1,1 +1,1 @@
-ERROR Couldn't find the 'notExistingVariable' variable - 139 158
+ERROR Couldn't find the 'notExistingVariable' variable - 156 175

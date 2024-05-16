@@ -1,8 +1,8 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..79
+module unresolvedVariableInTemplate
+  metamodel http://www.eclipse.org/emf/2002/Ecore (38..76)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [notExistingVariable (123..142)/] (newLineNeeded (122..146) (118..146)
-  [/template] (63..157) (0..159)
+  public template myTemplate(myParam : EPackage (111..136))
+    [notExistingVariable (143..162)/] (newLineNeeded (142..166) (138..166)
+  [/template] (83..177) (0..179)

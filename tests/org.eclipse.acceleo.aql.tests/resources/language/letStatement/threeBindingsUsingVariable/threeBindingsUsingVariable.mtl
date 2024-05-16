@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module threeBindingsUsingVariable('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template public myTemplate(myParam : ecore::EPackage)]
   [let myVariable : ecore::EClassifier = myParam.eClassifiers->first(),myVariable1 : ecore::EClassifier = myParam.eClassifiers->first(),myVariable2 : ecore::EClassifier = myParam.eClassifiers->first()]

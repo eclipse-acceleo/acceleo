@@ -1,21 +1,21 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..65
+module nominalOnQuery
+  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62)
   
  * My query has a nice comment.
  * @param myParam the input EPackage
-* (137..135)
-  myParam the input EPackage (107..133)[comment myParam the input EPackage (107..133) /] (107..133)[comment 
+* (143..141)
+  myParam the input EPackage (113..139)[comment myParam the input EPackage (113..139) /] (113..139)[comment 
  * My query has a nice comment.
  * @param myParam the input EPackage
-* (137..135) /] (61..137)
+* (143..141) /] (67..143)
   
  * My query has a nice comment.
  * @param myParam the input EPackage
-* (137..135)
-  myParam the input EPackage (107..133)[comment myParam the input EPackage (107..133) /] (107..133)[comment 
+* (143..141)
+  myParam the input EPackage (113..139)[comment myParam the input EPackage (113..139) /] (113..139)[comment 
  * My query has a nice comment.
  * @param myParam the input EPackage
-* (137..135) /] (61..137)public query myQuery(myParam : EPackage (160..185)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (210..239)
-  /] (138..241) (0..241)
+* (143..141) /] (67..143)public query myQuery(myParam : EPackage (166..191)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (216..245)
+  /] (144..247) (0..247)

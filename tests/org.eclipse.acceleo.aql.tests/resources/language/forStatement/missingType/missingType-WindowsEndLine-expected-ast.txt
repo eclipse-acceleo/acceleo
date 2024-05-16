@@ -1,17 +1,17 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..62
+module missingType
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
   
-  public template myTemplate(myParam : EPackage (91..116))
+  public template myTemplate(myParam : EPackage (94..119))
     [for *** error binding ***
     missing name: -1
     missing colon: -1
-    missing type: 142
+    missing type: 145
     missing affectation symbol: null
     missing affectation symbol position: -1
-    myVariable : ***ERROR*** = .aqlFeatureAccess(myParam, 'eClassifiers') (144..164) (128..164)
-      some static text. (newLineNeeded) (172..191) (166..193)
-    [/for] (122..199)
-     (newLineNeeded) (199..201) (118..201)
-  [/template] (63..212) (0..212)
+    myVariable : ***ERROR*** = .aqlFeatureAccess(myParam, 'eClassifiers') (147..167) (131..167)
+      some static text. (newLineNeeded) (175..194) (169..196)
+    [/for] (125..202)
+     (newLineNeeded) (202..204) (121..204)
+  [/template] (66..215) (0..215)

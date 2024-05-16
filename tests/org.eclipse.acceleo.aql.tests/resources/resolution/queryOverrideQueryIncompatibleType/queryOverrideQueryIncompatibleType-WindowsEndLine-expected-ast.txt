@@ -1,17 +1,17 @@
 
-header position 0..130
-module queryOverrideQuery
-  metamodel http://www.eclipse.org/emf/2002/Ecore (28..66)
-  extends resolution::queryOverrideQueryIncompatibleType::super (75..128)
-  [comment @main  (143..149) /] (134..151)
+header position 0..146
+module queryOverrideQueryIncompatibleType
+  metamodel http://www.eclipse.org/emf/2002/Ecore (44..82)
+  extends resolution::queryOverrideQueryIncompatibleType::super (91..144)
+  [comment @main  (159..165) /] (150..167)
   
-  public template t11(param1 : EClass (174..196))
+  public template t11(param1 : EClass (190..212))
   @main
-    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (209..229) mode overwrite
-      generated from import.t11(EClass) (newLineNeeded) (248..283)
-      [.t41(param1) (288..300)/] (newLineNeeded (287..304) (242..306)
-    [/file] (202..313)
-     (newLineNeeded) (313..315) (198..315)
-  [/template] (153..326)
-  public query toOverride(param1 : EClass (355..377)) ) : java.lang.Integer .size('generated from queryOverrideQuery.toOverride(EClass)') (394..455)
-  /] (330..459) (0..459)
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (225..245) mode overwrite
+      generated from import.t11(EClass) (newLineNeeded) (264..299)
+      [.t41(param1) (304..316)/] (newLineNeeded (303..320) (258..322)
+    [/file] (218..329)
+     (newLineNeeded) (329..331) (214..331)
+  [/template] (169..342)
+  public query toOverride(param1 : EClass (371..393)) ) : java.lang.Integer .size('generated from queryOverrideQuery.toOverride(EClass)') (410..471)
+  /] (346..475) (0..475)

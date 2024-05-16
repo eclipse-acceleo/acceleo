@@ -1,18 +1,18 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..62
+module missingName
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
   
-  public template myTemplate(myParam : EPackage (91..116))
+  public template myTemplate(myParam : EPackage (94..119))
     *** error for statement ***
     missing open parenthesis: -1
-    missing binding: 172
+    missing binding: 175
     missing close parenthesis: -1
     missing separator close parenthesis: -1
     missing end header: -1
     missing end: -1
     [for null binding
-      some static text. (newLineNeeded) (180..199) (174..201)
-    [/for] (122..207)
-     (newLineNeeded) (207..209) (118..209)
-  [/template] (63..220) (0..220)
+      some static text. (newLineNeeded) (183..202) (177..204)
+    [/for] (125..210)
+     (newLineNeeded) (210..212) (121..212)
+  [/template] (66..223) (0..223)

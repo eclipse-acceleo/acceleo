@@ -1,5 +1,5 @@
 
-header position 0..120
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  extends language::module::withUnknownExtends::extendedModule (66..118) (0..120)
+header position 0..130
+module withUnknownExtends
+  metamodel http://www.eclipse.org/emf/2002/Ecore (28..66)
+  extends language::module::withUnknownExtends::extendedModule (76..128) (0..130)

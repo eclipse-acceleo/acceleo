@@ -1,3 +1,3 @@
-ERROR Missing "/]" - 171 171
-ERROR missing ')' - 159 167
-ERROR missing expression - 171 171
+ERROR Missing "/]" - 188 188
+ERROR missing ')' - 176 184
+ERROR missing expression - 188 188

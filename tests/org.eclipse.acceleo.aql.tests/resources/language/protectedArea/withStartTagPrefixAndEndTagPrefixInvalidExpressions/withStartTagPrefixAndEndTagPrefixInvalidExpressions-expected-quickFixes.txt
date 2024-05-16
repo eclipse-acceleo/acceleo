@@ -1,17 +1,17 @@
 //@moduleElements.0/@body/@statements.0/@startTagPrefix/@aql/@arguments.0
 Add parameter notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [114, 2, 53, 114, 2, 53] , notExisting: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [157, 2, 53, 157, 2, 53] , notExisting: String
 Surround with Let: notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [119, 3, 2, 246, 5, 14] [let notExisting : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [162, 3, 2, 289, 5, 14] [let notExisting : String = '']
     [protected (myParam.name) startTagPrefix(notExisting.name) endTagPrefix(notExisting.name)]
       some static text.
     [/protected]
   [/let]
 //@moduleElements.0/@body/@statements.0/@endTagPrefix/@aql/@arguments.0
 Add parameter notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [114, 2, 53, 114, 2, 53] , notExisting: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [157, 2, 53, 157, 2, 53] , notExisting: String
 Surround with Let: notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [119, 3, 2, 246, 5, 14] [let notExisting : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/protectedArea/withStartTagPrefixAndEndTagPrefixInvalidExpressions/withStartTagPrefixAndEndTagPrefixInvalidExpressions.mtl [162, 3, 2, 289, 5, 14] [let notExisting : String = '']
     [protected (myParam.name) startTagPrefix(notExisting.name) endTagPrefix(notExisting.name)]
       some static text.
     [/protected]

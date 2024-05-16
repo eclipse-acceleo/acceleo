@@ -1,17 +1,17 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..99
+module withIndentationWithStartTagPrefixAndEndTagPrefix
+  metamodel http://www.eclipse.org/emf/2002/Ecore (58..96)
+  [comment @main  (110..116) /] (101..118)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (147..172))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      *** (183..186)
-      [protected .aqlFeatureAccess(myParam, 'name') (198..210)
-        [.aqlFeatureAccess(myParam, 'name') (265..277)/] (newLineNeeded (264..280) (254..287) startTagPrefix '// ' (227..232) endTagPrefix '// ' (247..252)
-      [/protected] (186..299)
-       (newLineNeeded) (299..300) (178..302)
-    [/file] (137..309)
-     (newLineNeeded) (309..310) (134..310)
-  [/template] (79..321) (0..321)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (184..205) mode overwrite
+      *** (223..226)
+      [protected .aqlFeatureAccess(myParam, 'name') (238..250)
+        [.aqlFeatureAccess(myParam, 'name') (305..317)/] (newLineNeeded (304..320) (294..327) startTagPrefix '// ' (267..272) endTagPrefix '// ' (287..292)
+      [/protected] (226..339)
+       (newLineNeeded) (339..340) (218..342)
+    [/file] (177..349)
+     (newLineNeeded) (349..350) (174..350)
+  [/template] (119..361) (0..361)

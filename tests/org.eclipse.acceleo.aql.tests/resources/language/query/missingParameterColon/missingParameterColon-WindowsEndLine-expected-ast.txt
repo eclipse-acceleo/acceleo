@@ -1,10 +1,10 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..72
+module missingParameterColon
+  metamodel http://www.eclipse.org/emf/2002/Ecore (31..69)
   public query myQuery(*** error variable ***
   missing name: -1
-  missing colon: 94
+  missing colon: 107
   missing type: -1
-   (85..109)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (134..163)
-  /] (63..165) (0..165)
+   (98..122)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (147..176)
+  /] (76..178) (0..178)

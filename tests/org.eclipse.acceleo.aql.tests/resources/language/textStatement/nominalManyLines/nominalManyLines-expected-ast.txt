@@ -1,10 +1,10 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..67
+module nominalManyLines
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    some static text 1. (newLineNeeded) (119..139)
-    some static text 2. (newLineNeeded) (141..161)
-    some static text 3. (newLineNeeded) (163..183) (116..183)
-  [/template] (61..194) (0..194)
+  public template myTemplate(myParam : EPackage (97..122))
+    some static text 1. (newLineNeeded) (127..147)
+    some static text 2. (newLineNeeded) (149..169)
+    some static text 3. (newLineNeeded) (171..191) (124..191)
+  [/template] (69..202) (0..202)

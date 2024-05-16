@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module callUnresolvedServiceWithUnresolvedImports('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [import org::eclipse::acceleo::notExisting/]
 [import org::eclipse::acceleo::services::notExisting/]

@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module withSeparatorMissingExpression('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template public myTemplate(myParam : ecore::EPackage)]
   [for (myVariable : ecore::EClassifier | myParam.eClassifiers) separator()]

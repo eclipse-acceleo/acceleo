@@ -1,16 +1,16 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..74
+module missingCloseParenthesis
+  metamodel http://www.eclipse.org/emf/2002/Ecore (33..71)
   
-  public template myTemplate(myParam : EPackage (89..114))
+  public template myTemplate(myParam : EPackage (104..129))
     *** error if statement ***
     missing open parenthesis: -1
-    missing close parenthesis: 156
+    missing close parenthesis: 171
     missing end header: -1
     missing end: -1
-    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (124..156)
-      some static text. (newLineNeeded) (162..180) (157..182)
-    [/if] (119..187)
-     (newLineNeeded) (187..188) (116..188)
-  [/template] (61..199) (0..199)
+    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (139..171)
+      some static text. (newLineNeeded) (177..195) (172..197)
+    [/if] (134..202)
+     (newLineNeeded) (202..203) (131..203)
+  [/template] (76..214) (0..214)

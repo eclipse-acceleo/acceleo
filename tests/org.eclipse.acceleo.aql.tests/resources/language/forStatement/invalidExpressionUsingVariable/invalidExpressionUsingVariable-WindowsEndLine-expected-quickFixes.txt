@@ -1,17 +1,17 @@
 //@moduleElements.0/@body/@statements.0/@binding/@initExpression/@aql/@arguments.0
 Add parameter notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [116, 2, 53, 116, 2, 53] , notExisting: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [138, 2, 53, 138, 2, 53] , notExisting: String
 Surround with Let: notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [122, 3, 2, 222, 5, 8] [let notExisting : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [144, 3, 2, 244, 5, 8] [let notExisting : String = '']
     [for (myVariable : ecore::EClassifier | notExisting.eClassifiers)]
       [myVariable.name/]
     [/for]
   [/let]
 //@moduleElements.0/@body/@statements.0/@body/@statements.0/@expression/@aql/@arguments.0
 Add parameter myVariable
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [116, 2, 53, 116, 2, 53] , myVariable: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [138, 2, 53, 138, 2, 53] , myVariable: String
 Surround with Let: myVariable
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [194, 4, 4, 214, 5, 0] [let myVariable : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/forStatement/invalidExpressionUsingVariable/invalidExpressionUsingVariable.mtl [216, 4, 4, 236, 5, 0] [let myVariable : String = '']
       [myVariable.name/]
   
     [/let]

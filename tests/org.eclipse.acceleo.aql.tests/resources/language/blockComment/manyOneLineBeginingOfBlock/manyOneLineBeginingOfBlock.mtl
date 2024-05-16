@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module manyOneLineBeginingOfBlock('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template public myTemplate(myParam : ecore::EPackage)][comment]a block comment[/comment][comment]an other block comment[/comment][comment]a last block comment[/comment]
   some static text.

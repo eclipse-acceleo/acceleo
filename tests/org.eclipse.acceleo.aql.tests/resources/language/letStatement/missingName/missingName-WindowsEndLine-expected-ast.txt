@@ -1,15 +1,15 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..62
+module missingName
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
   
-  public template myTemplate(myParam : EPackage (91..116))
+  public template myTemplate(myParam : EPackage (94..119))
     *** error let statement ***
-    missing bindings: 180
+    missing bindings: 183
     missing end header: -1
     missing end: -1
     [let 
-      some static text. (newLineNeeded) (187..206) (181..208)
-    [/let] (122..214)
-     (newLineNeeded) (214..216) (118..216)
-  [/template] (63..227) (0..227)
+      some static text. (newLineNeeded) (190..209) (184..211)
+    [/let] (125..217)
+     (newLineNeeded) (217..219) (121..219)
+  [/template] (66..230) (0..230)

@@ -1,1 +1,1 @@
-ERROR Missing or invalid type - 99 99
+ERROR Missing or invalid type - 111 111

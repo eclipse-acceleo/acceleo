@@ -1,6 +1,6 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  public query calledQuery(myParam : EPackage (89..114)) ) : java.lang.String acceleo::VisibilityKind::private (127..159)
-  /] (63..161) (0..163)
+header position 0..81
+module notImportedPackageEEnumLiteral
+  metamodel http://www.eclipse.org/emf/2002/Ecore (40..78)
+  public query calledQuery(myParam : EPackage (111..136)) ) : java.lang.String acceleo::VisibilityKind::private (149..181)
+  /] (85..183) (0..185)

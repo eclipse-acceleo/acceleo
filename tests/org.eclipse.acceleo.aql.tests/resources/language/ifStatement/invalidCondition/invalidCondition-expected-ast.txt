@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..67
+module invalidCondition
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [if .equals(->size(.aqlFeatureAccess(notExisting, 'eClassifiers')), 0) (124..160)
-      some static text. (newLineNeeded) (167..185) (162..187)
-    [/if] (119..192)
-     (newLineNeeded) (192..193) (116..193)
-  [/template] (61..204) (0..204)
+  public template myTemplate(myParam : EPackage (97..122))
+    [if .equals(->size(.aqlFeatureAccess(notExisting, 'eClassifiers')), 0) (132..168)
+      some static text. (newLineNeeded) (175..193) (170..195)
+    [/if] (127..200)
+     (newLineNeeded) (200..201) (124..201)
+  [/template] (69..212) (0..212)

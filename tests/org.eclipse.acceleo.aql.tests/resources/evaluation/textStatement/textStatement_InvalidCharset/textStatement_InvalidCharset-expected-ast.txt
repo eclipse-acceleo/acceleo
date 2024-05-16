@@ -1,13 +1,13 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..79
+module textStatement_InvalidCharset
+  metamodel http://www.eclipse.org/emf/2002/Ecore (38..76)
+  [comment @main  (90..96) /] (81..98)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (127..152))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite charset 'InvalidCharset' (178..194)
-      La génération de code source est une opération permettant de générer automatiquement du code source. (newLineNeeded) (201..302) (196..304)
-    [/file] (137..311)
-     (newLineNeeded) (311..312) (134..312)
-  [/template] (79..323) (0..323)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (164..185) mode overwrite charset 'InvalidCharset' (198..214)
+      La génération de code source est une opération permettant de générer automatiquement du code source. (newLineNeeded) (221..322) (216..324)
+    [/file] (157..331)
+     (newLineNeeded) (331..332) (154..332)
+  [/template] (99..343) (0..343)

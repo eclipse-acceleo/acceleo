@@ -1,17 +1,17 @@
 
-header position 0..53
-module m1
-  metamodel http://www.eclipse.org/emf/2002/Ecore (12..50)
-  imports resolution::multipleimport::imported (63..99) (55..101)
-  imports resolution::multipleimport::otherpackage::imported (110..160) (102..162)
-  [comment @main  (173..179) /] (164..181)
+header position 0..65
+module multipleimport
+  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62)
+  imports resolution::multipleimport::imported (75..111) (67..113)
+  imports resolution::multipleimport::otherpackage::imported (122..172) (114..174)
+  [comment @main  (185..191) /] (176..193)
   
-  public template t11(param1 : EClass (203..225))
+  public template t11(param1 : EClass (215..237))
   @main
-    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (237..257) mode overwrite
-      generated from import.t11(EClass) (newLineNeeded) (275..309)
-      [.t41(param1) (314..326)/] (newLineNeeded (313..329)
-      [.t41(.oclAsType(.eContainer(param1), EPackage)) (334..386)/] (newLineNeeded (333..389) (270..391)
-    [/file] (230..398)
-     (newLineNeeded) (398..399) (227..399)
-  [/template] (182..410) (0..411)
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (249..269) mode overwrite
+      generated from import.t11(EClass) (newLineNeeded) (287..321)
+      [.t41(param1) (326..338)/] (newLineNeeded (325..341)
+      [.t41(.oclAsType(.eContainer(param1), EPackage)) (346..398)/] (newLineNeeded (345..401) (282..403)
+    [/file] (242..410)
+     (newLineNeeded) (410..411) (239..411)
+  [/template] (194..422) (0..423)

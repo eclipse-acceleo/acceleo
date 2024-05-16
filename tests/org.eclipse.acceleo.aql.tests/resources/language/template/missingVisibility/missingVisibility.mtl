@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module missingVisibility('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template  myTemplate(myParam : ecore::EPackage)]
   some static text.

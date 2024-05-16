@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module withIndentationProtectedAreaSameIDWithTemplateCall('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [comment @main /]
 [template public mainTemplate(myParam : ecore::EPackage)]

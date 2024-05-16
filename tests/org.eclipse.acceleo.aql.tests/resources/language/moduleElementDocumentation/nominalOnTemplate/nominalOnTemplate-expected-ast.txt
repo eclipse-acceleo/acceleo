@@ -1,23 +1,23 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..68
+module nominalOnTemplate
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
   
  * My template has a nice comment.
  * @param myParam the input EPackage
-* (140..138)
-  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)[comment 
+* (149..147)
+  myParam the input EPackage (119..145)[comment myParam the input EPackage (119..145) /] (119..145)[comment 
  * My template has a nice comment.
  * @param myParam the input EPackage
-* (140..138) /] (61..140)
+* (149..147) /] (70..149)
   
  * My template has a nice comment.
  * @param myParam the input EPackage
-* (140..138)
-  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)[comment 
+* (149..147)
+  myParam the input EPackage (119..145)[comment myParam the input EPackage (119..145) /] (119..145)[comment 
  * My template has a nice comment.
  * @param myParam the input EPackage
-* (140..138) /] (61..140)
-  public template myTemplate(myParam : EPackage (169..194))
-    some static text. (newLineNeeded) (199..217) (196..217)
-  [/template] (141..228) (0..228)
+* (149..147) /] (70..149)
+  public template myTemplate(myParam : EPackage (178..203))
+    some static text. (newLineNeeded) (208..226) (205..226)
+  [/template] (150..237) (0..237)

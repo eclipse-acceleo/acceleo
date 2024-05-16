@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..60
+module missingId
+  metamodel http://www.eclipse.org/emf/2002/Ecore (19..57)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [protected ***ERROR*** (134..134)
-      some static text. (newLineNeeded) (142..161) (136..163)
-    [/protected] (122..175)
-     (newLineNeeded) (175..177) (118..177)
-  [/template] (63..188) (0..188)
+  public template myTemplate(myParam : EPackage (92..117))
+    [protected ***ERROR*** (135..135)
+      some static text. (newLineNeeded) (143..162) (137..164)
+    [/protected] (123..176)
+     (newLineNeeded) (176..178) (119..178)
+  [/template] (64..189) (0..189)

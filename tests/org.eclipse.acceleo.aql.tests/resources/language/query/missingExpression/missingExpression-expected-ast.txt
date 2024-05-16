@@ -1,6 +1,6 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  public query myQuery(myParam : EPackage (83..108)) ) : EClassifier ***ERROR*** (133..133)
-  /] (61..135) (0..135)
+header position 0..68
+module missingExpression
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
+  public query myQuery(myParam : EPackage (92..117)) ) : EClassifier ***ERROR*** (142..142)
+  /] (70..144) (0..144)

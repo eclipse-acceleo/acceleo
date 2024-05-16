@@ -13,9 +13,9 @@ since: 0.0.1
  * @version 0.1.0
  * @since 0.0.1
 * (45..144) /] (42..146)
-header position 148..207
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (166..204)
+header position 148..224
+module beforeModuleDocumentation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (183..221)
   [blockComment][comment 
   a block comment
  (9..30) /] (0..40)
@@ -33,4 +33,4 @@ module myModule
  * @author Yvan Lussaud
  * @version 0.1.0
  * @since 0.0.1
-* (45..144) /] (42..146) (0..207)
+* (45..144) /] (42..146) (0..224)

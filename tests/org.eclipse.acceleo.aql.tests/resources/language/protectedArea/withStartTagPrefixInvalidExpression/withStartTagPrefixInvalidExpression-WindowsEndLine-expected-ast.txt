@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..86
+module withStartTagPrefixInvalidExpression
+  metamodel http://www.eclipse.org/emf/2002/Ecore (45..83)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [protected .aqlFeatureAccess(myParam, 'name') (134..146)
-      some static text. (newLineNeeded) (187..206) (181..208) startTagPrefix .aqlFeatureAccess(notExisting, 'name') (163..179)
-    [/protected] (122..220)
-     (newLineNeeded) (220..222) (118..222)
-  [/template] (63..233) (0..233)
+  public template myTemplate(myParam : EPackage (118..143))
+    [protected .aqlFeatureAccess(myParam, 'name') (161..173)
+      some static text. (newLineNeeded) (214..233) (208..235) startTagPrefix .aqlFeatureAccess(notExisting, 'name') (190..206)
+    [/protected] (149..247)
+     (newLineNeeded) (247..249) (145..249)
+  [/template] (90..260) (0..260)

@@ -1,4 +1,4 @@
-[module recursiveTemplateInvocation('http://www.eclipse.org/emf/2002/Ecore')/]
+[module templateRecusiveCall('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [comment @main/]
 [template public recursive_source_is_argument(c : ecore::EClass)]

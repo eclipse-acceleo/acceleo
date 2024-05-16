@@ -1,2 +1,2 @@
-ERROR Couldn't find the 'notExisting' variable - 126 137
-ERROR The expression never evaluates to a String type ([]). - 126 151
+ERROR Couldn't find the 'notExisting' variable - 128 139
+ERROR The expression never evaluates to a String type ([]). - 128 153

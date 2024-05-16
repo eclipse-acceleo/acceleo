@@ -1,15 +1,15 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..61
+module withElseIf
+  metamodel http://www.eclipse.org/emf/2002/Ecore (20..58)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (127..159)
-      some static text. (newLineNeeded) (167..186) (161..188)
+  public template myTemplate(myParam : EPackage (93..118))
+    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (129..161)
+      some static text. (newLineNeeded) (169..188) (163..190)
     [else]
-      [if .greaterThan(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 2) (197..229)
-        some different static text. (newLineNeeded) (237..266) (231..268)
-      [/if] (188..273) (-1..-1)
-    [/if] (122..273)
-     (newLineNeeded) (273..275) (118..275)
-  [/template] (63..286) (0..286)
+      [if .greaterThan(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 2) (199..231)
+        some different static text. (newLineNeeded) (239..268) (233..270)
+      [/if] (190..275) (-1..-1)
+    [/if] (124..275)
+     (newLineNeeded) (275..277) (120..277)
+  [/template] (65..288) (0..288)

@@ -1,18 +1,18 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..67
+module missingEndHeader
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64)
   
-  public template myTemplate(myParam : EPackage (89..114))
+  public template myTemplate(myParam : EPackage (97..122))
     *** error protected area ***
     missing open parenthesis: -1
     missing close parenthesis: -1
     missing start tag prefix close parenthesis: -1
     missing end tag prefix close parenthesis: -1
-    missing end header: 149
+    missing end header: 157
     missing end: -1
-    [protected .aqlFeatureAccess(myParam, 'name') (131..143)
-      some static text. (newLineNeeded) (149..167) (149..169)
-    [/protected] (119..181)
-     (newLineNeeded) (181..182) (116..182)
-  [/template] (61..193) (0..193)
+    [protected .aqlFeatureAccess(myParam, 'name') (139..151)
+      some static text. (newLineNeeded) (157..175) (157..177)
+    [/protected] (127..189)
+     (newLineNeeded) (189..190) (124..190)
+  [/template] (69..201) (0..201)

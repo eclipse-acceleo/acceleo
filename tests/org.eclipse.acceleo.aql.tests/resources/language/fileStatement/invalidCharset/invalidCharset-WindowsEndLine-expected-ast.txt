@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..65
+module invalidCharset
+  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (129..150) mode overwrite charset ***ERROR***.aqlFeatureAccess(myParam) (163..171)
-      some static text. (newLineNeeded) (179..198) (173..200)
-    [/file] (122..207)
-     (newLineNeeded) (207..209) (118..209)
-  [/template] (63..220) (0..220)
+  public template myTemplate(myParam : EPackage (97..122))
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (135..156) mode overwrite charset ***ERROR***.aqlFeatureAccess(myParam) (169..177)
+      some static text. (newLineNeeded) (185..204) (179..206)
+    [/file] (128..213)
+     (newLineNeeded) (213..215) (124..215)
+  [/template] (69..226) (0..226)

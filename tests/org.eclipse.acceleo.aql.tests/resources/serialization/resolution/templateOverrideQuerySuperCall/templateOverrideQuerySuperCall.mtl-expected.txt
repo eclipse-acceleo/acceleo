@@ -1,4 +1,4 @@
-[module templateOverrideQuery('http://www.eclipse.org/emf/2002/Ecore') extends resolution::templateOverrideQuerySuperCall::super/]
+[module templateOverrideQuerySuperCall('http://www.eclipse.org/emf/2002/Ecore') extends resolution::templateOverrideQuerySuperCall::super/]
 
 [comment @main /]
 [template public t11(param1 : ecore::EClass)]

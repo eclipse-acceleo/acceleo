@@ -1,10 +1,10 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..67
+module missingEndHeader
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64)
   
-  public template myTemplate(myParam : EPackage (89..114))
+  public template myTemplate(myParam : EPackage (97..122))
     *** error expression statement ***
-    missing end header: 142
-    [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (120..141)/] (119..142) (116..142)
-  [/template] (61..153) (0..153)
+    missing end header: 150
+    [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (128..149)/] (127..150) (124..150)
+  [/template] (69..161) (0..161)

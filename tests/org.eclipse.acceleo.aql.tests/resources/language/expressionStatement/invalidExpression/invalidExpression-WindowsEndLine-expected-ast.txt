@@ -1,8 +1,8 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..68
+module invalidExpression
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [.add(.aqlFeatureAccess(notExisting, 'name'), '.txt') (123..148)/] (newLineNeeded (122..152) (118..152)
-  [/template] (63..163) (0..163)
+  public template myTemplate(myParam : EPackage (100..125))
+    [.add(.aqlFeatureAccess(notExisting, 'name'), '.txt') (132..157)/] (newLineNeeded (131..161) (127..161)
+  [/template] (72..172) (0..172)

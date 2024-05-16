@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,6 +87,11 @@ import org.eclipse.emf.ecore.EPackage;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AcceleoValidator extends AcceleoSwitch<Object> {
+
+	/**
+	 * Module name missmatch message.
+	 */
+	public static final String DOESN_T_MATCH_RESOURCE_NAME = " doesn't match resource name ";
 
 	/**
 	 * The index varible suffix for {@link ForStatement} {@link Binding}.
@@ -278,6 +283,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModule(Module module) {
+		checkName(module);
 		checkMetamodels(module);
 		if (module.getExtends() != null) {
 			doSwitch(module.getExtends());
@@ -289,6 +295,29 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		}
 
 		return RETURN_VALUE;
+	}
+
+	/**
+	 * Checks the name of the given module against its qualified name.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 */
+	private void checkName(Module module) {
+		if (module.getName() != null && module.eResource() != null && module.eResource().getURI() != null) {
+			final String[] segments = module.eResource().getURI().toString().split(
+					AcceleoParser.QUALIFIER_SEPARATOR);
+			if (segments.length > 0) {
+				final String resourceName = segments[segments.length - 1];
+				if (!module.getName().equals(resourceName)) {
+					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+					addMessage(module, ValidationMessageLevel.ERROR, module.getName()
+							+ DOESN_T_MATCH_RESOURCE_NAME + resourceName, acceleoAstResult
+									.getIdentifierStartPosition(module), acceleoAstResult
+											.getIdentifierEndPosition(module));
+				}
+			}
+		}
 	}
 
 	/**

@@ -1,6 +1,6 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  public query myQuery(myParam : EPackage (83..108), myParam : EPackage (109..134), myParam : EPackage (135..160)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (185..214)
-  /] (61..216) (0..216)
+header position 0..71
+module duplicatedParameters
+  metamodel http://www.eclipse.org/emf/2002/Ecore (30..68)
+  public query myQuery(myParam : EPackage (95..120), myParam : EPackage (121..146), myParam : EPackage (147..172)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (197..226)
+  /] (73..228) (0..228)

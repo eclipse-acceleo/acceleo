@@ -1,4 +1,4 @@
-[module m1('http://www.eclipse.org/emf/2002/Ecore')/]
+[module importmoduleQuery('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [import resolution::importmoduleQuery::imported/]
 

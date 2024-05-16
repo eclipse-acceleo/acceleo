@@ -1,15 +1,15 @@
 
-header position 0..53
-module m1
-  metamodel http://www.eclipse.org/emf/2002/Ecore (12..50)
-  public query myQuery(param1 : EClass (79..101)) ) : java.lang.String .aqlFeatureAccess(param1, 'name') (117..128)
-  /] (57..132)
-  [comment @main  (145..151) /] (136..153)
+header position 0..76
+module callAfterQueryDeclaration
+  metamodel http://www.eclipse.org/emf/2002/Ecore (35..73)
+  public query myQuery(param1 : EClass (102..124)) ) : java.lang.String .aqlFeatureAccess(param1, 'name') (140..151)
+  /] (80..155)
+  [comment @main  (168..174) /] (159..176)
   
-  public template mainTemplate(param1 : EClass (185..207))
+  public template mainTemplate(param1 : EClass (208..230))
   @main
-    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (220..240) mode overwrite
-      [.myQuery(param1) (260..276)/] (newLineNeeded (259..280) (253..282)
-    [/file] (213..289)
-     (newLineNeeded) (289..291) (209..291)
-  [/template] (155..302) (0..302)
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (243..263) mode overwrite
+      [.myQuery(param1) (283..299)/] (newLineNeeded (282..303) (276..305)
+    [/file] (236..312)
+     (newLineNeeded) (312..314) (232..314)
+  [/template] (178..325) (0..325)

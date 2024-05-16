@@ -1,8 +1,8 @@
 //@moduleElements.1/@body/@statements.0/@body/@statements.0/@id/@aql/@arguments.0
 Add parameter notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/protectedArea/invalidId/invalidId.mtl [135, 3, 53, 135, 3, 53] , notExisting: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/protectedArea/invalidId/invalidId.mtl [136, 3, 53, 136, 3, 53] , notExisting: String
 Surround with Let: notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/protectedArea/invalidId/invalidId.mtl [188, 5, 4, 259, 7, 16] [let notExisting : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/protectedArea/invalidId/invalidId.mtl [189, 5, 4, 260, 7, 16] [let notExisting : String = '']
       [protected (notExisting.name)]
         [myParam.name/]
       [/protected]

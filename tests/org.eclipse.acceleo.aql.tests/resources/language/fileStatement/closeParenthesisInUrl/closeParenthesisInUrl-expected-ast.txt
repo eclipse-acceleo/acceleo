@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..72
+module closeParenthesisInUrl
+  metamodel http://www.eclipse.org/emf/2002/Ecore (31..69)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), ').txt') (126..148) mode overwrite
-      some static text. (newLineNeeded) (166..184) (161..186)
-    [/file] (119..193)
-     (newLineNeeded) (193..194) (116..194)
-  [/template] (61..205) (0..205)
+  public template myTemplate(myParam : EPackage (102..127))
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), ').txt') (139..161) mode overwrite
+      some static text. (newLineNeeded) (179..197) (174..199)
+    [/file] (132..206)
+     (newLineNeeded) (206..207) (129..207)
+  [/template] (74..218) (0..218)

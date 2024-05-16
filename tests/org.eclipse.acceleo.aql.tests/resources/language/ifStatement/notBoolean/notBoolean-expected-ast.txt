@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..61
+module notBoolean
+  metamodel http://www.eclipse.org/emf/2002/Ecore (20..58)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [if .aqlFeatureAccess(myParam, 'name') (124..136)
-      some static text. (newLineNeeded) (143..161) (138..163)
-    [/if] (119..168)
-     (newLineNeeded) (168..169) (116..169)
-  [/template] (61..180) (0..180)
+  public template myTemplate(myParam : EPackage (91..116))
+    [if .aqlFeatureAccess(myParam, 'name') (126..138)
+      some static text. (newLineNeeded) (145..163) (140..165)
+    [/if] (121..170)
+     (newLineNeeded) (170..171) (118..171)
+  [/template] (63..182) (0..182)

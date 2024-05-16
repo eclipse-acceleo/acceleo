@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module documentationIsMain('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [**
  * My template has a nice comment.

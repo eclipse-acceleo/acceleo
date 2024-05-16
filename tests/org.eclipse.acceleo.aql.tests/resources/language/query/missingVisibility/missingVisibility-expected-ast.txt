@@ -1,9 +1,9 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..68
+module missingVisibility
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
   *** error query ***
-  missing visibility: 69
+  missing visibility: 78
   missing name: -1
   missing open parenthesis: -1
   missing parameters: -1
@@ -12,5 +12,5 @@ module myModule
   missing type: -1
   missing equal: -1
   missing end: -1
-  private query myQuery(myParam : EPackage (77..102)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (127..156)
-  /] (61..158) (0..158)
+  private query myQuery(myParam : EPackage (86..111)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (136..165)
+  /] (70..167) (0..167)

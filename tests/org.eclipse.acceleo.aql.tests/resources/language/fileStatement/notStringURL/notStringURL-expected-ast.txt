@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..63
+module notStringURL
+  metamodel http://www.eclipse.org/emf/2002/Ecore (22..60)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [file url myParam (126..133) mode overwrite
-      some static text. (newLineNeeded) (151..169) (146..171)
-    [/file] (119..178)
-     (newLineNeeded) (178..179) (116..179)
-  [/template] (61..190) (0..190)
+  public template myTemplate(myParam : EPackage (93..118))
+    [file url myParam (130..137) mode overwrite
+      some static text. (newLineNeeded) (155..173) (150..175)
+    [/file] (123..182)
+     (newLineNeeded) (182..183) (120..183)
+  [/template] (65..194) (0..194)

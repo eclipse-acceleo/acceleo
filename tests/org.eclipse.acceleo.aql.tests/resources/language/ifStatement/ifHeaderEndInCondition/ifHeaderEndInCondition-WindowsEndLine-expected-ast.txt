@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..73
+module ifHeaderEndInCondition
+  metamodel http://www.eclipse.org/emf/2002/Ecore (32..70)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [if .equals(.add(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), ''), ']') (127..166)
-      some static text. (newLineNeeded) (174..193) (168..195)
-    [/if] (122..200)
-     (newLineNeeded) (200..202) (118..202)
-  [/template] (63..213) (0..213)
+  public template myTemplate(myParam : EPackage (105..130))
+    [if .equals(.add(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), ''), ']') (141..180)
+      some static text. (newLineNeeded) (188..207) (182..209)
+    [/if] (136..214)
+     (newLineNeeded) (214..216) (132..216)
+  [/template] (77..227) (0..227)

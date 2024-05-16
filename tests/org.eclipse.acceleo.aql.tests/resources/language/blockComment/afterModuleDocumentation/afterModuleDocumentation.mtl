@@ -7,4 +7,4 @@
 [comment]
   a block comment
 [/comment]
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module afterModuleDocumentation('http://www.eclipse.org/emf/2002/Ecore')/]

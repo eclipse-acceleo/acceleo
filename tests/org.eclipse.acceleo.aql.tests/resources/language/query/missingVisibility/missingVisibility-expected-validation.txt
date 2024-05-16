@@ -1,1 +1,1 @@
-ERROR Missing visibility - 69 69
+ERROR Missing visibility - 78 78

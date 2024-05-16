@@ -1,5 +1,5 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  imports org::eclipse::acceleo::notExisting (69..103) (61..105) (0..105)
+header position 0..64
+module invalidImport
+  metamodel http://www.eclipse.org/emf/2002/Ecore (23..61)
+  imports org::eclipse::acceleo::notExisting (74..108) (66..110) (0..110)

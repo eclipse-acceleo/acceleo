@@ -1,2 +1,2 @@
-ERROR Missing or invalid type - 95 95
-ERROR missing type literal - 120 127
+ERROR Missing or invalid type - 107 107
+ERROR missing type literal - 132 139

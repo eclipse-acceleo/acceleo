@@ -1,12 +1,12 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..72
+module letHeaderEndInBinding
+  metamodel http://www.eclipse.org/emf/2002/Ecore (31..69)
   
-  public template myTemplate(myParam : EPackage (89..114))
+  public template myTemplate(myParam : EPackage (102..127))
     [let 
-    myVariable : EString = .add(->first(.aqlFeatureAccess(myParam, 'eClassifiers')), ']') (154..189) (124..189)
-      some static text. (newLineNeeded) (195..213) (190..215)
-    [/let] (119..221)
-     (newLineNeeded) (221..222) (116..222)
-  [/template] (61..233) (0..233)
+    myVariable : EString = .add(->first(.aqlFeatureAccess(myParam, 'eClassifiers')), ']') (167..202) (137..202)
+      some static text. (newLineNeeded) (208..226) (203..228)
+    [/let] (132..234)
+     (newLineNeeded) (234..235) (129..235)
+  [/template] (74..246) (0..246)

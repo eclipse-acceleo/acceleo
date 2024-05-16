@@ -1,1 +1,1 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore') extends language::module::withUnknownExtends::extendedModule/]
+[module withUnknownExtends('http://www.eclipse.org/emf/2002/Ecore') extends language::module::withUnknownExtends::extendedModule/]

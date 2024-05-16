@@ -1,0 +1,24 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _rVIn4BNiEe-VBJEst36cPw,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: RenameModule
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _3F3rABNiEe-VBJEst36cPw
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 5/16/24, 11:03 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/c.mtl" | double-click
+with [get-editor "c.mtl" | get-text-viewer] {
+    hover-text 1 10
+    hover-text 1 10
+}
+get-window -from "Information Window" | get-link "<A>Rename module c1 to c</a>" | click-link
+get-view Problems | get-tree | get-property itemCount | equals 0 | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

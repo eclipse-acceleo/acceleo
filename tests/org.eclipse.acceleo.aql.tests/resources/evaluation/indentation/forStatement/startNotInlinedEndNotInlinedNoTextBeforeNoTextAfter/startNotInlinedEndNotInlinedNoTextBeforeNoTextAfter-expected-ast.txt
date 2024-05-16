@@ -1,18 +1,18 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..102
+module startNotInlinedEndNotInlinedNoTextBeforeNoTextAfter
+  metamodel http://www.eclipse.org/emf/2002/Ecore (61..99)
+  [comment @main  (113..119) /] (104..121)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (150..175))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      first line (newLineNeeded) (183..194)
-      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (238..258) (204..258)
-        [.aqlFeatureAccess(myVariable, 'name') (268..283)/] (newLineNeeded (267..286) (260..290)
-      [/for] (198..296)
-       (newLineNeeded) (296..297)
-      last line (newLineNeeded) (301..311) (178..313)
-    [/file] (137..320)
-     (newLineNeeded) (320..321) (134..321)
-  [/template] (79..332) (0..332)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (187..208) mode overwrite
+      first line (newLineNeeded) (226..237)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (281..301) (247..301)
+        [.aqlFeatureAccess(myVariable, 'name') (311..326)/] (newLineNeeded (310..329) (303..333)
+      [/for] (241..339)
+       (newLineNeeded) (339..340)
+      last line (newLineNeeded) (344..354) (221..356)
+    [/file] (180..363)
+     (newLineNeeded) (363..364) (177..364)
+  [/template] (122..375) (0..375)

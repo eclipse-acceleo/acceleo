@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..65
+module noVariableType
+  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [for myVariable : null = Sequence{'a', 'b', 'c', } (138..161) (125..161)
-      some static text. (newLineNeeded) (168..186) (163..188)
-    [/for] (119..194)
-     (newLineNeeded) (194..195) (116..195)
-  [/template] (61..206) (0..206)
+  public template myTemplate(myParam : EPackage (95..120))
+    [for myVariable : null = Sequence{'a', 'b', 'c', } (144..167) (131..167)
+      some static text. (newLineNeeded) (174..192) (169..194)
+    [/for] (125..200)
+     (newLineNeeded) (200..201) (122..201)
+  [/template] (67..212) (0..212)

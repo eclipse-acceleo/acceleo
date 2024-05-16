@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..94
+module unresolvedVariableInTemplateWithIndentation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (53..91)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (127..159)
-      [notExistingVariable (168..187)/] (newLineNeeded (167..191) (161..193)
-    [/if] (122..198)
-     (newLineNeeded) (198..200) (118..200)
-  [/template] (63..211) (0..213)
+  public template myTemplate(myParam : EPackage (126..151))
+    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (162..194)
+      [notExistingVariable (203..222)/] (newLineNeeded (202..226) (196..228)
+    [/if] (157..233)
+     (newLineNeeded) (233..235) (153..235)
+  [/template] (98..246) (0..248)

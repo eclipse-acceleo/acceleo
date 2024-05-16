@@ -1,35 +1,35 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..66
+module threeParameters
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
   
  * My template has a nice comment.
  * @param myParam the input EPackage
  * @param myParam1 the input1 EPackage
  * @param myParam2 the input2 EPackage
-* (218..216)
-  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)
-  myParam1 the input1 EPackage (147..175)[comment myParam1 the input1 EPackage (147..175) /] (147..175)
-  myParam2 the input2 EPackage (186..214)[comment myParam2 the input2 EPackage (186..214) /] (186..214)[comment 
+* (225..223)
+  myParam the input EPackage (117..143)[comment myParam the input EPackage (117..143) /] (117..143)
+  myParam1 the input1 EPackage (154..182)[comment myParam1 the input1 EPackage (154..182) /] (154..182)
+  myParam2 the input2 EPackage (193..221)[comment myParam2 the input2 EPackage (193..221) /] (193..221)[comment 
  * My template has a nice comment.
  * @param myParam the input EPackage
  * @param myParam1 the input1 EPackage
  * @param myParam2 the input2 EPackage
-* (218..216) /] (61..218)
+* (225..223) /] (68..225)
   
  * My template has a nice comment.
  * @param myParam the input EPackage
  * @param myParam1 the input1 EPackage
  * @param myParam2 the input2 EPackage
-* (218..216)
-  myParam the input EPackage (110..136)[comment myParam the input EPackage (110..136) /] (110..136)
-  myParam1 the input1 EPackage (147..175)[comment myParam1 the input1 EPackage (147..175) /] (147..175)
-  myParam2 the input2 EPackage (186..214)[comment myParam2 the input2 EPackage (186..214) /] (186..214)[comment 
+* (225..223)
+  myParam the input EPackage (117..143)[comment myParam the input EPackage (117..143) /] (117..143)
+  myParam1 the input1 EPackage (154..182)[comment myParam1 the input1 EPackage (154..182) /] (154..182)
+  myParam2 the input2 EPackage (193..221)[comment myParam2 the input2 EPackage (193..221) /] (193..221)[comment 
  * My template has a nice comment.
  * @param myParam the input EPackage
  * @param myParam1 the input1 EPackage
  * @param myParam2 the input2 EPackage
-* (218..216) /] (61..218)
-  public template myTemplate(myParam : EPackage (247..272), myParam1 : EPackage (273..299), myParam2 : EPackage (300..326))
-    some static text. (newLineNeeded) (331..349) (328..349)
-  [/template] (219..360) (0..360)
+* (225..223) /] (68..225)
+  public template myTemplate(myParam : EPackage (254..279), myParam1 : EPackage (280..306), myParam2 : EPackage (307..333))
+    some static text. (newLineNeeded) (338..356) (335..356)
+  [/template] (226..367) (0..367)

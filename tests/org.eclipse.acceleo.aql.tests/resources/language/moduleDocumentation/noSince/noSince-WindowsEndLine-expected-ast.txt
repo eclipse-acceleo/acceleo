@@ -11,9 +11,9 @@ since: null
  * @author Yvan Lussaud
  * @version 0.1.0
 * (3..85) /] (0..87)
-header position 89..148
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (107..145)
+header position 89..147
+module noSince
+  metamodel http://www.eclipse.org/emf/2002/Ecore (106..144)
   	
  * My module has a nice comment.
  * @author Yvan Lussaud
@@ -26,4 +26,4 @@ module myModule
  * My module has a nice comment.
  * @author Yvan Lussaud
  * @version 0.1.0
-* (3..85) /] (0..87) (0..148)
+* (3..85) /] (0..87) (0..147)

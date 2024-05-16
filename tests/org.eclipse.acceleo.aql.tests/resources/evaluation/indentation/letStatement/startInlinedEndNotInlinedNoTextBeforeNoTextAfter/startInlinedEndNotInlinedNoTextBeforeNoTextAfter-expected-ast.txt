@@ -1,21 +1,21 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..99
+module startInlinedEndNotInlinedNoTextBeforeNoTextAfter
+  metamodel http://www.eclipse.org/emf/2002/Ecore (58..96)
+  [comment @main  (110..116) /] (101..118)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (147..172))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      first line (newLineNeeded) (183..194)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (184..205) mode overwrite
+      first line (newLineNeeded) (223..234)
       [let 
-      name : null = .aqlFeatureAccess(myParam, 'name') (210..222) (203..222)
-        [name (224..228)/] (223..230)
-         (newLineNeeded) (230..230)
-             (231..235) (223..235)
-      [/let] (198..241)
-       (newLineNeeded) (241..242)
-      last line (newLineNeeded) (246..256) (178..258)
-    [/file] (137..265)
-     (newLineNeeded) (265..266) (134..266)
-  [/template] (79..277) (0..277)
+      name : null = .aqlFeatureAccess(myParam, 'name') (250..262) (243..262)
+        [name (264..268)/] (263..270)
+         (newLineNeeded) (270..270)
+             (271..275) (263..275)
+      [/let] (238..281)
+       (newLineNeeded) (281..282)
+      last line (newLineNeeded) (286..296) (218..298)
+    [/file] (177..305)
+     (newLineNeeded) (305..306) (174..306)
+  [/template] (119..317) (0..317)

@@ -1,0 +1,13 @@
+
+header position 0..75
+module textStatement_ISO_8859_1
+  metamodel http://www.eclipse.org/emf/2002/Ecore (34..72)
+  [comment @main  (86..92) /] (77..94)
+  
+  public template myTemplate(myParam : EPackage (123..148))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (160..181) mode overwrite charset 'ISO-8859-1' (194..206)
+      La génération de code source est une opération permettant de générer automatiquement du code source. (newLineNeeded) (213..314) (208..316)
+    [/file] (153..323)
+     (newLineNeeded) (323..324) (150..324)
+  [/template] (95..335) (0..335)

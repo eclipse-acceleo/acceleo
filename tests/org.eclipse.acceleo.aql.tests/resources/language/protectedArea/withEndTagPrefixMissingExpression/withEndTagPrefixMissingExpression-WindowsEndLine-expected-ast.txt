@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..84
+module withEndTagPrefixMissingExpression
+  metamodel http://www.eclipse.org/emf/2002/Ecore (43..81)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [protected .aqlFeatureAccess(myParam, 'name') (134..146)
-      some static text. (newLineNeeded) (169..188) (163..190) endTagPrefix ***ERROR*** (161..161)
-    [/protected] (122..202)
-     (newLineNeeded) (202..204) (118..204)
-  [/template] (63..215) (0..215)
+  public template myTemplate(myParam : EPackage (116..141))
+    [protected .aqlFeatureAccess(myParam, 'name') (159..171)
+      some static text. (newLineNeeded) (194..213) (188..215) endTagPrefix ***ERROR*** (186..186)
+    [/protected] (147..227)
+     (newLineNeeded) (227..229) (143..229)
+  [/template] (88..240) (0..240)

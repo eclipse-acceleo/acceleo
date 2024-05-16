@@ -1,17 +1,17 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..65
+module withElseIfElse
+  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (124..156)
-      some static text. (newLineNeeded) (163..181) (158..183)
+  public template myTemplate(myParam : EPackage (95..120))
+    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (130..162)
+      some static text. (newLineNeeded) (169..187) (164..189)
     [else]
-      [if .greaterThan(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 2) (192..224)
-        some different static text. (newLineNeeded) (231..259) (226..261)
+      [if .greaterThan(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 2) (198..230)
+        some different static text. (newLineNeeded) (237..265) (232..267)
       [else]
-        yet some different static text again. (newLineNeeded) (272..310) (267..312)
-      [/if] (183..317) (-1..-1)
-    [/if] (119..317)
-     (newLineNeeded) (317..318) (116..318)
-  [/template] (61..329) (0..329)
+        yet some different static text again. (newLineNeeded) (278..316) (273..318)
+      [/if] (189..323) (-1..-1)
+    [/if] (125..323)
+     (newLineNeeded) (323..324) (122..324)
+  [/template] (67..335) (0..335)

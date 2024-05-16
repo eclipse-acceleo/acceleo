@@ -12,7 +12,7 @@ since: 0.0.1
  * @since 0.0.1
 * (3..73) /] (0..75)
 header position 76..135
-module myModule
+module noAuthor
   metamodel http://www.eclipse.org/emf/2002/Ecore (94..132)
   	
  * My module has a nice comment.

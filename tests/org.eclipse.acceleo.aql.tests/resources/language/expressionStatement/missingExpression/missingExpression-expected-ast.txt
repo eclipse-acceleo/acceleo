@@ -1,8 +1,8 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..68
+module missingExpression
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [***ERROR*** (120..120)/] (newLineNeeded (119..123) (116..123)
-  [/template] (61..134) (0..134)
+  public template myTemplate(myParam : EPackage (98..123))
+    [***ERROR*** (129..129)/] (newLineNeeded (128..132) (125..132)
+  [/template] (70..143) (0..143)

@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..62
+module extraSpaces
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [protected .aqlFeatureAccess(myParam, 'name') (137..149)
-      some static text. (newLineNeeded) (162..180) (157..182)
-    [/protected] (119..194)
-     (newLineNeeded) (194..195) (116..195)
-  [/template] (61..206) (0..206)
+  public template myTemplate(myParam : EPackage (92..117))
+    [protected .aqlFeatureAccess(myParam, 'name') (140..152)
+      some static text. (newLineNeeded) (165..183) (160..185)
+    [/protected] (122..197)
+     (newLineNeeded) (197..198) (119..198)
+  [/template] (64..209) (0..209)

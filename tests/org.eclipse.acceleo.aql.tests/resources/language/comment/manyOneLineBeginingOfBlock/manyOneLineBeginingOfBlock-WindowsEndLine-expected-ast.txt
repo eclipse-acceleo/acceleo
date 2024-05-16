@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..77
+module manyOneLineBeginingOfBlock
+  metamodel http://www.eclipse.org/emf/2002/Ecore (36..74)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [comment a basic comment (127..142) /] (118..144)
-    [comment an other one (153..165) /] (144..167)
-    [comment a last one (176..186) /] (167..188)
-    some static text. (newLineNeeded) (192..211) (118..211)
-  [/template] (63..222) (0..222)
+  public template myTemplate(myParam : EPackage (109..134))
+    [comment a basic comment (145..160) /] (136..162)
+    [comment an other one (171..183) /] (162..185)
+    [comment a last one (194..204) /] (185..206)
+    some static text. (newLineNeeded) (210..229) (136..229)
+  [/template] (81..240) (0..240)

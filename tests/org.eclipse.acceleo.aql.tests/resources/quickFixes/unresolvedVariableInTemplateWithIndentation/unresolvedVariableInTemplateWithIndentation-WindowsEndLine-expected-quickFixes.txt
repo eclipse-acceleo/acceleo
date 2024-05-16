@@ -1,8 +1,8 @@
 //@moduleElements.0/@body/@statements.0/@then/@statements.0/@expression/@aql
 Add parameter notExistingVariable
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/quickFixes/unresolvedVariableInTemplateWithIndentation/unresolvedVariableInTemplateWithIndentation.mtl [116, 2, 53, 116, 2, 53] , notExistingVariable: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/quickFixes/unresolvedVariableInTemplateWithIndentation/unresolvedVariableInTemplateWithIndentation.mtl [151, 2, 53, 151, 2, 53] , notExistingVariable: String
 Surround with Let: notExistingVariable
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/quickFixes/unresolvedVariableInTemplateWithIndentation/unresolvedVariableInTemplateWithIndentation.mtl [167, 4, 4, 191, 5, 0] [let notExistingVariable : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/quickFixes/unresolvedVariableInTemplateWithIndentation/unresolvedVariableInTemplateWithIndentation.mtl [202, 4, 4, 226, 5, 0] [let notExistingVariable : String = '']
       [notExistingVariable/]
   
     [/let]

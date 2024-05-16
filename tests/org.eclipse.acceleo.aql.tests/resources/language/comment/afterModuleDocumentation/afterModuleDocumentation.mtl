@@ -5,4 +5,4 @@
  * @since 0.0.1
 */]
 [comment a basic comment/]
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module afterModuleDocumentation('http://www.eclipse.org/emf/2002/Ecore')/]

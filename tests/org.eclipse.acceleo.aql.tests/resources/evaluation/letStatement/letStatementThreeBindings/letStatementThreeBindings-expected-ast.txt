@@ -1,21 +1,21 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..76
+module letStatementThreeBindings
+  metamodel http://www.eclipse.org/emf/2002/Ecore (35..73)
+  [comment @main  (87..93) /] (78..95)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (124..149))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (161..182) mode overwrite
       [let 
-      myVariable : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 1) (222..249) (188..249)
-      myVariable1 : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 2) (285..312) (250..312)
-      myVariable2 : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 3) (348..375) (313..375)
-        [.aqlFeatureAccess(myVariable, 'name') (384..399)/] (newLineNeeded (383..402)
-        [.aqlFeatureAccess(myVariable1, 'name') (409..425)/] (newLineNeeded (408..428)
-        [.aqlFeatureAccess(myVariable2, 'name') (435..451)/] (newLineNeeded (434..454) (376..458)
-      [/let] (183..464)
-       (newLineNeeded) (464..465) (178..467)
-    [/file] (137..474)
-     (newLineNeeded) (474..475) (134..475)
-  [/template] (79..486) (0..486)
+      myVariable : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 1) (239..266) (205..266)
+      myVariable1 : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 2) (302..329) (267..329)
+      myVariable2 : EClassifier = ->at(.aqlFeatureAccess(myParam, 'eClassifiers'), 3) (365..392) (330..392)
+        [.aqlFeatureAccess(myVariable, 'name') (401..416)/] (newLineNeeded (400..419)
+        [.aqlFeatureAccess(myVariable1, 'name') (426..442)/] (newLineNeeded (425..445)
+        [.aqlFeatureAccess(myVariable2, 'name') (452..468)/] (newLineNeeded (451..471) (393..475)
+      [/let] (200..481)
+       (newLineNeeded) (481..482) (195..484)
+    [/file] (154..491)
+     (newLineNeeded) (491..492) (151..492)
+  [/template] (96..503) (0..503)

@@ -2,8 +2,8 @@
 missing open parenthesis: -1
 missing EPackage: -1
 missing close parenthesis: -1
-missing end header: 57
+missing end header: 65
 
-header position 0..57
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56) (0..57)
+header position 0..65
+module missingEndHeader
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64) (0..65)

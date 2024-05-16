@@ -1,0 +1,5 @@
+/
+Rename module otherDifferentName to differentName
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/differentName/differentName.mtl [8, 0, 8, 26, 0, 26] differentName
+Rename module resource file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/differentName/differentName.mtl to file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/differentName/otherDifferentName.mtl
+Move file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/differentName/differentName.mtl file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/module/differentName/otherDifferentName.mtl

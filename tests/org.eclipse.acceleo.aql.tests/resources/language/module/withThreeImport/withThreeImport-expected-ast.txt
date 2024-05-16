@@ -1,7 +1,7 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  imports language::module::withThreeImport::importedModule (69..118) (61..120)
-  imports language::module::withThreeImport::anotherImported (129..179) (121..181)
-  imports language::module::withThreeImport::aThirdImported (190..239) (182..241) (0..241)
+header position 0..66
+module withThreeImport
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
+  imports language::module::withThreeImport::importedModule (76..125) (68..127)
+  imports language::module::withThreeImport::anotherImported (136..186) (128..188)
+  imports language::module::withThreeImport::aThirdImported (197..246) (189..248) (0..248)

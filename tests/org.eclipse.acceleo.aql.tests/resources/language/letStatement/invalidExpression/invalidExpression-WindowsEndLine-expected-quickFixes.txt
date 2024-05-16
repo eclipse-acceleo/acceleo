@@ -1,8 +1,8 @@
 //@moduleElements.0/@body/@statements.0/@variables.0/@initExpression/@aql/@arguments.0/@arguments.0
 Add parameter notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpression/invalidExpression.mtl [116, 2, 53, 116, 2, 53] , notExisting: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpression/invalidExpression.mtl [125, 2, 53, 125, 2, 53] , notExisting: String
 Surround with Let: notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpression/invalidExpression.mtl [122, 3, 2, 228, 5, 8] [let notExisting : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/letStatement/invalidExpression/invalidExpression.mtl [131, 3, 2, 237, 5, 8] [let notExisting : String = '']
     [let myVariable : ecore::EClassifier = notExisting.eClassifiers->first()]
       some static text.
     [/let]

@@ -1,8 +1,8 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..69
+module missingIndentation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (28..66)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    me static text. (newLineNeeded) (122..139) (118..139)
-  [/template] (63..150) (0..150)
+  public template myTemplate(myParam : EPackage (101..126))
+    me static text. (newLineNeeded) (132..149) (128..149)
+  [/template] (73..160) (0..160)

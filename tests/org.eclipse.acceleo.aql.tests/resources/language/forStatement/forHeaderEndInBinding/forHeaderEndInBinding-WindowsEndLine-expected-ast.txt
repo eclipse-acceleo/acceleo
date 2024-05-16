@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..72
+module forHeaderEndInBinding
+  metamodel http://www.eclipse.org/emf/2002/Ecore (31..69)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [for myVariable : EString = Sequence{']', '', '', } (158..179) (128..179)
-      some static text. (newLineNeeded) (187..206) (181..208)
-    [/for] (122..214)
-     (newLineNeeded) (214..216) (118..216)
-  [/template] (63..227) (0..227)
+  public template myTemplate(myParam : EPackage (104..129))
+    [for myVariable : EString = Sequence{']', '', '', } (171..192) (141..192)
+      some static text. (newLineNeeded) (200..219) (194..221)
+    [/for] (135..227)
+     (newLineNeeded) (227..229) (131..229)
+  [/template] (76..240) (0..240)

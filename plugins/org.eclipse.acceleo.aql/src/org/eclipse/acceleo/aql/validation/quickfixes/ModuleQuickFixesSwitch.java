@@ -16,20 +16,23 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
-import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.quickfixes.AstQuickFix;
 import org.eclipse.acceleo.query.parser.quickfixes.AstTextReplacement;
 import org.eclipse.acceleo.query.parser.quickfixes.CreateResource;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstResourceChange;
+import org.eclipse.acceleo.query.parser.quickfixes.MoveResource;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
@@ -75,11 +78,6 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 	final int[][] linesAndColumns;
 
 	/**
-	 * The {@link Positions}.
-	 */
-	private final Positions<ASTNode> positions;
-
-	/**
 	 * The module {@link URI}.
 	 */
 	private final URI uri;
@@ -114,10 +112,163 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 		this.linesAndColumns = AQLUtils.getLinesAndColumns(moduleText);
 		this.newLine = newLine;
 
-		this.positions = validationResult.getAcceleoAstResult().getPositions();
-
 		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 		this.uri = resolver.getSourceURI(moduleQualifiedName);
+	}
+
+	@Override
+	public List<IAstQuickFix> caseModule(Module object) {
+		final List<IAstQuickFix> res = new ArrayList<>();
+
+		if (needRename(module)) {
+			final String[] segments = uri.getPath().split("/");
+			if (segments.length > 0) {
+				final String lastSegment = segments[segments.length - 1];
+				final String newModuleName = lastSegment.substring(0, lastSegment.length()
+						- AcceleoParser.MODULE_FILE_EXTENSION.length() - 1);
+				if (isJavaIdentifier(newModuleName)) {
+					res.add(getRenameModuleQuickFix(uri, module, newModuleName));
+				}
+			}
+			res.add(getRenameModuleResourceQuickFix(uri, module));
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link Module} needs renaming.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return <code>true</code> if the given {@link Module} needs renaming, <code>false</code> otherwise
+	 */
+	private boolean needRename(Module module) {
+		return validationResult.getValidationMessages(module).stream().anyMatch(m -> m.getMessage().contains(
+				AcceleoValidator.DOESN_T_MATCH_RESOURCE_NAME));
+	}
+
+	/**
+	 * Tells if the given name is a valid Java identifier.
+	 * 
+	 * @param name
+	 *            the name to check
+	 * @return <code>true</code> if the given name is a valid Java identifier, <code>false</code>
+	 */
+	private boolean isJavaIdentifier(String name) {
+		final boolean res;
+
+		if (name != null && !name.isBlank()) {
+			final char[] chars = name.toCharArray();
+			if (Character.isJavaIdentifierStart(chars[0])) {
+				boolean hasNotIdentifierPart = false;
+				for (int i = 1; i < chars.length; i++) {
+					if (!Character.isJavaIdentifierPart(chars[i])) {
+						hasNotIdentifierPart = true;
+						break;
+					}
+				}
+				res = !hasNotIdentifierPart;
+			} else {
+				res = false;
+			}
+		} else {
+			res = false;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Get the rename {@link Module} {@link IAstQuickFix} for the given {@link Module} to match the given
+	 * {@link URI} resource name.
+	 * 
+	 * @param uri
+	 *            the {@link Module} {@link URI}
+	 * @param module
+	 *            the {@link Module} to rename
+	 * @param newModuleName
+	 *            the new {@link Module} {@link Module#getName() name}
+	 * @return the rename {@link Module} {@link IAstQuickFix} for the given {@link Module} to match the given
+	 *         {@link URI} resource name
+	 */
+	private IAstQuickFix getRenameModuleQuickFix(URI uri, Module module, String newModuleName) {
+		final IAstQuickFix res = new AstQuickFix("Rename module " + module.getName() + " to "
+				+ newModuleName);
+
+		final AcceleoAstResult acceleoAstResult = validationResult.getAcceleoAstResult();
+		final int startOffset = acceleoAstResult.getIdentifierStartPosition(module);
+		final int startLine = acceleoAstResult.getIdentifierStartLine(module);
+		final int startColumn = acceleoAstResult.getIdentifierStartColumn(module);
+		final int endOffset = acceleoAstResult.getIdentifierEndPosition(module);
+		final int endLine = acceleoAstResult.getIdentifierEndLine(module);
+		final int endColumn = acceleoAstResult.getIdentifierEndColumn(module);
+		res.getTextReplacements().add(new AstTextReplacement(uri, newModuleName, startOffset, startLine,
+				startColumn, endOffset, endLine, endColumn));
+
+		return res;
+	}
+
+	/**
+	 * Get the rename {@link Module}'s resource {@link IAstQuickFix} for the given {@link Module} to match its
+	 * {@link Module#getName() names}.
+	 * 
+	 * @param uri
+	 *            the {@link Module} {@link URI}
+	 * @param module
+	 *            the {@link Module}
+	 * @return the rename {@link Module}'s resource {@link IAstQuickFix} for the given {@link Module} to match
+	 *         its {@link Module#getName() names}
+	 */
+	private IAstQuickFix getRenameModuleResourceQuickFix(URI uri, Module module) {
+		final URI newUri = uri.resolve(module.getName() + "." + AcceleoParser.MODULE_FILE_EXTENSION);
+		final IAstQuickFix res = new AstQuickFix("Rename module resource " + uri + " to " + newUri);
+
+		res.getResourceChanges().add(new MoveResource(uri, newUri));
+
+		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		final String oldQualifiedName = moduleQualifiedName;
+		final int lastIndexOfQualifierSeparator = oldQualifiedName.lastIndexOf(
+				AcceleoParser.QUALIFIER_SEPARATOR);
+		final String newQualifiedName;
+		if (lastIndexOfQualifierSeparator >= 0) {
+			newQualifiedName = oldQualifiedName.substring(0, lastIndexOfQualifierSeparator)
+					+ AcceleoParser.QUALIFIER_SEPARATOR + module.getName();
+		} else {
+			newQualifiedName = module.getName();
+		}
+		// change extends and imports in dependent modules (ILoaders should probably handle this at some point
+		// to be able to also change imports from non module)
+		for (String dependent : resolver.getDependOn(oldQualifiedName)) {
+			final Object resolved = resolver.resolve(dependent);
+			if (resolved instanceof Module) {
+				final Module dependentModule = (Module)resolved;
+				final URI dependentModuleURI = resolver.getSourceURI(dependent);
+				final List<ModuleReference> dependentModuleReferences = new ArrayList<>();
+				if (dependentModule.getExtends() != null) {
+					dependentModuleReferences.add(dependentModule.getExtends());
+				}
+				for (Import imp : dependentModule.getImports()) {
+					dependentModuleReferences.add(imp.getModule());
+				}
+				for (ModuleReference dependentModuleReference : dependentModuleReferences) {
+					if (oldQualifiedName.equals(dependentModuleReference.getQualifiedName())) {
+						final AcceleoAstResult acceleoAstResult = dependentModule.getAst();
+						final int startOffset = acceleoAstResult.getStartPosition(dependentModuleReference);
+						final int startLine = acceleoAstResult.getStartLine(dependentModuleReference);
+						final int startColumn = acceleoAstResult.getStartColumn(dependentModuleReference);
+						final int endOffset = acceleoAstResult.getEndPosition(dependentModuleReference);
+						final int endLine = acceleoAstResult.getEndLine(dependentModuleReference);
+						final int endColumn = acceleoAstResult.getEndColumn(dependentModuleReference);
+						res.getTextReplacements().add(new AstTextReplacement(dependentModuleURI,
+								newQualifiedName, startOffset, startLine, startColumn, endOffset, endLine,
+								endColumn));
+					}
+				}
+			}
+		}
+
+		return res;
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..62
+module invalidPost
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
   
-  public template myTemplate(myParam : EPackage (89..114))
-  post .trim(notExisting) (121..139)
-    some static text. (newLineNeeded) (144..162) (141..162)
-  [/template] (61..173) (0..173)
+  public template myTemplate(myParam : EPackage (92..117))
+  post .trim(notExisting) (124..142)
+    some static text. (newLineNeeded) (147..165) (144..165)
+  [/template] (64..176) (0..176)

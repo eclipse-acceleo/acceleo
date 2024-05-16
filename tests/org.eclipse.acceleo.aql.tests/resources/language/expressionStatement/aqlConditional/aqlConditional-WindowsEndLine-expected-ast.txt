@@ -1,8 +1,8 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..65
+module aqlConditional
+  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [if (.equals(.aqlFeatureAccess(myParam, 'name'), '')) then 'No name' else .aqlFeatureAccess(myParam, 'name') endif  (124..183)/] (newLineNeeded (122..187) (118..187)
-  [/template] (63..198) (0..198)
+  public template myTemplate(myParam : EPackage (97..122))
+    [if (.equals(.aqlFeatureAccess(myParam, 'name'), '')) then 'No name' else .aqlFeatureAccess(myParam, 'name') endif  (130..189)/] (newLineNeeded (128..193) (124..193)
+  [/template] (69..204) (0..204)

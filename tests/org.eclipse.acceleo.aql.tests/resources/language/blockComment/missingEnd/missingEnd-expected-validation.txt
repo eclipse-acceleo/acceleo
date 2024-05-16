@@ -1,1 +1,1 @@
-ERROR Missing "[/comment]" - 187 187
+ERROR Missing "[/comment]" - 189 189

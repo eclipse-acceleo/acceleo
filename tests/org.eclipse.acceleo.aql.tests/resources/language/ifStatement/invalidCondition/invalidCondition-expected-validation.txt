@@ -1,2 +1,2 @@
-ERROR Couldn't find the 'notExisting' variable - 124 135
-ERROR The predicate never evaluates to a boolean type ([]). - 124 160
+ERROR Couldn't find the 'notExisting' variable - 132 143
+ERROR The predicate never evaluates to a boolean type ([]). - 132 168

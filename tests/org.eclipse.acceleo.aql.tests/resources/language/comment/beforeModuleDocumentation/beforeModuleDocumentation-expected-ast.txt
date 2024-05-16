@@ -13,9 +13,9 @@ since: 0.0.1
  * @version 0.1.0
  * @since 0.0.1
 * (30..124) /] (27..126)
-header position 127..186
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (145..183)
+header position 127..203
+module beforeModuleDocumentation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (162..200)
   [comment a basic comment (9..24) /] (0..26)
   	
  * My module has a nice comment.
@@ -31,4 +31,4 @@ module myModule
  * @author Yvan Lussaud
  * @version 0.1.0
  * @since 0.0.1
-* (30..124) /] (27..126) (0..186)
+* (30..124) /] (27..126) (0..203)

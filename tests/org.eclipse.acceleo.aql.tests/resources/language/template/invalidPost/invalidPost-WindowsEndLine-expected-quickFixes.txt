@@ -1,3 +1,3 @@
 //@moduleElements.0/@post/@aql/@arguments.0
 Add parameter notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/template/invalidPost/invalidPost.mtl [116, 2, 53, 116, 2, 53] , notExisting: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/template/invalidPost/invalidPost.mtl [119, 2, 53, 119, 2, 53] , notExisting: String

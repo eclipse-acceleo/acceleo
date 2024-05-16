@@ -1,8 +1,8 @@
 //@moduleElements.0/@body/@statements.0/@expression/@aql/@arguments.0/@arguments.0
 Add parameter notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/expressionStatement/invalidExpression/invalidExpression.mtl [114, 2, 53, 114, 2, 53] , notExisting: String
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/expressionStatement/invalidExpression/invalidExpression.mtl [123, 2, 53, 123, 2, 53] , notExisting: String
 Surround with Let: notExisting
-Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/expressionStatement/invalidExpression/invalidExpression.mtl [119, 3, 2, 148, 4, 0] [let notExisting : String = '']
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/expressionStatement/invalidExpression/invalidExpression.mtl [128, 3, 2, 157, 4, 0] [let notExisting : String = '']
     [notExisting.name + '.txt'/]
   
   [/let]

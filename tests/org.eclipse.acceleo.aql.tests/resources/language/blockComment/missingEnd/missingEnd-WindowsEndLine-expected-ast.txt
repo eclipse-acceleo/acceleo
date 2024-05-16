@@ -13,9 +13,9 @@ since: 0.0.1
  * @version 0.1.0
  * @since 0.0.1
 * (3..102) /] (0..104)
-header position 106..165
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (124..162)
+header position 106..167
+module missingEnd
+  metamodel http://www.eclipse.org/emf/2002/Ecore (126..164)
   	
  * My module has a nice comment.
  * @author Yvan Lussaud
@@ -32,6 +32,6 @@ module myModule
  * @since 0.0.1
 * (3..102) /] (0..104)
   *** error comment ***
-  missing end header: 195
+  missing end header: 197
   [blockComment][comment 
-  a block comment (176..195) /] (167..195) (0..195)
+  a block comment (178..197) /] (169..197) (0..197)

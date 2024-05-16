@@ -1,2 +1,2 @@
-ERROR Missing parameter - 101 101
-ERROR Couldn't find the 'myParam' variable - 126 133
+ERROR Missing parameter - 113 113
+ERROR Couldn't find the 'myParam' variable - 138 145

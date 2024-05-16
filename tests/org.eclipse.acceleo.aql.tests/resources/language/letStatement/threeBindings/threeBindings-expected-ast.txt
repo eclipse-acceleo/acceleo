@@ -1,14 +1,14 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..64
+module threeBindings
+  metamodel http://www.eclipse.org/emf/2002/Ecore (23..61)
   
-  public template myTemplate(myParam : EPackage (89..114))
+  public template myTemplate(myParam : EPackage (94..119))
     [let 
-    myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (158..187) (124..187)
-    myVariable1 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (223..252) (188..252)
-    myVariable2 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (288..317) (253..317)
-      some static text. (newLineNeeded) (323..341) (318..343)
-    [/let] (119..349)
-     (newLineNeeded) (349..350) (116..350)
-  [/template] (61..361) (0..361)
+    myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (163..192) (129..192)
+    myVariable1 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (228..257) (193..257)
+    myVariable2 : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (293..322) (258..322)
+      some static text. (newLineNeeded) (328..346) (323..348)
+    [/let] (124..354)
+     (newLineNeeded) (354..355) (121..355)
+  [/template] (66..366) (0..366)

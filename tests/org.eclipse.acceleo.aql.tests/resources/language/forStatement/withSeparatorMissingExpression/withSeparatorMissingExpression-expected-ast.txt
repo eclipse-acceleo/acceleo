@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..81
+module withSeparatorMissingExpression
+  metamodel http://www.eclipse.org/emf/2002/Ecore (40..78)
   
-  public template myTemplate(myParam : EPackage (89..114))
-    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (159..179) (125..179) separator ***ERROR*** (191..191)
-      some static text. (newLineNeeded) (198..216) (193..218)
-    [/for] (119..224)
-     (newLineNeeded) (224..225) (116..225)
-  [/template] (61..236) (0..236)
+  public template myTemplate(myParam : EPackage (111..136))
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (181..201) (147..201) separator ***ERROR*** (213..213)
+      some static text. (newLineNeeded) (220..238) (215..240)
+    [/for] (141..246)
+     (newLineNeeded) (246..247) (138..247)
+  [/template] (83..258) (0..258)

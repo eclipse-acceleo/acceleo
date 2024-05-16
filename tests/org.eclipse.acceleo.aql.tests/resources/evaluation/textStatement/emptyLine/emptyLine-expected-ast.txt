@@ -1,15 +1,15 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (70..76) /] (61..78)
+header position 0..60
+module emptyLine
+  metamodel http://www.eclipse.org/emf/2002/Ecore (19..57)
+  [comment @main  (71..77) /] (62..79)
   
-  public template myTemplate(myParam : EPackage (107..132))
+  public template myTemplate(myParam : EPackage (108..133))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (144..165) mode overwrite
-      before empty line (newLineNeeded) (183..201)
-      NEW_LINE (indentationNeeded)  (newLineNeeded) (205..206)
-      after empty line (newLineNeeded) (210..227) (178..229)
-    [/file] (137..236)
-     (newLineNeeded) (236..237) (134..237)
-  [/template] (79..248) (0..248)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (145..166) mode overwrite
+      before empty line (newLineNeeded) (184..202)
+      NEW_LINE (indentationNeeded)  (newLineNeeded) (206..207)
+      after empty line (newLineNeeded) (211..228) (179..230)
+    [/file] (138..237)
+     (newLineNeeded) (237..238) (135..238)
+  [/template] (80..249) (0..249)

@@ -1,12 +1,12 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..64
+module usingVariable
+  metamodel http://www.eclipse.org/emf/2002/Ecore (23..61)
   
-  public template myTemplate(myParam : EPackage (91..116))
+  public template myTemplate(myParam : EPackage (96..121))
     [let 
-    myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (161..190) (127..190)
-      [.aqlFeatureAccess(myVariable, 'name') (198..213)/] (newLineNeeded (197..217) (191..219)
-    [/let] (122..225)
-     (newLineNeeded) (225..227) (118..227)
-  [/template] (63..238) (0..238)
+    myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (166..195) (132..195)
+      [.aqlFeatureAccess(myVariable, 'name') (203..218)/] (newLineNeeded (202..222) (196..224)
+    [/let] (127..230)
+     (newLineNeeded) (230..232) (123..232)
+  [/template] (68..243) (0..243)

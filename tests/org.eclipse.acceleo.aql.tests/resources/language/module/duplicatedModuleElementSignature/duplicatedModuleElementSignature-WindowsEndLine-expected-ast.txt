@@ -1,12 +1,12 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..83
+module duplicatedModuleElementSignature
+  metamodel http://www.eclipse.org/emf/2002/Ecore (42..80)
   
-  public template generateBody(pkg : EPackage (93..114)) (116..118)
-  [/template] (63..129)
+  public template generateBody(pkg : EPackage (117..138)) (140..142)
+  [/template] (87..153)
   
-  public template generateBody(pkg : EPackage (163..184)) (186..188)
-  [/template] (133..199)
-  public query generateBody(pkg : EPackage (230..251)) ) : java.lang.String '' (268..270)
-  /] (203..274) (0..278)
+  public template generateBody(pkg : EPackage (187..208)) (210..212)
+  [/template] (157..223)
+  public query generateBody(pkg : EPackage (254..275)) ) : java.lang.String '' (292..294)
+  /] (227..298) (0..302)

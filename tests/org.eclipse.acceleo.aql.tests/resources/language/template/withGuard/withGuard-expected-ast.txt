@@ -1,9 +1,9 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..60
+module withGuard
+  metamodel http://www.eclipse.org/emf/2002/Ecore (19..57)
   
-  public template myTemplate(myParam : EPackage (89..114))
-  guard .equals(.aqlFeatureAccess(myParam, 'name'), '') (119..136)
-    some static text. (newLineNeeded) (141..159) (138..159)
-  [/template] (61..170) (0..170)
+  public template myTemplate(myParam : EPackage (90..115))
+  guard .equals(.aqlFeatureAccess(myParam, 'name'), '') (120..137)
+    some static text. (newLineNeeded) (142..160) (139..160)
+  [/template] (62..171) (0..171)

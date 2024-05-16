@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..68
+module thenTypeInference
+  metamodel http://www.eclipse.org/emf/2002/Ecore (27..65)
   
-  public template myTemplate(myParam : EClassifier (89..117))
-    [if .oclIsKindOf(myParam, EClass) (127..161)
-      [.aqlFeatureAccess(myParam, 'eSuperTypes') (169..188)/] (newLineNeeded (168..191) (163..193)
-    [/if] (122..198)
-     (newLineNeeded) (198..199) (119..199)
-  [/template] (61..210) (0..210)
+  public template myTemplate(myParam : EClassifier (98..126))
+    [if .oclIsKindOf(myParam, EClass) (136..170)
+      [.aqlFeatureAccess(myParam, 'eSuperTypes') (178..197)/] (newLineNeeded (177..200) (172..202)
+    [/if] (131..207)
+     (newLineNeeded) (207..208) (128..208)
+  [/template] (70..219) (0..219)

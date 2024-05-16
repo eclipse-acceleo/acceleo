@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..58
+module nominal
+  metamodel http://www.eclipse.org/emf/2002/Ecore (17..55)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [protected .aqlFeatureAccess(myParam, 'name') (134..146)
-      some static text. (newLineNeeded) (154..173) (148..175)
-    [/protected] (122..187)
-     (newLineNeeded) (187..189) (118..189)
-  [/template] (63..200) (0..200)
+  public template myTemplate(myParam : EPackage (90..115))
+    [protected .aqlFeatureAccess(myParam, 'name') (133..145)
+      some static text. (newLineNeeded) (153..172) (147..174)
+    [/protected] (121..186)
+     (newLineNeeded) (186..188) (117..188)
+  [/template] (62..199) (0..199)

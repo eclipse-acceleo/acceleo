@@ -1,4 +1,4 @@
-[module importmoduleQueryPrivate('http://www.eclipse.org/emf/2002/Ecore')/]
+[module importmoduleQueryCollectionCallPrivate('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [import resolution::importmoduleQueryCollectionReceiverPrivate::imported/]
 

@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..102
+module withStartTagPrefixAndEndTagPrefixMissingExpressions
+  metamodel http://www.eclipse.org/emf/2002/Ecore (61..99)
   
-  public template myTemplate(myParam : EPackage (91..116))
-    [protected .aqlFeatureAccess(myParam, 'name') (134..146)
-      some static text. (newLineNeeded) (186..205) (180..207) startTagPrefix ***ERROR*** (163..163) endTagPrefix ***ERROR*** (178..178)
-    [/protected] (122..219)
-     (newLineNeeded) (219..221) (118..221)
-  [/template] (63..232) (0..232)
+  public template myTemplate(myParam : EPackage (134..159))
+    [protected .aqlFeatureAccess(myParam, 'name') (177..189)
+      some static text. (newLineNeeded) (229..248) (223..250) startTagPrefix ***ERROR*** (206..206) endTagPrefix ***ERROR*** (221..221)
+    [/protected] (165..262)
+     (newLineNeeded) (262..264) (161..264)
+  [/template] (106..275) (0..275)

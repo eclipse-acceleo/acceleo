@@ -1,2 +1,2 @@
-ERROR Couldn't find the 'notExisting' variable - 162 173
-ERROR The myVariable variable has no types - 195 205
+ERROR Couldn't find the 'notExisting' variable - 184 195
+ERROR The myVariable variable has no types - 217 227

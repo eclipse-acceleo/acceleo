@@ -1,11 +1,11 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..73
+module missingOpenParenthesis
+  metamodel http://www.eclipse.org/emf/2002/Ecore (32..70)
   *** error template ***
   missing visibility: -1
   missing name: -1
-  missing open parenthesis: 91
+  missing open parenthesis: 105
   missing parameters: -1
   missing close parenthesis: -1
   missing guard open parenthesis: -1
@@ -14,6 +14,6 @@ module myModule
   missing post end header: -1
   missing post end: -1
   
-  public template myTemplate(myParam : EPackage (91..116))
-    some static text. (newLineNeeded) (122..141) (118..141)
-  [/template] (63..152) (0..152)
+  public template myTemplate(myParam : EPackage (105..130))
+    some static text. (newLineNeeded) (136..155) (132..155)
+  [/template] (77..166) (0..166)

@@ -1,19 +1,19 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  [comment @main  (72..78) /] (63..80)
+header position 0..82
+module templateCallUnionTypeParameters
+  metamodel http://www.eclipse.org/emf/2002/Ecore (41..79)
+  [comment @main  (95..101) /] (86..103)
   
-  public template myTemplate(myParam : EPackage (110..135))
+  public template myTemplate(myParam : EPackage (133..158))
   @main
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (148..169) mode overwrite
-      [.myOtherTemplate(myParam) (189..214)/] (newLineNeeded (188..218)
-        -  (222..226)
-      [.myOtherTemplate(.aqlFeatureAccess(myParam, 'eClassifiers')) (227..265)/] (newLineNeeded (226..269) (182..271)
-    [/file] (141..278)
-     (newLineNeeded) (278..280) (137..280)
-  [/template] (82..291)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (171..192) mode overwrite
+      [.myOtherTemplate(myParam) (212..237)/] (newLineNeeded (211..241)
+        -  (245..249)
+      [.myOtherTemplate(.aqlFeatureAccess(myParam, 'eClassifiers')) (250..288)/] (newLineNeeded (249..292) (205..294)
+    [/file] (164..301)
+     (newLineNeeded) (301..303) (160..303)
+  [/template] (105..314)
   
-  public template myOtherTemplate(myParam : {EPackage | EClassifier} (328..376))
-    [.aqlFeatureAccess(myParam, 'name') (383..395)/] (newLineNeeded (382..399) (378..399)
-  [/template] (295..410) (0..410)
+  public template myOtherTemplate(myParam : {EPackage | EClassifier} (351..399))
+    [.aqlFeatureAccess(myParam, 'name') (406..418)/] (newLineNeeded (405..422) (401..422)
+  [/template] (318..433) (0..433)

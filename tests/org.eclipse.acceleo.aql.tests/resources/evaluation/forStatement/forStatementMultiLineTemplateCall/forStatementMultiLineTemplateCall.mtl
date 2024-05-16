@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module forStatementMultiLineTemplateCall('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [comment @main /]
 [template public myTemplate(myParam : ecore::EPackage)]

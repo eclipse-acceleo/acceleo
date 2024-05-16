@@ -1,12 +1,12 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  public query myQuery(myParam : Sequence(java.lang.String)java.util.List (85..111)) ) : java.lang.String 'test' (124..130)
-  /] (63..132)
-  public query myQuery(myParam : Sequence(EPackage)java.util.List (156..191)) ) : java.lang.String 'test' (204..210)
-  /] (134..212)
-  public query myQuery(myParam : OrderedSet(java.lang.String)java.util.Set (238..266)) ) : java.lang.String 'test' (279..285)
-  /] (216..287)
-  public query myQuery(myParam : OrderedSet(EPackage)java.util.Set (311..348)) ) : java.lang.String 'test' (361..367)
-  /] (289..369) (0..369)
+header position 0..75
+module usingCollectionParameter
+  metamodel http://www.eclipse.org/emf/2002/Ecore (34..72)
+  public query myQuery(myParam : Sequence(java.lang.String)java.util.List (101..127)) ) : java.lang.String 'test' (140..146)
+  /] (79..148)
+  public query myQuery(myParam : Sequence(EPackage)java.util.List (172..207)) ) : java.lang.String 'test' (220..226)
+  /] (150..228)
+  public query myQuery(myParam : OrderedSet(java.lang.String)java.util.Set (254..282)) ) : java.lang.String 'test' (295..301)
+  /] (232..303)
+  public query myQuery(myParam : OrderedSet(EPackage)java.util.Set (327..364)) ) : java.lang.String 'test' (377..383)
+  /] (305..385) (0..385)

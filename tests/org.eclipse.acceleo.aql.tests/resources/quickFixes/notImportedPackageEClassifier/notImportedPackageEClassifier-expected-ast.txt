@@ -1,6 +1,6 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  public query calledQuery(myParam : EPackage (87..112)) ) : Module null (134..138)
-  /] (61..140) (0..141)
+header position 0..80
+module notImportedPackageEClassifier
+  metamodel http://www.eclipse.org/emf/2002/Ecore (39..77)
+  public query calledQuery(myParam : EPackage (108..133)) ) : Module null (155..159)
+  /] (82..161) (0..162)

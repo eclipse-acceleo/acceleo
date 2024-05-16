@@ -1,8 +1,8 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  imports org::eclipse::acceleo::notExisting (71..105) (63..107)
-  imports org::eclipse::acceleo::services::notExisting (117..161) (109..163)
-  public query calledQuery(myParam : EPackage (193..218)) ) : EClassifier ->notExistingService(.aqlFeatureAccess(myParam, 'eClassifiers')) (243..285)
-  /] (167..287) (0..289)
+header position 0..93
+module callUnresolvedServiceWithUnresolvedImports
+  metamodel http://www.eclipse.org/emf/2002/Ecore (52..90)
+  imports org::eclipse::acceleo::notExisting (105..139) (97..141)
+  imports org::eclipse::acceleo::services::notExisting (151..195) (143..197)
+  public query calledQuery(myParam : EPackage (227..252)) ) : EClassifier ->notExistingService(.aqlFeatureAccess(myParam, 'eClassifiers')) (277..319)
+  /] (201..321) (0..323)

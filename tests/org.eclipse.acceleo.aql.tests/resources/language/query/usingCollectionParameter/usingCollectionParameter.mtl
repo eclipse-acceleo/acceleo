@@ -1,4 +1,4 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+[module usingCollectionParameter('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [query public myQuery(myParam : Sequence(String)) : String = 'test'/]
 [query public myQuery(myParam : Sequence(ecore::EPackage)) : String = 'test'/]

@@ -1,18 +1,18 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..63
+module missingComma
+  metamodel http://www.eclipse.org/emf/2002/Ecore (22..60)
   
-  public template myTemplate(myParam : EPackage (91..116))
+  public template myTemplate(myParam : EPackage (95..120))
     *** error file statement ***
     missing open mode: -1
     missing open parenthesis: -1
-    missing comma: 151
+    missing comma: 155
     missing close parenthesis: -1
     missing end header: -1
     missing end: -1
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (129..150) mode overwrite
-      some static text. (newLineNeeded) (168..187) (162..189)
-    [/file] (122..196)
-     (newLineNeeded) (196..198) (118..198)
-  [/template] (63..209) (0..209)
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (133..154) mode overwrite
+      some static text. (newLineNeeded) (172..191) (166..193)
+    [/file] (126..200)
+     (newLineNeeded) (200..202) (122..202)
+  [/template] (67..213) (0..213)

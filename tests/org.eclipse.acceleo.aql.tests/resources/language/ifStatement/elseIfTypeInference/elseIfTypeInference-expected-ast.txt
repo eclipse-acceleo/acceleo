@@ -1,15 +1,15 @@
 
-header position 0..59
-module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+header position 0..70
+module elseIfTypeInference
+  metamodel http://www.eclipse.org/emf/2002/Ecore (29..67)
   
-  public template myTemplate(myParam : EClassifier (89..117))
-    [if .equals(.aqlFeatureAccess(myParam, 'name'), '') (127..144)
-      some static text. (newLineNeeded) (151..169) (146..171)
+  public template myTemplate(myParam : EClassifier (100..128))
+    [if .equals(.aqlFeatureAccess(myParam, 'name'), '') (138..155)
+      some static text. (newLineNeeded) (162..180) (157..182)
     [else]
-      [if .oclIsKindOf(myParam, EClass) (180..214)
-        [.aqlFeatureAccess(myParam, 'eSuperTypes') (222..241)/] (newLineNeeded (221..244) (216..246)
-      [/if] (171..251) (-1..-1)
-    [/if] (122..251)
-     (newLineNeeded) (251..252) (119..252)
-  [/template] (61..263) (0..263)
+      [if .oclIsKindOf(myParam, EClass) (191..225)
+        [.aqlFeatureAccess(myParam, 'eSuperTypes') (233..252)/] (newLineNeeded (232..255) (227..257)
+      [/if] (182..262) (-1..-1)
+    [/if] (133..262)
+     (newLineNeeded) (262..263) (130..263)
+  [/template] (72..274) (0..274)
