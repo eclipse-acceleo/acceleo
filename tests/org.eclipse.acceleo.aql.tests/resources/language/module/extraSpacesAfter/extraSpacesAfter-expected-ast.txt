@@ -1,0 +1,4 @@
+
+header position 0..67
+module extraSpacesAfter
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64) (0..77)

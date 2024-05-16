@@ -877,6 +877,7 @@ public class AcceleoParser {
 	protected Module parseModule(List<Comment> comments) {
 		final Module res;
 
+		skipSpaces();
 		if (text.startsWith(MODULE_HEADER_START, currentPosition)) {
 			// Start of the whole module, including comments and documentation that may be before the
 			// '[module' declaration.
