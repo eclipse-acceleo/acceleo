@@ -1,13 +1,13 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Contexts: _d8d2kKyFEeqylZAj0d4Xnw,_Ayow4KrpEeqpkej7GeVvKQ
-Element-Name: LaunchRunValidate
+Element-Name: LaunchRunValidateFileSystem
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
-Id: _kQf3MLN0Ee2kZdZD_a54_g
+Id: _lEKKcBRREe-GQsEketulMQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 2/23/23, 4:32 PM
+Save-Time: 5/17/24, 3:35 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -28,7 +28,7 @@ with [get-window "Run Configurations"] {
     get-button Run | get-property enablement | equals false | verify-true
 }
 with [get-window "Run Configurations"] {
-    get-group "Module file:" | get-button "Browse..." | click -metaKeys ""
+    get-group "Module file:" | get-button "Workspace..." | click -metaKeys ""
     get-window "Select a module file" | get-tree | select "test/src/test/otherModule.mtl" | double-click
 }
 with [get-window "Run Configurations"] {
@@ -38,7 +38,7 @@ with [get-window "Run Configurations"] {
     get-button Run | get-property enablement | equals false | verify-true
 }
 with [get-window "Run Configurations"] {
-    get-group "Module file:" | get-button "Browse..." | click -metaKeys ""
+    get-group "Module file:" | get-button "Workspace..." | click -metaKeys ""
     get-window "Select a module file" | get-tree | select "test/src/test/test.mtl" | double-click
 }
 with [get-window "Run Configurations"] {
@@ -47,25 +47,18 @@ with [get-window "Run Configurations"] {
         | equals "Select a model file." | verify-true
     get-button Run | get-property enablement | equals false | verify-true
 }
+set-dialog-result File "platform:/resource/test/test.xmi"
+get-window "Run Configurations" | get-group "Model file:" | get-button "File system..." | click -metaKeys ""
 with [get-window "Run Configurations"] {
-    get-group "Model file:" | get-button "Browse..." | click -metaKeys ""
-    get-window "Select the model file" | get-table | select "test.xmi - test" | double-click
-}
-with [get-window "Run Configurations"] {
-    get-group "Model file:" | get-editbox | get-property text | equals "/test/test.xmi" | verify-true
+    get-group "Model file:" | get-editbox | get-property text | matches "file:.*?/test/test.xmi" | verify-true
     get-editbox -after [get-label "Create, manage, and run configurations"] | get-property text 
         | equals "Select a destination folder." | verify-true
     get-button Run | get-property enablement | equals false | verify-true
 }
+set-dialog-result Folder "platform:/resource/test/generated"
+get-window "Run Configurations" | get-group "Destination folder:" | get-button "File system..." | click -metaKeys ""
 with [get-window "Run Configurations"] {
-    get-group "Destination folder:" | get-button "Browse..." | click -metaKeys ""
-    with [get-window "Select the destination folder"] {
-        get-tree | select "test/generated"
-        get-button OK | click -metaKeys ""
-    }
-}
-with [get-window "Run Configurations"] {
-    get-group "Destination folder:" | get-editbox | get-property text | equals "/test/generated" | verify-true
+    get-group "Destination folder:" | get-editbox | get-property text | matches "file:.*?/test/generated/" | verify-true
     get-editbox -after [get-label "Create, manage, and run configurations"] | get-property text 
         | equals "Run and Debug Acceleo 4 generation" | verify-true
     get-button Run | get-property enablement | equals true | verify-true

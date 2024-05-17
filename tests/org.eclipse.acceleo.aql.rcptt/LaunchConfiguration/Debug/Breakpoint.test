@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _y9cjEMErEeqjcPTfvO5d8Q
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 4/18/24, 3:33 PM
+Save-Time: 5/16/24, 3:52 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -33,7 +33,7 @@ with [get-window "Debug Configurations"] {
     get-group "Module file:" | get-editbox | get-property text | equals "/test/src/test/test.mtl" | verify-true
 }
 with [get-window "Debug Configurations"] {
-    get-group "Model file:" | get-button "Browse..." | click -metaKeys ""
+    get-group "Model file:" | get-button "Workspace..." | click -metaKeys ""
     get-window "Select the model file" | get-table | select "test.xmi - test" | double-click
 }
 get-window "Debug Configurations" | get-group "Model file:" | get-editbox | get-property text | equals "/test/test.xmi" 
@@ -41,7 +41,7 @@ get-window "Debug Configurations" | get-group "Model file:" | get-editbox | get-
 get-window "Debug Configurations" | get-editbox -after [get-label "Create, manage, and run configurations"] 
     | get-property text | equals "Select a destination folder." | verify-true
 with [get-window "Debug Configurations"] {
-    get-group "Destination folder:" | get-button "Browse..." | click -metaKeys ""
+    get-group "Destination folder:" | get-button "Workspace..." | click -metaKeys ""
     with [get-window "Select the destination folder"] {
         get-tree | select "test/generated"
         get-button OK | click -metaKeys ""

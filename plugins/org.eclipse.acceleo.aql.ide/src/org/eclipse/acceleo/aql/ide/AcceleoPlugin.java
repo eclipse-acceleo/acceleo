@@ -15,6 +15,7 @@ package org.eclipse.acceleo.aql.ide;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Collections;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
@@ -27,6 +28,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
  * Plugin's activator class.
@@ -134,7 +137,8 @@ public class AcceleoPlugin extends EMFPlugin {
 	}
 
 	/**
-	 * Tells if the given resource is a Acceleo {@link Module} with a {@link Template#isMain() main template}.
+	 * Tells if the given {@link IResource} is a Acceleo {@link Module} with a {@link Template#isMain() main
+	 * template}.
 	 * 
 	 * @param resource
 	 *            the {@link IResource}
@@ -144,12 +148,52 @@ public class AcceleoPlugin extends EMFPlugin {
 	public static boolean isAcceleoMain(IResource resource) {
 		boolean res = false;
 
-		final AcceleoParser parser = new AcceleoParser();
-		final IFile file = (IFile)resource;
-		if (file.isAccessible()) {
-			try (InputStream contents = file.getContents()) {
-				final Module module = parser.parse(contents, Charset.forName(file.getCharset()), "none")
-						.getModule();
+		if (resource instanceof IFile) {
+			final IFile file = (IFile)resource;
+			if (file.isAccessible()) {
+				final AcceleoParser parser = new AcceleoParser();
+				try (InputStream contents = file.getContents()) {
+					final Module module = parser.parse(contents, Charset.forName(file.getCharset()), "none")
+							.getModule();
+					for (ModuleElement element : module.getModuleElements()) {
+						if (element instanceof Template && ((Template)element).isMain()) {
+							res = true;
+							break;
+						}
+					}
+				} catch (IOException e) {
+					AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
+							"couldn't parse module " + resource.getFullPath(), e));
+				} catch (CoreException e) {
+					AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
+							"couldn't parse module " + resource.getFullPath(), e));
+				}
+			} else {
+				res = false;
+			}
+		} else {
+			res = false;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link URI} is a Acceleo {@link Module} with a {@link Template#isMain() main
+	 * template}.
+	 * 
+	 * @param uri
+	 *            the {@link URI}
+	 * @return <code>true</code> if the given resource is a Acceleo {@link Module} with a
+	 *         {@link Template#isMain() main template}, <code>false</code> otherwise
+	 */
+	public static boolean isAcceleoMain(URIConverter uriConverter, URI uri, Charset charset) {
+		boolean res = false;
+
+		if (uriConverter.exists(uri, Collections.emptyMap())) {
+			final AcceleoParser parser = new AcceleoParser();
+			try (InputStream is = uriConverter.createInputStream(uri)) {
+				final Module module = parser.parse(is, charset, "none").getModule();
 				for (ModuleElement element : module.getModuleElements()) {
 					if (element instanceof Template && ((Template)element).isMain()) {
 						res = true;
@@ -158,10 +202,7 @@ public class AcceleoPlugin extends EMFPlugin {
 				}
 			} catch (IOException e) {
 				AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
-						"couldn't parse module " + resource.getFullPath(), e));
-			} catch (CoreException e) {
-				AcceleoPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoPlugin.PLUGIN_ID,
-						"couldn't parse module " + resource.getFullPath(), e));
+						"couldn't parse module " + uri, e));
 			}
 		} else {
 			res = false;

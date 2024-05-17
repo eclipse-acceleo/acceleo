@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -173,7 +175,7 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	 */
 	private Text createProfileModelEditor(final Composite parent) {
 		final Group group = new Group(parent, parent.getStyle());
-		group.setLayout(new GridLayout(2, false));
+		group.setLayout(new GridLayout(3, false));
 		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		group.setText("Profile model:");
 		final Text res = new Text(group, SWT.BORDER);
@@ -186,11 +188,18 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
-		Button browseButton = createPushButton(group, BROWSE, null);
-		browseButton.addListener(SWT.Selection, new Listener() {
+		Button workspaceButton = createPushButton(group, WORKSPACE, null);
+		workspaceButton.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				handleBrowseProfileModelButton();
+				handleWorkspaceProfileModelButton();
+			}
+		});
+		Button fileSystemButton = createPushButton(group, FILE_SYSTEM, null);
+		fileSystemButton.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				handleFileSystemProfileModelButton();
 			}
 		});
 		return res;
@@ -227,7 +236,7 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 	/**
 	 * Show a dialog that lists all the models.
 	 */
-	private void handleBrowseProfileModelButton() {
+	private void handleWorkspaceProfileModelButton() {
 		final AbstractResourceSelectionDialog dialog = new FileSelectionDialog(getShell(),
 				"Select the profile model", profileModel, ProfilerUtils.PROFILE_EXTENSION, false);
 		final int dialogResult = dialog.open();
@@ -239,6 +248,29 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 				profileModelText.setText(path + "profiling." + ProfilerUtils.PROFILE_EXTENSION); //$NON-NLS-1$
 			} else {
 				profileModelText.setText(path + "/profiling." + ProfilerUtils.PROFILE_EXTENSION); //$NON-NLS-1$
+			}
+			setDirty(isDirty());
+		}
+	}
+
+	/**
+	 * Show a dialog that lists all the models.
+	 */
+	private void handleFileSystemProfileModelButton() {
+		final FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+		dialog.setText("Select the profile model");
+		String[] filterExt = {"*." + ProfilerUtils.PROFILE_EXTENSION, "*.*" };
+		dialog.setFilterExtensions(filterExt);
+		final String selected = dialog.open();
+		if (selected != null) {
+			if (selected.endsWith(ProfilerUtils.PROFILE_EXTENSION)) {
+				profileModelText.setText(URI.createFileURI(selected).toString());
+			} else if (selected.endsWith("/")) { //$NON-NLS-1$
+				profileModelText.setText(URI.createFileURI(selected + "profiling." //$NON-NLS-1$
+						+ ProfilerUtils.PROFILE_EXTENSION).toString());
+			} else {
+				profileModelText.setText(URI.createFileURI(selected + "/profiling." //$NON-NLS-1$
+						+ ProfilerUtils.PROFILE_EXTENSION).toString());
 			}
 			setDirty(isDirty());
 		}

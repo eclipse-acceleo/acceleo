@@ -473,7 +473,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 		final String profileModel = (String)arguments.get(PROFILE_MODEL);
 		if (profileModel != null) {
-			profileModelURI = URI.createFileURI(URI.decode(profileModel));
+			profileModelURI = URI.createURI(profileModel);
 		}
 		final String profilerModelRepresentationString = (String)arguments.get(PROFILE_MODEL_REPRESENTATION);
 		if (profilerModelRepresentationString != null) {

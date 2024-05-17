@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.ls.debug.ide.launch;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.net.URI;
 
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
@@ -54,22 +55,38 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 			param.addProperty(AcceleoDebugger.MODULE, moduleUri.toString());
 		}
 		if (wc.hasAttribute(AcceleoDebugger.MODEL)) {
-			final IFile model = root.getFile(new Path(wc.getAttribute(AcceleoDebugger.MODEL, (String)null)));
-			final URI modelUri = model.getLocation().toFile().getAbsoluteFile().toURI();
+			final URI modelUri;
+			final String modelAttribute = wc.getAttribute(AcceleoDebugger.MODEL, (String)null);
+			if (modelAttribute.startsWith("file:")) {
+				modelUri = URI.create(modelAttribute);
+			} else {
+				final IFile model = root.getFile(new Path(modelAttribute));
+				modelUri = model.getLocation().toFile().getAbsoluteFile().toURI();
+			}
 			param.addProperty(AcceleoDebugger.MODEL, modelUri.toString());
 		}
 		if (wc.hasAttribute(AcceleoDebugger.DESTINATION)) {
-			final Path destinationPath = new Path(wc.getAttribute(AcceleoDebugger.DESTINATION, (String)null));
-			IResource destination = root.findMember(destinationPath);
-			if (destination instanceof IFile) {
-				destination = destination.getParent();
-			} else if (destination == null) {
-				destination = root.getFolder(destinationPath);
-				if (!destination.exists()) {
-					((IFolder)destination).create(true, true, monitor);
+			final String destinationAttribute = wc.getAttribute(AcceleoDebugger.DESTINATION, (String)null);
+			final URI destinationUri;
+			if (destinationAttribute.startsWith("file:")) {
+				destinationUri = URI.create(destinationAttribute);
+				File file = new File(destinationUri);
+				if (!file.exists()) {
+					file.mkdirs();
 				}
+			} else {
+				final Path destinationPath = new Path(destinationAttribute);
+				IResource destination = root.findMember(destinationPath);
+				if (destination instanceof IFile) {
+					destination = destination.getParent();
+				} else if (destination == null) {
+					destination = root.getFolder(destinationPath);
+					if (!destination.exists()) {
+						((IFolder)destination).create(true, true, monitor);
+					}
+				}
+				destinationUri = destination.getLocation().toFile().getAbsoluteFile().toURI();
 			}
-			final URI destinationUri = destination.getLocation().toFile().getAbsoluteFile().toURI();
 			param.addProperty(AcceleoDebugger.DESTINATION, destinationUri.toString());
 		}
 		if (wc.hasAttribute(AcceleoDebugger.OPTIONS)) {
@@ -78,10 +95,16 @@ public class AcceleoLaunchConfigurationDelegate extends DSPLaunchDelegate {
 		}
 		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
 			if (wc.hasAttribute(AcceleoDebugger.PROFILE_MODEL)) {
-				final IFile profileModel = root.getFile(new Path(wc.getAttribute(
-						AcceleoDebugger.PROFILE_MODEL, (String)null)));
-				param.addProperty(AcceleoDebugger.PROFILE_MODEL, profileModel.getLocation().toFile()
-						.getAbsoluteFile().toString());
+				final String profileModelAttribute = wc.getAttribute(AcceleoDebugger.PROFILE_MODEL,
+						(String)null);
+				final URI profileModelUri;
+				if (profileModelAttribute.startsWith("file:")) {
+					profileModelUri = URI.create(profileModelAttribute);
+				} else {
+					final IFile profileModel = root.getFile(new Path(profileModelAttribute));
+					profileModelUri = profileModel.getLocation().toFile().getAbsoluteFile().toURI();
+				}
+				param.addProperty(AcceleoDebugger.PROFILE_MODEL, profileModelUri.toString());
 			}
 			if (wc.hasAttribute(AcceleoDebugger.PROFILE_MODEL_REPRESENTATION)) {
 				param.addProperty(AcceleoDebugger.PROFILE_MODEL_REPRESENTATION, wc.getAttribute(
