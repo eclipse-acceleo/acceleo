@@ -1,0 +1,2 @@
+ERROR Couldn't find the 'notExistingService(EClassifier=EClassifier)' service - 183 204
+WARNING EClassifier=EClassifier is incompatible with Nothing(Couldn't find the 'notExistingService(EClassifier=EClassifier)' service) - 87 206

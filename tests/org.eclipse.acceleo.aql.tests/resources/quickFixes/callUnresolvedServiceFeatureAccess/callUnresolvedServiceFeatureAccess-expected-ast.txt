@@ -1,0 +1,6 @@
+
+header position 0..85
+module callUnresolvedServiceFeatureAccess
+  metamodel http://www.eclipse.org/emf/2002/Ecore (44..82)
+  public query calledQuery(myParam : EPackage (113..138)) ) : EClassifier .notExistingService(.aqlFeatureAccess(myParam, 'eClassifiers')) (163..204)
+  /] (87..206) (0..207)

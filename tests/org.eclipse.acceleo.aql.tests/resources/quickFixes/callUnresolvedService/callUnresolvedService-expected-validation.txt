@@ -1,2 +1,0 @@
-ERROR Couldn't find the 'notExistingService(Sequence(EClassifier=EClassifier))' service - 170 192
-WARNING EClassifier=EClassifier is incompatible with Nothing(Couldn't find the 'notExistingService(Sequence(EClassifier=EClassifier))' service) - 74 194

@@ -1,10 +1,10 @@
 //@moduleElements.1/@body/@statements.0/@body/@statements.1/@expression/@aql
 Add template t41(Set(EClassifier=EClass)) to this module
 Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/resolution/importmoduleQueryCollectionCallPrivate/importmoduleQueryCollectionCallPrivate.mtl [355, 11, 0, 355, 11, 0] 
-[template public t41(parameter0 : OrderedSet(ecore::EClass))]
+[template public t41(param1 : OrderedSet(ecore::EClass))]
 [/template]
 Add template t41(Set(EClassifier=EClass)) to resolution::importmoduleQueryCollectionReceiverPrivate::imported
 Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/resolution/importmoduleQueryCollectionReceiverPrivate/imported.mtl [155, 2, 94, 155, 2, 94] 
 
-[template public t41(parameter0 : OrderedSet(ecore::EClass))]
+[template public t41(param1 : OrderedSet(ecore::EClass))]
 [/template]

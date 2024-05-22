@@ -1,0 +1,8 @@
+
+header position 0..92
+module callUnresolvedServiceGetterCollectionCall
+  metamodel http://www.eclipse.org/emf/2002/Ecore (51..89)
+  public query calledQuery(myParam : EPackage (122..147)) ) : EClassifier ->notExistingService(.getInterestingResults(.aqlFeatureAccess(myParam, 'eClassifiers'))) (172..238)
+  /] (96..240)
+  public query getInterestingResults(myParam : EClassifier (280..308)) ) : Sequence(EClassifier)java.util.List Sequence{myParam, } (343..360)
+  /] (244..362) (0..364)

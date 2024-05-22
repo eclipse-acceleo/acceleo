@@ -53,7 +53,9 @@ import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.query.parser.CombineIterator;
@@ -63,8 +65,10 @@ import org.eclipse.acceleo.query.parser.quickfixes.AstQuickFixesSwitch;
 import org.eclipse.acceleo.query.parser.quickfixes.AstTextReplacement;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstTextReplacement;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -73,6 +77,11 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
+/**
+ * The Acceleo implementation of the {@link AstQuickFixesSwitch}.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
 public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 
 	/**
@@ -177,6 +186,15 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		return res;
 	}
 
+	/**
+	 * Gets the surround with {@link LetStatement} {@link IAstQuickFix} for the given {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 * @param containingStatement
+	 *            the containing {@link Statement}
+	 * @return the surround with {@link LetStatement} {@link IAstQuickFix} for the given {@link VarRef}
+	 */
 	private List<IAstQuickFix> getSurroundWithLetStatementQuickFix(VarRef varRef,
 			final Statement containingStatement) {
 		final List<IAstQuickFix> res = new ArrayList<>();
@@ -225,6 +243,15 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		return res;
 	}
 
+	/**
+	 * Get the add parameter {@link IAstQuickFix} for the given {@link VarRef}.
+	 * 
+	 * @param varRef
+	 *            the {@link VarRef}
+	 * @param moduleElement
+	 *            the surrounding {@link ModuleElement}.
+	 * @return the add parameter {@link IAstQuickFix} for the given {@link VarRef}
+	 */
 	private List<IAstQuickFix> getAddParameterQuickFixes(VarRef varRef, final ModuleElement moduleElement) {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
@@ -318,8 +345,52 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final IType returnType = new ClassType(queryEnvironment, String.class);
 		final List<Set<IType>> argumentTypes = getArgumentPossibleTypes(call);
 		final CombineIterator<IType> combineIt = new CombineIterator<>(argumentTypes);
+		final List<String> parameterNames = getParameterNames(call);
 		while (combineIt.hasNext()) {
-			res.addAll(getAddServiceQuickFixes(call.getServiceName(), returnType, combineIt.next()));
+			res.addAll(getAddServiceQuickFixes(call.getServiceName(), parameterNames, returnType, combineIt
+					.next()));
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of parameter Names for the given {@link Call}.
+	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @return the {@link List} of parameter Names for the given {@link Call}
+	 */
+	private List<String> getParameterNames(Call call) {
+		final List<String> res = new ArrayList<>();
+
+		int i = 0;
+		for (Expression argument : call.getArguments()) {
+			if (argument instanceof VarRef) {
+				res.add(((VarRef)argument).getVariableName());
+			} else if (argument instanceof Call) {
+				final String serviceName = ((Call)argument).getServiceName();
+				if (AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(serviceName)) {
+					if (((Call)argument).getArguments().get(1) instanceof StringLiteral) {
+						res.add(((StringLiteral)((Call)argument).getArguments().get(1)).getValue());
+					} else {
+						res.add("parameter" + i++);
+					}
+				} else {
+					if (serviceName.startsWith("get")) {
+						res.add(new StringServices().toLowerFirst(serviceName.substring(3)));
+					} else {
+						res.add(serviceName);
+					}
+				}
+			} else {
+				res.add("parameter" + i++);
+			}
+		}
+
+		if (res.get(0).endsWith("s") && call.getType() != CallType.COLLECTIONCALL) {
+			final String oldName = res.remove(0);
+			res.add(0, oldName.substring(0, oldName.length() - 1));
 		}
 
 		return res;
@@ -455,8 +526,22 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		return res;
 	}
 
-	private List<IAstQuickFix> getAddServiceQuickFixes(String serviceName, IType returnType,
-			List<IType> argumentTypes) {
+	/**
+	 * Gets the {@link List} of {@link IAstQuickFix} for missing {@link IService} (add a {@link Template},
+	 * {@link Query}, java method).
+	 * 
+	 * @param serviceName
+	 *            the {@link IService}'s {@link IService#getName() name}
+	 * @param parameterNames
+	 *            parameter names
+	 * @param returnType
+	 *            the return type
+	 * @param argumentTypes
+	 *            argument types
+	 * @return the {@link List} of {@link IAstQuickFix} for missing {@link IService}
+	 */
+	private List<IAstQuickFix> getAddServiceQuickFixes(String serviceName, List<String> parameterNames,
+			IType returnType, List<IType> argumentTypes) {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
 		final String signature = getSignature(serviceName, argumentTypes);
@@ -465,15 +550,15 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		if (isQueryModule(moduleQualifiedName)) {
 			final IAstQuickFix fix = new AstQuickFix("Add query " + signature + " to this module");
 			if (uri != null && "file".equals(uri.getScheme())) {
-				fix.getTextReplacements().add(getQueryReplacement(uri, module, serviceName, returnType,
-						argumentTypes));
+				fix.getTextReplacements().add(getQueryReplacement(uri, module, serviceName, parameterNames,
+						returnType, argumentTypes));
 			}
 			res.add(fix);
 		} else {
 			final IAstQuickFix fix = new AstQuickFix("Add template " + signature + " to this module");
 			if (uri != null && "file".equals(uri.getScheme())) {
-				fix.getTextReplacements().add(getTemplateReplacement(uri, module, serviceName, returnType,
-						argumentTypes));
+				fix.getTextReplacements().add(getTemplateReplacement(uri, module, serviceName, parameterNames,
+						returnType, argumentTypes));
 			}
 			res.add(fix);
 		}
@@ -499,7 +584,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 					final URI sourceURI = resolver.getSourceURI(qName);
 					if (sourceURI != null && "file".equals(sourceURI.getScheme())) {
 						fix.getTextReplacements().add(getQueryReplacement(sourceURI, (Module)resolved,
-								serviceName, returnType, argumentTypes));
+								serviceName, parameterNames, returnType, argumentTypes));
 					}
 					res.add(fix);
 				} else {
@@ -507,7 +592,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 					final URI sourceURI = resolver.getSourceURI(qName);
 					if (sourceURI != null && "file".equals(sourceURI.getScheme())) {
 						fix.getTextReplacements().add(getTemplateReplacement(sourceURI, (Module)resolved,
-								serviceName, returnType, argumentTypes));
+								serviceName, parameterNames, returnType, argumentTypes));
 					}
 					res.add(fix);
 				}
@@ -519,7 +604,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 						final String classContents = AcceleoUtil.getContent(is, StandardCharsets.UTF_8
 								.name());
 						fix.getTextReplacements().add(getServiceReplacement(sourceURI, (Class<?>)resolved,
-								classContents, serviceName, returnType, argumentTypes));
+								classContents, serviceName, parameterNames, returnType, argumentTypes));
 						res.add(fix);
 					} catch (MalformedURLException e) {
 						// TODO Auto-generated catch block
@@ -535,8 +620,23 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		return res;
 	}
 
+	/**
+	 * Gets the add {@link Query} {@link IAstTextReplacement}.
+	 * 
+	 * @param sourceURI
+	 *            the source resource {@link URI}
+	 * @param serviceName
+	 *            the {@link IService}'s {@link IService#getName() name}
+	 * @param parameterNames
+	 *            parameter names
+	 * @param returnType
+	 *            the return type
+	 * @param argumentTypes
+	 *            argument types
+	 * @return the add {@link Query} {@link IAstTextReplacement}
+	 */
 	private IAstTextReplacement getQueryReplacement(URI sourceURI, Module module, String serviceName,
-			IType returnType, List<IType> argumentTypes) {
+			List<String> parameterNames, IType returnType, List<IType> argumentTypes) {
 		final Query query = AcceleoPackage.eINSTANCE.getAcceleoFactory().createQuery();
 		query.setVisibility(VisibilityKind.PUBLIC);
 		query.setName(serviceName);
@@ -547,7 +647,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		int i = 0;
 		for (IType type : argumentTypes) {
 			final Variable parameter = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
-			parameter.setName("parameter" + i++);
+			parameter.setName(parameterNames.get(i++));
 			parameter.setType(parseWhileAqlTypeLiteral(getAqlTypeString(type)));
 			query.getParameters().add(parameter);
 		}
@@ -567,15 +667,30 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		return res;
 	}
 
+	/**
+	 * Gets the add {@link Template} {@link IAstTextReplacement}.
+	 * 
+	 * @param sourceURI
+	 *            the source resource {@link URI}
+	 * @param serviceName
+	 *            the {@link IService}'s {@link IService#getName() name}
+	 * @param parameterNames
+	 *            parameter names
+	 * @param returnType
+	 *            the return type
+	 * @param argumentTypes
+	 *            argument types
+	 * @return the add {@link Template} {@link IAstTextReplacement}
+	 */
 	private IAstTextReplacement getTemplateReplacement(URI sourceURI, Module module, String serviceName,
-			IType returnType, List<IType> argumentTypes) {
+			List<String> parameterNames, IType returnType, List<IType> argumentTypes) {
 		final Template template = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTemplate();
 		template.setVisibility(VisibilityKind.PUBLIC);
 		template.setName(serviceName);
 		int i = 0;
 		for (IType type : argumentTypes) {
 			final Variable parameter = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
-			parameter.setName("parameter" + i++);
+			parameter.setName(parameterNames.get(i++));
 			parameter.setType(parseWhileAqlTypeLiteral(getAqlTypeString(type)));
 			template.getParameters().add(parameter);
 		}
@@ -597,8 +712,23 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		return res;
 	}
 
+	/**
+	 * Gets the add Java method {@link IAstTextReplacement}.
+	 * 
+	 * @param sourceURI
+	 *            the source resource {@link URI}
+	 * @param serviceName
+	 *            the {@link IService}'s {@link IService#getName() name}
+	 * @param parameterNames
+	 *            parameter names
+	 * @param returnType
+	 *            the return type
+	 * @param argumentTypes
+	 *            argument types
+	 * @return the add Java method {@link IAstTextReplacement}
+	 */
 	private IAstTextReplacement getServiceReplacement(URI sourceURI, Class<?> cls, String classContent,
-			String serviceName, IType returnType, List<IType> argumentTypes) {
+			String serviceName, List<String> parameterNames, IType returnType, List<IType> argumentTypes) {
 
 		final StringBuilder replacement = new StringBuilder();
 		replacement.append("\tpublic ");
@@ -616,7 +746,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final StringJoiner joiner = new StringJoiner(AcceleoParser.COMMA + SPACE);
 		int i = 0;
 		for (IType type : argumentTypes) {
-			joiner.add(getJavaStringType(type) + " parameter" + i++);
+			joiner.add(getJavaStringType(type) + " " + parameterNames.get(i++));
 		}
 		replacement.append(joiner.toString());
 		replacement.append(") {" + newLine);
@@ -661,11 +791,28 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		return res;
 	}
 
+	/**
+	 * Tells if the given qualified name should only contains {@link Query}.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name
+	 * @return <code>true</code> if the given qualified name should only contains {@link Query},
+	 *         <code>false</code> otherwise
+	 */
 	private boolean isQueryModule(String qualifiedName) {
 		return qualifiedName.contains(AcceleoParser.QUALIFIER_SEPARATOR + "requests"
 				+ AcceleoParser.QUALIFIER_SEPARATOR);
 	}
 
+	/**
+	 * Gets the signature for the given service name and argument types.
+	 * 
+	 * @param serviceName
+	 *            the service name
+	 * @param argumentTypes
+	 *            the argument types
+	 * @return the signature for the given service name and argument types
+	 */
 	private String getSignature(String serviceName, List<IType> argumentTypes) {
 		final StringBuilder res = new StringBuilder();
 

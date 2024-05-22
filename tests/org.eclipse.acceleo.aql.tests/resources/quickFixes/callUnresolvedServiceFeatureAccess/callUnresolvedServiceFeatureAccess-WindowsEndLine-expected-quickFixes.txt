@@ -1,0 +1,5 @@
+//@moduleElements.0/@body/@aql
+Add template notExistingService(EClassifier=EClassifier) to this module
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/quickFixes/callUnresolvedServiceFeatureAccess/callUnresolvedServiceFeatureAccess.mtl [210, 3, 0, 210, 3, 0] 
+[template public notExistingService(eClassifier : ecore::EClassifier)]
+[/template]
