@@ -63,6 +63,7 @@ import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -446,6 +447,11 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	private AcceleoDebugEvaluator evaluator;
 
 	/**
+	 * The module {@link IFile}.
+	 */
+	private IResource moduleFile;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param target
@@ -480,7 +486,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			profilerModelRepresentation = Representation.valueOf(profilerModelRepresentationString);
 		}
 
-		final IProject project = LSPEclipseUtils.findResourceFor((String)arguments.get(MODULE)).getProject();
+		moduleFile = LSPEclipseUtils.findResourceFor((String)arguments.get(MODULE));
+		final IProject project = moduleFile.getProject();
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
 				AcceleoParser.QUALIFIER_SEPARATOR, false);
@@ -545,8 +552,10 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final AcceleoEvaluator noDebugEvaluator;
 		final IProfiler profiler;
 		if (profileModelURI != null && profilerModelRepresentation != null) {
-			profiler = ProfilerUtils.getProfiler(profilerModelRepresentation, ProfilerPackage.eINSTANCE
-					.getProfilerFactory());
+			final String workspaceModuleFilePath = moduleFile.getFullPath().toString();
+			final URI startFileURI = URI.createPlatformResourceURI(workspaceModuleFilePath, true);
+			profiler = ProfilerUtils.getProfiler(startFileURI.toString(), profilerModelRepresentation,
+					ProfilerPackage.eINSTANCE.getProfilerFactory());
 			noDebugEvaluator = new AcceleoProfilerEvaluator(queryEnvironment, newLine, profiler);
 		} else {
 			noDebugEvaluator = new AcceleoEvaluator(environment.getLookupEngine(), newLine);

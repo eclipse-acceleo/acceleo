@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileResourceImpl#getEntry <em>Entry</em>}</li>
+ * <li>{@link org.eclipse.acceleo.aql.profiler.impl.ProfileResourceImpl#getStartResource <em>Start
+ * Resource</em>}</li>
  * </ul>
  *
  * @generated
@@ -42,6 +44,26 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	 * @ordered
 	 */
 	protected ProfileEntry entry;
+
+	/**
+	 * The default value of the '{@link #getStartResource() <em>Start Resource</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getStartResource()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String START_RESOURCE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getStartResource() <em>Start Resource</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getStartResource()
+	 * @generated
+	 * @ordered
+	 */
+	protected String startResource = START_RESOURCE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -120,6 +142,30 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 	 * @generated
 	 */
 	@Override
+	public String getStartResource() {
+		return startResource;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setStartResource(String newStartResource) {
+		String oldStartResource = startResource;
+		startResource = newStartResource;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					ProfilerPackage.PROFILE_RESOURCE__START_RESOURCE, oldStartResource, startResource));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
@@ -138,6 +184,8 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 		switch (featureID) {
 			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
 				return getEntry();
+			case ProfilerPackage.PROFILE_RESOURCE__START_RESOURCE:
+				return getStartResource();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -152,6 +200,9 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 		switch (featureID) {
 			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
 				setEntry((ProfileEntry)newValue);
+				return;
+			case ProfilerPackage.PROFILE_RESOURCE__START_RESOURCE:
+				setStartResource((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -168,6 +219,9 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
 				setEntry((ProfileEntry)null);
 				return;
+			case ProfilerPackage.PROFILE_RESOURCE__START_RESOURCE:
+				setStartResource(START_RESOURCE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -182,8 +236,28 @@ public class ProfileResourceImpl extends EObjectImpl implements ProfileResource 
 		switch (featureID) {
 			case ProfilerPackage.PROFILE_RESOURCE__ENTRY:
 				return entry != null;
+			case ProfilerPackage.PROFILE_RESOURCE__START_RESOURCE:
+				return START_RESOURCE_EDEFAULT == null ? startResource != null
+						: !START_RESOURCE_EDEFAULT.equals(startResource);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (startResource: ");
+		result.append(startResource);
+		result.append(')');
+		return result.toString();
 	}
 
 } // ProfileResourceImpl

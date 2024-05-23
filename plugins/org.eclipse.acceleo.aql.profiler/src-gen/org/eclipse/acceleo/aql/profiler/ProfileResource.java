@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,5 +50,28 @@ public interface ProfileResource extends EObject {
 	 * @generated
 	 */
 	void setEntry(ProfileEntry value);
+
+	/**
+	 * Returns the value of the '<em><b>Start Resource</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Start Resource</em>' attribute.
+	 * @see #setStartResource(String)
+	 * @see org.eclipse.acceleo.aql.profiler.ProfilerPackage#getProfileResource_StartResource()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getStartResource();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.aql.profiler.ProfileResource#getStartResource
+	 * <em>Start Resource</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Start Resource</em>' attribute.
+	 * @see #getStartResource()
+	 * @generated
+	 */
+	void setStartResource(String value);
 
 } // ProfileResource

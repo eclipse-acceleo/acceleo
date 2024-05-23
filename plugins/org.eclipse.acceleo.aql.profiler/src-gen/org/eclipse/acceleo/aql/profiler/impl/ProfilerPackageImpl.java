@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -209,6 +209,16 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * @generated
 	 */
 	@Override
+	public EAttribute getProfileResource_StartResource() {
+		return (EAttribute)profileResourceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public ProfilerFactory getProfilerFactory() {
 		return (ProfilerFactory)getEFactoryInstance();
 	}
@@ -243,6 +253,7 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 
 		profileResourceEClass = createEClass(PROFILE_RESOURCE);
 		createEReference(profileResourceEClass, PROFILE_RESOURCE__ENTRY);
+		createEAttribute(profileResourceEClass, PROFILE_RESOURCE__START_RESOURCE);
 	}
 
 	/**
@@ -308,6 +319,9 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 		initEReference(getProfileResource_Entry(), this.getProfileEntry(), null, "entry", null, 0, 1,
 				ProfileResource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProfileResource_StartResource(), ecorePackage.getEString(), "startResource", null,
+				1, 1, ProfileResource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

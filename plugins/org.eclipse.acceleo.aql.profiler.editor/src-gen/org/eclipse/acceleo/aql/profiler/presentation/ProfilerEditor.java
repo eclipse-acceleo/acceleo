@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,10 @@ import org.eclipse.acceleo.aql.profiler.editor.coverage.CoverageHelper;
 import org.eclipse.acceleo.aql.profiler.provider.ProfilerItemProviderAdapterFactorySpec;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.presentation.EcoreEditor;
 import org.eclipse.emf.ecore.presentation.EcoreEditorPlugin;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -62,7 +65,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
@@ -70,14 +72,9 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * This class implements the profiler editor.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @generated NOT
  */
 public final class ProfilerEditor extends EcoreEditor {
-
-	/**
-	 * Initialize the Profiler metamodel.
-	 */
-	@SuppressWarnings("unused")
-	private static final ProfilerPackage PKG = ProfilerPackage.eINSTANCE;
 
 	/** The current sort status of the view. */
 	protected ProfilerSortStatus sortStatus = new ProfilerSortStatus();
@@ -91,6 +88,8 @@ public final class ProfilerEditor extends EcoreEditor {
 	 */
 	public ProfilerEditor() {
 		super();
+		// Initialize the Profiler metamodel.
+		ProfilerPackage.eINSTANCE.getName();
 
 		adapterFactory.addAdapterFactory(new ProfilerItemProviderAdapterFactorySpec());
 	}
@@ -389,7 +388,6 @@ public final class ProfilerEditor extends EcoreEditor {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	@SuppressWarnings("synthetic-access")
 	private final class ChangementListener implements ISelectionChangedListener {
 		/**
 		 * {@inheritDoc}
@@ -467,13 +465,15 @@ public final class ProfilerEditor extends EcoreEditor {
 	@Override
 	public void init(IEditorSite site, IEditorInput editorInput) {
 		super.init(site, editorInput);
-		if (editorInput instanceof FileEditorInput) {
-			FileEditorInput fip = (FileEditorInput)editorInput;
-			IProject project = fip.getFile().getProject();
-			acceleoEnvResourceFactory = new AcceleoEnvResourceFactory(project);
-			getEditingDomain().getResourceSet().getResourceFactoryRegistry().getProtocolToFactoryMap().put(
-					"acceleoenv", acceleoEnvResourceFactory); //$NON-NLS-1$
-		}
+
+		createModel();
+		final URI startURI = URI.createURI(getProfileResource().getStartResource(), true);
+		final IFile startFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(startURI
+				.toPlatformString(true)));
+		final IProject project = startFile.getProject();
+		acceleoEnvResourceFactory = new AcceleoEnvResourceFactory(project);
+		getEditingDomain().getResourceSet().getResourceFactoryRegistry().getProtocolToFactoryMap().put(
+				"acceleoenv", acceleoEnvResourceFactory); //$NON-NLS-1$
 	}
 
 	private CoverageHelper getCoverageHelper() {

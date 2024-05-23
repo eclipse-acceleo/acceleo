@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -116,22 +116,25 @@ public final class ProfilerUtils {
 	/**
 	 * Gets a fresh new {@link IProfiler}.
 	 * 
+	 * @param startResource
+	 *            the resource that started profiling
 	 * @param representation
-	 *            the {@link Representation} to use for profiling.
+	 *            the {@link Representation} to use for profiling
 	 * @param childFactory
-	 *            the factory to build profiler model.
+	 *            the factory to build profiler model
 	 * @return a fresh new {@link IProfiler}
 	 */
-	public static IProfiler getProfiler(Representation representation, ProfilerFactory profilerFactory) {
+	public static IProfiler getProfiler(String startResource, Representation representation,
+			ProfilerFactory profilerFactory) {
 		IProfiler res = null;
 
 		switch (representation) {
 			case TREE:
-				res = new TreeProfiler(profilerFactory);
+				res = new TreeProfiler(profilerFactory, startResource);
 				break;
 
 			case FLAT:
-				res = new FlatProfiler(profilerFactory);
+				res = new FlatProfiler(profilerFactory, startResource);
 				break;
 
 			default:

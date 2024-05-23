@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -161,13 +161,22 @@ public interface ProfilerPackage extends EPackage {
 	int PROFILE_RESOURCE__ENTRY = 0;
 
 	/**
+	 * The feature id for the '<em><b>Start Resource</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int PROFILE_RESOURCE__START_RESOURCE = 1;
+
+	/**
 	 * The number of structural features of the '<em>Profile Resource</em>' class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int PROFILE_RESOURCE_FEATURE_COUNT = 1;
+	int PROFILE_RESOURCE_FEATURE_COUNT = 2;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.aql.profiler.ProfileEntry <em>Profile
@@ -286,6 +295,18 @@ public interface ProfilerPackage extends EPackage {
 	EReference getProfileResource_Entry();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.eclipse.acceleo.aql.profiler.ProfileResource#getStartResource <em>Start Resource</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Start Resource</em>'.
+	 * @see org.eclipse.acceleo.aql.profiler.ProfileResource#getStartResource()
+	 * @see #getProfileResource()
+	 * @generated
+	 */
+	EAttribute getProfileResource_StartResource();
+
+	/**
 	 * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -390,6 +411,14 @@ public interface ProfilerPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PROFILE_RESOURCE__ENTRY = eINSTANCE.getProfileResource_Entry();
+
+		/**
+		 * The meta object literal for the '<em><b>Start Resource</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute PROFILE_RESOURCE__START_RESOURCE = eINSTANCE.getProfileResource_StartResource();
 
 	}
 

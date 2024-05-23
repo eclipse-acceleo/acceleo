@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,11 @@ public final class TreeProfiler extends AbstractProfiler {
 	private final ProfilerFactory profilerFactory;
 
 	/**
+	 * The resource that started profiling.
+	 */
+	private final String startResource;
+
+	/**
 	 * Containing {@link ProfileResource}.
 	 */
 	private ProfileResource resource;
@@ -40,9 +45,12 @@ public final class TreeProfiler extends AbstractProfiler {
 	 * 
 	 * @param profilerFactory
 	 *            the {@link ProfilerFactory} to create the profiler model
+	 * @param startResource
+	 *            the resource that started profiling
 	 */
-	public TreeProfiler(ProfilerFactory profilerFactory) {
+	public TreeProfiler(ProfilerFactory profilerFactory, String startResource) {
 		this.profilerFactory = profilerFactory;
+		this.startResource = startResource;
 	}
 
 	/**
@@ -66,6 +74,7 @@ public final class TreeProfiler extends AbstractProfiler {
 			entry.setMonitored(monitored);
 			if (resource == null) {
 				resource = profilerFactory.createProfileResource();
+				resource.setStartResource(startResource);
 			}
 			resource.setEntry(entry);
 			entry.start();
