@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module eclipseGenerator('http://www.eclipse.org/acceleo/4.0')/]
+[module eclipseGeneratorHandler('http://www.eclipse.org/acceleo/4.0')/]
 
 [import org::eclipse::acceleo::aql::ide::ui::module::requests::requests/]
 [import org::eclipse::acceleo::aql::ide::ui::module::services::Services/]
