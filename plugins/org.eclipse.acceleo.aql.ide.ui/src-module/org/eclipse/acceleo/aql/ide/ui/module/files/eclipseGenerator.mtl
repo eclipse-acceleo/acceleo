@@ -68,7 +68,7 @@
     	 * The selected value.
     	 * @generated
     	 */
-    	private final List<EObject> value;
+    	private final List<EObject> values;
     
     	/**
     	 * Constructor.
@@ -79,7 +79,7 @@
     	 */
     	public [module.getEclipseClassName()/]([module.getReceiverClassName()/] selected) {
     		super(Collections.emptyList(), getTarget(selected));
-    		this.value = Collections.singletonList(selected);
+    		this.values = Collections.singletonList(selected);
     	}
     
     	/**
@@ -88,7 +88,7 @@
     	@Override
     	protected List<EObject> getValues(IQualifiedNameQueryEnvironment queryEnvironment,
     			Map<EClass, List<EObject>> valuesCache, TypeLiteral type, ResourceSet resourceSetForModels) {
-    		return value;
+    		return values;
     	}
     
     	/**
