@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -59,6 +59,7 @@ public class ModuleItemProvider extends NamedElementItemProvider {
 			addStartHeaderPositionPropertyDescriptor(object);
 			addEndHeaderPositionPropertyDescriptor(object);
 			addAstPropertyDescriptor(object);
+			addEncodingPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -172,6 +173,22 @@ public class ModuleItemProvider extends NamedElementItemProvider {
 	}
 
 	/**
+	 * This adds a property descriptor for the Encoding feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addEncodingPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Module_encoding_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Module_encoding_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Module_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.MODULE__ENCODING, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an
 	 * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
 	 * {@link org.eclipse.emf.edit.command.RemoveCommand} or
@@ -245,6 +262,7 @@ public class ModuleItemProvider extends NamedElementItemProvider {
 		case AcceleoPackage.MODULE__START_HEADER_POSITION:
 		case AcceleoPackage.MODULE__END_HEADER_POSITION:
 		case AcceleoPackage.MODULE__AST:
+		case AcceleoPackage.MODULE__ENCODING:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case AcceleoPackage.MODULE__DOCUMENTATION:

@@ -13,7 +13,6 @@ package org.eclipse.acceleo.aql.parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -75,12 +74,17 @@ public class ModuleLoader extends AbstractLoader {
 	public Object load(IQualifiedNameResolver resolver, String qualifiedName) {
 		Module res;
 
-		// TODO use the proper charset (using the comment on first line)
-		try (InputStream is = resolver.getInputStream(resourceName(qualifiedName))) {
-			if (is != null) {
-				res = parser.parse(is, StandardCharsets.UTF_8, qualifiedName).getModule();
-			} else {
-				res = null;
+		try {
+			final String encoding;
+			try (InputStream is = resolver.getInputStream(resourceName(qualifiedName))) {
+				encoding = parser.parseEncoding(is);
+			}
+			try (InputStream is = resolver.getInputStream(resourceName(qualifiedName))) {
+				if (is != null) {
+					res = parser.parse(is, encoding, qualifiedName).getModule();
+				} else {
+					res = null;
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -70,6 +70,7 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 			addStartHeaderPositionPropertyDescriptor(object);
 			addEndHeaderPositionPropertyDescriptor(object);
 			addAstPropertyDescriptor(object);
+			addEncodingPropertyDescriptor(object);
 			addMissingOpenParenthesisPropertyDescriptor(object);
 			addMissingEPackagePropertyDescriptor(object);
 			addMissingCloseParenthesisPropertyDescriptor(object);
@@ -199,6 +200,22 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 						getResourceLocator(), getString("_UI_Module_ast_feature"), //$NON-NLS-1$
 						getString("_UI_PropertyDescriptor_description", "_UI_Module_ast_feature", "_UI_Module_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						AcceleoPackage.Literals.MODULE__AST, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Encoding feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addEncodingPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Module_encoding_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Module_encoding_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Module_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.MODULE__ENCODING, true, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -341,6 +358,7 @@ public class ErrorModuleItemProvider extends ItemProviderAdapter implements IEdi
 		case AcceleoPackage.ERROR_MODULE__START_HEADER_POSITION:
 		case AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION:
 		case AcceleoPackage.ERROR_MODULE__AST:
+		case AcceleoPackage.ERROR_MODULE__ENCODING:
 		case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 		case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
 		case AcceleoPackage.ERROR_MODULE__MISSING_CLOSE_PARENTHESIS:

@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -192,14 +191,15 @@ public abstract class AbstractLanguageTestSuite {
 		final File testFolderFile = new File(testFolderPath);
 		final File moduleFile = getModuleFile(testFolderFile);
 
+		final String encoding;
 		try (InputStream is = new FileInputStream(moduleFile)) {
-			moduleText = AcceleoUtil.getContent(is, StandardCharsets.UTF_8.name());
+			encoding = new AcceleoParser().parseEncoding(is);
+		}
+		try (InputStream is = new FileInputStream(moduleFile)) {
+			moduleText = AcceleoUtil.getContent(is, encoding);
 		}
 
-		try (InputStream is = new FileInputStream(moduleFile)) {
-			moduleTextWindowsEndLine = AcceleoUtil.getContent(is, StandardCharsets.UTF_8.name()).replaceAll(
-					"\n", "\r\n");
-		}
+		moduleTextWindowsEndLine = moduleText.replaceAll("\n", "\r\n");
 
 		final Path rootPath = testFolderFile.toPath().getName(0);
 		final URL[] urls = new URL[] {testFolderFile.toPath().getName(0).toUri().toURL() };
@@ -819,7 +819,13 @@ public abstract class AbstractLanguageTestSuite {
 	 */
 	public static void setContent(OutputStream stream, String charsetName, String content)
 			throws UnsupportedEncodingException, IOException {
-		stream.write(content.getBytes(charsetName));
+		final String localCharsetName;
+		if (charsetName != null) {
+			localCharsetName = charsetName;
+		} else {
+			localCharsetName = "UTF-8";
+		}
+		stream.write(content.getBytes(localCharsetName));
 		stream.flush();
 	}
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -185,5 +185,28 @@ public interface Module extends NamedElement, DocumentedElement, AcceleoASTNode 
 	 * @generated
 	 */
 	void setAst(AcceleoAstResult value);
+
+	/**
+	 * Returns the value of the '<em><b>Encoding</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Encoding</em>' attribute.
+	 * @see #setEncoding(String)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getModule_Encoding()
+	 * @model
+	 * @generated
+	 */
+	String getEncoding();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.Module#getEncoding <em>Encoding</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Encoding</em>' attribute.
+	 * @see #getEncoding()
+	 * @generated
+	 */
+	void setEncoding(String value);
 
 } // Module

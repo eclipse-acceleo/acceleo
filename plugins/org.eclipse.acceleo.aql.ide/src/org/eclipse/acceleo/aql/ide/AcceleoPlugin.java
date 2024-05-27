@@ -14,7 +14,6 @@ package org.eclipse.acceleo.aql.ide;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Collections;
 
 import org.eclipse.acceleo.Module;
@@ -153,8 +152,7 @@ public class AcceleoPlugin extends EMFPlugin {
 			if (file.isAccessible()) {
 				final AcceleoParser parser = new AcceleoParser();
 				try (InputStream contents = file.getContents()) {
-					final Module module = parser.parse(contents, Charset.forName(file.getCharset()), "none")
-							.getModule();
+					final Module module = parser.parse(contents, file.getCharset(), "none").getModule();
 					for (ModuleElement element : module.getModuleElements()) {
 						if (element instanceof Template && ((Template)element).isMain()) {
 							res = true;
@@ -182,22 +180,30 @@ public class AcceleoPlugin extends EMFPlugin {
 	 * Tells if the given {@link URI} is a Acceleo {@link Module} with a {@link Template#isMain() main
 	 * template}.
 	 * 
+	 * @param uriConverter
+	 *            the {@link URIConverter}
 	 * @param uri
 	 *            the {@link URI}
 	 * @return <code>true</code> if the given resource is a Acceleo {@link Module} with a
 	 *         {@link Template#isMain() main template}, <code>false</code> otherwise
 	 */
-	public static boolean isAcceleoMain(URIConverter uriConverter, URI uri, Charset charset) {
+	public static boolean isAcceleoMain(URIConverter uriConverter, URI uri) {
 		boolean res = false;
 
 		if (uriConverter.exists(uri, Collections.emptyMap())) {
 			final AcceleoParser parser = new AcceleoParser();
-			try (InputStream is = uriConverter.createInputStream(uri)) {
-				final Module module = parser.parse(is, charset, "none").getModule();
-				for (ModuleElement element : module.getModuleElements()) {
-					if (element instanceof Template && ((Template)element).isMain()) {
-						res = true;
-						break;
+			final String encoding;
+			try {
+				try (InputStream is = uriConverter.createInputStream(uri)) {
+					encoding = parser.parseEncoding(is);
+				}
+				try (InputStream is = uriConverter.createInputStream(uri)) {
+					final Module module = parser.parse(is, encoding, "none").getModule();
+					for (ModuleElement element : module.getModuleElements()) {
+						if (element instanceof Template && ((Template)element).isMain()) {
+							res = true;
+							break;
+						}
 					}
 				}
 			} catch (IOException e) {

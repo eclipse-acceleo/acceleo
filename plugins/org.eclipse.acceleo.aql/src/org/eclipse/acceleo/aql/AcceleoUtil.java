@@ -337,7 +337,8 @@ public final class AcceleoUtil {
 	 * @param stream
 	 *            the {@link InputStream}
 	 * @param charsetName
-	 *            The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
+	 *            The name of a supported {@link java.nio.charset.Charset
+	 *            </code>charset<code>}, <code>null</code> will default to {@link StandardCharsets#UTF_8}
 	 * @return a {@link CharSequence} of the content of the given {@link InputStream}
 	 * @throws IOException
 	 *             if the {@link InputStream} can't be read
@@ -345,9 +346,15 @@ public final class AcceleoUtil {
 	public static String getContent(InputStream stream, String charsetName) throws IOException {
 		final int len = 8192;
 		StringBuilder res = new StringBuilder(len);
+		final String localCharsetName;
+		if (charsetName != null) {
+			localCharsetName = charsetName;
+		} else {
+			localCharsetName = StandardCharsets.UTF_8.name();
+		}
 		if (len != 0) {
 			try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream),
-					charsetName)) {
+					localCharsetName)) {
 				char[] buffer = new char[len];
 				int length = input.read(buffer);
 				while (length != -1) {

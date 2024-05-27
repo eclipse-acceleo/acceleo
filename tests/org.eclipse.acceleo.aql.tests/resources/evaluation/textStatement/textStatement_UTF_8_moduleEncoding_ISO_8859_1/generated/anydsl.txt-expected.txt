@@ -1,0 +1,1 @@
+La génération de code source est une opération permettant de générer automatiquement du code source.

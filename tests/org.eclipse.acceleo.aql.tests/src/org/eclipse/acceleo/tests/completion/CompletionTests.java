@@ -146,7 +146,8 @@ public class CompletionTests {
 			resolver.addLoader(new ModuleLoader(parser, evaluator));
 			resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, true));
 
-			final AcceleoAstResult parsingResult = parser.parse(source, "org::eclipse::acceleo::tests::");
+			final AcceleoAstResult parsingResult = parser.parse(source, null,
+					"org::eclipse::acceleo::tests::");
 			final Module module = parsingResult.getModule();
 			resolver.register("org::eclipse::acceleo::tests::" + MODULE_NAME, module);
 			final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(

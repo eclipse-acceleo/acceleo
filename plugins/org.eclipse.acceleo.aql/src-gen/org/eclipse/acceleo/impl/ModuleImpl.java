@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -183,6 +183,26 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 * @ordered
 	 */
 	protected AcceleoAstResult ast = AST_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEncoding() <em>Encoding</em>}' attribute. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #getEncoding()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ENCODING_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getEncoding() <em>Encoding</em>}' attribute. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #getEncoding()
+	 * @generated
+	 * @ordered
+	 */
+	protected String encoding = ENCODING_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -468,6 +488,30 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 * @generated
 	 */
 	@Override
+	public String getEncoding() {
+		return encoding;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setEncoding(String newEncoding) {
+		String oldEncoding = encoding;
+		encoding = newEncoding;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__ENCODING,
+					oldEncoding, encoding));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AcceleoPackage.MODULE__DOCUMENTATION:
@@ -527,6 +571,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 				return getEndHeaderPosition();
 			case AcceleoPackage.MODULE__AST:
 				return getAst();
+			case AcceleoPackage.MODULE__ENCODING:
+				return getEncoding();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -570,6 +616,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 			case AcceleoPackage.MODULE__AST:
 				setAst((AcceleoAstResult)newValue);
 				return;
+			case AcceleoPackage.MODULE__ENCODING:
+				setEncoding((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -609,6 +658,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 			case AcceleoPackage.MODULE__AST:
 				setAst(AST_EDEFAULT);
 				return;
+			case AcceleoPackage.MODULE__ENCODING:
+				setEncoding(ENCODING_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -639,6 +691,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 				return endHeaderPosition != END_HEADER_POSITION_EDEFAULT;
 			case AcceleoPackage.MODULE__AST:
 				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
+			case AcceleoPackage.MODULE__ENCODING:
+				return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -726,6 +780,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 		result.append(endHeaderPosition);
 		result.append(", ast: "); //$NON-NLS-1$
 		result.append(ast);
+		result.append(", encoding: "); //$NON-NLS-1$
+		result.append(encoding);
 		result.append(')');
 		return result.toString();
 	}

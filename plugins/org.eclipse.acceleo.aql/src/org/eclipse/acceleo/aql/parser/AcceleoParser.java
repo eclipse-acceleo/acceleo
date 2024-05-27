@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.parser;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.eclipse.acceleo.AcceleoASTNode;
@@ -360,6 +365,22 @@ public class AcceleoParser {
 	/**
 	 * Main tag.
 	 */
+	public static final String ENCODING_TAG = "encoding";
+
+	/**
+	 * The {@link Pattern} to match the encoding.
+	 */
+	private static final Pattern ENCODING_PATTERN = Pattern.compile(Pattern.quote(COMMENT_START) + "\\s*"
+			+ Pattern.quote(ENCODING_TAG) + "\\s*" + EQUAL + "\\s*(.+?)\\s*" + Pattern.quote(COMMENT_END));
+
+	/**
+	 * The encoding group in the {@link #ENCODING_PATTERN}.
+	 */
+	private static final int ENCODING_PATTERN_ENCODING_GROUP_INDEX = 1;
+
+	/**
+	 * Main tag.
+	 */
 	public static final String MAIN_TAG = "@main";
 
 	/**
@@ -428,21 +449,54 @@ public class AcceleoParser {
 	private List<Error> errors;
 
 	/**
+	 * Parses the encoding tag and return the encoding value.
+	 * 
+	 * @param source
+	 *            the source {@link InputStream}
+	 * @return the encoding tag and return the encoding value if any, <code>null</code> otherwise
+	 * @throws IOException
+	 *             if the {@link InputStream} can't be read
+	 */
+	public String parseEncoding(InputStream source) throws IOException {
+		final String res;
+
+		if (source != null) {
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(source));
+			if (reader.ready()) {
+				final String firstLine = reader.readLine();
+				final Matcher matcher = ENCODING_PATTERN.matcher(firstLine);
+				if (matcher.find() && matcher.start() == 0) {
+					res = matcher.group(ENCODING_PATTERN_ENCODING_GROUP_INDEX);
+				} else {
+					res = null;
+				}
+			} else {
+				res = null;
+			}
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
 	 * Parses the given {@link InputStream}.
 	 * 
 	 * @param source
 	 *            the {@link InputStream}
-	 * @param charset
-	 *            the {@link Charset}
+	 * @param charsetName
+	 *            The name of a supported {@link java.nio.charset.Charset
+	 *            </code>charset<code>}, <code>null</code> will default to {@link StandardCharsets#UTF_8}
 	 * @param moduleQualifiedName
 	 *            the qualified name of the {@link Module} (e.g. "path::to::module").
 	 * @return the parsed {@link AstResult}
 	 * @throws IOException
 	 *             if the {@link InputStream} can't be read
 	 */
-	public AcceleoAstResult parse(InputStream source, Charset charset, String moduleQualifiedName)
+	public AcceleoAstResult parse(InputStream source, String charsetName, String moduleQualifiedName)
 			throws IOException {
-		return parse(AcceleoUtil.getContent(source, charset.name()), moduleQualifiedName);
+		return parse(AcceleoUtil.getContent(source, charsetName), charsetName, moduleQualifiedName);
 	}
 
 	/**
@@ -450,12 +504,16 @@ public class AcceleoParser {
 	 * 
 	 * @param source
 	 *            the source text
+	 * @param charsetName
+	 *            The name of a supported {@link java.nio.charset.Charset
+	 *            </code>charset<code>}, <code>null</code> will default to {@link StandardCharsets#UTF_8}
 	 * @param qualifiedName
 	 *            the qualified name of the {@link Module} (e.g. "path::to::module").
 	 * @return the parsed {@link AstResult}
 	 */
-	public AcceleoAstResult parse(String source, String qualifiedName) {
-		this.currentPosition = 0;
+	public AcceleoAstResult parse(String source, String charsetName, String qualifiedName) {
+
+		this.currentPosition = skipEncoding(source);
 		this.text = source;
 		this.textLength = text.length();
 		this.lines = new int[textLength + 1];
@@ -466,12 +524,48 @@ public class AcceleoParser {
 
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
 		final Module module = parseModule(comments);
+		module.setEncoding(charsetName);
 
 		final Resource containerEmfResource = new XMIResourceImpl(URI.createURI(ACCELEOENV_URI_PROTOCOL
 				+ qualifiedName));
 		containerEmfResource.getContents().add(module);
 
 		return new AcceleoAstResult(module, positions, errors);
+	}
+
+	/**
+	 * Skips the Encoding comment.
+	 * 
+	 * @param text
+	 *            the module text
+	 * @return the new current position
+	 */
+	private int skipEncoding(String text) {
+		int res = 0;
+
+		if (text != null) {
+			final BufferedReader reader = new BufferedReader(new StringReader(text));
+			try {
+				if (reader.ready()) {
+					final String firstLine = reader.readLine();
+					final Matcher matcher = ENCODING_PATTERN.matcher(firstLine);
+					if (matcher.find() && matcher.start() == 0) {
+						res = matcher.end();
+					} else {
+						res = 0;
+					}
+				} else {
+					res = 0;
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			res = 0;
+		}
+
+		return res;
 	}
 
 	/**

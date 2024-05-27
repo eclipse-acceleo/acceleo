@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -2340,6 +2340,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(moduleEClass, MODULE__START_HEADER_POSITION);
 		createEAttribute(moduleEClass, MODULE__END_HEADER_POSITION);
 		createEAttribute(moduleEClass, MODULE__AST);
+		createEAttribute(moduleEClass, MODULE__ENCODING);
 
 		errorModuleEClass = createEClass(ERROR_MODULE);
 		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_OPEN_PARENTHESIS);
@@ -2703,6 +2704,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getModule_Ast(), this.getAcceleoAstResult(), "ast", null, 1, 1, //$NON-NLS-1$
+				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModule_Encoding(), ecorePackage.getEString(), "encoding", null, 0, 1, //$NON-NLS-1$
 				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3227,6 +3231,16 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	@Override
 	public EAttribute getModule_Ast() {
 		return (EAttribute)moduleEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getModule_Encoding() {
+		return (EAttribute)moduleEClass.getEStructuralFeatures().get(7);
 	}
 
 	@Override

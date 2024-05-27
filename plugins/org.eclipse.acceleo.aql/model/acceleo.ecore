@@ -15,6 +15,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endHeaderPosition" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ast" lowerBound="1" eType="#//AcceleoAstResult"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorModule" eSuperTypes="#//Error #//Module">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingOpenParenthesis"

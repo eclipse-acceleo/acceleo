@@ -80,9 +80,13 @@ public class AcceleoAstSerializerTests {
 		EcorePackage.eINSTANCE.getName(); // initialize Ecore package
 		GenModelPackage.eINSTANCE.getName();
 		AcceleoParser parser = new AcceleoParser();
+		final String encoding;
 		try (InputStream stream = new FileInputStream(ROOT + File.separator + modulePath)) {
-			source = AcceleoUtil.getContent(stream, AbstractLanguageTestSuite.UTF_8);
-			ast = parser.parse(source, "org::eclipse::acceleo::tests::test");
+			encoding = parser.parseEncoding(stream);
+		}
+		try (InputStream stream = new FileInputStream(ROOT + File.separator + modulePath)) {
+			source = AcceleoUtil.getContent(stream, encoding);
+			ast = parser.parse(source, encoding, "org::eclipse::acceleo::tests::test");
 		}
 	}
 
@@ -102,16 +106,17 @@ public class AcceleoAstSerializerTests {
 		final File expectedSerializedFile = new File(ROOT + File.separator + "serialization" + File.separator
 				+ modulePath + "-expected.txt");
 
-		createActualFileIfNeeded(actualSerializedModule, expectedSerializedFile);
+		createActualFileIfNeeded(actualSerializedModule, ast.getModule().getEncoding(),
+				expectedSerializedFile);
 		try (FileInputStream stream = new FileInputStream(expectedSerializedFile)) {
-			final String expectedSerializedModule = AcceleoUtil.getContent(stream,
-					AbstractLanguageTestSuite.UTF_8);
+			final String expectedSerializedModule = AcceleoUtil.getContent(stream, ast.getModule()
+					.getEncoding());
 			assertEquals(expectedSerializedModule, actualSerializedModule);
 			stream.close();
 		}
 	}
 
-	private void createActualFileIfNeeded(final String actualSerializedModule,
+	private void createActualFileIfNeeded(final String actualSerializedModule, String encoding,
 			final File expectedSerializedFile) throws IOException, UnsupportedEncodingException,
 			FileNotFoundException {
 		if (!expectedSerializedFile.exists()) {
@@ -124,8 +129,8 @@ public class AcceleoAstSerializerTests {
 				}
 				actualSerializedFile.createNewFile();
 			}
-			AbstractLanguageTestSuite.setContent(new FileOutputStream(actualSerializedFile),
-					AbstractLanguageTestSuite.UTF_8, actualSerializedModule);
+			AbstractLanguageTestSuite.setContent(new FileOutputStream(actualSerializedFile), encoding,
+					actualSerializedModule);
 			fail("file doesn't exist.");
 		}
 	}

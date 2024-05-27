@@ -439,6 +439,11 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append(module.getEndHeaderPosition());
 		newLine();
 		builder.append("module " + module.getName());
+		if (module.getEncoding() != null) {
+			newLine();
+			builder.append("encoding ");
+			builder.append(module.getEncoding());
+		}
 		indent();
 		for (Metamodel metamodel : module.getMetamodels()) {
 			newLine();

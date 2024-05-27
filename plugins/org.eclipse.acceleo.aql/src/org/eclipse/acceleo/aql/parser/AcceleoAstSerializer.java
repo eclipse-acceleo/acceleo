@@ -60,7 +60,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	/**
 	 * A space.
 	 */
-	private static final String SPACE = " ";
+	public static final String SPACE = " ";
 
 	/**
 	 * A dummy {@link Object} to prevent switching in super types.
@@ -363,6 +363,17 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseModule(Module module) {
+		if (module.getEncoding() != null) {
+			builder.append(AcceleoParser.COMMENT_START);
+			builder.append(AcceleoParser.ENCODING_TAG);
+			builder.append(SPACE);
+			builder.append(AcceleoParser.EQUAL);
+			builder.append(SPACE);
+			builder.append(module.getEncoding());
+			builder.append(SPACE);
+			builder.append(AcceleoParser.COMMENT_END);
+			insertNewLine();
+		}
 		if (module.getDocumentation() != null) {
 			doSwitch(module.getDocumentation());
 			insertNewLine();

@@ -75,11 +75,11 @@ public class AcceleoCompletor {
 		// First, parse the source contents up to the position.
 		final AcceleoParser acceleoParser = new AcceleoParser();
 		final String partialAcceleoSource = source.substring(0, position);
-		final AcceleoAstResult partialAcceleoAstResult = acceleoParser.parse(partialAcceleoSource,
+		final AcceleoAstResult partialAcceleoAstResult = acceleoParser.parse(partialAcceleoSource, null,
 				moduleQualifiedNameForCompletion);
 
 		// Second, validate the AST - this is required further on for the AQL completion.
-		final AcceleoAstResult acceleoAstResult = acceleoParser.parse(source,
+		final AcceleoAstResult acceleoAstResult = acceleoParser.parse(source, null,
 				moduleQualifiedNameForCompletion);
 		queryEnvironment.getLookupEngine().getResolver().register(moduleQualifiedNameForCompletion,
 				acceleoAstResult.getModule());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package org.eclipse.acceleo.tests.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
@@ -36,14 +35,18 @@ public class ModuleLoaderWindowsEndLine extends ModuleLoader {
 	public Object load(IQualifiedNameResolver resolver, String qualifiedName) {
 		Module res;
 
-		// TODO use the proper charset (using the comment on first line)
-		try (InputStream is = resolver.getInputStream(resourceName(qualifiedName))) {
-			if (is != null) {
-				final String text = AcceleoUtil.getContent(is, StandardCharsets.UTF_8.name()).replaceAll("\n",
-						"\r\n");
-				res = getParser().parse(text, qualifiedName).getModule();
-			} else {
-				res = null;
+		try {
+			final String encoding;
+			try (InputStream is = resolver.getInputStream(resourceName(qualifiedName))) {
+				encoding = getParser().parseEncoding(is);
+			}
+			try (InputStream is = resolver.getInputStream(resourceName(qualifiedName))) {
+				if (is != null) {
+					final String text = AcceleoUtil.getContent(is, encoding).replaceAll("\n", "\r\n");
+					res = getParser().parse(text, encoding, qualifiedName).getModule();
+				} else {
+					res = null;
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

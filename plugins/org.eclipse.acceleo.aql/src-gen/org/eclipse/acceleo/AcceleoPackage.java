@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -199,13 +199,22 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__AST = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Encoding</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE__ENCODING = NAMED_ELEMENT_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>Module</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 9;
+	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Module</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -369,13 +378,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE__AST = ERROR_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Encoding</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_MODULE__ENCODING = ERROR_FEATURE_COUNT + 10;
+
+	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 10;
+	int ERROR_MODULE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Missing EPackage</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -384,7 +402,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_EPACKAGE = ERROR_FEATURE_COUNT + 11;
+	int ERROR_MODULE__MISSING_EPACKAGE = ERROR_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -393,7 +411,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
+	int ERROR_MODULE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -402,7 +420,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 13;
+	int ERROR_MODULE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The number of structural features of the '<em>Error Module</em>' class. <!-- begin-user-doc --> <!--
@@ -411,7 +429,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 14;
+	int ERROR_MODULE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 15;
 
 	/**
 	 * The number of operations of the '<em>Error Module</em>' class. <!-- begin-user-doc --> <!--
@@ -3791,6 +3809,17 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getModule_Ast();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.Module#getEncoding
+	 * <em>Encoding</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Encoding</em>'.
+	 * @see org.eclipse.acceleo.Module#getEncoding()
+	 * @see #getModule()
+	 * @generated
+	 */
+	EAttribute getModule_Encoding();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorModule <em>Error Module</em>}'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -5737,6 +5766,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute MODULE__AST = eINSTANCE.getModule_Ast();
+
+		/**
+		 * The meta object literal for the '<em><b>Encoding</b></em>' attribute feature. <!-- begin-user-doc
+		 * --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute MODULE__ENCODING = eINSTANCE.getModule_Encoding();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorModuleImpl <em>Error

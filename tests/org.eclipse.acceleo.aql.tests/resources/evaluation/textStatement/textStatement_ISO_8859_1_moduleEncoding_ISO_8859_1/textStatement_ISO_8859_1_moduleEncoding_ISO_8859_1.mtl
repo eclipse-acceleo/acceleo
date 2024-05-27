@@ -1,0 +1,9 @@
+[comment encoding = ISO-8859-1 /]
+[module textStatement_ISO_8859_1_moduleEncoding_ISO_8859_1('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite, 'ISO-8859-1')]
+    La génération de code source est une opération permettant de générer automatiquement du code source.
+  [/file]
+[/template]

@@ -174,12 +174,11 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			}
 
 			final AcceleoAstSerializer serializer = new AcceleoAstSerializer(NEW_LINE);
-			// TODO at some point we should reuse the parser constants for this.
-			final String moduleString = "[comment encoding = UTF-8 /]" + NEW_LINE + serializer.serialize(
-					module);
 			try {
+				module.setEncoding(moduleFile.getCharset());
+				final String moduleString = serializer.serialize(module);
 				final ByteArrayInputStream moduleInputStream = new ByteArrayInputStream(moduleString.getBytes(
-						"UTF-8"));
+						moduleFile.getCharset()));
 				moduleFile.create(moduleInputStream, true, monitor);
 			} catch (CoreException e) {
 				res = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't write " + moduleFile

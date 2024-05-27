@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ls.services.textdocument;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -198,7 +201,14 @@ public class AcceleoTextDocument {
 
 		if (isOpened()) {
 			AcceleoParser acceleoParser = new AcceleoParser();
-			parsingResult = acceleoParser.parse(this.contents, this.getModuleQualifiedName());
+			final String encoding;
+			try (InputStream is = new ByteArrayInputStream(this.contents.getBytes())) {
+				encoding = acceleoParser.parseEncoding(is);
+				parsingResult = acceleoParser.parse(this.contents, encoding, this.getModuleQualifiedName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			final Module resolvedModule = (Module)getProject().getResolver().resolve(qualifiedName);
 			parsingResult = resolvedModule.getAst();

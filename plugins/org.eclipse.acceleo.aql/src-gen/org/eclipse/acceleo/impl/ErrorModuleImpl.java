@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -52,6 +52,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * Position</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getAst <em>Ast</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getEncoding <em>Encoding</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingOpenParenthesis <em>Missing Open
  * Parenthesis</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingEPackage <em>Missing EPackage</em>}</li>
@@ -212,6 +213,26 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * @ordered
 	 */
 	protected AcceleoAstResult ast = AST_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEncoding() <em>Encoding</em>}' attribute. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #getEncoding()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ENCODING_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getEncoding() <em>Encoding</em>}' attribute. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #getEncoding()
+	 * @generated
+	 * @ordered
+	 */
+	protected String encoding = ENCODING_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
@@ -604,6 +625,30 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * @generated
 	 */
 	@Override
+	public String getEncoding() {
+		return encoding;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setEncoding(String newEncoding) {
+		String oldEncoding = encoding;
+		encoding = newEncoding;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_MODULE__ENCODING,
+					oldEncoding, encoding));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -763,6 +808,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return getEndHeaderPosition();
 			case AcceleoPackage.ERROR_MODULE__AST:
 				return getAst();
+			case AcceleoPackage.ERROR_MODULE__ENCODING:
+				return getEncoding();
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
@@ -816,6 +863,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return;
 			case AcceleoPackage.ERROR_MODULE__AST:
 				setAst((AcceleoAstResult)newValue);
+				return;
+			case AcceleoPackage.ERROR_MODULE__ENCODING:
+				setEncoding((String)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis((Integer)newValue);
@@ -871,6 +921,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_MODULE__AST:
 				setAst(AST_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_MODULE__ENCODING:
+				setEncoding(ENCODING_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
@@ -915,6 +968,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return endHeaderPosition != END_HEADER_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE__AST:
 				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
+			case AcceleoPackage.ERROR_MODULE__ENCODING:
+				return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
@@ -968,6 +1023,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 					return AcceleoPackage.MODULE__END_HEADER_POSITION;
 				case AcceleoPackage.ERROR_MODULE__AST:
 					return AcceleoPackage.MODULE__AST;
+				case AcceleoPackage.ERROR_MODULE__ENCODING:
+					return AcceleoPackage.MODULE__ENCODING;
 				default:
 					return -1;
 			}
@@ -1016,6 +1073,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 					return AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION;
 				case AcceleoPackage.MODULE__AST:
 					return AcceleoPackage.ERROR_MODULE__AST;
+				case AcceleoPackage.MODULE__ENCODING:
+					return AcceleoPackage.ERROR_MODULE__ENCODING;
 				default:
 					return -1;
 			}
@@ -1044,6 +1103,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 		result.append(endHeaderPosition);
 		result.append(", ast: "); //$NON-NLS-1$
 		result.append(ast);
+		result.append(", encoding: "); //$NON-NLS-1$
+		result.append(encoding);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
 		result.append(", missingEPackage: "); //$NON-NLS-1$
