@@ -246,9 +246,8 @@ public final class AcceleoUtil {
 		if (logURI != null && evaluator.getGenerationResult().getDiagnostic()
 				.getSeverity() != Diagnostic.OK) {
 			// TODO provide Charset
-			try {
-				final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
-						StandardCharsets.UTF_8, evaluator.getNewLine());
+			try (final IAcceleoWriter logWriter = generationStrategy.createWriterForLog(logURI,
+					StandardCharsets.UTF_8, evaluator.getNewLine());) {
 				printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "", evaluator
 						.getNewLine());
 			} catch (IOException e) {
