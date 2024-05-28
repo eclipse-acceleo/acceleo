@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -325,7 +325,7 @@ public class AcceleoAstResult {
 	 *            the start line
 	 * @param column
 	 *            the start column
-	 * @return the ast node at the given line and column if nay, <code>null</code> otherwise
+	 * @return the ast node at the given line and column if any, <code>null</code> otherwise
 	 */
 	public ASTNode getAstNode(int line, int column) {
 		return positions.getNodeAt(module, line, column);

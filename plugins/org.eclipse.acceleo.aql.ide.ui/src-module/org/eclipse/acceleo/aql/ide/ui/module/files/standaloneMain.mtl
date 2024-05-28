@@ -438,7 +438,7 @@
     	 * @param destination
     	 *            destination {@link URI}
     	 * @param logURI
-    	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
+    	 *            the {@link URI} for logging if any, <code>null</code> otherwise
     	 * @generated
     	 */
     	protected void beforeGeneration(AcceleoEvaluator evaluator,

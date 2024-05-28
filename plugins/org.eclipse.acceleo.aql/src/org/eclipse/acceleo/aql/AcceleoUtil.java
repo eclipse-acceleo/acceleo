@@ -131,7 +131,7 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            destination {@link URI}
 	 * @param logURI
-	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
+	 *            the {@link URI} for logging if any, <code>null</code> otherwise
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, Resource model, IAcceleoGenerationStrategy generationStrategy, URI destination,
@@ -156,7 +156,7 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            the destination {@link URI}
 	 * @param logURI
-	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
+	 *            the {@link URI} for logging if any, <code>null</code> otherwise
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, ResourceSet resourceSet, IAcceleoGenerationStrategy generationStrategy,
@@ -179,7 +179,7 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            the destination {@link URI}
 	 * @param logURI
-	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
+	 *            the {@link URI} for logging if any, <code>null</code> otherwise
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, List<Resource> resources, IAcceleoGenerationStrategy generationStrategy,
@@ -228,7 +228,7 @@ public final class AcceleoUtil {
 	 * @param destination
 	 *            the destination {@link URI}
 	 * @param logURI
-	 *            the {@link URI} for logging if nay, <code>null</code> otherwise
+	 *            the {@link URI} for logging if any, <code>null</code> otherwise
 	 */
 	public static void generate(Template template, Map<String, Object> variables, AcceleoEvaluator evaluator,
 			IQualifiedNameQueryEnvironment queryEnvironment, IAcceleoGenerationStrategy generationStrategy,

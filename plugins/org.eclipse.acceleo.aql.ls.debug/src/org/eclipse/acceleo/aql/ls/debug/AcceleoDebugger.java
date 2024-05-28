@@ -722,7 +722,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 	 * 
 	 * @param instruction
 	 *            the {@link EObject instruction}
-	 * @return the {@link Module} of the given {@link EObject instruction} if nay, <code>null</code> otherwise
+	 * @return the {@link Module} of the given {@link EObject instruction} if any, <code>null</code> otherwise
 	 */
 	private Module getModule(EObject instruction) {
 		Module res = null;
