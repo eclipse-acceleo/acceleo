@@ -1,0 +1,16 @@
+
+header position 0..67
+module regexpNamedGroup
+  metamodel http://www.eclipse.org/emf/2002/Ecore (26..64)
+  [comment @main  (78..84) /] (69..86)
+  
+  public template myTemplate(myParam : EPackage (115..140))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (152..173) mode overwrite
+      [protected .aqlFeatureAccess(myParam, 'name') (203..215)
+        [.aqlFeatureAccess(myParam, 'name') (225..237)/] (newLineNeeded (224..240) (217..244)
+      [/protected] (191..256)
+       (newLineNeeded) (256..257) (186..259)
+    [/file] (145..266)
+     (newLineNeeded) (266..267) (142..267)
+  [/template] (87..278) (0..278)

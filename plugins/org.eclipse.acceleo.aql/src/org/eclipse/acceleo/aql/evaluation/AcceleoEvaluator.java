@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.AcceleoASTNode;
@@ -700,7 +701,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 								+ " " + Pattern.quote(entry.getKey()) + newLine + "((?!"
 								+ IAcceleoGenerationStrategy.USER_CODE_END + ").|" + newLine + ")*"
 								+ IAcceleoGenerationStrategy.USER_CODE_END + newLine;
-						content = content.replaceFirst(protectedAreaContentsRegex, entry.getValue());
+						content = content.replaceFirst(protectedAreaContentsRegex, Matcher.quoteReplacement(
+								entry.getValue()));
 					}
 					write(content);
 					popIndentation();
