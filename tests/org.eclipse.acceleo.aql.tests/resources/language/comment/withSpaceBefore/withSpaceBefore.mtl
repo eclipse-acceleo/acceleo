@@ -1,0 +1,4 @@
+
+
+  [comment a basic comment/]
+[module withSpaceBefore('http://www.eclipse.org/emf/2002/Ecore')/]

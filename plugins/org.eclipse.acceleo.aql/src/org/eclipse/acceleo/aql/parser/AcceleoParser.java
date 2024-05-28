@@ -522,7 +522,9 @@ public class AcceleoParser {
 		computeLinesAndColumns(text, textLength);
 		this.errors = new ArrayList<Error>();
 
+		skipSpaces();
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
+		skipSpaces();
 		final Module module = parseModule(comments);
 		module.setEncoding(charsetName);
 
@@ -548,9 +550,13 @@ public class AcceleoParser {
 			try {
 				if (reader.ready()) {
 					final String firstLine = reader.readLine();
-					final Matcher matcher = ENCODING_PATTERN.matcher(firstLine);
-					if (matcher.find() && matcher.start() == 0) {
-						res = matcher.end();
+					if (firstLine != null) {
+						final Matcher matcher = ENCODING_PATTERN.matcher(firstLine);
+						if (matcher.find() && matcher.start() == 0) {
+							res = matcher.end();
+						} else {
+							res = 0;
+						}
 					} else {
 						res = 0;
 					}
@@ -971,7 +977,6 @@ public class AcceleoParser {
 	protected Module parseModule(List<Comment> comments) {
 		final Module res;
 
-		skipSpaces();
 		if (text.startsWith(MODULE_HEADER_START, currentPosition)) {
 			// Start of the whole module, including comments and documentation that may be before the
 			// '[module' declaration.

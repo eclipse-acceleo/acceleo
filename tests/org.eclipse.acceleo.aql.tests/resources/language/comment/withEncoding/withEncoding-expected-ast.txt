@@ -1,0 +1,6 @@
+
+header position 56..119
+module withEncoding
+encoding UTF-8
+  metamodel http://www.eclipse.org/emf/2002/Ecore (78..116)
+  [comment a basic comment (38..53) /] (29..55) (29..119)

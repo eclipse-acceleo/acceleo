@@ -1,0 +1,5 @@
+
+header position 31..97
+module withSpaceBefore
+  metamodel http://www.eclipse.org/emf/2002/Ecore (56..94)
+  [comment a basic comment (13..28) /] (4..30) (4..97)

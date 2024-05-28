@@ -1,0 +1,7 @@
+[**	
+ * My module has a nice comment.
+ * @author Yvan Lussaud
+ * @version 0.1.0
+ * @since 0.0.1
+*/]
+[module withSpaceAfter('http://www.eclipse.org/emf/2002/Ecore')/]
