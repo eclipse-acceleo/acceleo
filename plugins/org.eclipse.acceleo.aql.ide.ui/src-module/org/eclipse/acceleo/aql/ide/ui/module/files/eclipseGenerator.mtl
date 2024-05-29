@@ -36,6 +36,7 @@
       import org.eclipse.core.runtime.IStatus;
       import org.eclipse.core.runtime.NullProgressMonitor;
       import org.eclipse.core.runtime.Path;
+      import org.eclipse.core.runtime.Platform;
       import org.eclipse.core.runtime.Status;
       import org.eclipse.emf.common.util.Diagnostic;
       import org.eclipse.emf.ecore.EClass;
@@ -43,6 +44,7 @@
       import org.eclipse.emf.ecore.resource.ResourceSet;
       import org.eclipse.jface.dialogs.IDialogConstants;
       import org.eclipse.ui.PlatformUI;
+      import org.osgi.framework.Bundle;
 
       [let package = module.getJavaPackage()]
         [if (package.size() <> 0)]
@@ -89,6 +91,20 @@
     	protected List<EObject> getValues(IQualifiedNameQueryEnvironment queryEnvironment,
     			Map<EClass, List<EObject>> valuesCache, TypeLiteral type, ResourceSet resourceSetForModels) {
     		return values;
+    	}
+    
+    	/**
+    	 * @generated
+    	 */
+    	@Override
+    	protected IQualifiedNameResolver createResolver() {
+    		final String bundleIdentifier = "[projectUIName.baseProjectName()/]";
+    		final Bundle bundle = Platform.getBundle(bundleIdentifier);
+    		if (bundle == null || bundle.getState() == Bundle.UNINSTALLED) {
+    			Activator.getDefault().log(new Status(IStatus.ERROR, getClass(), "The Bundle " + bundleIdentifier
+    					+ " must be available in the target platform."));
+    		}
+    		return new OSGiQualifiedNameResolver(bundle, AcceleoParser.QUALIFIER_SEPARATOR);
     	}
     
     	/**
