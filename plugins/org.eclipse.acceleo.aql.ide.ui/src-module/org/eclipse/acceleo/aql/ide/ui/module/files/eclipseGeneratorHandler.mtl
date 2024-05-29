@@ -23,6 +23,7 @@
       import org.eclipse.core.commands.ExecutionEvent;
       import org.eclipse.core.commands.ExecutionException;
       import [module.getReceiverQualifiedClassName()/];
+      import org.eclipse.core.resources.IFile;
       import org.eclipse.jface.viewers.IStructuredSelection;
       import [projectUIName/].[module.getEclipseClassName()/];
       import org.eclipse.ui.handlers.HandlerUtil;
@@ -47,8 +48,12 @@
     		final Iterator<?> it = selection.iterator();
     		while (it.hasNext()) {
     			final Object selected = it.next();
+    			final [module.getEclipseClassName()/] generator;
     			if (selected instanceof [module.getReceiverClassName()/]) {
-    				final [module.getEclipseClassName()/] generator = new [module.getEclipseClassName()/](([module.getReceiverClassName()/])selected);
+    				generator = new [module.getEclipseClassName()/](([module.getReceiverClassName()/])selected);
+    				generator.generate();
+    			} else if (selected instanceof IFile) {
+    				generator = new [module.getEclipseClassName()/]((IFile) selected);
     				generator.generate();
     			}
     		}

@@ -6,7 +6,7 @@
  * @param projectUIName the UI project name
  */]
 [template public buildPropertiesFile(projectUIName : String)]
-  [file (projectUIName + '/build.properties', overwrite, 'UTF-8')]
+  [file (projectUIName + '/build.properties', create, 'UTF-8')]
     output.. = bin/
     bin.includes = META-INF/,\
                    .,\

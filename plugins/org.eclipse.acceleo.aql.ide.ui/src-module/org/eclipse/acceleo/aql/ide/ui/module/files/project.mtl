@@ -6,7 +6,7 @@
  * @param projectUIName the UI project name
  */]
 [template public projectFile(projectUIName : String)]
-  [file (projectUIName + '/.project', overwrite, 'UTF-8')]
+  [file (projectUIName + '/.project', create, 'UTF-8')]
     <?xml version="1.0" encoding="UTF-8"?>
     <projectDescription>
     	<name>[projectUIName/]</name>

@@ -23,12 +23,18 @@
       import java.util.List;
       import java.util.Map;
     
+      import org.eclipse.acceleo.aql.AcceleoUtil;
       import org.eclipse.acceleo.aql.evaluation.GenerationResult;
       import org.eclipse.acceleo.aql.ide.ui.dialog.AbstractResourceSelectionDialog;
       import org.eclipse.acceleo.aql.ide.ui.dialog.FolderSelectionDialog;
+      import org.eclipse.acceleo.aql.parser.AcceleoParser;
+      import org.eclipse.acceleo.query.ast.ASTNode;
       import org.eclipse.acceleo.query.ast.TypeLiteral;
+      import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameResolver;
       import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+      import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
       import org.eclipse.core.resources.IContainer;
+      import org.eclipse.core.resources.IFile;
       import org.eclipse.core.resources.IResource;
       import org.eclipse.core.resources.IWorkspaceRoot;
       import org.eclipse.core.resources.ResourcesPlugin;
@@ -39,6 +45,7 @@
       import org.eclipse.core.runtime.Platform;
       import org.eclipse.core.runtime.Status;
       import org.eclipse.emf.common.util.Diagnostic;
+      import org.eclipse.emf.common.util.URI;
       import org.eclipse.emf.ecore.EClass;
       import org.eclipse.emf.ecore.EObject;
       import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -76,6 +83,18 @@
     	 * Constructor.
     	 * 
     	 * @param selected
+    	 *            the selected {@link IFile}
+    	 * @generated
+    	 */
+    	public [module.getEclipseClassName()/](IFile selected) {
+    		super(Collections.singletonList(selected.getLocation().toString()), getTarget(selected));
+    		this.values = null;
+    	}
+    
+    	/**
+    	 * Constructor.
+    	 * 
+    	 * @param selected
     	 *            the selected {@link [module.getReceiverClassName()/]}
     	 * @generated
     	 */
@@ -90,7 +109,34 @@
     	@Override
     	protected List<EObject> getValues(IQualifiedNameQueryEnvironment queryEnvironment,
     			Map<EClass, List<EObject>> valuesCache, TypeLiteral type, ResourceSet resourceSetForModels) {
-    		return values;
+    		final List<EObject> res;
+    
+    		if (values != null) {
+    			res = values;
+    		} else {
+    			res = super.getValues(queryEnvironment, valuesCache, type, resourceSetForModels);
+    		}
+    
+    		return res;
+    		
+    	}
+    
+    	/**
+    	 * @generated
+    	 */
+    	@Override
+    	protected void loadResources(ResourceSet resourceSetForModels, List<String> resources) {
+    		for (String resource : resources) {
+    			resourceSetForModels.getResource(URI.createFileURI(resource), true);
+    		}
+    	}
+
+    	/**
+    	 * @generated
+    	 */
+    	@Override
+    	protected void standaloneInitialization(ResourceSet resourceSetForModels) {
+    		// nothing to do here
     	}
     
     	/**
@@ -108,14 +154,16 @@
     	}
     
     	/**
-    	 * Gets the target folder for the selected {@link [module.getReceiverClassName()/]}.
+    	 * Gets the target folder for the selected {@link [module.getReceiverClassName()/]} or selected
+    	 * {@link IFile}.
     	 * 
     	 * @param selected
-    	 *            the model {@link [module.getReceiverClassName()/]}
-    	 * @return the target folder for the selected {@link [module.getReceiverClassName()/]}
+    	 *            the model {@link [module.getReceiverClassName()/]} or selected {@link IFile}
+    	 * @return the target folder for the selected {@link [module.getReceiverClassName()/]} or selected
+    	 *         {@link IFile}
     	 * @generated
     	 */
-    	private static String getTarget([module.getReceiverClassName()/] selected) {
+    	private static String getTarget(Object selected) {
     		final String res;
     
     		final AbstractResourceSelectionDialog dialog = new FolderSelectionDialog(PlatformUI.getWorkbench()
@@ -173,20 +221,26 @@
     	 */
     	protected void printDiagnostic(Diagnostic diagnostic) {
     		if (diagnostic.getMessage() != null) {
+    			final String location;
+    			if (!diagnostic.getData().isEmpty() && diagnostic.getData().get(0) instanceof ASTNode) {
+    				location = AcceleoUtil.getLocation((ASTNode)diagnostic.getData().get(0)) + ": ";
+    			} else {
+    				location = "";
+    			}
     			switch (diagnostic.getSeverity()) {
     				case Diagnostic.INFO:
-    					Activator.getDefault().log(new Status(IStatus.INFO, diagnostic.getSource(), diagnostic
-    							.getMessage(), diagnostic.getException()));
+    					Activator.getDefault().log(new Status(IStatus.INFO, diagnostic.getSource(),
+    							location + diagnostic.getMessage(), diagnostic.getException()));
     					break;
-    
-    				case Diagnostic.WARNING:
-    					Activator.getDefault().log(new Status(IStatus.WARNING, diagnostic.getSource(), diagnostic
-    							.getMessage(), diagnostic.getException()));
+
+    						case Diagnostic.WARNING:
+    					Activator.getDefault().log(new Status(IStatus.WARNING, diagnostic.getSource(),
+    							location + diagnostic.getMessage(), diagnostic.getException()));
     					break;
-    
-    				case Diagnostic.ERROR:
-    					Activator.getDefault().log(new Status(IStatus.ERROR, diagnostic.getSource(), diagnostic
-    							.getMessage(), diagnostic.getException()));
+
+    						case Diagnostic.ERROR:
+    					Activator.getDefault().log(new Status(IStatus.ERROR, diagnostic.getSource(),
+    							location + diagnostic.getMessage(), diagnostic.getException()));
     					break;
     			}
     		}

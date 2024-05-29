@@ -39,6 +39,7 @@
       import org.eclipse.acceleo.OpenModeKind;
       import org.eclipse.acceleo.Template;
       import org.eclipse.acceleo.aql.AcceleoUtil;
+      import org.eclipse.acceleo.query.ast.ASTNode;
       import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
       import org.eclipse.acceleo.aql.evaluation.GenerationResult;
       import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
@@ -491,18 +492,21 @@
     			stream.print(indentation);
     			switch (diagnostic.getSeverity()) {
     				case Diagnostic.INFO:
-    					stream.print("INFO: ");
+    					stream.print("INFO ");
     					break;
 
-    				case Diagnostic.WARNING:
-    					stream.print("WARNING: ");
+    						case Diagnostic.WARNING:
+    					stream.print("WARNING ");
     					break;
 
-    				case Diagnostic.ERROR:
-    					stream.print("ERROR: ");
+    						case Diagnostic.ERROR:
+    					stream.print("ERROR ");
     					break;
     			}
-    			stream.println(diagnostic.getMessage());
+    			if (!diagnostic.getData().isEmpty() && diagnostic.getData().get(0) instanceof ASTNode) {
+    				stream.print(AcceleoUtil.getLocation((ASTNode)diagnostic.getData().get(0)));
+    			}
+    			stream.println(": " + diagnostic.getMessage());
     			nextIndentation += "\t";
     		}
     		for (Diagnostic child : diagnostic.getChildren()) {
