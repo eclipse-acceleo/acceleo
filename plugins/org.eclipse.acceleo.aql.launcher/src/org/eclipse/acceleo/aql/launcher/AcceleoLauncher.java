@@ -32,6 +32,7 @@ import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFac
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
@@ -297,7 +298,23 @@ public class AcceleoLauncher implements IApplication {
 		String nextIndentation = indentation;
 		if (diagnostic.getMessage() != null) {
 			stream.print(indentation);
-			stream.println(diagnostic.getMessage());
+			switch (diagnostic.getSeverity()) {
+				case Diagnostic.INFO:
+					stream.print("INFO ");
+					break;
+
+				case Diagnostic.WARNING:
+					stream.print("WARNING ");
+					break;
+
+				case Diagnostic.ERROR:
+					stream.print("ERROR ");
+					break;
+			}
+			if (!diagnostic.getData().isEmpty() && diagnostic.getData().get(0) instanceof ASTNode) {
+				stream.print(AcceleoUtil.getLocation((ASTNode)diagnostic.getData().get(0)));
+			}
+			stream.println(": " + diagnostic.getMessage());
 			nextIndentation += "\t";
 		}
 		for (Diagnostic child : diagnostic.getChildren()) {

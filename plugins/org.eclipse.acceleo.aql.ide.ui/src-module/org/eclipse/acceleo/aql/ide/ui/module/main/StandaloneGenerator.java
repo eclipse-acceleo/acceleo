@@ -30,6 +30,7 @@ import org.eclipse.acceleo.aql.ide.ui.Activator;
 import org.eclipse.acceleo.aql.ide.ui.module.services.Services;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
@@ -265,20 +266,26 @@ public class StandaloneGenerator extends AbstractGenerator {
 	 */
 	protected void printDiagnostic(Diagnostic diagnostic) {
 		if (diagnostic.getMessage() != null) {
+			final String location;
+			if (!diagnostic.getData().isEmpty() && diagnostic.getData().get(0) instanceof ASTNode) {
+				location = AcceleoUtil.getLocation((ASTNode)diagnostic.getData().get(0)) + ": ";
+			} else {
+				location = "";
+			}
 			switch (diagnostic.getSeverity()) {
 				case Diagnostic.INFO:
 					Activator.getDefault().getLog().log(new Status(IStatus.INFO, diagnostic.getSource(),
-							diagnostic.getMessage(), diagnostic.getException()));
+							location + diagnostic.getMessage(), diagnostic.getException()));
 					break;
 
 				case Diagnostic.WARNING:
 					Activator.getDefault().getLog().log(new Status(IStatus.WARNING, diagnostic.getSource(),
-							diagnostic.getMessage(), diagnostic.getException()));
+							location + diagnostic.getMessage(), diagnostic.getException()));
 					break;
 
 				case Diagnostic.ERROR:
 					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, diagnostic.getSource(),
-							diagnostic.getMessage(), diagnostic.getException()));
+							location + diagnostic.getMessage(), diagnostic.getException()));
 					break;
 			}
 		}

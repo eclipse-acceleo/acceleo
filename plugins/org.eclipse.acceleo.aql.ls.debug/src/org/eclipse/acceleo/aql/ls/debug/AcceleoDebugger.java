@@ -57,6 +57,7 @@ import org.eclipse.acceleo.debug.util.FrameVariable;
 import org.eclipse.acceleo.debug.util.StackFrame;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.AQLUtils.AcceleoAQLResult;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -764,18 +765,21 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			consolePrint(indentation);
 			switch (diagnostic.getSeverity()) {
 				case Diagnostic.INFO:
-					consolePrint("INFO: ");
+					consolePrint("INFO ");
 					break;
 
 				case Diagnostic.WARNING:
-					consolePrint("WARNING: ");
+					consolePrint("WARNING ");
 					break;
 
 				case Diagnostic.ERROR:
-					consolePrint("ERROR: ");
+					consolePrint("ERROR ");
 					break;
 			}
-			consolePrint(diagnostic.getMessage() + newLine);
+			if (!diagnostic.getData().isEmpty() && diagnostic.getData().get(0) instanceof ASTNode) {
+				consolePrint(AcceleoUtil.getLocation((ASTNode)diagnostic.getData().get(0)));
+			}
+			consolePrint(": " + diagnostic.getMessage() + newLine);
 			nextIndentation += "\t";
 		}
 		for (Diagnostic child : diagnostic.getChildren()) {

@@ -31,6 +31,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
@@ -311,23 +312,41 @@ public final class AcceleoUtil {
 			writer.append(indentation);
 			switch (diagnostic.getSeverity()) {
 				case Diagnostic.INFO:
-					writer.append("INFO: ");
+					writer.append("INFO ");
 					break;
 
 				case Diagnostic.WARNING:
-					writer.append("WARNING: ");
+					writer.append("WARNING ");
 					break;
 
 				case Diagnostic.ERROR:
-					writer.append("ERROR: ");
+					writer.append("ERROR ");
 					break;
 			}
+			if (!diagnostic.getData().isEmpty() && diagnostic.getData().get(0) instanceof ASTNode) {
+				writer.append(getLocation((ASTNode)diagnostic.getData().get(0)));
+			}
+			writer.append(": ");
 			writer.append(diagnostic.getMessage() + newLine);
 			nextIndentation += "\t";
 		}
 		for (Diagnostic child : diagnostic.getChildren()) {
 			printDiagnostic(writer, child, nextIndentation, newLine);
 		}
+	}
+
+	/**
+	 * Gets the qualified name and line number of the given {@link ASTNode}.
+	 * 
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @return the qualified name and line number of the given {@link ASTNode}
+	 */
+	public static String getLocation(ASTNode astNode) {
+		final Module module = getContainingModule(astNode);
+
+		return module.eResource().getURI().toString().substring(AcceleoParser.ACCELEOENV_URI_PROTOCOL
+				.length()) + " L" + module.getAst().getStartLine(astNode);
 	}
 
 	/**
