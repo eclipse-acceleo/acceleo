@@ -200,6 +200,39 @@ public class Services {
 	}
 
 	/**
+	 * Gets the receiver {@link EClassifier} for the given {@link Module}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return the receiver {@link EClassifier} for the given {@link Module}
+	 */
+	public EClassifier getReceiverEClassifier(Module module) {
+		final EClassifier res;
+
+		final List<Template> mains = AcceleoUtil.getMainTemplates(module);
+		if (!mains.isEmpty()) {
+			final Template main = mains.get(0);
+			if (!main.getParameters().isEmpty()) {
+				final Variable receiver = main.getParameters().get(0);
+				if (receiver.getTypeAql() instanceof EClassifierTypeLiteral) {
+					final EClassifierTypeLiteral type = (EClassifierTypeLiteral)receiver.getTypeAql();
+					final EClassifier eClassifier = queryEnvironment.getEPackageProvider().getTypes(type
+							.getEPackageName(), type.getEClassifierName()).iterator().next();
+					res = eClassifier;
+				} else {
+					res = null;
+				}
+			} else {
+				res = null;
+			}
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
 	 * Gets the receiver {@link Class} name for the given {@link Module}.
 	 * 
 	 * @param module

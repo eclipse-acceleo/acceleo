@@ -77,6 +77,30 @@
         </with>
      </visibleWhen>
   </command>
+  <!--command
+        commandId="[projectUIName/].commands.[module.getCommandID()/]"
+        id="[projectUIName/].menus.[module.getCommandID()/]"
+        label="[module.getQualifiedName()/]">
+     <visibleWhen
+           checkEnabled="false">
+        <with
+              variable="selection">
+           <iterate
+                 ifEmpty="false"
+                 operator="and">
+              <and>
+                 <instanceof
+                       value="org.eclipse.core.resources.IFile">
+                 </instanceof>
+                 <test
+                       property="org.eclipse.core.resources.extension"
+                       value="[module.getReceiverEClassifier()->asSequence().ePackage.name/]">
+                 </test>
+              </and>
+           </iterate>
+        </with>
+     </visibleWhen>
+  </command-->
 [/template]
 
 [**
