@@ -1146,16 +1146,12 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
-		assertEquals(1, stripNothingTypes(possibleTypes).size());
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
 		assertEquals(1, possibleTypes.size());
-		final Iterator<IType> it = possibleTypes.iterator();
-		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
-		assertEquals(1, validationResult.getMessages(ast).size());
-		assertValidationMessage(validationResult.getMessages(ast).get(0), ValidationMessageLevel.WARNING,
-				"Variable stuff overrides an existing value.", 0, 25);
-		assertEquals(0, validationResult.getMessages(((Let)ast).getBindings().get(0)).size());
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(1, validationResult.getMessages(((Let)ast).getBindings().get(0)).size());
+		assertValidationMessage(validationResult.getMessages(((Let)ast).getBindings().get(0)).get(0),
+				ValidationMessageLevel.WARNING, "Variable stuff overrides an existing value.", 4, 16);
 		assertEquals(0, validationResult.getMessages(((Let)ast).getBindings().get(0).getValue()).size());
 		assertEquals(0, validationResult.getMessages(((Let)ast).getBody()).size());
 	}
@@ -1167,18 +1163,17 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
-		assertEquals(1, stripNothingTypes(possibleTypes).size());
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertEquals(true, possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
-		assertEquals(1, validationResult.getMessages(ast).size());
-		assertValidationMessage(validationResult.getMessages(ast).get(0), ValidationMessageLevel.WARNING,
-				"Variable a overrides an existing value.", 0, 24);
 		assertEquals(0, validationResult.getMessages(((Let)ast).getBindings().get(0)).size());
 		assertEquals(0, validationResult.getMessages(((Let)ast).getBindings().get(0).getValue()).size());
-		assertEquals(0, validationResult.getMessages(((Let)ast).getBindings().get(1)).size());
+		assertEquals(1, validationResult.getMessages(((Let)ast).getBindings().get(1)).size());
+		assertValidationMessage(validationResult.getMessages(((Let)ast).getBindings().get(1)).get(0),
+				ValidationMessageLevel.WARNING, "Variable a overrides an existing value.", 11, 16);
 		assertEquals(0, validationResult.getMessages(((Let)ast).getBindings().get(1).getValue()).size());
 		assertEquals(0, validationResult.getMessages(((Let)ast).getBody()).size());
 	}

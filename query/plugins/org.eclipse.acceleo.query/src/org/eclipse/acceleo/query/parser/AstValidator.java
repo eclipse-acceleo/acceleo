@@ -296,30 +296,30 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	}
 
 	/**
-	 * Gets the start position for the given {@link Expression} and {@link AstResult}.
+	 * Gets the start position for the given {@link ASTNode} and {@link AstResult}.
 	 * 
 	 * @param astResult
 	 *            the {@link AstResult}
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the start position for the given {@link Expression} and {@link AstResult}
+	 * @param node
+	 *            the {@link ASTNode}
+	 * @return the start position for the given {@link ASTNode} and {@link AstResult}
 	 */
-	private int getStartPosition(final AstResult astResult, Expression expression) {
+	private int getStartPosition(final AstResult astResult, ASTNode node) {
 		final int startPostion;
-		if (expression instanceof Call) {
-			final String serviceName = ((Call)expression).getServiceName();
+		if (node instanceof Call) {
+			final String serviceName = ((Call)node).getServiceName();
 			if (AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(serviceName)) {
 				if (AstBuilderListener.NOT_OPERATOR.equals(serviceName)
 						|| AstBuilderListener.UNARY_MIN_OPERATOR.equals(serviceName)) {
-					startPostion = astResult.getStartPosition(expression);
+					startPostion = astResult.getStartPosition(node);
 				} else {
-					startPostion = astResult.getStartPosition(((Call)expression).getArguments().get(0));
+					startPostion = astResult.getStartPosition(((Call)node).getArguments().get(0));
 				}
 			} else {
-				startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
+				startPostion = astResult.getEndPosition(((Call)node).getArguments().get(0));
 			}
 		} else {
-			startPostion = astResult.getStartPosition(expression);
+			startPostion = astResult.getStartPosition(node);
 		}
 		return startPostion;
 	}
@@ -835,8 +835,15 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		for (VariableDeclaration variableDeclaration : object.getParameters()) {
 			final Set<IType> types = doSwitch(variableDeclaration);
 			if (newVariableTypes.containsKey(variableDeclaration.getName())) {
-				lambdaExpressionTypes.add(services.nothing(VARIABLE_OVERRIDES_AN_EXISTING_VALUE,
-						variableDeclaration.getName()));
+				final AstResult astResult = validationResult.getAstResult();
+				final int startPostion = getStartPosition(astResult, variableDeclaration);
+				final int endPosition = astResult.getEndPosition(variableDeclaration);
+				final String formatedMessage = String.format(VARIABLE_OVERRIDES_AN_EXISTING_VALUE,
+						variableDeclaration.getName());
+				final ValidationMessage msg = new ValidationMessage(ValidationMessageLevel.WARNING,
+						formatedMessage, startPostion, endPosition);
+				messages.computeIfAbsent(variableDeclaration, n -> new LinkedHashSet<IValidationMessage>())
+						.add(msg);
 			}
 			newVariableTypes.put(variableDeclaration.getName(), types);
 		}
@@ -1172,7 +1179,14 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final Set<IType> bindingTypes = doSwitch(binding);
 			if (binding.getName() != null) {
 				if (newVariableTypes.containsKey(binding.getName())) {
-					result.add(services.nothing(VARIABLE_OVERRIDES_AN_EXISTING_VALUE, binding.getName()));
+					final AstResult astResult = validationResult.getAstResult();
+					final int startPostion = getStartPosition(astResult, binding);
+					final int endPosition = astResult.getEndPosition(binding);
+					final String formatedMessage = String.format(VARIABLE_OVERRIDES_AN_EXISTING_VALUE, binding
+							.getName());
+					final ValidationMessage msg = new ValidationMessage(ValidationMessageLevel.WARNING,
+							formatedMessage, startPostion, endPosition);
+					messages.computeIfAbsent(binding, n -> new LinkedHashSet<IValidationMessage>()).add(msg);
 				}
 				newVariableTypes.put(binding.getName(), bindingTypes);
 			}
