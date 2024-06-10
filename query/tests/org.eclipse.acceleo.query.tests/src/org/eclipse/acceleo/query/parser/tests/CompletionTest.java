@@ -1245,7 +1245,8 @@ public class CompletionTest {
 
 		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
 
-		assertCompletion(completionResult, 6, "_Re::", "", 0, 5, "_Real::Keyword", "_Real::_String");
+		assertCompletion(completionResult, 3, "_Re::", "", 0, 5, "_Real::Keyword", "_Real::_String",
+				"_Real::_String::_Integer");
 	}
 
 	@Test

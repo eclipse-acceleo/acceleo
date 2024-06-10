@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,8 +65,10 @@ public class BasicFilter implements IProposalFilter {
 				result = startsWithOrMatchCamelCase(eClassifier.getEPackage().getName(), segments[0])
 						&& startsWithOrMatchCamelCase(eClassifier.getName(), segments[1]);
 			} else if (segments.length == 1) {
+				final boolean endsWithEmptySegment = prefix.endsWith(":");
 				result = startsWithOrMatchCamelCase(eClassifier.getEPackage().getName(), segments[0])
-						|| startsWithOrMatchCamelCase(eClassifier.getName(), segments[0]);
+						|| (!endsWithEmptySegment && startsWithOrMatchCamelCase(eClassifier.getName(),
+								segments[0]));
 			} else {
 				result = true;
 			}
@@ -75,19 +77,21 @@ public class BasicFilter implements IProposalFilter {
 			final EEnumLiteral eEnumLiteral = ((EEnumLiteralCompletionProposal)proposal).getObject();
 			if (segments.length == 3) {
 				result = startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getEPackage().getName(),
-						segments[0])
-						&& startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(), segments[1])
-						&& startsWithOrMatchCamelCase(eEnumLiteral.getName(), segments[2]);
+						segments[0]) && startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(),
+								segments[1]) && startsWithOrMatchCamelCase(eEnumLiteral.getName(),
+										segments[2]);
 			} else if (segments.length == 2) {
+				final boolean endsWithEmptySegment = prefix.endsWith(":");
 				result = startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getEPackage().getName(),
-						segments[0])
-						&& (startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(), segments[1]) || startsWithOrMatchCamelCase(
-								eEnumLiteral.getName(), segments[1]));
+						segments[0]) && (startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(),
+								segments[1]) || (!endsWithEmptySegment && startsWithOrMatchCamelCase(
+										eEnumLiteral.getName(), segments[1])));
 			} else if (segments.length == 1) {
+				final boolean endsWithEmptySegment = prefix.endsWith(":");
 				result = startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getEPackage().getName(),
-						segments[0])
-						|| startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(), segments[0])
-						|| startsWithOrMatchCamelCase(eEnumLiteral.getName(), segments[0]);
+						segments[0]) || (!endsWithEmptySegment && startsWithOrMatchCamelCase(eEnumLiteral
+								.getEEnum().getName(), segments[0])) || (!endsWithEmptySegment
+										&& startsWithOrMatchCamelCase(eEnumLiteral.getName(), segments[0]));
 			} else {
 				result = true;
 			}
@@ -137,18 +141,18 @@ public class BasicFilter implements IProposalFilter {
 			localCandidate = candidate;
 		}
 
-		final String localquery;
+		final String localQuery;
 		if (candidate != null && query.startsWith("_")) {
-			localquery = query.substring(1);
+			localQuery = query.substring(1);
 		} else {
-			localquery = query;
+			localQuery = query;
 		}
 
-		if (startsWithIgnoreCase(localCandidate, localquery)) {
+		if (startsWithIgnoreCase(localCandidate, localQuery)) {
 			result = true;
 		} else if (localCandidate != null) {
 			// transform the query into a camelCase regex
-			String regex = CAMEL_CASE_PATTERN.matcher(localquery).replaceAll("$1[^A-Z]*") + ".*";
+			String regex = CAMEL_CASE_PATTERN.matcher(localQuery).replaceAll("$1[^A-Z]*") + ".*";
 			result = localCandidate.matches(regex);
 		} else {
 			result = false;
