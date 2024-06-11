@@ -26,8 +26,12 @@ import org.eclipse.emf.ecore.EEnumLiteral;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class BasicFilter implements IProposalFilter {
+
 	/** Pre-compiled pattern that'll allow us to match proposals with camel case. */
 	private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile("([a-z]+|[A-Z][a-z]*)");
+
+	/** Pre-compiled pattern that'll allow us to change the prefix to match in a case insensitive way. */
+	private static final Pattern CAMEL_CASE_PREFIX_PATTERN = Pattern.compile("^([a-z]+)");
 
 	/**
 	 * The {@link ICompletionResult}.
@@ -153,6 +157,10 @@ public class BasicFilter implements IProposalFilter {
 		} else if (localCandidate != null) {
 			// transform the query into a camelCase regex
 			String regex = CAMEL_CASE_PATTERN.matcher(localQuery).replaceAll("$1[^A-Z]*") + ".*";
+			// make the lowercase prefix case insensitive match
+			regex = CAMEL_CASE_PREFIX_PATTERN.matcher(regex).replaceFirst("(?i)$1(?-i)");
+			// allows any prefix
+			regex = ".*?" + regex;
 			result = localCandidate.matches(regex);
 		} else {
 			result = false;

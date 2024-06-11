@@ -1,4 +1,22 @@
 * Label:
+eAnnotations
+* Description:
+EReference named eAnnotations in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+eAnnotations
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eFactoryInstance
+* Description:
+EReference named eFactoryInstance in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+eFactoryInstance
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 name
 * Description:
 EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
@@ -22,6 +40,285 @@ nsURI
 EAttribute named nsURI in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 nsURI
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+ancestors()
+* Description:
+ancestors(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a Sequence containing the full set of object's ancestors.<br><br>  @param self<br>        The EObject we seek the ancestors of<br><br>  @return<br>        Sequence containing the full set of the receiver's ancestors<br><br>
+* Text:
+ancestors()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+ancestors()
+* Description:
+ancestors(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List<br><br>Returns a Sequence containing the set of object's ancestors of any given types.<br><br>  @param self<br>        The EObject we seek the ancestors of<br>  @param filters<br>        The set of filtering EClasses<br><br>  @return<br>        Sequence containing the set of the receiver's ancestors of any given types<br><br>
+* Text:
+ancestors()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+ancestors()
+* Description:
+ancestors(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List<br><br>Returns a Sequence containing the set of object's ancestors of the given type.<br><br>  @param self<br>        The EObject we seek the ancestors of<br>  @param filter<br>        The filtering EClass<br><br>  @return<br>        Sequence containing the set of the receiver's ancestors of the given type<br><br>
+* Text:
+ancestors()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eAllContents()
+* Description:
+eAllContents(eObject: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a sequence of the EObjects recursively contained in the specified root eObject.<br><br>  @param eObject<br>        The root of the content tree<br><br>  @return<br>        The recursive content of the specified eObject.<br><br>
+* Text:
+eAllContents()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eAllContents()
+* Description:
+eAllContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = List<br><br>Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass<br><br>  @param eObject<br>        The root of the content tree<br>  @param types<br>        The set of types used to select elements<br><br>  @return<br>        The recursive content of the specified eObject.<br><br>
+* Text:
+eAllContents()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eAllContents()
+* Description:
+eAllContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = List<br><br>Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass<br><br>  @param eObject<br>        The root of the content tree<br>  @param type<br>        The type used to select elements<br><br>  @return<br>        The recursive content of the specified eObject.<br><br>
+* Text:
+eAllContents()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContainer()
+* Description:
+eContainer(eObject: org.eclipse.emf.ecore.EObject) = EObject<br><br>Returns the container of the specified EObject<br><br>  @param eObject<br>        The eObject which container is requested.<br><br>  @return<br>        The container of the specified eObject.<br><br>
+* Text:
+eContainer()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContainer()
+* Description:
+eContainer(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = EObject<br><br>Returns the first container of the specified EObject that matches the given type<br><br>  @param eObject<br>        The eObject which container is requested.<br>  @param type<br>        The type filter.<br><br>  @return<br>        The first container of the specified eObject that matches the given type.<br><br>
+* Text:
+eContainer()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContainerOrSelf()
+* Description:
+eContainerOrSelf(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = EObject<br><br>Returns self or the first container of the specified EObject that matches the given type<br><br>  @param eObject<br>        The eObject which container is requested.<br>  @param type<br>        The type filter.<br><br>  @return<br>        Self or the first container of the specified eObject that matches the given type.<br><br>
+* Text:
+eContainerOrSelf()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContainingFeature()
+* Description:
+eContainingFeature(eObject: org.eclipse.emf.ecore.EObject) = EStructuralFeature<br><br>Returns the containing feature of the specified EObject<br><br>  @param eObject<br>        The eObject which containing feature is requested.<br><br>  @return<br>        The containing feature of the specified EObject<br><br>
+* Text:
+eContainingFeature()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContainmentFeature()
+* Description:
+eContainmentFeature(eObject: org.eclipse.emf.ecore.EObject) = EReference<br><br>Returns the containment feature of the specified EObject<br><br>  @param eObject<br>        The eObject which containment feature is requested.<br><br>  @return<br>        The containment feature of the specified EObject<br><br>
+* Text:
+eContainmentFeature()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContents()
+* Description:
+eContents(eObject: org.eclipse.emf.ecore.EObject) = List<br><br>Returns the contents of the specified EObject instance.<br><br>  @param eObject<br>        The eObject which content is requested.<br><br>  @return<br>        The content of the specified eObject.<br><br>
+* Text:
+eContents()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContents()
+* Description:
+eContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = List<br><br>Returns a sequence made of the instances of the specified types in the contents of the specified eObject.<br><br>  @param eObject<br>        The eObject which content is requested.<br>  @param types<br>        The Set of types filter.<br><br>  @return<br>        The filtered content of the specified eObject.<br><br>
+* Text:
+eContents()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eContents()
+* Description:
+eContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = List<br><br>Returns a sequence made of the instances of the specified type in the contents of the specified eObject.<br><br>  @param eObject<br>        The eObject which content is requested.<br>  @param type<br>        The type filter.<br><br>  @return<br>        The filtered content of the specified eObject.<br><br>
+* Text:
+eContents()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eCrossReferences()
+* Description:
+eCrossReferences(eObject: org.eclipse.emf.ecore.EObject) = Object<br><br>Returns the list of all EObjects cross-referenced from the receiver.<br><br>  @param eObject<br>        The eObject of which we need the cross-references.<br><br>  @return<br>        The list of all EObjects cross-referenced from the receiver.<br><br>
+* Text:
+eCrossReferences()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eInverse()
+* Description:
+eInverse(eObject: org.eclipse.emf.ecore.EObject) = Set<br><br>Returns the set containing the inverse references.<br><br>  @param eObject<br>        The eObject which inverse references are requested.<br><br>  @return<br>        The set of the inverse references<br><br>
+* Text:
+eInverse()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eInverse()
+* Description:
+eInverse(eObject: org.eclipse.emf.ecore.EObject, featureName: java.lang.String) = Set<br><br>Returns the elements from the set of the inverse references of the receiver that are referencing the receiver using a feature with the given name.<br><br>  @param eObject<br>        The eObject which inverse references are requested.<br>  @param featureName<br>        The feature name.<br><br>  @return<br>        The set of the inverse references<br><br>
+* Text:
+eInverse()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+eInverse()
+* Description:
+eInverse(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClassifier) = Set<br><br>Returns the elements of the given type from the set of the inverse references of the receiver.<br><br>  @param eObject<br>        The eObject which inverse references are requested.<br>  @param type<br>        The type filter.<br><br>  @return<br>        The set of the inverse references<br><br>
+* Text:
+eInverse()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+followingSiblings()
+* Description:
+followingSiblings(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a Sequence containing the full set of object's following siblings.<br><br>  @param self<br>        The EObject we seek the following siblings of<br><br>  @return<br>        Sequence containing the full set of the receiver's following siblings<br><br>
+* Text:
+followingSiblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+followingSiblings()
+* Description:
+followingSiblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List<br><br>Returns a Sequence containing the set of object's following siblings of any given types.<br><br>  @param self<br>        The EObject we seek the following siblings of<br>  @param filters<br>        The set of filtering EClasses<br><br>  @return<br>        Sequence containing the set of the receiver's following siblings of any given types<br><br>
+* Text:
+followingSiblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+followingSiblings()
+* Description:
+followingSiblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List<br><br>Returns a Sequence containing the set of object's following siblings of the given type.<br><br>  @param self<br>        The EObject we seek the following siblings of<br>  @param filter<br>        The filtering EClass<br><br>  @return<br>        Sequence containing the set of the receiver's following siblings of the given type<br><br>
+* Text:
+followingSiblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+getEAnnotation()
+* Description:
+EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+getEAnnotation()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+lineSeparator()
+* Description:
+lineSeparator(obj: java.lang.Object) = String<br><br>Gets the platform line separator.<br><br>  @param obj<br>        Any object<br><br>  @return<br>        '\n' (Unix) or '\r\n' (Dos) or '\r' (Mac Os Classic)<br><br>
+* Text:
+lineSeparator()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+oclIsKindOf()
+* Description:
+oclIsKindOf(object: java.lang.Object, type: java.lang.Object) = Boolean<br><br>Evaluates to "true" if the type of the object o1 conforms to the type "classifier". That is, o1 is of type "classifier" or a subtype of "classifier".<br><br>  @param object<br>        The reference Object we seek to test.<br>  @param type<br>        The expected supertype classifier.<br><br>  @return<br>        "true" if the object o1 is a kind of the classifier, "false" otherwise.<br><br>
+* Text:
+oclIsKindOf()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+precedingSiblings()
+* Description:
+precedingSiblings(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a Sequence containing the full set of object's preceding siblings.<br><br>  @param self<br>        The EObject we seek the preceding siblings of<br><br>  @return<br>        Sequence containing the full set of the receiver's preceding siblings<br><br>
+* Text:
+precedingSiblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+precedingSiblings()
+* Description:
+precedingSiblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List<br><br>Returns a Sequence containing the set of object's preceding siblings of any given types.<br><br>  @param self<br>        The EObject we seek the preceding siblings of<br>  @param filters<br>        The set of filtering EClasses<br><br>  @return<br>        Sequence containing the set of the receiver's preceding siblings of any given types<br><br>
+* Text:
+precedingSiblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+precedingSiblings()
+* Description:
+precedingSiblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List<br><br>Returns a Sequence containing the set of object's preceding siblings of the given type.<br><br>  @param self<br>        The EObject we seek the preceding siblings of<br>  @param filter<br>        The filtering EClass<br><br>  @return<br>        Sequence containing the set of the receiver's preceding siblings of the given type<br><br>
+* Text:
+precedingSiblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+siblings()
+* Description:
+siblings(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a Sequence containing the full set of object's siblings.<br><br>  @param self<br>        The EObject we seek the siblings of<br><br>  @return<br>        Sequence containing the full set of the receiver's siblings<br><br>
+* Text:
+siblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+siblings()
+* Description:
+siblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List<br><br>Returns a Sequence containing the set of object's siblings of any given types.<br><br>  @param self<br>        The EObject we seek the siblings of<br>  @param filters<br>        The set of filtering EClasses<br><br>  @return<br>        Sequence containing the set of the receiver's siblings of any given types<br><br>
+* Text:
+siblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+siblings()
+* Description:
+siblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List<br><br>Returns a Sequence containing the set of object's siblings of the given type.<br><br>  @param self<br>        The EObject we seek the siblings of<br>  @param filter<br>        The filtering EClass<br><br>  @return<br>        Sequence containing the set of the receiver's siblings of the given type<br><br>
+* Text:
+siblings()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+toString()
+* Description:
+toString(self: java.lang.Object) = String<br><br>Returns a string representation of the current object.<br><br>  @param self<br>        The current object<br><br>  @return<br>        a String representation of the given Object. For Collections, this will be the concatenation of all contained Objects' toString.<br><br>
+* Text:
+toString()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 

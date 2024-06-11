@@ -178,7 +178,8 @@ public class CompletionTest {
 	public void navigationSegmentPrefixTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.na", 7, variableTypes);
 
-		assertCompletion(completionResult, 1, "na", "", 5, 2, "name");
+		assertCompletion(completionResult, 3, "na", "", 5, 2, "name", "instanceClassName",
+				"instanceTypeName");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -188,7 +189,8 @@ public class CompletionTest {
 	public void navigationSegmentPrefixRemainingTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.nam", 7, variableTypes);
 
-		assertCompletion(completionResult, 1, "na", "m", 5, 2, "name");
+		assertCompletion(completionResult, 3, "na", "m", 5, 2, "name", "instanceClassName",
+				"instanceTypeName");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -198,7 +200,8 @@ public class CompletionTest {
 	public void navigationSegmentPrefixLongExpressionRemainingTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.nam.size()", 7, variableTypes);
 
-		assertCompletion(completionResult, 1, "na", "m", 5, 2, "name");
+		assertCompletion(completionResult, 3, "na", "m", 5, 2, "name", "instanceClassName",
+				"instanceTypeName");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -376,7 +379,7 @@ public class CompletionTest {
 	public void testLetCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("le", 2, variableTypes);
 
-		assertCompletion(completionResult, 2, "le", "", 0, 2, "let ", "anydsl::Kind::Leaf");
+		assertCompletion(completionResult, 15, "le", "", 0, 2, "let ", "anydsl::Kind::Leaf");
 	}
 
 	@Test
@@ -462,7 +465,8 @@ public class CompletionTest {
 	public void testConditionalIfCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("i", 1, variableTypes);
 
-		assertCompletion(completionResult, 3, "i", "", 0, 1, "Integer", "if ", "anydsl::Kind::Inflorescence");
+		assertCompletion(completionResult, 56, "i", "", 0, 1, "Integer", "if ",
+				"anydsl::Kind::Inflorescence");
 	}
 
 	@Test
@@ -525,7 +529,7 @@ public class CompletionTest {
 	public void testConditionWithinTrueBranchCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("if true then tr", 15, variableTypes);
 
-		assertCompletion(completionResult, 2, "tr", "", 13, 2, "true", "anydsl::Kind::Tree");
+		assertCompletion(completionResult, 13, "tr", "", 13, 2, "true", "anydsl::Kind::Tree");
 	}
 
 	/**
@@ -1290,7 +1294,8 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self.eClass().nam", 17, types);
 
-		assertCompletion(completionResult, 1, "nam", "", 14, 3, "name");
+		assertCompletion(completionResult, 3, "nam", "", 14, 3, "name", "instanceClassName",
+				"instanceTypeName");
 	}
 
 	@Test
