@@ -1,0 +1,10 @@
+
+header position 29..95
+module missingFeatureType
+encoding UTF-8
+  metamodel http://www.eclipse.org/acceleo/4.0 (57..92)
+  
+  public template myTemplate(parameter : Expression (125..156))
+    Some Text:  (161..172)
+    [.aqlFeatureAccess(parameter, 'aql') (173..186)/] (newLineNeeded (172..189) (158..189)
+  [/template] (97..200) (29..200)

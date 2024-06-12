@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module missingFeatureType('http://www.eclipse.org/acceleo/4.0')/]
+
+[template public myTemplate(parameter : acceleo::Expression)]
+  Some Text: [parameter.aql/]
+[/template]

@@ -34,6 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
@@ -45,6 +47,7 @@ import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.aql.validation.quickfixes.AcceleoQuickFixesSwitch;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
+import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstResourceChange;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstTextReplacement;
@@ -185,6 +188,8 @@ public abstract class AbstractLanguageTestSuite {
 	 */
 	public AbstractLanguageTestSuite(String testFolder) throws IOException {
 		GenModelPackage.eINSTANCE.getName(); // initialize the GenModelPackage
+		AstPackage.eINSTANCE.getName();// initialize the AstPackage
+		AcceleoPackage.eINSTANCE.getName(); // initialize the AcceleoPackage
 		this.memoryDestinationString = "acceleotests://" + testFolder + "/";
 		this.memoryDestination = URI.createURI(memoryDestinationString);
 		this.testFolderPath = testFolder;
@@ -253,9 +258,19 @@ public abstract class AbstractLanguageTestSuite {
 			astResultWindowsEndLine = null;
 		}
 
+		for (Metamodel metamodel : astResult.getModule().getMetamodels()) {
+			if (metamodel.getReferencedPackage() != null) {
+				queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
+			}
+		}
 		final AcceleoValidator validator = new AcceleoValidator(queryEnvironment);
 		validationResult = validator.validate(astResult, qualifiedName);
 
+		for (Metamodel metamodel : astResultWindowsEndLine.getModule().getMetamodels()) {
+			if (metamodel.getReferencedPackage() != null) {
+				queryEnvironmentWindowsEndLine.registerEPackage(metamodel.getReferencedPackage());
+			}
+		}
 		final AcceleoValidator validatorWindowsEndLine = new AcceleoValidator(queryEnvironmentWindowsEndLine);
 		validationResultWindowsEndLine = validatorWindowsEndLine.validate(astResultWindowsEndLine,
 				qualifiedName);

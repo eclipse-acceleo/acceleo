@@ -342,13 +342,71 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	public List<IAstQuickFix> caseCall(Call call) {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
-		final IType returnType = new ClassType(queryEnvironment, String.class);
-		final List<Set<IType>> argumentTypes = getArgumentPossibleTypes(call);
-		final CombineIterator<IType> combineIt = new CombineIterator<>(argumentTypes);
-		final List<String> parameterNames = getParameterNames(call);
-		while (combineIt.hasNext()) {
-			res.addAll(getAddServiceQuickFixes(call.getServiceName(), parameterNames, returnType, combineIt
-					.next()));
+		if (!AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(call.getServiceName())) {
+			final IType returnType = new ClassType(queryEnvironment, String.class);
+			final List<Set<IType>> argumentTypes = getArgumentPossibleTypes(call);
+			final CombineIterator<IType> combineIt = new CombineIterator<>(argumentTypes);
+			final List<String> parameterNames = getParameterNames(call);
+			while (combineIt.hasNext()) {
+				res.addAll(getAddServiceQuickFixes(call.getServiceName(), parameterNames, returnType,
+						combineIt.next()));
+			}
+		} else if (validationResult.getValidationMessages(call).stream().anyMatch(m -> m.getMessage()
+				.endsWith("is not registered in the current environment"))) {
+			for (IType type : validationResult.getPossibleTypes(call)) {
+				if (type instanceof EClassifierType) {
+					final IAstQuickFix fix = getAddMetamodelForEClassifierQuickFix(((EClassifierType)type)
+							.getType());
+					if (fix != null) {
+						res.add(fix);
+					}
+				}
+			}
+		}
+
+		return res;
+	}
+
+	private IAstQuickFix getAddMetamodelForEClassifierQuickFix(EClassifier eClassifier) {
+		final IAstQuickFix res;
+
+		if (eClassifier != null && eClassifier.getEPackage() != null) {
+			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+			final URI uri = resolver.getSourceURI(moduleQualifiedName);
+			final EPackage ePkg = eClassifier.getEPackage();
+			final IAstQuickFix fix = new AstQuickFix("Add " + ePkg.getNsURI());
+			final int offset;
+			final int line;
+			final int column;
+			if (module.getMetamodels().isEmpty()) {
+				final String moduleHeader = moduleText.substring(module.getStartHeaderPosition(), module
+						.getEndHeaderPosition());
+				final Matcher matcher = EMPTY_MODULE_METAMODEL_PATTERN.matcher(moduleHeader);
+				if (matcher.find()) {
+					offset = module.getStartHeaderPosition() + matcher.start();
+					line = linesAndColumns[offset][0];
+					column = linesAndColumns[offset][1];
+					final AstTextReplacement textReplacement = new AstTextReplacement(uri, AcceleoParser.QUOTE
+							+ ePkg.getNsURI() + AcceleoParser.QUOTE, offset, line, column, offset, line,
+							column);
+					fix.getTextReplacements().add(textReplacement);
+					res = fix;
+				} else {
+					res = null;
+				}
+			} else {
+				final Metamodel lastMetamodel = module.getMetamodels().get(module.getMetamodels().size() - 1);
+				offset = positions.getEndPositions(lastMetamodel);
+				line = positions.getEndLines(lastMetamodel);
+				column = positions.getEndColumns(lastMetamodel);
+				final AstTextReplacement textReplacement = new AstTextReplacement(uri, AcceleoParser.COMMA
+						+ SPACE + AcceleoParser.QUOTE + ePkg.getNsURI() + AcceleoParser.QUOTE, offset, line,
+						column, offset, line, column);
+				fix.getTextReplacements().add(textReplacement);
+				res = fix;
+			}
+		} else {
+			res = null;
 		}
 
 		return res;

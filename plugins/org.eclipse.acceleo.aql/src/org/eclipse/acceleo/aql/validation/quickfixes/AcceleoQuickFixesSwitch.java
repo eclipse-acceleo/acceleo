@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.ast.ASTNode;
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.StringLiteral;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
@@ -65,10 +68,23 @@ public class AcceleoQuickFixesSwitch extends ComposedSwitch<List<IAstQuickFix>> 
 	public List<IAstQuickFix> getQuickFixes(ASTNode node) {
 		final List<IAstQuickFix> res;
 
-		final List<IValidationMessage> errors = validationResult.getValidationMessages(node).stream().filter(
-				m -> m.getLevel() == ValidationMessageLevel.ERROR).collect(Collectors.toList());
+		final List<IValidationMessage> errors;
+		final ASTNode localNode;
+		if (node instanceof StringLiteral && node.eContainer() instanceof Call
+				&& AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(((Call)node.eContainer())
+						.getServiceName())) {
+			final Call call = (Call)node.eContainer();
+			errors = validationResult.getValidationMessages(call).stream().filter(m -> m
+					.getLevel() == ValidationMessageLevel.ERROR).collect(Collectors.toList());
+			localNode = call;
+		} else {
+			errors = validationResult.getValidationMessages(node).stream().filter(m -> m
+					.getLevel() == ValidationMessageLevel.ERROR).collect(Collectors.toList());
+			localNode = node;
+		}
+
 		if (!errors.isEmpty()) {
-			final List<IAstQuickFix> quickFixes = doSwitch(node);
+			final List<IAstQuickFix> quickFixes = doSwitch(localNode);
 			if (quickFixes != null) {
 				res = quickFixes;
 			} else {
