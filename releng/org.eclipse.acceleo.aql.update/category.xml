@@ -58,6 +58,12 @@
        <category name="M2Doc"/>
    </feature>
    <bundle id="org.antlr.runtime"/>
+   <bundle id="org.eclipse.lsp4j"/>
+   <bundle id="org.eclipse.lsp4j.debug"/>
+   <bundle id="org.eclipse.lsp4j.jsonrpc"/>
+   <bundle id="org.eclipse.lsp4j.jsonrpc.debug"/>
+   <bundle id="org.eclipse.lsp4e"/>
+   <bundle id="org.eclipse.lsp4e.debug"/>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
          Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.).
