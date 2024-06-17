@@ -29,6 +29,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -251,6 +252,7 @@ public final class AcceleoUtil {
 					StandardCharsets.UTF_8, evaluator.getNewLine());) {
 				printDiagnostic(logWriter, evaluator.getGenerationResult().getDiagnostic(), "", evaluator
 						.getNewLine());
+				printSummary(logWriter, evaluator.getGenerationResult(), evaluator.getNewLine());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -333,6 +335,45 @@ public final class AcceleoUtil {
 		for (Diagnostic child : diagnostic.getChildren()) {
 			printDiagnostic(writer, child, nextIndentation, newLine);
 		}
+	}
+
+	/**
+	 * Prints the summary of the generation.
+	 * 
+	 * @param writer
+	 *            the {@link IAcceleoWriter}
+	 * @param result
+	 *            the {@link GenerationResult}
+	 * @param newLine
+	 *            the new line {@link String}
+	 */
+	private static void printSummary(IAcceleoWriter writer, GenerationResult result, String newLine) {
+		int nbErrors = 0;
+		int nbWarnings = 0;
+		int nbInfos = 0;
+		for (Diagnostic diagnostic : result.getDiagnostic().getChildren()) {
+			switch (diagnostic.getSeverity()) {
+				case Diagnostic.ERROR:
+					nbErrors++;
+					break;
+
+				case Diagnostic.WARNING:
+					nbWarnings++;
+					break;
+
+				case Diagnostic.INFO:
+					nbInfos++;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		final String message = "Files: " + result.getGeneratedFiles().size() + ", Lost Files: " + result
+				.getLostFiles().size() + ", Errors: " + nbErrors + ", Warnings: " + nbWarnings + ", Infos: "
+				+ nbInfos + ".";
+		writer.append(message + newLine);
 	}
 
 	/**

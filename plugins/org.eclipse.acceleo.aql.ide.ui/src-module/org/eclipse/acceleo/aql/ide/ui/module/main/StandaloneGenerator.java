@@ -252,6 +252,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 		if (generationResult.getDiagnostic().getSeverity() > Diagnostic.INFO) {
 			printDiagnostic(generationResult.getDiagnostic());
 		}
+		printSummary(generationResult);
 	}
 
 	/**
@@ -292,6 +293,41 @@ public class StandaloneGenerator extends AbstractGenerator {
 		for (Diagnostic child : diagnostic.getChildren()) {
 			printDiagnostic(child);
 		}
+	}
+
+	/**
+	 * Prints the summary of the generation.
+	 * 
+	 * @param result
+	 *            the {@link GenerationResult}
+	 */
+	protected void printSummary(GenerationResult result) {
+		int nbErrors = 0;
+		int nbWarnings = 0;
+		int nbInfos = 0;
+		for (Diagnostic diagnostic : result.getDiagnostic().getChildren()) {
+			switch (diagnostic.getSeverity()) {
+				case Diagnostic.ERROR:
+					nbErrors++;
+					break;
+
+				case Diagnostic.WARNING:
+					nbWarnings++;
+					break;
+
+				case Diagnostic.INFO:
+					nbInfos++;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		final String message = "Files: " + result.getGeneratedFiles().size() + ", Lost Files: " + result
+				.getLostFiles().size() + ", Errors: " + nbErrors + ", Warnings: " + nbWarnings + ", Infos: "
+				+ nbInfos + ".";
+		Activator.getDefault().getLog().log(new Status(IStatus.INFO, getClass(), message));
 	}
 
 	/**

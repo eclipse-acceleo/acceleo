@@ -37,6 +37,7 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
@@ -121,7 +122,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 						@Override
 						public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
 								String lineDelimiter) throws IOException {
-							consolePrint(uri.toString());
+							consolePrint(uri.toString() + newLine);
 							return super.createWriterFor(uri, openMode, charset, lineDelimiter);
 						}
 					};
@@ -130,6 +131,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					if (evaluator.getGenerationResult().getDiagnostic().getSeverity() != Diagnostic.OK) {
 						printDiagnostic(evaluator.getGenerationResult().getDiagnostic(), "");
 					}
+					printSummary(evaluator.getGenerationResult());
 				}
 			} finally {
 				// FIXME workaround: UI jobs are coming from core.debug even if the gen has finished,
@@ -177,7 +179,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 					try {
 						res.put(entry.getKey(), Integer.valueOf(hitCondition));
 					} catch (NumberFormatException e) {
-						consolePrint("hit condition is not an integer: " + hitCondition);
+						consolePrint("hit condition is not an integer: " + hitCondition + newLine);
 					}
 				}
 			}
@@ -339,14 +341,14 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 
 			final AcceleoAQLResult result = AQLUtils.parseWhileAqlExpression(expression.toString());
 			if (result.getAstResult().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-				consolePrint("parsing error: " + expression);
+				consolePrint("parsing error: " + expression + newLine);
 				printDiagnostic(result.getAstResult().getDiagnostic(), "");
 				res = null;
 			} else {
 				final EvaluationResult value = evaluator.getAqlEngine().eval(result.getAstResult(),
 						peekVariables());
 				if (value.getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-					consolePrint("evaluation error: " + expression);
+					consolePrint("evaluation error: " + expression + newLine);
 					printDiagnostic(result.getAstResult().getDiagnostic(), "");
 					res = null;
 				} else {
@@ -574,7 +576,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			@Override
 			public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
 					String lineDelimiter) throws IOException {
-				consolePrint(uri.toString());
+				consolePrint(uri.toString() + newLine);
 				return super.createWriterFor(uri, openMode, charset, lineDelimiter);
 			}
 		};
@@ -583,6 +585,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		if (noDebugEvaluator.getGenerationResult().getDiagnostic().getSeverity() != Diagnostic.OK) {
 			printDiagnostic(noDebugEvaluator.getGenerationResult().getDiagnostic(), "");
 		}
+		printSummary(noDebugEvaluator.getGenerationResult());
 
 		if (profiler != null) {
 			try {
@@ -785,6 +788,41 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		for (Diagnostic child : diagnostic.getChildren()) {
 			printDiagnostic(child, nextIndentation);
 		}
+	}
+
+	/**
+	 * Prints the summary of the generation.
+	 * 
+	 * @param result
+	 *            the {@link GenerationResult}
+	 */
+	protected void printSummary(GenerationResult result) {
+		int nbErrors = 0;
+		int nbWarnings = 0;
+		int nbInfos = 0;
+		for (Diagnostic diagnostic : result.getDiagnostic().getChildren()) {
+			switch (diagnostic.getSeverity()) {
+				case Diagnostic.ERROR:
+					nbErrors++;
+					break;
+
+				case Diagnostic.WARNING:
+					nbWarnings++;
+					break;
+
+				case Diagnostic.INFO:
+					nbInfos++;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		final String message = "Files: " + result.getGeneratedFiles().size() + ", Lost Files: " + result
+				.getLostFiles().size() + ", Errors: " + nbErrors + ", Warnings: " + nbWarnings + ", Infos: "
+				+ nbInfos + ".";
+		consolePrint(message + newLine);
 	}
 
 	@Override

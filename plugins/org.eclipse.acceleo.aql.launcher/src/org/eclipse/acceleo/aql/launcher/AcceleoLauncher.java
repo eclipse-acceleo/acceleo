@@ -165,6 +165,7 @@ public class AcceleoLauncher implements IApplication {
 				}
 				if (consoleLog) {
 					printDiagnostic(stream, result.getDiagnostic(), "");
+					printSummary(System.out, result);
 				}
 			}
 			Set<URI> generatedFiles = result.getGeneratedFiles();
@@ -320,6 +321,37 @@ public class AcceleoLauncher implements IApplication {
 		for (Diagnostic child : diagnostic.getChildren()) {
 			printDiagnostic(stream, child, nextIndentation);
 		}
+	}
+
+	private void printSummary(PrintStream stream, GenerationResult result) {
+		int nbErrors = 0;
+		int nbWarnings = 0;
+		int nbInfos = 0;
+		for (Diagnostic diagnostic : result.getDiagnostic().getChildren()) {
+			switch (diagnostic.getSeverity()) {
+				case Diagnostic.ERROR:
+					nbErrors++;
+					break;
+
+				case Diagnostic.WARNING:
+					nbWarnings++;
+					break;
+
+				case Diagnostic.INFO:
+					nbInfos++;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		stream.print("Files: " + result.getGeneratedFiles().size());
+		stream.print(", Lost Files: " + result.getLostFiles().size());
+		stream.print(", Errors: " + nbErrors);
+		stream.print(", Warnings: " + nbWarnings);
+		stream.print(", Infos: " + nbInfos);
+		stream.println(".");
 	}
 
 	@Override

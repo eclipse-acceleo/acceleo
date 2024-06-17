@@ -473,6 +473,47 @@
     			}
     			printDiagnostic(stream, generationResult.getDiagnostic(), "");
     		}
+    		printSummary(System.out, generationResult);
+    	}
+
+    	/**
+    	 * Prints the generation summary.
+    	 * 
+    	 * @param stream
+    	 *            the {@link PrintStream}
+    	 * @param result
+    	 *            the {@link GenerationResult}
+    	 * @generated
+    	 */
+    	private void printSummary(PrintStream stream, GenerationResult result) {
+    		int nbErrors = 0;
+    		int nbWarnings = 0;
+    		int nbInfos = 0;
+    		for (Diagnostic diagnostic : result.getDiagnostic().getChildren()) {
+    			switch (diagnostic.getSeverity()) {
+    				case Diagnostic.ERROR:
+    					nbErrors++;
+    					break;
+
+    					case Diagnostic.WARNING:
+    					nbWarnings++;
+    					break;
+
+    					case Diagnostic.INFO:
+    					nbInfos++;
+    					break;
+
+    					default:
+    					break;
+    			}
+    		}
+
+    		stream.print("Files: " + result.getGeneratedFiles().size());
+    		stream.print(", Lost Files: " + result.getLostFiles().size());
+    		stream.print(", Errors: " + nbErrors);
+    		stream.print(", Warnings: " + nbWarnings);
+    		stream.print(", Infos: " + nbInfos);
+    		stream.println(".");
     	}
 
     	/**
