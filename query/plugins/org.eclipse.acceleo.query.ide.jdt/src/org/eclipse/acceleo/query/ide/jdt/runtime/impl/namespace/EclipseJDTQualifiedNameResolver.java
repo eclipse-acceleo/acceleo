@@ -281,7 +281,8 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 							.getLocationURI();
 					final File file = new File(uri);
 					if (file.isFile() && file.exists()) {
-						res = URI.create("file://" + file.getAbsolutePath());
+						res = URI.create(org.eclipse.emf.common.util.URI.createFileURI((file
+								.getAbsolutePath())).toString());
 						break found;
 					}
 				}
