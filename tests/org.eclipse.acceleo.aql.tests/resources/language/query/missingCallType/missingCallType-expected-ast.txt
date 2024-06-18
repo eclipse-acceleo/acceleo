@@ -1,0 +1,11 @@
+
+header position 29..92
+module missingCallType
+encoding UTF-8
+  metamodel http://www.eclipse.org/acceleo/4.0 (54..89)
+  imports language::query::missingCallType::missingCallTypeB (102..152) (94..154)
+  
+  public template myTemplate(parameter : Expression (184..215))
+    Some Text:  (220..231)
+    [.myOtherTemplate(.eContents(parameter)) (232..271)/] (newLineNeeded (231..274) (217..274)
+  [/template] (156..285) (29..285)

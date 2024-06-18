@@ -1,0 +1,8 @@
+[comment encoding = UTF-8 /]
+[module missingCallType('http://www.eclipse.org/acceleo/4.0')/]
+
+[import language::query::missingCallType::missingCallTypeB/]
+
+[template public myTemplate(parameter : acceleo::Expression)]
+  Some Text: [parameter.eContents().myOtherTemplate()/]
+[/template]
