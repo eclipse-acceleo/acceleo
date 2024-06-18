@@ -886,7 +886,7 @@ public abstract class AbstractLanguageTestSuite {
 																									// message
 		res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost"); // strip lost user doc
 																						// date
-		res = res.replaceAll("@[a-f0-9]{5,8}[, )]", "@00000000 "); // object address in toString()
+		res = res.replaceAll("@[a-f0-9]{4,8}[, )]", "@00000000 "); // object address in toString()
 		res = res.replaceAll(
 				"(\\tat [a-zA-Z0-9$./]+((<|&lt;)init(>|&gt;))?\\((Unknown Source|Native Method|[a-zA-Z0-9$./]+java:[0-9]+)\\)\n?)+",
 				"...STACK..."); // strip stack traces
