@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Obeo.
+ * Copyright (c) 2016, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate;
 import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate.Factory;
@@ -48,7 +49,14 @@ public class AQLInvocationDelegateFactory extends AbstractEnvironmentProvider im
 			parameterNames.add(parameter.getName());
 		}
 
-		// TODO test if something went wrong
+		if (astResult.getDiagnostic().getSeverity() == Diagnostic.ERROR) {
+			final StringBuilder messages = new StringBuilder();
+			for (Diagnostic child : astResult.getDiagnostic().getChildren()) {
+				messages.append("\n" + child.getMessage());
+			}
+			throw new IllegalArgumentException("Unable to parse \"" + expression + "\"" + messages
+					.toString());
+		}
 
 		return new AQLInvocationDelegate(env, astResult, parameterNames);
 	}
