@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Obeo.
+ * Copyright (c) 2016, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -268,8 +268,10 @@ public class DelegateTests {
 		Diagnostic diagnostic = Diagnostician.INSTANCE.validate(eObj);
 
 		assertEquals(Diagnostic.ERROR, diagnostic.getSeverity());
-		assertEquals(1, diagnostic.getChildren().size());
+		assertEquals(2, diagnostic.getChildren().size());
 		assertTrue(diagnostic.getChildren().get(0).getMessage().endsWith("missing expression"));
+		assertTrue(diagnostic.getChildren().get(1).getMessage().startsWith(
+				"Validation failed with an exception for '"));
 	}
 
 	@Test
@@ -297,7 +299,7 @@ public class DelegateTests {
 		assertEquals("abcdef", value);
 	}
 
-	@Test(expected = java.lang.reflect.InvocationTargetException.class)
+	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void bodyParsingError() throws InvocationTargetException {
 		final EObject eObj = EcoreUtil.create(eClassParsingError);
 		final EList<Object> arguments = new BasicEList<Object>();
