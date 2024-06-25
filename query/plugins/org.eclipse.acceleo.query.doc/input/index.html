@@ -771,6 +771,77 @@
 			<br/>compatibility method provided by AQL : 
 			<code>self.eContainerOrSelf(some::Type)</code>  
 		</p>
+		<h2 id="EMFintegration">EMF integration</h2>
+		<p>You can use the AQL language to implement EMF delegates. This is a way to extends EMF capabilities without the need to write Java code. It can be used to implement validation rules, derived features, and operations.</p>
+		<h3 id="ValidationDelegate">Validation Delegate</h3>
+		<p>First you need to add the following EAnnotation on your EPackage:</p>
+		<ul>
+			<li>source = http://www.eclipse.org/emf/2002/Ecore
+				<ul>
+					<li>key = validationDelegates</li>
+					<li>value = http://www.eclipse.org/acceleo/query/1.0</li>
+				</ul>
+			</li>
+		</ul>
+		<p>Then you need to list all constraints on an EClassifier:</p>
+		<ul>
+			<li>source = http://www.eclipse.org/emf/2002/Ecore
+				<ul>
+					<li>key = constraints</li>
+					<li>value = constraint1 constraint3 constraint2 ...</li>
+				</ul>
+			</li>
+		</ul>
+		<p>Then for constraints that need to be implemented with AQL, add the following EAnnotation on the EClassifier:</p>
+		<ul>
+			<li>source = http://www.eclipse.org/acceleo/query/1.0
+				<ul>
+					<li>key = constraint1</li>
+					<li>value = &lt;AQL expression&gt;</li>
+				</ul>
+			</li>
+		</ul>
+		<p>The current validated instance will be registered in the environment as the variable named &#171;self&#187;. The returned value must be a boolean, true indicate a valid constraint.</p>
+		<h3 id="SettingDelegate">Setting Delegate</h3>
+		<p>First you need to add the following EAnnotation on your EPackage:</p>
+		<ul>
+			<li>source = http://www.eclipse.org/emf/2002/Ecore
+				<ul>
+					<li>key = settingDelegates</li>
+					<li>value = http://www.eclipse.org/acceleo/query/1.0</li>
+				</ul>
+			</li>
+		</ul>
+		<p>Then on an EStructuralFeature you can add the following EAnnotation:</p>
+		<ul>
+			<li>source = http://www.eclipse.org/acceleo/query/1.0
+				<ul>
+					<li>key = derivation</li>
+					<li>value = &lt;AQL expression&gt;</li>
+				</ul>
+			</li>
+		</ul>
+		<p>The current instance will be registered in the environment as the variable named &#171;self&#187;. The returned value must be compatible with the type of the EStructuralFeature.</p>
+		<h3 id="InvocationDelegate">Invocation Delegate</h3>
+		<p>First you need to add the following EAnnotation on your EPackage:</p>
+		<ul>
+			<li>source = http://www.eclipse.org/emf/2002/Ecore
+				<ul>
+					<li>key = invocationDelegates</li>
+					<li>value = http://www.eclipse.org/acceleo/query/1.0</li>
+				</ul>
+			</li>
+		</ul>
+		<p>Then on an EOperation you can add the following EAnnotation:</p>
+		<ul>
+			<li>source = http://www.eclipse.org/acceleo/query/1.0
+				<ul>
+					<li>key = body</li>
+					<li>value = &lt;AQL expression&gt;</li>
+				</ul>
+			</li>
+		</ul>
+		<p>The current instance will be registered in the environment as the variable named &#171;self&#187; and each parameter value will be registered by its name. The returned value must be compatible with the type of the EOperation.</p>
 		<h2 id="UsingAQLprogrammatically">Using AQL programmatically</h2>
 		<p>This section provide information and code snippet. It will help you to integrate AQL in your own tool.</p>
 		<p>Simple overview of AQL:</p>
@@ -818,6 +889,80 @@
 		<pre><code>queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 </code></pre>
 		<p>By default the EClass is mapped to Map.Entry which is not an EObject. This prevents using services on EObject.</p>
+		<h3 id="Services">Services</h3>
+		<p>In AQL everything is a service. Each segment of an expression is parsed as a 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src-gen/org/eclipse/acceleo/query/ast/Call.java">Call</a> and later resolved as an 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/IService.java">IService</a>.
+		</p>
+		<p>AQL provides default implementations:</p>
+		<ul>
+			<li>
+				<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodService.java">JavaMethodService</a> that takes a Java Method with at least one parameter as argument. The result of the previous part of the expression is passed as the first argument of the Java Method
+			</li>
+			<li>
+				<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodReceiverService.java">JavaMethodReceiverService</a> that takes a Java Method as parameter. The result of the previous part of the expression is used as the instance on which the Java Method will be called
+			</li>
+			<li>
+				<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/EOperationService.java">EOperationService</a> that takes an EOperation as parameter. The result of the previous part of the expression is used as the instance on which the EOperation will be called
+			</li>
+		</ul>
+		<p>Other tools provides their own implementations to be able to call structures of their languages in AQL expressions:</p>
+		<ul>
+			<li>Acceleo: 
+				<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/QueryService.java">QueryService</a>, 
+				<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/TemplateService.java">TemplateService</a>
+			</li>
+			<li>M2Doc: 
+				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/M2DocTemplateService.java">M2DocTemplateService</a>
+			</li>
+		</ul>
+		<p>Services are responsible for:</p>
+		<ul>
+			<li>return type: give a return type at validation time. This type can be static or dynamic to a specific call</li>
+			<li>completion proposals: give a list of completion proposals</li>
+			<li>invoke: returning the result at runtime</li>
+		</ul>
+		<p>Since everything is a service feature access and operators are also services. That allows to extends or override the behavior of AQL:</p>
+		<ul>
+			<li>feature access: the service name is &#171;aqlFeatureAccess&#187; and the first argument is the result of the previous expression and the second argument is the name of the feature.</li>
+			<li>operators:
+				<ul>
+					<li>not: service name &#171;not&#187; and the result of the expression is passed as the first argument</li>
+					<li>- (unary minus): service name &#171;unaryMin&#187;  and the result of the expression is passed as the first argument</li>
+					<li>* (multiplication): service name &#171;mult&#187; two parameters, one for each operand</li>
+					<li>/ (division): service name &#171;divOp&#187; two parameters, one for each operand</li>
+					<li>+ (addition): service name &#171;add&#187; two parameters, one for each operand</li>
+					<li>- (subtraction): service name &#171;sub&#187; two parameters, one for each operand</li>
+					<li>&lt;= (less or equals than): service name &#171;lessThanEqual&#187; two parameters, one for each operand</li>
+					<li>&gt;= (more or equals than): service name &#171;greaterThanEqual&#187; two parameters, one for each operand</li>
+					<li>!= or &lt;&gt; (different): service name &#171;differs&#187; two parameters, one for each operand</li>
+					<li>= or == (equals): service name &#171;equals&#187; two parameters, one for each operand</li>
+					<li>&lt; (less than): service name &#171;lessThan&#187; two parameters, one for each operand</li>
+					<li>&gt; (more than): service name &#171;greaterThan&#187; two parameters, one for each operand</li>
+					<li>and: service name &#171;and&#187; two parameters, one for each operand</li>
+					<li>or: service name &#171;or&#187; two parameters, one for each operand</li>
+					<li>xor (exclusive or): service name &#171;xor&#187; two parameters, one for each operand</li>
+					<li>implies: service name &#171;implies&#187; two parameters, one for each operand</li>
+				</ul>
+			</li>
+		</ul>
+		<p>For more advanced services, you can also use lambdas as argument. In this case the service should take a collection as first argument and a 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/LambdaValue.java">LambdaValue</a> as the second argument. Ad an example, you can have a look at the implementation of the select 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/collection/SelectService.java">service</a> and Java 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/8f4dbce6140045128a5c1384f1e60bac2dd95797/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/CollectionServices.java#L406">Method</a>.
+		</p>
+		<p>You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing a 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java">IServicesConfigurator</a>. It&#8217;s possible to use the following extension point to register your 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java">IServicesConfigurator</a>:
+		</p>
+		<pre><code>&lt;extension
+     point="org.eclipse.acceleo.query.ide.servicesConfigurator"&gt;
+  &lt;servicesConfigurators
+        class="org.eclipse.acceleo.query.services.configurator.HTTPServiceConfigurator"
+        language="org.eclipse.acceleo.query"&gt;
+  &lt;/servicesConfigurators&gt;
+&lt;/extension&gt;
+</code></pre>
 		<h3 id="BuildinganAQLexpression">Building an AQL expression</h3>
 		<p>The first step is building your expression from a String to an AST:</p>
 		<pre><code>QueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
@@ -851,5 +996,37 @@ ICompletionResult completionResult = engine.getCompletion("self.", 5, variableTy
 List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new BasicFilter(completionResult));
 </code></pre>
 		<p>Here 5 is the offset where the completion should be computed in the given expression.</p>
+		<h3 id="JFaceViewerconfiguration">JFace Viewer configuration</h3>
+		<p>You can easily integrate completion and syntax highlighting to your own JFace SourceViewer. You can use the 
+			<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.ide.ui/src/org/eclipse/acceleo/query/ide/ui/viewer/AQLConfiguration.java">AQLConfiguration</a> class to configure your SourceViewer. A more complet example can be found in the tests.
+		</p>
+		<h3 id="Integratinginotherlanguages">Integrating in other languages</h3>
+		<p>You can integrate AQL to your own language. AQL provides some generic classes and interfaces to help you with the following topics:</p>
+		<ul>
+			<li>Runtime:
+				<ul>
+					<li>resolve qualified names to find services with the interface 
+						<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameResolver.java">IQualifiedNameResolver</a>. This interface is responsible for mainly two things decide where services can be loaded like a class path in Java and what can be laoded using implementations of the 
+						<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java">ILoader</a> interface. It can then be used with an implementation of 
+						<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameQueryEnvironment.java">IQualifiedNameQueryEnvironment</a> that can be used as the query environment in the above examples.
+					</li>
+					<li>import and/or extends qualified names to reuse or override services. This is done with the 
+						<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java">ILoader</a>.
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li>Development environment (workspace): In this context the resolution should be divided if you work with projects where each project is resmonsible for the resolution of its own resources. That will prevent loading multiple times the same resource.
+				<ul>
+					<li>react to changes in the workspace, the 
+						<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java">IQueryWorkspace</a> will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/... resources).
+					</li>
+					<li>all the above (resolve/import/extends qualified names) with the 
+						<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java">IQueryWorkspaceQualifiedNameResolver</a>.
+					</li>
+				</ul>
+			</li>
+		</ul>
 	</body>
 </html>
