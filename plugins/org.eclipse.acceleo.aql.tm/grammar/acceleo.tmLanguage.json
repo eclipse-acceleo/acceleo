@@ -268,11 +268,11 @@
 		},
 		"query-parameter-type":{
 			"name": "meta.parameter.type",
-			"match": "(?<=:)(?:\\s*)((Sequence|OrderedSet)\\((String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=((\\s*,)|(\\s*\\)\\s*:)))"
+			"match": "(?<=:)(?:\\s*)(\\b(Sequence|OrderedSet)\\b\\((\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=((\\s*,)|(\\s*\\)\\s*:)))"
 		},
 		"query-return-type": {
 			"name": "meta.query.type.acceleo",
-			"match": "(?<=:)(?:\\s*)((Sequence|OrderedSet)\\((String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=(\\s*=\\s*:))"
+			"match": "(?<=:)(?:\\s*)(\\b(Sequence|OrderedSet)\\b\\((\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=(\\s*=\\s*:))"
 		},
 		"query-body" : {
 			"name": "meta.expression.aql",
@@ -420,7 +420,7 @@
 		},
 		"template-parameter-type":{
 			"name": "meta.parameter.type",
-			"match": "(?<=:)(?:\\s*)((Sequence|OrderedSet)\\((String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=((\\s*,)|(\\s*\\)\\s*(\\?|\\bpost\\b|\\]))))"
+			"match": "(?<=:)(?:\\s*)(\\b(Sequence|OrderedSet)\\b\\((\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=((\\s*,)|(\\s*\\)\\s*(\\?|\\bpost\\b|\\]))))"
 		},
 		"template-pre-condition": {
 			"name": "meta.template.header.precondition.acceleo",
@@ -662,7 +662,7 @@
 		},
 		"statement-for-variable-type": {
 			"name": "meta.parameter.type.acceleo",
-			"match": "(?<=:)(?:\\s*)((Sequence|OrderedSet)\\((String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=(\\s*|\\s*:))" 
+			"match": "(?<=:)(?:\\s*)(\\b(Sequence|OrderedSet)\\b\\((\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=(\\s*|\\s*:))" 
 		},
 		"statement-for-assignment": {
 			"name": "keyword.other.statement.for.acceleo",
@@ -849,7 +849,7 @@
 		},
 		"statement-let-variable-type": {
 			"name": "meta.parameter.type.acceleo",
-			"match": "(?<=:)(?:\\s*)((Sequence|OrderedSet)\\((String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=\\s*\\=)" 
+			"match": "(?<=:)(?:\\s*)(\\b(Sequence|OrderedSet)\\b\\((\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})(?=\\s*\\=)" 
 		},
 		"statement-let-assignment": {
 			"name": "keyword.other.statement.let.acceleo",
@@ -999,15 +999,15 @@
 		},
 		"expression-real": {
 			"name": "meta.expression.aql.real.acceleo",
-			"match": "[0-9]+(\\.[0-9]+)*"
+			"match": "\\b[0-9]+(\\.[0-9]+)*\\b"
 		},
-		"expression-real": {
+		"expression-enum": {
 			"name": "meta.expression.aql.enum.acceleo",
 			"match": "\\w+(::\\w+)(::\\w+)"
 		},
 		"expression-type": {
 			"name": "meta.expression.aql.type.acceleo",
-			"match": "((Sequence|OrderedSet)\\((String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|String|Integer|Real|Boolean|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})"
+			"match": "(\\b(Sequence|OrderedSet)\\b\\((\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\}))\\))|\\b(String|Integer|Real|Boolean)\\b|(\\w+(::\\w+))|(\\{(\\w+(::\\w+))(,\\s*(\\w+(::\\w+)))*\\})"
 		},
 		"statement-expression-tag-close": {
 			"name": "keyword.other.statement.expression.acceleo",

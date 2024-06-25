@@ -15,19 +15,19 @@
 .meta.module.identifier { font-weight: bold; color: #764545; }
 
 .meta.query.identifier { font-weight: bold; color: #764545; }
-.meta.query.type { font-style: italic; color: #6b6b6b; }
+.meta.query.type { font-style: italic; color: #6B6B6B; }
 .meta.query.body { }
 
 .meta.template.header.identifier { font-weight: bold; color: #764545; }
 
 .meta.main { font-weight: bold; color: #3F7F5F; }
-.meta.parameter.type { font-style: italic; color: #6b6b6b; }
-.meta.expression.aql { color: #006bd7; }
+.meta.parameter.type { font-style: italic; color: #6B6B6B; }
+.meta.expression.aql { color: #006BD7; }
 .meta.expression.aql.keyword { color: #7F0055; }
 .meta.expression.aql.string { color: #2A00FF; }
 .meta.expression.aql.real { color: #2A00FF; }
 .meta.expression.aql.enum { color: #2A00FF; }
-.meta.expression.aql.type { font-style: italic; color: #6b6b6b; }
+.meta.expression.aql.type { font-style: italic; color: #6B6B6B; }
 .meta.documentation.tag.value { font-style: italic; color: #3F7F5F; }
 
 .storage { font-weight: bold; color: #7F0055; }
