@@ -32,7 +32,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					def buildQualifier = sh(script: 'date \'+%Y%m%d%H%M\'', returnStdout: true)
+					def buildQualifier = sh(script: 'date +%Y%m%d%H%M', returnStdout: true)
 					sh "mvn clean deploy -P$PLATFORM -DbuildQualifier=${buildQualifier} -Psign"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
@@ -55,7 +55,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					def buildQualifier = sh(script: 'date \'+%Y%m%d%H%M\'', returnStdout: true)
+					def buildQualifier = sh(script: 'date +%Y%m%d%H%M', returnStdout: true)
 					sh "mvn clean verify deploy -P$PLATFORM -DbuildQualifier=${buildQualifier} -Psign"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
@@ -73,7 +73,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					def buildQualifier = sh(script: 'date \'+%Y%m%d%H%M\'', returnStdout: true)
+					def buildQualifier = sh(script: 'date +%Y%m%d%H%M', returnStdout: true)
 					sh "mvn clean verify -P$PLATFORM -DbuildQualifier=${buildQualifier}"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
