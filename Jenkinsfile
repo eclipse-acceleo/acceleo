@@ -32,7 +32,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean deploy -P$PLATFORM -Psign"
+					sh "mvn clean deploy -P$PLATFORM -DbuildQualifier=$(date '+%Y%m%d%H%M') -Psign"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
 				sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
@@ -54,7 +54,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean verify deploy:deploy -P$PLATFORM -Psign"
+					sh "mvn clean verify deploy -P$PLATFORM -DbuildQualifier=$(date '+%Y%m%d%H%M') -Psign"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
 				sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
@@ -71,7 +71,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean verify -P$PLATFORM"
+					sh "mvn clean verify -P$PLATFORM -DbuildQualifier=$(date '+%Y%m%d%H%M')"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
 			}
