@@ -965,13 +965,13 @@
 </code></pre>
 		<h3 id="BuildinganAQLexpression">Building an AQL expression</h3>
 		<p>The first step is building your expression from a String to an AST:</p>
-		<pre><code>QueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
+		<pre><code>QueryBuilderEngine builder = new QueryBuilderEngine();
 AstResult astResult = builder.build("self.name");
 </code></pre>
 		<h3 id="EvaluatinganAQLexpression">Evaluating an AQL expression</h3>
 		<p>To evaluate an AQL expression you can use the QueryEvaluationEngine</p>
 		<pre><code>QueryEvaluationEngine engine = new QueryEvaluationEngine(queryEnvironment);
-Map&lt;String, Object&gt; variables = Maps.newHashMap();
+Map&lt;String, Object&gt; variables = new HashMap&lt;&gt;();
 variables.put("self", EcorePackage.eINSTANCE);
 EvaluationResult evaluationResult = engine.eval(astResult, variables);
 </code></pre>
@@ -982,8 +982,8 @@ EvaluationResult evaluationResult = engine.eval(astResult, variables);
 Set&lt;IType&gt; selfTypes = new LinkedHashSet&lt;IType&gt;();
 selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 variableTypes.put("self", selfTypes);
-AstValidator validator = new AstValidator(queryEnvironment, variableTypes);
-IValidationResult validationResult = validator.validate(astResult);
+AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+IValidationResult validationResult = validator.validate(variableTypes, astResult);
 </code></pre>
 		<h3 id="CompletinganAQLexpression">Completing an AQL expression</h3>
 		<p>To do this use the QueryCompletionEngine, it will build the query and validate it for you. It will also compute needed prefix and suffix if any:</p>
@@ -1028,5 +1028,24 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 				</ul>
 			</li>
 		</ul>
+		<h3 id="Maven">Maven</h3>
+		<p>You can use AQL in your maven project with the following repository and dependency:</p>
+		<pre><code>&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;Acceleo Repository&lt;/id&gt;
+    &lt;url&gt;https://download.eclipse.org/acceleo/updates/releases/4.0/...&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.eclipse.acceleo&lt;/groupId&gt;
+    &lt;artifactId&gt;aql&lt;/artifactId&gt;
+    &lt;version&gt;8.0.2&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+		<p>The following 
+			<a href="https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.query.maven.tests">test project</a> can be used as an example.
+		</p>
 	</body>
 </html>

@@ -483,7 +483,7 @@ h3. Building an AQL expression
 
 The first step is building your expression from a String to an AST:
 
-bc. QueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
+bc. QueryBuilderEngine builder = new QueryBuilderEngine();
 AstResult astResult = builder.build("self.name");
 
 h3. Evaluating an AQL expression
@@ -491,7 +491,7 @@ h3. Evaluating an AQL expression
 To evaluate an AQL expression you can use the QueryEvaluationEngine
 
 bc. QueryEvaluationEngine engine = new QueryEvaluationEngine(queryEnvironment);
-Map<String, Object> variables = Maps.newHashMap();
+Map<String, Object> variables = new HashMap<>();
 variables.put("self", EcorePackage.eINSTANCE);
 EvaluationResult evaluationResult = engine.eval(astResult, variables);
 
@@ -505,8 +505,8 @@ bc. Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>
 Set<IType> selfTypes = new LinkedHashSet<IType>();
 selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 variableTypes.put("self", selfTypes);
-AstValidator validator = new AstValidator(queryEnvironment, variableTypes);
-IValidationResult validationResult = validator.validate(astResult);
+AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+IValidationResult validationResult = validator.validate(variableTypes, astResult);
 
 h3. Completing an AQL expression
 
@@ -537,3 +537,23 @@ You can integrate AQL to your own language. AQL provides some generic classes an
 * Development environment (workspace): In this context the resolution should be divided if you work with projects where each project is resmonsible for the resolution of its own resources. That will prevent loading multiple times the same resource.
 ** react to changes in the workspace, the "IQueryWorkspace":https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/... resources).
 ** all the above (resolve/import/extends qualified names) with the "IQueryWorkspaceQualifiedNameResolver":https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java.
+
+h3. Maven
+
+You can use AQL in your maven project with the following repository and dependency:
+
+bc. <repositories>
+  <repository>
+    <id>Acceleo Repository</id>
+    <url>https://download.eclipse.org/acceleo/updates/releases/4.0/...</url>
+  </repository>
+</repositories>
+<dependencies>
+  <dependency>
+    <groupId>org.eclipse.acceleo</groupId>
+    <artifactId>aql</artifactId>
+    <version>8.0.2</version>
+  </dependency>
+</dependencies>
+
+The following "test project":https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.query.maven.tests can be used as an example.
