@@ -38,8 +38,8 @@
   </licenses>
 
   <properties>
-    <tycho-version>4.0.7</tycho-version>
-    <tycho-extras-version>4.0.7</tycho-extras-version>
+    <tycho-version>4.0.8</tycho-version>
+    <tycho-extras-version>4.0.8</tycho-extras-version>
 
     <java-resource-encoding>UTF-8</java-resource-encoding>
     <resource-encoding>UTF-8</resource-encoding>
