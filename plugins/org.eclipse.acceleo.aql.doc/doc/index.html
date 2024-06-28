@@ -450,11 +450,147 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_introduction">1. Introduction</a></li>
 <li><a href="#_installation">2. Installation</a></li>
 <li><a href="#_getting_started">3. Getting Started</a></li>
-<li><a href="#_the_acceleo_tooling">4. The Acceleo Tooling</a></li>
-<li><a href="#_the_acceleo_language">5. The Acceleo Language</a></li>
-<li><a href="#_launching_an_acceleo_generation">6. Launching an Acceleo generation</a></li>
-<li><a href="#_using_acceleo_4_programmatically">7. Using Acceleo 4 programmatically</a></li>
-<li><a href="#_migrate_acceleo_3_templates_to_acceleo_4">8. Migrate Acceleo 3 templates to Acceleo 4</a></li>
+<li><a href="#_the_acceleo_tooling">4. The Acceleo Tooling</a>
+<ul class="sectlevel2">
+<li><a href="#_the_acceleo_editor">4.1. The Acceleo Editor</a>
+<ul class="sectlevel3">
+<li><a href="#_syntax_highlighting">4.1.1. Syntax Highlighting</a></li>
+<li><a href="#_content_assist">4.1.2. Content assist</a></li>
+<li><a href="#_real_time_errors_detection">4.1.3. Real Time Errors Detection</a></li>
+<li><a href="#_quick_fixes">4.1.4. Quick fixes</a></li>
+<li><a href="#_outlines">4.1.5. Outlines</a></li>
+<li><a href="#_open_declaration">4.1.6. Open Declaration</a></li>
+<li><a href="#_show_references">4.1.7. Show references</a></li>
+<li><a href="#_refactoring">4.1.8. Refactoring</a></li>
+</ul>
+</li>
+<li><a href="#_the_acceleo_debugger">4.2. The Acceleo Debugger</a>
+<ul class="sectlevel3">
+<li><a href="#_breakpoints">4.2.1. Breakpoints</a></li>
+<li><a href="#_step_by_step_execution">4.2.2. Step by step execution</a></li>
+</ul>
+</li>
+<li><a href="#_acceleo_profiler">4.3. Acceleo Profiler</a>
+<ul class="sectlevel3">
+<li><a href="#_launching_a_generation_with_the_profiler">4.3.1. Launching a generation with the profiler</a></li>
+<li><a href="#_acceleo_profile_files">4.3.2. Acceleo Profile Files</a></li>
+<li><a href="#_coverage_informations">4.3.3. Coverage informations</a></li>
+</ul>
+</li>
+<li><a href="#_java_launchers">4.4. Java launchers</a></li>
+</ul>
+</li>
+<li><a href="#_the_acceleo_language">5. The Acceleo Language</a>
+<ul class="sectlevel2">
+<li><a href="#_intended_audience">5.1. Intended Audience</a></li>
+<li><a href="#_module">5.2. Module</a>
+<ul class="sectlevel3">
+<li><a href="#_imports">5.2.1. Imports</a></li>
+<li><a href="#_module_elements">5.2.2. Module Elements</a></li>
+</ul>
+</li>
+<li><a href="#_template">5.3. Template</a>
+<ul class="sectlevel3">
+<li><a href="#_main_template">5.3.1. Main template</a></li>
+<li><a href="#_file_block">5.3.2. File Block</a></li>
+<li><a href="#_for_loops">5.3.3. For loops</a></li>
+<li><a href="#_if_conditions">5.3.4. If conditions</a></li>
+<li><a href="#_let_block">5.3.5. Let block</a></li>
+<li><a href="#_protected_area">5.3.6. Protected Area</a></li>
+<li><a href="#_variable">5.3.7. Variable</a></li>
+</ul>
+</li>
+<li><a href="#_white_spaces">5.4. White spaces</a></li>
+<li><a href="#_query">5.5. Query</a></li>
+</ul>
+</li>
+<li><a href="#_preface">6. Preface</a></li>
+<li><a href="#_syntax">7. Syntax</a>
+<ul class="sectlevel2">
+<li><a href="#_comment">7.1. Comment</a></li>
+<li><a href="#_module_2">7.2. Module</a></li>
+<li><a href="#_identifier">7.3. Identifier</a></li>
+<li><a href="#_module_documentation">7.4. Module Documentation</a></li>
+<li><a href="#_metamodel">7.5. Metamodel</a></li>
+<li><a href="#_import">7.6. Import</a></li>
+<li><a href="#_module_reference">7.7. Module Reference</a></li>
+<li><a href="#_module_qualified_name">7.8. Module Qualified Name</a></li>
+<li><a href="#_module_element">7.9. Module Element</a></li>
+<li><a href="#_template_2">7.10. Template</a></li>
+<li><a href="#_visibility">7.11. Visibility</a></li>
+<li><a href="#_parameter">7.12. Parameter</a></li>
+<li><a href="#_statement">7.13. Statement</a>
+<ul class="sectlevel3">
+<li><a href="#_file_statement">7.13.1. File Statement</a></li>
+<li><a href="#_for_statement">7.13.2. For Statement</a></li>
+<li><a href="#_if_statement">7.13.3. If Statement</a></li>
+<li><a href="#_let_statement">7.13.4. Let Statement</a></li>
+<li><a href="#_protected_area_2">7.13.5. Protected Area</a></li>
+<li><a href="#_expression_statement">7.13.6. Expression Statement</a></li>
+<li><a href="#_text_statement">7.13.7. Text Statement</a></li>
+</ul>
+</li>
+<li><a href="#_aql_expression">7.14. AQL Expression</a></li>
+<li><a href="#_aql_type_literal">7.15. AQL Type Literal</a></li>
+<li><a href="#_query_2">7.16. Query</a></li>
+<li><a href="#_module_element_documentation">7.17. Module Element documentation</a></li>
+</ul>
+</li>
+<li><a href="#_launching_an_acceleo_generation">8. Launching an Acceleo generation</a>
+<ul class="sectlevel2">
+<li><a href="#_eclipse">8.1. Eclipse</a></li>
+<li><a href="#_maventycho">8.2. Maven/Tycho</a></li>
+</ul>
+</li>
+<li><a href="#_using_acceleo_4_programmatically">9. Using Acceleo 4 programmatically</a></li>
+<li><a href="#_use_acceleo_4_programmatically">Use Acceleo 4 programmatically</a>
+<ul class="sectlevel1">
+<li><a href="#_parsing">1. Parsing</a></li>
+<li><a href="#_validation">2. Validation</a></li>
+<li><a href="#_completion">3. Completion</a></li>
+<li><a href="#_generation">4. Generation</a></li>
+<li><a href="#_unit_test_module">5. Unit test module</a></li>
+<li><a href="#_maven">6. Maven</a></li>
+<li><a href="#_migrate_acceleo_3_templates_to_acceleo_4">7. Migrate Acceleo 3 templates to Acceleo 4</a>
+<ul class="sectlevel2">
+<li><a href="#_how_to_migrate_acceleo_3_templates_to_acceleo_4">7.1. How to migrate Acceleo 3 templates to Acceleo 4</a>
+<ul class="sectlevel3">
+<li><a href="#_the_migration_tool">7.1.1. The migration tool</a></li>
+<li><a href="#_launching_a_migration">7.1.2. Launching a migration</a></li>
+</ul>
+</li>
+<li><a href="#_language_changes">7.2. Language Changes</a>
+<ul class="sectlevel3">
+<li><a href="#_modules">7.2.1. Modules</a></li>
+<li><a href="#_templates">7.2.2. Templates</a></li>
+<li><a href="#_query_3">7.2.3. Query</a></li>
+<li><a href="#_file_block_2">7.2.4. File Block</a></li>
+<li><a href="#_for_block">7.2.5. For Block</a></li>
+<li><a href="#_let_statement_2">7.2.6. Let Statement</a></li>
+<li><a href="#_elselet_blocks">7.2.7. ElseLet Blocks</a></li>
+<li><a href="#_invocation">7.2.8. Invocation</a></li>
+<li><a href="#_module_element_call">7.2.9. Module Element Call</a></li>
+<li><a href="#_variable_2">7.2.10. Variable</a></li>
+<li><a href="#_expressions">7.2.11. Expressions</a></li>
+<li><a href="#_set_and_bags">7.2.12. Set and Bags</a></li>
+</ul>
+</li>
+<li><a href="#_behavior_changes">7.3. Behavior Changes</a>
+<ul class="sectlevel3">
+<li><a href="#_modules_2">7.3.1. Modules</a></li>
+<li><a href="#_query_5">7.3.2. Query</a></li>
+<li><a href="#_let_statement_3">7.3.3. Let Statement</a></li>
+</ul>
+</li>
+<li><a href="#_limitations">7.4. Limitations</a>
+<ul class="sectlevel3">
+<li><a href="#_comments">7.4.1. Comments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -483,7 +619,16 @@ It can be used to generate any kind of text file: code, configuration, documenta
 <h2 id="_installation">2. Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::install.adoc[]</p>
+<p>If you have an existing Eclipse installation and simply wish to install Acceleo in it, you can install it from the <strong>Update Site</strong>, available here <a href="https://download.eclipse.org/acceleo/updates/nightly/" class="bare">https://download.eclipse.org/acceleo/updates/nightly/</a>.</p>
+</div>
+<div class="paragraph">
+<p>When installing the update site you must ensure that <strong>"Contact all update sites during install to find required software"</strong> is checked and that in the <strong>"Manage&#8230;&#8203;"</strong> dialog, the <strong>"Latest Eclipse Release"</strong> update site is checked.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/InstallDependencies.png" alt="Install Acceleo"></span></p>
+</div>
+<div class="paragraph">
+<p>For those of you who need to retrieve the source code of Acceleo, it is available on Git: <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/" class="bare">https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/</a>.</p>
 </div>
 </div>
 </div>
@@ -491,15 +636,687 @@ It can be used to generate any kind of text file: code, configuration, documenta
 <h2 id="_getting_started">3. Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::start.adoc[]</p>
+<p>In this section, you will create a new project to work with Acceleo.</p>
+</div>
+<div class="paragraph">
+<p>First you need to create a <strong>Java project</strong>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Inside Eclipse select the menu item <strong>File &gt; New &gt; Project&#8230;&#8203;</strong> to open the <strong>New Project</strong> wizard,</p>
+</li>
+<li>
+<p>Select <strong>Java Project</strong> then click <strong>Next</strong> to  start the <strong>New Java Project</strong> wizard:</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewProjectWizard.png" alt="NewProjectWizard">
+</div>
+</div>
+<div class="paragraph">
+<p>On this page:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Enter the Project name,</p>
+</li>
+<li>
+<p>Select the Java Runtime Environment (JRE) or leave it at the default,</p>
+</li>
+<li>
+<p>Then click <strong>Finish</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewProject.png" alt="NewProject">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the <strong>Package Explorer</strong>, expand the project and select the source folder <strong>src</strong>,</p>
+</li>
+<li>
+<p>Select the menu item <strong>File &gt; New &gt; File</strong> to open the <strong>New File</strong> wizard,</p>
+</li>
+<li>
+<p>Select the <strong>src</strong> folder as parent folder,</p>
+</li>
+<li>
+<p>Enter the File name with the extension <strong>.mtl</strong>, for example: <code>MyTemplate.mtl</code>,</p>
+</li>
+<li>
+<p>Then click <strong>Finish</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewFile.png" alt="NewFile">
+</div>
+</div>
+<div class="paragraph">
+<p>An empty editor opens, you can start writing your generation template.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewTemplate.png" alt="NewTemplate">
+</div>
+</div>
+<div class="paragraph">
+<p>In order to launch an Acceleo generator, you just have to right-click on your main module and use the <strong>Run As</strong> menu.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RunAs.png" alt="Run As">
+</div>
+</div>
+<div class="paragraph">
+<p>From there the <strong>Launch Configuration</strong> menu will open.
+If you already have created a launch configuration you can access the launch configuration menu from the <strong>Run &gt; Run Configurations&#8230;&#8203;</strong> menu.
+In this menu, you will have access to the Acceleo Launch configuration.
+You just have to select:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>your main <strong>module file</strong>,</p>
+</li>
+<li>
+<p>your input <strong>model file</strong>,</p>
+</li>
+<li>
+<p>the <strong>destination folder</strong> of the generation.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/LaunchConfig.png" alt="Launch Configuration">
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="title">After launching the generation</div>
+<div class="paragraph">
+<p>Check that your generation is finished by opening the <strong>Console</strong> view.
+You should see a message like this <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_the_acceleo_tooling">4. The Acceleo Tooling</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_the_acceleo_editor">4.1. The Acceleo Editor</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="title">Before you Start</div>
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::tool.adoc[]</p>
+<p>Use a <strong>Java Project</strong> and the classical <strong>Java Perspective</strong> for writing your Acceleo templates <code>.mtl</code> in the <strong>src</strong> folder.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The module editor provides the following features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Syntax highlighting;</p>
+</li>
+<li>
+<p>Content assistant (<code>Ctrl + Space</code>);</p>
+</li>
+<li>
+<p>Error detection;</p>
+</li>
+<li>
+<p>Quick fixes;</p>
+</li>
+<li>
+<p>Outlines;</p>
+</li>
+<li>
+<p>Quick outline (<code>Ctrl + O</code>);</p>
+</li>
+<li>
+<p>Open declaration (either with <code>Ctrl + Left Click</code> or <code>F3</code>);</p>
+</li>
+<li>
+<p>Show references (<code>Ctrl + Shift + G</code>);</p>
+</li>
+<li>
+<p>Refactoring:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename (<code>Ctrl + Alt + R</code>);</p>
+</li>
+<li>
+<p>Extract template (<code>Alt + Shift + T</code>);</p>
+</li>
+<li>
+<p>Wrap in if (<code>Alt + Shift + I</code>);</p>
+</li>
+<li>
+<p>Wrap in for (<code>Alt + Shift + F</code>);</p>
+</li>
+<li>
+<p>Wrap in let (<code>Alt + Shift + L</code>);</p>
+</li>
+<li>
+<p>Wrap in protected (<code>Alt + Shift + P</code>);</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>White spaces.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_syntax_highlighting">4.1.1. Syntax Highlighting</h4>
+<div class="paragraph">
+<p>The editor uses specific colors for Acceleo templates:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>red is used for template tags;</p>
+</li>
+<li>
+<p>purple is used for other tags (queries, modules, imports, &#8230;&#8203;);</p>
+</li>
+<li>
+<p>blue is used for dynamic expressions in templates or other places;</p>
+</li>
+<li>
+<p>green is used for comments and String literals;</p>
+</li>
+<li>
+<p>black is used for static text or query bodies.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SyntaxHighlighting.png" alt="Syntax Highlighting">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_content_assist">4.1.2. Content assist</h4>
+<div class="paragraph">
+<p>The content assistant is traditionally invoked with <code>Ctrl + Space</code>.
+It proposes a choice of all elements that make sense at the place of invocation.
+It is available everywhere, so don&#8217;t hesitate to hit <code>Ctrl + Space</code> anywhere!</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ContentAssistMetamodel.png" alt="Content Assist">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_real_time_errors_detection">4.1.3. Real Time Errors Detection</h4>
+<div class="paragraph">
+<p>Obviously, Acceleo displays error markers when errors are detected.
+Acceleo displays error markers whenever a module file is not valid, whatever the reason.
+Errors appear in the <strong>Problems</strong> view (generally displayed at the bottom of the perspective), and double-clicking on an error in this view directly takes you to the file where it is located.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ErrorInProblemsView.png" alt="Errors in Problems view">
+</div>
+</div>
+<div class="paragraph">
+<p>Files with errors also appear with an error decorator.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ErrorFile.png" alt="Error at file level">
+</div>
+</div>
+<div class="paragraph">
+<p>Just hover the marker in the editor margin with the mouse to get a tooltip to appear with an explanation of the problem.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ErrorTooltip.png" alt="Error Tooltip">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_quick_fixes">4.1.4. Quick fixes</h4>
+<div class="paragraph">
+<p>For some errors the Acceleo 4 editor can provide quick fixes to help you fix them. To access <strong>Quick Fixes</strong> you need to over the error with the mouse. If quick fixes are available you should see the following popup:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/QuickFixes.png" alt="Quick Fixes">
+</div>
+</div>
+<div class="paragraph">
+<p>You can then select the quick fix you want to apply in the list.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_outlines">4.1.5. Outlines</h4>
+<div class="paragraph">
+<p>One of the great benefits of modern IDE tooling is the capacity to easily navigate in code from elements to their declarations and, vice-versa, from declarations to usages.</p>
+</div>
+<div class="sect4">
+<h5 id="_the_dynamic_outline">The dynamic outline</h5>
+<div class="paragraph">
+<p>The traditional Eclipse <strong>Outline</strong> view is used by Acceleo to display the module&#8217;s structure metamodels, templates, queries can be seen there, and double-clicking on any of them places the cursor at the corresponding position in the module (in the editor).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Outline.png" alt="Outline">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_the_quick_outline">The quick outline</h5>
+<div class="paragraph">
+<p>The quick outline, which can be displayed using <code>Ctrl + O</code>, displays just the necessary information to access any element in the current module.
+So, hitting <code>Ctrl + O</code> displays a pop-up with a list of templates and queries.</p>
+</div>
+<div class="paragraph">
+<p>A text field at the top allows you to quickly filter the content in order to easily find what you are looking for.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/QuickOutline.png" alt="QuickOutline">
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_open_declaration">4.1.6. Open Declaration</h4>
+<div class="paragraph">
+<p>The traditional shortcut <code>F3</code> is supported by Acceleo, along with <code>Ctrl + click</code>, which both take you to the declaration of the selected or clicked element.
+This is supported for all kinds of elements: templates, queries, metamodels, metamodel elements, EOperations, etc.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/OpenDeclaration.png" alt="Open Declaration">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_show_references">4.1.7. Show references</h4>
+<div class="paragraph">
+<p>You can show references to a service or a variable by either selecting its declaration or one of its reference an using the <code>Ctrl + Shift + G</code> shortcut. It will show all references in the search view.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ShowReferences.png" alt="Show References">
+</div>
+</div>
+<div class="paragraph">
+<p>You can then double click enties in the search view to navigate to a reference.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_refactoring">4.1.8. Refactoring</h4>
+<div class="sect4">
+<h5 id="_rename">Rename</h5>
+<div class="paragraph">
+<p>You can use the rename shortcut <code>Ctrl + Alt + R</code> to rename all references to a service or a variable in the workspace.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorRename.png" alt="Refactor Rename">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_extract_template">Extract template</h5>
+<div class="paragraph">
+<p>You can use the extract template short cut <code>Alt + Shift + T</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new template and the selected text will be replaced by a call to this template.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorExtractTemplate.png" alt="Extract Template">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_if">Wrap in if</h5>
+<div class="paragraph">
+<p>You can use the wrap in if short cut <code>Alt + Shift + I</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new if statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInIf.png" alt="Wrap in If">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_for">Wrap in for</h5>
+<div class="paragraph">
+<p>You can use the wrap in for short cut <code>Alt + Shift + F</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new for statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInFor.png" alt="Wrap in For">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_let">Wrap in let</h5>
+<div class="paragraph">
+<p>You can use the wrap in let short cut <code>Alt + Shift + L</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new let statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInLet.png" alt="Wrap in Let">
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_wrap_in_protected">Wrap in protected</h5>
+<div class="paragraph">
+<p>You can use the wrap in protected short cut <code>Alt + Shift + P</code> after selecting one or more lines in a template. The selection must start and end at the beginning of a line (first column). The selection must start and end in the same block of code.</p>
+</div>
+<div class="paragraph">
+<p>The selection will be wrapped in a new protected statement.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorOrigin.png" alt="Origin">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RefactorWrapInProtected.png" alt="Wrap in Protected">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_acceleo_debugger">4.2. The Acceleo Debugger</h3>
+<div class="sect3">
+<h4 id="_breakpoints">4.2.1. Breakpoints</h4>
+<div class="paragraph">
+<p>To add a breakpoint somewhere in a template, just double-click in the left margin on the line where you want to add the breakpoint.
+A nice bluish marker should appear, which should be very familiar to eclipse users.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Breakpoint.png" alt="Breakpoint">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Conditional breakpoints are not supported.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_by_step_execution">4.2.2. Step by step execution</h4>
+<div class="paragraph">
+<p>To debug an Acceleo generation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Right-click on your <code>.mtl</code> file, and select <strong>Debug As &gt; Debug Acceleo 4 generation</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/DebugAs.png" alt="Debug As">
+</div>
+</div>
+<div class="paragraph">
+<p>It is actually recommended to switch to the <strong>Debug Perspective</strong>, which is really more appropriate to debug executions.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/DebugSession.png" alt="Debug">
+</div>
+</div>
+<div class="paragraph">
+<p>The debug perspective should be quite familiar to people used to the eclipse IDE.
+The <strong>Debug</strong> view (on the top left) displays the stack of the current execution.
+Clicking on any element of the stack will simultaneously display the corresponding Acceleo code in the edition area.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>Variables</strong> view displays currently accessible variables.
+In the example below, the execution has met a breakpoint when computing <code>Attributes</code> for a class, so the current input is a class.
+The Variables view tells us that the current class is called <code>EAttribute</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/VariablesView.png" alt="VariablesView">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The debugger cannot step into AQL expressions only Acceleo elements are visible in the Variables view.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>As usual, it is possible to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Step into</strong> a template (<code>F5</code>);</p>
+</li>
+<li>
+<p><strong>Step over</strong> a template (<code>F6</code>);</p>
+</li>
+<li>
+<p><strong>Step Return</strong> (<code>F7</code>), which means "go to the end of the current template";</p>
+</li>
+<li>
+<p><strong>Resume</strong> execution (<code>F8</code>);</p>
+</li>
+<li>
+<p><strong>Stop</strong> execution (<code>Ctrl + F2</code>).
+The icons above the <strong>Debug</strong> view serve the same purpose.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Acceleo breakpoints can be temporarily deactivated, thanks to the <strong>Breakpoints</strong> view.
+Just uncheck the checkbox in front of a breakpoint to deactivate it.
+Here is an example of a deactivated breakpoint in this view:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UnactivBreakpoint.png" alt="Unchecked Breakpoint">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_acceleo_profiler">4.3. Acceleo Profiler</h3>
+<div class="paragraph">
+<p>The Acceleo 4 Profiler allows you to keep track of executions and see where time is consumed during a generation, thus making it easier to identify (and hopefully fix) bottlenecks.</p>
+</div>
+<div class="sect3">
+<h4 id="_launching_a_generation_with_the_profiler">4.3.1. Launching a generation with the profiler</h4>
+<div class="paragraph">
+<p>The first thing to do to profile an Acceleo generation is to create a Profile Configuration, which is as we will see very similar to a Launch Configuration. To create a Profile Configuration, right-click on an Acceleo module file, and select Profile As &gt; Profile Configurations&#8230;&#8203;.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ProfileAs.png" alt="Profile As">
+</div>
+</div>
+<div class="paragraph">
+<p>A configuration page appears, which looks very much like the traditional launch configuration page.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ProfileLaunchConfiguration.png" alt="Profiler Launch Configuration">
+</div>
+</div>
+<div class="paragraph">
+<p>There is just one additional information to enter, which is the path to the profiling result file where Acceleo will store the profiling information of subsequent executions. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
+You can simply select a folder in this dialog, in which the profile file will be created.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_acceleo_profile_files">4.3.2. Acceleo Profile Files</h4>
+<div class="paragraph">
+<p>Acceleo stores the result of a profiled execution in a file which extension is .mtlp. This file is actually just a serialized EMF model. Let&#8217;s take a closer look at it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ProfileFile.png" alt="Profile File">
+</div>
+</div>
+<div class="paragraph">
+<p>The above image shows the content of an mtlp file, and correspondances between the profiled data and the Acceleo template elements.</p>
+</div>
+<div class="paragraph">
+<p>For each generated file, there is one entry in the root node of the profile.</p>
+</div>
+<div class="paragraph">
+<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a [for &#8230;&#8203; ] instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_coverage_informations">4.3.3. Coverage informations</h4>
+<div class="paragraph">
+<p>The profile editor also provides coverage informations based on the profiling result. For each used module it shows what percentage of it has been actually used.</p>
+</div>
+<div class="paragraph">
+<p>You can double-click on the module in the profile editor (or on any module element in the profile model) to accurately see what has been used in a given module. It shows in green what has been covered by the execution and in red what has been ignored.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Coverage.png" alt="Coverage">
+</div>
+</div>
+<div class="paragraph">
+<p>To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_java_launchers">4.4. Java launchers</h3>
+<div class="paragraph">
+<p>You can select a module file that contains a main template to generate the Java code that will launch your module. There are two menus under <strong>Initialize Generator Launcher</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Java Main Class</strong> that will generate a Java class that can be used in standalone</p>
+<div class="ulist">
+<ul>
+<li>
+<p>It creates a Java main class next to your module</p>
+</li>
+<li>
+<p>It can be integrated in other application outside or inside of Eclipse</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Eclipse UI Project</strong> that will generate an Eclipse plugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>It creates an Eclipse plugin projet next to your generator project</p>
+</li>
+<li>
+<p>It extends the standalone class (the standalone main class will be generated)</p>
+</li>
+<li>
+<p>It contribute a menu to objects that can be passed to your main template</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/JavaGenerators.png" alt="Java Generators">
+</div>
+</div>
+<div class="paragraph">
+<p>All the code above is generated using Acceleo 4. You can extend and override the content of the generated files like you would with any Acceleo 4 generator. The source code is in this <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/plugins/org.eclipse.acceleo.aql.ide.ui/src-module/">source folder</a>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -509,33 +1326,1763 @@ It can be used to generate any kind of text file: code, configuration, documenta
 <div class="paragraph">
 <p>You can read to the <a href="language.html">language documentation</a> to understand Acceleo 4 language specificity. If you are looking for the syntax quick reference you can check the <a href="syntax.html">syntax page</a>.</p>
 </div>
+<div class="sect2">
+<h3 id="_intended_audience">5.1. Intended Audience</h3>
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::language.adoc[]
-Unresolved directive in index.adoc - include::syntax.adoc[]</p>
+<p>This guide was written to describe the elements composing the Acceleo 4 templating language. This will not delve into the Acceleo Query Language (AQL) description.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module">5.2. Module</h3>
+<div class="paragraph">
+<p>An Acceleo module is defined in its own file and is the main container for generation <a href="#_template">templates</a> (that will generate text) and <a href="#_query">queries</a> (which purpose is to extract information from the input models).</p>
+</div>
+<div class="paragraph">
+<p>The name of the module will be qualified according to its location in the source folder of the project.</p>
+</div>
+<div class="paragraph">
+<p>An Acceleo file must start with the module declaration in the following format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[**
+&lt;module documentation&gt;
+@author &lt;author name&gt;
+@version &lt;version number&gt;
+@since &lt;first version in which this module appeared&gt;
+/]
+[module &lt;module name&gt;('http://metamodel/URI/1', 'http://metamodel/URI/1', &lt;additional_URIs&gt;) extends &lt;other module qualified name&gt;]</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Module documentation</dt>
+<dd>
+<p>The documentation of a module is optional, and can contain both the description of the module and optional metadata such as the author and version number.</p>
+</dd>
+<dt class="hdlist1">Module name</dt>
+<dd>
+<p>The module name can only contain alphanumeric (and underscore <code>_</code>) characters and cannot start with a number.</p>
+</dd>
+<dt class="hdlist1">Metamodel URIs</dt>
+<dd>
+<p>The metamodel(s) from which this module will take types. The list has to be exhaustive: if multiple connected metamodels are used, then all must be listed in the module declaration.</p>
+</dd>
+<dt class="hdlist1">Extends</dt>
+<dd>
+<p>The qualified name of another module. Acceleo allows you to override <em>protected</em> and <em>public</em> visibility templates from the extended module. Extending multiple modules is not allowed.
+<strong>Note</strong> that the extended module&#8217;s name has to be qualified, even when overriding modules located in the same package.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>See also the <a href="#_module">Module syntax documentation</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_imports">5.2.1. Imports</h4>
+<div class="paragraph">
+<p>An Acceleo module can import any number of other modules or Java service class. All <em>public</em> visibility templates and queries from the imported module(s) can be called by the importer, for Java class all public methods can be used a service.</p>
+</div>
+<div class="paragraph">
+<p>Importing modules can be done right after the module declaration line and requires the following format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[import &lt;other module or Java class qualified name&gt;/]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> that modules can only be referenced through their qualified name, even if they are located in the same package.</p>
+</div>
+<div class="paragraph">
+<p>See also the <a href="#_import">Import</a> as well as the <a href="#_module_reference">Module Reference</a> syntax documentation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_module_elements">5.2.2. Module Elements</h4>
+<div class="paragraph">
+<p>Following the imports declaration, any number of module element can now be written as the body of our Module. Please refer to <a href="#_template">Template</a> and <a href="#_query">Query</a> sections below for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_template">5.3. Template</h3>
+<div class="paragraph">
+<p>A Template is a set of Acceleo statements used to generate text. It is delimited by <code>[template &#8230;&#8203;][/template]</code> tags.</p>
+</div>
+<div class="paragraph">
+<p>The template signature must include the visbility and the name, and can optionally define a post-treatment expression.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[**
+&lt;template documentation&gt;
+@param class &lt;documentation of the parameter&gt;
+/]
+[template public generate(class : ecore::EClass) post (self.trim())]
+[/template]</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">visibility</dt>
+<dd>
+<p>One of</p>
+<div class="ulist">
+<ul>
+<li>
+<p>public : Public templates will be visible from all modules importing or extending the module declaring them. They can be overridden by extending modules.</p>
+</li>
+<li>
+<p>protected : Protected templates will only be visible from extending modules and can be overridden.</p>
+</li>
+<li>
+<p>private : Private templates are only visible by the defining module and cannot be overridden.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">name</dt>
+<dd>
+<p>The name of the template. Only alphanumeric (and underscore <code>_</code>) characters are allowed, and the name cannot start with a number.</p>
+</dd>
+<dt class="hdlist1">arguments</dt>
+<dd>
+<p>Arguments follow the <a href="#_variable">format for variables</a>.</p>
+</dd>
+<dt class="hdlist1">post</dt>
+<dd>
+<p>The post-treatment expression will be called on the result of the template (stored in variable <code>self</code>) and needs to be applicable to a String.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><strong>The result of a template is always a String.</strong></p>
+</div>
+<div class="paragraph">
+<p>Templates can be overriden by extending a <a href="#_module">module</a> and writing a template or query that have the same signature of a template or query that return a compatible type (String for template) in the extended module. Only <code>public</code> and <code>protected</code> templates and queries can be overriden.</p>
+</div>
+<div class="paragraph">
+<p>It you want to call the super template or query you can prefix the call with <code>super:</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>self.super:overridenService()</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See also the <a href="#_template">Template syntax documentation</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_main_template">5.3.1. Main template</h4>
+<div class="paragraph">
+<p>Acceleo defines a special metadata tag on templates to specify the main entry point(s) of a generation, the template(s) that will be called first during the workflow. This metadata tag, <code>@main</code>, needs to be in the comments preceding the template, or within the template documentation</p>
+</div>
+<div class="paragraph">
+<p>Such templates do not necessarily contain a <a href="#_file_block">File</a> block themselves.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[**
+&lt;template documentation&gt;
+@param class &lt;param documentation&gt;
+@main
+/]
+[template public generate(class : ecore::EClass)]
+  [file (class.name + '.txt', overwrite)]
+    Class [class.name/] structural features:
+    [for (feature | class.eStructuralFeatures)]
+      [feature.name/]
+    [/for]
+  [/file]
+[/template]</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_file_block">5.3.2. File Block</h4>
+<div class="paragraph">
+<p>File blocks are used to tell the Acceleo engine it must generate the body of the <code>[file &#8230;&#8203;]</code> block in an actual file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[file (&lt;uri&gt;, &lt;open mode&gt;, &lt;charset&gt;)][/file]</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">uri</dt>
+<dd>
+<p>An AQL expression denoting the output file name. Must evaluate to a String.</p>
+</dd>
+<dt class="hdlist1">open mode</dt>
+<dd>
+<p>The open mode for the file. This can be one of:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>(Not Supported Yet)</strong> append : Append to the end of the file if it already exists, create it otherwise.</p>
+</li>
+<li>
+<p>overwrite : Overwrite the whole file if it already exists, create it otherwise.</p>
+</li>
+<li>
+<p>create : Do not change the file if it already exists, create it otherwise.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">charset</dt>
+<dd>
+<p>This can be used to tell Acceleo which charset to use for the generated file. This is optional and will default to UTF-8</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(class : ecore::EClass)]
+  [file (class.name + '.java', append, 'UTF-8')]
+  [/file]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> that the file will only be generated if the engine actually evaluates the file block. For example, if the template containing that block is never called, or if the file block is included in an <code>If</code> block which condition evalutes to <code>false</code>, then no file will be created.</p>
+</div>
+<div class="paragraph">
+<p>See also the <a href="#_file_statement">File Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_for_loops">5.3.3. For loops</h4>
+<div class="paragraph">
+<p>For loops in Acceleo need to be expressed using the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (&lt;variable&gt; | &lt;iteration expression&gt;) separator(&lt;separator expression&gt;)]...[/for]</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">variable</dt>
+<dd>
+<p>The variable follows the <a href="#_variable">format for variables</a>. The variable type must match the result of the iteration expression. If the expression returns a collection of Strings, then the variable will be of type String. Because of this, typing the variable is optional.
+A variable with the same name and suffixed with <code>Index</code> will also be created. Its value is the current loop index starting at <code>1</code>.</p>
+</dd>
+<dt class="hdlist1">iteration expression</dt>
+<dd>
+<p>An AQL expression returning a collection of elements on which to iterate. If the expression doesn&#8217;t return a collection but a single element, it will be used to iterate only once.</p>
+</dd>
+<dt class="hdlist1">separator</dt>
+<dd>
+<p>The separator expression will be evaluated to insert content in-between the content generated for each iteration of the for body. It will not be generated if the for loop doesn&#8217;t generate text or only generates one iteration worth of content.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(class : ecore::EClass)]
+  [for (feature | class.eStructuralFeatures)]
+  [/for]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example you can also use the <code>featureIndex</code> variable to keep track of the loop index.
+See also the <a href="#_for_statement">For Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_if_conditions">5.3.4. If conditions</h4>
+<div class="paragraph">
+<p>The <code>If</code> statement in Acceleo uses the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[if (condition)]
+[elseif (condition)]
+[else]
+[/if]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>elseif</code> and <code>else</code> are both optional. If one of the <code>condition</code> expressions does not evaluate to a boolean an error will be logged and nothing will be generated for that <code>if</code> block.</p>
+</div>
+<div class="paragraph">
+<p>See also the <a href="#_if_statement">If Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_let_block">5.3.5. Let block</h4>
+<div class="paragraph">
+<p>Acceleo <code>Let</code> blocks use the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let &lt;variable1&gt; = &lt;init expression&gt;, &lt;variable2&gt; = &lt;init expression&gt;]
+[/let]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>Let</code> blocks allow template writers to define temporary variables that will be visible within the scope of the block.</p>
+</div>
+<div class="paragraph">
+<p>The variables follow the <a href="#_variable">format for variables</a>. All of their typing is optional since they must match the return type of their initialization expression.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> that all variables are immutable. Nested <code>Let</code> blocks can override the value of a variable within their own scope, but the variable will go back to its former value once outside of the nested <code>Let</code>. This will produce a warning during validation.</p>
+</div>
+<div class="paragraph">
+<p>See also the <a href="#_let_statemnet">Let Statement syntax documentation</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_protected_area">5.3.6. Protected Area</h4>
+<div class="paragraph">
+<p>The purpose of protected areas is incremental generation.</p>
+</div>
+<div class="paragraph">
+<p>A protected area defines a set of statements that should only be generated if the generated file doesn&#8217;t exist on disk or it does not contain an area with the specified protected area&#8217;s identifier.</p>
+</div>
+<div class="paragraph">
+<p>Protected areas allow module writers to create a "safe" part of the generated file that can be modified directly in the generated file, without fear of these manual modifications to be lost during subsequent generations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[comment @main/]
+[template public generate(class : ecore::EClass)]
+  [file (class.name + '.java', overwrite, 'UTF-8')/]
+    [protected (class.name + ' imports') startTagPrefix('// ') endTagPrefix('// ')]
+      imports java.util.List;
+    [/protected]
+
+    public class [class.name.toUpperFirst()/] {
+
+    }
+  [/file]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The expression within the protected block&#8217;s signature serves as the protected area&#8217;s identifier and <strong>must be unique</strong> in the generated file&#8217;s scope.</p>
+</div>
+<div class="paragraph">
+<p><strong>There must be nothing present on the line after the protected area&#8217;s signature.</strong> Otherwise, everything following said signature will be considered to be part of the area&#8217;s identifier by the engine and the code will not be properly protected.</p>
+</div>
+<div class="paragraph">
+<p>Please also note that the protected area&#8217;s first and last line are marked as comments in the generated code (<code>'// '</code>) using the start and end tag prefixes. This is to avoid generating invalid Java code as the markers will be present in the generated file&#8217;s contents.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_variable">5.3.7. Variable</h4>
+<div class="paragraph">
+<p>Acceleo 4 variables use the AQL syntax and inference logic for their typing.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;name&gt; : &lt;type&gt;</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">name</dt>
+<dd>
+<p>Name of the variable. Only alphanumeric (and underscore`_`) characters are allowed, and the name cannot start with a number.</p>
+</dd>
+<dt class="hdlist1">type</dt>
+<dd>
+<p>Type of the variable. Four different kind of types are accepted</p>
+<div class="ulist">
+<ul>
+<li>
+<p>primitive : Integer, Double, String, Boolean</p>
+</li>
+<li>
+<p>collection : Sequence, OrderedSet. Collection types have to be further specified with their content types, such as Sequence(String) for a list of String elements.</p>
+</li>
+<li>
+<p>eclassifier : in the form &lt;epackage_name&gt;::&lt;classifier_name&gt; such as ecore::EClass.</p>
+</li>
+<li>
+<p>union type : in the form {&lt;epackage_name&gt;::&lt;classifier_name&gt; | &lt;epackage_name&gt;::&lt;classifier_name&gt; | &#8230;&#8203;}. This kind of typing describes a variable that can be either one of the <em>n</em> specified classifiers. e.g. {ecore::EAttribute | ecore::EReference }.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_white_spaces">5.4. White spaces</h3>
+<div class="paragraph">
+<p>When generating text, and especially code, white spaces and indentation is an important point.
+In order to keep template code indentation from interfering with the generated output, a few rules applies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>each block has a <strong>mandatory indentation</strong> of <strong>two characters</strong> that will not be generated in the output (in yellow below)</p>
+</li>
+<li>
+<p>when generating a block if the last generated line is not empty, it is repeated at the beginning of each line generated by the block (in red below)</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Indentation.png" alt="Indentation">
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In a template you have to <strong>let 2 whitespaces at the beginning of each line</strong>, else the generated content will be truncated by 2 characters.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/IndentationIssue.png" alt="Truncated generation due to indentation">
+</div>
+</div>
+<div class="paragraph">
+<p>Their is one exception to this rule, an empty line in the module will generate an empty line in the output. This allows to either generate an empty line that use indentation or an empty line regardless of current indentation:</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query">5.5. Query</h3>
+<div class="paragraph">
+<p>A query is a re-useable AQL expression that can return any type of Object. They are commonly used to extract information from the input models. A query is enclosed in a <code>[query &#8230;&#8203;]</code> tag.</p>
+</div>
+<div class="paragraph">
+<p>The query signature must include the visibility and its name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[**
+&lt;query documentation&gt;
+@param class &lt;documentation of the parameter&gt;
+/]
+[query public getPublicProperties(class : uml::Class) : Set(uml::Property) =
+	class.attribute-&gt;select(property : uml::Property | property.visibility = uml::VisbilityKind::public)
+/]</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">visibility</dt>
+<dd>
+<p>One of</p>
+<div class="ulist">
+<ul>
+<li>
+<p>public : Public templates will be visible from all modules importing or extending the module declaring them. They can be overridden by extending modules.</p>
+</li>
+<li>
+<p>protected : Protected templates will only be visible from extending modules and can be overridden.</p>
+</li>
+<li>
+<p>private : Private templates are only visible by the defining module and cannot be overridden.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">name</dt>
+<dd>
+<p>The name of the query. Only alphanumeric (and underscore <code>_</code>) characters are allowed, and the name cannot start with a number.</p>
+</dd>
+<dt class="hdlist1">arguments</dt>
+<dd>
+<p>Arguments follow the <a href="#_variable">format for variables</a>.</p>
+</dd>
+<dt class="hdlist1">return type</dt>
+<dd>
+<p>The return type describes the kind of object this query is expected to return. If the expression does not return an object of the accurate type, the evaluation will fail at runtime.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Queries can be overriden by extending a <a href="#_module">module</a> and writing a template or a query that have the same signature of a template or query that return a String in the extended module.</p>
+</div>
+<div class="paragraph">
+<p>Templates can be overriden by extending a <a href="#_module">module</a> and writing a template or query that have the same signature of a template or query that return a compatible type (String for template) in the extended module.  Only <code>public</code> and <code>protected</code> templates and queries can be overriden.</p>
+</div>
+<div class="paragraph">
+<p>It you want to call the super template or query you can prefix the call with <code>super:</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>self.super:overridenService()</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See also the <a href="#_query">Query syntax documentation</a>.
+= Acceleo
+Acceleo 4 Syntax</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_launching_an_acceleo_generation">6. Launching an Acceleo generation</h2>
+<h2 id="_preface">6. Preface</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::generate.adoc[]</p>
+<p>This document describe the syntax of an Acceleo 4 module.</p>
+</div>
+<div class="paragraph">
+<p>The syntax is described using the <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">Backus Naur from</a> (BNF).</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_using_acceleo_4_programmatically">7. Using Acceleo 4 programmatically</h2>
+<h2 id="_syntax">7. Syntax</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_comment">7.1. Comment</h3>
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::use.adoc[]</p>
+<p>A comment can be used to document any part of the <a href="#_module">Module</a>. It generates nothing if placed directly or indirectly in a <a href="#_file_statement">File Statement</a>. For simplification comments will not be present in the BNF representation of the grammar.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_comment">Comment</a> = '[comment ' ... '/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_2">7.2. Module</h3>
+<div class="paragraph">
+<p>The module is the top level element of a .mtl file. It represent a namespace declaring <a href="#_template">Template</a> and <a href="#_query">Query</a>. The name of the module is qualified by the location of the file in the source folder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module">Module</a> =
+
+(<a href="#_module_documentation">Module Documentation</a>)* '[module ' <a href="#_identifier">Identifier</a> '(' <a href="#_metamodel">Metamodel</a> ',' (<a href="#_metamodel">Metamodel</a>)* ')' ('extends ' <a href="#_module_reference">Module Reference</a>)? '/]'
+
+<a href="#_import">Import</a>*
+
+<a href="#_module_element">Module Element</a>*</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_identifier">7.3. Identifier</h3>
+<div class="paragraph">
+<p>An identifier is used to name elements that need to be identified, or reference element that can be identified.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_identifier">Identifier</a> = [a-zA-Z_][a-zA-Z_0-9]*</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_documentation">7.4. Module Documentation</h3>
+<div class="paragraph">
+<p>The module documentation should contains a description of the <a href="#_module">Module</a>.</p>
+</div>
+<div class="paragraph">
+<p>It can also contain metadata such as the author, version, and since (the version since this <a href="#_module">Module</a> exists).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_documentation">Module Documentation</a> =
+
+'[**'
+
+...
+
+('@author' ...)?
+
+('@version' ...)?
+
+('@since' ...)?
+
+...
+
+'/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metamodel">7.5. Metamodel</h3>
+<div class="paragraph">
+<p>This is the declaration of metamodels used by the module. Metamodels are referenced using their EPackage nsURI between simple quote.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_metamodel">Metamodel</a> = '\'' ... '\''</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_import">7.6. Import</h3>
+<div class="paragraph">
+<p>This allows a module to import other <a href="#_module">Module</a> or service classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_import">Import</a> = '[import ' <a href="#_module_reference">Module Reference</a> '/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_reference">7.7. Module Reference</h3>
+<div class="paragraph">
+<p>The module reference is a qualified reference to a <a href="#_module">Module</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_reference">Module Reference</a> = <a href="#_module_qualified_name">Module Qualified Name</a></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_qualified_name">7.8. Module Qualified Name</h3>
+<div class="paragraph">
+<p>A module&#8217;s name is qualified according to its location in the source folder of a project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_qualified_name">Module Qualified Name</a> = <a href="#_identifier">Identifier</a> ('::' <a href="#_identifier">Identifier</a>)*</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_element">7.9. Module Element</h3>
+<div class="paragraph">
+<p>A module element is either a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_element">Module Element</a> = <a href="#_template">Template</a> | <a href="#_query">Query</a></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_template_2">7.10. Template</h3>
+<div class="paragraph">
+<p>A template returns a String produced using its contained <a href="#_statement">Statement</a>, it can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>Also a <a href="#_module">Module</a> can contain a template used as entry point of the generation. This template will be identified with a <a href="#_comment">Comment</a> preceding the template and containing the tag '@main'.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_template">Template</a> =
+
+'[template ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ('?' <a href="#_aql_expression">AQL Expression</a>)? ('post (' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
+
+(<a href="#_statement">Statement</a>)*
+
+'[/template]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_visibility">7.11. Visibility</h3>
+<div class="paragraph">
+<p>The visibility defines the scope in which a <a href="#_module_element">Module Element</a> can be called as a service.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_visibility">Visibility</a> = 'private' | 'protected' | 'public'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameter">7.12. Parameter</h3>
+<div class="paragraph">
+<p>A parameter is used to pass a value from the caller to a callee. This value can be later referenced using its identifier.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_parameter">Parameter</a> = <a href="#_identifier">Identifier</a> ':' <a href="#_aql_type_literal">AQL Type Literal</a></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_statement">7.13. Statement</h3>
+<div class="paragraph">
+<p>A statement is a directive used to produce an output or control the execution flow.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_statement">Statement</a> =
+
+<a href="#_file_statement">File Statement</a> | <a href="#_for_statement">For Statement</a> | <a href="#_if_statement">If Statement</a> | <a href="#_let_statement">Let Statement</a> | <a href="#_protected_area">Protected Area</a> | <a href="#_expression_statement">Expression Statement</a> | <a href="#_text_statement">Text Statement</a></code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_file_statement">7.13.1. File Statement</h4>
+<div class="paragraph">
+<p>This statement is used to start the generation of a new file. Strings returned by a statement contained directly or indirectly in the execution flow, will be generated into that file.</p>
+</div>
+<div class="paragraph">
+<p>The file statement itself returns an empty String.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_file_statement">File Statement</a> =
+
+'[file ' '(' <a href="#_aql_expression">AQL Expression</a> ',' <a href="#Open Mode Kind">[Open Mode Kind]</a> (',' <a href="#_aql_expression">AQL Expression</a>)? ')' ']'
+
+(<a href="#_statement">Statement</a>)*
+
+'[/file]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_for_statement">7.13.2. For Statement</h4>
+<div class="paragraph">
+<p>This statement loops over a list of values and return the concatenation of all returned String.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_for_statement">For Statement</a> =
+
+'[for ' '(' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '|' <a href="#_aql_expression">AQL Expression</a> ')' ('separator(' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
+
+(<a href="#_statement">Statement</a>)*
+
+'[/for]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_if_statement">7.13.3. If Statement</h4>
+<div class="paragraph">
+<p>This statement create a branch in the execution flow and return the String of one of its branch according to the <a href="#_aql_expression">AQL Expression</a> evaluated to true. If a condition doesn&#8217;t evaluate to a boolean an empty String is generated and an error is logged.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_if_statement">If Statement</a> =
+
+'[if ' '(' <a href="#_aql_expression">AQL Expression</a> ')' ']'
+
+(<a href="#_statement">Statement</a>)*
+
+('[elseif ' '(' <a href="#_aql_expression">AQL Expression</a> ')' ']'
+
+(<a href="#_statement">Statement</a>)*)*
+
+('[else]'
+
+(<a href="#_statement">Statement</a>)*)?
+
+'[/if]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_let_statement">7.13.4. Let Statement</h4>
+<div class="paragraph">
+<p>This statement allows to compute one or more <a href="#_aql_expression">AQL Expression</a> and reference their value using an identifier. It can be used to improve readability of the template or increase performance when using the same <a href="#_aql_expression">AQL Expression</a> many times in a block of <a href="#_statement">Statement</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_let_statement">Let Statement</a> =
+
+'[let ' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '=' <a href="#_aql_expression">AQL Expression</a> (',' <a href="#_identifier">Identifier</a> (':' <a href="#_aql_type_literal">AQL Type Literal</a>)? '=' <a href="#_aql_expression">AQL Expression</a>)* ']'
+
+(<a href="#_statement">Statement</a>)*)?
+
+'[/let]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_protected_area_2">7.13.5. Protected Area</h4>
+<div class="paragraph">
+<p>This statement declares an identified area in the generated file. If the generated file exists and a protected area with the same identifier exists in its contents, then the existing content of this area is directly returned. If it doesn&#8217;t exist, then the concatenation of the body&#8217;s statements results is returned.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_protected_area">Protected Area</a> =
+
+'[protected ' '(' <a href="#_aql_expression">AQL Expression</a> ')'  ('startTagPrefix(' <a href="#_aql_expression">AQL Expression</a> ')')?  ('endTagPrefix(' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
+
+(<a href="#_statement">Statement</a>)*)?
+
+'[/protected]'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The start tag prefix and end tag prefix expressions allows to add a prefix to the intserted start and end tag to delimit the protected area in the generated document.
+If an unkown protected area id is encountered in a pre-existing generated document, a lost file is created to save its content.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_expression_statement">7.13.6. Expression Statement</h4>
+<div class="paragraph">
+<p>This statement returns the String representation of the evaluation of its <a href="#_aql_expression">AQL Expression</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_expression_statement">Expression Statement</a> = '[' <a href="#_aql_expression">AQL Expression</a> '/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_text_statement">7.13.7. Text Statement</h4>
+<div class="paragraph">
+<p>This is any other text outside of '[' and ']'.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aql_expression">7.14. AQL Expression</h3>
+<div class="paragraph">
+<p>This is an Acceleo Query Language expression. It is used to navigate through models and call services. In the context of Acceleo, <a href="#_template">Template</a> and <a href="#_query">Query</a> can be called as services.</p>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL documentation</a> for more details about the language itself, the full list of standard services, and the differences with Acceleo/MTL.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aql_type_literal">7.15. AQL Type Literal</h3>
+<div class="paragraph">
+<p>This is a type literal as defined in the Acceleo Query Language.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_2">7.16. Query</h3>
+<div class="paragraph">
+<p>A query references an <a href="#_aql_expression">AQL Expression</a> with parameters and can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_query">Query</a> =
+
+'[query ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ':' <a href="#_aql_type_literal">AQL Type Literal</a> '=' <a href="#_aql_expression">AQL Expression</a> '/]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_element_documentation">7.17. Module Element documentation</h3>
+<div class="paragraph">
+<p>The documentation of a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_module_element_documentation">Module Element documentation</a> =
+
+'[**'
+
+...
+
+'@param ' ...
+
+...
+
+'/]'</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_migrate_acceleo_3_templates_to_acceleo_4">8. Migrate Acceleo 3 templates to Acceleo 4</h2>
+<h2 id="_launching_an_acceleo_generation">8. Launching an Acceleo generation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::migration.adoc[]</p>
+<p>This section describe how to launch a generation from <a href="#eclipse">[eclipse]</a> or <a href="#_maventycho">Maven/Tycho</a>.
+Note that you can also use the <a href="#_debugger">[_debugger]</a> to run a module or directly use Acceleo 4 programmatically, see <a href="#_generation">Generation</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_eclipse">8.1. Eclipse</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important">
+</td>
+<td class="content">
+<div class="title">Before you Start</div>
+<div class="paragraph">
+<p>Use a <strong>Java Project</strong> and the classical <strong>Java Perspective</strong> for writing your Acceleo templates <code>.mtl</code> in the <strong>src</strong> folder.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In order to launch an Acceleo generator, you just have to right-click on your main module and use the <strong>Run As</strong> menu.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RunAs.png" alt="Run As">
+</div>
+</div>
+<div class="paragraph">
+<p>From there the <strong>Launch Configuration</strong> menu will open.
+If you already have created a launch configuration you can access the launch configuration menu from the <strong>Run &gt; Run Configurations&#8230;&#8203;</strong> menu.
+In this menu, you will have access to the Acceleo Launch configuration.
+You just have to select:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>your main <strong>module file</strong>,</p>
+</li>
+<li>
+<p>your input <strong>model file</strong>,</p>
+</li>
+<li>
+<p>the <strong>destination folder</strong> of the generation.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/LaunchConfig.png" alt="Launch Configuration">
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important">
+</td>
+<td class="content">
+<div class="title">After launching the generation</div>
+<div class="paragraph">
+<p>Check that your generation is finished by opening the <strong>Console</strong> view.
+You should see a message like this <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_maventycho">8.2. Maven/Tycho</h3>
+<div class="paragraph">
+<p>Acceleo provides a specific eclipse application that can be used from command line or tycho in order to start a generation.
+In order to use the launcher, you will need to first package all of your generator projects into an update site, then use this update site as input of the application.</p>
+</div>
+<div class="paragraph">
+<p>An example is available in the Acceleo repository and can be checked out at: <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/examples/MavenLauncher" class="bare">https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/examples/MavenLauncher</a></p>
+</div>
+<div class="paragraph">
+<p>This example includes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A generator project <code>org.eclipse.acceleo.aql.launcher.sample</code>,</p>
+</li>
+<li>
+<p>A feature including this project <code>org.eclipse.acceleo.aql.launcher.sample-feature</code>,</p>
+</li>
+<li>
+<p>An update site including this feature <code>org.eclipse.acceleo.aql.launcher.sample-site</code>,</p>
+</li>
+<li>
+<p>A <code>pom.xml</code> file that can be used to both package the generator and start the generation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The packaging can be started through the command line <code>mvn clean verify</code>.
+Once packaged, generation can be started through the command line <code>mvn clean verify -Pgenerate</code>.</p>
+</div>
+<div class="paragraph">
+<p>The application takes a number of arguments that will have to be customized through the pom.xml file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;applicationsArgs&gt;
+	&lt;args&gt;-application&lt;/args&gt;
+	&lt;args&gt;org.eclipse.acceleo.aql.launcher.AcceleoLauncher&lt;/args&gt;
+	&lt;args&gt;-data&lt;/args&gt;
+	&lt;args&gt;${project.build.directory}/wks&lt;/args&gt;
+	&lt;args&gt;-bundle&lt;/args&gt;
+	&lt;args&gt;org.eclipse.acceleo.aql.launcher.sample&lt;/args&gt;
+	&lt;args&gt;-module&lt;/args&gt;
+	&lt;args&gt;org::eclipse::acceleo::aql::launcher::sample::main&lt;/args&gt;
+	&lt;args&gt;-models&lt;/args&gt;
+	&lt;args&gt;platform:/plugin/org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi&lt;/args&gt;
+	&lt;args&gt;-target&lt;/args&gt;
+	&lt;args&gt;file:/${project.build.directory}/generated/&lt;/args&gt;
+&lt;/applicationsArgs&gt;</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">application</dt>
+<dd>
+<p>Standard Eclipse argument, this tells Eclipse which application it needs to run. The specific launcher for Acceleo generations is <code>org.eclipse.acceleo.aql.launcher.AcceleoLauncher</code>.</p>
+</dd>
+<dt class="hdlist1">data</dt>
+<dd>
+<p>Standard Eclipse argument, this can be used to modify the workspace path.</p>
+</dd>
+<dt class="hdlist1">bundle</dt>
+<dd>
+<p>This needs to be the identifier of the bundle containing the main module for this generation.</p>
+</dd>
+<dt class="hdlist1">module</dt>
+<dd>
+<p>The starting point of the generation that is to be started. This needs to the qualified name of the module containing an "@main"-annotated template.</p>
+</dd>
+<dt class="hdlist1">models</dt>
+<dd>
+<p>The URI of the models that will be fed to the main module of the generation. This cannot be empty and needs to be an URI that eclipse is capable of resolving. In this example we&#8217;re using a <code>platform:/plugin/&#8230;&#8203;</code> URI since we&#8217;ve bundled the input model into our generator project.</p>
+</dd>
+<dt class="hdlist1">target</dt>
+<dd>
+<p>The destination URI for this generation. Generated files will use this folder as their root to resolve against. <strong>Note</strong> that this needs to end in a trailing <code>/</code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_acceleo_4_programmatically">9. Using Acceleo 4 programmatically</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<h1 id="_use_acceleo_4_programmatically" class="sect0">Use Acceleo 4 programmatically</h1>
+<div class="paragraph">
+<p>Acceleo 4 can be used programmatically and for instance integrated in other products.</p>
+</div>
+<div class="paragraph">
+<p>If you run in standalone (outside of Eclipse) you will need to initialize your metamodel (EPagkages), for instance for Ecore:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">EcorePackage.eINSTANCE.getName();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will also need to register needed resource factories, for instance for XMI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());</code></pre>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parsing">1. Parsing</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+final Map&lt;String, String&gt; options = new HashMap&lt;&gt;();
+options.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
+options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+final ArrayList&lt;Exception&gt; exceptions = new ArrayList&lt;&gt;();
+final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver, new ResourceSetImpl(), options);
+final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels, false);
+// evaluator can be null if you don't plan to evaluate and only need to validate
+AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), "\n");
+
+// allow Acceleo module loading
+resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
+// allow Java class loading
+resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
+
+final Object resolved = resolver.resolve(moduleQualifiedName);
+final Module mainModule;
+if (resolved instanceof Module) {
+	mainModule = (Module)resolved;
+} else {
+	mainModule = null;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validation">2. Validation</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
+final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(mainModule.getAst(), moduleQualifiedName);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_completion">3. Completion</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
+String source = ...;
+int position = ...;
+List&lt;AcceleoCompletionProposal&gt; completionProposals = acceleoCompletor.getProposals(acceleoEnvironment, moduleQualifiedNameForCompletion, source, position);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generation">4. Generation</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final Resource resource = resourceSetForModels.getResource(uri, true);
+final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels.getURIConverter(), new DefaultWriterFactory());
+final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
+
+AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_unit_test_module">5. Unit test module</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java">FileStatementTests</a> and the corresponding <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement">folder</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_maven">6. Maven</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can use Acceleo 4 in your maven project with the following repository and dependency:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;Acceleo Repository&lt;/id&gt;
+    &lt;url&gt;https://download.eclipse.org/acceleo/updates/releases/4.0/...&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.eclipse.acceleo&lt;/groupId&gt;
+    &lt;artifactId&gt;acceleo&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you use the source folder for your template make sure you include them as resources:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;build&gt;
+  &lt;resources&gt;
+    &lt;resource&gt;
+      &lt;directory&gt;${project.basedir}/src/main/java&lt;/directory&gt;
+        &lt;includes&gt;
+          &lt;include&gt;**/*.mtl&lt;/include&gt;
+        &lt;/includes&gt;
+      &lt;/resource&gt;
+    &lt;/resources&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.aql.maven.tests">test project</a> can be used as an example.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_migrate_acceleo_3_templates_to_acceleo_4">7. Migrate Acceleo 3 templates to Acceleo 4</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section was written to describe the behavior changes between the two versions of Acceleo, for the purpose of migrating from one to the next.</p>
+</div>
+<div class="sect2">
+<h3 id="_how_to_migrate_acceleo_3_templates_to_acceleo_4">7.1. How to migrate Acceleo 3 templates to Acceleo 4</h3>
+<div class="sect3">
+<h4 id="_the_migration_tool">7.1.1. The migration tool</h4>
+<div class="paragraph">
+<p>The migration tool consists on a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) required to perform a migration.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_launching_a_migration">7.1.2. Launching a migration</h4>
+<div class="paragraph">
+<p>The migration tool requires a fully built Acceleo 3 project as input: the project folder must contain a bin/ folder with all of the compiled (.emtl) versions of the .mtl source files.</p>
+</div>
+<div class="paragraph">
+<p>The migration jar can be run in command line with the following arguments. We assume we are in the folder containing the migration jar, and that the Acceleo project is at the same level. There is also an empty "output" folder to receive the result of the migration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>java -jar migrator.jar &lt;myproject&gt;/&lt;sourcefolder&gt; &lt;output_folder&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For instance, for an Acceleo 3 project in which the source templates are in the src/ folder (anywhere in the sub-folders of src/):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>java -jar migrator.jar myProject/src output</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The converted .mtl files will be created in the output folder, accordingly to the folder structure in the source project.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_language_changes">7.2. Language Changes</h3>
+<div class="sect3">
+<h4 id="_modules">7.2.1. Modules</h4>
+<div class="sect4">
+<h5 id="_module_name">module name</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed users to set the fully qualified name of the module in its declaration, such as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module qualified::module::name(...)]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 forbids anything other than the actual module name and this will thus become.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module name(...)]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both versions require the module name to be equal to the name of the containing file minus the extension.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_multiple_inheritance">multiple inheritance</h5>
+<div class="paragraph">
+<p>The Acceleo 3 module declaration allowed users to declare multiple "extends" modules:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module qualified::module::name(...) extends another::module, and::a:second::module]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 modules can only define a single extended module.</p>
+</div>
+<div class="paragraph">
+<p><strong>Only the first extended module was taken into account</strong> in Acceleo 3 so the migration just strips all but the first extended modules' name.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_module_imports">module imports</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed imports of modules through unqualified names. This is forbidden in Acceleo 4 and the fully qualified names of the imports are required.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_templates">7.2.2. Templates</h4>
+<div class="paragraph">
+<p><strong>Important notes:</strong> Every template which had duplicated signatures (same name, same argument list, different pre-condition) needs to be manually checked after migration.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Acceleo 4 does not allow duplicated signatures and has no pre-condition, so duplicated templates might have to be combined into a single one with their pre-condition as an <code>If-Else</code> block inside.</p>
+</li>
+<li>
+<p>Initialization blocks could be different on duplicated templates, depending on the pre-condition. The migrated <code>Let</code> block thus needs to be different per branch of the above <code>If-Else</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 templates will automatically override their super-module templates if the signature matches. This was not the case in Acceleo 3 and matching templates thus need verified manually.</p>
+</div>
+<div class="sect4">
+<h5 id="_overriding">Overriding</h5>
+<div class="paragraph">
+<p>Acceleo 3 templates allowed users to override an arbitrary template through the "overrides" keyword:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) overrides anotherTemplateName]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only allows a template of name "xyz" to override a template from the extended module with the same "xyz" name.</p>
+</div>
+<div class="paragraph">
+<p>Furthermore, Acceleo 4 templates will automatically override their super-module&#8217;s public or protected templates if they have the same signature.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_pre_conditions">Pre-conditions</h5>
+<div class="paragraph">
+<p>Acceleo 4 does not allow pre-conditions on templates.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_post_treatment">Post-treatment</h5>
+<div class="paragraph">
+<p>Acceleo 3 used an implicit String-typed variable so the post expression could be a simple call without a variable:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) post (trim())]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 doesn&#8217;t allow implicit variables. The result of the template call will be stored in the <code>self</code> variable and the migration will thus transform this expression into:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) post (self.trim())]</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_init_block">Init block</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed variable initialization blocks on the template:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplateName(...) {var1 = 'string'; var2 = param1.feature;}]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 removes the initialization blocks altogether, so the variable declarations must be manually transformed into a <code>let</code> block at the start of the template (this is not supported by the migration tool).</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_namesakes">Namesakes</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed multiple templates with the same name and same argument list to co-exist within the same module, as long as their pre-condition differed.</p>
+</div>
+<div class="paragraph">
+<p>Though Acceleo 4 will allow multiple templates with the same signature to exist in a module, only the last one will ever be resolved for a call or override, all subsequent being ignored.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_3">7.2.3. Query</h4>
+<div class="sect4">
+<h5 id="_java_services">Java services</h5>
+<div class="paragraph">
+<p>The best practice for Acceleo 3 was to wrap java services inside of a query. The special <code>invoke</code> service was used to this end.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[query public hasStereotype(element : uml::Element, stereotypeName : String) : Boolean =
+	invoke('org.eclipse.acceleo.module.sample.services.UMLServices', 'hasStereotype(org.eclipse.uml2.uml.Element, java.lang.String)', Sequence{element, stereotypeName})
+/]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 allows users to directly import java services.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_file_block_2">7.2.4. File Block</h4>
+<div class="paragraph">
+<p>The second argument for the file block in Acceleo 3 was a boolean (false = overwrite the file, true = append at the end of the file).</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 uses an enumeration, which allows the keyword "overwrite", "append" or "create" instead.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_for_block">7.2.5. For Block</h4>
+<div class="sect4">
+<h5 id="_simplified_syntax">Simplified Syntax</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed for loops in two formats:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (i : E | expr)]...[/for]</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (expr)]...[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the second case, the loop variable was <code>self</code>.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only allows for the first of these two formats. Note that typing the iteration variable is optional in Acceleo 4.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_iteration_count">Iteration count</h5>
+<div class="paragraph">
+<p>Acceleo 3 defined an implicit variable, <code>i</code>, that held the current iteration count.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (feature : ecore::EStructuralFeature | class.eStructuralFeatures)]
+iteration number [i/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 does not define any similar variable.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_before_separator_after">before, separator, after</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed users to specify a <code>before</code> expression that would be inserted right before the content generated by the loop body <em>if the loop had any iteration</em>. An <code>after</code> that would similarly inserted after the loop body if it generated any content, and finally a <code>separator</code> which content would be inserted in-between each iteration result.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (number : Integer | Sequence{1, 2, 3}) before ('int[] array = new int[') separator (', ') after ('];')][number/][/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only supports <code>separator</code>. This is not supported by the migration tool. To translate that in Acceleo 4 you could convert <code>before</code> and <code>after</code> into a <code>Let</code> holding the content of the iteration expression, then a <code>If</code> only generating before and after if the collection is not empty.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_pre_condition">Pre-condition</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed users to specify a pre-condition that would be evaluated every iteration and that would prevent all generation for that iteration if <code>false</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (number : Integer | Sequence{1, 2, 3}) ? (isEven(number))]
+[number/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 does not have pre-conditions. This could be manually converted to an <code>If</code> at the start of the for body (this is not supported by the migration tool).</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_init_block_2">Init block</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed variable initialization blocks on the for:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (feature : ecore::EStructuralFeature | class.eStructuralFeatures) {var : String = 'string'; className : String = class.name;}]
+[number/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 removes the initialization blocks altogether, so the variable declarations must be manually transformed into a <code>let</code> block before the <code>For</code> block (this is not supported by the migration tool).</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> the initialization block was evaluated before the for itself, and not for every loop.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_ranges">Ranges</h5>
+<div class="paragraph">
+<p>Acceleo 4 does not support ranges, e.g.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[for (item : Integer | Sequence{1..5})]
+[item/]
+[/for]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Such for blocks are ignored by the migration tool.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_let_statement_2">7.2.6. Let Statement</h4>
+<div class="paragraph">
+<p>Acceleo 3 only allowed a single variable per <code>Let</code>, forcing users to have multiple nested <code>Let</code> blocks to define more. The migration could aggregate multiple nested blocks into one with multiple variables if the nested blocks don&#8217;t use one of the outer `Let&#8217;s variable.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_elselet_blocks">7.2.7. ElseLet Blocks</h4>
+<div class="paragraph">
+<p>Acceleo 4 does not support elselet blocks, they are ignored by the migration tool.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_invocation">7.2.8. Invocation</h4>
+<div class="paragraph">
+<p>Acceleo 3 made use of implicit variables allowing module writers to avoid always specifying the target of an expression or call:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(class : ecore::EClass)]
+[name/] is equivalent to [class.name/] or [self.name/]
+[eAllContents()/] is equivalent to [class.eAllContents()/] or [self.eAllContents()/]
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The implicit variable is always <code>self</code>, but the value of <code>self</code> may not be intuitive in all cases.</p>
+</div>
+<div class="paragraph">
+<p>The migration replaces the implicit variable with the correct variable for Acceleo 4.</p>
+</div>
+<div class="sect4">
+<h5 id="_template_3">Template</h5>
+<div class="paragraph">
+<p>Acceleo 3 : <code>self</code> is the first argument of the template.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the first argument of the template</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_query_4">Query</h5>
+<div class="paragraph">
+<p>Acceleo 3 : <code>self</code> is the first argument of the query.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the first argument of the query</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_for">For</h5>
+<div class="paragraph">
+<p>Acceleo 3 : <code>self</code> has the same value as the iteration variable.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the iteration variable</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_if">If</h5>
+<div class="paragraph">
+<p>Acceleo 3 : The value of <code>self</code> is not changed within the <code>if</code> scope and remains the value of <code>self</code> outside of the <code>if</code>.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the parent context</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_let">let</h5>
+<div class="paragraph">
+<p>Acceleo 3 : The value of <code>self</code> is not changed within the <code>let</code> scope and remains the value of <code>self</code> outside of the <code>let</code>.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 : The migration tool makes the variable explicit, using the parent context</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_expression">Expression</h5>
+<div class="paragraph">
+<p>Acceleo 3/OCL : The value of <code>self</code> is defined by the current Acceleo scope and will not be altered by OCL.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4/AQL : The migration tool makes the variable explicit, using the parent context</p>
+</div>
+<div class="paragraph">
+<p>You can have a look at the MTL to AQL <a href="https://www.eclipse.org/acceleo/documentation/aql.html#MigratingfromMTLqueries">migration guide</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_module_element_call">7.2.9. Module Element Call</h4>
+<div class="sect4">
+<h5 id="_template_invocation">Template invocation</h5>
+<div class="paragraph">
+<p>Acceleo 3 allowed special template calls such as the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public aTemplate()]
+	[anotherTemplate() before ('inserted before generated body') separator ('in-between') after ('inserted after generated body')/]
+[/template]
+
+[template protected anotherTemplate()]
+	generated body
+[/template]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both <code>before</code> and <code>after</code> expression are handled by Acceleo 3 and will respectively generate their content before and after the callee&#8217;s generated text. This is true even if the callee does not generate any text.</p>
+</div>
+<div class="paragraph">
+<p><code>separator</code> is not implemented by the engine so the migration strips it entirely.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_query_invocation">Query invocation</h5>
+<div class="paragraph">
+<p>Similar to template invocations, query invocations support <code>before</code>, <code>separator</code> and <code>after</code> expressions. None of which is implemented in the Acceleo 3 generation engine so they are stripped entirely.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_variable_2">7.2.10. Variable</h4>
+<div class="paragraph">
+<p>Acceleo 3 supported unqualified type names for the variables.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 only accepts qualified types for the classifiers and the above becomes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : ecore::EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_expressions">7.2.11. Expressions</h4>
+<div class="paragraph">
+<p>Acceleo 3 was using OCL as the underlying expression language, while Acceleo 4 is using AQL. Please look at the <a href="https://www.eclipse.org/acceleo/documentation/#MigratingfromMTLqueries">AQL Documentation</a> for more information on migrating OCL expressions to AQL.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_set_and_bags">7.2.12. Set and Bags</h4>
+<div class="paragraph">
+<p>The OCL collection types Set and Bag are not anymore available in AQL, which supports only two types: Sequence and OrderedSet. All collections are ordered.
+Thus the migration tool translates each Set into an OrderedSet and each Bag into a Sequence.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_behavior_changes">7.3. Behavior Changes</h3>
+<div class="sect3">
+<h4 id="_modules_2">7.3.1. Modules</h4>
+<div class="sect4">
+<h5 id="_inheritance_behavior">inheritance behavior</h5>
+<div class="paragraph">
+<p>In Acceleo 3, once an overriding module (child) called a public or protected template of its extended module (parent), the execution flow would never come down to the child again until we <code>returned</code> out of the callee. This is contrary to other Object-oriented languages in which a <code>super</code> template could call down an <code>overriden</code> other template from the child when necessary.</p>
+</div>
+<div class="paragraph">
+<p>If you consider the following simplified modules:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module parentModule()/]
+
+[template public aTemplate()]
+	[anotherTemplate()/]
+[/template]
+
+[template protected anotherTemplate()]
+	parent behavior
+[/template]</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[module childModule() extends parentModule/]
+
+[template public main()]
+	[aTemplate()/]
+[/template]
+
+[template protected anotherTemplate()]
+	child behavior
+[/template]</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_5">7.3.2. Query</h4>
+<div class="sect4">
+<h5 id="_validation_2">Validation</h5>
+<div class="paragraph">
+<p>In Acceleo 3, the return type of a query was not validated at compile time, so it was very easy for ClassCastExceptions to occur at runtime or for invalid templates to be written with the error only detected at runtime.</p>
+</div>
+<div class="paragraph">
+<p>For example, the following will fail when we try to generate, but is valid for the compiler:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[template public generate(c : ecore::EClass)]
+	[file (c.name.concat('.java'), false, 'UTF-8')]
+	[for (attribute : ecore::EAttribute | getFeatures(c))]
+		attribute name : [attribute.name/] [if (attribute.iD)]is id attribute[/if]
+	[/for]
+	[/file]
+[/template]
+
+[query private getFeatures(c : ecore::EClass) : Set(ecore::EAttribute) = c.eStructuralFeatures/]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The template expected "getFeatures" to return a Set of Attributes, but the actual type is a set of EStructuralFeature. This will fail as soon as we try to generate for a class containing both attributes and references.</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 validates the return type of the query&#8217;s body expression.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_cache">Cache</h5>
+<div class="paragraph">
+<p>The MTL specification enforces that "A query is required to produce the same result each time it is invoked with the same arguments.". The result of a query call was thus cached in Acceleo 3, and never reevaluated. (This behavior could be disabled through a preference for Acceleo 3.)</p>
+</div>
+<div class="paragraph">
+<p>Acceleo 4 will always reevaluate the query&#8217;s body even if the same argument list is passed twice.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_let_statement_3">7.3.3. Let Statement</h4>
+<div class="paragraph">
+<p>The Acceleo 3 let statement was equivalent to an "instance of" condition check to enter a block.</p>
+</div>
+<div class="paragraph">
+<p>If we consider the following let block:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[let var : EPackage = anotherVar.eContainer()]
+	output text for EPackage named [var.name/]
+[/let]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In Acceleo 3, if the result of evaluating <code>anotherVar.eContainer()</code> is of type <code>EPackage</code> (the declared type of variable <code>var</code>), then this block will output the result of evaluating its body. In any other event, this would output no text and cause no failure as the block would be simply ignored if the types do not match.</p>
+</div>
+<div class="paragraph">
+<p>In Acceleo 4, this same let block will cause validation errors if the type of <code>anotherVar.eContainer()</code> cannot be an <code>EPackage</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_limitations">7.4. Limitations</h3>
+<div class="sect3">
+<h4 id="_comments">7.4.1. Comments</h4>
+<div class="paragraph">
+<p>Comments are mostly ignored by the migration tool, except for module / template / queries documentation.</p>
+</div>
+</div>
 </div>
 </div>
 </div>

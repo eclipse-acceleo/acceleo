@@ -1,56 +1,120 @@
+= Use Acceleo 4 programmatically
+
 Acceleo 4 can be used programmatically and for instance integrated in other products. 
 
-=== Parsing
+If you run in standalone (outside of Eclipse) you will need to initialize your metamodel (EPagkages), for instance for Ecore:
 
 [source,java]
 ---------
-URI destination = URI.createURI(...);
+EcorePackage.eINSTANCE.getName();
+---------
 
+You will also need to register needed resource factories, for instance for XMI:
+
+[source,java]
+---------
+resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+---------
+
+== Parsing
+
+[source,java]
+---------
 final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
-final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(), destination);
-AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment.getLookupEngine());
+final Map<String, String> options = new HashMap<>();
+options.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
+options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+final ArrayList<Exception> exceptions = new ArrayList<>();
+final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver, new ResourceSetImpl(), options);
+final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels, false);
+// evaluator can be null if you don't plan to evaluate and only need to validate
+AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), "\n");
 
-resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
-resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+// allow Acceleo module loading
+resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
+// allow Java class loading
+resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 final Object resolved = resolver.resolve(moduleQualifiedName);
 final Module mainModule;
 if (resolved instanceof Module) {
-  mainModule = (Module)resolved;
+	mainModule = (Module)resolved;
 } else {
-  mainModule = null;
+	mainModule = null;
 }
 ---------
 
 
-=== Validation
+== Validation
 
 [source,java]
 ----
-final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment, queryEnvironment.getLookupEngine());
-final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(mainModule.getAst(), moduleQualifiedNameForCompletion);
+final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
+final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(mainModule.getAst(), moduleQualifiedName);
 ----
 
-=== Completion
+== Completion
 
 [source,java]
 ----
 final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
 String source = ...;
 int position = ...;
-List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(acceleoEnvironment, acceleoEnvironment.getQueryEnvironment().getLookupEngine(), qualifiedName, source, position);
+List<AcceleoCompletionProposal> completionProposals = acceleoCompletor.getProposals(acceleoEnvironment, moduleQualifiedNameForCompletion, source, position);
 ----
 
-=== Generation
+== Generation
 
 [source,java]
 ----
-final ResourceSetImpl rs = new ResourceSetImpl();
-final Resource model = rs.getResource(..., true);
-AcceleoUtil.generate(evaluator, environment, module, model);
+final Resource resource = resourceSetForModels.getResource(uri, true);
+final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels.getURIConverter(), new DefaultWriterFactory());
+final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
+
+AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI);
 ----
 
-=== Unit test module
+== Unit test module
 
 You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java[FileStatementTests] and the corresponding https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement[folder].
+
+== Maven
+
+You can use Acceleo 4 in your maven project with the following repository and dependency:
+
+[source,xml]
+----
+<repositories>
+  <repository>
+    <id>Acceleo Repository</id>
+    <url>https://download.eclipse.org/acceleo/updates/releases/4.0/...</url>
+  </repository>
+</repositories>
+<dependencies>
+  <dependency>
+    <groupId>org.eclipse.acceleo</groupId>
+    <artifactId>acceleo</artifactId>
+    <version>4.0.0</version>
+  </dependency>
+</dependencies>
+----
+
+If you use the source folder for your template make sure you include them as resources:
+
+
+[source,xml]
+----
+<build>
+  <resources>
+    <resource>
+      <directory>${project.basedir}/src/main/java</directory>
+        <includes>
+          <include>**/*.mtl</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+</project>
+----
+
+The following https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as an example.

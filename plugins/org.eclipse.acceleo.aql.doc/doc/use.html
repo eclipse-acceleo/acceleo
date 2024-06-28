@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Parsing</title>
+<title>Use Acceleo 4 programmatically</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,85 +438,170 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
+<h1>Use Acceleo 4 programmatically</h1>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
-<ul class="sectlevel2">
+<ul class="sectlevel1">
 <li><a href="#_parsing">Parsing</a></li>
 <li><a href="#_validation">Validation</a></li>
 <li><a href="#_completion">Completion</a></li>
 <li><a href="#_generation">Generation</a></li>
 <li><a href="#_unit_test_module">Unit test module</a></li>
+<li><a href="#_maven">Maven</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Acceleo 4 can be used programmatically and for instance integrated in other products.</p>
 </div>
-<div class="sect2">
-<h3 id="_parsing">Parsing</h3>
+<div class="paragraph">
+<p>If you run in standalone (outside of Eclipse) you will need to initialize your metamodel (EPagkages), for instance for Ecore:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">URI destination = URI.createURI(...);
+<pre class="highlight"><code class="language-java" data-lang="java">EcorePackage.eINSTANCE.getName();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will also need to register needed resource factories, for instance for XMI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parsing">Parsing</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+final Map&lt;String, String&gt; options = new HashMap&lt;&gt;();
+options.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
+options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+final ArrayList&lt;Exception&gt; exceptions = new ArrayList&lt;&gt;();
+final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver, new ResourceSetImpl(), options);
+final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels, false);
+// evaluator can be null if you don't plan to evaluate and only need to validate
+AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), "\n");
 
-final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
-final QualifiedNameQueryEnvironment queryEnvironment = new QualifiedNameQueryEnvironment(resolver);
-IAcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(resolver, queryEnvironment, new DefaultGenerationStrategy(), destination);
-AcceleoEvaluator evaluator = new AcceleoEvaluator(acceleoEnvironment, queryEnvironment.getLookupEngine());
-
-resolver.addLoader(new ModuleLoader(new AcceleoParser(queryEnvironment), evaluator));
-resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR));
+// allow Acceleo module loading
+resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
+// allow Java class loading
+resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 final Object resolved = resolver.resolve(moduleQualifiedName);
 final Module mainModule;
 if (resolved instanceof Module) {
-  mainModule = (Module)resolved;
+	mainModule = (Module)resolved;
 } else {
-  mainModule = null;
+	mainModule = null;
 }</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_validation">Validation</h3>
+</div>
+<div class="sect1">
+<h2 id="_validation">Validation</h2>
+<div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">final AcceleoValidator acceleoValidator = new AcceleoValidator(acceleoEnvironment, queryEnvironment.getLookupEngine());
-final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(mainModule.getAst(), moduleQualifiedNameForCompletion);</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
+final IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(mainModule.getAst(), moduleQualifiedName);</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_completion">Completion</h3>
+</div>
+<div class="sect1">
+<h2 id="_completion">Completion</h2>
+<div class="sectionbody">
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">final AcceleoCompletor acceleoCompletor = new AcceleoCompletor();
 String source = ...;
 int position = ...;
-List&lt;AcceleoCompletionProposal&gt; completionProposals = acceleoCompletor.getProposals(acceleoEnvironment, acceleoEnvironment.getQueryEnvironment().getLookupEngine(), qualifiedName, source, position);</code></pre>
+List&lt;AcceleoCompletionProposal&gt; completionProposals = acceleoCompletor.getProposals(acceleoEnvironment, moduleQualifiedNameForCompletion, source, position);</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_generation">Generation</h3>
+</div>
+<div class="sect1">
+<h2 id="_generation">Generation</h2>
+<div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">final ResourceSetImpl rs = new ResourceSetImpl();
-final Resource model = rs.getResource(..., true);
-AcceleoUtil.generate(evaluator, environment, module, model);</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">final Resource resource = resourceSetForModels.getResource(uri, true);
+final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels.getURIConverter(), new DefaultWriterFactory());
+final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
+
+AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI);</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_unit_test_module">Unit test module</h3>
+</div>
+<div class="sect1">
+<h2 id="_unit_test_module">Unit test module</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java">FileStatementTests</a> and the corresponding <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement">folder</a>.</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_maven">Maven</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can use Acceleo 4 in your maven project with the following repository and dependency:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;Acceleo Repository&lt;/id&gt;
+    &lt;url&gt;https://download.eclipse.org/acceleo/updates/releases/4.0/...&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.eclipse.acceleo&lt;/groupId&gt;
+    &lt;artifactId&gt;acceleo&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you use the source folder for your template make sure you include them as resources:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;build&gt;
+  &lt;resources&gt;
+    &lt;resource&gt;
+      &lt;directory&gt;${project.basedir}/src/main/java&lt;/directory&gt;
+        &lt;includes&gt;
+          &lt;include&gt;**/*.mtl&lt;/include&gt;
+        &lt;/includes&gt;
+      &lt;/resource&gt;
+    &lt;/resources&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.aql.maven.tests">test project</a> can be used as an example.</p>
+</div>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-09 16:19:19 +0200
+Last updated 2024-06-28 12:05:02 +0200
 </div>
 </div>
 </body>
