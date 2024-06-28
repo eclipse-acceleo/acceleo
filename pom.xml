@@ -19,7 +19,7 @@
 
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo-parent</artifactId>
-  <version>4.0.0-SNAPSHOT</version>
+  <version>4.0.0</version>
   <packaging>pom</packaging>
   <name>Acceleo Parent</name>
 
@@ -406,7 +406,7 @@
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
                   <artifactId>acceleo-2024-03</artifactId>
-                  <version>4.0.0-SNAPSHOT</version>
+                  <version>4.0.0</version>
                 </artifact>
               </target>
             </configuration>
@@ -440,7 +440,7 @@
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
                   <artifactId>acceleo-rcptt</artifactId>
-                  <version>4.0.0-SNAPSHOT</version>
+                  <version>4.0.0</version>
                 </artifact>
               </target>
             </configuration>
@@ -626,7 +626,7 @@
                   <goal>set</goal>
                 </goals>
                 <configuration>
-                  <newVersion>${parsedVersion.nextMajorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}-SNAPSHOT</newVersion>
+                  <newVersion>${parsedVersion.nextMajorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}</newVersion>
                 </configuration>
               </execution>
               <execution>
@@ -671,7 +671,7 @@
                   <goal>set</goal>
                 </goals>
                 <configuration>
-                  <newVersion>${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.${parsedVersion.incrementalVersion}-SNAPSHOT</newVersion>
+                  <newVersion>${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.${parsedVersion.incrementalVersion}</newVersion>
                 </configuration>
               </execution>
               <execution>
@@ -716,7 +716,7 @@
                   <goal>set</goal>
                 </goals>
                 <configuration>
-                  <newVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT</newVersion>
+                  <newVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}</newVersion>
                 </configuration>
               </execution>
               <execution>
