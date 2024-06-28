@@ -32,7 +32,8 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean verify -P$PLATFORM -Psign"
+					sh "mvn clean deploy -P$PLATFORM -Psign"
+					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
 				sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
 					sh '''
@@ -54,6 +55,7 @@ pipeline {
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 					sh "mvn clean verify deploy:deploy -P$PLATFORM -Psign"
+					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
 				sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
 					sh '''
@@ -70,6 +72,7 @@ pipeline {
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 					sh "mvn clean verify -P$PLATFORM"
+					sh "mvn clean deploy -f releng/maven/pom.xml"
 				}
 			}
 		}

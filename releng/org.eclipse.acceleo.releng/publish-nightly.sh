@@ -1,6 +1,6 @@
 #!/bin/sh
 # ====================================================================
-# Copyright (c) 2021 Obeo
+# Copyright (c) 2021, 2024 Obeo
 # This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License 2.0
 # which accompanies this distribution, and is available at
@@ -19,11 +19,18 @@ export SSH_ACCOUNT="genie.acceleo@projects-storage.eclipse.org"
 NIGHTLIES_FOLDER="/home/data/httpd/download.eclipse.org/acceleo/updates/nightly"
 GROUP="modeling.acceleo"
 
+MAVEN_REPOSITORY_FOLDER=${WORKSPACE}/releng/maven/repository
 UPDATE_FOLDER=${WORKSPACE}/releng/org.eclipse.acceleo.aql.update/target
 UPDATE_ZIP="$(ls ${UPDATE_FOLDER}/org.eclipse.acceleo-*.zip | sort -V | tail -n1)"
 
 ZIP_NAME=$(echo ${UPDATE_ZIP} | sed 's/.*\(org.eclipse.acceleo-.*.zip\)$/\1/')
 QUALIFIER=$(echo ${UPDATE_ZIP} | sed 's/.*org.eclipse.acceleo-\(.*\).zip$/\1/')
+
+# add maven repository to the p2 zip file
+echo Adding maven repository to p2 repository zip file
+pushd ${MAVEN_REPOSITORY_FOLDER}
+  zip -ur ${UPDATE_ZIP} .
+popd
 
 P2_TIMESTAMP=$(date +"%s000")
 

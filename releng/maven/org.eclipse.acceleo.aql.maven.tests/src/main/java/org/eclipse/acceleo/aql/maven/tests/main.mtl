@@ -1,0 +1,6 @@
+[module main('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [myParam.name + '.txt'/]
+[/template]
