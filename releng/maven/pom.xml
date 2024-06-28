@@ -54,51 +54,6 @@
 
   <profiles>
     <profile>
-      <id>remove-snapshot</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.6.0</version>
-            <executions>
-              <execution>
-                <id>parse-version</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>parse-version</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>versions-maven-plugin</artifactId>
-            <version>2.16.2</version>
-            <executions>
-              <execution>
-                <id>set-version</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>set</goal>
-                </goals>
-                <configuration>
-                  <newVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}</newVersion>
-                </configuration>
-              </execution>
-              <execution>
-                <id>upgrade-pom</id>
-                <phase>validate</phase>
-                <goals>
-                   <goal>commit</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>next-major-version</id>
       <build>
         <plugins>
