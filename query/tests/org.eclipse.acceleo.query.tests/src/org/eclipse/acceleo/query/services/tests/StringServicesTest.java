@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1545,6 +1545,42 @@ public class StringServicesTest extends AbstractServicesTest {
 	@Test
 	public void trim() {
 		assertEquals("azerty", stringServices.trim("\n\t    \razerty \t\t"));
+	}
+
+	@Test
+	public void removeLineSeparatorsNull() {
+		assertEquals(null, stringServices.removeLineSeparators(null));
+	}
+
+	@Test
+	public void removeLineSeparatorsEmpty() {
+		assertEquals("", stringServices.removeLineSeparators(""));
+	}
+
+	@Test
+	public void removeLineSeparators() {
+		assertEquals("HelloWorld", stringServices.removeLineSeparators("Hello\nWorld"));
+		assertEquals("HelloWorld", stringServices.removeLineSeparators("Hello\r\nWorld"));
+		assertEquals("HelloWorld", stringServices.removeLineSeparators("Hello\n\nWorld"));
+		assertEquals("HelloWorld", stringServices.removeLineSeparators("Hello\r\n\r\nWorld"));
+	}
+
+	@Test
+	public void removeEmptyLinesNull() {
+		assertEquals(null, stringServices.removeEmptyLines(null));
+	}
+
+	@Test
+	public void removeEmptyLinesEmpty() {
+		assertEquals("", stringServices.removeEmptyLines(""));
+	}
+
+	@Test
+	public void removeEmptyLines() {
+		assertEquals("Hello\nWorld", stringServices.removeEmptyLines("Hello\nWorld"));
+		assertEquals("Hello\r\nWorld", stringServices.removeEmptyLines("Hello\r\nWorld"));
+		assertEquals("HelloWorld", stringServices.removeEmptyLines("Hello\n\nWorld"));
+		assertEquals("HelloWorld", stringServices.removeEmptyLines("Hello\r\n\r\nWorld"));
 	}
 
 	@Test

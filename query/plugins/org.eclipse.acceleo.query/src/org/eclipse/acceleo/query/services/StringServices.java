@@ -880,7 +880,15 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String removeLineSeparators(String self) {
-		return NEW_LINE_PATTERN.matcher(self).replaceAll("");
+		final String res;
+
+		if (self != null) {
+			res = NEW_LINE_PATTERN.matcher(self).replaceAll("");
+		} else {
+			res = null;
+		}
+
+		return res;
 	}
 
 	// @formatter:off
@@ -899,7 +907,15 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String removeEmptyLines(String self) {
-		return EMPTY_LINE_PATTERN.matcher(self).replaceAll("");
+		final String res;
+
+		if (self != null) {
+			res = EMPTY_LINE_PATTERN.matcher(self).replaceAll("");
+		} else {
+			res = null;
+		}
+
+		return res;
 	}
 
 	// @formatter:off
