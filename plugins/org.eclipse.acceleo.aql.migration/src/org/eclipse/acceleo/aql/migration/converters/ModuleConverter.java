@@ -77,6 +77,7 @@ import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
@@ -837,12 +838,16 @@ public final class ModuleConverter extends AbstractConverter {
 			if (endOfText < 0) {
 				endOfText = text.length();
 				final TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
-				output.setValue(text.substring(startOfText, endOfText).replaceAll("(\\r\\n)|\\n", newLine));
+				final String value = StringServices.NEW_LINE_PATTERN.matcher(text.substring(startOfText,
+						endOfText)).replaceAll(newLine);
+				output.setValue(value);
 				output.setNewLineNeeded(false);
 				outputs.add(output);
 			} else {
 				final TextStatement output = AcceleoFactory.eINSTANCE.createTextStatement();
-				output.setValue(text.substring(startOfText, endOfText).replaceAll("(\\r\\n)|\\n", newLine));
+				final String value = StringServices.NEW_LINE_PATTERN.matcher(text.substring(startOfText,
+						endOfText)).replaceAll(newLine);
+				output.setValue(value);
 				output.setNewLineNeeded(true);
 				outputs.add(output);
 			}
@@ -880,7 +885,7 @@ public final class ModuleConverter extends AbstractConverter {
 		CommentBody body = AcceleoFactory.eINSTANCE.createCommentBody();
 		StringBuilder formatValue = new StringBuilder();
 		formatValue.append(newLine);
-		for (String line : input.getBody().getValue().split("(\\r\\n)|\\n")) {
+		for (String line : StringServices.NEW_LINE_PATTERN.split(input.getBody().getValue())) {
 			if (!line.trim().isEmpty()) {
 				formatValue.append(" * " + line + newLine);
 			}

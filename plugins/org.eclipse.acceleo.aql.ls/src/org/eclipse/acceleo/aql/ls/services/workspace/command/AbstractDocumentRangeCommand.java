@@ -41,6 +41,7 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSetLitContext;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IJavaType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -321,9 +322,9 @@ public class AbstractDocumentRangeCommand {
 		}
 		final String emptyLineReplacement = UUID.randomUUID().toString() + UUID.randomUUID().toString() + UUID
 				.randomUUID().toString();
-		res = res.replaceAll("(\\r\\n|\\n)(\\r\\n|\\n)", emptyLineReplacement);
-		res = res.replaceAll("(\\r\\n|\\n)" + blockIndentation, lineDelimiter + outputBlockIndentation
-				+ indentation);
+		res = StringServices.EMPTY_LINE_PATTERN.matcher(res).replaceAll(emptyLineReplacement);
+		res = res.replaceAll(StringServices.NEW_LINE_PATTERN.pattern() + blockIndentation, lineDelimiter
+				+ outputBlockIndentation + indentation);
 		res = res.replace(emptyLineReplacement, lineDelimiter + lineDelimiter + outputBlockIndentation
 				+ indentation);
 

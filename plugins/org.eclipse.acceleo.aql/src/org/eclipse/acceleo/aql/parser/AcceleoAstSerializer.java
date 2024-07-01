@@ -43,6 +43,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstSerializer;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 
 /**
@@ -187,7 +188,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseCommentBody(CommentBody commentBody) {
-		builder.append(commentBody.getValue().replaceAll("(\\r\\n)|\\n", newLine));
+		builder.append(StringServices.NEW_LINE_PATTERN.matcher(commentBody.getValue()).replaceAll(newLine));
 
 		return DUMMY;
 	}
@@ -582,7 +583,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseTextStatement(TextStatement textStatement) {
-		builder.append(textStatement.getValue().replaceAll("(\\r\\n)|\\n", newLine));
+		builder.append(StringServices.NEW_LINE_PATTERN.matcher(textStatement.getValue()).replaceAll(newLine));
 		if (textStatement.isNewLineNeeded()) {
 			insertNewLine();
 		}

@@ -24,6 +24,7 @@ import org.eclipse.acceleo.aql.ide.ui.dialog.FolderSelectionDialog;
 import org.eclipse.acceleo.aql.ls.debug.AcceleoDebugger;
 import org.eclipse.acceleo.aql.ls.debug.ide.AcceleoDebugPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -63,16 +64,6 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	 * The Workspace button text.
 	 */
 	protected static final String FILE_SYSTEM = "File system...";
-
-	/**
-	 * New line.
-	 */
-	protected static final String NEW_LINE = "\n";
-
-	/**
-	 * New line.
-	 */
-	protected static final String WINDOWS_NEW_LINE = "\r\n";
 
 	/**
 	 * The {@link Gson} instance.
@@ -189,8 +180,8 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 			optionsString = GSON.toJson(options);
 			initialOptionsString = optionsString;
 			final String newLine = options.get(AcceleoUtil.NEW_LINE_OPTION);
-			unixEndLineButton.setSelection(NEW_LINE.equals(newLine));
-			windowsEndLineButton.setSelection(WINDOWS_NEW_LINE.equals(newLine));
+			unixEndLineButton.setSelection(StringServices.NEW_LINE.equals(newLine));
+			windowsEndLineButton.setSelection(StringServices.WINDOWS_NEW_LINE.equals(newLine));
 		} catch (CoreException e) {
 			AcceleoDebugPlugin.getPlugin().log(new Status(IStatus.ERROR, AcceleoDebugPlugin.ID,
 					"couldn't initialize from launch configuration", e));
@@ -404,14 +395,14 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		unixEndLineButton.setText("Unix");
 		unixEndLineButton.addListener(SWT.Selection, e -> {
 			if (unixEndLineButton.getSelection()) {
-				putOption(AcceleoUtil.NEW_LINE_OPTION, NEW_LINE);
+				putOption(AcceleoUtil.NEW_LINE_OPTION, StringServices.NEW_LINE);
 			}
 		});
 		windowsEndLineButton = new Button(group, SWT.RADIO);
 		windowsEndLineButton.setText("Windows");
 		windowsEndLineButton.addListener(SWT.Selection, e -> {
 			if (windowsEndLineButton.getSelection()) {
-				putOption(AcceleoUtil.NEW_LINE_OPTION, WINDOWS_NEW_LINE);
+				putOption(AcceleoUtil.NEW_LINE_OPTION, StringServices.WINDOWS_NEW_LINE);
 			}
 		});
 	}

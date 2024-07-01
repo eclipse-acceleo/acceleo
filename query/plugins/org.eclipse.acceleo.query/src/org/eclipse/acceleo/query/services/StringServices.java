@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,21 @@ import org.eclipse.acceleo.annotations.api.documentation.Throw;
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class StringServices {
+
+	/**
+	 * New line.
+	 */
+	public static final String NEW_LINE = "\n";
+
+	/**
+	 * New line.
+	 */
+	public static final String WINDOWS_NEW_LINE = "\r\n";
+
+	public static final Pattern NEW_LINE_PATTERN = Pattern.compile(WINDOWS_NEW_LINE + "|" + NEW_LINE);
+
+	public static final Pattern EMPTY_LINE_PATTERN = Pattern.compile("(" + WINDOWS_NEW_LINE + "|" + NEW_LINE
+			+ ")" + "(" + WINDOWS_NEW_LINE + "|" + NEW_LINE + ")");
 
 	/**
 	 * Public constructor.
@@ -849,6 +864,42 @@ public class StringServices {
 		}
 
 		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Removes all line separators.",
+		params = {
+			@Param(name = "self", value = "The String to trim")
+		},
+		result = "The String with removed line separators",
+		examples = {
+				@Example(expression = "'Hello\\nWorld'.removeLineSeparators()", result = "'HelloWorld'"),
+				@Example(expression = "'Hello\\r\\nWorld'.removeLineSeparators()", result = "'HelloWorld'")
+		}
+	)
+	// @formatter:on
+	public String removeLineSeparators(String self) {
+		return NEW_LINE_PATTERN.matcher(self).replaceAll("");
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Removes all empty lines.",
+		params = {
+			@Param(name = "self", value = "The String to trim")
+		},
+		result = "The String with removed empty lines",
+		examples = {
+				@Example(expression = "'Hello\\n\\nWorld'.removeEmptyLines()", result = "'HelloWorld'"),
+				@Example(expression = "'Hello\\r\\n\\r\\nWorld'.removeEmptyLines()", result = "'HelloWorld'"),
+				@Example(expression = "'Hello\\n\\r\\nWorld'.removeEmptyLines()", result = "'HelloWorld'"),
+				@Example(expression = "'Hello\\r\\n\\nWorld'.removeEmptyLines()", result = "'HelloWorld'")
+		}
+	)
+	// @formatter:on
+	public String removeEmptyLines(String self) {
+		return EMPTY_LINE_PATTERN.matcher(self).replaceAll("");
 	}
 
 	// @formatter:off

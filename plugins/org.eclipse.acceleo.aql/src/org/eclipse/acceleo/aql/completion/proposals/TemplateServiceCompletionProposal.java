@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.completion.proposals;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
+import org.eclipse.acceleo.query.services.StringServices;
 
 /**
  * {@link IServiceCompletionProposal} for {@link TemplateService}.
@@ -62,8 +63,8 @@ public class TemplateServiceCompletionProposal implements IServiceCompletionProp
 		final String res;
 
 		if (service.getOrigin().getDocumentation() != null) {
-			res = service.getOrigin().getDocumentation().getBody().getValue().replaceAll("(\\r\\n)|\\n",
-					"<br>");
+			res = StringServices.NEW_LINE_PATTERN.matcher(service.getOrigin().getDocumentation().getBody()
+					.getValue()).replaceAll("<br>");
 		} else {
 			res = "";
 		}

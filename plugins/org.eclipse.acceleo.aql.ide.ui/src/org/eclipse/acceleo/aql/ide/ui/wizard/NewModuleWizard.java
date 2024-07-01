@@ -39,6 +39,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -229,7 +230,9 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			if (configuration.isGenerateFile()) {
 				text.setValue(NEW_LINE);
 			} else {
-				text.setValue(initialContent.replaceAll("\\r\\n|\\n", NEW_LINE + "  ") + NEW_LINE);
+				final String newText = StringServices.NEW_LINE_PATTERN.matcher(initialContent).replaceAll(
+						NEW_LINE + "  ") + NEW_LINE;
+				text.setValue(newText);
 			}
 			if (configuration.isGenerateFile()) {
 				final FileStatement fileStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
@@ -264,8 +267,8 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			final String emptyLineReplacement = UUID.randomUUID().toString() + UUID.randomUUID().toString()
 					+ UUID.randomUUID().toString();
 
-			res = initialContent.replaceAll("(\\r\\n|\\n)(\\r\\n|\\n)", emptyLineReplacement);
-			res = res.replaceAll("(\\r\\n|\\n)", NEW_LINE + "    ");
+			res = StringServices.EMPTY_LINE_PATTERN.matcher(initialContent).replaceAll(emptyLineReplacement);
+			res = StringServices.NEW_LINE_PATTERN.matcher(res).replaceAll(NEW_LINE + "    ");
 			res = res.replace(emptyLineReplacement, NEW_LINE + NEW_LINE + "    ");
 
 			res = res.replace("[", "['['/]");

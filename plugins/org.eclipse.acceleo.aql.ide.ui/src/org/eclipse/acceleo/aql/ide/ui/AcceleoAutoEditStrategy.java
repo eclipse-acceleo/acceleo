@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;
@@ -190,7 +191,8 @@ public class AcceleoAutoEditStrategy implements IAutoEditStrategy {
 			command.text = command.text.substring(blockIndentation.length());
 			final String emptyLineReplacement = UUID.randomUUID().toString() + UUID.randomUUID().toString()
 					+ UUID.randomUUID().toString();
-			command.text = command.text.replaceAll("(\\r\\n|\\n)(\\r\\n|\\n)", emptyLineReplacement);
+			command.text = StringServices.EMPTY_LINE_PATTERN.matcher(command.text).replaceAll(
+					emptyLineReplacement);
 			for (String lineDelimiter : document.getLegalLineDelimiters()) {
 				command.text = command.text.replace(lineDelimiter + blockIndentation, lineDelimiter
 						+ indentation);

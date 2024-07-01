@@ -43,6 +43,7 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedName
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -221,7 +222,7 @@ public class CompletionTests {
 			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 		}
 
-		return builder.toString().replaceAll("(\\r\\n)|\\r|\\n", Character.toString(
+		return StringServices.NEW_LINE_PATTERN.matcher(builder.toString()).replaceAll(Character.toString(
 				AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER));
 	}
 

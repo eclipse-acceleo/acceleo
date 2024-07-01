@@ -242,6 +242,24 @@ promptString()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+removeEmptyLines()
+* Description:
+removeEmptyLines(self: java.lang.String) = String<br><br>Removes all empty lines.<br><br>  @param self<br>        The String to trim<br><br>  @return<br>        The String with removed empty lines<br><br>
+* Text:
+removeEmptyLines()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+removeLineSeparators()
+* Description:
+removeLineSeparators(self: java.lang.String) = String<br><br>Removes all line separators.<br><br>  @param self<br>        The String to trim<br><br>  @return<br>        The String with removed line separators<br><br>
+* Text:
+removeLineSeparators()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 replace()
 * Description:
 replace(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String<br><br>Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".<br><br>  @param self<br>        The current String.<br>  @param regex<br>        The regular expression used to find the substring to replace in the current String.<br>  @param replacement<br>        The replacement String.<br><br>  @return<br>        Returns the resulting String of a substitution of the first substring matching the given regex by the given replacement<br><br>  @throw java.lang.NullPointerException<br>        Thrown if the current String or "regex" or "replacement" is null.<br>  @throw java.util.regex.PatternSyntaxException<br>        If the regular expression's syntax is invalid<br><br>

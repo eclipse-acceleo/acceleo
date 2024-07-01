@@ -75,6 +75,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.EOperationServiceComple
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
@@ -1005,7 +1006,8 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 * @return the corresponding {@link AcceleoCompletionProposal}.
 	 */
 	private static AcceleoCompletionProposal transform(ICompletionProposal aqlCompletionProposal) {
-		String description = aqlCompletionProposal.getDescription().replaceAll("(\\r\\n)|\\r|\\n", "<br>");
+		final String description = StringServices.NEW_LINE_PATTERN.matcher(aqlCompletionProposal
+				.getDescription()).replaceAll("<br>");
 		return new AcceleoCompletionProposal(aqlCompletionProposal.getProposal(), description,
 				aqlCompletionProposal.getProposal(), AcceleoPackage.Literals.EXPRESSION);
 	}

@@ -25,16 +25,6 @@ import org.eclipse.lsp4j.Range;
  */
 public final class AcceleoLanguageServerPositionUtils {
 
-	/**
-	 * New line.
-	 */
-	public static final String NEW_LINE = "\n";
-
-	/**
-	 * New line.
-	 */
-	public static final String WINDOWS_NEW_LINE = "\r\n";
-
 	private AcceleoLanguageServerPositionUtils() {
 		// Utility class.
 	}
