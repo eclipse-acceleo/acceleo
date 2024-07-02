@@ -64,6 +64,9 @@
    <bundle id="org.eclipse.lsp4j.jsonrpc.debug"/>
    <bundle id="org.eclipse.lsp4e"/>
    <bundle id="org.eclipse.lsp4e.debug"/>
+   <bundle id="org.eclipse.tm4e.languageconfiguration"/>
+   <bundle id="org.eclipse.tm4e.core"/>
+   <bundle id="org.eclipse.tm4e.ui"/>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
          Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.).
