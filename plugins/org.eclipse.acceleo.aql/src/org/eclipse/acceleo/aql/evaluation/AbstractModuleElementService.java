@@ -41,6 +41,8 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	 */
 	private final AcceleoEvaluator evaluator;
 
+	private final String shortSignature;
+
 	/**
 	 * Constructor.
 	 * 
@@ -58,6 +60,14 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 		super(moduleElement, lookupEngine, contextQualifiedName);
 		this.visibility = getVisibility(moduleElement);
 		this.evaluator = evaluator;
+
+		if (lookupEngine != null) {
+			final List<Set<IType>> parameterTypes = getParameterTypes(lookupEngine.getQueryEnvironment());
+			final Object[] argumentTypes = parameterTypes.toArray(new Object[parameterTypes.size()]);
+			this.shortSignature = serviceShortSignature(argumentTypes);
+		} else {
+			this.shortSignature = "";
+		}
 	}
 
 	/**
@@ -119,10 +129,7 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	 */
 	@Override
 	public String getShortSignature() {
-		final List<Set<IType>> parameterTypes = getParameterTypes(getLookupEngine().getQueryEnvironment());
-		final Object[] argumentTypes = parameterTypes.toArray(new Object[parameterTypes.size()]);
-
-		return serviceShortSignature(argumentTypes);
+		return shortSignature;
 	}
 
 	/**
