@@ -1,0 +1,34 @@
+= Acceleo
+Acceleo User Guide
+:toc:
+:toclevels: 3
+:toc-title: Table of Content
+:sectnums:
+:icons: font
+:source-highlighter: highlightjs
+:listing-caption: Listing
+
+* link:pages/install.adoc[Installation]
+* link:pages/start.adoc[Getting Started]
+* link:pages/tool.adoc[The Acceleo Tooling]
+** link:pages/tool.html#_the_acceleo_editor[The Acceleo Editor]
+*** link:pages/tool.html#_syntax_highlighting[Syntax Highlighting]
+*** link:pages/tool.html#_content_assist[Content assist]
+*** link:pages/tool.html#_real_time_errors_detection[Real Time Errors Detection]
+*** link:pages/tool.html#_outlines[Outlines]
+**** link:pages/tool.html#_the_dynamic_outline[The dynamic outline]
+**** link:pages/tool.html#_the_quick_outline[The quick outline]
+*** link:pages/tool.html#_open_declaration[Open Declaration]
+*** link:pages/tool.html#_white_spaces[White spaces]
+** link:pages/tool.html#_the_acceleo_debugger[The Acceleo Debugger]
+*** link:pages/tool.html#_breakpoints[Breakpoints]
+*** link:pages/tool.html#_step_by_step_execution[Step by step execution]
+** link:pages/tool.html#_acceleo_profiler[Acceleo Profiler]
+*** link:pages/tool.html#_launching_a_generation_with_the_profiler[Launching a generation with the profiler]
+*** link:pages/tool.html#_acceleo_profile_files[Acceleo Profile Files]
+*** link:pages/tool.html#_coverage_informations[Coverage informations]
+* link:pages/language.adoc[Language]
+* link:pages/generate.adoc[Launching an Acceleo generation]
+* link:pages/syntax.adoc[Syntax]
+* link:pages/use.adoc[Using Acceleo 4 programmatically]
+* link:pages/migration.adoc[Migration]
