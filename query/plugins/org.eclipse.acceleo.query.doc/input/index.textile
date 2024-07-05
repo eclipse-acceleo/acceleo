@@ -442,6 +442,7 @@ Other tools provides their own implementations to be able to call structures of 
 * M2Doc: "M2DocTemplateService":https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/M2DocTemplateService.java
 
 Services are responsible for:
+* Provide arguments types : used for lookup for validation and evaluation
 * return type: give a return type at validation time. This type can be static or dynamic to a specific call
 * completion proposals: give a list of completion proposals
 * invoke: returning the result at runtime
