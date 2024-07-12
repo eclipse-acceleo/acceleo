@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,6 @@ public class EvaluationTests extends AbstractMigrationTestSuite {
 
 	public static final String[] EXCLUDED_TESTS = new String[] {
 			// Excluded tests:
-			"implicitForIterator", // TODO (infer iterator)
 			"templateVariableInitialization", // TODO (declare let inside of the template)
 			"protectedAreaBlock", // TODO serialization issues
 			"elseletBlock", // UNSUPPORTED in A4

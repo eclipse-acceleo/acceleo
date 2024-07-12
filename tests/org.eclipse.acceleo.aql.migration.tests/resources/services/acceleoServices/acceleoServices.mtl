@@ -8,7 +8,6 @@
     @Test '\n' + '\t' + '\'' + '\\ ' + '\"' + '"' => ['\n' + '\t' + '\'' + '\\ ' + '"' + '"'/]
     @Test inligned special text => ['['/]
     @Test let OclAny to EObject => [let var = p][var.oclAsType(ecore::EPackage).name/][/let]
-    
     @Test invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'}) => [p.myService('test')/]
   [/file]
 [/template]

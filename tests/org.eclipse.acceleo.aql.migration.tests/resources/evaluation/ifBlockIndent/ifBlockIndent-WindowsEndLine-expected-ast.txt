@@ -1,0 +1,44 @@
+
+header position 0..64
+module ifBlockIndent
+  metamodel http://www.eclipse.org/emf/2002/Ecore (23..61)
+  [comment @main (77..82) /] (68..84)
+  
+  public template testingIf(p : EPackage (113..132))
+  @main
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (138..140)
+    [file url 'testIfNoIndent' (149..165) mode overwrite
+      [if true (189..193)
+        abcdef-testIfNoIndent (195..216) (195..216)
+      [/if] (184..221)
+       (newLineNeeded) (221..223) (178..225)
+    [/file] (142..232)
+     (newLineNeeded) (232..234)
+    NEW_LINE (indentationNeeded)  (newLineNeeded) (236..238)
+    [file url 'testIfA4Indent' (247..263) mode overwrite
+           (282..286)
+      [if true (291..295)
+        abcdef-testIfA4Indent (297..318) (297..318)
+      [/if] (286..323)
+       (newLineNeeded) (323..325) (276..327)
+    [/file] (240..334)
+     (newLineNeeded) (334..336)
+       (newLineNeeded) (338..342)
+    [file url 'testIfA3Indent' (351..367) mode overwrite
+      		 (386..388)
+      [if true (393..397)
+        abcdef-testIfA3Indent (399..420) (399..420)
+      [/if] (388..425)
+       (newLineNeeded) (425..427) (380..429)
+    [/file] (344..436)
+     (newLineNeeded) (436..438)
+    	 (newLineNeeded) (440..443)
+    [file url 'testIfAnyIndent' (452..469) mode overwrite
+        			   (488..495)
+      [if true (500..504)
+        abcdef-testIfAnyIndent (506..528) (506..528)
+      [/if] (495..533)
+       (newLineNeeded) (533..535) (482..537)
+    [/file] (445..544)
+     (newLineNeeded) (544..546) (134..546)
+  [/template] (86..557) (0..557)

@@ -2,5 +2,4 @@
 @Test '\n' + '\t' + '\'' + '\\ ' + '\"' + '"' => 	'\ ""
 @Test inligned special text => [
 @Test let OclAny to EObject => target
-
 @Test invoke('misc.MyService','myService(java.lang.Object, java.lang.String)',Sequence{p,'test'}) => test: EPackageImpl

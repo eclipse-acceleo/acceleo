@@ -5,13 +5,11 @@
   [file ('testIf', overwrite)]
     [for (c : ecore::EClass | p.eClassifiers)]
       			[if (c.name = 'ClasseA')]Class name [c.name/] = ClasseA.[/if]
-      
     [/for]
   [/file]
   [file ('testElse', overwrite)]
     [for (c : ecore::EClass | p.eClassifiers)]
       			[if (c.name = 'NotMatched')]Must not be displayed.[else]Class name is [c.name/].[/if]
-      
     [/for]
   [/file]
   [file ('testElseif', overwrite)]
@@ -39,15 +37,12 @@
       [if (c.name = 'ClasseA')]
         Class name is A.
         				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
-        
       [elseif (c.name = 'ClasseB')]
         Class name is B.
         				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
-        
       [else]
         Class name is different.
         				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
-        
       [/if]
     [/for]
   [/file]

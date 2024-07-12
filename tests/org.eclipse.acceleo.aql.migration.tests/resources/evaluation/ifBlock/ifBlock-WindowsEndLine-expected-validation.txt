@@ -1,0 +1,11 @@
+WARNING EClassifier=EClass is incompatible with Sequence(EClassifier=EClassifier) - 172 206
+WARNING EClassifier=EClass is incompatible with Sequence(EClassifier=EClassifier) - 349 383
+WARNING EClassifier=EClass is incompatible with Sequence(EClassifier=EClassifier) - 552 586
+WARNING EClassifier=EClass is incompatible with Sequence(EClassifier=EClassifier) - 810 844
+WARNING EClassifier=EClass is incompatible with Sequence(EClassifier=EClassifier) - 1139 1173
+ERROR Feature abstract not found in EClass EClassifier - 1254 1263
+ERROR The predicate never evaluates to a boolean type ([Nothing(Feature abstract not found in EClass EClassifier)]). - 1253 1263
+ERROR Feature abstract not found in EClass EClassifier - 1398 1407
+ERROR The predicate never evaluates to a boolean type ([Nothing(Feature abstract not found in EClass EClassifier)]). - 1397 1407
+ERROR Feature abstract not found in EClass EClassifier - 1527 1536
+ERROR The predicate never evaluates to a boolean type ([Nothing(Feature abstract not found in EClass EClassifier)]). - 1526 1536

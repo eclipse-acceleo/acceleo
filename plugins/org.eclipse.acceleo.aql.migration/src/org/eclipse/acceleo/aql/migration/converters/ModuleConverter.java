@@ -42,6 +42,7 @@ import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LeafStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
@@ -689,7 +690,7 @@ public final class ModuleConverter extends AbstractConverter {
 		return outputQuery;
 	}
 
-	private Object caseFileBlock(FileBlock input) {
+	private List<Statement> caseFileBlock(FileBlock input) {
 		FileStatement output = AcceleoFactory.eINSTANCE.createFileStatement();
 		if (input.getCharset() != null) {
 			output.setCharset(expressionConverter.convertToExpression(input.getCharset(), implicitSelfStack));
@@ -701,10 +702,10 @@ public final class ModuleConverter extends AbstractConverter {
 		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);
 
-		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
+		return Arrays.asList(new Statement[] {output, newLineAfterEndBlock() });
 	}
 
-	private Object caseLetBlock(LetBlock input) {
+	private List<Statement> caseLetBlock(LetBlock input) {
 		if (!input.getElseLet().isEmpty()) {
 			throw new MigrationException(input.getElseLet().get(0));
 		}
@@ -723,7 +724,11 @@ public final class ModuleConverter extends AbstractConverter {
 		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);
 
-		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
+		if (!body.isInlined()) {
+			return Arrays.asList(new Statement[] {output, newLineAfterEndBlock() });
+		} else {
+			return Arrays.asList(new Statement[] {output });
+		}
 	}
 
 	private TextStatement newLineAfterEndBlock() {
@@ -735,7 +740,7 @@ public final class ModuleConverter extends AbstractConverter {
 		return res;
 	}
 
-	private Object caseForBlock(ForBlock input) {
+	private List<Statement> caseForBlock(ForBlock input) {
 		ForStatement output = AcceleoFactory.eINSTANCE.createForStatement();
 		Binding binding = AcceleoFactory.eINSTANCE.createBinding();
 		output.setBinding(binding);
@@ -750,8 +755,9 @@ public final class ModuleConverter extends AbstractConverter {
 
 		// statements
 		pushImplicitSelf(input, binding.getName());
+		final Block body;
 		try {
-			final Block body = createBlock(output, input.getBody());
+			body = createBlock(output, input.getBody());
 			output.setBody(body);
 		} finally {
 			popIndentation();
@@ -761,7 +767,12 @@ public final class ModuleConverter extends AbstractConverter {
 		if (each != null) {
 			output.setSeparator(expressionConverter.convertToExpression(each, implicitSelfStack));
 		}
-		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
+
+		if (!body.isInlined()) {
+			return Arrays.asList(new Statement[] {output, newLineAfterEndBlock() });
+		} else {
+			return Arrays.asList(new Statement[] {output });
+		}
 	}
 
 	private org.eclipse.acceleo.Expression getInitExpression(ForBlock input) {
@@ -823,7 +834,11 @@ public final class ModuleConverter extends AbstractConverter {
 				}
 			}
 		}
-		return Arrays.asList(new Statement[] {output, newLineAfterEndBlock() });
+		if (!output.getThen().isInlined() && (output.getElse() == null || !output.getElse().isInlined())) {
+			return Arrays.asList(new Statement[] {output, newLineAfterEndBlock() });
+		} else {
+			return Arrays.asList(new Statement[] {output });
+		}
 	}
 
 	private Object caseText(StringLiteralExp input) {
@@ -912,13 +927,18 @@ public final class ModuleConverter extends AbstractConverter {
 		return outputComment;
 	}
 
-	private Object caseProtectedAreaBlock(ProtectedAreaBlock input) {
+	private List<Statement> caseProtectedAreaBlock(ProtectedAreaBlock input) {
 		ProtectedArea output = AcceleoFactory.eINSTANCE.createProtectedArea();
 		output.setId(expressionConverter.convertToExpression(input.getMarker(), implicitSelfStack));
 		// statements
 		final Block body = createBlock(output, input.getBody());
 		output.setBody(body);
-		return Arrays.asList(new Object[] {output, newLineAfterEndBlock() });
+
+		if (!body.isInlined()) {
+			return Arrays.asList(new Statement[] {output, newLineAfterEndBlock() });
+		} else {
+			return Arrays.asList(new Statement[] {output });
+		}
 	}
 
 	private Block createBlock(AcceleoASTNode node, List<OCLExpression> inputStatements) {
@@ -935,7 +955,7 @@ public final class ModuleConverter extends AbstractConverter {
 		} else {
 			boolean inlined = true;
 			for (Statement statement : res.getStatements()) {
-				if (statement instanceof TextStatement && ((TextStatement)statement).isNewLineNeeded()) {
+				if (!isInlinedStatement(statement)) {
 					inlined = false;
 					break;
 				}
@@ -945,6 +965,36 @@ public final class ModuleConverter extends AbstractConverter {
 
 		if (res.getStatements().isEmpty()) {
 			res.setInlined(false);
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link Statement} is inlined.
+	 * 
+	 * @param statement
+	 *            the {@link Statement}
+	 * @return <code>true</code> if the given {@link Statement} is inlined, <code>false</code> otherwise
+	 */
+	private boolean isInlinedStatement(Statement statement) {
+		final boolean res;
+
+		if (statement instanceof LeafStatement) {
+			res = !((LeafStatement)statement).isNewLineNeeded();
+		} else if (statement instanceof FileStatement) {
+			res = ((FileStatement)statement).getBody().isInlined();
+		} else if (statement instanceof ForStatement) {
+			res = ((ForStatement)statement).getBody().isInlined();
+		} else if (statement instanceof IfStatement) {
+			res = ((IfStatement)statement).getThen().isInlined() && (((IfStatement)statement)
+					.getElse() == null || ((IfStatement)statement).getElse().isInlined());
+		} else if (statement instanceof LetStatement) {
+			res = ((LetStatement)statement).getBody().isInlined();
+		} else if (statement instanceof ProtectedArea) {
+			res = ((ProtectedArea)statement).getBody().isInlined();
+		} else {
+			res = true;
 		}
 
 		return res;

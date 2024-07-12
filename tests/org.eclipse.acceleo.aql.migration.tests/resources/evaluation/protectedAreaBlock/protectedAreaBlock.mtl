@@ -1,0 +1,831 @@
+[module protectedAreaBlock('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main/]
+[template public test_protected_area(anEClass : ecore::EClass)]
+  [file ('protected_areas', overwrite)]
+    		[anEClass.local_template_protected_area()/]
+  [/file]
+  [file ('protected_areas', overwrite)]
+    		[anEClass.local_template_protected_area()/]
+  [/file]
+  
+  [file ('removed_protected_areas', overwrite)]
+    		[anEClass.local_template_protected_area()/]
+  [/file]
+  [file ('removed_protected_areas', overwrite)]
+    		[anEClass.local_template_removed_protected_area()/]
+  [/file]
+  
+  [file ('lost_protected_areas', overwrite)]
+    		[anEClass.local_template_protected_area()/]
+  [/file]
+  [file ('lost_protected_areas', overwrite)]
+    		[anEClass.local_template_lost_protected_area()/]
+  [/file]
+  
+  [file ('test_protected_area_file_block', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  
+  [file ('test_protected_area_file_block_merge', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_file_block_merge', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  
+  [file ('test_protected_area_for_block', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_for_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/for]
+  [/file]
+  [file ('test_protected_area_for_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_let_block', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_let_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/let]
+  [/file]
+  [file ('test_protected_area_let_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_if_block', overwrite, 'Cp1252')]
+    [if (true)]
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_if_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/if]
+  [/file]
+  [file ('test_protected_area_if_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_for_let_if_block', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [let str1 : String = 'a']
+        [if (true)]
+          [protected ('protected')]
+            protected block
+          [/protected]
+          
+        [/if]
+      [/let]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_for_let_if_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [let str1 : String = 'a']
+        [if (true)]
+          [protected ('protected')]
+            protected block
+          [/protected]
+          
+        [/if]
+      [/let]
+    [/for]
+  [/file]
+  [file ('test_protected_area_for_let_if_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [let str1 : String = 'a']
+        [if (true)]
+          [protected ('protected')]
+            protected block
+          [/protected]
+          
+        [/if]
+      [/let]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_template_block', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template()/]
+  [/file]
+  [file ('test_protected_area_template_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template()/]
+  [/file]
+  [file ('test_protected_area_template_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template()/]
+  [/file]
+  
+  [file ('test_protected_area_for_template_block', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_for_template_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template()/]
+    [/for]
+  [/file]
+  [file ('test_protected_area_for_template_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_let_template_block', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_let_template_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template()/]
+    [/let]
+  [/file]
+  [file ('test_protected_area_let_template_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_if_template_block', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_if_template_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template()/]
+    [/if]
+  [/file]
+  [file ('test_protected_area_if_template_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_template_for_block', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_for()/]
+  [/file]
+  
+  [file ('test_protected_area_template_for_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_for()/]
+  [/file]
+  [file ('test_protected_area_template_for_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_for()/]
+  [/file]
+  
+  [file ('test_protected_area_for_template_for_block', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_for()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_for_template_for_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_for()/]
+    [/for]
+  [/file]
+  [file ('test_protected_area_for_template_for_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_for()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_let_template_for_block', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_for()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_let_template_for_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_for()/]
+    [/let]
+  [/file]
+  [file ('test_protected_area_let_template_for_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_for()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_if_template_for_block', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_for()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_if_template_for_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_for()/]
+    [/if]
+  [/file]
+  [file ('test_protected_area_if_template_for_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_for()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_template_let_block', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_let()/]
+  [/file]
+  
+  [file ('test_protected_area_template_let_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_let()/]
+  [/file]
+  [file ('test_protected_area_template_let_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_let()/]
+  [/file]
+  
+  [file ('test_protected_area_for_template_let_block', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_let()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_for_template_let_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_let()/]
+    [/for]
+  [/file]
+  [file ('test_protected_area_for_template_let_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_let()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_let_template_let_block', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_let()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_let_template_let_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_let()/]
+    [/let]
+  [/file]
+  [file ('test_protected_area_let_template_let_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_let()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_if_template_let_block', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_let()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_if_template_let_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_let()/]
+    [/if]
+  [/file]
+  [file ('test_protected_area_if_template_let_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_let()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_template_if_block', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_if()/]
+  [/file]
+  
+  [file ('test_protected_area_template_if_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_if()/]
+  [/file]
+  [file ('test_protected_area_template_if_block_merge', overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_if()/]
+  [/file]
+  
+  [file ('test_protected_area_for_template_if_block', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_if()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_for_template_if_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_if()/]
+    [/for]
+  [/file]
+  [file ('test_protected_area_for_template_if_block_merge', overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [anEClass.protected_area_template_if()/]
+    [/for]
+  [/file]
+  
+  [file ('test_protected_area_let_template_if_block', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_if()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_let_template_if_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_if()/]
+    [/let]
+  [/file]
+  [file ('test_protected_area_let_template_if_block_merge', overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [anEClass.protected_area_template_if()/]
+    [/let]
+  [/file]
+  
+  [file ('test_protected_area_if_template_if_block', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_if()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_if_template_if_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_if()/]
+    [/if]
+  [/file]
+  [file ('test_protected_area_if_template_if_block_merge', overwrite, 'Cp1252')]
+    [if (true)]
+      [anEClass.protected_area_template_if()/]
+    [/if]
+  [/file]
+  
+  [file ('test_protected_area_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  
+  [file ('test_protected_area_variable_marker_id_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_variable_marker_id_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected_alt')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_variable_marker_id_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  
+  [file ('test_protected_area_conditional_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+  [file ('test_protected_area_conditional_multiple_generations', overwrite, 'Cp1252')]
+    protected
+  [/file]
+  [file ('test_protected_area_conditional_multiple_generations', overwrite, 'Cp1252')]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/file]
+[/template]
+
+[comment CALLED TEMPLATES /]
+[template public protected_file_template_let_if(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [if (true)]
+        [anEClass.protected_area_template()/]
+      [/if]
+    [/let]
+  [/file]
+[/template]
+
+[template public protected_file(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [anEClass.protected_area_template()/]
+  [/file]
+[/template]
+
+[template public protected_file_for(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_for()/]
+  [/file]
+[/template]
+
+[template public protected_file_let(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_let()/]
+  [/file]
+[/template]
+
+[template public protected_file_if(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_if()/]
+  [/file]
+[/template]
+
+[template public protected_file_for_if(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [anEClass.protected_area_template_for_if()/]
+  [/file]
+[/template]
+
+[template public protected_area_template(anEClass : ecore::EClass)]
+  [protected ('protected')]
+    protected block
+  [/protected]
+[/template]
+
+[template public protected_area_template_for(anEClass : ecore::EClass)]
+  [for (str : String | Sequence{'a'})]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/for]
+[/template]
+
+[template public protected_area_template_let(anEClass : ecore::EClass)]
+  [let str : String = 'a']
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/let]
+[/template]
+
+[template public protected_area_template_if(anEClass : ecore::EClass)]
+  [if (true)]
+    [protected ('protected')]
+      protected block
+    [/protected]
+    
+  [/if]
+[/template]
+
+[template public protected_area_template_for_if(anEClass : ecore::EClass)]
+  [for (str : String | Sequence{'a'})]
+    [if (true)]
+      [protected ('protected')]
+        protected block
+      [/protected]
+      
+    [/if]
+  [/for]
+[/template]
+
+[template public test_protected_area_template_let_complex(anEClass : ecore::EClass)]
+  [for (str1 : String | Sequence{'a'})]
+    [if (true)]
+      [for (str2 : String | Sequence{'a'})]
+        [file ('test_protected_area_template_let_complex', overwrite, 'UTF-8')]
+          [let str3 : String = anEClass.protectedTest()]
+            [str3/]
+          [/let]
+          
+        [/file]
+      [/for]
+    [/if]
+  [/for]
+[/template]
+
+[template public protectedTest(anEClass : ecore::EClass)]
+  [protected ('protected')]
+    	protected block
+  [/protected]
+  
+[/template]
+
+[comment template definitions/]
+[template public local_template_protected_area(anEClass : ecore::EClass)]
+      [protected ('user code 1 '.concat(anEClass.name)) startTagPrefix('// ') endTagPrefix('// ')]
+        	    first protected area
+      [/protected]
+  
+  	[protected ('user code 2 '.concat(anEClass.name)) startTagPrefix('// ') endTagPrefix('// ')]
+     	    second protected area
+   [/protected]
+[/template]
+
+[template public local_template_removed_protected_area(anEClass : ecore::EClass)]
+  	[protected ('user code 2 '.concat(anEClass.name)) startTagPrefix('// ') endTagPrefix('// ')]
+     	    second protected area
+   [/protected]
+[/template]
+
+[template public local_template_lost_protected_area(anEClass : ecore::EClass)]
+  	[protected ('user code 2 '.concat(anEClass.name)) startTagPrefix('// ') endTagPrefix('// ')]
+     	    second protected area
+   [/protected]
+  
+  	[protected ('user code 3 '.concat(anEClass.name)) startTagPrefix('// ') endTagPrefix('// ')]
+     	    third protected area
+   [/protected]
+[/template]
+
+[template public test_protected_area_template_file_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file('test_protected_area_template_file_block')/][/template]
+
+[template public test_protected_area_template_file_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file('test_protected_area_template_file_block_merge')/]
+  [anEClass.protected_file('test_protected_area_template_file_block_merge')/][/template]
+
+[template public test_protected_area_template_file_for_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_for('test_protected_area_template_file_for_block')/][/template]
+
+[template public test_protected_area_template_file_for_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_for('test_protected_area_template_file_for_block_merge')/]
+  [anEClass.protected_file_for('test_protected_area_template_file_for_block_merge')/][/template]
+
+[template public test_protected_area_template_file_let_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_let('test_protected_area_template_file_let_block')/][/template]
+
+[template public test_protected_area_template_file_let_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_let('test_protected_area_template_file_let_block_merge')/]
+  [anEClass.protected_file_let('test_protected_area_template_file_let_block_merge')/][/template]
+
+[template public test_protected_area_template_file_if_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_if('test_protected_area_template_file_if_block')/][/template]
+
+[template public test_protected_area_template_file_if_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_if('test_protected_area_template_file_if_block_merge')/]
+  [anEClass.protected_file_if('test_protected_area_template_file_if_block_merge')/][/template]
+
+[template public test_protected_area_template_file_for_if_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_for_if('test_protected_area_template_file_for_if_block')/][/template]
+
+[template public test_protected_area_template_file_for_if_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_for_if('test_protected_area_template_file_for_if_block_merge')/]
+  [anEClass.protected_file_for_if('test_protected_area_template_file_for_if_block_merge')/][/template]
+
+[template public test_protected_area_template_file_template_for_if_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_for_if('test_protected_area_template_file_template_for_if_block')/][/template]
+
+[template public test_protected_area_template_file_template_for_if_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_for_if('test_protected_area_template_file_template_for_if_block_merge')/]
+  [anEClass.protected_file_template_for_if('test_protected_area_template_file_template_for_if_block_merge')/][/template]
+
+[template public protected_file_template_for_if(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [if (true)]
+        [anEClass.protected_area_template()/]
+      [/if]
+    [/for]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_if_file_for_if_else_template_block(anEClass : ecore::EClass)]
+  [if (true)]
+    [file ('test_protected_area_template_if_file_for_if_else_template_block', overwrite, 'Cp1252')]
+      [for (str : String | Sequence{'a'})]
+        [if (false)]
+          thenblock
+        [else]
+          [anEClass.protected_area_template()/]
+        [/if]
+      [/for]
+    [/file]
+  [/if]
+[/template]
+
+[template public test_protected_area_template_if_file_for_if_else_template_block_merge(anEClass : ecore::EClass)]
+  [if (true)]
+    [file ('test_protected_area_template_if_file_for_if_else_template_block_merge', overwrite, 'Cp1252')]
+      [for (str : String | Sequence{'a'})]
+        [if (false)]
+          thenblock
+        [else]
+          [anEClass.protected_area_template()/]
+        [/if]
+      [/for]
+    [/file]
+  [/if]
+  [if (true)]
+    [file ('test_protected_area_template_if_file_for_if_else_template_block_merge', overwrite, 'Cp1252')]
+      [for (str : String | Sequence{'a'})]
+        [if (false)]
+          thenblock
+        [else]
+          [anEClass.protected_area_template()/]
+        [/if]
+      [/for]
+    [/file]
+  [/if]
+[/template]
+
+[template public test_protected_area_template_file_template_for_for_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_for_for('test_protected_area_template_file_template_for_for_block')/][/template]
+
+[template public test_protected_area_template_file_template_for_for_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_for_for('test_protected_area_template_file_template_for_for_block_merge')/]
+  [anEClass.protected_file_template_for_for('test_protected_area_template_file_template_for_for_block_merge')/][/template]
+
+[template public protected_file_template_for_for(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [for (str : String | Sequence{'a'})]
+        [anEClass.protected_area_template()/]
+      [/for]
+    [/for]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_file_template_for_let_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_for_let('test_protected_area_template_file_template_for_let_block')/][/template]
+
+[template public test_protected_area_template_file_template_for_let_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_for_let('test_protected_area_template_file_template_for_let_block_merge')/]
+  [anEClass.protected_file_template_for_let('test_protected_area_template_file_template_for_let_block_merge')/][/template]
+
+[template public protected_file_template_for_let(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [for (str : String | Sequence{'a'})]
+      [let str1 : String = 'a']
+        [anEClass.protected_area_template()/]
+      [/let]
+    [/for]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_file_template_if_for_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_if_for('test_protected_area_template_file_template_if_for_block')/][/template]
+
+[template public test_protected_area_template_file_template_if_for_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_if_for('test_protected_area_template_file_template_if_for_block_merge')/]
+  [anEClass.protected_file_template_if_for('test_protected_area_template_file_template_if_for_block_merge')/][/template]
+
+[template public protected_file_template_if_for(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [if (true)]
+      [for (str : String | Sequence{'a'})]
+        [anEClass.protected_area_template()/]
+      [/for]
+    [/if]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_file_template_if_let_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_if_let('test_protected_area_template_file_template_if_let_block')/][/template]
+
+[template public test_protected_area_template_file_template_if_let_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_if_let('test_protected_area_template_file_template_if_let_block_merge')/]
+  [anEClass.protected_file_template_if_let('test_protected_area_template_file_template_if_let_block_merge')/][/template]
+
+[template public protected_file_template_if_let(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [if (true)]
+      [let str : String = 'a']
+        [anEClass.protected_area_template()/]
+      [/let]
+    [/if]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_file_template_if_if_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_if_if('test_protected_area_template_file_template_if_if_block')/][/template]
+
+[template public test_protected_area_template_file_template_if_if_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_if_if('test_protected_area_template_file_template_if_if_block_merge')/]
+  [anEClass.protected_file_template_if_if('test_protected_area_template_file_template_if_if_block_merge')/][/template]
+
+[template public protected_file_template_if_if(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [if (true)]
+      [if (true)]
+        [anEClass.protected_area_template()/]
+      [/if]
+    [/if]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_file_template_let_for_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_let_for('test_protected_area_template_file_template_let_for_block')/][/template]
+
+[template public test_protected_area_template_file_template_let_for_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_let_for('test_protected_area_template_file_template_let_for_block_merge')/]
+  [anEClass.protected_file_template_let_for('test_protected_area_template_file_template_let_for_block_merge')/][/template]
+
+[template public protected_file_template_let_for(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [for (str : String | Sequence{'a'})]
+        [anEClass.protected_area_template()/]
+      [/for]
+    [/let]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_file_template_let_let_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_let_let('test_protected_area_template_file_template_let_let_block')/][/template]
+
+[template public test_protected_area_template_file_template_let_let_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_let_let('test_protected_area_template_file_template_let_let_block_merge')/]
+  [anEClass.protected_file_template_let_let('test_protected_area_template_file_template_let_let_block_merge')/][/template]
+
+[template public protected_file_template_let_let(anEClass : ecore::EClass, path : String)]
+  [file (path, overwrite, 'Cp1252')]
+    [let str : String = 'a']
+      [let str1 : String = 'a']
+        [anEClass.protected_area_template()/]
+      [/let]
+    [/let]
+  [/file]
+[/template]
+
+[template public test_protected_area_template_file_template_let_if_block(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_let_if('test_protected_area_template_file_template_let_if_block')/][/template]
+
+[template public test_protected_area_template_file_template_let_if_block_merge(anEClass : ecore::EClass)]
+  [anEClass.protected_file_template_let_if('test_protected_area_template_file_template_let_if_block_merge')/]
+  [anEClass.protected_file_template_let_if('test_protected_area_template_file_template_let_if_block_merge')/][/template]

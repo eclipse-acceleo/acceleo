@@ -1,0 +1,16 @@
+
+header position 0..70
+module implicitForIterator
+  metamodel http://www.eclipse.org/emf/2002/Ecore (29..67)
+  [comment @main (83..88) /] (74..90)
+  
+  public template test(anEClass : EClass (114..138))
+  @main
+    [file url 'test' (151..157) mode overwrite charset 'UTF-8' (170..177)
+      [for iterator0 : null = Sequence{'a', 'b', 'c', } (203..226) (191..226)
+        value (newLineNeeded) (236..243) (228..247)
+      [/for] (185..253)
+       (newLineNeeded) (253..255) (179..257)
+    [/file] (144..264)
+     (newLineNeeded) (264..266) (140..266)
+  [/template] (92..277) (0..277)

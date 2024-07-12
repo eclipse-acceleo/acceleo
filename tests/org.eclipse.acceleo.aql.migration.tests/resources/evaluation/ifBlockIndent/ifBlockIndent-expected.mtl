@@ -5,21 +5,17 @@
   
   [file ('testIfNoIndent', overwrite)]
     [if (true)]abcdef-testIfNoIndent[/if]
-    
   [/file]
   
   [file ('testIfA4Indent', overwrite)]
         [if (true)]abcdef-testIfA4Indent[/if]
-    
   [/file]
     
   [file ('testIfA3Indent', overwrite)]
     		[if (true)]abcdef-testIfA3Indent[/if]
-    
   [/file]
   	
   [file ('testIfAnyIndent', overwrite)]
       			  [if (true)]abcdef-testIfAnyIndent[/if]
-    
   [/file]
 [/template]

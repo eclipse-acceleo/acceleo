@@ -1,0 +1,37 @@
+
+header position 0..62
+module emptyBlocks
+  metamodel http://www.eclipse.org/emf/2002/Ecore (21..59)
+  [comment @main (75..80) /] (66..82)
+  
+  public template emptyBlocks1(anEClass : EClass (114..138))
+  @main
+    [if true (149..153)
+      [file url 'emptyBlocks1' (168..182) mode overwrite charset 'Cp1252' (195..203)
+        [for str : java.lang.String = Sequence{'a', } (234..247) (219..247)
+          [if false (264..269) (271..281)
+          [else]
+            [.aqlFeatureAccess(anEClass, 'name') (300..313)/] (newLineNeeded (299..317) (287..325)
+          [/if] (259..330)
+           (newLineNeeded) (330..332) (249..338)
+        [/for] (213..344)
+         (newLineNeeded) (344..346) (205..350)
+      [/file] (161..357)
+       (newLineNeeded) (357..359) (155..361)
+    [/if] (144..366)
+     (newLineNeeded) (366..368)
+    [if true (375..379)
+      [file url 'emptyBlocks1' (394..408) mode overwrite charset 'Cp1252' (421..429)
+        [for str : java.lang.String = Sequence{'a', } (460..473) (445..473)
+          [if false (490..495) (497..507)
+          [else]
+            [.aqlFeatureAccess(anEClass, 'name') (526..539)/] (newLineNeeded (525..543) (513..551)
+          [/if] (485..556)
+           (newLineNeeded) (556..558) (475..564)
+        [/for] (439..570)
+         (newLineNeeded) (570..572) (431..576)
+      [/file] (387..583)
+       (newLineNeeded) (583..585) (381..587)
+    [/if] (370..592)
+     (newLineNeeded) (592..594) (140..594)
+  [/template] (84..605) (0..605)

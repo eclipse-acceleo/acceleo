@@ -355,6 +355,41 @@
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
       </body>
+      <body xsi:type="mtl:FileBlock" openMode="OverWrite">
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#x9;&#x9;"/>
+        <body xsi:type="mtl:ForBlock">
+          <body xsi:type="ocl.ecore:VariableExp" name="item" referredVariable="/0/testingSimple/%.8/%.1/item.1">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+          </body>
+          <loopVariable name="item">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+          </loopVariable>
+          <iterSet xsi:type="ocl.ecore:CollectionLiteralExp" eType="/7/Sequence(String)" kind="Sequence">
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="a">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="b">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="c">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+          </iterSet>
+        </body>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;"/>
+        <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="testInlined">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </fileUrl>
+      </body>
       <parameter name="c">
         <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
       </parameter>
@@ -653,12 +688,30 @@
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="i">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
   <ecore:EAnnotation source="positions">
     <eAnnotations source="positions.0" references="/0/testingSimple">
       <details key="start" value="61"/>
-      <details key="end" value="1386"/>
+      <details key="end" value="1487"/>
       <details key="line" value="3"/>
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/testingSimple/%">
@@ -1281,7 +1334,62 @@
       <details key="end" value="1002"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.125" references="/0/testingSimple/c">
+    <eAnnotations source="positions.125" references="/0/testingSimple/%.8">
+      <details key="start" value="1376"/>
+      <details key="end" value="1475"/>
+      <details key="line" value="52"/>
+    </eAnnotations>
+    <eAnnotations source="positions.126" references="/0/testingSimple/%.8/%">
+      <details key="start" value="1406"/>
+      <details key="end" value="1408"/>
+      <details key="line" value="53"/>
+    </eAnnotations>
+    <eAnnotations source="positions.127" references="/0/testingSimple/%.8/%.1">
+      <details key="start" value="1408"/>
+      <details key="end" value="1466"/>
+      <details key="line" value="53"/>
+    </eAnnotations>
+    <eAnnotations source="positions.128" references="/0/testingSimple/%.8/%.1/item">
+      <details key="start" value="1454"/>
+      <details key="end" value="1458"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.129" references="/0/testingSimple/%.8/%.1/item.1">
+      <details key="start" value="1414"/>
+      <details key="end" value="1427"/>
+      <details key="line" value="53"/>
+    </eAnnotations>
+    <eAnnotations source="positions.130" references="/0/testingSimple/%.8/%.1/%">
+      <details key="start" value="1430"/>
+      <details key="end" value="1451"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.131" references="/0/testingSimple/%.8/%.1/%/%/%">
+      <details key="start" value="1439"/>
+      <details key="end" value="1442"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.132" references="/0/testingSimple/%.8/%.1/%/%.1/%">
+      <details key="start" value="1443"/>
+      <details key="end" value="1446"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.133" references="/0/testingSimple/%.8/%.1/%/%.2/%">
+      <details key="start" value="1447"/>
+      <details key="end" value="1450"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.134" references="/0/testingSimple/%.8/%.2">
+      <details key="start" value="1466"/>
+      <details key="end" value="1467"/>
+      <details key="line" value="54"/>
+    </eAnnotations>
+    <eAnnotations source="positions.135" references="/0/testingSimple/%.8/%.3">
+      <details key="start" value="1383"/>
+      <details key="end" value="1396"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.136" references="/0/testingSimple/c">
       <details key="start" value="92"/>
       <details key="end" value="104"/>
       <details key="line" value="3"/>

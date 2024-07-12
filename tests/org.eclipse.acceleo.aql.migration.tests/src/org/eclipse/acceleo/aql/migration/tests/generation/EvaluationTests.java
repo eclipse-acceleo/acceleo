@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,12 +26,7 @@ import org.junit.runners.Parameterized.Parameters;
  */
 public class EvaluationTests extends AbstractEvaluationTests {
 
-	public static final String[] EXCLUDED_TESTS = new String[] {
-			// Excluded tests because of slight space differences that need to be checked
-			"emptyBlocks", // TODO
-			"ifBlock", // TODO
-			"ifBlockIndent", // TODO
-	};
+	public static final String[] EXCLUDED_TESTS = new String[] {};
 
 	/**
 	 * Constructor.
