@@ -25,25 +25,26 @@
                icon="icons/AcceleoLaunch.gif"
                label="Migrate to Acceleo 4"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false"
-                        operator="and">
-                     <and>
-                        <instanceof
-                              value="org.eclipse.core.resources.IProject">
-                        </instanceof>
-                        <test
-                              property="org.eclipse.core.resources.projectNature"
-                              value="org.eclipse.acceleo.ide.ui.acceleoNature">
-                        </test>
-                     </and>
-                  </iterate>
-               </with>
-            </visibleWhen>
+           <visibleWhen
+                 checkEnabled="false">
+              <iterate
+                    ifEmpty="false"
+                    operator="and">
+                 <adapt
+                       type="org.eclipse.core.resources.IProject">
+                    <and>
+                       <test
+                             property="org.eclipse.core.resources.projectNature"
+                             value="org.eclipse.acceleo.ide.ui.acceleoNature">
+                       </test>
+                       <test
+                             property="org.eclipse.core.resources.open"
+                             value="true">
+                       </test>
+                    </and>
+                 </adapt>
+              </iterate>
+           </visibleWhen>
          </command>
       </menuContribution>
    </extension>
