@@ -2,7 +2,7 @@ target "Orbit"
 
 with source, requirements
 
-location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-06" {
+location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-09" {
 	com.google.guava [33.0.0,34.0.0)
 	org.junit [4,5)
 	org.kohsuke.args4j [2.37.0,2.38.0)
