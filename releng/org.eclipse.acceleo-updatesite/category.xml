@@ -51,7 +51,6 @@
    <feature id="org.eclipse.acceleo.query.ui.source" version="0.0.0">
       <category name="org.eclipse.acceleo"/>
    </feature>
-   <bundle id="com.google.guava" version="0.0.0"/>
    <bundle id="org.antlr.runtime" version="0.0.0"/>
    <bundle id="org.kohsuke.args4j" version="0.0.0"/>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
