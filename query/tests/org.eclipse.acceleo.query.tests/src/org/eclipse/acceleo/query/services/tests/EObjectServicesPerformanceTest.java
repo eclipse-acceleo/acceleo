@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Obeo.
+ * Copyright (c) 2016, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -51,6 +48,26 @@ import static org.junit.Assert.assertTrue;
  */
 public class EObjectServicesPerformanceTest {
 
+	private class Stopwatch {
+
+		long lastStart;
+
+		long elapsed;
+
+		public void start() {
+			lastStart = System.currentTimeMillis();
+		}
+
+		public void stop() {
+			elapsed += System.currentTimeMillis() - lastStart;
+		}
+
+		public long elapsed() {
+			return elapsed;
+		}
+
+	}
+
 	/**
 	 * 
 	 */
@@ -76,8 +93,8 @@ public class EObjectServicesPerformanceTest {
 
 	@Test
 	public void eAllContentsWithFailingAccessBenchmark() {
-		Stopwatch noError = Stopwatch.createUnstarted();
-		Stopwatch error = Stopwatch.createUnstarted();
+		Stopwatch noError = new Stopwatch();
+		Stopwatch error = new Stopwatch();
 		int iterations = 20;
 		noError.start();
 		for (int i = 0; i < iterations; i++) {
@@ -99,12 +116,11 @@ public class EObjectServicesPerformanceTest {
 		}
 		error.stop();
 		System.out.println("PERFO: self.eAllContents(ecore::EClass)->select(c | not c.abstract)  :  "
-				+ noError.elapsed(TimeUnit.MILLISECONDS)
-				+ "ms /  self.eAllContents()->select(c | not c.abstract) : " + error.elapsed(
-						TimeUnit.MILLISECONDS) + "ms");
+				+ noError.elapsed() + "ms /  self.eAllContents()->select(c | not c.abstract) : " + error
+						.elapsed() + "ms");
 
-		final double noErrorElapsed = noError.elapsed(TimeUnit.MILLISECONDS);
-		final double errorElapsed = error.elapsed(TimeUnit.MILLISECONDS);
+		final double noErrorElapsed = noError.elapsed();
+		final double errorElapsed = error.elapsed();
 
 		assertTrue("We expect a maximum overhead of 1800% and we had:" + (errorElapsed / noErrorElapsed) * 100
 				+ "%", errorElapsed / noErrorElapsed < 18.0);
@@ -127,13 +143,19 @@ public class EObjectServicesPerformanceTest {
 
 	@Test
 	public void eAllContentsBenchmark() {
-		Stopwatch emf = Stopwatch.createUnstarted();
-		Stopwatch aql = Stopwatch.createUnstarted();
+		Stopwatch emf = new Stopwatch();
+		Stopwatch aql = new Stopwatch();
 		for (int i = 0; i < NB_ITERATIONS; i++) {
 			for (EObject root : reverseEcoreModel.getContents()) {
 				emf.start();
-				List<EPackage> ePackagesEMF = Lists.newArrayList(Iterators.filter(root.eAllContents(),
-						EPackage.class));
+				final List<EPackage> ePackagesEMF = new ArrayList<>();
+				final Iterator<EObject> itPkg = root.eAllContents();
+				while (itPkg.hasNext()) {
+					final EObject current = itPkg.next();
+					if (current instanceof EPackage) {
+						ePackagesEMF.add((EPackage)current);
+					}
+				}
 				emf.stop();
 				aql.start();
 				List<EObject> ePackagesAQL = eObjectService.eAllContents(root, EcorePackage.eINSTANCE
@@ -143,8 +165,14 @@ public class EObjectServicesPerformanceTest {
 				assertEquals(ePackagesEMF, ePackagesAQL);
 				for (EPackage ePackage : ePackagesEMF) {
 					emf.start();
-					List<EClass> eclassesEMF = Lists.newArrayList(Iterators.filter(ePackage.eAllContents(),
-							EClass.class));
+					final List<EClass> eclassesEMF = new ArrayList<>();
+					final Iterator<EObject> itCls = ePackage.eAllContents();
+					while (itCls.hasNext()) {
+						final EObject current = itCls.next();
+						if (current instanceof EClass) {
+							eclassesEMF.add((EClass)current);
+						}
+					}
 					emf.stop();
 					aql.start();
 					final List<EObject> eClassesAQL = eObjectService.eAllContents(ePackage,
@@ -154,11 +182,11 @@ public class EObjectServicesPerformanceTest {
 				}
 			}
 		}
-		System.out.println("PERFO: eAllContents(Type)  :  AQL " + aql.elapsed(TimeUnit.MILLISECONDS)
-				+ "ms /  EMF : " + emf.elapsed(TimeUnit.MILLISECONDS) + "ms");
+		System.out.println("PERFO: eAllContents(Type)  :  AQL " + aql.elapsed() + "ms /  EMF : " + emf
+				.elapsed() + "ms");
 
-		final long aqlElapsed = aql.elapsed(TimeUnit.MILLISECONDS);
-		final long emfElapsed = emf.elapsed(TimeUnit.MILLISECONDS);
+		final long aqlElapsed = aql.elapsed();
+		final long emfElapsed = emf.elapsed();
 
 		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than emf + 4s
 		assertTrue("The AQL implementation is supposed to be faster than the EMF one.", (aqlElapsed
@@ -167,13 +195,15 @@ public class EObjectServicesPerformanceTest {
 
 	@Test
 	public void eContentsBenchmark() {
-		Stopwatch emf = Stopwatch.createUnstarted();
-		Stopwatch aql = Stopwatch.createUnstarted();
+		Stopwatch emf = new Stopwatch();
+		Stopwatch aql = new Stopwatch();
 		for (int i = 0; i < NB_ITERATIONS; i++) {
 			for (EObject root : reverseEcoreModel.getContents()) {
 				emf.start();
-				List<EPackage> ePackagesEMF = Lists.newArrayList(Iterables.filter(root.eContents(),
-						EPackage.class));
+				@SuppressWarnings("unchecked")
+				List<EPackage> ePackagesEMF = new ArrayList<EPackage>((Collection<? extends EPackage>)root
+						.eContents().stream().filter(eObj -> eObj instanceof EPackage).collect(Collectors
+								.toList()));
 				emf.stop();
 				aql.start();
 				List<EObject> ePackagesAQL = eObjectService.eContents(root, EcorePackage.eINSTANCE
@@ -183,8 +213,10 @@ public class EObjectServicesPerformanceTest {
 				assertEquals(ePackagesEMF, ePackagesAQL);
 				for (EPackage ePackage : ePackagesEMF) {
 					emf.start();
-					List<EClass> eclassesEMF = Lists.newArrayList(Iterables.filter(ePackage.eContents(),
-							EClass.class));
+					@SuppressWarnings("unchecked")
+					List<EClass> eclassesEMF = new ArrayList<EClass>((Collection<? extends EClass>)ePackage
+							.eContents().stream().filter(eObj -> eObj instanceof EClass).collect(Collectors
+									.toList()));
 					emf.stop();
 					aql.start();
 					final List<EObject> eClassesAQL = eObjectService.eContents(ePackage,
@@ -194,11 +226,11 @@ public class EObjectServicesPerformanceTest {
 				}
 			}
 		}
-		System.out.println("PERFO: eContents(Type)  :  AQL " + aql.elapsed(TimeUnit.MILLISECONDS)
-				+ "ms /  EMF : " + emf.elapsed(TimeUnit.MILLISECONDS) + "ms");
+		System.out.println("PERFO: eContents(Type)  :  AQL " + aql.elapsed() + "ms /  EMF : " + emf.elapsed()
+				+ "ms");
 
-		final long aqlElapsed = aql.elapsed(TimeUnit.MILLISECONDS);
-		final long emfElapsed = emf.elapsed(TimeUnit.MILLISECONDS);
+		final long aqlElapsed = aql.elapsed();
+		final long emfElapsed = emf.elapsed();
 
 		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than emf + 4s
 		assertTrue("The AQL implementation is supposed to be faster than the EMF one.", (aqlElapsed
