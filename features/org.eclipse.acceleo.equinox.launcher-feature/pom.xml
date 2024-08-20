@@ -16,14 +16,14 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>3.7.16-SNAPSHOT</version>
+    <version>3.7.17-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <groupId>org.eclipse.acceleo.features</groupId>
   <artifactId>org.eclipse.acceleo.equinox.launcher</artifactId>
   <packaging>eclipse-feature</packaging>
-  <version>3.7.16-SNAPSHOT</version>
+  <version>3.7.17-SNAPSHOT</version>
 
   <build>
     <plugins>

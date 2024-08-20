@@ -12,7 +12,7 @@ Contributors:
 <feature
       id="org.eclipse.acceleo.ui.interpreter.completeocl"
       label="%featureName"
-      version="3.7.16.qualifier"
+      version="3.7.17.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1">
@@ -30,7 +30,7 @@ Contributors:
    </license>
 
    <requires>
-      <import feature="org.eclipse.acceleo.ui.interpreter.ocl" version="3.7.16" match="compatible"/>
+      <import feature="org.eclipse.acceleo.ui.interpreter.ocl" version="3.7.17" match="compatible"/>
       <import feature="org.eclipse.acceleo" version="3.4.1.qualifier" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ocl.examples.xtext.console" version="4.0.0" match="greaterOrEqual"/>
    </requires>
