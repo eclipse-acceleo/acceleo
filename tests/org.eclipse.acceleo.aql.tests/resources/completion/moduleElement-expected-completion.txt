@@ -11,11 +11,11 @@ http://www.eclipse.org/acceleo/4.0#//Template
 New Template
 * Description:
 Inserts the following sample Acceleo Template:<br/><pre>[template public myTemplate(myParameter : MyParameterType)]
-	My template with a static text.
+  My template with a static text.
 [/template]</pre>
 * Text:
 [template public myTemplate(myParameter : MyParameterType)]
-	My template with a static text.
+  My template with a static text.
 [/template]
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Template
