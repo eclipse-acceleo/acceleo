@@ -6,7 +6,7 @@ Bundle-Version: 4.0.0
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.eclipse.acceleo,
  org.eclipse.acceleo.aql,
  org.eclipse.acceleo.aql.completion,
