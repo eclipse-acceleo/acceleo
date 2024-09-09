@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,6 +109,54 @@ public class ResourceServices extends AbstractServiceProvider {
 			if (type.isInstance(eObj)) {
 				res.add(eObj);
 			}
+		}
+
+		return res;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the EObjects from the given Resource with the given URI fragment.",
+	    params = {
+			@Param(name = "resource", value = "The Resource where to look for the EObject"),
+			@Param(name = "uriFragment", value = "The URI fragment of the EObject in the Resource (can be an ID)")
+		},
+		result = "The EObjects from the given Resource with the given URI fragment."
+	)
+	// @formatter:on
+	public EObject getEObject(Resource resource, String uriFragment) {
+		final EObject res;
+
+		if (resource != null && uriFragment != null) {
+			res = resource.getEObject(uriFragment);
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the URI fragment from the given EObject in its Resource.",
+	    params = {
+				@Param(name = "eObject", value = "The EObject")
+		},
+		result = "The URI fragment from the given EObject in its Resource or null if not in a resource."
+	)
+	// @formatter:on
+	public String getURIFragment(EObject eObject) {
+		final String res;
+
+		if (eObject != null) {
+			final Resource eResource = eObject.eResource();
+			if (eResource != null) {
+				res = eResource.getURIFragment(eObject);
+			} else {
+				res = null;
+			}
+		} else {
+			res = null;
 		}
 
 		return res;

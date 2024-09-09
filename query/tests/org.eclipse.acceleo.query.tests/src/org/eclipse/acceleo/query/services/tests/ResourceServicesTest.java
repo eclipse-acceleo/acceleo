@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -216,4 +216,20 @@ public class ResourceServicesTest extends AbstractEngineInitializationWithCrossR
 		URI goodURI = URI.createURI("platform:/plugin/good/one");
 		assertTrue(resourceServices.isPlatformPlugin(goodURI));
 	}
+
+	@Test
+	public void getEObject() {
+		assertEquals(null, resourceServices.getEObject(null, null));
+		assertEquals(null, resourceServices.getEObject(reverseModel, null));
+		assertEquals(reverseModel.getContents().get(0), resourceServices.getEObject(reverseModel, "/"));
+	}
+
+	@Test
+	public void getURIFragment() {
+		assertEquals(null, resourceServices.getURIFragment(null));
+		final EObject noInResource = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		assertEquals(null, resourceServices.getURIFragment(noInResource));
+		assertEquals("/", resourceServices.getURIFragment(reverseModel.getContents().get(0)));
+	}
+
 }

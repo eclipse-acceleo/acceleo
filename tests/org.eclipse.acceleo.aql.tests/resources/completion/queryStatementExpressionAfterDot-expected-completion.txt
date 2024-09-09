@@ -323,6 +323,15 @@ getEClassifier()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+getURIFragment()
+* Description:
+getURIFragment(eObject: org.eclipse.emf.ecore.EObject) = String<br><br>Returns the URI fragment from the given EObject in its Resource.<br><br>  @param eObject<br>        The EObject<br><br>  @return<br>        The URI fragment from the given EObject in its Resource or null if not in a resource.<br><br>
+* Text:
+getURIFragment()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 lineSeparator()
 * Description:
 lineSeparator(obj: java.lang.Object) = String<br><br>Gets the platform line separator.<br><br>  @param obj<br>        Any object<br><br>  @return<br>        '\n' (Unix) or '\r\n' (Dos) or '\r' (Mac Os Classic)<br><br>

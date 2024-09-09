@@ -323,6 +323,15 @@ getEAnnotation()
 http://www.eclipse.org/acceleo/4.0#//Expression
 
 * Label:
+getURIFragment()
+* Description:
+getURIFragment(eObject: org.eclipse.emf.ecore.EObject) = String<br><br>Returns the URI fragment from the given EObject in its Resource.<br><br>  @param eObject<br>        The EObject<br><br>  @return<br>        The URI fragment from the given EObject in its Resource or null if not in a resource.<br><br>
+* Text:
+getURIFragment()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
 isInstance()
 * Description:
 EOperation named isInstance in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
