@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import java.util.Collection;
+
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 
 /**
@@ -17,7 +19,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public abstract class AbstractCollectionType extends AbstractJavaType implements ICollectionType {
+public class CollectionType extends AbstractJavaType implements ICollectionType {
 
 	/**
 	 * The {@link IType}.
@@ -32,16 +34,11 @@ public abstract class AbstractCollectionType extends AbstractJavaType implements
 	 * @param type
 	 *            the {@link IType}
 	 */
-	public AbstractCollectionType(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
+	public CollectionType(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
 		super(queryEnvironment);
 		this.type = type;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.validation.type.ICollectionType#getCollectionType()
-	 */
 	public IType getCollectionType() {
 		return type;
 	}
@@ -64,25 +61,25 @@ public abstract class AbstractCollectionType extends AbstractJavaType implements
 		return res;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		return getType().hashCode() ^ getCollectionType().hashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		return getClass() == obj.getClass() && ((AbstractCollectionType)obj).getType().equals(getType())
-				&& ((AbstractCollectionType)obj).getCollectionType().equals(getCollectionType());
+		return getClass() == obj.getClass() && ((CollectionType)obj).getType().equals(getType())
+				&& ((CollectionType)obj).getCollectionType().equals(getCollectionType());
+	}
+
+	@Override
+	public Class<?> getType() {
+		return Collection.class;
+	}
+
+	@Override
+	public String toString() {
+		return "Collection(" + getCollectionType().toString() + ")";
 	}
 
 }

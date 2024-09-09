@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -28,6 +29,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.CollectionType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -249,6 +251,9 @@ public class ValidationServices extends AbstractLanguageServices {
 				} else if (receiverType instanceof SetType) {
 					result.merge(validateCallOnSet(call, validationResult, serviceName, (SetType)receiverType,
 							argTypesNoReceiver));
+				} else if (receiverType instanceof CollectionType) {
+					result.merge(validateCallOnCollection(call, validationResult, serviceName,
+							(CollectionType)receiverType, argTypesNoReceiver));
 				} else {
 					final List<Set<IType>> newArgTypes = new ArrayList<Set<IType>>(argTypesNoReceiver);
 					final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
@@ -351,6 +356,50 @@ public class ValidationServices extends AbstractLanguageServices {
 	 */
 	protected void flattenSet(ServicesValidationResult result) {
 		result.flattenSet();
+	}
+
+	/**
+	 * Validates a service call on a collection of objects.
+	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
+	 * @param serviceName
+	 *            the name of the service to be called.
+	 * @param receiverType
+	 *            the receiver type on which elements to validate the service
+	 * @param argTypesNoReceiver
+	 *            the argument types to pass to the service
+	 * @return the {@link ServicesValidationResult}
+	 */
+	private ServicesValidationResult validateCallOnCollection(Call call, IValidationResult validationResult,
+			String serviceName, CollectionType receiverType, List<Set<IType>> argTypesNoReceiver) {
+		try {
+			final List<Set<IType>> newArgTypes = new ArrayList<Set<IType>>(argTypesNoReceiver);
+			final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
+			newReceiverTypes.add(receiverType.getCollectionType());
+			newArgTypes.add(0, newReceiverTypes);
+			ServicesValidationResult result = callOrApplyTypes(call, validationResult, serviceName,
+					newArgTypes);
+			flattenCollection(result);
+			return result;
+			// CHECKSTYLE:OFF
+		} catch (Exception e) {
+			// CHECKSTYLE:ON
+			throw new AcceleoQueryValidationException("empty argument array passed to callOrApply "
+					+ serviceName, e);
+		}
+	}
+
+	/**
+	 * Flatten {@link Collection} on the given {@link ServicesValidationResult}.
+	 * 
+	 * @param result
+	 *            the {@link ServicesValidationResult} to flatten
+	 */
+	protected void flattenCollection(ServicesValidationResult result) {
+		result.flattenCollection();
 	}
 
 	/**

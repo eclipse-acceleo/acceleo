@@ -64,6 +64,7 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.CollectionType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -791,6 +792,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				possibleTypes.add(new SequenceType(services.getQueryEnvironment(), type));
 			} else if (object.getValue() == Set.class) {
 				possibleTypes.add(new SetType(services.getQueryEnvironment(), type));
+			} else if (object.getValue() == Collection.class) {
+				possibleTypes.add(new CollectionType(services.getQueryEnvironment(), type));
 			} else {
 				throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 			}
@@ -1273,6 +1276,12 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 						.getCollectionType());
 				for (IType collectionType : getDeclarationTypes(queryEnvironment, collectionTypes)) {
 					res.add(new SetType(queryEnvironment, collectionType));
+				}
+			} else if (iType instanceof CollectionType) {
+				final Set<IType> collectionTypes = Collections.singleton(((CollectionType)iType)
+						.getCollectionType());
+				for (IType collectionType : getDeclarationTypes(queryEnvironment, collectionTypes)) {
+					res.add(new CollectionType(queryEnvironment, collectionType));
 				}
 			} else {
 				res.add(iType);

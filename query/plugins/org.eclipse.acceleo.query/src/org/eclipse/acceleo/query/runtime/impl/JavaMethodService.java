@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ClassLiteralType;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.CollectionType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IJavaType;
@@ -114,6 +116,10 @@ public class JavaMethodService extends AbstractService<Method> {
 				final IType t = getClassType(queryEnvironment, ((ParameterizedType)type)
 						.getActualTypeArguments()[0]);
 				result = new SetType(queryEnvironment, t);
+			} else if (Collection.class.isAssignableFrom(cls)) {
+				final IType t = getClassType(queryEnvironment, ((ParameterizedType)type)
+						.getActualTypeArguments()[0]);
+				result = new CollectionType(queryEnvironment, t);
 			} else {
 				result = getClassJavaType(queryEnvironment, cls);
 			}
@@ -204,6 +210,11 @@ public class JavaMethodService extends AbstractService<Method> {
 						.getActualTypeArguments()[0])) {
 					result.add(new SetType(queryEnvironment, t));
 				}
+			} else if (Collection.class.isAssignableFrom(cls)) {
+				for (IType t : getIType(queryEnvironment, ((ParameterizedType)type)
+						.getActualTypeArguments()[0])) {
+					result.add(new CollectionType(queryEnvironment, t));
+				}
 			} else {
 				result.add(getClassJavaType(queryEnvironment, cls));
 			}
@@ -234,6 +245,8 @@ public class JavaMethodService extends AbstractService<Method> {
 			result.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
 		} else if (Set.class.isAssignableFrom(cls)) {
 			result.add(new SetType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
+		} else if (Collection.class.isAssignableFrom(cls)) {
+			result.add(new CollectionType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
 		} else {
 			result.add(getClassJavaType(queryEnvironment, cls));
 		}
@@ -337,12 +350,18 @@ public class JavaMethodService extends AbstractService<Method> {
 	 */
 	protected IType createReturnCollectionWithType(IReadOnlyQueryEnvironment queryEnvironment,
 			IType collectionType) {
-		IType result = collectionType;
+		final IType result;
+
 		if (List.class.isAssignableFrom(getOrigin().getReturnType())) {
 			result = new SequenceType(queryEnvironment, collectionType);
 		} else if (Set.class.isAssignableFrom(getOrigin().getReturnType())) {
 			result = new SetType(queryEnvironment, collectionType);
+		} else if (Collection.class.isAssignableFrom(getOrigin().getReturnType())) {
+			result = new CollectionType(queryEnvironment, collectionType);
+		} else {
+			result = collectionType;
 		}
+
 		return result;
 	}
 }

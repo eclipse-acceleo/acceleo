@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.validation.type.CollectionType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
@@ -155,6 +156,28 @@ public class ServicesValidationResult {
 								.getCollectionType()));
 					} else {
 						flattenedTypes.add(new SequenceType(queryEnvironment, resultType));
+					}
+				}
+				resultTypes.clear();
+				resultTypes.addAll(flattenedTypes);
+			}
+		}
+	}
+
+	/**
+	 * Flatten the resulting {@link IType} to reflect a call on a collection.
+	 */
+	public void flattenCollection() {
+		for (Map<List<IType>, Set<IType>> map : typesPerService.values()) {
+			for (Set<IType> resultTypes : map.values()) {
+				Set<IType> flattenedTypes = new LinkedHashSet<IType>();
+				for (IType resultType : resultTypes) {
+					// flatten
+					if (resultType instanceof ICollectionType) {
+						flattenedTypes.add(new CollectionType(queryEnvironment, ((ICollectionType)resultType)
+								.getCollectionType()));
+					} else {
+						flattenedTypes.add(new CollectionType(queryEnvironment, resultType));
 					}
 				}
 				resultTypes.clear();

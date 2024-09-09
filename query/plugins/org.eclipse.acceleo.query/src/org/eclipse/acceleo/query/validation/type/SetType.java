@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class SetType extends AbstractCollectionType {
+public class SetType extends CollectionType {
 
 	/**
 	 * Constructor.
@@ -33,21 +33,11 @@ public class SetType extends AbstractCollectionType {
 		super(queryEnvironment, type);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.validation.type.IType#getType()
-	 */
 	@Override
 	public Class<?> getType() {
 		return Set.class;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "Set(" + getCollectionType().toString() + ")";

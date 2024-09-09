@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -743,6 +743,32 @@ public class EvaluationTest {
 		queryEnvironment.removeEPackage(RealPackage.eINSTANCE);
 
 		assertEquals("Select EOperation called successfully", result.getResult());
+	}
+
+	@Test
+	public void collectionCall() {
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		varDefinitions.put("self", EcorePackage.eINSTANCE);
+
+		final EvaluationResult result = engine.eval(builder.build("self.eClass().getCollection().name"),
+				varDefinitions);
+
+		assertTrue(result.getResult() instanceof List);
+		assertEquals(1, ((List<?>)result.getResult()).size());
+		assertEquals("EPackage", ((List<?>)result.getResult()).get(0));
+	}
+
+	@Test
+	public void collectionCallFlatten() {
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		varDefinitions.put("self", EcorePackage.eINSTANCE);
+
+		final EvaluationResult result = engine.eval(builder.build(
+				"self.eClass().getCollection().getCollection().name"), varDefinitions);
+
+		assertTrue(result.getResult() instanceof List);
+		assertEquals(1, ((List<?>)result.getResult()).size());
+		assertEquals("EPackage", ((List<?>)result.getResult()).get(0));
 	}
 
 }

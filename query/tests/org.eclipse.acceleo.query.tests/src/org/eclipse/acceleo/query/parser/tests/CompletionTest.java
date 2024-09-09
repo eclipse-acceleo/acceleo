@@ -21,7 +21,9 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.BasicFilter;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
@@ -30,6 +32,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceComple
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
+import org.eclipse.acceleo.query.tests.services.EObjectServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -1434,6 +1437,21 @@ public class CompletionTest {
 				"self.toString()->select(s | s = anydsl::Color::black", 52, variableTypes);
 
 		assertCompletion(completionResult, 13, "", "", 52, 0, ")", ", ");
+	}
+
+	@Test
+	public void afterCollectionCall() {
+		final Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+
+		try {
+			final ICompletionResult completionResult = engine.getCompletion("self.eClass().getCollection().",
+					30, variableTypes);
+			assertCompletion(completionResult, 79, "", "", 30, 0, "name");
+		} finally {
+			ServiceUtils.removeServices(queryEnvironment, services);
+		}
+
 	}
 
 	public static void assertCompletion(ICompletionResult completionResult, int size, String prefix,

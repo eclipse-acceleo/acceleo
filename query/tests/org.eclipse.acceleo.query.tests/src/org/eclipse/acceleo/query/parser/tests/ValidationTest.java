@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.services.ReceiverServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.CollectionType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -2396,6 +2397,46 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof ClassType);
 		assertEquals(Boolean.class, possibleType.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+	}
+
+	@Test
+	public void collectionCall() {
+		final IValidationResult validationResult = engine.validate("self.eClass().getCollection().name",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof CollectionType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), ((CollectionType)possibleType).getCollectionType()
+				.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+
+		assertEquals(0, validationResult.getMessages(ast).size());
+		assertEquals(0, validationResult.getMessages(((Call)ast).getArguments().get(0)).size());
+	}
+
+	@Test
+	public void collectionCallFlatten() {
+		final IValidationResult validationResult = engine.validate(
+				"self.eClass().getCollection().getCollection().name", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof CollectionType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), ((CollectionType)possibleType).getCollectionType()
+				.getType());
 
 		assertEquals(0, validationResult.getMessages().size());
 
