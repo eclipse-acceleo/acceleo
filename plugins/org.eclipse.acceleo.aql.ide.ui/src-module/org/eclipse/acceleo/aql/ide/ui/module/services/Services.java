@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui.module.services;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
@@ -144,26 +142,7 @@ public class Services {
 	 *         {@link Module} dependencies
 	 */
 	public Set<EPackage> getAllEPackages(Module module) {
-		final Set<EPackage> res = new LinkedHashSet<>();
-
-		final Set<String> qualifiedNames = new LinkedHashSet<>();
-		final String moduleQualifiedName = workspaceResolver.getQualifiedName(module);
-		qualifiedNames.add(moduleQualifiedName);
-		qualifiedNames.addAll(workspaceResolver.getDependOn(moduleQualifiedName));
-
-		for (String qualifiedName : qualifiedNames) {
-			final Object resolved = workspaceResolver.resolve(qualifiedName);
-			if (resolved instanceof Module) {
-				final Module child = (Module)resolved;
-				for (Metamodel metamodel : child.getMetamodels()) {
-					if (metamodel.getReferencedPackage() != null) {
-						res.add(metamodel.getReferencedPackage());
-					}
-				}
-			}
-		}
-
-		return res;
+		return AcceleoUtil.getAllNeededEPackages(workspaceResolver, module);
 	}
 
 	/**

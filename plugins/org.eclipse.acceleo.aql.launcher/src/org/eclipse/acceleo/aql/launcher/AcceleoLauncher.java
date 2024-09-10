@@ -268,6 +268,7 @@ public class AcceleoLauncher implements IApplication {
 			final Module mainModule;
 			if (resolved instanceof Module) {
 				mainModule = (Module)resolved;
+				AcceleoUtil.registerEPackage(queryEnvironment, resolver, mainModule);
 			} else {
 				mainModule = null;
 			}

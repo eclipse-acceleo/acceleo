@@ -77,7 +77,6 @@ import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -510,10 +509,6 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		}
 		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
 				false);
-
-		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
-			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
-		}
 		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
 		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR,
 				false));
@@ -523,21 +518,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final Object resolved = resolver.resolve(moduleQualifiedName);
 		if (resolved instanceof Module) {
 			astResult = ((Module)resolved).getAst();
-		}
-	}
-
-	/**
-	 * Registers the given {@link EPackage} in the given {@link IQualifiedNameQueryEnvironment} recursively.
-	 * 
-	 * @param environment
-	 *            the {@link IQualifiedNameQueryEnvironment}
-	 * @param ePackage
-	 *            the {@link EPackage}
-	 */
-	private void registerEPackage(IQualifiedNameQueryEnvironment environment, EPackage ePackage) {
-		environment.registerEPackage(ePackage);
-		for (EPackage child : ePackage.getESubpackages()) {
-			registerEPackage(environment, child);
+			AcceleoUtil.registerEPackage(queryEnvironment, resolver, (Module)resolved);
 		}
 	}
 

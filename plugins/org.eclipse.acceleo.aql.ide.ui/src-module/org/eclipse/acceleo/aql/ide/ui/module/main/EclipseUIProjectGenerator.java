@@ -48,7 +48,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
@@ -93,21 +92,6 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 	}
 
 	/**
-	 * Registers the given {@link EPackage} in the given {@link IQualifiedNameQueryEnvironment} recursively.
-	 * 
-	 * @param environment
-	 *            the {@link IQualifiedNameQueryEnvironment}
-	 * @param ePackage
-	 *            the {@link EPackage}
-	 */
-	private static void registerEPackage(IQualifiedNameQueryEnvironment environment, EPackage ePackage) {
-		environment.registerEPackage(ePackage);
-		for (EPackage child : ePackage.getESubpackages()) {
-			registerEPackage(environment, child);
-		}
-	}
-
-	/**
 	 * Generates.
 	 */
 	public void generate() {
@@ -129,6 +113,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		final IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);
 
 		final Module module = (Module)resolver.resolve(moduleQualifiedName);
+		AcceleoUtil.registerEPackage(queryEnvironment, resolver, module);
 		final Template main = AcceleoUtil.getMainTemplates(module).iterator().next();
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
@@ -213,9 +198,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 			IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
 		final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
 				options, resolver, resourceSetForModels, false);
-		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
-			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
-		}
+
 		return queryEnvironment;
 	}
 

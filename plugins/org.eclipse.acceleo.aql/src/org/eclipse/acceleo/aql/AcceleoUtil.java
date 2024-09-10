@@ -19,13 +19,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
@@ -49,6 +53,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -387,7 +392,7 @@ public final class AcceleoUtil {
 		final Module module = getContainingModule(astNode);
 
 		return module.eResource().getURI().toString().substring(AcceleoParser.ACCELEOENV_URI_PROTOCOL
-				.length()) + " L" + module.getAst().getStartLine(astNode);
+				.length()) + " L" + (module.getAst().getStartLine(astNode) + 1);
 	}
 
 	/**
@@ -509,6 +514,39 @@ public final class AcceleoUtil {
 	}
 
 	/**
+	 * Registers {@link EPackage} needed to launch the given main {@link Module} to the given
+	 * {@link IQualifiedNameQueryEnvironment}.
+	 * 
+	 * @param environment
+	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param main
+	 *            the main {@link Module}
+	 */
+	public static void registerEPackage(IQualifiedNameQueryEnvironment environment,
+			IQualifiedNameResolver resolver, Module main) {
+		for (EPackage ePkg : AcceleoUtil.getAllNeededEPackages(resolver, main)) {
+			registerEPackage(environment, ePkg);
+		}
+	}
+
+	/**
+	 * Registers the given {@link EPackage} in the given {@link IQualifiedNameQueryEnvironment} recursively.
+	 * 
+	 * @param environment
+	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param ePackage
+	 *            the {@link EPackage}
+	 */
+	private static void registerEPackage(IQualifiedNameQueryEnvironment environment, EPackage ePackage) {
+		environment.registerEPackage(ePackage);
+		for (EPackage child : ePackage.getESubpackages()) {
+			registerEPackage(environment, child);
+		}
+	}
+
+	/**
 	 * Cleans the services for the given Acceleo {@link IReadOnlyQueryEnvironment}.
 	 * 
 	 * @param queryEnvironment
@@ -548,6 +586,69 @@ public final class AcceleoUtil {
 			}
 		} else {
 			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Set} of all needed {@link Module} for the given {@link Module} and its direct and
+	 * indirect extends and imports in the given {@link IQualifiedNameResolver}.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param module
+	 *            the {@link Module}
+	 * @return the {@link Set} of all needed {@link Module} for the given {@link Module} and its direct and
+	 *         indirect extends and imports in the given {@link IQualifiedNameResolver}.
+	 */
+	public static Set<Module> getAllNeededModules(IQualifiedNameResolver resolver, Module module) {
+		final Set<Module> res = new LinkedHashSet<>();
+
+		Set<Module> currentModules = new LinkedHashSet<>();
+		res.add(module);
+		currentModules.add(module);
+		do {
+			final Set<Module> addedModules = new LinkedHashSet<>();
+			for (Module currentModule : currentModules) {
+				final ModuleReference extds = currentModule.getExtends();
+				if (extds != null) {
+					Object resolved = resolver.resolve(extds.getQualifiedName());
+					if (resolved instanceof Module && res.add(currentModule)) {
+						addedModules.add((Module)resolved);
+					}
+				}
+				for (Import imprt : currentModule.getImports()) {
+					final Object resolved = resolver.resolve(imprt.getModule().getQualifiedName());
+					if (resolved instanceof Module && res.add(currentModule)) {
+						addedModules.add((Module)resolved);
+					}
+				}
+			}
+			currentModules = addedModules;
+		} while (!currentModules.isEmpty());
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Set} all {@link EPackage} used by the given {@link Module} and direct and indirect
+	 * {@link Module} dependencies.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param module
+	 *            the {@link Module}
+	 * @return the {@link Set} all {@link EPackage} used by the given {@link Module} and direct and indirect
+	 *         {@link Module} dependencies.
+	 */
+	public static Set<EPackage> getAllNeededEPackages(IQualifiedNameResolver resolver, Module module) {
+		final Set<EPackage> res = new LinkedHashSet<>();
+
+		for (Module mod : getAllNeededModules(resolver, module)) {
+			for (Metamodel medamodel : mod.getMetamodels()) {
+				res.add(medamodel.getReferencedPackage());
+			}
 		}
 
 		return res;

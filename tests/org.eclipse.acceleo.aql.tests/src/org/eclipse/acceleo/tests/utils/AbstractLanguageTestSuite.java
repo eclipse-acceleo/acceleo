@@ -247,6 +247,7 @@ public abstract class AbstractLanguageTestSuite {
 		final Object resolved = resolver.resolve(qualifiedName);
 		if (resolved instanceof Module) {
 			astResult = ((Module)resolved).getAst();
+			AcceleoUtil.registerEPackage(queryEnvironment, resolver, (Module)resolved);
 		} else {
 			astResult = null;
 		}
@@ -254,6 +255,8 @@ public abstract class AbstractLanguageTestSuite {
 		final Object resolvedWindowsEndLine = resolverWindowsEndLine.resolve(qualifiedName);
 		if (resolvedWindowsEndLine instanceof Module) {
 			astResultWindowsEndLine = ((Module)resolvedWindowsEndLine).getAst();
+			AcceleoUtil.registerEPackage(queryEnvironmentWindowsEndLine, resolverWindowsEndLine,
+					(Module)resolvedWindowsEndLine);
 		} else {
 			astResultWindowsEndLine = null;
 		}

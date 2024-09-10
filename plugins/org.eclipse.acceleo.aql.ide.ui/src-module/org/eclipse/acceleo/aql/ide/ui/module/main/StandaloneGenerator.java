@@ -122,6 +122,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 		final IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);
 
 		final Module module = (Module)resolver.resolve(moduleQualifiedName);
+		AcceleoUtil.registerEPackage(queryEnvironment, resolver, module);
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
 		final IQualifiedNameResolver workspaceResolver = QueryPlugin.getPlugin().createQualifiedNameResolver(

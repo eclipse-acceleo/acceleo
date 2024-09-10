@@ -30,6 +30,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
@@ -150,6 +151,11 @@ public class CompletionTests {
 			final AcceleoAstResult parsingResult = parser.parse(source, null,
 					"org::eclipse::acceleo::tests::");
 			final Module module = parsingResult.getModule();
+			for (Metamodel metamodel : module.getMetamodels()) {
+				if (metamodel.getReferencedPackage() != null) {
+					queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
+				}
+			}
 			resolver.register("org::eclipse::acceleo::tests::" + MODULE_NAME, module);
 			final List<AcceleoCompletionProposal> completionProposals = completor.getProposals(
 					queryEnvironment, MODULE_NAME, source, position);
