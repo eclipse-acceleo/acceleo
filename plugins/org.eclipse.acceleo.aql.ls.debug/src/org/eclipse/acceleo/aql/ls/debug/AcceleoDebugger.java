@@ -500,8 +500,14 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final ArrayList<Exception> exceptions = new ArrayList<>();
 		resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this, new ResourceSetImpl(),
 				options);
-		// TODO report exceptions
-		model = resourceSetForModels.getResource(modelURI, true);
+		for (Exception exception : exceptions) {
+			consolePrint(exception.getMessage());
+		}
+		try {
+			model = resourceSetForModels.getResource(modelURI, true);
+		} catch (Exception e) {
+			consolePrint(e.getMessage());
+		}
 		queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels,
 				false);
 
