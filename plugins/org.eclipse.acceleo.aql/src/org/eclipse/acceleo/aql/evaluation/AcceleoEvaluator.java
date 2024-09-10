@@ -1101,6 +1101,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 * @return the {@link GenerationResult}
 	 */
 	public GenerationResult getGenerationResult() {
+		if (generationResult == null) {
+			generationResult = new GenerationResult();
+		}
 		return generationResult;
 	}
 
