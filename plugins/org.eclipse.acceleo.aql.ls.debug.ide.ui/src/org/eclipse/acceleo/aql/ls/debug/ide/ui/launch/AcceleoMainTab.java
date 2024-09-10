@@ -466,8 +466,19 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private void handleWorkspaceDestinationButton() {
-		final AbstractResourceSelectionDialog dialog = new FolderSelectionDialog(getShell(),
-				"Select the destination folder", destination);
+		final AbstractResourceSelectionDialog dialog;
+		if (destination != null) {
+			final IResource workspaceResource = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(
+					destination));
+			if (workspaceResource != null) {
+				dialog = new FolderSelectionDialog(getShell(), "Select the destination folder", destination);
+			} else {
+				dialog = new FolderSelectionDialog(getShell(), "Select the destination folder", null);
+			}
+		} else {
+			dialog = new FolderSelectionDialog(getShell(), "Select the destination folder", null);
+		}
+
 		final int dialogResult = dialog.open();
 		if ((dialogResult == IDialogConstants.OK_ID) && dialog.getFileName() != null && !dialog.getFileName()
 				.isEmpty()) {
