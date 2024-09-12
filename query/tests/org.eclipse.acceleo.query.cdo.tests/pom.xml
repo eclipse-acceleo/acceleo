@@ -16,12 +16,12 @@
     <parent>
         <groupId>org.eclipse.acceleo</groupId>
         <artifactId>org.eclipse.acceleo-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.1-SNAPSHOT</version>
         <relativePath>../../..</relativePath>
     </parent>
 
     <artifactId>org.eclipse.acceleo.query.cdo.tests</artifactId>
-    <version>8.0.2</version>
+    <version>8.0.3-SNAPSHOT</version>
     <packaging>eclipse-test-plugin</packaging>  
 
     <build>

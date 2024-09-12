@@ -16,24 +16,24 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
   <artifactId>acceleo</artifactId>
-  <version>4.0.0</version>
+  <version>4.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>  
 
   <dependencies>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>aql</artifactId>
-      <version>8.0.2</version>
+      <version>8.0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>org.eclipse.acceleo.aql</artifactId>
-      <version>4.0.0</version>
+      <version>4.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
