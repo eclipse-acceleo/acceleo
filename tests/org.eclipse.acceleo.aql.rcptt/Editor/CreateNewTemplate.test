@@ -6,7 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _CxR7IMEfEeqjcPTfvO5d8Q
-Save-Time: 5/26/21 2:40 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 9/12/24, 3:22 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -24,6 +25,6 @@ with [get-editor "test.mtl" | get-text-viewer] {
 }
 get-editor "test.mtl" | get-text-viewer | get-property "getSelectionText()" 
     | equals "[template public myTemplate(myParameter : MyParameterType)]\n"
-    + "\\9My template with a static text.\n"
+    + "  My template with a static text.\n"
     + "[/template]" | verify-true
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
