@@ -7,6 +7,8 @@ Note that you can also use the <<_debugger>> to run a module or directly use Acc
 [IMPORTANT] 
 ====
 Use a *Java Project* and the classical *Java Perspective* for writing your Acceleo templates `.mtl` in the *src* folder.
+
+You will also need to deploy your metamodels plugins in the running Eclipse and the metamodel projects should not be opened in the current workspace. If you are developing your metamodels or use a target platform, you will need to launch an https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Flaunchers%2Feclipse_application_launcher.htm[Eclipse runtime].
 ====
 
 In order to launch an Acceleo generator, you just have to right-click on your main module and use the *Run As* menu.

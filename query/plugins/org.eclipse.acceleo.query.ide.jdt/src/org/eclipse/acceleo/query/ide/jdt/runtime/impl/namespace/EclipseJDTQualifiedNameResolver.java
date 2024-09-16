@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -39,13 +40,60 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.container.Module;
+import org.osgi.framework.Bundle;
 
 /**
- * Eclipse JDT {@link ClassLoaderQualifiedNameResolver}.
+ * Eclipse JDT {@link ClassLoaderQualifiedNameResolver}. NOTE: when {@link #forWorkspace} is
+ * <code>false</code>, metamodels OSGi bundles need to be deployed in the running Eclipse and not present in
+ * the current workspace.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameResolver {
+
+	/**
+	 * A {@link ClassLoader} that delegate to the given array of dependency {@link Bundle} before
+	 * {@link #findClass(String) finding a Class}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class BundleDelegatingClassLoader extends URLClassLoader {
+
+		/**
+		 * The array of dependency {@link Bundle}
+		 */
+		private final Bundle[] dependencyBundles;
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param urls
+		 *            the array of {@link URL}
+		 * @param parent
+		 *            the parent {@link ClassLoader}
+		 * @param dependencyBundles
+		 *            the array of dependency {@link Bundle}
+		 */
+		private BundleDelegatingClassLoader(URL[] urls, ClassLoader parent, Bundle[] dependencyBundles) {
+			super(urls, parent);
+			this.dependencyBundles = dependencyBundles;
+		}
+
+		@Override
+		protected Class<?> findClass(String name) throws ClassNotFoundException {
+			for (Bundle bundle : dependencyBundles) {
+				try {
+					final Class<?> cls = bundle.loadClass(name);
+					if (cls != null) {
+						return cls;
+					}
+				} catch (ClassNotFoundException e) {
+					// nothing to do here
+				}
+			}
+			return super.findClass(name);
+		}
+	}
 
 	/**
 	 * The {@link IJavaProject}.
@@ -57,6 +105,9 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 	 */
 	private final boolean forWorkspace;
 
+	/**
+	 * Dependency project entries {@link URI}.
+	 */
 	private final URI[] dependencyProjectEntries;
 
 	/**
@@ -83,8 +134,8 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 		final List<URI> uriList = new ArrayList<>();
 		for (String entry : dependencyProjectEntries) {
 			final IPath path = new Path(entry);
-			final URI urli = path.toFile().toURI();
-			uriList.add(urli);
+			final URI uri = path.toFile().toURI();
+			uriList.add(uri);
 		}
 		this.dependencyProjectEntries = uriList.toArray(new URI[uriList.size()]);
 	}
@@ -110,16 +161,23 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 			final IJavaProject javaProject = JavaCore.create(project);
 			if (javaProject != null && javaProject.exists()) {
 				try {
+					final List<Bundle> dependencyBundlesList = new ArrayList<>();
 					final String[] classPathEntries = getClassPathes(javaProject, forWorspace,
-							dependencyProjectEntries);
+							dependencyProjectEntries, dependencyBundlesList);
 					final List<URL> urlList = new ArrayList<URL>();
 					for (String entry : classPathEntries) {
 						final IPath path = new Path(entry);
 						final URL url = path.toFile().toURI().toURL();
 						urlList.add(url);
 					}
-					final URL[] urls = (URL[])urlList.toArray(new URL[urlList.size()]);
-					res = new URLClassLoader(urls, classLoader);
+					final URL[] urls = urlList.toArray(new URL[urlList.size()]);
+					if (forWorspace) {
+						res = new URLClassLoader(urls, classLoader);
+					} else {
+						final Bundle[] dependencyBundles = dependencyBundlesList.toArray(
+								new Bundle[dependencyBundlesList.size()]);
+						res = new BundleDelegatingClassLoader(urls, classLoader, dependencyBundles);
+					}
 				} catch (CoreException e) {
 					Activator.getPlugin().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 							EclipseQualifiedNameResolver.CAN_T_LOAD_FROM_WORKSPACE, e));
@@ -141,7 +199,7 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 
 	// copied from JavaRuntime.computeDefaultRuntimeClassPath()
 	private static String[] getClassPathes(IJavaProject javaProject, boolean forWorkspace,
-			List<String> dependencyProjectEntries) throws CoreException {
+			List<String> dependencyProjectEntries, List<Bundle> dependencyBundlesList) throws CoreException {
 		IRuntimeClasspathEntry[] unresolved = JavaRuntime.computeUnresolvedRuntimeClasspath(javaProject);
 
 		// 1. remove bootpath entries
@@ -155,10 +213,19 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 				for (int j = 0; j < entries.length; j++) {
 					String location = entries[j].getLocation();
 					if (location != null) {
-						if (isDependencyProjectEntry(javaProject, forWorkspace, entries[j])) {
-							dependencyProjectEntries.add(location);
+						if (forWorkspace) {
+							if (isDependencyProjectEntry(javaProject, entries[j])) {
+								dependencyProjectEntries.add(location);
+							}
+							resolved.add(location);
+						} else {
+							final Bundle bundle = getBundle(location);
+							if (bundle != null) {
+								dependencyBundlesList.add(bundle);
+							} else {
+								resolved.add(location);
+							}
 						}
-						resolved.add(location);
 					}
 				}
 			}
@@ -169,36 +236,66 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 	}
 
 	/**
+	 * Gets the {@link Bundle} for the given location.
+	 * 
+	 * @param location
+	 *            the {@link URL}
+	 * @return the {@link Bundle} for the given location if any, <code>null</code> otherwise
+	 */
+	private static Bundle getBundle(String location) {
+		final Bundle res;
+
+		final String symbolicName = getBundleSymbolicName(location);
+		if (symbolicName != null) {
+			res = Platform.getBundle(symbolicName);
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Bundle} {@link Bundle#getSymbolicName() symbolic name} for the given location.
+	 * 
+	 * @param location
+	 *            the {@link URL}
+	 * @return the {@link Bundle} {@link Bundle#getSymbolicName() symbolic name} for the given location
+	 */
+	private static String getBundleSymbolicName(String location) {
+		final String res;
+
+		final String[] segments = location.replace("\\", "/").split("/");
+		final String lastSegment = segments[segments.length - 1];
+		res = lastSegment.split("_")[0];
+
+		return res;
+	}
+
+	/**
 	 * Tells if the given {@link IRuntimeClasspathEntry} if from a project we depend on.
 	 * 
 	 * @param javaProject
 	 *            the current {@link IJavaProject}
-	 * @param forWorspace
-	 *            <code>true</code> for workspace use, local project resolution only
 	 * @param entry
 	 *            the {@link IRuntimeClasspathEntry}
 	 * @return <code>true</code> if the given {@link IRuntimeClasspathEntry} if from a project we depend on,
 	 *         <code>false</code> otherwise
 	 */
-	private static boolean isDependencyProjectEntry(IJavaProject javaProject, boolean forWorkspace,
-			IRuntimeClasspathEntry entry) {
+	private static boolean isDependencyProjectEntry(IJavaProject javaProject, IRuntimeClasspathEntry entry) {
 		final boolean res;
 
-		if (forWorkspace) {
-			if (entry.getType() == IRuntimeClasspathEntry.PROJECT && javaProject.getProject() != entry
-					.getResource()) {
+		if (entry.getType() == IRuntimeClasspathEntry.PROJECT && javaProject.getProject() != entry
+				.getResource()) {
+			res = true;
+		} else {
+			final IResource entryResource = entry.getResource();
+			if (entryResource != null && entryResource.exists() && entryResource.getProject() != null
+					&& !entryResource.getProject().equals(javaProject.getProject())) {
 				res = true;
 			} else {
-				final IResource entryResource = entry.getResource();
-				if (entryResource != null && entryResource.exists() && entryResource.getProject() != null
-						&& !entryResource.getProject().equals(javaProject.getProject())) {
-					res = true;
-				} else {
-					res = false;
-				}
+				res = false;
 			}
-		} else {
-			res = false;
 		}
 
 		return res;
@@ -215,6 +312,7 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 			// we perform a dummy registration to prevent further loading
 			dummyRegistration(qualifiedName);
 		}
+
 		return res;
 	}
 
