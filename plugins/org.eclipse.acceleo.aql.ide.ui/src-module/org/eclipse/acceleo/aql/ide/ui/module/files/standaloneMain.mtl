@@ -39,8 +39,8 @@
       import org.eclipse.acceleo.OpenModeKind;
       import org.eclipse.acceleo.Template;
       import org.eclipse.acceleo.aql.AcceleoUtil;
-      import org.eclipse.acceleo.query.ast.ASTNode;
       import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+      import org.eclipse.acceleo.aql.evaluation.AcceleoProfilerEvaluator;
       import org.eclipse.acceleo.aql.evaluation.GenerationResult;
       import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
       import org.eclipse.acceleo.aql.evaluation.strategy.DefaultWriterFactory;
@@ -48,18 +48,22 @@
       import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
       import org.eclipse.acceleo.aql.parser.AcceleoParser;
       import org.eclipse.acceleo.aql.parser.ModuleLoader;
+      import org.eclipse.acceleo.aql.profiler.IProfiler;
+      import org.eclipse.acceleo.aql.profiler.ProfileResource;
       import org.eclipse.acceleo.query.AQLUtils;
+      import org.eclipse.acceleo.query.ast.ASTNode;
       import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
       import org.eclipse.acceleo.query.ast.TypeLiteral;
       import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
       import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
       import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
       import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+      import org.eclipse.acceleo.query.services.ResourceServices;
+      import org.eclipse.emf.common.util.BasicDiagnostic;
       import org.eclipse.emf.common.util.Diagnostic;
       import org.eclipse.emf.common.util.URI;
       import org.eclipse.emf.ecore.EClass;
       import org.eclipse.emf.ecore.EObject;
-      import org.eclipse.emf.ecore.EPackage;
       import org.eclipse.emf.ecore.resource.Resource;
       import org.eclipse.emf.ecore.resource.ResourceSet;
       import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -163,7 +167,7 @@
     		final IQualifiedNameResolver resolver = createResolver();
     		final IQualifiedNameQueryEnvironment queryEnvironment = createAcceleoQueryEnvironment(options,
     				resolver, resourceSetForModels);
-    		AcceleoEvaluator evaluator = createAcceleoEvaluator(resolver, queryEnvironment);
+    		AcceleoEvaluator evaluator = createAcceleoEvaluator(targetURI, resolver, queryEnvironment);
     		final IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);
 
     		final Module module = (Module)resolver.resolve(moduleQualifiedName);
@@ -188,6 +192,18 @@
     				}
     			}
     		} finally {
+    			if (evaluator instanceof AcceleoProfilerEvaluator) {
+    				IProfiler profiler = ((AcceleoProfilerEvaluator)evaluator).getProfiler();
+    				ProfileResource profileResource = profiler.getResource();
+    				profileResource.setStartResource(resolver.getSourceURI(moduleQualifiedName).toString());
+    				try {
+    					profiler.save(URI.createURI(targetURI.toString() + "/" + module.getName() + ".mtlp"));
+    				} catch (IOException e) {
+    					final Diagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, getClass()
+    							.getCanonicalName(), 0, e.getMessage(), new Object['['/]] {e });
+    					evaluator.getGenerationResult().addDiagnostic(diagnostic);
+    				}
+    			}
     			AQLUtils.cleanResourceSetForModels(generationKey, resourceSetForModels);
     			AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
     			printDiagnostics(evaluator.getGenerationResult());
@@ -366,6 +382,8 @@
     	/**
     	 * Creates the {@link AcceleoEvaluator}
     	 * 
+    	 * @param targetURI
+    	 *            the target {@link URI}
     	 * @param resolver
     	 *            the {@link IQualifiedNameResolver}
     	 * @param queryEnvironment
@@ -373,10 +391,18 @@
     	 * @return the created {@link AcceleoEvaluator}
     	 * @generated
     	 */
-    	protected AcceleoEvaluator createAcceleoEvaluator(IQualifiedNameResolver resolver,
+    	protected AcceleoEvaluator createAcceleoEvaluator(URI targetURI, IQualifiedNameResolver resolver,
     			IQualifiedNameQueryEnvironment queryEnvironment) {
     		AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), System
     				.lineSeparator());
+
+    		// final Representation profilerModelRepresentation = Representation.TREE;
+    		// final IProfiler profiler = ProfilerUtils.getProfiler(getModuleQualifiedName(),
+    		// profilerModelRepresentation, ProfilerPackage.eINSTANCE.getProfilerFactory());
+    		// AcceleoEvaluator evaluator = new AcceleoProfilerEvaluator(queryEnvironment.getLookupEngine(),
+    		// System
+    		// .lineSeparator(), profiler);
+
     		resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
     		resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 

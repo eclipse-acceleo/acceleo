@@ -5,11 +5,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ls.debug;
+package org.eclipse.acceleo.aql.evaluation;
 
-import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.profiler.IProfiler;
-import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -22,21 +21,21 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	/**
 	 * The Acceleo Profiler.
 	 */
-	private IProfiler profiler;
+	private final IProfiler profiler;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param queryEnvironment
-	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
 	 * @param newLine
 	 *            the new line {@link String}
 	 * @param profiler
 	 *            the {@link IProfiler}
 	 */
-	public AcceleoProfilerEvaluator(IQualifiedNameQueryEnvironment queryEnvironment, String newLine,
+	public AcceleoProfilerEvaluator(IQualifiedNameLookupEngine lookupEngine, String newLine,
 			IProfiler profiler) {
-		super(queryEnvironment.getLookupEngine(), newLine);
+		super(lookupEngine, newLine);
 		this.profiler = profiler;
 	}
 
@@ -48,9 +47,20 @@ public class AcceleoProfilerEvaluator extends AcceleoEvaluator {
 	@Override
 	public Object doSwitch(EObject eObject) {
 		profiler.start(eObject);
-		Object res = super.doSwitch(eObject);
-		profiler.stop();
-		return res;
+		try {
+			return super.doSwitch(eObject);
+		} finally {
+			profiler.stop();
+		}
+	}
+
+	/**
+	 * Gets the attached {@link IProfiler}.
+	 * 
+	 * @return the attached {@link IProfiler}
+	 */
+	public IProfiler getProfiler() {
+		return profiler;
 	}
 
 }

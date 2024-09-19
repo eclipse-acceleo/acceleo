@@ -45,6 +45,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -468,17 +469,32 @@ public final class ProfilerEditor extends EcoreEditor {
 
 		createModel();
 		final URI startURI = URI.createURI(getProfileResource().getStartResource(), true);
-		final IFile startFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(startURI
-				.toPlatformString(true)));
-		final IProject project = startFile.getProject();
-		acceleoEnvResourceFactory = new AcceleoEnvResourceFactory(project);
-		getEditingDomain().getResourceSet().getResourceFactoryRegistry().getProtocolToFactoryMap().put(
-				"acceleoenv", acceleoEnvResourceFactory); //$NON-NLS-1$
+		final IFile startFile;
+		if (startURI.isPlatformResource()) {
+			startFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(startURI.toPlatformString(
+					true)));
+		} else {
+			final java.net.URI uri = java.net.URI.create(startURI.toString());
+			final IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(uri);
+			if (files.length != 0) {
+				startFile = files[0];
+			} else {
+				MessageDialog.openError(getEditorSite().getShell(), "Error",
+						"Couldn't find workspace file for: " + startURI);
+				startFile = null;
+			}
+		}
+		if (startFile != null) {
+			final IProject project = startFile.getProject();
+			acceleoEnvResourceFactory = new AcceleoEnvResourceFactory(project);
+			getEditingDomain().getResourceSet().getResourceFactoryRegistry().getProtocolToFactoryMap().put(
+					"acceleoenv", acceleoEnvResourceFactory); //$NON-NLS-1$
+		}
 	}
 
 	private CoverageHelper getCoverageHelper() {
 		if (coverageHelper == null) {
-			coverageHelper = new CoverageHelper(getProfileResource(), acceleoEnvResourceFactory);
+			coverageHelper = new CoverageHelper(getProfileResource());
 		}
 		return coverageHelper;
 	}
@@ -495,8 +511,8 @@ public final class ProfilerEditor extends EcoreEditor {
 
 	private void selectInEditor(AcceleoASTNode astNode) throws PartInitException, URISyntaxException {
 		Resource eResource = astNode.eResource();
-		if (eResource != null && !eResource.getContents().isEmpty() && eResource.getContents().get(
-				0) instanceof Module) {
+		if (acceleoEnvResourceFactory != null && eResource != null && !eResource.getContents().isEmpty()
+				&& eResource.getContents().get(0) instanceof Module) {
 			org.eclipse.acceleo.Module module = (org.eclipse.acceleo.Module)eResource.getContents().get(0);
 			IFile sourceFile = acceleoEnvResourceFactory.getSourceFile(module);
 			if (sourceFile != null) {
@@ -525,7 +541,9 @@ public final class ProfilerEditor extends EcoreEditor {
 	protected void handleChangedResources() {
 		if (changedResources.contains(getProfileResource().eResource())) {
 			// We reinit the module resolver
-			acceleoEnvResourceFactory.init();
+			if (acceleoEnvResourceFactory != null) {
+				acceleoEnvResourceFactory.init();
+			}
 
 			// We remove all module resources to force their reloading
 			List<Resource> moduleResources = new ArrayList<Resource>();
@@ -553,7 +571,9 @@ public final class ProfilerEditor extends EcoreEditor {
 	 */
 	@Override
 	public void dispose() {
-		acceleoEnvResourceFactory.dispose();
+		if (acceleoEnvResourceFactory != null) {
+			acceleoEnvResourceFactory.dispose();
+		}
 		if (coverageHelper != null) {
 			coverageHelper.clearAnnotations();
 		}

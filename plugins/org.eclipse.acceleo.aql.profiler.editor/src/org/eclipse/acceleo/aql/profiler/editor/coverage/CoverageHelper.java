@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Huawei.
+ * Copyright (c) 2020, 2024 Huawei.
  * All rights reserved.
  * 
  * Contributors:
@@ -24,7 +24,6 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.profiler.ProfileEntry;
 import org.eclipse.acceleo.aql.profiler.ProfileResource;
-import org.eclipse.acceleo.aql.profiler.editor.AcceleoEnvResourceFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -80,10 +79,8 @@ public class CoverageHelper {
 	 * 
 	 * @param profileResource
 	 *            the profile resource
-	 * @param resourceFactory
-	 *            the resource factory
 	 */
-	public CoverageHelper(ProfileResource profileResource, AcceleoEnvResourceFactory resourceFactory) {
+	public CoverageHelper(ProfileResource profileResource) {
 		super();
 		this.profileResource = profileResource;
 		this.textEditors = new HashSet<>();

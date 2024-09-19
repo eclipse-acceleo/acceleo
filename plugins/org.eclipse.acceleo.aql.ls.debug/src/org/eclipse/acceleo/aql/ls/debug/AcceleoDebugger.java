@@ -37,6 +37,7 @@ import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.evaluation.AcceleoProfilerEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
@@ -546,7 +547,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 			final URI startFileURI = URI.createPlatformResourceURI(workspaceModuleFilePath, true);
 			profiler = ProfilerUtils.getProfiler(startFileURI.toString(), profilerModelRepresentation,
 					ProfilerPackage.eINSTANCE.getProfilerFactory());
-			noDebugEvaluator = new AcceleoProfilerEvaluator(queryEnvironment, newLine, profiler);
+			noDebugEvaluator = new AcceleoProfilerEvaluator(environment.getLookupEngine(), newLine, profiler);
 		} else {
 			noDebugEvaluator = new AcceleoEvaluator(environment.getLookupEngine(), newLine);
 			profiler = null;
