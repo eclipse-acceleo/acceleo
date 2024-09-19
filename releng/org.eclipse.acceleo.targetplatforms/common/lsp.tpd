@@ -4,7 +4,7 @@ include "orbit.tpd"
 
 with requirements
 
-location "https://download.eclipse.org/lsp4e/releases/0.25.0/" {
+location "https://download.eclipse.org/lsp4e/releases/0.26.4/" {
 	org.eclipse.lsp4j lazy
 	org.eclipse.lsp4j.debug lazy
 	org.eclipse.lsp4j.jsonrpc lazy
@@ -15,6 +15,6 @@ location "https://download.eclipse.org/lsp4e/releases/0.25.0/" {
 	a.jre.javase lazy
 }
 
-location "https://download.eclipse.org/mylyn/docs/releases/3.0.48/" {
+location "https://download.eclipse.org/mylyn/updates/release/4.4.0/" {
 	org.eclipse.mylyn.wikitext.markdown lazy
 }
