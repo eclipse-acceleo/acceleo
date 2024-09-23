@@ -130,6 +130,8 @@
     <module>tests/org.eclipse.acceleo.aql.tests</module>
     <module>plugins/org.eclipse.acceleo.aql.ls</module>
     <module>plugins/org.eclipse.acceleo.aql.tm</module>
+    <!-- the TM tests freeze when ran using Tycho --> 
+    <!--module>tests/org.eclipse.acceleo.aql.tm.tests</module-->
     <module>plugins/org.eclipse.acceleo.aql.doc</module>
     <module>plugins/org.eclipse.acceleo.aql.ide</module>
     <module>plugins/org.eclipse.acceleo.aql.ide.ui</module>

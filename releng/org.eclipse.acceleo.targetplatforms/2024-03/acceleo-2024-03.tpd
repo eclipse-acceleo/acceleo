@@ -8,7 +8,7 @@ include "../common/cdo.tpd"
 
 with requirements
 
-location Eclipse_2024-03 "https://download.eclipse.org/releases/2024-03" {
+location Eclipse_2024-03 "https://download.eclipse.org/releases/2024-06" {
 	org.eclipse.sdk.feature.group lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
@@ -30,4 +30,8 @@ location Eclipse_2024-03 "https://download.eclipse.org/releases/2024-03" {
 	org.eclipse.tm4e.core lazy
 	org.eclipse.tm4e.ui lazy
 	org.eclipse.tm4e.languageconfiguration lazy
+}
+
+location Eclipse_4.31_2024-03 "https://download.eclipse.org/eclipse/updates/4.31/" {
+	org.eclipse.ui.tests.harness lazy
 }

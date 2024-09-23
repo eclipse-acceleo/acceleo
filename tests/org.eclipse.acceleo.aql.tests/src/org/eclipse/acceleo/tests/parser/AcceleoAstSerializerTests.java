@@ -78,7 +78,7 @@ public class AcceleoAstSerializerTests {
 	public AcceleoAstSerializerTests(String modulePath) throws FileNotFoundException, IOException {
 		this.modulePath = modulePath;
 		EcorePackage.eINSTANCE.getName(); // initialize Ecore package
-		GenModelPackage.eINSTANCE.getName();
+		GenModelPackage.eINSTANCE.getName(); // initialize GenModel package
 		AcceleoParser parser = new AcceleoParser();
 		final String encoding;
 		try (InputStream stream = new FileInputStream(ROOT + File.separator + modulePath)) {
@@ -112,7 +112,6 @@ public class AcceleoAstSerializerTests {
 			final String expectedSerializedModule = AcceleoUtil.getContent(stream, ast.getModule()
 					.getEncoding());
 			assertEquals(expectedSerializedModule, actualSerializedModule);
-			stream.close();
 		}
 	}
 

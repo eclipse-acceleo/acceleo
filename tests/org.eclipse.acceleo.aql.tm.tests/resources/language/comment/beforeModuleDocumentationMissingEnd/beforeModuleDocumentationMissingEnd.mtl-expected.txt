@@ -1,0 +1,1 @@
+[StyleRange {0, 125, fontStyle=normal, foreground=Color {147, 161, 161, 255}}, StyleRange {125, 7, fontStyle=normal, foreground=Color {133, 153, 0, 255}}, StyleRange {132, 36, fontStyle=normal, foreground=Color {38, 139, 210, 255}}, StyleRange {168, 43, fontStyle=normal, foreground=Color {133, 153, 0, 255}}]
