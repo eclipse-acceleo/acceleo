@@ -1011,7 +1011,7 @@
 		},
 		"statement-expression-tag-close": {
 			"name": "keyword.other.statement.expression.acceleo",
-			"match": "/\\]\\[(?!/)"
+			"match": "/\\]\\[(?!(/|file|for|if|elseif|else|let|protected))"
 		},
 		"statement-expression-tag-double": {
 			"name": "keyword.other.statement.expression.acceleo",
