@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -30,6 +30,7 @@ import org.eclipse.acceleo.ErrorForStatement;
 import org.eclipse.acceleo.ErrorIfStatement;
 import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
 import org.eclipse.acceleo.ErrorModuleDocumentation;
@@ -378,6 +379,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseNewLineStatement(NewLineStatement object) {
 			return createNewLineStatementAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorMargin(ErrorMargin object) {
+			return createErrorMarginAdapter();
 		}
 
 		@Override
@@ -1135,6 +1141,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createNewLineStatementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorMargin <em>Error
+	 * Margin</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+	 * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorMargin
+	 * @generated
+	 */
+	public Adapter createErrorMarginAdapter() {
 		return null;
 	}
 

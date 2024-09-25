@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -30,6 +30,7 @@ import org.eclipse.acceleo.ErrorForStatement;
 import org.eclipse.acceleo.ErrorIfStatement;
 import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
 import org.eclipse.acceleo.ErrorModuleDocumentation;
@@ -918,6 +919,25 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_MARGIN: {
+				ErrorMargin errorMargin = (ErrorMargin)theEObject;
+				T result = caseErrorMargin(errorMargin);
+				if (result == null)
+					result = caseError(errorMargin);
+				if (result == null)
+					result = caseTextStatement(errorMargin);
+				if (result == null)
+					result = caseLeafStatement(errorMargin);
+				if (result == null)
+					result = caseASTNode(errorMargin);
+				if (result == null)
+					result = caseStatement(errorMargin);
+				if (result == null)
+					result = caseAcceleoASTNode(errorMargin);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			default:
 				return defaultCase(theEObject);
 		}
@@ -1702,6 +1722,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseNewLineStatement(NewLineStatement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Margin</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Margin</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorMargin(ErrorMargin object) {
 		return null;
 	}
 

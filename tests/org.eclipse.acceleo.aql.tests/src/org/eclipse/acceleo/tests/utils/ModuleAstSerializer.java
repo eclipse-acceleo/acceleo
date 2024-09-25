@@ -28,6 +28,7 @@ import org.eclipse.acceleo.ErrorForStatement;
 import org.eclipse.acceleo.ErrorIfStatement;
 import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
 import org.eclipse.acceleo.ErrorProtectedArea;
@@ -1032,6 +1033,14 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append(" (" + ast.getStartPosition(node));
 		builder.append("..");
 		builder.append(ast.getEndPosition(node) + ")");
+
+		return null;
+	}
+
+	@Override
+	public Void caseErrorMargin(ErrorMargin errorMargin) {
+		builder.append("*** error margin ***");
+
 		return null;
 	}
 

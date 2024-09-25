@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -404,6 +404,14 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	NewLineStatement createNewLineStatement();
+
+	/**
+	 * Returns a new object of class '<em>Error Margin</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Error Margin</em>'.
+	 * @generated
+	 */
+	ErrorMargin createErrorMargin();
 
 	/**
 	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

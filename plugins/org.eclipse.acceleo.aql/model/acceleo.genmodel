@@ -242,6 +242,7 @@
     <genClasses ecoreClass="acceleo.ecore#//NewLineStatement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//NewLineStatement/indentationNeeded"/>
     </genClasses>
+    <genClasses ecoreClass="acceleo.ecore#//ErrorMargin"/>
   </genPackages>
   <genPackages prefix="Ast" ecorePackage="http://www.eclipse.org/acceleo/query/1.0#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://www.eclipse.org/acceleo/query/1.0#//CallType">

@@ -195,7 +195,6 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseDocumentation(Documentation documentation) {
-
 		builder.append(AcceleoParser.DOCUMENTATION_START);
 		doSwitch(documentation.getBody());
 		builder.append(AcceleoParser.DOCUMENTATION_END);
@@ -223,6 +222,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		if (expressionStatement.isNewLineNeeded()) {
 			insertNewLine();
 		}
+
 		return DUMMY;
 	}
 
@@ -244,6 +244,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.FILE_HEADER_END);
 		doSwitch(fileStatement.getBody());
 		builder.append(AcceleoParser.FILE_END);
+
 		return DUMMY;
 	};
 
@@ -322,6 +323,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.IMPORT_START);
 		doSwitch(imp.getModule());
 		builder.append(AcceleoParser.IMPORT_END);
+
 		return DUMMY;
 	}
 
@@ -449,6 +451,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.DOCUMENTATION_START);
 		doSwitch(moduleDocumentation.getBody());
 		builder.append(AcceleoParser.DOCUMENTATION_END);
+
 		return DUMMY;
 	}
 
@@ -457,12 +460,14 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.DOCUMENTATION_START);
 		doSwitch(moduleElementDocumentation.getBody());
 		builder.append(AcceleoParser.DOCUMENTATION_END);
+
 		return DUMMY;
 	}
 
 	@Override
 	public Object caseModuleReference(ModuleReference moduleReference) {
 		builder.append(moduleReference.getQualifiedName());
+
 		return DUMMY;
 	}
 
@@ -613,6 +618,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 			}
 		}
 		insertNewLine();
+
 		return DUMMY;
 	}
 

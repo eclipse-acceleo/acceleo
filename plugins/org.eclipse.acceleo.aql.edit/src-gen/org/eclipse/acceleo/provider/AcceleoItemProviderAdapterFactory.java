@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2023 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -1170,6 +1170,30 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all
+	 * {@link org.eclipse.acceleo.ErrorMargin} instances. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected ErrorMarginItemProvider errorMarginItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.eclipse.acceleo.ErrorMargin}. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Adapter createErrorMarginAdapter() {
+		if (errorMarginItemProvider == null) {
+			errorMarginItemProvider = new ErrorMarginItemProvider(this);
+		}
+
+		return errorMarginItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1356,6 +1380,8 @@ public class AcceleoItemProviderAdapterFactory extends AcceleoAdapterFactory
 			textStatementItemProvider.dispose();
 		if (newLineStatementItemProvider != null)
 			newLineStatementItemProvider.dispose();
+		if (errorMarginItemProvider != null)
+			errorMarginItemProvider.dispose();
 	}
 
 }
