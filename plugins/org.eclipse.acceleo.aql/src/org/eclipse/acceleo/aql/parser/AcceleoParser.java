@@ -2461,48 +2461,59 @@ public class AcceleoParser {
 		final TextStatement res;
 
 		int localStartOfText = currentPosition;
+		boolean hasMarginError = false;
 		while (localStartOfText < endOfText && columns[localStartOfText] < significantTextColumn) {
+			hasMarginError = hasMarginError || !Character.isWhitespace(text.charAt(localStartOfText));
 			localStartOfText++;
 		}
-		final int newLineLength = newLineAt(text, textLength, localStartOfText);
-		if (newLineLength != 0 && columns[localStartOfText] == significantTextColumn) {
-			final NewLineStatement newLineStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
-					.createNewLineStatement();
-			newLineStatement.setIndentationNeeded(true);
-			newLineStatement.setNewLineNeeded(true);
-			newLineStatement.setValue("");
-			currentPosition = localStartOfText + newLineLength;
-			setPositions(newLineStatement, localStartOfText, currentPosition);
-			res = newLineStatement;
-		} else if (localStartOfText < endOfText) {
-			int localEndOfText = localStartOfText;
-			while (localEndOfText < endOfText && columns[localEndOfText] >= significantTextColumn) {
-				localEndOfText++;
-			}
-			final boolean needNewLine;
-			if (columns[localEndOfText] == 0) {
-				localEndOfText = localEndOfText - 1; // remove the new line
-				needNewLine = true;
-			} else {
-				needNewLine = false;
-			}
-			final boolean isEmptyLine = columns[localStartOfText] == significantTextColumn && needNewLine;
-			if (localStartOfText < localEndOfText || isEmptyLine) {
-				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
-				res.setValue(text.substring(localStartOfText, localEndOfText));
-				res.setNewLineNeeded(needNewLine);
-				if (needNewLine) {
-					localEndOfText += newLineAt(text, textLength, localEndOfText);
+		if (hasMarginError) {
+			final String margin = text.substring(currentPosition, localStartOfText);
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorMargin();
+			res.setValue(margin.trim());
+			res.setNewLineNeeded(columns[localStartOfText] == 0);
+			setPositions(res, currentPosition, localStartOfText);
+			currentPosition = localStartOfText;
+		} else {
+			final int newLineLength = newLineAt(text, textLength, localStartOfText);
+			if (newLineLength != 0 && columns[localStartOfText] == significantTextColumn) {
+				final NewLineStatement newLineStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory()
+						.createNewLineStatement();
+				newLineStatement.setIndentationNeeded(true);
+				newLineStatement.setNewLineNeeded(true);
+				newLineStatement.setValue("");
+				currentPosition = localStartOfText + newLineLength;
+				setPositions(newLineStatement, localStartOfText, currentPosition);
+				res = newLineStatement;
+			} else if (localStartOfText < endOfText) {
+				int localEndOfText = localStartOfText;
+				while (localEndOfText < endOfText && columns[localEndOfText] >= significantTextColumn) {
+					localEndOfText++;
 				}
-				setPositions(res, localStartOfText, localEndOfText);
-				currentPosition = localEndOfText;
+				final boolean needNewLine;
+				if (columns[localEndOfText] == 0) {
+					localEndOfText = localEndOfText - 1; // remove the new line
+					needNewLine = true;
+				} else {
+					needNewLine = false;
+				}
+				final boolean isEmptyLine = columns[localStartOfText] == significantTextColumn && needNewLine;
+				if (localStartOfText < localEndOfText || isEmptyLine) {
+					res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTextStatement();
+					res.setValue(text.substring(localStartOfText, localEndOfText));
+					res.setNewLineNeeded(needNewLine);
+					if (needNewLine) {
+						localEndOfText += newLineAt(text, textLength, localEndOfText);
+					}
+					setPositions(res, localStartOfText, localEndOfText);
+					currentPosition = localEndOfText;
+				} else {
+					res = null;
+					currentPosition = localEndOfText;
+				}
 			} else {
 				res = null;
-				currentPosition = localEndOfText;
+				currentPosition = endOfText;
 			}
-		} else {
-			res = null;
-			currentPosition = endOfText;
 		}
 
 		return res;

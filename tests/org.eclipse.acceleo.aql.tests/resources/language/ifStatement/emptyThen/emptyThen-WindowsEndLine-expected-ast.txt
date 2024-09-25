@@ -5,7 +5,8 @@ module emptyThen
   
   public template test(anEClass : EClass (86..110))
     [if false (119..124) (126..126)
-    [else] (132..145)
+    [else]
+      *** error margin ***some text (newLineNeeded) (134..145) (132..145)
     [/if] (114..150)
      (newLineNeeded) (150..152) (112..152)
   [/template] (64..163) (0..163)

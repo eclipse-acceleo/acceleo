@@ -1,0 +1,3 @@
+//@moduleElements.0/@body/@statements.0/@else/@statements.0
+Indent text
+Replace file:/.../tests/org.eclipse.acceleo.aql.tests/resources/language/ifStatement/emptyThen/emptyThen.mtl [130, 4, 0, 130, 4, 0]               

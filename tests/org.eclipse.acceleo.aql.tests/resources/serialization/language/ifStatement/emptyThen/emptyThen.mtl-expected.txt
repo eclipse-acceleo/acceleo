@@ -2,5 +2,6 @@
 
 [template public test(anEClass : ecore::EClass)]
   [if (false)][else]
+                some text
               [/if]
 [/template]

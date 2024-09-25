@@ -4,5 +4,6 @@ module missingIndentation
   metamodel http://www.eclipse.org/emf/2002/Ecore (28..66)
   
   public template myTemplate(myParam : EPackage (101..126))
+    *** error margin ***so (130..132)
     me static text. (newLineNeeded) (132..149) (128..149)
   [/template] (73..160) (0..160)

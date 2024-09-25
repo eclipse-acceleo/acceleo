@@ -361,6 +361,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="indentationNeeded" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorMargin" eSuperTypes="#//Error #//TextStatement"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ASTResult" instanceClassName="org.eclipse.acceleo.query.parser.AstResult"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ModuleQualifiedName" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EDataType" name="AcceleoAstResult" instanceClassName="org.eclipse.acceleo.aql.parser.AcceleoAstResult"/>

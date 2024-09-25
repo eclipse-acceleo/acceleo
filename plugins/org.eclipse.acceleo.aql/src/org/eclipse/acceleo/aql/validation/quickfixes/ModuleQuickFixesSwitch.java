@@ -16,6 +16,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
@@ -32,6 +34,7 @@ import org.eclipse.acceleo.query.parser.quickfixes.AstTextReplacement;
 import org.eclipse.acceleo.query.parser.quickfixes.CreateResource;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
 import org.eclipse.acceleo.query.parser.quickfixes.IAstResourceChange;
+import org.eclipse.acceleo.query.parser.quickfixes.IAstTextReplacement;
 import org.eclipse.acceleo.query.parser.quickfixes.MoveResource;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
@@ -333,7 +336,7 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 		final Collection<Metamodel> metamodels = EcoreUtil.copyAll(module.getMetamodels());
 		newModule.getMetamodels().addAll(metamodels);
 		final String replacement = new AcceleoAstSerializer(newLine).serialize(newModule);
-		final AstTextReplacement contentReplacement = new AstTextReplacement(moduleURI, replacement, 0, 0, 0,
+		final IAstTextReplacement contentReplacement = new AstTextReplacement(moduleURI, replacement, 0, 0, 0,
 				0, 0, 0);
 		fix.getTextReplacements().add(contentReplacement);
 
@@ -365,11 +368,56 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 				+ AcceleoParser.QUALIFIER_SEPARATOR.length(), moduleReference.getQualifiedName().length());
 		final String replacement = "package " + packageName + ";" + newLine + newLine + "public class "
 				+ className + " {" + newLine + newLine + "}" + newLine;
-		final AstTextReplacement contentReplacement = new AstTextReplacement(classURI, replacement, 0, 0, 0,
+		final IAstTextReplacement contentReplacement = new AstTextReplacement(classURI, replacement, 0, 0, 0,
 				0, 0, 0);
 		fix.getTextReplacements().add(contentReplacement);
 
 		return fix;
+	}
+
+	@Override
+	public List<IAstQuickFix> caseErrorMargin(ErrorMargin errorMargin) {
+		final List<IAstQuickFix> res = new ArrayList<>();
+
+		final IAstQuickFix fix = new AstQuickFix("Indent text");
+		final AcceleoAstResult acceleoAstResult = validationResult.getAcceleoAstResult();
+		final int startOffset = acceleoAstResult.getStartPosition(errorMargin);
+		final int startLine = acceleoAstResult.getStartLine(errorMargin);
+		final int startColumn = acceleoAstResult.getStartColumn(errorMargin);
+		final int blockIndentationColumn = getBlockIndentationColumn(acceleoAstResult, moduleText,
+				(Block)errorMargin.eContainer());
+		final StringBuilder indentation = new StringBuilder();
+		for (int i = 0; i < blockIndentationColumn - startColumn; i++) {
+			indentation.append(" ");
+		}
+		fix.getTextReplacements().add(new AstTextReplacement(uri, indentation.toString(), startOffset,
+				startLine, startColumn, startOffset, startLine, startColumn));
+		res.add(fix);
+
+		return res;
+	}
+
+	/**
+	 * Gets the given {@link Block} indentation column.
+	 * 
+	 * @param acceleoAstResult
+	 *            the {@link AcceleoAstResult}
+	 * @param text
+	 *            the module text
+	 * @param block
+	 *            the {@link Block}
+	 * @return the given {@link Block} indentation column
+	 */
+	private int getBlockIndentationColumn(AcceleoAstResult acceleoAstResult, String text, Block block) {
+		int res = acceleoAstResult.getStartColumn(block) + AcceleoParser.INDENTATION;
+
+		int currentPosition = acceleoAstResult.getStartPosition(block);
+		while (text.charAt(currentPosition) != '[' && currentPosition > 0) {
+			currentPosition--;
+			res--;
+		}
+
+		return res;
 	}
 
 }

@@ -34,6 +34,7 @@ import org.eclipse.acceleo.ErrorForStatement;
 import org.eclipse.acceleo.ErrorIfStatement;
 import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
 import org.eclipse.acceleo.ErrorProtectedArea;
@@ -1176,6 +1177,15 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		}
 		doSwitch(fileStatement.getBody());
 
+		return RETURN_VALUE;
+	}
+
+	@Override
+	public Object caseErrorMargin(ErrorMargin errorMargin) {
+		final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+		addMessage(errorMargin, ValidationMessageLevel.ERROR, "Missing indentation before: " + errorMargin
+				.getValue(), acceleoAstResult.getStartPosition(errorMargin), acceleoAstResult.getEndPosition(
+						errorMargin));
 		return RETURN_VALUE;
 	}
 

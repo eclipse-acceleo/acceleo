@@ -1,0 +1,3 @@
+//@moduleElements.0/@body/@statements.0
+Indent text
+Replace file:/.../tests/org.eclipse.acceleo.aql.tests/resources/language/textStatement/missingIndentation/missingIndentation.mtl [127, 3, 0, 127, 3, 0]   
