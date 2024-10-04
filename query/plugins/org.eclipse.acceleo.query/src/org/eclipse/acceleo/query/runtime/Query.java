@@ -239,7 +239,11 @@ public final class Query {
 	 */
 	public static IQualifiedNameQueryEnvironment newQualifiedNameEnvironment(
 			IQualifiedNameResolver resolver) {
-		return new QualifiedNameQueryEnvironment(resolver);
+		final QualifiedNameQueryEnvironment res = new QualifiedNameQueryEnvironment(resolver);
+
+		resolver.setLookupEngine(res.getLookupEngine());
+
+		return res;
 	}
 
 }

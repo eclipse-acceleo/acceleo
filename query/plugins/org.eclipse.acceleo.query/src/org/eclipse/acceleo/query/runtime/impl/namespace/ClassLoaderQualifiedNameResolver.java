@@ -60,6 +60,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private final ClassLoader classLoader;
 
 	/**
+	 * The {@link IQualifiedNameLookupEngine}.
+	 */
+	private IQualifiedNameLookupEngine lookupEngine;
+
+	/**
 	 * The qualified name separator.
 	 */
 	private final String qualifierSeparator;
@@ -189,7 +194,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 
 		for (ILoader loader : loaders) {
 			try {
-				res = classLoader.getResource(loader.resourceName(qualifiedName)).toURI();
+				res = getClassLoader().getResource(loader.resourceName(qualifiedName)).toURI();
 			} catch (Exception e) {
 				res = null;
 			}
@@ -199,6 +204,15 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		}
 
 		return res;
+	}
+
+	/**
+	 * Gets the {@link ClassLoader}.
+	 * 
+	 * @return the {@link ClassLoader}
+	 */
+	protected ClassLoader getClassLoader() {
+		return classLoader;
 	}
 
 	@Override
@@ -311,7 +325,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 * @param object
 	 *            the {@link Object}
 	 */
-	private void register(ILoader loader, String qualifiedName, Object object) {
+	protected void register(ILoader loader, String qualifiedName, Object object) {
 		final List<String> imports = loader.getImports(object);
 		qualifiedNameToImports.put(qualifiedName, imports);
 		for (String imp : imports) {
@@ -327,7 +341,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		}
 		objectToQualifiedName.put(object, qualifiedName);
 		try {
-			final URL resource = classLoader.getResource(loader.resourceName(qualifiedName));
+			final URL resource = getClassLoader().getResource(loader.resourceName(qualifiedName));
 			// can be null for validation and completion
 			if (resource != null) {
 				objectToURI.put(object, resource.toURI());
@@ -475,7 +489,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 
 	@Override
 	public InputStream getInputStream(String resourceName) {
-		return classLoader.getResourceAsStream(resourceName);
+		return getClassLoader().getResourceAsStream(resourceName);
 	}
 
 	@Override
@@ -483,7 +497,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		Class<?> res;
 
 		try {
-			res = classLoader.loadClass(qualifiedName.replace(qualifierSeparator, DOT));
+			res = getClassLoader().loadClass(qualifiedName.replace(qualifierSeparator, DOT));
 		} catch (Exception | Error e) {
 			res = null;
 		}
@@ -496,12 +510,13 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		final Set<String> res = new LinkedHashSet<String>();
 
 		try {
-			if (classLoader instanceof URLClassLoader) {
-				for (URL url : ((URLClassLoader)classLoader).getURLs()) {
+			final ClassLoader clsLoader = getClassLoader();
+			if (clsLoader instanceof URLClassLoader) {
+				for (URL url : ((URLClassLoader)clsLoader).getURLs()) {
 					res.addAll(getQualifiedNamesFromURL(url));
 				}
 			} else {
-				final Enumeration<URL> rootResources = classLoader.getResources("");
+				final Enumeration<URL> rootResources = clsLoader.getResources("");
 				while (rootResources.hasMoreElements()) {
 					final URL url = rootResources.nextElement();
 					res.addAll(getQualifiedNamesFromURL(url));
@@ -662,4 +677,15 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	public void clearLoaders() {
 		loaders.clear();
 	}
+
+	@Override
+	public void setLookupEngine(IQualifiedNameLookupEngine lookupEngine) {
+		this.lookupEngine = lookupEngine;
+	}
+
+	@Override
+	public IQualifiedNameLookupEngine getLookupEngine() {
+		return lookupEngine;
+	}
+
 }

@@ -35,6 +35,11 @@ public abstract class QueryWorkspaceQualifiedNameResolver implements IQueryWorks
 	private final IQualifiedNameResolver resolver;
 
 	/**
+	 * The {@link IQualifiedNameLookupEngine}.
+	 */
+	private IQualifiedNameLookupEngine lookupEngine;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param resolver
@@ -221,6 +226,16 @@ public abstract class QueryWorkspaceQualifiedNameResolver implements IQueryWorks
 		}
 
 		return res;
+	}
+
+	@Override
+	public void setLookupEngine(IQualifiedNameLookupEngine lookupEngine) {
+		this.lookupEngine = lookupEngine;
+	}
+
+	@Override
+	public IQualifiedNameLookupEngine getLookupEngine() {
+		return lookupEngine;
 	}
 
 }

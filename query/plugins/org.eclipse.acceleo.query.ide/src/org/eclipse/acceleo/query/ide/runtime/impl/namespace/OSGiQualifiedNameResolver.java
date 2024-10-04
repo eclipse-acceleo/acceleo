@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,37 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ide.runtime.impl.namespace;
 
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.acceleo.query.runtime.impl.namespace.CallStack;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
 
 /**
- * OSGi resolver.
+ * OSGi resolver. The resolution takes place in the {@link IQualifiedNameLookupEngine#getCurrentContext()
+ * current context}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver {
+
+	/**
+	 * The mapping from a qualified name and its {@link BundleWiring}.
+	 */
+	private final Map<String, Bundle> qualifiedNameToBundleWiring = new HashMap<>();
+
+	/**
+	 * The {@link Bundle}.
+	 */
+	private final Bundle bundle;
 
 	/**
 	 * Constructor.
@@ -31,6 +52,7 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 	 */
 	public OSGiQualifiedNameResolver(Bundle bundle, String qualifierSeparator) {
 		super(createBundleClassLoader(bundle), qualifierSeparator);
+		this.bundle = bundle;
 	}
 
 	/**
@@ -44,4 +66,91 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 		return bundle.adapt(BundleWiring.class).getClassLoader();
 	}
 
+	@Override
+	protected void register(ILoader loader, String qualifiedName, Object object) {
+		super.register(loader, qualifiedName, object);
+		final String resourceName = loader.resourceName(qualifiedName);
+		final Bundle resourceBundle = getBundle(new HashSet<>(), bundle, resourceName);
+		qualifiedNameToBundleWiring.put(qualifiedName, resourceBundle);
+	}
+
+	/**
+	 * Gets the {@link Bundle} declaring the given resource. Either the given {@link Bundle} or one of its
+	 * direct or indirect dependency.
+	 * 
+	 * @param root
+	 *            the root {@link Bundle}
+	 * @param resource
+	 *            the resource to look for
+	 * @return the {@link Bundle} declaring the given resource. Either the given {@link Bundle} or one of its
+	 *         direct or indirect dependency.
+	 */
+	private Bundle getBundle(Set<Bundle> knownBundles, Bundle root, String resource) {
+		Bundle res = null;
+
+		if (knownBundles.add(root)) {
+			final URL entry = root.getResource(resource);
+			if (isLocalResource(root, entry)) {
+				res = root;
+			} else {
+				final BundleWiring rootWiring = root.adapt(BundleWiring.class);
+				for (BundleWire requirement : rootWiring.getRequiredWires(null)) {
+					final Bundle requiredBundle = requirement.getProviderWiring().getBundle();
+					final URL requiredBundleEntry = requiredBundle.getResource(resource);
+					final Bundle resourceBundle = getBundle(knownBundles, requiredBundle, resource);
+					if (isLocalResource(requiredBundle, requiredBundleEntry)) {
+						res = resourceBundle;
+						break;
+					}
+				}
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Tells if the given resource {@link URL} is local to the given {@link Bundle}.
+	 * 
+	 * @param bundle
+	 *            the {@link Bundle}
+	 * @param resource
+	 *            the resource {@link URL}
+	 * @return <code>true</code> if the given resource {@link URL} is local to the given {@link Bundle},
+	 *         <code>false</code> otherwise
+	 */
+	private boolean isLocalResource(Bundle bundle, URL resource) {
+		return resource != null && resource.toString().startsWith(bundle.getResource("/").toString());
+	}
+
+	@Override
+	protected ClassLoader getClassLoader() {
+		final String contextQualifiedName = getContextQualifiedName();
+		final BundleWiring contextBundleWiring = qualifiedNameToBundleWiring.getOrDefault(
+				contextQualifiedName, bundle).adapt(BundleWiring.class);
+
+		return contextBundleWiring.getClassLoader();
+	}
+
+	/**
+	 * Gets the context qualified name.
+	 * 
+	 * @return the context qualified name
+	 */
+	protected String getContextQualifiedName() {
+		final String res;
+
+		final CallStack currentContext = getLookupEngine().getCurrentContext();
+		if (currentContext != null) {
+			if (!currentContext.isEmpty()) {
+				res = currentContext.peek();
+			} else {
+				res = currentContext.getStartingQualifiedName();
+			}
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
 }

@@ -241,4 +241,19 @@ public interface IQualifiedNameResolver {
 	 */
 	void clearLoaders();
 
+	/**
+	 * Sets the {@link IQualifiedNameLookupEngine}.
+	 * 
+	 * @param lookupEngine
+	 *            the {@link IQualifiedNameLookupEngine}
+	 */
+	void setLookupEngine(IQualifiedNameLookupEngine lookupEngine);
+
+	/**
+	 * Gets the {@link IQualifiedNameLookupEngine}
+	 * 
+	 * @return the {@link IQualifiedNameLookupEngine}
+	 */
+	IQualifiedNameLookupEngine getLookupEngine();
+
 }
