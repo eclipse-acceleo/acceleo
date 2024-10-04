@@ -12,9 +12,7 @@ package org.eclipse.acceleo.query.ide.runtime.impl.namespace;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.impl.namespace.CallStack;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
@@ -70,7 +68,7 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 	protected void register(ILoader loader, String qualifiedName, Object object) {
 		super.register(loader, qualifiedName, object);
 		final String resourceName = loader.resourceName(qualifiedName);
-		final Bundle resourceBundle = getBundle(new HashSet<>(), bundle, resourceName);
+		final Bundle resourceBundle = getBundle(bundle, resourceName);
 		qualifiedNameToBundleWiring.put(qualifiedName, resourceBundle);
 	}
 
@@ -85,23 +83,20 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 	 * @return the {@link Bundle} declaring the given resource. Either the given {@link Bundle} or one of its
 	 *         direct or indirect dependency.
 	 */
-	private Bundle getBundle(Set<Bundle> knownBundles, Bundle root, String resource) {
+	private Bundle getBundle(Bundle root, String resource) {
 		Bundle res = null;
 
-		if (knownBundles.add(root)) {
-			final URL entry = root.getResource(resource);
-			if (isLocalResource(root, entry)) {
-				res = root;
-			} else {
-				final BundleWiring rootWiring = root.adapt(BundleWiring.class);
-				for (BundleWire requirement : rootWiring.getRequiredWires(null)) {
-					final Bundle requiredBundle = requirement.getProviderWiring().getBundle();
-					final URL requiredBundleEntry = requiredBundle.getResource(resource);
-					final Bundle resourceBundle = getBundle(knownBundles, requiredBundle, resource);
-					if (isLocalResource(requiredBundle, requiredBundleEntry)) {
-						res = resourceBundle;
-						break;
-					}
+		final URL entry = root.getResource(resource);
+		if (isLocalResource(root, entry)) {
+			res = root;
+		} else {
+			final BundleWiring rootWiring = root.adapt(BundleWiring.class);
+			for (BundleWire requirement : rootWiring.getRequiredWires(null)) {
+				final Bundle requiredBundle = requirement.getProviderWiring().getBundle();
+				final URL requiredBundleEntry = requiredBundle.getResource(resource);
+				if (isLocalResource(requiredBundle, requiredBundleEntry)) {
+					res = requiredBundle;
+					break;
 				}
 			}
 		}
