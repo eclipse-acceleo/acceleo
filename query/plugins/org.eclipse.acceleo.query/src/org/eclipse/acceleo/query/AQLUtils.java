@@ -34,8 +34,13 @@ import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
+import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstSerializer;
@@ -56,6 +61,7 @@ import org.eclipse.acceleo.query.services.configurator.IResourceSetConfiguratorD
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfiguratorDescriptor;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.CollectionType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -793,6 +799,54 @@ public final class AQLUtils {
 		for (IServicesConfigurator configurator : getServicesConfigurators(language)) {
 			configurator.cleanServices(queryEnvironment, resourceSetForModels);
 		}
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IType} for the given {@link TypeLiteral}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param typeExpression
+	 *            the {@link Expression}
+	 * @return the {@link Set} of {@link IType} for the given {@link TypeLiteral}
+	 */
+	public static Set<IType> getTypes(IReadOnlyQueryEnvironment queryEnvironment,
+			final TypeLiteral typeExpression) {
+		final Set<IType> res = new LinkedHashSet<>();
+
+		if (typeExpression instanceof EClassifierTypeLiteral) {
+			final EClassifierTypeLiteral typeLiteral = (EClassifierTypeLiteral)typeExpression;
+			for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getTypes(typeLiteral
+					.getEPackageName(), typeLiteral.getEClassifierName())) {
+				res.add(new EClassifierType(queryEnvironment, eClassifier));
+			}
+		} else if (typeExpression instanceof TypeSetLiteral) {
+			final TypeSetLiteral typeLiteral = (TypeSetLiteral)typeExpression;
+			for (TypeLiteral type : typeLiteral.getTypes()) {
+				if (type instanceof EClassifierTypeLiteral) {
+					for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getTypes(
+							((EClassifierTypeLiteral)type).getEPackageName(), ((EClassifierTypeLiteral)type)
+									.getEClassifierName())) {
+						res.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				}
+			}
+		} else if (typeExpression instanceof CollectionTypeLiteral) {
+			for (IType elementType : getTypes(queryEnvironment, ((CollectionTypeLiteral)typeExpression)
+					.getElementType())) {
+				if (List.class.isAssignableFrom(((CollectionTypeLiteral)typeExpression).getValue())) {
+					res.add(new SequenceType(queryEnvironment, elementType));
+				} else if (List.class.isAssignableFrom(((CollectionTypeLiteral)typeExpression).getValue())) {
+					res.add(new SetType(queryEnvironment, elementType));
+				} else {
+					res.add(new CollectionType(queryEnvironment, elementType));
+				}
+			}
+		} else if (typeExpression instanceof ClassTypeLiteral) {
+			res.add(new ClassType(queryEnvironment, ((ClassTypeLiteral)typeExpression).getValue()));
+		}
+
+		return res;
 	}
 
 }

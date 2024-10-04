@@ -16,10 +16,11 @@ import java.util.Set;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.runtime.impl.NullValue;
 import org.eclipse.acceleo.query.runtime.impl.namespace.AbstractQualifiedNameService;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
-import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -190,8 +191,8 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 		final Object res;
 
 		if (value == null) {
-			final Set<IType> types = EObjectServices.getTypes(getLookupEngine().getQueryEnvironment(),
-					variable.getTypeAql());
+			final Set<IType> types = AQLUtils.getTypes(getLookupEngine().getQueryEnvironment(),
+					(TypeLiteral)variable.getTypeAql());
 			res = new NullValue(types);
 		} else {
 			res = value;

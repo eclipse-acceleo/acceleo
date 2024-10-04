@@ -25,6 +25,7 @@ import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -399,7 +400,7 @@ public class EObjectServices extends AbstractServiceProvider {
 					final Expression typeExpression = call.getArguments().get(1);
 					if (typeExpression instanceof EClassifierTypeLiteral
 							|| typeExpression instanceof TypeSetLiteral) {
-						filterTypes.addAll(getTypes(queryEnvironment, typeExpression));
+						filterTypes.addAll(AQLUtils.getTypes(queryEnvironment, (TypeLiteral)typeExpression));
 					} else {
 						filterTypes.add(argTypes.get(1));
 					}
@@ -1758,41 +1759,6 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		return result;
-	}
-
-	/**
-	 * Gets the {@link Set} of {@link IType} for the given {@link Expression}.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @param typeExpression
-	 *            the {@link Expression}
-	 * @return the {@link Set} of {@link IType} for the given {@link Expression}
-	 */
-	public static Set<IType> getTypes(IReadOnlyQueryEnvironment queryEnvironment,
-			final Expression typeExpression) {
-		final Set<IType> filterTypes = new LinkedHashSet<>();
-
-		if (typeExpression instanceof EClassifierTypeLiteral) {
-			final EClassifierTypeLiteral typeLiteral = (EClassifierTypeLiteral)typeExpression;
-			for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getTypes(typeLiteral
-					.getEPackageName(), typeLiteral.getEClassifierName())) {
-				filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
-			}
-		} else if (typeExpression instanceof TypeSetLiteral) {
-			final TypeSetLiteral typeLiteral = (TypeSetLiteral)typeExpression;
-			for (TypeLiteral type : typeLiteral.getTypes()) {
-				if (type instanceof EClassifierTypeLiteral) {
-					for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getTypes(
-							((EClassifierTypeLiteral)type).getEPackageName(), ((EClassifierTypeLiteral)type)
-									.getEClassifierName())) {
-						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
-					}
-				}
-			}
-		}
-
-		return filterTypes;
 	}
 
 }
