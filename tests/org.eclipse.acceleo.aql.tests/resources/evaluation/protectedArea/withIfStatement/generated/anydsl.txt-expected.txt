@@ -1,0 +1,10 @@
+some text
+  Start of user code anydsl
+  anydsl
+  inlined then block
+  inlined else block
+  then block
+  else block
+  anydsl
+  End of user code
+some text

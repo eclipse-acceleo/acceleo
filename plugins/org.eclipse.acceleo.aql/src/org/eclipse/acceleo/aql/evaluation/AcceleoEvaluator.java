@@ -80,6 +80,42 @@ import org.eclipse.emf.ecore.util.EcoreUtil.FilteredSettingsIterator;
 public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 	/**
+	 * The indentation context.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	protected static class IndentationContext {
+		/**
+		 * The current indentation.
+		 */
+		private final String indentation;
+
+		/**
+		 * Tells if the current {@link Block} is {@link Block#isInlined() inlined}.
+		 */
+		private final boolean inlinedBlock;
+
+		/**
+		 * Tells if the indentation should be kept.
+		 */
+		private boolean keepIndentation;
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param indentation
+		 *            the indentation
+		 * @param inlinedBlock
+		 *            tells if the current {@link Block} is {@link Block#isInlined() inlined}
+		 */
+		private IndentationContext(String indentation, boolean inlinedBlock) {
+			this.indentation = indentation;
+			this.inlinedBlock = inlinedBlock;
+		}
+
+	}
+
+	/**
 	 * The plugin ID.
 	 */
 	private static final String ID = "org.eclipse.acceleo.aql";
@@ -105,11 +141,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private final Deque<Map<String, Object>> variablesStack = new ArrayDeque<Map<String, Object>>();
 
 	/**
-	 * The indentation stack.
-	 */
-	private final Deque<String> indentationStack = new ArrayDeque<String>();
-
-	/**
 	 * The user code stack, mapping from ID to user code.
 	 */
 	private final Deque<Map<String, String>> protectedAreaContentStack = new ArrayDeque<>();
@@ -120,19 +151,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private String lastLineOfLastStatement;
 
 	/**
-	 * Tells if we should keep the current indentation regardless of the {@link #lastLineOfLastStatement}.
-	 */
-	private boolean keepIndentation;
-
-	/**
 	 * The {@link IQualifiedNameLookupEngine}.
 	 */
 	private final IQualifiedNameLookupEngine lookupEngine;
 
 	/**
-	 * Tells if the current {@link Block} is {@link Block#isInlined() inlined}.
+	 * The {@link IndentationContext} stack.
 	 */
-	private Deque<Boolean> inlinedBlock = new ArrayDeque<>();
+	private Deque<IndentationContext> indentationContextStack = new ArrayDeque<IndentationContext>();
 
 	/**
 	 * The destination {@link URI}.
@@ -202,23 +228,20 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		destination = destinationURI;
 		generationStrategy = strategy;
 
-		final String savedLastLineOfLastStatement = lastLineOfLastStatement;
-		lastLineOfLastStatement = "";
-		final boolean keepIndentationSave = keepIndentation;
-		keepIndentation = false;
 		if (generationResult == null) {
 			generationResult = new GenerationResult();
 		}
 
-		inlinedBlock.addLast(false);
+		final String savedLastLineOfLastStatement = lastLineOfLastStatement;
+		lastLineOfLastStatement = "";
+		indentationContextStack.addLast(new IndentationContext(lastLineOfLastStatement, false));
 		pushVariables(variables);
 		try {
 			res = doSwitch(node);
 		} finally {
 			popVariables();
-			inlinedBlock.removeLast();
+			indentationContextStack.removeLast();
 			lastLineOfLastStatement = savedLastLineOfLastStatement;
-			keepIndentation = keepIndentationSave;
 		}
 
 		return res;
@@ -262,12 +285,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Peeks the last {@link #pushIndentation(Map) pushed} inline block from the stack.
+	 * Peeks the last {@link #pushIndentationContext(Block, String) pushed} indentation context.
 	 * 
-	 * @return the last {@link #pushIndentation(Map) pushed} inline block from the stack
+	 * @return the last {@link #pushIndentationContext(Block, String) pushed} indentation context
 	 */
-	protected boolean peekInlinedBlock() {
-		return inlinedBlock.peekLast();
+	protected IndentationContext peekIndentationContext() {
+		return indentationContextStack.peekLast();
 	}
 
 	/**
@@ -278,43 +301,44 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 * @param indentation
 	 *            the indentation to push
 	 */
-	protected void pushIndentation(Block block, String indentation) {
+	protected void pushIndentationContext(Block block, String indentation) {
+		final IndentationContext newIndentationContext;
+
+		final IndentationContext currentIndenationContext = indentationContextStack.getLast();
 		if (block.isInlined()) {
-			inlinedBlock.addLast(true);
-			indentationStack.addLast("");
-		} else {
-			inlinedBlock.addLast(false);
-			if (keepIndentation && indentation.isEmpty()) {
-				final String currentIndentation = peekIndentation();
+			if (currentIndenationContext.keepIndentation && indentation.isEmpty()) {
+				final String currentIndentation = currentIndenationContext.indentation;
 				if (currentIndentation != null) {
-					indentationStack.addLast(currentIndentation);
+					newIndentationContext = new IndentationContext(currentIndentation, true);
 				} else {
-					indentationStack.addLast(indentation);
+					newIndentationContext = new IndentationContext(indentation, true);
 				}
-				keepIndentation = false;
 			} else {
-				indentationStack.addLast(indentation);
+				newIndentationContext = new IndentationContext("", true);
+			}
+		} else {
+			if (currentIndenationContext.keepIndentation && indentation.isEmpty()) {
+				final String currentIndentation = currentIndenationContext.indentation;
+				if (currentIndentation != null) {
+					newIndentationContext = new IndentationContext(currentIndentation, false);
+				} else {
+					newIndentationContext = new IndentationContext(indentation, false);
+				}
+			} else {
+				newIndentationContext = new IndentationContext(indentation, false);
 			}
 		}
+
+		indentationContextStack.addLast(newIndentationContext);
 	}
 
 	/**
-	 * Peeks the last {@link #pushIndentation(Block, String) pushed} indentation from the stack.
+	 * Pops the current {@link IndentationContext};
 	 * 
-	 * @return the last {@link #pushIndentation(Block, String) pushed} indentation from the stack
+	 * @return the current {@link IndentationContext}
 	 */
-	protected String peekIndentation() {
-		return indentationStack.peekLast();
-	}
-
-	/**
-	 * Pops the last {@link #pushIndentation(Block, String) pushed} indentation from the stack.
-	 * 
-	 * @return the last {@link #pushIndentation(Block, String) pushed} indentation from the stack
-	 */
-	protected String popIndentation() {
-		inlinedBlock.removeLast();
-		return indentationStack.removeLast();
+	protected IndentationContext popIndentationContext() {
+		return indentationContextStack.removeLast();
 	}
 
 	/**
@@ -395,11 +419,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		final String indentation;
-		if (peekInlinedBlock()) {
+		if (peekIndentationContext().inlinedBlock) {
 			indentation = "";
 		} else {
 			if (lastLineOfLastStatement.isEmpty()) {
-				indentation = peekIndentation();
+				indentation = peekIndentationContext().indentation;
 			} else {
 				indentation = lastLineOfLastStatement;
 			}
@@ -470,7 +494,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public String caseTemplate(Template template) {
 		final String res;
 
-		pushIndentation(template.getBody(), lastLineOfLastStatement);
+		pushIndentationContext(template.getBody(), lastLineOfLastStatement);
 		try {
 			final String templateText = (String)doSwitch(template.getBody());
 			if (template.getPost() != null) {
@@ -486,7 +510,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				res = templateText;
 			}
 		} finally {
-			popIndentation();
+			popIndentationContext();
 		}
 
 		return res;
@@ -513,7 +537,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		if (textStatement.isNewLineNeeded()) {
 			if (lastLineOfLastStatement.isEmpty()) {
 				if (!textStatement.getValue().isEmpty()) {
-					res = peekIndentation() + textStatement.getValue() + newLine;
+					res = peekIndentationContext().indentation + textStatement.getValue() + newLine;
 				} else {
 					// empty text with new line at the beginning of a line is a no operation
 					// see NewLineStatement
@@ -525,7 +549,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			}
 		} else {
 			if (lastLineOfLastStatement.isEmpty()) {
-				res = peekIndentation() + textStatement.getValue();
+				res = peekIndentationContext().indentation + textStatement.getValue();
 				lastLineOfLastStatement = res;
 			} else {
 				res = textStatement.getValue();
@@ -541,12 +565,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		if (newLineStatement.isIndentationNeeded() && lastLineOfLastStatement.isEmpty()) {
-			res = peekIndentation() + newLine;
+			res = peekIndentationContext().indentation + newLine;
 		} else {
 			res = newLine;
 		}
 		lastLineOfLastStatement = "";
-		keepIndentation = true;
+		peekIndentationContext().keepIndentation = true;
 
 		return res;
 	}
@@ -655,11 +679,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		pushVariables(variables);
-		pushIndentation(letStatement.getBody(), lastLineOfLastStatement);
+		pushIndentationContext(letStatement.getBody(), lastLineOfLastStatement);
 		try {
 			res = (String)doSwitch(letStatement.getBody());
 		} finally {
-			popIndentation();
+			popIndentationContext();
 			popVariables();
 		}
 
@@ -690,7 +714,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
 				openWriter(uri, mode, charset, newLine);
 				lastLineOfLastStatement = "";
-				pushIndentation(fileStatement.getBody(), lastLineOfLastStatement);
+				pushIndentationContext(fileStatement.getBody(), lastLineOfLastStatement);
 				pushProtectedAreaContent();
 				String content = EMPTY_RESULT;
 				try {
@@ -705,7 +729,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 								entry.getValue()));
 					}
 					write(content);
-					popIndentation();
+					popIndentationContext();
 					closeWriter(fileStatement);
 				}
 			} catch (IOException e) {
@@ -860,18 +884,18 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final Object condition = doSwitch(ifStatement.getCondition());
 		if (condition instanceof Boolean) {
 			if (Boolean.TRUE.equals(condition)) {
-				pushIndentation(ifStatement.getThen(), lastLineOfLastStatement);
+				pushIndentationContext(ifStatement.getThen(), lastLineOfLastStatement);
 				try {
 					res = (String)doSwitch(ifStatement.getThen());
 				} finally {
-					popIndentation();
+					popIndentationContext();
 				}
 			} else if (ifStatement.getElse() != null) {
-				pushIndentation(ifStatement.getElse(), lastLineOfLastStatement);
+				pushIndentationContext(ifStatement.getElse(), lastLineOfLastStatement);
 				try {
 					res = (String)doSwitch(ifStatement.getElse());
 				} finally {
-					popIndentation();
+					popIndentationContext();
 				}
 			} else {
 				res = EMPTY_RESULT;
@@ -907,7 +931,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
 			final String name = forStatement.getBinding().getName();
 			pushVariables(variables);
-			pushIndentation(forStatement.getBody(), lastLineOfLastStatement);
+			pushIndentationContext(forStatement.getBody(), lastLineOfLastStatement);
 			try {
 				// the first value is generated on its own
 				// to insert separators
@@ -925,7 +949,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 					builder.append(doSwitch(forStatement.getBody()));
 				}
 			} finally {
-				popIndentation();
+				popIndentationContext();
 				popVariables();
 			}
 		}
@@ -984,20 +1008,20 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine);
 			res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 		} else {
-			pushIndentation(protectedArea.getBody(), lastLineOfLastStatement);
+			pushIndentationContext(protectedArea.getBody(), lastLineOfLastStatement);
 			try {
 				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine);
 				lastLineOfLastStatement = "";
-				keepIndentation = true;
+				peekIndentationContext().keepIndentation = true;
 
 				final String text = (String)doSwitch(protectedArea.getBody());
 				res.append(text);
 
 				if (lastLineOfLastStatement.isEmpty()) {
-					res.append(peekIndentation());
+					res.append(peekIndentationContext().indentation);
 				}
 			} finally {
-				popIndentation();
+				popIndentationContext();
 			}
 			if (protectedArea.getEndTagPrefix() != null) {
 				Object endTagPrefixObject = doSwitch(protectedArea.getEndTagPrefix());
@@ -1006,7 +1030,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 		}
 		lastLineOfLastStatement = "";
-		keepIndentation = true;
+		peekIndentationContext().keepIndentation = true;
 
 		return res.toString();
 	}
