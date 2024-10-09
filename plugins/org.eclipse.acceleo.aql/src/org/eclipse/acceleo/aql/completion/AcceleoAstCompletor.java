@@ -51,6 +51,7 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposalsProvider;
 import org.eclipse.acceleo.aql.completion.proposals.syntax.AcceleoSyntacticCompletionProposals;
@@ -488,13 +489,17 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			final Map<String, Set<IType>> variables = new HashMap<String, Set<IType>>();
 			final Set<IType> possibleTypes = Collections.singleton(new ClassType(queryEnvironment,
 					String.class));
-			variables.put("self", possibleTypes);
+			variables.put(AcceleoUtil.getTemplateImplicitVariableName(), possibleTypes);
 			res.addAll(getAqlCompletionProposals(variables, acceleoValidationResult.getValidationResult(
 					errorTemplate.getPost().getAst())));
 		} else if (errorTemplate.getMissingPostCloseParenthesis() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.CLOSE_PARENTHESIS);
-			res.addAll(this.getAqlCompletionProposals(getVariables(errorTemplate), acceleoValidationResult
-					.getValidationResult(errorTemplate.getPost().getAst())));
+			final Map<String, Set<IType>> variables = new HashMap<String, Set<IType>>();
+			final Set<IType> possibleTypes = Collections.singleton(new ClassType(queryEnvironment,
+					String.class));
+			variables.put(AcceleoUtil.getTemplateImplicitVariableName(), possibleTypes);
+			res.addAll(this.getAqlCompletionProposals(variables, acceleoValidationResult.getValidationResult(
+					errorTemplate.getPost().getAst())));
 		} else if (errorTemplate.getMissingEndHeader() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.TEMPLATE_HEADER_END);
 			if (errorTemplate.getGuard() == null && errorTemplate.getPost() == null) {

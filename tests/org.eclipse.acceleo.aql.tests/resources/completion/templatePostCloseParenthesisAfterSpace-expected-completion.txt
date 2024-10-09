@@ -7,3 +7,66 @@ Inserts the following text: <pre>)</pre>
 * Type (optional):
 null
 
+* Label:
++ 
+* Description:
++ 
+* Text:
++ 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+< 
+* Description:
+< 
+* Text:
+< 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+<= 
+* Description:
+<= 
+* Text:
+<= 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+<> 
+* Description:
+<> 
+* Text:
+<> 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+= 
+* Description:
+= 
+* Text:
+= 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+> 
+* Description:
+> 
+* Text:
+> 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+
+* Label:
+>= 
+* Description:
+>= 
+* Text:
+>= 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+

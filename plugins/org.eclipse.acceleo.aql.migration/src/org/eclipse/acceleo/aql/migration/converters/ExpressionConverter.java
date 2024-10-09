@@ -24,6 +24,7 @@ import java.util.Map;
 import org.eclipse.acceleo.AcceleoFactory;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.Statement;
+import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.migration.MigrationException;
 import org.eclipse.acceleo.aql.migration.converters.ModuleConverter.ImpliciteSelfFrame;
 import org.eclipse.acceleo.aql.migration.converters.utils.OperationUtils;
@@ -102,7 +103,7 @@ public final class ExpressionConverter extends AbstractConverter {
 	/**
 	 * The self variable.
 	 */
-	private static final String SELF_VARIABLE_NAME = "self";
+	private static final String SELF_VARIABLE_NAME = AcceleoUtil.getTemplateImplicitVariableName();
 
 	/**
 	 * The current implicit self variable name stack.
