@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -28,7 +28,6 @@ import org.eclipse.acceleo.ErrorForStatement;
 import org.eclipse.acceleo.ErrorIfStatement;
 import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
-import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
 import org.eclipse.acceleo.ErrorModuleDocumentation;
@@ -200,8 +199,6 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createTextStatement();
 			case AcceleoPackage.NEW_LINE_STATEMENT:
 				return createNewLineStatement();
-			case AcceleoPackage.ERROR_MARGIN:
-				return createErrorMargin();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
 						+ "' is not a valid classifier"); //$NON-NLS-1$
@@ -749,17 +746,6 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public NewLineStatement createNewLineStatement() {
 		NewLineStatementImpl newLineStatement = new NewLineStatementImpl();
 		return newLineStatement;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public ErrorMargin createErrorMargin() {
-		ErrorMarginImpl errorMargin = new ErrorMarginImpl();
-		return errorMargin;
 	}
 
 	/**

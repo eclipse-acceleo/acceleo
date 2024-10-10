@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2021 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -239,9 +239,6 @@ public class BlockItemProvider extends ItemProviderAdapter implements IEditingDo
 
 		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
 				AcceleoFactory.eINSTANCE.createNewLineStatement()));
-
-		newChildDescriptors.add(createChildParameter(AcceleoPackage.Literals.BLOCK__STATEMENTS,
-				AcceleoFactory.eINSTANCE.createErrorMargin()));
 	}
 
 	/**

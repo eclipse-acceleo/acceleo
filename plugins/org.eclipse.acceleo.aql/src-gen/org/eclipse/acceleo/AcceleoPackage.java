@@ -3670,60 +3670,6 @@ public interface AcceleoPackage extends EPackage {
 	int NEW_LINE_STATEMENT_OPERATION_COUNT = TEXT_STATEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorMarginImpl <em>Error Margin</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see org.eclipse.acceleo.impl.ErrorMarginImpl
-	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorMargin()
-	 * @generated
-	 */
-	int ERROR_MARGIN = 52;
-
-	/**
-	 * The feature id for the '<em><b>Multi Lines</b></em>' attribute. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MARGIN__MULTI_LINES = ERROR_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>New Line Needed</b></em>' attribute. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MARGIN__NEW_LINE_NEEDED = ERROR_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MARGIN__VALUE = ERROR_FEATURE_COUNT + 2;
-
-	/**
-	 * The number of structural features of the '<em>Error Margin</em>' class. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MARGIN_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
-
-	/**
-	 * The number of operations of the '<em>Error Margin</em>' class. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_MARGIN_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.VisibilityKind <em>Visibility Kind</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -3731,7 +3677,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 53;
+	int VISIBILITY_KIND = 52;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.OpenModeKind <em>Open Mode Kind</em>}' enum.
@@ -3741,7 +3687,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 54;
+	int OPEN_MODE_KIND = 53;
 
 	/**
 	 * The meta object id for the '<em>AST Result</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3751,7 +3697,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
-	int AST_RESULT = 55;
+	int AST_RESULT = 54;
 
 	/**
 	 * The meta object id for the '<em>Module Qualified Name</em>' data type. <!-- begin-user-doc --> <!--
@@ -3761,7 +3707,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleQualifiedName()
 	 * @generated
 	 */
-	int MODULE_QUALIFIED_NAME = 56;
+	int MODULE_QUALIFIED_NAME = 55;
 
 	/**
 	 * The meta object id for the '<em>Ast Result</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3771,7 +3717,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getAcceleoAstResult()
 	 * @generated
 	 */
-	int ACCELEO_AST_RESULT = 57;
+	int ACCELEO_AST_RESULT = 56;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Module <em>Module</em>}'. <!--
@@ -5680,16 +5626,6 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getNewLineStatement_IndentationNeeded();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorMargin <em>Error Margin</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for class '<em>Error Margin</em>'.
-	 * @see org.eclipse.acceleo.ErrorMargin
-	 * @generated
-	 */
-	EClass getErrorMargin();
-
-	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.VisibilityKind <em>Visibility Kind</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -7281,16 +7217,6 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute NEW_LINE_STATEMENT__INDENTATION_NEEDED = eINSTANCE.getNewLineStatement_IndentationNeeded();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorMarginImpl <em>Error
-		 * Margin</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @see org.eclipse.acceleo.impl.ErrorMarginImpl
-		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorMargin()
-		 * @generated
-		 */
-		EClass ERROR_MARGIN = eINSTANCE.getErrorMargin();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.VisibilityKind <em>Visibility

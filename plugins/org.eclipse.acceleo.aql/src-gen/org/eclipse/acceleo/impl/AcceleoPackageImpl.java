@@ -31,7 +31,6 @@ import org.eclipse.acceleo.ErrorForStatement;
 import org.eclipse.acceleo.ErrorIfStatement;
 import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
-import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
 import org.eclipse.acceleo.ErrorModuleDocumentation;
@@ -447,13 +446,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EClass newLineStatementEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EClass errorMarginEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2277,16 +2269,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EClass getErrorMargin() {
-		return errorMarginEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
 	public EEnum getVisibilityKind() {
 		return visibilityKindEEnum;
 	}
@@ -2579,8 +2561,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		newLineStatementEClass = createEClass(NEW_LINE_STATEMENT);
 		createEAttribute(newLineStatementEClass, NEW_LINE_STATEMENT__INDENTATION_NEEDED);
 
-		errorMarginEClass = createEClass(ERROR_MARGIN);
-
 		// Create enums
 		visibilityKindEEnum = createEEnum(VISIBILITY_KIND);
 		openModeKindEEnum = createEEnum(OPEN_MODE_KIND);
@@ -2701,8 +2681,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		errorFileStatementEClass.getESuperTypes().add(this.getFileStatement());
 		textStatementEClass.getESuperTypes().add(this.getLeafStatement());
 		newLineStatementEClass.getESuperTypes().add(this.getTextStatement());
-		errorMarginEClass.getESuperTypes().add(this.getError());
-		errorMarginEClass.getESuperTypes().add(this.getTextStatement());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(moduleEClass, org.eclipse.acceleo.Module.class, "Module", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
@@ -3226,9 +3204,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		initEAttribute(getNewLineStatement_IndentationNeeded(), ecorePackage.getEBoolean(),
 				"indentationNeeded", null, 1, 1, NewLineStatement.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(errorMarginEClass, ErrorMargin.class, "ErrorMargin", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
-				IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(visibilityKindEEnum, VisibilityKind.class, "VisibilityKind"); //$NON-NLS-1$
