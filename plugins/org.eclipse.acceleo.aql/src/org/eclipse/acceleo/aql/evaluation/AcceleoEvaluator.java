@@ -440,14 +440,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 		if (expressionStatement.isNewLineNeeded() && !endsWithNewLine) {
 			if (lastLineOfLastStatement.isEmpty()) {
-				res = indentation + expressionValue + newLine;
+				res = peekIndentationContext().indentation + expressionValue + newLine;
 			} else {
 				res = expressionValue + newLine;
 			}
 			lastLineOfLastStatement = "";
 		} else {
 			if (lastLineOfLastStatement.isEmpty()) {
-				res = indentation + expressionValue;
+				res = peekIndentationContext().indentation + expressionValue;
 			} else {
 				res = expressionValue;
 			}

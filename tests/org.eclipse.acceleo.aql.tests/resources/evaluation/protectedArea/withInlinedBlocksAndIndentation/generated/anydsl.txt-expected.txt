@@ -2,9 +2,25 @@ some text
   Start of user code anydsl
   anydsl
   inlined then block
+  inlined then block
+  inlined else block
   inlined else block
   then block
+  then block
+  else block
   else block
   anydsl
+  vvv
+  123
+  v
+  v
+  v
+  1
+  2
+  3
+  let block
+  let block
+  let block
+  let block
   End of user code
 some text
