@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2023 Obeo. 
+ *  Copyright (c) 2019, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
@@ -44,6 +45,11 @@ public class SWTPromptServicesConfigurator implements IServicesConfigurator {
 
 	@Override
 	public Map<String, String> getInitializedOptions(Map<String, String> options) {
+		return Collections.emptyMap();
+	}
+
+	@Override
+	public Map<String, String> getInitializedOptions(Map<String, String> options, EObject eObj) {
 		return Collections.emptyMap();
 	}
 

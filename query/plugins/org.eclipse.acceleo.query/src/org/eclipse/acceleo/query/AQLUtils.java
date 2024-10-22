@@ -666,6 +666,31 @@ public final class AQLUtils {
 	}
 
 	/**
+	 * Gets the {@link Map} of initialized options from the given EObject.
+	 * 
+	 * @param language
+	 *            the language name
+	 * @param options
+	 *            the {@link Map} of existing options.
+	 * @param eObj
+	 *            the {@link EObject}
+	 * @return the {@link Map} of initialized options
+	 */
+	public static Map<String, String> getInitializedOptions(String language, Map<String, String> options,
+			EObject eObj) {
+		final Map<String, String> res = new LinkedHashMap<>();
+
+		for (IOptionProvider provider : getOptionProviders(AQL_LANGUAGE)) {
+			res.putAll(provider.getInitializedOptions(options));
+		}
+		for (IOptionProvider provider : getOptionProviders(language)) {
+			res.putAll(provider.getInitializedOptions(options));
+		}
+
+		return res;
+	}
+
+	/**
 	 * Gets the {@link List} of possible option names.
 	 * 
 	 * @param language

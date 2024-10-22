@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2019 Obeo. 
+ * Copyright (c) 2017, 2024 Obeo. 
  *    All rights reserved. This program and the accompanying materials
  *    are made available under the terms of the Eclipse Public License v2.0
  *    which accompanies this distribution, and is available at
@@ -34,11 +34,13 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.sirius.business.api.helper.SiriusUtil;
 import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
+import org.eclipse.sirius.business.api.query.EObjectQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
@@ -96,6 +98,25 @@ public class SiriusResourceSetConfigurator implements IResourceSetConfigurator {
                 res.put(AqlSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
             }
         }
+        return res;
+    }
+
+    @Override
+    public Map<String, String> getInitializedOptions(Map<String, String> options, EObject eObj) {
+        final Map<String, String> res = new HashMap<>();
+
+        if (!options.containsKey(AqlSiriusUtils.SIRIUS_SESSION_OPTION)) {
+            final Session session = new EObjectQuery(eObj).getSession();
+            if (session != null) {
+                final String baseURIStr = options.get(AQLUtils.BASE_URI_OPTION);
+                final URI baseURI = URI.createURI(baseURIStr, true);
+                final URI sessionURI = session.getSessionResource().getURI();
+                final String sessionURIStr = URI.decode(sessionURI.deresolve(baseURI, false, true, true).toString());
+
+                res.put(AqlSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
+            }
+        }
+
         return res;
     }
 
