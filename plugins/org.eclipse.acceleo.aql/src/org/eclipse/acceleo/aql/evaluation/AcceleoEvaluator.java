@@ -539,6 +539,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			if (lastLineOfLastStatement.isEmpty()) {
 				if (!textStatement.getValue().isEmpty()) {
 					res = peekIndentationContext().indentation + textStatement.getValue() + newLine;
+					lastLineOfLastStatement = "";
 				} else {
 					// empty text with new line at the beginning of a line is a no operation
 					// see NewLineStatement
@@ -680,7 +681,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		pushVariables(variables);
-		pushIndentationContext(letStatement.getBody(), lastLineOfLastStatement);
+		pushIndentationContext(letStatement.getBody(), getIndentation());
 		try {
 			res = (String)doSwitch(letStatement.getBody());
 		} finally {
@@ -688,7 +689,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			popVariables();
 		}
 
-		return res;
+		return addIndentationPrefix(letStatement.getBody(), res);
 	}
 
 	/**
@@ -885,19 +886,23 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final Object condition = doSwitch(ifStatement.getCondition());
 		if (condition instanceof Boolean) {
 			if (Boolean.TRUE.equals(condition)) {
-				pushIndentationContext(ifStatement.getThen(), lastLineOfLastStatement);
+				pushIndentationContext(ifStatement.getThen(), getIndentation());
+				final String text;
 				try {
-					res = (String)doSwitch(ifStatement.getThen());
+					text = (String)doSwitch(ifStatement.getThen());
 				} finally {
 					popIndentationContext();
 				}
+				res = addIndentationPrefix(ifStatement.getThen(), text);
 			} else if (ifStatement.getElse() != null) {
-				pushIndentationContext(ifStatement.getElse(), lastLineOfLastStatement);
+				pushIndentationContext(ifStatement.getElse(), getIndentation());
+				final String text;
 				try {
-					res = (String)doSwitch(ifStatement.getElse());
+					text = (String)doSwitch(ifStatement.getElse());
 				} finally {
 					popIndentationContext();
 				}
+				res = addIndentationPrefix(ifStatement.getElse(), text);
 			} else {
 				res = EMPTY_RESULT;
 			}
@@ -932,7 +937,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
 			final String name = forStatement.getBinding().getName();
 			pushVariables(variables);
-			pushIndentationContext(forStatement.getBody(), lastLineOfLastStatement);
+			pushIndentationContext(forStatement.getBody(), getIndentation());
 			try {
 				// the first value is generated on its own
 				// to insert separators
@@ -955,7 +960,45 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			}
 		}
 
-		return builder.toString();
+		return addIndentationPrefix(forStatement.getBody(), builder.toString());
+	}
+
+	/**
+	 * Add the indentation prefix to the given text if the given {@link Block} is {@link Block#isInlined()
+	 * inlined}.
+	 * 
+	 * @param block
+	 *            the {@link Block}
+	 * @param text
+	 *            the text
+	 * @return the indentation prefix to the given text if the given {@link Block} is {@link Block#isInlined()
+	 *         inlined}
+	 */
+	private String addIndentationPrefix(Block block, String text) {
+		final String res;
+
+		if (block.isInlined() && !text.isEmpty()) {
+			res = peekIndentationContext().indentation + text;
+		} else {
+			res = text;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the current indentation.
+	 * 
+	 * @return the current indentation
+	 */
+	private String getIndentation() {
+		final String indentation;
+		if (lastLineOfLastStatement.isEmpty()) {
+			indentation = peekIndentationContext().indentation;
+		} else {
+			indentation = lastLineOfLastStatement;
+		}
+		return indentation;
 	}
 
 	/**
@@ -996,6 +1039,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		checkProtectedAreaIdUniqueness(protectedArea, id);
 
+		final String indentation = getIndentation();
+		if (lastLineOfLastStatement.isEmpty()) {
+			res.append(indentation);
+		}
+
 		if (protectedArea.getStartTagPrefix() != null) {
 			final Object startTagPrefixObject = doSwitch(protectedArea.getStartTagPrefix());
 			final String prefix = toString(startTagPrefixObject);
@@ -1010,7 +1058,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine);
 			res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 		} else {
-			pushIndentationContext(protectedArea.getBody(), lastLineOfLastStatement);
+			pushIndentationContext(protectedArea.getBody(), indentation);
 			try {
 				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine);
 				lastLineOfLastStatement = "";
@@ -1035,7 +1083,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		lastLineOfLastStatement = "";
 		peekIndentationContext().keepIndentation = true;
 
-		return res.toString();
+		return addIndentationPrefix(protectedArea.getBody(), res.toString());
 	}
 
 	/**

@@ -1,0 +1,17 @@
+[module withIndentationInIfAfterExpressionStatement('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+       [if (true)]
+         ['expression text'/]
+         toto
+         [for (v | Sequence{1, 2, 3})]
+           [v/]
+         [/for]
+         [protected (myParam.name) startTagPrefix('// ') endTagPrefix('// ')]
+           [myParam.name/]
+         [/protected]
+       [/if]
+  [/file]
+[/template]

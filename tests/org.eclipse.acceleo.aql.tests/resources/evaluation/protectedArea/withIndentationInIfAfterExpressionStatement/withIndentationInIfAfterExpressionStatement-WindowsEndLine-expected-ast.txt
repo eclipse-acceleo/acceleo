@@ -1,0 +1,26 @@
+
+header position 0..94
+module withIndentationInIfAfterExpressionStatement
+  metamodel http://www.eclipse.org/emf/2002/Ecore (53..91)
+  [comment @main  (107..113) /] (98..115)
+  
+  public template myTemplate(myParam : EPackage (145..170))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (183..204) mode overwrite
+          (223..226)
+      [if true (231..235)
+        ['expression text' (249..266)/] (newLineNeeded (248..270)
+        toto (newLineNeeded) (279..285)
+        [for v : null = Sequence{1, 2, 3, } (304..321) (300..321)
+          [v (337..338)/] (newLineNeeded (336..342) (323..351)
+        [/for] (294..357)
+         (newLineNeeded) (357..359)
+        [protected .aqlFeatureAccess(myParam, 'name') (380..392)
+          [.aqlFeatureAccess(myParam, 'name') (450..462)/] (newLineNeeded (449..466) (436..475) startTagPrefix '// ' (409..414) endTagPrefix '// ' (429..434)
+        [/protected] (368..487)
+         (newLineNeeded) (487..489) (237..496)
+      [/if] (226..501)
+       (newLineNeeded) (501..503) (217..505)
+    [/file] (176..512)
+     (newLineNeeded) (512..514) (172..514)
+  [/template] (117..525) (0..525)
