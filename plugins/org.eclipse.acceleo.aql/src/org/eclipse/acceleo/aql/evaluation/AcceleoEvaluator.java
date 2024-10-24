@@ -96,11 +96,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		private final boolean inlinedBlock;
 
 		/**
-		 * Tells if we should keep the current indentation regardless of the {@link #lastLineOfLastStatement}.
-		 */
-		private boolean keepIndentation;
-
-		/**
 		 * Constructor.
 		 * 
 		 * @param indentation
@@ -108,10 +103,9 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		 * @param inlinedBlock
 		 *            tells if the current {@link Block} is {@link Block#isInlined() inlined}
 		 */
-		private IndentationContext(String indentation, boolean inlinedBlock, boolean keepIndentation) {
+		private IndentationContext(String indentation, boolean inlinedBlock) {
 			this.indentation = indentation;
 			this.inlinedBlock = inlinedBlock;
-			this.keepIndentation = keepIndentation;
 		}
 
 	}
@@ -235,7 +229,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		final String savedLastLineOfLastStatement = lastLineOfLastStatement;
 		lastLineOfLastStatement = "";
-		indentationContextStack.addLast(new IndentationContext(lastLineOfLastStatement, false, false));
+		indentationContextStack.addLast(new IndentationContext(lastLineOfLastStatement, false));
 		pushVariables(variables);
 		try {
 			res = doSwitch(node);
@@ -305,29 +299,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	protected void pushIndentationContext(Block block, String indentation) {
 		final IndentationContext newIndentationContext;
 
-		final IndentationContext currentIndenationContext = indentationContextStack.getLast();
 		if (block.isInlined()) {
-			if (peekIndentationContext().keepIndentation && indentation.isEmpty()) {
-				final String currentIndentation = currentIndenationContext.indentation;
-				if (currentIndentation != null) {
-					newIndentationContext = new IndentationContext(currentIndentation, true, true);
-				} else {
-					newIndentationContext = new IndentationContext(indentation, true, true);
-				}
-			} else {
-				newIndentationContext = new IndentationContext("", true, false);
-			}
+			newIndentationContext = new IndentationContext("", true);
 		} else {
-			if (peekIndentationContext().keepIndentation && indentation.isEmpty()) {
-				final String currentIndentation = currentIndenationContext.indentation;
-				if (currentIndentation != null) {
-					newIndentationContext = new IndentationContext(currentIndentation, false, true);
-				} else {
-					newIndentationContext = new IndentationContext(indentation, false, true);
-				}
-			} else {
-				newIndentationContext = new IndentationContext(indentation, false, false);
-			}
+			newIndentationContext = new IndentationContext(indentation, false);
 		}
 
 		indentationContextStack.addLast(newIndentationContext);
@@ -572,7 +547,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			res = newLine;
 		}
 		lastLineOfLastStatement = "";
-		peekIndentationContext().keepIndentation = true;
 
 		return res;
 	}
@@ -1062,7 +1036,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			try {
 				res.append(IAcceleoGenerationStrategy.USER_CODE_START + " " + id + newLine);
 				lastLineOfLastStatement = "";
-				peekIndentationContext().keepIndentation = true;
 
 				final String text = (String)doSwitch(protectedArea.getBody());
 				res.append(text);
@@ -1081,7 +1054,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			res.append(IAcceleoGenerationStrategy.USER_CODE_END + newLine);
 		}
 		lastLineOfLastStatement = "";
-		peekIndentationContext().keepIndentation = true;
 
 		return addIndentationPrefix(protectedArea.getBody(), res.toString());
 	}
