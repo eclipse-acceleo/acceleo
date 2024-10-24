@@ -1,0 +1,30 @@
+some text
+  Start of user code anydsl
+  anydsl
+  inlined theninlined theninlined then
+  inlined then 1inlined then 2inlined then 3
+  inlined elseinlined elseinlined else
+  inlined else 1inlined else 2inlined else 3
+  then block
+  then block
+  then block
+  then 1
+  then 2
+  then 3
+  else block
+  else block
+  else block
+  else 1
+  else 2
+  else 3
+  anydsl
+  inlined letinlined letinlined let
+  inlined let 1inlined let 2inlined let 3
+  let block
+  let block
+  let block
+  let 1
+  let 2
+  let 3
+  End of user code
+some text
