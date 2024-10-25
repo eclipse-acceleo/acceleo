@@ -1,0 +1,6 @@
+[module middleOfExpressionLineMultiLineInlinedBlock('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]['some text '/][myParam.name + '.txt' + '\n\nlast ExpressionStatement line'/][' some text'/][/file]
+[/template]

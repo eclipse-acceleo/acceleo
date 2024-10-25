@@ -1,0 +1,8 @@
+[module middleOfExpressionLineMultiLineInlinedElseIf('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+    ['some text'/][if (false)]['then block\nthen block\nthen block\n'/][elseif (true)]['elseif block\nelseif block\nelseif block\n'/][else]['else block'/][/if]['some text'/]
+  [/file]
+[/template]

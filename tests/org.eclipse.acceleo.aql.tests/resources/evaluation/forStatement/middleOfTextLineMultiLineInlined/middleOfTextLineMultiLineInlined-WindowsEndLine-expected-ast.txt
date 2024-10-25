@@ -1,0 +1,20 @@
+
+header position 0..83
+module middleOfTextLineMultiLineInlined
+  metamodel http://www.eclipse.org/emf/2002/Ecore (42..80)
+  [comment @main  (96..102) /] (87..104)
+  
+  public template myTemplate(myParam : EPackage (134..159))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (172..193) mode overwrite
+      some text (212..221)
+      [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (261..281) (227..281)
+        [.add(.add(.add(.add(.add(.aqlFeatureAccess(myVariable, 'name'), '
+'), .aqlFeatureAccess(myVariable, 'name')), '
+'), .aqlFeatureAccess(myVariable, 'name')), '
+') (284..356)/] (283..358) (283..358)
+      [/for] (221..364)
+      some text (newLineNeeded) (364..375) (206..377)
+    [/file] (165..384)
+     (newLineNeeded) (384..386) (161..386)
+  [/template] (106..397) (0..397)

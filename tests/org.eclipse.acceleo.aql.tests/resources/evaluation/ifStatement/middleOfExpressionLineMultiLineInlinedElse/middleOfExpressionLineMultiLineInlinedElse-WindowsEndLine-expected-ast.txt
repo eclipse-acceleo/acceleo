@@ -1,0 +1,32 @@
+
+header position 0..93
+module middleOfExpressionLineMultiLineInlinedElse
+  metamodel http://www.eclipse.org/emf/2002/Ecore (52..90)
+  [comment @main  (106..112) /] (97..114)
+  
+  public template myTemplate(myParam : EPackage (144..169))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (182..203) mode overwrite
+      ['some text' (223..234)/] (222..236)
+      [if false (241..246)
+        ['then block
+then block
+then block
+' (249..287)/] (248..289) (248..289)
+      [else]
+        [if false (298..303)
+          ['elseif block
+elseif block
+elseif block
+' (306..350)/] (305..352) (305..352)
+        [else]
+          ['else block
+else block
+else block
+' (359..397)/] (358..399) (358..399)
+        [/if] (289..404) (-1..-1)
+      [/if] (236..404)
+      ['some text' (405..416)/] (newLineNeeded (404..420) (216..422)
+    [/file] (175..429)
+     (newLineNeeded) (429..431) (171..431)
+  [/template] (116..442) (0..442)

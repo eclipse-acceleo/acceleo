@@ -1,0 +1,17 @@
+
+header position 0..94
+module middleOfExpressionLineMultiLineInlinedBlock
+  metamodel http://www.eclipse.org/emf/2002/Ecore (53..91)
+  [comment @main  (107..113) /] (98..115)
+  
+  public template myTemplate(myParam : EPackage (145..170))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (183..204) mode overwrite
+      ['some text ' (218..230)/] (217..232)
+      [.add(.add(.aqlFeatureAccess(myParam, 'name'), '.txt'), '
+
+last ExpressionStatement line') (233..292)/] (232..294)
+      [' some text' (295..307)/] (294..309) (217..309)
+    [/file] (176..316)
+     (newLineNeeded) (316..318) (172..318)
+  [/template] (117..329) (0..329)
