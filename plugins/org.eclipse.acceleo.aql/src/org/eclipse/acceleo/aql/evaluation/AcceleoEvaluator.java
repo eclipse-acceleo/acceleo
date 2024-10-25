@@ -400,15 +400,16 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		} else {
 			indentation = getIndentation();
 		}
-		// TODO replace all possible new lines with the right one
 		String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
 		final boolean endsWithNewLine = expressionValue.endsWith(newLine);
 		if (!indentation.isEmpty()) {
-			expressionValue = expressionValue.replace(newLine, newLine + indentation);
+			expressionValue = expressionValue.replaceAll("\r\n|\n", newLine + indentation);
 			if (endsWithNewLine) {
 				expressionValue = expressionValue.substring(0, expressionValue.length() - indentation
 						.length());
 			}
+		} else {
+			expressionValue = expressionValue.replaceAll("\r\n|\n", newLine);
 		}
 		if (expressionStatement.isNewLineNeeded() && !endsWithNewLine) {
 			if (lastLineOfLastStatement.isEmpty()) {
