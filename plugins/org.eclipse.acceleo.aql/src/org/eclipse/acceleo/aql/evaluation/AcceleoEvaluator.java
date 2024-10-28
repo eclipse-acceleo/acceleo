@@ -126,6 +126,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private static final DateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	/**
+	 * The new line {@link Pattern}.
+	 */
+	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("(\\r\\n)|(\\n)");
+
+	/**
 	 * The {@link IQueryEvaluationEngine} used to evaluate AQL expressions.
 	 */
 	private final IQueryEvaluationEngine aqlEngine;
@@ -403,13 +408,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
 		final boolean endsWithNewLine = expressionValue.endsWith(newLine);
 		if (!indentation.isEmpty()) {
-			expressionValue = expressionValue.replaceAll("\r\n|\n", newLine + indentation);
+			expressionValue = NEW_LINE_PATTERN.matcher(expressionValue).replaceAll(newLine + Matcher
+					.quoteReplacement(indentation));
 			if (endsWithNewLine) {
 				expressionValue = expressionValue.substring(0, expressionValue.length() - indentation
 						.length());
 			}
 		} else {
-			expressionValue = expressionValue.replaceAll("\r\n|\n", newLine);
+			expressionValue = NEW_LINE_PATTERN.matcher(expressionValue).replaceAll(newLine);
 		}
 		if (expressionStatement.isNewLineNeeded() && !endsWithNewLine) {
 			if (lastLineOfLastStatement.isEmpty()) {
