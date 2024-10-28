@@ -1,0 +1,8 @@
+[module multiLinesMixedNewLinesWithIndentation('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+      [myParam.name + '\n' + myParam.name + '\r\n' + myParam.name/]
+  [/file]
+[/template]

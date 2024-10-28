@@ -1,0 +1,5 @@
+# keep those files as his (no end of line modifications)
+tests/org.eclipse.acceleo.aql.tests/resources/evaluation/expressionStatement/multiLinesMixedNewLines/multiLinesMixedNewLines-expected-ast.txt binary
+tests/org.eclipse.acceleo.aql.tests/resources/evaluation/expressionStatement/multiLinesMixedNewLines/multiLinesMixedNewLines-WindowsEndLine-expected-ast.txt binary
+tests/org.eclipse.acceleo.aql.tests/resources/evaluation/expressionStatement/multiLinesMixedNewLinesWithIndentation/multiLinesMixedNewLinesWithIndentation-WindowsEndLine-expected-ast.txt binary
+tests/org.eclipse.acceleo.aql.tests/resources/evaluation/expressionStatement/multiLinesMixedNewLinesWithIndentation/multiLinesMixedNewLinesWithIndentation-expected-ast.txt binary

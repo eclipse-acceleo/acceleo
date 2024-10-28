@@ -1,0 +1,16 @@
+
+header position 0..89
+module multiLinesMixedNewLinesWithIndentation
+  metamodel http://www.eclipse.org/emf/2002/Ecore (48..86)
+  [comment @main  (100..106) /] (91..108)
+  
+  public template myTemplate(myParam : EPackage (137..162))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (174..195) mode overwrite
+         (213..215)
+      [.add(.add(.add(.add(.aqlFeatureAccess(myParam, 'name'), '
+'), .aqlFeatureAccess(myParam, 'name')), '
+'), .aqlFeatureAccess(myParam, 'name')) (216..274)/] (newLineNeeded (215..277) (208..279)
+    [/file] (167..286)
+     (newLineNeeded) (286..287) (164..287)
+  [/template] (109..298) (0..298)
