@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.namespace.workspace;
 
 import java.net.URI;
+import java.util.Set;
 
 /**
  * A workspace invalidates resolvers according to outside changes.
@@ -101,5 +102,12 @@ public interface IQueryWorkspace<P> {
 	 * @return the qualified name for the given {@link URI} if any, <code>null</code> otherwise
 	 */
 	String changeResource(P project, URI resource);
+
+	/**
+	 * Gets the {@link Set} of resource extensions to check.
+	 * 
+	 * @return the {@link Set} of resource extensions to check
+	 */
+	public Set<String> getExtensions();
 
 }

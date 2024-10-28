@@ -63,6 +63,12 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 			return (AcceleoWorkspace)getQueryWorkspace();
 		}
 
+		@Override
+		protected boolean shouldInitializationSynchronize(IProject project) {
+			// TODO filter on Acceleo nature
+			return true;
+		}
+
 	}
 
 	/**

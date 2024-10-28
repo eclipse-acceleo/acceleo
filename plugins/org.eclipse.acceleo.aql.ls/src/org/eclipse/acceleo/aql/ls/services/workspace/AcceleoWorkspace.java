@@ -22,6 +22,8 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.IAcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocument;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.impl.namespace.workspace.QueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
@@ -222,6 +224,16 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	 */
 	public AcceleoProject getProject(URI resource) {
 		return context.getProject(this, resource);
+	}
+
+	@Override
+	public Set<String> getExtensions() {
+		final Set<String> res = new LinkedHashSet<>();
+
+		res.add(JavaLoader.CLASS);
+		res.add(AcceleoParser.MODULE_FILE_EXTENSION);
+
+		return res;
 	}
 
 }

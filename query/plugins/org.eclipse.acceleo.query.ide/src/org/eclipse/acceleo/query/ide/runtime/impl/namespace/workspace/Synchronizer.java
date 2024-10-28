@@ -11,9 +11,12 @@
 package org.eclipse.acceleo.query.ide.runtime.impl.namespace.workspace;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.namespace.workspace.IWorkspaceResolverProvider;
@@ -50,9 +53,12 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private final class ResourceCounter implements IResourceVisitor {
+	private final class InitialResourceCollector implements IResourceVisitor {
 
-		private int count;
+		/**
+		 * The {@link List} of {@link IResource} to synchronize during initialization.
+		 */
+		private final List<IResource> resourcesToInitialize = new ArrayList<>();
 
 		@Override
 		public boolean visit(IResource resource) throws CoreException {
@@ -60,8 +66,13 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 
 			final IProject project = resource.getProject();
 			if (project == null || project.isOpen()) {
-				count++;
-				res = true;
+				res = shouldInitializationSynchronize(project);
+				if (resource.getType() == IResource.FILE && extensions.contains(resource
+						.getFileExtension())) {
+					resourcesToInitialize.add(resource);
+				} else if (resource.getType() == IResource.PROJECT) {
+					resourcesToInitialize.add(resource);
+				}
 			} else {
 				res = resource instanceof IWorkspaceRoot;
 			}
@@ -69,8 +80,13 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			return res;
 		}
 
-		public int getCount() {
-			return count;
+		/**
+		 * Gets the {@link List} of {@link IResource}
+		 * 
+		 * @return
+		 */
+		public List<IResource> getResourcesToInitialize() {
+			return resourcesToInitialize;
 		}
 	}
 
@@ -83,6 +99,11 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 	 * The {@link IQueryWorkspace} to synchronize.
 	 */
 	private final IQueryWorkspace<P> queryWorkspace;
+
+	/**
+	 * The {@link Set} of resource extensions to check.
+	 */
+	private final Set<String> extensions;
 
 	/**
 	 * The mapping from {@link IProject} to project.
@@ -105,7 +126,18 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 	public Synchronizer(IWorkspace eclipseWorkspace, IQueryWorkspace<P> queryWorkspace) {
 		this.eclipseWorkspace = eclipseWorkspace;
 		this.queryWorkspace = queryWorkspace;
+		extensions = queryWorkspace.getExtensions();
 	}
+
+	/**
+	 * Tells if we should synchronize the given {@link IProject} at initialization.
+	 * 
+	 * @param project
+	 *            the {@link IProject}
+	 * @return <code>true</code> if we should synchronize the given {@link IProject} at initialization,
+	 *         <code>false</code> otherwise
+	 */
+	protected abstract boolean shouldInitializationSynchronize(IProject project);
 
 	/**
 	 * Starts synchronizing.
@@ -128,13 +160,17 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 
 							// walk the workspace for current state
 
-							final ResourceCounter resourceCounter = new ResourceCounter();
-							eclipseWorkspace.getRoot().accept(resourceCounter);
+							final InitialResourceCollector initialResources = new InitialResourceCollector();
+							eclipseWorkspace.getRoot().accept(initialResources);
+							final List<IResource> resourcesToInitialize = initialResources
+									.getResourcesToInitialize();
 							final SubMonitor subMonitor = SubMonitor.convert(monitor, "Validating",
-									resourceCounter.getCount());
+									resourcesToInitialize.size());
 							Synchronizer.this.monitor = subMonitor;
 							try {
-								eclipseWorkspace.getRoot().accept(Synchronizer.this);
+								for (IResource resource : resourcesToInitialize) {
+									Synchronizer.this.visit(resource);
+								}
 							} finally {
 								Synchronizer.this.monitor = null;
 							}
@@ -181,7 +217,8 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			if (resource.getType() == IResource.PROJECT) {
 				IProject workspaceProject = (IProject)resource;
 				visitProjectDelta(delta, workspaceProject);
-			} else if (resource.getType() == IResource.FILE) {
+			} else if (resource.getType() == IResource.FILE && extensions.contains(resource
+					.getFileExtension())) {
 				final IFile file = (IFile)resource;
 				visitFileDelta(delta, file);
 			}
@@ -308,7 +345,7 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			synchronized(this) {
 				getOrCreateProject(queryWorkspace, eclipseProject);
 			}
-		} else if (resource.getType() == IResource.FILE) {
+		} else if (resource.getType() == IResource.FILE && extensions.contains(resource.getFileExtension())) {
 			final IFile file = (IFile)resource;
 			final URI uri = file.getLocationURI();
 			this.queryWorkspace.addResource(getProject(file.getProject()), uri);
