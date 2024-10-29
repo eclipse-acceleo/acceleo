@@ -158,12 +158,11 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	public void didChange(DidChangeTextDocumentParams params) {
 		final URI changedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		this.checkDocumentIsOpened(changedDocumentUri);
+		final AcceleoTextDocument changedAcceleoTextDocument = getAcceleoTextDocument(changedDocumentUri,
+				true, true);
 
 		final List<TextDocumentContentChangeEvent> textDocumentContentchangeEvents = params
 				.getContentChanges();
-		final AcceleoTextDocument changedAcceleoTextDocument = this.server.getWorkspace().getDocument(
-				changedDocumentUri);
 		changedAcceleoTextDocument.applyChanges(textDocumentContentchangeEvents);
 	}
 
@@ -171,9 +170,8 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	public void didClose(DidCloseTextDocumentParams params) {
 		final URI closedDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(closedDocumentUri);
-		final AcceleoTextDocument closedAcceleoTextDocument = this.server.getWorkspace().getDocument(
-				closedDocumentUri);
+		final AcceleoTextDocument closedAcceleoTextDocument = getAcceleoTextDocument(closedDocumentUri, false,
+				true);
 		if (closedAcceleoTextDocument == null) {
 			throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
 					+ closedDocumentUri);
@@ -212,28 +210,13 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	}
 
 	// Implementation of the various capabilities declared by the {@link AcceleoLanguageServer}.
-	/**
-	 * Checks that this service knows of an open document with the given URI. Otherwise, a
-	 * {@link LanguageServerProtocolException} is thrown because we are not supposed to receive requests on
-	 * open documents before the document is opened.
-	 * 
-	 * @param documentUri
-	 *            the {@link URI} of the document.
-	 */
-	protected void checkDocumentIsOpened(URI documentUri) {
-		if (!this.openedDocumentsIndex.containsKey(documentUri)) {
-			throw new LanguageServerProtocolException("Received a notification for document \"" + documentUri
-					+ "\" but it has not previously been opened. This should never happen.");
-		}
-	}
 
 	@Override
 	public CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(
 			CompletionParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, true);
 		final Position position = params.getPosition();
 		return completion(acceleoTextDocument, position);
 	}
@@ -288,8 +271,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			DeclarationParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, true);
 		final Position position = params.getPosition();
 		return declaration(acceleoTextDocument, position);
 	}
@@ -321,8 +303,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			DefinitionParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, true);
 		final Position position = params.getPosition();
 		return definition(acceleoTextDocument, position);
 	}
@@ -354,8 +335,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			DocumentSymbolParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, true);
 		return documentSymbol(acceleoTextDocument);
 	}
 
@@ -398,8 +378,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	public CompletableFuture<List<? extends Location>> references(ReferenceParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, true);
 		final Position position = params.getPosition();
 		return references(acceleoTextDocument, position);
 	}
@@ -441,8 +420,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			PrepareRenameParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, true);
 		final Position position = params.getPosition();
 		return prepareRename(acceleoTextDocument, position);
 	}
@@ -475,8 +453,7 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	public CompletableFuture<WorkspaceEdit> rename(RenameParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, true);
 		final Position position = params.getPosition();
 		return rename(acceleoTextDocument, position, params.getNewName());
 	}
@@ -510,11 +487,42 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 	public CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params) {
 		final URI textDocumentUri = AcceleoLanguageServerServicesUtils.toUri(params.getTextDocument()
 				.getUri());
-		checkDocumentIsOpened(textDocumentUri);
-		final AcceleoTextDocument acceleoTextDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		final AcceleoTextDocument acceleoTextDocument = getAcceleoTextDocument(textDocumentUri, false, false);
 		final Range position = params.getRange();
 		final CodeActionContext context = params.getContext();
 		return codeAction(acceleoTextDocument, position, context);
+	}
+
+	/**
+	 * Gets the {@link AcceleoTextDocument} for the given {@link URI}.
+	 * 
+	 * @param textDocumentUri
+	 *            the text document {@link URI}
+	 * @param fromWorkspace
+	 *            <code>true</code> gets the document from the workspace, <code>false</code> take the document
+	 *            from opened documents
+	 * @param checkOpened
+	 *            <code>true</code> to check if the document is currently opened, <code>false</code> otherwise
+	 * @return the {@link AcceleoTextDocument} for the given {@link URI}
+	 */
+	protected AcceleoTextDocument getAcceleoTextDocument(final URI textDocumentUri, boolean fromWorkspace,
+			boolean checkOpened) {
+		final AcceleoTextDocument res;
+
+		final AcceleoTextDocument openedDocument = this.openedDocumentsIndex.get(textDocumentUri);
+		if (checkOpened && openedDocument == null) {
+			throw new LanguageServerProtocolException("Received a notification for document \""
+					+ textDocumentUri
+					+ "\" but it has not previously been opened. This should never happen.");
+		}
+
+		if (fromWorkspace || openedDocument == null) {
+			res = server.getWorkspace().getDocument(textDocumentUri);
+		} else {
+			res = openedDocument;
+		}
+
+		return res;
 	}
 
 	private CompletableFuture<List<Either<Command, CodeAction>>> codeAction(
