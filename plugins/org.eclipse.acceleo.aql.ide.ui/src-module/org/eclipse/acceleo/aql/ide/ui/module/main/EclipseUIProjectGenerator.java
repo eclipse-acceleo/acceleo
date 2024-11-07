@@ -27,7 +27,7 @@ import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
-import org.eclipse.acceleo.aql.ide.ui.Activator;
+import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.module.services.Services;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -266,17 +266,17 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		if (diagnostic.getMessage() != null) {
 			switch (diagnostic.getSeverity()) {
 				case Diagnostic.INFO:
-					Activator.getDefault().getLog().log(new Status(IStatus.INFO, diagnostic.getSource(),
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.INFO, diagnostic.getSource(),
 							diagnostic.getMessage(), diagnostic.getException()));
 					break;
 
 				case Diagnostic.WARNING:
-					Activator.getDefault().getLog().log(new Status(IStatus.WARNING, diagnostic.getSource(),
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, diagnostic.getSource(),
 							diagnostic.getMessage(), diagnostic.getException()));
 					break;
 
 				case Diagnostic.ERROR:
-					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, diagnostic.getSource(),
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, diagnostic.getSource(),
 							diagnostic.getMessage(), diagnostic.getException()));
 					break;
 			}
@@ -318,7 +318,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		final String message = "Files: " + result.getGeneratedFiles().size() + ", Lost Files: " + result
 				.getLostFiles().size() + ", Errors: " + nbErrors + ", Warnings: " + nbWarnings + ", Infos: "
 				+ nbInfos + ".";
-		Activator.getDefault().getLog().log(new Status(IStatus.INFO, getClass(), message));
+		AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.INFO, getClass(), message));
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 					existingProject.getParent().refreshLocal(IResource.DEPTH_INFINITE,
 							new NullProgressMonitor());
 				} catch (CoreException e) {
-					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
 							"could not refresh " + existingProject.getParent().getFullPath(), e));
 				}
 			}
@@ -352,7 +352,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 				project.open(null);
 				addPluginDependencies(project, dependencyBundleNames);
 			} catch (CoreException e) {
-				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
 						"couldn't import project " + projectUIAbsolutePath, e));
 			}
 		}

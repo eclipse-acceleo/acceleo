@@ -34,7 +34,7 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.ide.ui.Activator;
+import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.parser.AstResult;
@@ -97,7 +97,7 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			final IFile moduleFile = moduleConfiguration.getModuleFile();
-			IStatus res = new Status(IStatus.OK, Activator.PLUGIN_ID, String.format(OK_MESSAGE, moduleFile
+			IStatus res = new Status(IStatus.OK, AcceleoUIPlugin.PLUGIN_ID, String.format(OK_MESSAGE, moduleFile
 					.getFullPath()));
 
 			final org.eclipse.acceleo.Module module = AcceleoPackage.eINSTANCE.getAcceleoFactory()
@@ -182,10 +182,10 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 						moduleFile.getCharset()));
 				moduleFile.create(moduleInputStream, true, monitor);
 			} catch (CoreException e) {
-				res = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't write " + moduleFile
+				res = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, "Can't write " + moduleFile
 						.getFullPath(), e);
 			} catch (UnsupportedEncodingException e) {
-				res = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Can't write " + moduleFile
+				res = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, "Can't write " + moduleFile
 						.getFullPath(), e);
 			}
 
@@ -212,12 +212,12 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 							.getCharset());
 				} catch (IOException e) {
 					fileContent = "";//$NON-NLS-1$
-					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
 							"unable to load intial file content.", e));
 					e.printStackTrace();
 				} catch (CoreException e) {
 					fileContent = "";//$NON-NLS-1$
-					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
 							"unable to load intial file content.", e));
 				}
 				initialContent = fileContent;

@@ -17,7 +17,7 @@ Export-Package: org.eclipse.acceleo.aql.ide.ui,
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.eclipse.acceleo.aql.ide.ui.Activator
+Bundle-Activator: org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.aql;bundle-version="[4.0.0,5.0.0)",

@@ -127,7 +127,7 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 			inputStream.close();
 			return result.toString(file.getCharset());
 		} catch (IOException | CoreException exception) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
 					"There was an issue while reading the contents of file " + file.getLocation().toString(),
 					exception));
 		}

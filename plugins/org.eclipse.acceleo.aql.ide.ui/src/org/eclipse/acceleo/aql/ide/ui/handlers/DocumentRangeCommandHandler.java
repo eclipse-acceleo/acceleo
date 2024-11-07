@@ -12,7 +12,7 @@ package org.eclipse.acceleo.aql.ide.ui.handlers;
 
 import java.util.Collections;
 
-import org.eclipse.acceleo.aql.ide.ui.Activator;
+import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ls.AcceleoLanguageServer;
 import org.eclipse.acceleo.aql.ls.services.workspace.command.DocumentRangeParams;
 import org.eclipse.core.commands.AbstractHandler;
@@ -68,7 +68,7 @@ public abstract class DocumentRangeCommandHandler extends AbstractHandler {
 					Collections.singletonList(documentRangeParams));
 			executor.computeFirst(ls -> ls.getWorkspaceService().executeCommand(executionCommandParams));
 		} catch (BadLocationException e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
 					"unable to run LS command " + lsCommand, e));
 		}
 		return null;

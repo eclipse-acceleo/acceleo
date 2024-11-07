@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2023 Obeo. 
+ *  Copyright (c) 2023, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle.
  */
-public class Activator extends AbstractUIPlugin {
+public class AcceleoUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * The delete image key.
@@ -45,7 +45,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * The shared instance.
 	 */
-	private static Activator plugin;
+	private static AcceleoUIPlugin plugin;
 
 	/**
 	 * The {@link EclipseAcceleoLanguageServerContext}.
@@ -55,7 +55,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * The constructor.
 	 */
-	public Activator() {
+	public AcceleoUIPlugin() {
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Activator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static AcceleoUIPlugin getDefault() {
 		return plugin;
 	}
 

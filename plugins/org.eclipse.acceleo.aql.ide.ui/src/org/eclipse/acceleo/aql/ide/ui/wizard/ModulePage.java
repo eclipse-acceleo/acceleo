@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.ide.ui.Activator;
+import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.message.AcceleoUIMessages;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.AQLUtils;
@@ -353,7 +353,7 @@ public class ModulePage extends WizardPage {
 		tableButtonComposite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 		tableButtonComposite.setLayout(layout);
 		addButton = new Button(tableButtonComposite, SWT.PUSH);
-		Image addImage = Activator.getDefault().getImageRegistry().get(Activator.ADD_IMG_KEY);
+		Image addImage = AcceleoUIPlugin.getDefault().getImageRegistry().get(AcceleoUIPlugin.ADD_IMG_KEY);
 		addButton.setImage(addImage);
 		addButton.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.AddButton")); //$NON-NLS-1$
 		addButton.addSelectionListener(new SelectionAdapter() {
@@ -364,7 +364,7 @@ public class ModulePage extends WizardPage {
 			}
 		});
 		removeButton = new Button(tableButtonComposite, SWT.PUSH);
-		Image removeImage = Activator.getDefault().getImageRegistry().get(Activator.DELETE_IMG_KEY);
+		Image removeImage = AcceleoUIPlugin.getDefault().getImageRegistry().get(AcceleoUIPlugin.DELETE_IMG_KEY);
 		removeButton.setImage(removeImage);
 		removeButton.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.RemoveButton")); //$NON-NLS-1$
 		removeButton.addSelectionListener(new SelectionAdapter() {
@@ -688,43 +688,43 @@ public class ModulePage extends WizardPage {
 	 * Checks errors.
 	 */
 	private void checkErrors() {
-		IStatus status = new Status(IStatus.OK, Activator.PLUGIN_ID, null);
+		IStatus status = new Status(IStatus.OK, AcceleoUIPlugin.PLUGIN_ID, null);
 
 		if (moduleConfiguration.getModuleName() == null || "".equals(moduleConfiguration.getModuleName())) { //$NON-NLS-1$
 			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.InvalidName"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (moduleConfiguration.getParentFolder() == null || "".equals(moduleConfiguration //$NON-NLS-1$
 				.getParentFolder())) {
 			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.InvalidParentFolder"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (moduleConfiguration.getNsURIs() == null || moduleConfiguration.getNsURIs().size() == 0) {
 			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.EmptyMetamodelURIs"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (moduleConfiguration.getModuleElementName() == null || "".equals(moduleConfiguration //$NON-NLS-1$
 				.getModuleElementName())) {
 			String message = AcceleoUIMessages.getString(
 					"AcceleoModuleCompositeMessage.InvalidModuleElementName"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (moduleConfiguration.getModuleElementParameterType() == null || "".equals( //$NON-NLS-1$
 				moduleConfiguration.getModuleElementParameterType())) {
 			String message = AcceleoUIMessages.getString(
 					"AcceleoModuleCompositeMessage.InvalidModuleElementParameterType"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (templateModuleElementKind.getSelection() && moduleConfiguration.isIsInitialized()
 				&& (moduleConfiguration.getInitializationPath() == null || "" //$NON-NLS-1$
 						.equals(moduleConfiguration.getInitializationPath()))) {
 			String message = AcceleoUIMessages.getString(
 					"AcceleoModuleCompositeMessage.EmptyModuleElementInitializationPath"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (templateModuleElementKind.getSelection() && moduleConfiguration.isIsInitialized()
 				&& !(fileExists(moduleConfiguration.getInitializationPath()))) {
 			String message = AcceleoUIMessages.getString(
 					"AcceleoModuleCompositeMessage.InvalidModuleElementInitializationPath"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (moduleExists(moduleConfiguration.getProjectName(), moduleConfiguration.getParentFolder(),
 				moduleConfiguration.getModuleName())) {
 			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.FileAlreadyExists"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		}
 
 		setMessage(MODULE_ELEMENT_NAME, ERROR);
@@ -917,7 +917,7 @@ public class ModulePage extends WizardPage {
 				} catch (WrappedException e) {
 					// It catches an EMF WrappedException.
 					// It is very useful if the EMF registry is corrupted by other contributions.
-					Activator.getDefault().getLog().log(new Status(ERROR, getClass(), e.getMessage(), e));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(ERROR, getClass(), e.getMessage(), e));
 				}
 			} else {
 				for (int i = 0; i < result.length; i++) {
