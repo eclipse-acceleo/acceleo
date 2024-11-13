@@ -7,8 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _8MymQOKdEe2DiuG6X15Vyw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 5/3/23, 3:59 PM
-Tags: fail
+Save-Time: 11/13/24, 4:24 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -25,25 +24,25 @@ with [get-editor "c.mtl" | get-text-viewer] {
 }
 
 with [get-view Search | get-tree] {
-    with [get-item -path "test/src/test/c.mtl \\(4 matches\\)/6: \\[file \\(myParam.name \\+ '.txt', overwrite\\)\\]"] {
+    with [get-item -path "test/src/test/c.mtl \\(4 matches\\)/7: \\[file \\(myParam.name \\+ '.txt', overwrite\\)\\]"] {
         get-property "getData().getLength()" | equals 43 | verify-true
         get-property "getData().getOffset()" | equals 160 | verify-true
         get-property "getData().getContents()" | equals "[file (myParam.name + '.txt', overwrite)]" | verify-true
     }
     with [get-item 
-        -path "test/src/test/c.mtl \\(4 matches\\)/7: - \\[for \\(myVariable1 : ecore::EClassifier | myParam.eClassifiers\\)\\]"] {
+        -path "test/src/test/c.mtl \\(4 matches\\)/8: - \\[for \\(myVariable1 : ecore::EClassifier | myParam.eClassifiers\\)\\]"] {
         get-property "getData().getLength()" | equals 70 | verify-true
         get-property "getData().getOffset()" | equals 204 | verify-true
         get-property "getData().getContents()" 
             | equals "- [for (myVariable1 : ecore::EClassifier | myParam.eClassifiers)]" | verify-true
     }
     with [get-item 
-        -path "test/src/test/c.mtl \\(4 matches\\)/12: \\[myParam.eClassifiers.name.getMessage\\(\\)\\/\\]"] {
+        -path "test/src/test/c.mtl \\(4 matches\\)/13: \\[myParam.eClassifiers.name.getMessage\\(\\)\\/\\]"] {
         get-property "getData().getLength()" | equals 49 | verify-true
         get-property "getData().getOffset()" | equals 423 | verify-true
         get-property "getData().getContents()" | equals "[myParam.eClassifiers.name.getMessage()/]" | verify-true
     }
-    with [get-item -path "test/src/test/c.mtl \\(4 matches\\)/13: \\[myParam.myTemplate2\\(\\)\\/\\]"] {
+    with [get-item -path "test/src/test/c.mtl \\(4 matches\\)/14: \\[myParam.myTemplate2\\(\\)\\/\\]"] {
         get-property "getData().getLength()" | equals 32 | verify-true
         get-property "getData().getOffset()" | equals 473 | verify-true
         get-property "getData().getContents()" | equals "[myParam.myTemplate2()/]" | verify-true
