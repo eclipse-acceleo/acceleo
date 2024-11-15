@@ -6,6 +6,7 @@
 
 [**
  * Generate the plugin.xml file.
+ * @param projectModules the Sequence of Module to generate command for
  * @param projectUIName the UI project name
  */]
 [template public pluginXMLFile(projectModules : Sequence(acceleo::Module), projectUIName : String)]
