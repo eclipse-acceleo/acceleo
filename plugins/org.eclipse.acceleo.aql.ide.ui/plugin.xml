@@ -141,6 +141,14 @@
             id="org.eclipse.acceleo.aql.ide.ui.commands.wrapInProtected"
             name="Wrap in Protected">
       </command>
+      <command
+            id="org.eclipse.acceleo.aql.ide.ui.commands.enableAcceleoNature"
+            name="Enable Acceleo Nature">
+      </command>
+      <command
+            id="org.eclipse.acceleo.aql.ide.ui.commands.disableAcceleoNature"
+            name="Disable Acceleo Nature">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -253,6 +261,14 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.EnableAcceleoNatureHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.enableAcceleoNature">
+      </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.DisableAcceleoNatureHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.disableAcceleoNature">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -363,6 +379,58 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+         <command
+               commandId="org.eclipse.acceleo.aql.ide.ui.commands.enableAcceleoNature"
+               icon="icons/AcceleoNature.gif"
+               label="Enable Acceleo Nature"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <not>
+                           <test
+                                 property="org.eclipse.core.resources.projectNature"
+                                 value="org.eclipse.acceleo.aql.ide.ui.acceleoNature">
+                           </test>
+                        </not>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.acceleo.aql.ide.ui.commands.disableAcceleoNature"
+               icon="icons/AcceleoNature.gif"
+               label="Disable Acceleo Nature"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <test
+                              property="org.eclipse.core.resources.projectNature"
+                              value="org.eclipse.acceleo.aql.ide.ui.acceleoNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -407,5 +475,22 @@
             name="Acceleo Open Declaration"
             targetId="org.eclipse.ui.DefaultTextEditor">
       </hyperlinkDetector>
+   </extension>
+   <extension
+         id="acceleoNature"
+         name="Acceleo Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.eclipse.acceleo.aql.ide.ui.natures.AcceleoNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension point="org.eclipse.ui.ide.projectNatureImages">
+      <image 
+         id="org.eclipse.acceleo.aql.ide.ui.acceleoNatureImage"
+         natureId="org.eclipse.acceleo.aql.ide.ui.acceleoNature"
+         icon="icons/AcceleoNature.gif">
+      </image>
    </extension>
 </plugin>

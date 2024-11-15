@@ -125,4 +125,11 @@ public class AcceleoProject implements IQueryProject {
 		return "Acceleo Project " + getName();
 	}
 
+	public void clean() {
+		for (AcceleoTextDocument acceleoDocument : qualifiedNameToDocuments.values()) {
+			acceleoDocument.cleanAndPublishResults();
+		}
+		qualifiedNameToDocuments.clear();
+	}
+
 }

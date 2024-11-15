@@ -12,6 +12,7 @@ Export-Package: org.eclipse.acceleo.aql.ide.ui,
  org.eclipse.acceleo.aql.ide.ui.module.main,
  org.eclipse.acceleo.aql.ide.ui.module.requests,
  org.eclipse.acceleo.aql.ide.ui.module.services,
+ org.eclipse.acceleo.aql.ide.ui.natures,
  org.eclipse.acceleo.aql.ide.ui.property,
  org.eclipse.acceleo.aql.ide.ui.wizard
 Bundle-Vendor: %providerName

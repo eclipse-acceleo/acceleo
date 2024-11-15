@@ -209,6 +209,23 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 		}
 	}
 
+	/**
+	 * Cleans all markers for the given {@link AcceleoTextDocument}.
+	 * 
+	 * @param acceleoTextDocument
+	 */
+	public void publishClean(AcceleoTextDocument acceleoTextDocument) {
+		if (this.languageClient != null) {
+			final List<Diagnostic> diagnosticsToPublish = Collections.emptyList();
+			final URI sourceURI = acceleoTextDocument.getProject().getResolver().getSourceURI(
+					acceleoTextDocument.getModuleQualifiedName());
+			if (sourceURI != null) {
+				this.languageClient.publishDiagnostics(new PublishDiagnosticsParams(sourceURI.toASCIIString(),
+						diagnosticsToPublish));
+			}
+		}
+	}
+
 	// Implementation of the various capabilities declared by the {@link AcceleoLanguageServer}.
 
 	@Override

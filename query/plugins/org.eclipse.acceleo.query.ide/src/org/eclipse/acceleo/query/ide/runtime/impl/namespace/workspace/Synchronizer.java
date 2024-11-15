@@ -62,22 +62,11 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 
 		@Override
 		public boolean visit(IResource resource) throws CoreException {
-			final boolean res;
-
-			final IProject project = resource.getProject();
-			if (project == null || project.isOpen()) {
-				res = shouldInitializationSynchronize(project);
-				if (resource.getType() == IResource.FILE && extensions.contains(resource
-						.getFileExtension())) {
-					resourcesToInitialize.add(resource);
-				} else if (resource.getType() == IResource.PROJECT) {
-					resourcesToInitialize.add(resource);
-				}
-			} else {
-				res = resource instanceof IWorkspaceRoot;
+			if (resource.getType() == IResource.FILE && extensions.contains(resource.getFileExtension())) {
+				resourcesToInitialize.add(resource);
 			}
 
-			return res;
+			return true;
 		}
 
 		/**
@@ -142,26 +131,28 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 	/**
 	 * Starts synchronizing.
 	 */
-	public void synchronize() {
+	public synchronized void synchronize() {
 		final Job synchronizeJob = Job.create("Synchronizing " + queryWorkspace.getName(),
 				new ICoreRunnable() {
 
 					@Override
 					public void run(IProgressMonitor monitor) throws CoreException {
+						final long start = System.currentTimeMillis();
+						final InitialResourceCollector initialResources = new InitialResourceCollector();
 						try {
+							// walk the workspace for current state
 							for (IProject project : eclipseWorkspace.getRoot().getProjects()) {
 								if (project.isAccessible()) {
 									getOrCreateProject(getQueryWorkspace(), project);
+									if (shouldInitializationSynchronize(project)) {
+										initialResources.visit(project);
+									}
 								}
 							}
 
 							// Keeping up-to-date with the workspace changes.
 							eclipseWorkspace.addResourceChangeListener(Synchronizer.this);
 
-							// walk the workspace for current state
-
-							final InitialResourceCollector initialResources = new InitialResourceCollector();
-							eclipseWorkspace.getRoot().accept(initialResources);
 							final List<IResource> resourcesToInitialize = initialResources
 									.getResourcesToInitialize();
 							final SubMonitor subMonitor = SubMonitor.convert(monitor, "Validating",
@@ -170,8 +161,12 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 							try {
 								for (IResource resource : resourcesToInitialize) {
 									Synchronizer.this.visit(resource);
+									if (Synchronizer.this.monitor.isCanceled()) {
+										break;
+									}
 								}
 							} finally {
+								Synchronizer.this.monitor.done();
 								Synchronizer.this.monitor = null;
 							}
 						} catch (Exception e) {
@@ -180,6 +175,8 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 									"can't visit the workspace current state: " + eclipseWorkspace.getRoot()
 											.getLocationURI().toString(), e));
 						}
+						System.out.println("******************************* " + ((System.currentTimeMillis()
+								- start) / 1000) + " s *******************************");
 					}
 				});
 		synchronizeJob.schedule();
@@ -217,8 +214,7 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			if (resource.getType() == IResource.PROJECT) {
 				IProject workspaceProject = (IProject)resource;
 				visitProjectDelta(delta, workspaceProject);
-			} else if (resource.getType() == IResource.FILE && extensions.contains(resource
-					.getFileExtension())) {
+			} else if (resource.getType() == IResource.FILE && shouldSynchronize((IFile)resource)) {
 				final IFile file = (IFile)resource;
 				visitFileDelta(delta, file);
 			}
@@ -345,10 +341,11 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			synchronized(this) {
 				getOrCreateProject(queryWorkspace, eclipseProject);
 			}
-		} else if (resource.getType() == IResource.FILE && extensions.contains(resource.getFileExtension())) {
+		} else if (resource.getType() == IResource.FILE && shouldSynchronize((IFile)resource)) {
 			final IFile file = (IFile)resource;
 			final URI uri = file.getLocationURI();
 			this.queryWorkspace.addResource(getProject(file.getProject()), uri);
+			System.out.println(uri);
 		}
 	}
 
@@ -439,5 +436,56 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 	 * @return the created project from the given {@link IProject}
 	 */
 	protected abstract P createProject(IQueryWorkspace<P> queryWorkspace, IProject eclipseProject);
+
+	/**
+	 * Tells if the given {@link IFile} should be synchronized.
+	 * 
+	 * @param file
+	 *            the {@link IFile}
+	 * @return <code>true</code> if the given {@link IFile} should be synchronized, <code>false</code>
+	 *         otherwise
+	 */
+	protected boolean shouldSynchronize(IFile file) {
+		return extensions.contains(file.getFileExtension());
+
+		// TODO enable this code to synchronize only files in shouldInitializationSynchronize projects or that
+		// TODO other files dependOn
+		// final boolean res;
+		//
+		// if (extensions.contains(file.getFileExtension())) {
+		// final IProject project = file.getProject();
+		// if (project != null) {
+		// if (shouldInitializationSynchronize(project)) {
+		// res = true;
+		// } else {
+		// final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
+		// final URI binaryURI = resolver.getBinaryURI(file.getLocation().toFile().toURI());
+		// final String qualifiedName = resolver.getQualifiedName(binaryURI);
+		// resolver.getDependOn(qualifiedName);
+		// if (!resolver.getDependOn(qualifiedName).isEmpty()) {
+		// res = true;
+		// } else {
+		// boolean hasDependOn = false;
+		// for (IQueryWorkspaceQualifiedNameResolver dependOnResolver : resolver
+		// .getResolversDependOn()) {
+		// if (!dependOnResolver.getDependOn(qualifiedName).isEmpty()) {
+		// hasDependOn = true;
+		// break;
+		// }
+		// }
+		// // res = hasDependOn;
+		// res = true;
+		// }
+		// }
+		// } else {
+		// // res = false;
+		// res = true;
+		// }
+		// } else {
+		// res = false;
+		// }
+		//
+		// return res;
+	}
 
 }

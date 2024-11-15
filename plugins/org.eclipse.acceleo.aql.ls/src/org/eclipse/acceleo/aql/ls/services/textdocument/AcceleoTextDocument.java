@@ -299,6 +299,18 @@ public class AcceleoTextDocument {
 	}
 
 	/**
+	 * Cleans this document and publishes an empty list.
+	 */
+	public void cleanAndPublishResults() {
+		queryEnvironment = null;
+		acceleoValidationResult = null;
+		final AcceleoTextDocumentService service = this.getTextDocumentService();
+		if (service != null) {
+			service.publishClean(this);
+		}
+	}
+
+	/**
 	 * Provides the qualified name of the Acceleo {@link Module} represented by this document, as computed by
 	 * the {@link IQualifiedNameResolver}.
 	 * 

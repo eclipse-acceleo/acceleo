@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
+import org.eclipse.acceleo.aql.ide.ui.natures.AcceleoNature;
 import org.eclipse.acceleo.aql.ls.IAcceleoLanguageServerContext;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoProject;
 import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspace;
@@ -29,6 +31,7 @@ import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -65,8 +68,14 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 
 		@Override
 		protected boolean shouldInitializationSynchronize(IProject project) {
-			// TODO filter on Acceleo nature
-			return true;
+			try {
+				return project != null && project.isAccessible() && project.getDescription().hasNature(
+						AcceleoNature.ID);
+			} catch (CoreException e) {
+				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
+						"Can't get project description for " + project.getName(), e));
+				return false;
+			}
 		}
 
 	}
@@ -181,6 +190,41 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 	 */
 	private static String getAcceleoWorkspaceName(IWorkspace clientWorkspace) {
 		return "AcceleoWorkspace[" + clientWorkspace.getRoot().getLocationURI().toString() + "]";
+	}
+
+	public void buildProject(IProject project) {
+		synchronized(synchronizer) {
+			try {
+				synchronizer.visit(project);
+			} catch (CoreException e) {
+				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
+						"There was an issue while building project " + project.getLocation().toString(), e));
+			}
+		}
+	}
+
+	public void buildIncremental(IProject project, IResourceDelta delta) {
+		synchronized(synchronizer) {
+			try {
+				synchronizer.visit(delta);
+			} catch (CoreException e) {
+				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
+						"There was an issue while incrementally building project " + project.getLocation()
+								.toString(), e));
+			}
+		}
+	}
+
+	public void cleanProject(IProject project) {
+		synchronized(synchronizer) {
+			final AcceleoProject acceleoProject = synchronizer.getProject(project);
+			if (acceleoProject != null) {
+				acceleoProject.clean();
+				final IQueryWorkspaceQualifiedNameResolver resolver = acceleoProject.getResolver();
+				final Set<String> allResolvedQualifiedNames = resolver.getResolvedQualifiedNames();
+				resolver.clear(allResolvedQualifiedNames);
+			}
+		}
 	}
 
 }

@@ -68,6 +68,11 @@ public class MigrateToAcceleo4Handler extends AbstractHandler {
 	private static final String ACCELEO3_NATURE = "org.eclipse.acceleo.ide.ui.acceleoNature";
 
 	/**
+	 * Acceleo 4 nature.
+	 */
+	private static final String ACCELEO4_NATURE = "org.eclipse.acceleo.aql.ide.ui.acceleoNature";
+
+	/**
 	 * Acceleo 3 builder.
 	 */
 	private static final String ACCELEO3_BUILDER = "org.eclipse.acceleo.ide.ui.acceleoBuilder";
@@ -137,7 +142,7 @@ public class MigrateToAcceleo4Handler extends AbstractHandler {
 								e.printStackTrace();
 							}
 
-							removeAcceleo3BuilderAndNature(targetProjectPath);
+							replaceAcceleo3BuilderAndNature(targetProjectPath);
 						}
 					}
 				}
@@ -151,12 +156,12 @@ public class MigrateToAcceleo4Handler extends AbstractHandler {
 	}
 
 	/**
-	 * Removes the Acceleo 3 builder and nature from the target project.
+	 * Replaces the Acceleo 3 builder and nature from the target project.
 	 * 
 	 * @param targetProjectPath
 	 *            the target project {@link Path}
 	 */
-	private void removeAcceleo3BuilderAndNature(final Path targetProjectPath) {
+	private void replaceAcceleo3BuilderAndNature(final Path targetProjectPath) {
 		final Path projectDescriptionPath = targetProjectPath.resolve(".project");
 		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -169,7 +174,7 @@ public class MigrateToAcceleo4Handler extends AbstractHandler {
 					removeAcceleo3Builder(node);
 				}
 				if ("natures".equals(node.getNodeName())) {
-					removeAcceleo3Nature(node);
+					replaceAcceleo3Nature(node);
 				}
 			}
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -184,25 +189,20 @@ public class MigrateToAcceleo4Handler extends AbstractHandler {
 	}
 
 	/**
-	 * Removes the Acceleo 3 nature.
+	 * Replaces the Acceleo 3 nature.
 	 * 
 	 * @param node
 	 *            the natures {@link Node}
 	 */
-	private void removeAcceleo3Nature(final Node node) {
+	private void replaceAcceleo3Nature(final Node node) {
 		final NodeList naturesChildren = node.getChildNodes();
-		boolean found = false;
-		Node natureNode = null;
 		for (int j = 0; j < naturesChildren.getLength(); j++) {
-			natureNode = naturesChildren.item(j);
+			final Node natureNode = naturesChildren.item(j);
 			if ("nature".equals(natureNode.getNodeName()) && ACCELEO3_NATURE.equals(natureNode.getFirstChild()
 					.getNodeValue())) {
-				found = true;
+				natureNode.getFirstChild().setNodeValue(ACCELEO4_NATURE);
 				break;
 			}
-		}
-		if (found) {
-			node.removeChild(natureNode);
 		}
 	}
 
