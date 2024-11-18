@@ -315,6 +315,12 @@
 					"include": "#template-footer"
 				},
 				{
+					"include": "#comment-block"
+				},
+				{
+					"include": "#comment"
+				},
+				{
 					"include": "#statement-file-header"
 				},
 				{
@@ -1011,7 +1017,7 @@
 		},
 		"statement-expression-tag-close": {
 			"name": "keyword.other.statement.expression.acceleo",
-			"match": "/\\]\\[(?!(/|file|for|if|elseif|else|let|protected))"
+			"match": "/\\]\\[(?!(/|file|for|if|elseif|else|let|protected|comment))"
 		},
 		"statement-expression-tag-double": {
 			"name": "keyword.other.statement.expression.acceleo",
