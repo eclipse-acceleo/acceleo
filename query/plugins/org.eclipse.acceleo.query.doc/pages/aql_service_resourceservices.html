@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+/********************************************************************************
+** Copyright (c) 2015 Obeo.
+** All rights reserved. This program and the accompanying materials
+** are made available under the terms of the Eclipse Public License v2.0
+** which accompanies this distribution, and is available at
+** http://www.eclipse.org/legal/epl-v20.html
+**
+** Contributors:
+**    Stephane Begaudeau (Obeo) - initial API and implementation
+*********************************************************************************/
+-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="St&eacute;phane B&eacute;gaudeau">
+    <!-- IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/css/docs.css" rel="stylesheet">
+    <title>Acceleo</title>
+  </head>
+
+  <body>
+    <div class="container">
+   <header class="jumbotron subhead" id="overview">
+    <h1>Acceleo Query Language Documentation</h1>
+    <!--<div class="subnav">
+       <ul class="nav nav-pills">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#language">Language</a></li>
+        <li><a href="#operations">Operations</a></li>
+        <li><a href="#standalone">Stand Alone</a></li>
+        <li><a href="#migration">Migration</a></li>
+        <li><a href="#textproductionrules">Text Production Rules</a></li>
+        <li><a href="#onlineresources">Online Resources</a></li>
+      </ul>
+    </div>-->
+  </header>
+
+  <section id="services">
+    <div class="page-header">
+      <h1>Services available for Resources and URIs</h1>
+    </div>
+
+        <h3>eResource(eObject: org.eclipse.emf.ecore.EObject) = Resource</h3>
+        <p>
+          Returns the Resource containing the given EObject. This service is equivalent to a direct call to EObject#eResource().
+        </p>
+        <hr />
+
+        <h3>fileExtension(uri: org.eclipse.emf.common.util.URI) = String</h3>
+        <p>
+          Returns the extension of the file referred to by the given URI. This service is equivalent to a direct call to URI#fileExtension()
+        </p>
+        <hr />
+
+        <h3>getContents(resource: org.eclipse.emf.ecore.resource.Resource) = List</h3>
+        <p>
+          Returns the direct content of the given Resource. This service is equivalent to a direct call to Resource#getContents()
+        </p>
+        <hr />
+
+        <h3>getContents(resource: org.eclipse.emf.ecore.resource.Resource, type: org.eclipse.emf.ecore.EClass) = List</h3>
+        <p>
+          Returns the EObjects of the given type from the direct content of the given Resource.
+        </p>
+        <hr />
+
+        <h3>getEObject(resource: org.eclipse.emf.ecore.resource.Resource, uriFragment: java.lang.String) = EObject</h3>
+        <p>
+          Returns the EObjects from the given Resource with the given URI fragment.
+        </p>
+        <hr />
+
+        <h3>getURI(resource: org.eclipse.emf.ecore.resource.Resource) = URI</h3>
+        <p>
+          Returns the URI of the given Resource. This service is equivalent to a direct call to Resource#getURI()
+        </p>
+        <hr />
+
+        <h3>getURIFragment(eObject: org.eclipse.emf.ecore.EObject) = String</h3>
+        <p>
+          Returns the URI fragment from the given EObject in its Resource.
+        </p>
+        <hr />
+
+        <h3>isPlatformPlugin(uri: org.eclipse.emf.common.util.URI) = Boolean</h3>
+        <p>
+          Returns "true" if the given URI is a platform plugin URI. This service is equivalent to a direct call to URI#isPlatformPlugin()
+        </p>
+        <hr />
+
+        <h3>isPlatformResource(uri: org.eclipse.emf.common.util.URI) = Boolean</h3>
+        <p>
+          Returns "true" if the given URI is a platform resource URI. This service is equivalent to a direct call to URI#isPlatformResource()
+        </p>
+        <hr />
+
+        <h3>lastSegment(uri: org.eclipse.emf.common.util.URI) = String</h3>
+        <p>
+          Returns the last segment of the given URI. This service is equivalent to a direct call to URI#lastSegment()
+        </p>
+        <hr />
+  </section>
+
+    </div>
+  </body>
+
+</html>

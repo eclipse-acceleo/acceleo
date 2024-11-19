@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015,2023 Obeo.
+ * Copyright (c) 2015,2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -214,12 +214,21 @@ public class AnyServices extends AbstractServiceProvider {
 					)
 				}
 			),
+			@Example(
+				expression = "null.oclAsType(ecore::EPackage)", result = "null"
+			),
+			@Example(
+				expression = "anEPackage.oclAsType(ecore::EClass)", result = "throws an exception"
+			),
+			@Example(
+				expression = "anything.oclAsType(null)", result = "throws an exception"
+			),
 		},
-		comment = "Contrary to Acceleo 3, the type is ignored, the given object will be returned directly."
+		comment = "If the given object is null then no check is performed, otherwise the oclIsKindOf check is performed."
 	)
 	// @formatter:on
 	public Object oclAsType(Object object, Object type) {
-		if (oclIsKindOf(object, type)) {
+		if (type != null && (object == null || oclIsKindOf(object, type))) {
 			return object;
 		}
 		throw new ClassCastException(object + " cannot be cast to " + type);

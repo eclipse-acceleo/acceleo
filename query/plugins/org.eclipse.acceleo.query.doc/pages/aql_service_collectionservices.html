@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+/********************************************************************************
+** Copyright (c) 2015 Obeo.
+** All rights reserved. This program and the accompanying materials
+** are made available under the terms of the Eclipse Public License v2.0
+** which accompanies this distribution, and is available at
+** http://www.eclipse.org/legal/epl-v20.html
+**
+** Contributors:
+**    Stephane Begaudeau (Obeo) - initial API and implementation
+*********************************************************************************/
+-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="St&eacute;phane B&eacute;gaudeau">
+    <!-- IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/css/docs.css" rel="stylesheet">
+    <title>Acceleo</title>
+  </head>
+
+  <body>
+    <div class="container">
+   <header class="jumbotron subhead" id="overview">
+    <h1>Acceleo Query Language Documentation</h1>
+    <!--<div class="subnav">
+       <ul class="nav nav-pills">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#language">Language</a></li>
+        <li><a href="#operations">Operations</a></li>
+        <li><a href="#standalone">Stand Alone</a></li>
+        <li><a href="#migration">Migration</a></li>
+        <li><a href="#textproductionrules">Text Production Rules</a></li>
+        <li><a href="#onlineresources">Online Resources</a></li>
+      </ul>
+    </div>-->
+  </header>
+
+  <section id="services">
+    <div class="page-header">
+      <h1>Services available for Collections</h1>
+    </div>
+
+        <h3>add(sequence: java.util.List, collection: java.util.Collection) = List</h3>
+        <p>
+          Returns the concatenation of the given collection into the given sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}.add(Sequence{'d', 'e'})</td>
+              <td>Sequence{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'} + OrderedSet{'c', 'e'}</td>
+              <td>Sequence{'a', 'b', 'c', 'c', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The service addAll has been replaced by "add" in order to have access to the operator "+" between to sequences
+        </p>
+        <h4>In other languages</h4>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>Sequence{'a', 'b', 'c'} + Sequence{'d', 'e'}</td>
+              <td>Sequence{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>Sequence{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'e'})</td>
+              <td>Sequence{'a', 'b', 'c', 'c', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+
+        <h3>add(set: java.util.Set, collection: java.util.Collection) = Set</h3>
+        <p>
+          Returns the concatenation of the given collection into the current set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'} + OrderedSet{'c', 'b', 'f'}</td>
+              <td>OrderedSet{'a', 'b', 'c', 'f'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The service addAll has been replaced by "add" in order to have access to the operator "+" between to sets
+        </p>
+        <h4>In other languages</h4>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})</td>
+              <td>OrderedSet{'a', 'b', 'c', 'f'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+
+        <h3>any(collection: java.util.Collection, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Object</h3>
+        <p>
+          Gets the first element in the current collection for which the value returned by the lambda evaluates to "true".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->any(str | str.size() = 1)</td>
+              <td>'a'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>append(set: java.util.Set, object: java.lang.Object) = Set</h3>
+        <p>
+          Inserts the given object in a copy of the given set at the last position. If the set already contained the given object, it is moved to the last position.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->append('f')</td>
+              <td>OrderedSet{'a', 'b', 'c', 'f'}</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->append('b')</td>
+              <td>OrderedSet{'a', 'c', 'b'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>append(sequence: java.util.List, object: java.lang.Object) = List</h3>
+        <p>
+          Inserts the given object in a copy of the given sequence at the last position.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->append('f')</td>
+              <td>Sequence{'a', 'b', 'c', 'f'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>asOrderedSet(collection: java.util.Collection) = Set</h3>
+        <p>
+          Returns a set representation of the specified collection. Returns the same object if it is a set already. This operation has the same behavior as "asSet()"
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->asOrderedSet()</td>
+              <td>OrderedSet{'a', 'b', 'c'}</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->asOrderedSet()</td>
+              <td>OrderedSet{'a', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>asSequence(collection: java.util.Collection) = List</h3>
+        <p>
+          Returns a sequence representation of the specified collection. Returns the same object if it is already a sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->asSequence()</td>
+              <td>Sequence{'a', 'b', 'c'}</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->asSequence()</td>
+              <td>Sequence{'a', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>asSet(collection: java.util.Collection) = Set</h3>
+        <p>
+          Returns a set representation of the specified collection. Returns the same object if it is already a set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->asSet()</td>
+              <td>OrderedSet{'a', 'b', 'c'}</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c', 'c', 'a'}->asSet()</td>
+              <td>OrderedSet{'a', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>at(set: java.util.Set, position: java.lang.Integer) = Object</h3>
+        <p>
+          Returns the element at the specified position in the set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->at(1)</td>
+              <td>'a'</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->at(2)</td>
+              <td>'b'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>at(sequence: java.util.List, position: java.lang.Integer) = Object</h3>
+        <p>
+          Returns the element at the specified position in the sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->at(1)</td>
+              <td>'a'</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->at(2)</td>
+              <td>'b'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>closure(collection: java.util.Collection, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Set</h3>
+        <p>
+          Returns a set containing the result of applying "lambda" recursivly.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{eCls}->closure(e | e.eContainer())</td>
+              <td>Sequence{subEPkg, ePkg, rootEPkg}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>collect(set: java.util.Set, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Set</h3>
+        <p>
+          Returns a set containing the result of applying "lambda" on all elements contained in the current set, maintaining order.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->collect(str | str.toUpper())</td>
+              <td>OrderedSet{'A', 'B', 'C'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>collect(sequence: java.util.List, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = List</h3>
+        <p>
+          Returns a sequence containing the result of applying "lambda" on all elements contained in the current sequence, maintaining order.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->collect(str | str.toUpper())</td>
+              <td>Sequence{'A', 'B', 'C'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>concat(set: java.util.Set, collection: java.util.Collection) = Set</h3>
+        <p>
+          Returns the concatenation of the current set with the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})</td>
+              <td>OrderedSet{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <h4>In other languages</h4>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>OrderedSet{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})</td>
+              <td>OrderedSet{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+
+        <h3>concat(sequence: java.util.List, collection: java.util.Collection) = List</h3>
+        <p>
+          Returns the concatenation of the current sequence with the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})</td>
+              <td>Sequence{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <h4>In other languages</h4>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>Sequence{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})</td>
+              <td>Sequence{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+
+        <h3>count(sequence: java.util.List, object: java.lang.Object) = Integer</h3>
+        <p>
+          Counts the number of occurrences of the given object in the given sequence
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->count('d')</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->count('a')</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>count(set: java.util.Set, object: java.lang.Object) = Integer</h3>
+        <p>
+          Returns "1" if the current set contains the given object, "0" otherwise.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->count('d')</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->count('a')</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>drop(set: java.util.Set, index: java.lang.Integer) = Set</h3>
+        <p>
+          Returns a set of elements after the given index in the given set
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->drop(2)</td>
+              <td>OrderedSet{'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>drop(sequence: java.util.List, index: java.lang.Integer) = List</h3>
+        <p>
+          Returns a sequence of elements after the given index in the given sequence
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->drop(2)</td>
+              <td>Sequence{'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>dropRight(set: java.util.Set, index: java.lang.Integer) = Set</h3>
+        <p>
+          Returns a set of elements before the given index in the given set
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->dropRight(2)</td>
+              <td>OrderedSet{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>dropRight(sequence: java.util.List, index: java.lang.Integer) = List</h3>
+        <p>
+          Returns a sequence of elements before the given index in the given sequence
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->dropRight(2)</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>endsWith(sequence: java.util.Collection, other: java.util.Collection) = Boolean</h3>
+        <p>
+          Returns "true" if the sequence ends with other, "false" otherwise
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->endsWith(Sequence{'b', 'c'})</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>excludes(collection: java.util.Collection, object: java.lang.Object) = Boolean</h3>
+        <p>
+          Indicates if the given collection doesn't contain the given object.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->excludes('a')</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->excludes('d')</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>excludesAll(collection1: java.util.Collection, collection2: java.util.Collection) = Boolean</h3>
+        <p>
+          Indicates if no elements from the second collection are contained in the first collection
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b'}->excludesAll(OrderedSet{'f'})</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b'}->excludesAll(OrderedSet{'a', 'f'})</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>excluding(sequence: java.util.List, object: java.lang.Object) = List</h3>
+        <p>
+          Removes the given object from the current sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->excluding('c')</td>
+              <td>Sequence{'a', 'b'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>excluding(set: java.util.Set, object: java.lang.Object) = Set</h3>
+        <p>
+          Removes the given object from the current set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->excluding('c')</td>
+              <td>OrderedSet{'a', 'b'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>exists(collection: java.util.Collection, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Boolean</h3>
+        <p>
+          Indicates if it exists an object from the given collection for which the given lambda evaluates to "true"
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->exists(str | str.size() > 5)</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>filter(sequence: java.util.List, eClassifier: org.eclipse.emf.ecore.EClassifier) = List</h3>
+        <p>
+          Keeps only instances of the given EClassifier in the given sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{anEClass, anEAttribute, anEReference}->filter(ecore::EClass)</td>
+              <td>Sequence{anEClass}</td>
+            </tr>
+            <tr>
+              <td>Sequence{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)</td>
+              <td>Sequence{anEAttribute}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>filter(set: java.util.Set, cls: java.lang.Class) = Set</h3>
+        <p>
+          Keeps only instances of the given primitive type (String, Integer, Real, Boolean) from the given set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 1, 3.14}->filter(String)</td>
+              <td>OrederedSet{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>filter(set: java.util.Set, eClassifiers: java.util.Set) = Set</h3>
+        <p>
+          Keeps only instances of the given set of EClassifier from the given set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})</td>
+              <td>OrderedSet{anEClass, anEReference}</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})</td>
+              <td>OrderedSet{anEAttribute, anEPackage}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>filter(sequence: java.util.List, cls: java.lang.Class) = List</h3>
+        <p>
+          Keeps only instances of the given primitive type (String, Integer, Real, Boolean) from the given sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 1, 3.14}->filter(String)</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>filter(set: java.util.Set, eClassifier: org.eclipse.emf.ecore.EClassifier) = Set</h3>
+        <p>
+          Keeps only instances of the given EClassifier from the given set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{anEClass, anEAttribute, anEReference}->filter(ecore::EClass)</td>
+              <td>OrederedSet{anEClass}</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)</td>
+              <td>OrederedSet{anEAttribute}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>filter(sequence: java.util.List, eClassifiers: java.util.Set) = List</h3>
+        <p>
+          Keeps only instances of the given EClassifier in the given sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})</td>
+              <td>Sequence{anEClass, anEReference}</td>
+            </tr>
+            <tr>
+              <td>Sequence{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})</td>
+              <td>Sequence{anEAttribute, anEPackage}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>first(collection: java.util.Collection) = Object</h3>
+        <p>
+          Returns the first element of the specified Collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->first()</td>
+              <td>'a'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>forAll(collection: java.util.Collection, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Boolean</h3>
+        <p>
+          Indicates if all the objects from the given collection validate the given lamba
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'ccc'}->forAll(str | str.size() = 1)</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->forAll(str | str.size() = 1)</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>includes(collection: java.util.Collection, object: java.lang.Object) = Boolean</h3>
+        <p>
+          Indicates if the given collection contains the given object.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->includes('a')</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->includes('d')</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>includesAll(collection1: java.util.Collection, collection2: java.util.Collection) = Boolean</h3>
+        <p>
+          Indicates if all elements from the second collection are contained in the first collection
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->includesAll(OrderedSet{'a'})</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->includesAll(OrderedSet{'a', 'f'})</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>including(sequence: java.util.List, object: java.lang.Object) = List</h3>
+        <p>
+          Adds the given object to the current sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->including('d')</td>
+              <td>Sequence{'a', 'b', 'c', 'd'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>including(set: java.util.Set, object: java.lang.Object) = Set</h3>
+        <p>
+          Adds the given object to the current set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->including('d')</td>
+              <td>OrderedSet{'a', 'b', 'c', 'd'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>indexOf(sequence: java.util.List, object: java.lang.Object) = Integer</h3>
+        <p>
+          Returns the index of the given object in the given sequence ([1..size]).
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{1, 2, 3, 4}->indexOf(3)</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>indexOf(set: java.util.Set, object: java.lang.Object) = Integer</h3>
+        <p>
+          Returns the index of the given object in the given set ([1..size]).
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{1, 2, 3, 4}->indexOf(3)</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>indexOfSlice(sequence: java.util.Collection, other: java.util.Collection) = Integer</h3>
+        <p>
+          Returns the index of the other collection in the given collection
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->indexOfSlice(Sequence{'b', 'c'})</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>insertAt(set: java.util.Set, position: java.lang.Integer, object: java.lang.Object) = Set</h3>
+        <p>
+          Inserts the given object in a copy of the given set at the given position ([1..size]). If the given set already contains this object, it will be moved to the accurate position.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->insertAt(2, 'f')</td>
+              <td>Sequence{'a', 'f', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>insertAt(sequence: java.util.List, position: java.lang.Integer, object: java.lang.Object) = List</h3>
+        <p>
+          Inserts the given object in a copy of the given sequence at the given position ([1..size]).
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->insertAt(2, 'f')</td>
+              <td>Sequence{'a', 'f', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>intersection(set: java.util.Set, collection: java.util.Collection) = Set</h3>
+        <p>
+          Creates a set with the elements from the given set that are also present in the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->intersection(OrderedSet{'a', 'f'})</td>
+              <td>OrderedSet{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>intersection(sequence: java.util.List, collection: java.util.Collection) = List</h3>
+        <p>
+          Creates a sequence with elements from the given sequence that are present in both the current sequence and the given other {@code Collection}. Iteration order will match that of the current sequence. Duplicates from the first list will all be kept in the result if they also are in the second one, but duplicates from the second list will be dumped even if they are present in the first.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->intersection(OrderedSet{'a', 'f'})</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isEmpty(collection: java.util.Collection) = Boolean</h3>
+        <p>
+          Returns "true" when the input collection is empty.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->isEmpty()</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>Sequence{}->isEmpty()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isUnique(collection: java.util.Collection, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Boolean</h3>
+        <p>
+          Indicates if the evaluation of the given lambda gives a different value for all elements of the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->isUnique(str | str.size())</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'bb', 'ccc'}->isUnique(str | str.size())</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>last(set: java.util.Set) = Object</h3>
+        <p>
+          Returns the last element of the given set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->last()</td>
+              <td>'c'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>last(sequence: java.util.List) = Object</h3>
+        <p>
+          Returns the last element of the given sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->last()</td>
+              <td>'c'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>lastIndexOf(sequence: java.util.List, object: java.lang.Object) = Integer</h3>
+        <p>
+          Returns the last index of the given object in the given sequence ([1..size]).
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{1, 2, 3, 4, 3}->lastIndexOf(3)</td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>lastIndexOf(set: java.util.Set, object: java.lang.Object) = Integer</h3>
+        <p>
+          Returns the last index of the given object in the given set ([1..size]).
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{1, 2, 3, 4}->lastIndexOf(3)</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>lastIndexOfSlice(sequence: java.util.Collection, other: java.util.Collection) = Integer</h3>
+        <p>
+          Returns the last index of the other collection in the given collection
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c', 'a', 'b', 'c'}->lastIndexOfSlice(Sequence{'b', 'c'})</td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>max(collection: java.util.Collection) = Number</h3>
+        <p>
+          Max element of the given collection if possible.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{1, 2, 3, 4}->max()</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Sequence{1, 2, 3.14, 4}->max()</td>
+              <td>4</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>min(collection: java.util.Collection) = Number</h3>
+        <p>
+          Min element of the given collection if possible.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{1, 2, 3, 4}->min()</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Sequence{1, 2, 3.14, 4}->min()</td>
+              <td>1.0</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>notEmpty(collection: java.util.Collection) = Boolean</h3>
+        <p>
+          Returns "true" when the input collection is not empty.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->notEmpty()</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>Sequence{}->notEmpty()</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>one(collection: java.util.Collection, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Boolean</h3>
+        <p>
+          Indicates if one and only one element of the given collection validates the given lambda.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->one(str | str.equals('a'))</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'a', 'c'}->one(str | str.equals('a'))</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>prepend(set: java.util.Set, object: java.lang.Object) = Set</h3>
+        <p>
+          Inserts the given object in a copy of the given set at the first position. If the set already contained the given object, it is moved to the first position.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->prepend('f')</td>
+              <td>OrderedSet{'f', 'a', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>prepend(sequence: java.util.List, object: java.lang.Object) = List</h3>
+        <p>
+          Inserts the given object in a copy of the given sequence at the first position.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->prepend('f')</td>
+              <td>Sequence{'f', 'a', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>reject(sequence: java.util.List, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = List</h3>
+        <p>
+          Reject returns a filtered version of the specified sequence. Only elements for which the given "lambda" evaluates to false will be present in the returned sequence
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->reject(str | str.equals('a'))</td>
+              <td>Sequence{'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>reject(set: java.util.Set, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Set</h3>
+        <p>
+          Reject returns a filtered version of the specified set. Only elements for which the given "lambda" evaluates to false will be present in the returned set
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->reject(str | str.equals('a'))</td>
+              <td>OrderedSet{'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>reverse(sequence: java.util.List) = List</h3>
+        <p>
+          Returns the given sequence in reversed order.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->reverse()</td>
+              <td>Sequence{'c', 'b', 'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>reverse(set: java.util.Set) = Set</h3>
+        <p>
+          Returns the given set in reversed order.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->reverse()</td>
+              <td>OrderedSet{'c', 'b', 'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>select(set: java.util.Set, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Set</h3>
+        <p>
+          Select returns a filtered version of the specified set. Only elements for which the given "lambda" evaluates to true will be present in the returned set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->select(str | str.equals('a'))</td>
+              <td>OrderedSet{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>select(sequence: java.util.List, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = List</h3>
+        <p>
+          Select returns a filtered version of the specified sequence. Only elements for which the given "lambda" evaluates to true will be present in the returned sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->select(str | str.equals('a'))</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>sep(collection: java.util.Collection, prefix: java.lang.Object, separator: java.lang.Object, suffix: java.lang.Object) = List</h3>
+        <p>
+          Inserts the given separator between each elements of the given collection, the given prefix before the first element, and the given suffix after the last element.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->sep('[', '-', ']')</td>
+              <td>Sequence{'[', 'a', '-', 'b', '-', 'c', ']'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>sep(collection: java.util.Collection, separator: java.lang.Object) = List</h3>
+        <p>
+          Inserts the given separator between each elements of the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->sep('-')</td>
+              <td>Sequence{'a', '-', 'b', '-', 'c'}</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->sep('-')</td>
+              <td>Sequence{'a', '-', 'b', '-', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>size(collection: java.util.Collection) = Integer</h3>
+        <p>
+          Returns the size of the specified collection
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->size()</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c', 'd'}->size()</td>
+              <td>4</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>sortedBy(sequence: java.util.List, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = List</h3>
+        <p>
+          Returns a sequence containing the elements of the original sequence ordered by the result of the given lamba
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'aa', 'bbb', 'c'}->sortedBy(str | str.size())</td>
+              <td>Sequence{'c', 'aa', 'bbb'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>sortedBy(set: java.util.Set, lambda: org.eclipse.acceleo.query.runtime.impl.LambdaValue) = Set</h3>
+        <p>
+          Returns a set containing the elements of the original set ordered by the result of the given lamba
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'aa', 'bbb', 'c'}->sortedBy(str | str.size())</td>
+              <td>OrderedSet{'c', 'aa', 'bbb'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>startsWith(sequence: java.util.Collection, other: java.util.Collection) = Boolean</h3>
+        <p>
+          Returns "true" if the sequence starts with other, "false" otherwise
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->startsWith(Sequence{'a', 'b'})</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>sub(sequence: java.util.List, collection: java.util.Collection) = List</h3>
+        <p>
+          Returns the difference of the current sequence and the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'} - Sequence{'c', 'b', 'f'}</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'} - OrderedSet{'c', 'b', 'f'}</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The service removeAll has been replaced by "sub" in order to have access to the operator "-" between to sequences
+        </p>
+        <h4>In other languages</h4>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>Sequence{'a', 'b', 'c'}.removeAll(Sequence{'c', 'b', 'f'})</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>Sequence{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'})</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+
+        <h3>sub(set: java.util.Set, collection: java.util.Collection) = Set</h3>
+        <p>
+          Returns the difference of the current set and the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'} - OrderedSet{'c', 'b', 'f'}</td>
+              <td>OrderedSet{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The service removeAll has been replaced by "sub" in order to have access to the operator "-" between to sets
+        </p>
+        <h4>In other languages</h4>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>OrderedSet{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'})</td>
+              <td>OrderedSet{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+
+        <h3>subOrderedSet(set: java.util.Set, startIndex: java.lang.Integer, startIndex: java.lang.Integer) = Set</h3>
+        <p>
+          Returns a subset of the given set
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->subOrderedSet(1, 2)</td>
+              <td>OrderedSet{'a', 'b'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>subSequence(sequence: java.util.List, startIndex: java.lang.Integer, startIndex: java.lang.Integer) = List</h3>
+        <p>
+          Returns a subset of the given sequence
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->subSequence(1, 2)</td>
+              <td>Sequence{'a', 'b'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>sum(collection: java.util.Collection) = Number</h3>
+        <p>
+          Sums elements of the given collection if possible.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{1, 2, 3, 4}->sum()</td>
+              <td>10</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>union(set1: java.util.Set, set2: java.util.Set) = Set</h3>
+        <p>
+          Returns a set containing all the elements of the first and second sets
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->union(OrderedSet{'d', 'c'})</td>
+              <td>OrderedSet{'a', 'b', 'c', 'd'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>union(sequence1: java.util.List, sequence2: java.util.List) = List</h3>
+        <p>
+          Returns a sequence containing all the elements of the first and second sequences
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->union(Sequence{'d', 'c'})</td>
+              <td>Sequence{'a', 'b', 'c', 'd'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+  </section>
+
+    </div>
+  </body>
+
+</html>

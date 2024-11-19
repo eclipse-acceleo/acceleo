@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+/********************************************************************************
+** Copyright (c) 2015 Obeo.
+** All rights reserved. This program and the accompanying materials
+** are made available under the terms of the Eclipse Public License v2.0
+** which accompanies this distribution, and is available at
+** http://www.eclipse.org/legal/epl-v20.html
+**
+** Contributors:
+**    Stephane Begaudeau (Obeo) - initial API and implementation
+*********************************************************************************/
+-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="St&eacute;phane B&eacute;gaudeau">
+    <!-- IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/css/docs.css" rel="stylesheet">
+    <title>Acceleo</title>
+  </head>
+
+  <body>
+    <div class="container">
+   <header class="jumbotron subhead" id="overview">
+    <h1>Acceleo Query Language Documentation</h1>
+    <!--<div class="subnav">
+       <ul class="nav nav-pills">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#language">Language</a></li>
+        <li><a href="#operations">Operations</a></li>
+        <li><a href="#standalone">Stand Alone</a></li>
+        <li><a href="#migration">Migration</a></li>
+        <li><a href="#textproductionrules">Text Production Rules</a></li>
+        <li><a href="#onlineresources">Online Resources</a></li>
+      </ul>
+    </div>-->
+  </header>
+
+  <section id="services">
+    <div class="page-header">
+      <h1>Services available for Strings</h1>
+    </div>
+
+        <h3>add(self: java.lang.String, b: java.lang.String) = String</h3>
+        <p>
+          Returns a string that is the result of the concatenation of the current string and the string "b".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello' + 'World'</td>
+              <td>HelloWorld</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          This operation behaves like '+' between two strings.
+        </p>
+        <hr />
+
+        <h3>at(self: java.lang.String, index: java.lang.Integer) = String</h3>
+        <p>
+          Gets the character at the given index of the given String.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'cat'.at(2)</td>
+              <td>'a'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>characters(self: java.lang.String) = List</h3>
+        <p>
+          Converts the given String in a Sequence of Strings representing each caracter.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'cat'.characters()</td>
+              <td>Sequence{'c', 'a', 't'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>concat(self: java.lang.String, b: java.lang.String) = String</h3>
+        <p>
+          Returns a string that is the result of the concatenation of the current string and the string "b".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.concat('World')</td>
+              <td>HelloWorld</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          This operation behaves like '+' between two strings.
+        </p>
+        <hr />
+
+        <h3>contains(self: java.lang.String, b: java.lang.String) = Boolean</h3>
+        <p>
+          Returns "true" if the current String contains the String "b"
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.contains('llo')</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>endsWith(self: java.lang.String, b: java.lang.String) = Boolean</h3>
+        <p>
+          Returns true if the current String ends with the string "b".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.endsWidth('llo')</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>equalsIgnoreCase(self: java.lang.String, b: java.lang.String) = Boolean</h3>
+        <p>
+          Returns true if the current String is equals to the String "b" without considering case in the comparison.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.equalsIgnoreCase('hello')</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>first(self: java.lang.String, n: java.lang.Integer) = String</h3>
+        <p>
+          Returns the "n" first characters of the current String, or the current String itself if its size is less than "n".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.first(5)</td>
+              <td>'Hello'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>index(self: java.lang.String, subString: java.lang.String) = Integer</h3>
+        <p>
+          Returns the index of the first occurrence "subString" in the current String, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloHello'.index('Hello')</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>index(self: java.lang.String, subString: java.lang.String, indexString: java.lang.Integer) = Integer</h3>
+        <p>
+          Returns the index of the first occurrence "subString" in the current String from the given index, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloHello'.index('Hello', 2)</td>
+              <td>6</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isAlpha(self: java.lang.String) = Boolean</h3>
+        <p>
+          Returns "true" if self consists only of alphabetical characters, "false" otherwise.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'abc123'.isAlpha()</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>'abcdef'.isAlpha()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isAlphaNum(self: java.lang.String) = Boolean</h3>
+        <p>
+          Returns "true" if self consists only of alphanumeric characters, "false" otherwise.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'abc123'.isAlphaNum()</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>'abcdef'.isAlphaNum()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>last(self: java.lang.String, n: java.lang.Integer) = String</h3>
+        <p>
+          Returns the "n" last characters of the current String, or the current String if its size is less than "n".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.last(5)</td>
+              <td>'World'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>lastIndex(self: java.lang.String, subString: java.lang.String) = Integer</h3>
+        <p>
+          Returns the index of the last occurrence of "subString" in the current String, "-1" if the current String doesn't contain this particular substring. The index referential is 1 as in OCL and not 0.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloHello'.lastIndex('World')</td>
+              <td>6</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>lastIndex(self: java.lang.String, subString: java.lang.String, indexString: java.lang.Integer) = Integer</h3>
+        <p>
+          Returns the index of the last occurrence "subString" in the current String searching backward from the given index, or -1 if "subString" is not in the current String. The index referential is 1 as in OCL and not 0.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloHello'.lastIndex('Hello', 7)</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>lineSeparator(obj: java.lang.Object) = String</h3>
+        <p>
+          Gets the platform line separator.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>obj.lineSeparator()</td>
+              <td>'\n'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>matches(self: java.lang.String, regex: java.lang.String) = Boolean</h3>
+        <p>
+          Returns "true" if the current String matches the given "regex".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.matches('*llo')</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>prefix(self: java.lang.String, prefix: java.lang.String) = String</h3>
+        <p>
+          Returns the current String prefixed with the given "prefix".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'World'.prefix('Hello')</td>
+              <td>'HelloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>removeEmptyLines(self: java.lang.String) = String</h3>
+        <p>
+          Removes all empty lines.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello\n\nWorld'.removeEmptyLines()</td>
+              <td>'HelloWorld'</td>
+            </tr>
+            <tr>
+              <td>'Hello\r\n\r\nWorld'.removeEmptyLines()</td>
+              <td>'HelloWorld'</td>
+            </tr>
+            <tr>
+              <td>'Hello\n\r\nWorld'.removeEmptyLines()</td>
+              <td>'HelloWorld'</td>
+            </tr>
+            <tr>
+              <td>'Hello\r\n\nWorld'.removeEmptyLines()</td>
+              <td>'HelloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>removeLineSeparators(self: java.lang.String) = String</h3>
+        <p>
+          Removes all line separators.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello\nWorld'.removeLineSeparators()</td>
+              <td>'HelloWorld'</td>
+            </tr>
+            <tr>
+              <td>'Hello\r\nWorld'.removeLineSeparators()</td>
+              <td>'HelloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>replace(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String</h3>
+        <p>
+          Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.replace('(.*)ll', 'Wh')</td>
+              <td>'Who'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>replaceAll(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String</h3>
+        <p>
+          Replaces each substring of the current String that matches the given regular expression "regex" with the String "replacement".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'TestTest'.replace('.st', 'erminated')</td>
+              <td>'TerminatedTerminated'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>replaceFirst(self: java.lang.String, regex: java.lang.String, replacement: java.lang.String) = String</h3>
+        <p>
+          Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.replace('(.*)ll', 'Wh')</td>
+              <td>'Who'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>size(self: java.lang.String) = Integer</h3>
+        <p>
+          Return the length of the current String.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.size()</td>
+              <td>10</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>startsWith(self: java.lang.String, b: java.lang.String) = Boolean</h3>
+        <p>
+          Returns true if the current String starts with the string "b".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.startsWith('Hell')</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>strcmp(self: java.lang.String, s1: java.lang.String) = Integer</h3>
+        <p>
+          Returns an integer that is either negative, zero or positive depending on whether s1 is alphabetically less than, equal to or greater than self. Note that upper case letters come before lower case ones, so that 'AA' is closer to 'AC' than it is to 'Ab'.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'strcmp operation'.strcmp('strcmp')</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>'strcmp operation'.strcmp('strcmp operation')</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>'strcmp operation'.strcmp('strtok')</td>
+              <td>-17</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>strstr(self: java.lang.String, r: java.lang.String) = Boolean</h3>
+        <p>
+          Searches r in self.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.strstr('World')</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>substitute(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String</h3>
+        <p>
+          Substitutes the first occurrence of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'WorldWorld'.substitute('World', 'Hello')</td>
+              <td>'HelloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>substituteAll(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String</h3>
+        <p>
+          Substitutes all occurences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'WorldWorld'.substituteAll('World', 'Hello')</td>
+              <td>'HelloHello'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>substituteFirst(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String</h3>
+        <p>
+          Substitutes the first occurrence of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'WorldWorld'.substitute('World', 'Hello')</td>
+              <td>'HelloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>substring(self: java.lang.String, lower: java.lang.Integer, upper: java.lang.Integer) = String</h3>
+        <p>
+          Returns a string containing all characters from self starting from index lower up to index upper included. Both lower and upper parameters should be contained between 1 and self.size() included. Lower cannot be greater than upper.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.substring(1, 5)</td>
+              <td>'Hello'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>substring(self: java.lang.String, lower: java.lang.Integer) = String</h3>
+        <p>
+          Returns a string containing all characters from self starting from index lower up to the end of the string included. The lower parameter should be contained between 1 and self.size() included. Lower cannot be greater than the size of the String.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.substring(5)</td>
+              <td>'World'</td>
+            </tr>
+            <tr>
+              <td>'HelloWorld'.substring(1)</td>
+              <td>'HelloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>toBoolean(value: java.lang.String) = Boolean</h3>
+        <p>
+          Gets the boolean value of the given String.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'true'.toBoolean()</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>'True'.toBoolean()</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>'Some String'.toBoolean()</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>toInteger(self: java.lang.String) = Integer</h3>
+        <p>
+          Returns an integer of value equal to self
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'42'.toInteger()</td>
+              <td>42</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>toLower(self: java.lang.String) = String</h3>
+        <p>
+          Returns the current String with all characters transformed to lower case.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.toLower()</td>
+              <td>'helloworld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>toLowerFirst(self: java.lang.String) = String</h3>
+        <p>
+          Returns the self string with the first characters transformed to lower case.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.toLowerFirst()</td>
+              <td>'helloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>toReal(self: java.lang.String) = Double</h3>
+        <p>
+          Returns a real of value equal to self
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'41.9'.toReal()</td>
+              <td>41.9</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>toUpper(self: java.lang.String) = String</h3>
+        <p>
+          Returns the current String with all characters transformed to upper case.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.toUpper()</td>
+              <td>'HELLOWORLD'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>toUpperFirst(self: java.lang.String) = String</h3>
+        <p>
+          Returns the current String with the first characters transformed to upper case.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'helloworld'.toUpperFirst()</td>
+              <td>'Helloworld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>tokenize(self: java.lang.String, delimiter: java.lang.String) = List</h3>
+        <p>
+          Splits the current String by using the given "delimiter" into a collection of String
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'a, b, c, d'.tokenize(', ')</td>
+              <td>['a', 'b', 'c', 'd']</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>tokenize(self: java.lang.String) = List</h3>
+        <p>
+          Splits the current String by whitespace delimiter into a collection of String
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'a, b, c, d'.tokenize()</td>
+              <td>['a,', 'b,', 'c,', 'd']</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>trim(self: java.lang.String) = String</h3>
+        <p>
+          Trims the given String.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'  Hello World   '.trim()</td>
+              <td>'Hello World'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+  </section>
+
+    </div>
+  </body>
+
+</html>

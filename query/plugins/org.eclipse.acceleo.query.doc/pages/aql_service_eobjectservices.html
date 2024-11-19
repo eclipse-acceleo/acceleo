@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+/********************************************************************************
+** Copyright (c) 2015 Obeo.
+** All rights reserved. This program and the accompanying materials
+** are made available under the terms of the Eclipse Public License v2.0
+** which accompanies this distribution, and is available at
+** http://www.eclipse.org/legal/epl-v20.html
+**
+** Contributors:
+**    Stephane Begaudeau (Obeo) - initial API and implementation
+*********************************************************************************/
+-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="St&eacute;phane B&eacute;gaudeau">
+    <!-- IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/css/docs.css" rel="stylesheet">
+    <title>Acceleo</title>
+  </head>
+
+  <body>
+    <div class="container">
+   <header class="jumbotron subhead" id="overview">
+    <h1>Acceleo Query Language Documentation</h1>
+    <!--<div class="subnav">
+       <ul class="nav nav-pills">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#language">Language</a></li>
+        <li><a href="#operations">Operations</a></li>
+        <li><a href="#standalone">Stand Alone</a></li>
+        <li><a href="#migration">Migration</a></li>
+        <li><a href="#textproductionrules">Text Production Rules</a></li>
+        <li><a href="#onlineresources">Online Resources</a></li>
+      </ul>
+    </div>-->
+  </header>
+
+  <section id="services">
+    <div class="page-header">
+      <h1>Services available for EObjects</h1>
+    </div>
+
+        <h3>allInstances(type: org.eclipse.emf.ecore.EClass) = List</h3>
+        <p>
+          Returns all instances of the EClass
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEClass.allInstances()</td>
+              <td>Sequence{firstEObject,secondEObject...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>allInstances(types: java.util.Set) = List</h3>
+        <p>
+          Returns all instances of each EClass from the OrderedSet
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>{ecore::EPackage | ecore::EClass}->allInstances()</td>
+              <td>Sequence{ePackage, eClass, ...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eAllContents(eObject: org.eclipse.emf.ecore.EObject) = List</h3>
+        <p>
+          Returns a sequence of the EObjects recursively contained in the specified root eObject.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEPackage.eAllContents()</td>
+              <td>Sequence{firstEClass, firstEAttribute, secondEClass, firstDataType}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eAllContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = List</h3>
+        <p>
+          Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEPackage.eAllContents({ecore::EPackage | ecore::EClass})</td>
+              <td>Sequence{ePackage, eClass, ...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eAllContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = List</h3>
+        <p>
+          Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEPackage.eAllContents(ecore::EClass)</td>
+              <td>Sequence{firstEClass, secondEClass}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eClass(eObject: org.eclipse.emf.ecore.EObject) = EClass</h3>
+        <p>
+          Returns the EClass of the specified EObject
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eClass()</td>
+              <td>anEClass</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContainer(eObject: org.eclipse.emf.ecore.EObject) = EObject</h3>
+        <p>
+          Returns the container of the specified EObject
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>firstEAttribute.eContainer()</td>
+              <td>firstEClass</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContainer(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = EObject</h3>
+        <p>
+          Returns the first container of the specified EObject that matches the given type
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>firstEAttribute.eContainer(ecore::EPackage)</td>
+              <td>anEPackage</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContainerOrSelf(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = EObject</h3>
+        <p>
+          Returns self or the first container of the specified EObject that matches the given type
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>firstEAttribute.eContainerOrSelf(ecore::EAttribute)</td>
+              <td>firstEAttribute</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContainingFeature(eObject: org.eclipse.emf.ecore.EObject) = EStructuralFeature</h3>
+        <p>
+          Returns the containing feature of the specified EObject
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eContainingFeature()</td>
+              <td>anEStructuralFeature</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContainmentFeature(eObject: org.eclipse.emf.ecore.EObject) = EReference</h3>
+        <p>
+          Returns the containment feature of the specified EObject
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eContainmentFeature()</td>
+              <td>anEReference</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContents(eObject: org.eclipse.emf.ecore.EObject) = List</h3>
+        <p>
+          Returns the contents of the specified EObject instance.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEPackage.eContents()</td>
+              <td>Sequence{firstEClass, secondEClass, firstDataType}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = List</h3>
+        <p>
+          Returns a sequence made of the instances of the specified type in the contents of the specified eObject.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEPackage.eContents(ecore::EDataType)</td>
+              <td>Sequence{firstDataType}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = List</h3>
+        <p>
+          Returns a sequence made of the instances of the specified types in the contents of the specified eObject.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEPackage.eContents({ecore::EPackage | ecore::EClass})</td>
+              <td>Sequence{SubEPackage, eClass, ... }</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eCrossReferences(eObject: org.eclipse.emf.ecore.EObject) = Object</h3>
+        <p>
+          Returns the list of all EObjects cross-referenced from the receiver.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eCrossReferences()</td>
+              <td>Sequence{firstReferencedEObject, secondReferencedEObject...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eGet(eObject: org.eclipse.emf.ecore.EObject, featureName: java.lang.String) = Object</h3>
+        <p>
+          Handles calls to the operation "eGet". This will fetch the value of the feature named "featureName" on "source"
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eGet(aFeatureName)</td>
+              <td>aValue</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eGet(eObject: org.eclipse.emf.ecore.EObject, feature: org.eclipse.emf.ecore.EStructuralFeature, resolve: boolean) = Object</h3>
+        <p>
+          Handles calls to the operation "eGet". This will fetch the value of the given feature on "source"; the value is optionally resolved before it is returned.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eGet(aFeature, true)</td>
+              <td>aValue</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eGet(eObject: org.eclipse.emf.ecore.EObject, feature: org.eclipse.emf.ecore.EStructuralFeature) = Object</h3>
+        <p>
+          Handles calls to the operation "eGet". This will fetch the value of the given feature on "source"
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eGet(aFeature)</td>
+              <td>aValue</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eInverse(eObject: org.eclipse.emf.ecore.EObject) = Set</h3>
+        <p>
+          Returns the set containing the inverse references.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eInverse()</td>
+              <td>OrderedSet{firstReferencingEObject, secondReferencingEObject...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eInverse(eObject: org.eclipse.emf.ecore.EObject, featureName: java.lang.String) = Set</h3>
+        <p>
+          Returns the elements from the set of the inverse references of the receiver that are referencing the receiver using a feature with the given name.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eInverse(aFeatureName)</td>
+              <td>OrderedSet{firstReferencingEObject, secondReferencingEObject...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>eInverse(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClassifier) = Set</h3>
+        <p>
+          Returns the elements of the given type from the set of the inverse references of the receiver.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eInverse(anEClass)</td>
+              <td>OrderedSet{firstReferencingEObject, secondReferencingEObject...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+  </section>
+
+    </div>
+  </body>
+
+</html>
