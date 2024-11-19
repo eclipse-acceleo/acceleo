@@ -128,7 +128,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	/**
 	 * The new line {@link Pattern}.
 	 */
-	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("(\\r\\n)|(\\n)");
+	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("(\\r\\n)|(\\n)|(\\r)");
 
 	/**
 	 * The {@link IQueryEvaluationEngine} used to evaluate AQL expressions.

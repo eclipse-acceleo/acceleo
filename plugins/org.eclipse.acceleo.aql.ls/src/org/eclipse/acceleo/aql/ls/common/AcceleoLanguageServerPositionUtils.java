@@ -449,7 +449,7 @@ public final class AcceleoLanguageServerPositionUtils {
 		if (index < textLength) {
 			if (text.charAt(index) == '\r' && index + 1 < textLength && text.charAt(index + 1) == '\n') {
 				res = 2;
-			} else if (text.charAt(index) == '\n') {
+			} else if (text.charAt(index) == '\n' || text.charAt(index) == '\r') {
 				res = 1;
 			} else {
 				res = 0;

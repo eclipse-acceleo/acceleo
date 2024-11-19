@@ -8,9 +8,9 @@ module multiLinesMixedNewLinesWithIndentation
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (178..199) mode overwrite
          (218..220)
-      [.add(.add(.add(.add(.aqlFeatureAccess(myParam, 'name'), '
+      [.add(.add(.add(.add(.add(.add(.aqlFeatureAccess(myParam, 'name'), '
 '), .aqlFeatureAccess(myParam, 'name')), '
-'), .aqlFeatureAccess(myParam, 'name')) (221..279)/] (newLineNeeded (220..283) (212..285)
-    [/file] (171..292)
-     (newLineNeeded) (292..294) (167..294)
-  [/template] (112..305) (0..305)
+'), .aqlFeatureAccess(myParam, 'name')), ''), .aqlFeatureAccess(myParam, 'name')) (221..301)/] (newLineNeeded (220..305) (212..307)
+    [/file] (171..314)
+     (newLineNeeded) (314..316) (167..316)
+  [/template] (112..327) (0..327)

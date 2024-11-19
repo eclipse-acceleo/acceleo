@@ -7,9 +7,9 @@ module multiLinesMixedNewLines
   public template myTemplate(myParam : EPackage (122..147))
   @main
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (159..180) mode overwrite
-      [.add(.add(.add(.add(.aqlFeatureAccess(myParam, 'name'), '
+      [.add(.add(.add(.add(.add(.add(.aqlFeatureAccess(myParam, 'name'), '
 '), .aqlFeatureAccess(myParam, 'name')), '
-'), .aqlFeatureAccess(myParam, 'name')) (199..257)/] (newLineNeeded (198..260) (193..262)
-    [/file] (152..269)
-     (newLineNeeded) (269..270) (149..270)
-  [/template] (94..281) (0..281)
+'), .aqlFeatureAccess(myParam, 'name')), ''), .aqlFeatureAccess(myParam, 'name')) (199..279)/] (newLineNeeded (198..282) (193..284)
+    [/file] (152..291)
+     (newLineNeeded) (291..292) (149..292)
+  [/template] (94..303) (0..303)
