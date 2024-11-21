@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -31,7 +30,6 @@ import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
@@ -41,7 +39,6 @@ import org.eclipse.acceleo.aql.evaluation.AcceleoProfilerEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
-import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.aql.ide.AcceleoPlugin;
 import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
@@ -53,6 +50,7 @@ import org.eclipse.acceleo.aql.profiler.ProfilerUtils;
 import org.eclipse.acceleo.aql.profiler.ProfilerUtils.Representation;
 import org.eclipse.acceleo.debug.AbstractDSLDebugger;
 import org.eclipse.acceleo.debug.DSLSource;
+import org.eclipse.acceleo.debug.DebuggerProgressMonitor;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.acceleo.debug.ls.DSLDebugServer;
 import org.eclipse.acceleo.debug.util.FrameVariable;
@@ -118,16 +116,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 							AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 					final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model
-							.getResourceSet().getURIConverter(), new AcceleoWorkspaceWriterFactory()) {
-						@Override
-						public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
-								String lineDelimiter) throws IOException {
-							consolePrint(uri.toString() + newLine);
-							return super.createWriterFor(uri, openMode, charset, lineDelimiter);
-						}
-					};
+							.getResourceSet().getURIConverter(), new AcceleoWorkspaceWriterFactory());
 					AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy,
-							getDestination(), logURI);
+							getDestination(), logURI, new DebuggerProgressMonitor(AcceleoDebugger.this));
 					if (evaluator.getGenerationResult().getDiagnostic().getSeverity() != Diagnostic.OK) {
 						printDiagnostic(evaluator.getGenerationResult().getDiagnostic(), "");
 					}
@@ -560,16 +551,9 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 				false));
 
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResource
-				.getResourceSet().getURIConverter(), new AcceleoWorkspaceWriterFactory()) {
-			@Override
-			public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
-					String lineDelimiter) throws IOException {
-				consolePrint(uri.toString() + newLine);
-				return super.createWriterFor(uri, openMode, charset, lineDelimiter);
-			}
-		};
+				.getResourceSet().getURIConverter(), new AcceleoWorkspaceWriterFactory());
 		AcceleoUtil.generate(noDebugEvaluator, environment, module, modelResource, strategy, getDestination(),
-				logURI);
+				logURI, new DebuggerProgressMonitor(this));
 		if (noDebugEvaluator.getGenerationResult().getDiagnostic().getSeverity() != Diagnostic.OK) {
 			printDiagnostic(noDebugEvaluator.getGenerationResult().getDiagnostic(), "");
 		}

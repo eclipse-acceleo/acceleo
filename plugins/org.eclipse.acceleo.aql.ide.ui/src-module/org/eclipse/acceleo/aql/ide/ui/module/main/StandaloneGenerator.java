@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -102,8 +103,11 @@ public class StandaloneGenerator extends AbstractGenerator {
 
 	/**
 	 * Generates.
+	 * 
+	 * @param monitor
+	 *            the progress {@link Monitor}
 	 */
-	public void generate() {
+	public void generate(Monitor monitor) {
 		// inputs
 		final String moduleQualifiedName = getModuleQualifiedName();
 		final URI targetURI = URI.createFileURI(moduleFile.getParent().getLocation().toFile()
@@ -142,7 +146,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 			beforeGeneration(queryEnvironment, workspaceResolver);
 			try {
 				AcceleoUtil.generate(evaluator, queryEnvironment, module, modelModule.eResource(), strategy,
-						targetURI, logURI);
+						targetURI, logURI, monitor);
 			} finally {
 				AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
 				printDiagnostics(evaluator.getGenerationResult());
@@ -281,13 +285,13 @@ public class StandaloneGenerator extends AbstractGenerator {
 					break;
 
 				case Diagnostic.WARNING:
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, diagnostic.getSource(),
-							location + diagnostic.getMessage(), diagnostic.getException()));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, diagnostic
+							.getSource(), location + diagnostic.getMessage(), diagnostic.getException()));
 					break;
 
 				case Diagnostic.ERROR:
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, diagnostic.getSource(),
-							location + diagnostic.getMessage(), diagnostic.getException()));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, diagnostic
+							.getSource(), location + diagnostic.getMessage(), diagnostic.getException()));
 					break;
 			}
 		}
@@ -347,8 +351,8 @@ public class StandaloneGenerator extends AbstractGenerator {
 				addexportPackages(moduleFile.getProject(), Collections.singleton(packageName));
 			}
 		} catch (CoreException e) {
-			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), "could not refresh "
-					+ moduleFile.getParent().getFullPath(), e));
+			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
+					"could not refresh " + moduleFile.getParent().getFullPath(), e));
 		}
 	}
 

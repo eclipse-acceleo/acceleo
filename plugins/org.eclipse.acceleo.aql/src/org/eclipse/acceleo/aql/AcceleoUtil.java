@@ -32,6 +32,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
@@ -49,6 +50,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -139,12 +141,14 @@ public final class AcceleoUtil {
 	 *            destination {@link URI}
 	 * @param logURI
 	 *            the {@link URI} for logging if any, <code>null</code> otherwise
+	 * @param monitor
+	 *            the progress {@link Monitor}
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, Resource model, IAcceleoGenerationStrategy generationStrategy, URI destination,
-			URI logURI) {
+			URI logURI, Monitor monitor) {
 		generate(evaluator, queryEnvironment, module, Collections.singletonList(model), generationStrategy,
-				destination, logURI);
+				destination, logURI, monitor);
 	}
 
 	/**
@@ -164,12 +168,14 @@ public final class AcceleoUtil {
 	 *            the destination {@link URI}
 	 * @param logURI
 	 *            the {@link URI} for logging if any, <code>null</code> otherwise
+	 * @param monitor
+	 *            the progress {@link Monitor}
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, ResourceSet resourceSet, IAcceleoGenerationStrategy generationStrategy,
-			URI destination, URI logURI) {
+			URI destination, URI logURI, Monitor monitor) {
 		generate(evaluator, queryEnvironment, module, resourceSet.getResources(), generationStrategy,
-				destination, logURI);
+				destination, logURI, monitor);
 	}
 
 	/**
@@ -187,30 +193,47 @@ public final class AcceleoUtil {
 	 *            the destination {@link URI}
 	 * @param logURI
 	 *            the {@link URI} for logging if any, <code>null</code> otherwise
+	 * @param monitor
+	 *            the progress {@link Monitor}
 	 */
 	public static void generate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module module, List<Resource> resources, IAcceleoGenerationStrategy generationStrategy,
-			URI destination, URI logURI) {
+			URI destination, URI logURI, Monitor monitor) {
 
 		final Map<EClass, List<EObject>> valuesCache = new HashMap<>();
-		for (Template main : getMainTemplates(module)) {
-			// TODO more than one parameter is allowed ?
-			// TODO not EClass type ?
-			// TODO more than one EClass type ?
-			// TODO use IType ?
-			// TODO this is really quick and dirty
-			final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)main.getParameters()
-					.get(0).getType().getAst();
-			final List<EObject> values = getValues(eClassifierTypeLiteral, queryEnvironment, resources,
-					valuesCache);
+		final List<Template> mainTemplates = getMainTemplates(module);
+		monitor.beginTask("Generating", mainTemplates.size() * (resources.size() + 1));
+		try {
+			for (Template main : mainTemplates) {
+				monitor.subTask("Loading model elements for " + main.getName());
+				// TODO more than one parameter is allowed ?
+				// TODO not EClass type ?
+				// TODO more than one EClass type ?
+				// TODO use IType ?
+				// TODO this is really quick and dirty
+				final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)main
+						.getParameters().get(0).getType().getAst();
+				final List<EObject> values = getValues(eClassifierTypeLiteral, queryEnvironment, resources,
+						valuesCache, monitor);
 
-			final String parameterName = main.getParameters().get(0).getName();
-			Map<String, Object> variables = new LinkedHashMap<>();
-			for (EObject value : values) {
-				variables.put(parameterName, value);
-				generate(main, variables, evaluator, queryEnvironment, generationStrategy, destination,
-						logURI);
+				monitor.subTask("Generating for " + main.getName());
+				final String parameterName = main.getParameters().get(0).getName();
+				Map<String, Object> variables = new LinkedHashMap<>();
+				for (EObject value : values) {
+					variables.put(parameterName, value);
+					generate(main, variables, evaluator, queryEnvironment, generationStrategy, destination,
+							logURI, monitor);
+					if (monitor.isCanceled()) {
+						break;
+					}
+				}
+				monitor.worked(1);
+				if (monitor.isCanceled()) {
+					break;
+				}
 			}
+		} finally {
+			monitor.done();
 		}
 
 	}
@@ -236,16 +259,21 @@ public final class AcceleoUtil {
 	 *            the destination {@link URI}
 	 * @param logURI
 	 *            the {@link URI} for logging if any, <code>null</code> otherwise
+	 * @param monitor
+	 *            the progress {@link Monitor}
 	 */
 	public static void generate(Template template, Map<String, Object> variables, AcceleoEvaluator evaluator,
 			IQualifiedNameQueryEnvironment queryEnvironment, IAcceleoGenerationStrategy generationStrategy,
-			URI destination, URI logURI) {
+			URI destination, URI logURI, Monitor monitor) {
 		generationStrategy.start(destination);
 		final String moduleQualifiedName = queryEnvironment.getLookupEngine().getResolver().getQualifiedName(
 				getContainingModule(template));
 		queryEnvironment.getLookupEngine().pushImportsContext(moduleQualifiedName, moduleQualifiedName);
+		monitor.subTask(moduleQualifiedName);
 		try {
-			evaluator.generate(template, variables, generationStrategy, destination);
+			evaluator.generate(template, variables, generationStrategy, destination, monitor);
+		} catch (AcceleoEvaluationCancelledException e) {
+			// nothing to do here
 		} finally {
 			queryEnvironment.getLookupEngine().popContext(moduleQualifiedName);
 		}
@@ -279,11 +307,13 @@ public final class AcceleoUtil {
 	 *            the {@link List} of {@link Resource} to search
 	 * @param valuesCache
 	 *            the cache of any previous values
+	 * @param monitor
+	 *            the progress {@link Monitor}, it must consumes the resources.size()
 	 * @return the {@link List} of {@link EObject} that can be used as values for the given
 	 *         {@link TypeLiteral} in the given {@link List} of {@link EReference}
 	 */
 	public static List<EObject> getValues(TypeLiteral type, IQualifiedNameQueryEnvironment queryEnvironment,
-			List<Resource> resources, Map<EClass, List<EObject>> valuesCache) {
+			List<Resource> resources, Map<EClass, List<EObject>> valuesCache, Monitor monitor) {
 		final List<EObject> res;
 
 		// TODO handle other types
@@ -296,16 +326,22 @@ public final class AcceleoUtil {
 			res = valuesCache.computeIfAbsent(parameterType, t -> {
 				final List<EObject> values = new ArrayList<EObject>();
 				for (Resource model : resources) {
+					monitor.subTask("Loading model elements form " + model.getURI());
 					for (EObject root : model.getContents()) {
 						if (parameterType.isInstance(root)) {
 							values.add(root);
 						}
 						values.addAll(services.eAllContents(root, t));
 					}
+					monitor.worked(1);
+					if (monitor.isCanceled()) {
+						break;
+					}
 				}
 				return values;
 			});
 		} else {
+			monitor.worked(resources.size());
 			res = Collections.emptyList();
 		}
 

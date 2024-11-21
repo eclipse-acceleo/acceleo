@@ -32,6 +32,7 @@ import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultWriterFactory;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -116,7 +117,8 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
 				.getURIConverter(), new DefaultWriterFactory());
-		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy, memoryDestination, null);
+		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy, memoryDestination, null,
+				new BasicMonitor());
 
 		assertGenerationMessages(evaluator.getGenerationResult());
 
@@ -184,7 +186,7 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
 				.getURIConverter(), new DefaultWriterFactory());
 		AcceleoUtil.generate(evaluatorWindowsEndLine, queryEnvironmentWindowsEndLine, module, model, strategy,
-				memoryDestination, null);
+				memoryDestination, null, new BasicMonitor());
 
 		assertGenerationMessagesWindowsEndLine(evaluatorWindowsEndLine.getGenerationResult());
 

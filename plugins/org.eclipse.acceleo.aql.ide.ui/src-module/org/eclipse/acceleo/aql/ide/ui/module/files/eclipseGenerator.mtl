@@ -45,6 +45,7 @@
       import org.eclipse.core.runtime.Platform;
       import org.eclipse.core.runtime.Status;
       import org.eclipse.emf.common.util.Diagnostic;
+      import org.eclipse.emf.common.util.Monitor;
       import org.eclipse.emf.common.util.URI;
       import org.eclipse.emf.ecore.EClass;
       import org.eclipse.emf.ecore.EObject;
@@ -108,29 +109,19 @@
     	 */
     	@Override
     	protected List<EObject> getValues(IQualifiedNameQueryEnvironment queryEnvironment,
-    			Map<EClass, List<EObject>> valuesCache, TypeLiteral type, ResourceSet resourceSetForModels) {
+    			Map<EClass, List<EObject>> valuesCache, TypeLiteral type, ResourceSet resourceSetForModels,
+    			Monitor monitor) {
     		final List<EObject> res;
     
     		if (values != null) {
     			res = values;
     		} else {
-    			res = super.getValues(queryEnvironment, valuesCache, type, resourceSetForModels);
+    			res = super.getValues(queryEnvironment, valuesCache, type, resourceSetForModels, monitor);
     		}
     
     		return res;
-    		
     	}
     
-    	/**
-    	 * @generated
-    	 */
-    	@Override
-    	protected void loadResources(ResourceSet resourceSetForModels, List<String> resources) {
-    		for (String resource : resources) {
-    			resourceSetForModels.getResource(URI.createFileURI(resource), true);
-    		}
-    	}
-
     	/**
     	 * @generated
     	 */
@@ -189,9 +180,9 @@
     	 * @generated
     	 */
     	@Override
-    	public void generate() {
+    	public void generate(Monitor monitor) {
     		if (target != null) {
-    			super.generate();
+    			super.generate(monitor);
     		}
     	}
     
@@ -234,12 +225,12 @@
     							location + diagnostic.getMessage(), diagnostic.getException()));
     					break;
 
-    						case Diagnostic.WARNING:
+    				case Diagnostic.WARNING:
     					Activator.getDefault().log(new Status(IStatus.WARNING, diagnostic.getSource(),
     							location + diagnostic.getMessage(), diagnostic.getException()));
     					break;
 
-    						case Diagnostic.ERROR:
+    				case Diagnostic.ERROR:
     					Activator.getDefault().log(new Status(IStatus.ERROR, diagnostic.getSource(),
     							location + diagnostic.getMessage(), diagnostic.getException()));
     					break;
@@ -267,15 +258,15 @@
     					nbErrors++;
     					break;
 
-    					case Diagnostic.WARNING:
+    				case Diagnostic.WARNING:
     					nbWarnings++;
     					break;
 
-    					case Diagnostic.INFO:
+    				case Diagnostic.INFO:
     					nbInfos++;
     					break;
 
-    					default:
+    				default:
     					break;
     			}
     		}

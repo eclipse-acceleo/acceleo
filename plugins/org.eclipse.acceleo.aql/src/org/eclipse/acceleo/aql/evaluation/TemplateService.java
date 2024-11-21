@@ -98,7 +98,7 @@ public class TemplateService extends AbstractModuleElementService<Template> {
 
 		final AcceleoEvaluator evaluator = getEvaluator();
 		return evaluator.generate(getOrigin(), variables, evaluator.getGenerationStrategy(), evaluator
-				.getDestination());
+				.getDestination(), evaluator.getMonitor());
 	}
 
 	@Override

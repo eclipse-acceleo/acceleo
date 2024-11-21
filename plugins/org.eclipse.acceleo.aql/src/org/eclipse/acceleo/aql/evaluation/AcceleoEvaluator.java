@@ -67,8 +67,11 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.FilteredSettingsIterator;
 
 /**
@@ -185,6 +188,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private String newLine;
 
 	/**
+	 * The progress {@link Monitor}.
+	 */
+	private Monitor monitor;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param lookupEngine
@@ -198,6 +206,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		this.newLine = newLine;
 	}
 
+	@Override
+	public Object doSwitch(EObject eObject) {
+		if (getMonitor().isCanceled()) {
+			throw new AcceleoEvaluationCancelledException("Generation canceled");
+		}
+		return super.doSwitch(eObject);
+	}
+
 	/**
 	 * Gets the new line {@link String}.
 	 * 
@@ -205,6 +221,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public String getNewLine() {
 		return newLine;
+	}
+
+	/**
+	 * Gets the progress {@link Monitor}.
+	 * 
+	 * @return the progress {@link Monitor}
+	 */
+	public Monitor getMonitor() {
+		return monitor;
 	}
 
 	/**
@@ -218,12 +243,20 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 *            the IAcceleoGenerationStrategy
 	 * @param destinationURI
 	 *            the destination {@link URI}
+	 * @param monitor
+	 *            the progress {@link Monitor}
 	 * @return the generated {@link Object}, can be <code>null</code>
 	 */
 	public Object generate(AcceleoASTNode node, Map<String, Object> variables,
-			IAcceleoGenerationStrategy strategy, URI destinationURI) {
+			IAcceleoGenerationStrategy strategy, URI destinationURI, Monitor monitor) {
 
 		final Object res;
+
+		if (monitor == null) {
+			this.monitor = new BasicMonitor();
+		} else {
+			this.monitor = monitor;
+		}
 
 		destination = destinationURI;
 		generationStrategy = strategy;
@@ -699,6 +732,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final Charset charset = getCharset(fileStatement);
 			try {
 				final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
+				getMonitor().subTask("Generating " + uri);
 				openWriter(uri, mode, charset, newLine);
 				lastLineOfLastStatement = "";
 				pushIndentationContext(fileStatement.getBody(), lastLineOfLastStatement);

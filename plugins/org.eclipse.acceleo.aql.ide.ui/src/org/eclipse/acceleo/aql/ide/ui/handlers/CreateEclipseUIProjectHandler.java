@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui.handlers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.module.main.EclipseUIProjectGenerator;
 import org.eclipse.acceleo.aql.ide.ui.module.main.StandaloneGenerator;
 import org.eclipse.core.commands.AbstractHandler;
@@ -24,7 +26,15 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -38,24 +48,60 @@ public class CreateEclipseUIProjectHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
 
-		final Iterator<?> it = selection.iterator();
-		final Map<IProject, List<IFile>> projectToFiles = new LinkedHashMap<>();
-		while (it.hasNext()) {
-			final Object selected = it.next();
-			if (selected instanceof IFile) {
-				final IFile file = (IFile)selected;
-				projectToFiles.computeIfAbsent(file.getProject(), p -> new ArrayList<>()).add(file);
-			}
-		}
+		final IRunnableWithProgress generateRunnable = new IRunnableWithProgress() {
 
-		for (Entry<IProject, List<IFile>> entry : projectToFiles.entrySet()) {
-			for (IFile file : entry.getValue()) {
-				final StandaloneGenerator standaloneGenerator = new StandaloneGenerator(file);
-				standaloneGenerator.generate();
+			@Override
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				final Iterator<?> it = selection.iterator();
+				final Map<IProject, List<IFile>> projectToFiles = new LinkedHashMap<>();
+				int amountOfWork = 0;
+				while (it.hasNext()) {
+					final Object selected = it.next();
+					if (selected instanceof IFile) {
+						final IFile file = (IFile)selected;
+						projectToFiles.computeIfAbsent(file.getProject(), p -> new ArrayList<>()).add(file);
+						amountOfWork++;
+					}
+				}
+
+				amountOfWork += projectToFiles.size();
+				final SubMonitor subMonitor = SubMonitor.convert(monitor, amountOfWork);
+				for (Entry<IProject, List<IFile>> entry : projectToFiles.entrySet()) {
+					for (IFile file : entry.getValue()) {
+						final Monitor childMonitor = BasicMonitor.toMonitor(subMonitor.split(1));
+						try {
+							final StandaloneGenerator standaloneGenerator = new StandaloneGenerator(file);
+							standaloneGenerator.generate(childMonitor);
+						} finally {
+							childMonitor.done();
+						}
+						if (monitor.isCanceled()) {
+							break;
+						}
+					}
+					final Monitor childMonitor = BasicMonitor.toMonitor(subMonitor.split(1));
+					try {
+						final EclipseUIProjectGenerator eclipseUIProjectGenerator = new EclipseUIProjectGenerator(
+								entry.getValue());
+						eclipseUIProjectGenerator.generate(childMonitor);
+					} finally {
+						childMonitor.done();
+					}
+					if (monitor.isCanceled()) {
+						break;
+					}
+				}
 			}
-			EclipseUIProjectGenerator eclipseUIProjectGenerator = new EclipseUIProjectGenerator(entry
-					.getValue());
-			eclipseUIProjectGenerator.generate();
+		};
+
+		try {
+			PlatformUI.getWorkbench().getProgressService().run(true, true, generateRunnable);
+		} catch (InvocationTargetException e) {
+			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
+					"Couldn't generate.", e));
+		} catch (InterruptedException e) {
+			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
+					"Couldn't generate.", e));
 		}
 
 		return null;

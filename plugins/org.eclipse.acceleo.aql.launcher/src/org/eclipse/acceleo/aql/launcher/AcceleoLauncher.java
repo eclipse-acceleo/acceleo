@@ -11,9 +11,7 @@
 package org.eclipse.acceleo.aql.launcher;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,13 +19,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
-import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -38,7 +34,9 @@ import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameRes
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.BasicMonitor.Printing;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -284,16 +282,10 @@ public class AcceleoLauncher implements IApplication {
 	private void evaluate(AcceleoEvaluator evaluator, IQualifiedNameQueryEnvironment queryEnvironment,
 			Module mainModule, ResourceSet modelResourceSet, URI targetURI, URI logURI) {
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(modelResourceSet
-				.getURIConverter(), new AcceleoWorkspaceWriterFactory()) {
-			@Override
-			public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
-					String lineDelimiter) throws IOException {
-				System.out.println(uri);
-				return super.createWriterFor(uri, openMode, charset, lineDelimiter);
-			}
-		};
+				.getURIConverter(), new AcceleoWorkspaceWriterFactory());
+		final Monitor monitor = new Printing(new PrintStream(System.out));
 		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, modelResourceSet, strategy, targetURI,
-				logURI);
+				logURI, monitor);
 	}
 
 	private void printDiagnostic(PrintStream stream, Diagnostic diagnostic, String indentation) {

@@ -170,8 +170,12 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 							try {
 								for (IResource resource : resourcesToInitialize) {
 									Synchronizer.this.visit(resource);
+									if (Synchronizer.this.monitor.isCanceled()) {
+										break;
+									}
 								}
 							} finally {
+								Synchronizer.this.monitor.done();
 								Synchronizer.this.monitor = null;
 							}
 						} catch (Exception e) {

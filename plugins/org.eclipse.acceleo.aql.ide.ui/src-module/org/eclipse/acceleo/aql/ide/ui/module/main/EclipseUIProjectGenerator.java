@@ -47,6 +47,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -93,8 +94,11 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 
 	/**
 	 * Generates.
+	 * 
+	 * @param monitor
+	 *            the progress {@link Monitor}
 	 */
-	public void generate() {
+	public void generate(Monitor monitor) {
 
 		// inputs
 		final String moduleQualifiedName = getModuleQualifiedName();
@@ -140,7 +144,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 				variables.put(main.getParameters().get(0).getName(), modelModules);
 				variables.put(main.getParameters().get(1).getName(), projectUIName);
 				AcceleoUtil.generate(main, variables, evaluator, queryEnvironment, strategy, targetURI,
-						logURI);
+						logURI, monitor);
 			} finally {
 				AcceleoUtil.cleanServices(queryEnvironment, resourceSetForModels);
 				printDiagnostics(evaluator.getGenerationResult());
@@ -271,13 +275,13 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 					break;
 
 				case Diagnostic.WARNING:
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, diagnostic.getSource(),
-							diagnostic.getMessage(), diagnostic.getException()));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, diagnostic
+							.getSource(), diagnostic.getMessage(), diagnostic.getException()));
 					break;
 
 				case Diagnostic.ERROR:
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, diagnostic.getSource(),
-							diagnostic.getMessage(), diagnostic.getException()));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, diagnostic
+							.getSource(), diagnostic.getMessage(), diagnostic.getException()));
 					break;
 			}
 		}
