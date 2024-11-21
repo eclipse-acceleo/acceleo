@@ -100,7 +100,8 @@ public class MavenTests {
 				.getURIConverter(), new DefaultWriterFactory());
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
-		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI);
+		AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI,
+				new BasicMonitor());
 
 		assertEquals(Diagnostic.OK, evaluator.getGenerationResult().getDiagnostic().getSeverity());
 		assertEquals(0, evaluator.getGenerationResult().getDiagnostic().getChildren().size());
