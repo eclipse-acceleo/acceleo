@@ -15,6 +15,7 @@ http://www.eclipse.org/acceleo/4.0#//LetStatement
 + 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 < 
@@ -24,6 +25,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 < 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 <= 
@@ -33,6 +35,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 <= 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 <> 
@@ -42,6 +45,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 <> 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 = 
@@ -51,6 +55,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 = 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 > 
@@ -60,6 +65,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 > 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 >= 
@@ -69,6 +75,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 >= 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 and 
@@ -78,6 +85,7 @@ and
 and 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 implies 
@@ -87,6 +95,7 @@ implies
 implies 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 or 
@@ -96,6 +105,7 @@ or
 or 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 
 * Label:
 xor 
@@ -105,4 +115,5 @@ xor
 xor 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1359 55 71 - 1359 55 71
 

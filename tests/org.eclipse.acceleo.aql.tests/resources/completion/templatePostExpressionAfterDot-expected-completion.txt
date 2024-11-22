@@ -6,6 +6,7 @@ at(self: java.lang.String, index: java.lang.Integer) = String<br><br>Gets the ch
 at()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 characters()
@@ -15,6 +16,7 @@ characters(self: java.lang.String) = List<br><br>Converts the given String in a 
 characters()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 concat()
@@ -24,6 +26,7 @@ concat(self: java.lang.String, b: java.lang.String) = String<br><br>Returns a st
 concat()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 contains()
@@ -33,6 +36,7 @@ contains(self: java.lang.String, b: java.lang.String) = Boolean<br><br>Returns "
 contains()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 endsWith()
@@ -42,6 +46,7 @@ endsWith(self: java.lang.String, b: java.lang.String) = Boolean<br><br>Returns t
 endsWith()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 equalsIgnoreCase()
@@ -51,6 +56,7 @@ equalsIgnoreCase(self: java.lang.String, b: java.lang.String) = Boolean<br><br>R
 equalsIgnoreCase()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 first()
@@ -60,6 +66,7 @@ first(self: java.lang.String, n: java.lang.Integer) = String<br><br>Returns the 
 first()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 getProperty()
@@ -69,6 +76,7 @@ getProperty(key: java.lang.String) = String<br><br>Get the property value for th
 getProperty()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 getProperty()
@@ -78,6 +86,7 @@ getProperty(key: java.lang.String, java.util.List) = String<br><br>Get the prope
 getProperty()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 index()
@@ -87,6 +96,7 @@ index(self: java.lang.String, subString: java.lang.String) = Integer<br><br>Retu
 index()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 index()
@@ -96,6 +106,7 @@ index(self: java.lang.String, subString: java.lang.String, indexString: java.lan
 index()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 isAlpha()
@@ -105,6 +116,7 @@ isAlpha(self: java.lang.String) = Boolean<br><br>Returns "true" if self consists
 isAlpha()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 isAlphaNum()
@@ -114,6 +126,7 @@ isAlphaNum(self: java.lang.String) = Boolean<br><br>Returns "true" if self consi
 isAlphaNum()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 last()
@@ -123,6 +136,7 @@ last(self: java.lang.String, n: java.lang.Integer) = String<br><br>Returns the "
 last()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 lastIndex()
@@ -132,6 +146,7 @@ lastIndex(self: java.lang.String, subString: java.lang.String) = Integer<br><br>
 lastIndex()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 lastIndex()
@@ -141,6 +156,7 @@ lastIndex(self: java.lang.String, subString: java.lang.String, indexString: java
 lastIndex()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 lineSeparator()
@@ -150,6 +166,7 @@ lineSeparator(obj: java.lang.Object) = String<br><br>Gets the platform line sepa
 lineSeparator()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 matches()
@@ -159,6 +176,7 @@ matches(self: java.lang.String, regex: java.lang.String) = Boolean<br><br>Return
 matches()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 oclAsType()
@@ -168,6 +186,7 @@ oclAsType(object: java.lang.Object, type: java.lang.Object) = Object<br><br>Cast
 oclAsType()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 oclIsKindOf()
@@ -177,6 +196,7 @@ oclIsKindOf(object: java.lang.Object, type: java.lang.Object) = Boolean<br><br>E
 oclIsKindOf()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 oclIsTypeOf()
@@ -186,6 +206,7 @@ oclIsTypeOf(object: java.lang.Object, type: java.lang.Object) = Boolean<br><br>E
 oclIsTypeOf()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 prefix()
@@ -195,6 +216,7 @@ prefix(self: java.lang.String, prefix: java.lang.String) = String<br><br>Returns
 prefix()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 promptDouble()
@@ -204,6 +226,7 @@ promptDouble(message: java.lang.String) = Double<br><br>Prompts for a Double val
 promptDouble()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 promptFloat()
@@ -213,6 +236,7 @@ promptFloat(message: java.lang.String) = Float<br><br>Prompts for a Float value 
 promptFloat()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 promptInteger()
@@ -222,6 +246,7 @@ promptInteger(message: java.lang.String) = Integer<br><br>Prompts for a Integer 
 promptInteger()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 promptLong()
@@ -231,6 +256,7 @@ promptLong(message: java.lang.String) = Long<br><br>Prompts for a Long value wit
 promptLong()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 promptString()
@@ -240,6 +266,7 @@ promptString(message: java.lang.String) = String<br><br>Prompts for a String val
 promptString()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 removeEmptyLines()
@@ -249,6 +276,7 @@ removeEmptyLines(self: java.lang.String) = String<br><br>Removes all empty lines
 removeEmptyLines()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 removeLineSeparators()
@@ -258,6 +286,7 @@ removeLineSeparators(self: java.lang.String) = String<br><br>Removes all line se
 removeLineSeparators()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 replace()
@@ -267,6 +296,7 @@ replace(self: java.lang.String, regex: java.lang.String, replacement: java.lang.
 replace()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 replaceAll()
@@ -276,6 +306,7 @@ replaceAll(self: java.lang.String, regex: java.lang.String, replacement: java.la
 replaceAll()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 replaceFirst()
@@ -285,6 +316,7 @@ replaceFirst(self: java.lang.String, regex: java.lang.String, replacement: java.
 replaceFirst()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 size()
@@ -294,6 +326,7 @@ size(self: java.lang.String) = Integer<br><br>Return the length of the current S
 size()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 startsWith()
@@ -303,6 +336,7 @@ startsWith(self: java.lang.String, b: java.lang.String) = Boolean<br><br>Returns
 startsWith()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 strcmp()
@@ -312,6 +346,7 @@ strcmp(self: java.lang.String, s1: java.lang.String) = Integer<br><br>Returns an
 strcmp()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 strstr()
@@ -321,6 +356,7 @@ strstr(self: java.lang.String, r: java.lang.String) = Boolean<br><br>Searches r 
 strstr()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 substitute()
@@ -330,6 +366,7 @@ substitute(self: java.lang.String, r: java.lang.String, t: java.lang.String) = S
 substitute()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 substituteAll()
@@ -339,6 +376,7 @@ substituteAll(self: java.lang.String, r: java.lang.String, t: java.lang.String) 
 substituteAll()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 substituteFirst()
@@ -348,6 +386,7 @@ substituteFirst(self: java.lang.String, r: java.lang.String, t: java.lang.String
 substituteFirst()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 substring()
@@ -357,6 +396,7 @@ substring(self: java.lang.String, lower: java.lang.Integer) = String<br><br>Retu
 substring()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 substring()
@@ -366,6 +406,7 @@ substring(self: java.lang.String, lower: java.lang.Integer, upper: java.lang.Int
 substring()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toBoolean()
@@ -375,6 +416,7 @@ toBoolean(value: java.lang.String) = Boolean<br><br>Gets the boolean value of th
 toBoolean()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toInteger()
@@ -384,6 +426,7 @@ toInteger(self: java.lang.String) = Integer<br><br>Returns an integer of value e
 toInteger()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toLower()
@@ -393,6 +436,7 @@ toLower(self: java.lang.String) = String<br><br>Returns the current String with 
 toLower()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toLowerFirst()
@@ -402,6 +446,7 @@ toLowerFirst(self: java.lang.String) = String<br><br>Returns the self string wit
 toLowerFirst()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toReal()
@@ -411,6 +456,7 @@ toReal(self: java.lang.String) = Double<br><br>Returns a real of value equal to 
 toReal()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toString()
@@ -420,6 +466,7 @@ toString(self: java.lang.Object) = String<br><br>Returns a string representation
 toString()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toUpper()
@@ -429,6 +476,7 @@ toUpper(self: java.lang.String) = String<br><br>Returns the current String with 
 toUpper()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 toUpperFirst()
@@ -438,6 +486,7 @@ toUpperFirst(self: java.lang.String) = String<br><br>Returns the current String 
 toUpperFirst()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 tokenize()
@@ -447,6 +496,7 @@ tokenize(self: java.lang.String) = List<br><br>Splits the current String by whit
 tokenize()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 tokenize()
@@ -456,6 +506,7 @@ tokenize(self: java.lang.String, delimiter: java.lang.String) = List<br><br>Spli
 tokenize()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 trace()
@@ -465,6 +516,7 @@ trace(self: java.lang.Object) = String<br><br>Returns a string representation of
 trace()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 
 * Label:
 trim()
@@ -474,4 +526,5 @@ trim(self: java.lang.String) = String<br><br>Trims the given String.<br><br>  @p
 trim()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 684 28 91 - 688 28 95
 

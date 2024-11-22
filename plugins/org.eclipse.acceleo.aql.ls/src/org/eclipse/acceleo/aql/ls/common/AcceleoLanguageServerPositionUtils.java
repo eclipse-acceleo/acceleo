@@ -14,6 +14,8 @@ import java.util.Objects;
 
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IPosition;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IRange;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
@@ -509,4 +511,27 @@ public final class AcceleoLanguageServerPositionUtils {
 
 		return new Position(currentLine, currentColumn);
 	}
+
+	/**
+	 * Gets the {@link Position} corresponding to the given {@link IPosition}.
+	 * 
+	 * @param position
+	 *            the {@link IPosition} to convert
+	 * @return the {@link Position} corresponding to the given {@link IPosition}
+	 */
+	public static Position getPosition(IPosition position) {
+		return new Position(position.getLine(), position.getColumn());
+	}
+
+	/**
+	 * Gets the {@link Range} corresponding to the given {@link IRange}.
+	 * 
+	 * @param range
+	 *            the {@link IRange} to convert
+	 * @return the {@link Position} corresponding to the given {@link IRange}
+	 */
+	public static Range getRange(IRange range) {
+		return new Range(getPosition(range.getStart()), getPosition(range.getEnd()));
+	}
+
 }

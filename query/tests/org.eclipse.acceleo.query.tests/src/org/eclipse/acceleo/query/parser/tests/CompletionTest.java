@@ -192,7 +192,7 @@ public class CompletionTest {
 	public void navigationSegmentPrefixRemainingTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.nam", 7, variableTypes);
 
-		assertCompletion(completionResult, 3, "na", "m", 5, 2, "name", "instanceClassName",
+		assertCompletion(completionResult, 3, "na", "m", 5, 3, "name", "instanceClassName",
 				"instanceTypeName");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
@@ -203,7 +203,7 @@ public class CompletionTest {
 	public void navigationSegmentPrefixLongExpressionRemainingTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.nam.size()", 7, variableTypes);
 
-		assertCompletion(completionResult, 3, "na", "m", 5, 2, "name", "instanceClassName",
+		assertCompletion(completionResult, 3, "na", "m", 5, 3, "name", "instanceClassName",
 				"instanceTypeName");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
@@ -640,7 +640,7 @@ public class CompletionTest {
 				variableTypes);
 
 		// the "remaining" ck are not part of the replacement
-		assertCompletion(completionResult, 2, "ecore::EPa", "ck", 16, 10, "ecore::EPackage",
+		assertCompletion(completionResult, 2, "ecore::EPa", "ck", 16, 12, "ecore::EPackage",
 				"ecore::EParameter");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -859,7 +859,7 @@ public class CompletionTest {
 
 		// This would replace part of the string...
 		// but makes no sense as there is no completion within string literals
-		assertCompletion(completionResult, 0, "te", "st", 8, 2);
+		assertCompletion(completionResult, 0, "te", "st", 8, 4);
 	}
 
 	@Test
@@ -1226,7 +1226,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents()", 5,
 				variableTypes);
 
-		assertCompletion(completionResult, 77, "", "eAllContents", 5, 0, "eContainer()", "eAttributes");
+		assertCompletion(completionResult, 77, "", "eAllContents", 5, 12, "eContainer()", "eAttributes");
 	}
 
 	@Test
@@ -1267,7 +1267,14 @@ public class CompletionTest {
 	public void partialEPackageNameAndEClassNameAndEnumNameNotEnum() {
 		final ICompletionResult completionResult = engine.getCompletion("eco::ECl::", 8, variableTypes);
 
-		assertCompletion(completionResult, 0, "eco::ECl", "", 0, 8);
+		assertCompletion(completionResult, 0, "eco::ECl", "::", 0, 10);
+	}
+
+	@Test
+	public void partialEPackageNameAndEClassNameAndDoubleColone() {
+		final ICompletionResult completionResult = engine.getCompletion("any::Co::whi", 7, variableTypes);
+
+		assertCompletion(completionResult, 16, "any::Co", "::whi", 0, 12, "anydsl::Color::white");
 	}
 
 	@Test
@@ -1545,6 +1552,33 @@ public class CompletionTest {
 				}
 			}
 		}
+	}
+
+	@Test
+	public void eObjectTypeTest() {
+		final ICompletionResult completionResult = engine.getCompletion("eo", 2, variableTypes);
+
+		assertCompletion(completionResult, 4, "eo", "", 0, 2, "ecore::EObject", "ecore::EOperation",
+				"ecore::EByteObject", "ecore::EDoubleObject");
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void eBigDecimalTypeTest() {
+		final ICompletionResult completionResult = engine.getCompletion("ecore::EOperation", 9,
+				variableTypes);
+
+		assertCompletion(completionResult, 2, "ecore::EO", "peration", 0, 17, "ecore::EObject",
+				"ecore::EOperation");
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 }

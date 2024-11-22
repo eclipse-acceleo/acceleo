@@ -6,6 +6,7 @@ EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
 name
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1658 68 22 - 1662 68 26
 
 * Label:
 )]

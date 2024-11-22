@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.completion.proposals.AcceleoCompletionProposal;
@@ -22,6 +23,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 
@@ -74,9 +76,10 @@ public class AcceleoCompletor {
 
 		// First, parse the source contents up to the position.
 		final AcceleoParser acceleoParser = new AcceleoParser();
-		final String partialAcceleoSource = source.substring(0, position);
-		final AcceleoAstResult partialAcceleoAstResult = acceleoParser.parse(partialAcceleoSource, null,
-				moduleQualifiedNameForCompletion);
+		final String remaining = QueryCompletionEngine.getRemaining(source, position);
+		final String partialAcceleoSource = source.substring(0, position + remaining.length());
+		final AcceleoAstResult partialAcceleoAstResult = acceleoParser.parse(partialAcceleoSource.substring(0,
+				position), null, moduleQualifiedNameForCompletion);
 
 		// Second, validate the AST - this is required further on for the AQL completion.
 		final AcceleoAstResult acceleoAstResult = acceleoParser.parse(source, null,
@@ -90,12 +93,12 @@ public class AcceleoCompletor {
 					partialAcceleoAstResult, moduleQualifiedNameForCompletion);
 
 			// Find which element of the AST we are completing.
-			EObject acceleoElementToComplete = getElementToComplete(partialAcceleoAstResult);
+			final AcceleoASTNode acceleoElementToComplete = getElementToComplete(partialAcceleoAstResult);
 			queryEnvironment.getLookupEngine().pushImportsContext(moduleQualifiedNameForCompletion,
 					moduleQualifiedNameForCompletion);
 			try {
 				proposals = this.getProposals(queryEnvironment, moduleFileName, partialAcceleoSource,
-						acceleoValidationResult, acceleoElementToComplete);
+						position, acceleoValidationResult, acceleoElementToComplete);
 			} finally {
 				queryEnvironment.getLookupEngine().popContext(moduleQualifiedNameForCompletion);
 			}
@@ -118,34 +121,36 @@ public class AcceleoCompletor {
 	 *            the module computed name
 	 * @param sourceFragment
 	 *            the module source fragment
+	 * @param position
+	 *            the caret position in {@code source}.
 	 * @param acceleoValidationResult
 	 *            the (non-{@code null}) contextual {@link IAcceleoValidationResult}.
 	 * @param acceleoElementToComplete
-	 *            the {@link EObject Acceleo AST element} to complete.
+	 *            the {@link AcceleoASTNode} to complete.
 	 * @return the {@link List} of {@link AcceleoCompletionProposal}.
 	 */
 	protected List<AcceleoCompletionProposal> getProposals(IQualifiedNameQueryEnvironment queryEnvironment,
-			String computedModuleName, String sourceFragment,
-			IAcceleoValidationResult acceleoValidationResult, EObject acceleoElementToComplete) {
+			String computedModuleName, String sourceFragment, int position,
+			IAcceleoValidationResult acceleoValidationResult, AcceleoASTNode acceleoElementToComplete) {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		AcceleoAstCompletor acceleoSyntaxCompletor = new AcceleoAstCompletor(queryEnvironment,
 				acceleoValidationResult, newLine);
 
 		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(computedModuleName, sourceFragment,
-				acceleoElementToComplete));
+				position, acceleoElementToComplete));
 
 		return completionProposals;
 	}
 
 	/**
-	 * Provides the Acceleo AST element to complete.
+	 * Provides the {@link AcceleoASTNode} element to complete.
 	 * 
 	 * @param acceleoAstResult
 	 *            the (non-{@code null}) {@link AcceleoAstResult} to complete.
-	 * @return the Acceleo AST element to complete.
+	 * @return the {@link AcceleoASTNode} element to complete.
 	 */
-	private EObject getElementToComplete(AcceleoAstResult acceleoAstResult) {
+	private AcceleoASTNode getElementToComplete(AcceleoAstResult acceleoAstResult) {
 		final Error errorToComplete = getErrorToComplete(acceleoAstResult);
 		if (errorToComplete == null) {
 			final Module moduleToComplete = acceleoAstResult.getModule();

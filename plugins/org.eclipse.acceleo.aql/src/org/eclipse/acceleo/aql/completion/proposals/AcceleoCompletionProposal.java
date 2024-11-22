@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@ package org.eclipse.acceleo.aql.completion.proposals;
 
 import java.util.Objects;
 
+import org.eclipse.acceleo.query.runtime.impl.namespace.Range;
+import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IRange;
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -88,6 +90,11 @@ public class AcceleoCompletionProposal {
 	private final EClass acceleoType;
 
 	/**
+	 * The replacement {@link IRange}.
+	 */
+	private final IRange replacement;
+
+	/**
 	 * The constructor, with a default description that consists of the inserted text.
 	 * 
 	 * @param label
@@ -99,7 +106,24 @@ public class AcceleoCompletionProposal {
 	 */
 	public AcceleoCompletionProposal(String label, String text, EClass acceleoType) {
 		this(label, "Inserts the following text: " + DESCRIPTION_CODE_OPEN + text + DESCRIPTION_CODE_CLOSE,
-				text, acceleoType);
+				text, acceleoType, null);
+	}
+
+	/**
+	 * The constructor, with a default description that consists of the inserted text.
+	 * 
+	 * @param label
+	 *            the (maybe-{@code null}) label of this proposal.
+	 * @param text
+	 *            the (non-{@code null}) text to insert in the Acceleo source at the completion location.
+	 * @param acceleoType
+	 *            the (maybe-{@code null}) {@link EClass Acceleo type} on which this proposal is based.
+	 * @param replacement
+	 *            the replacement {@link Range}
+	 */
+	public AcceleoCompletionProposal(String label, String text, EClass acceleoType, Range replacement) {
+		this(label, "Inserts the following text: " + DESCRIPTION_CODE_OPEN + text + DESCRIPTION_CODE_CLOSE,
+				text, acceleoType, replacement);
 	}
 
 	/**
@@ -113,12 +137,16 @@ public class AcceleoCompletionProposal {
 	 *            the (non-{@code null}) text to insert in the Acceleo source at the completion location.
 	 * @param acceleoType
 	 *            the (maybe-{@code null}) {@link EClass Acceleo type} on which this proposal is based.
+	 * @param replacement
+	 *            the replacement {@link IRange}
 	 */
-	public AcceleoCompletionProposal(String label, String description, String text, EClass acceleoType) {
+	public AcceleoCompletionProposal(String label, String description, String text, EClass acceleoType,
+			IRange replacement) {
 		this.label = label;
 		this.description = Objects.requireNonNull(description);
 		this.text = Objects.requireNonNull(text);
 		this.acceleoType = acceleoType;
+		this.replacement = replacement;
 	}
 
 	/**
@@ -156,5 +184,14 @@ public class AcceleoCompletionProposal {
 	 */
 	public EClass getAcceleoType() {
 		return acceleoType;
+	}
+
+	/**
+	 * Gets the replacement {@link IRange}.
+	 * 
+	 * @return the replacement {@link IRange} if any, <code>null</code> otherwise
+	 */
+	public IRange getReplacement() {
+		return replacement;
 	}
 }

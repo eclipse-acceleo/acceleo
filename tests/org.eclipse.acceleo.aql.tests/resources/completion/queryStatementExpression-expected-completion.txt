@@ -6,6 +6,7 @@ Variable myParam
 myParam
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EAnnotation
@@ -15,6 +16,7 @@ EClass named EAnnotation in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EAnnotation
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EAttribute
@@ -24,6 +26,7 @@ EClass named EAttribute in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EAttribute
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EBigDecimal
@@ -33,6 +36,7 @@ EDataType named EBigDecimal in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBigDecimal
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EBigInteger
@@ -42,6 +46,7 @@ EDataType named EBigInteger in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBigInteger
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EBoolean
@@ -51,6 +56,7 @@ EDataType named EBoolean in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBoolean
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EBooleanObject
@@ -60,6 +66,7 @@ EDataType named EBooleanObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBooleanObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EByte
@@ -69,6 +76,7 @@ EDataType named EByte in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EByte
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EByteArray
@@ -78,6 +86,7 @@ EDataType named EByteArray in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EByteArray
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EByteObject
@@ -87,6 +96,7 @@ EDataType named EByteObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EByteObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EChar
@@ -96,6 +106,7 @@ EDataType named EChar in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EChar
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::ECharacterObject
@@ -105,6 +116,7 @@ EDataType named ECharacterObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ECharacterObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EClass
@@ -114,6 +126,7 @@ EClass named EClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EClass
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EClassifier
@@ -123,6 +136,7 @@ EClass named EClassifier in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EClassifier
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EDataType
@@ -132,6 +146,7 @@ EClass named EDataType in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDataType
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EDate
@@ -141,6 +156,7 @@ EDataType named EDate in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDate
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EDiagnosticChain
@@ -150,6 +166,7 @@ EDataType named EDiagnosticChain in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDiagnosticChain
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EDouble
@@ -159,6 +176,7 @@ EDataType named EDouble in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDouble
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EDoubleObject
@@ -168,6 +186,7 @@ EDataType named EDoubleObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDoubleObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EEList
@@ -177,6 +196,7 @@ EDataType named EEList in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EEList
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EEnum
@@ -186,6 +206,7 @@ EClass named EEnum in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EEnum
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EEnumLiteral
@@ -195,6 +216,7 @@ EClass named EEnumLiteral in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EEnumLiteral
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EEnumerator
@@ -204,6 +226,7 @@ EDataType named EEnumerator in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EEnumerator
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EFactory
@@ -213,6 +236,7 @@ EClass named EFactory in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFactory
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EFeatureMap
@@ -222,6 +246,7 @@ EDataType named EFeatureMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFeatureMap
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EFeatureMapEntry
@@ -231,6 +256,7 @@ EDataType named EFeatureMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFeatureMapEntry
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EFloat
@@ -240,6 +266,7 @@ EDataType named EFloat in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFloat
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EFloatObject
@@ -249,6 +276,7 @@ EDataType named EFloatObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFloatObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EGenericType
@@ -258,6 +286,7 @@ EClass named EGenericType in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EGenericType
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EInt
@@ -267,6 +296,7 @@ EDataType named EInt in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EInt
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EIntegerObject
@@ -276,6 +306,7 @@ EDataType named EIntegerObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EIntegerObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EInvocationTargetException
@@ -285,6 +316,7 @@ EDataType named EInvocationTargetException in ecore(http://www.eclipse.org/emf/2
 ecore::EInvocationTargetException
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EJavaClass
@@ -294,6 +326,7 @@ EDataType named EJavaClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EJavaClass
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EJavaObject
@@ -303,6 +336,7 @@ EDataType named EJavaObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EJavaObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::ELong
@@ -312,6 +346,7 @@ EDataType named ELong in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ELong
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::ELongObject
@@ -321,6 +356,7 @@ EDataType named ELongObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ELongObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EMap
@@ -330,6 +366,7 @@ EDataType named EMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EMap
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EModelElement
@@ -339,6 +376,7 @@ EClass named EModelElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EModelElement
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::ENamedElement
@@ -348,6 +386,7 @@ EClass named ENamedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ENamedElement
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EObject
@@ -357,6 +396,7 @@ EClass named EObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EOperation
@@ -366,6 +406,7 @@ EClass named EOperation in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EOperation
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EPackage
@@ -375,6 +416,7 @@ EClass named EPackage in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EPackage
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EParameter
@@ -384,6 +426,7 @@ EClass named EParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EParameter
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EReference
@@ -393,6 +436,7 @@ EClass named EReference in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EReference
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EResource
@@ -402,6 +446,7 @@ EDataType named EResource in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EResource
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EResourceSet
@@ -411,6 +456,7 @@ EDataType named EResourceSet in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EResourceSet
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EShort
@@ -420,6 +466,7 @@ EDataType named EShort in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EShort
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EShortObject
@@ -429,6 +476,7 @@ EDataType named EShortObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EShortObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EString
@@ -438,6 +486,7 @@ EDataType named EString in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EString
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EStringToStringMapEntry
@@ -447,6 +496,7 @@ EClass named EStringToStringMapEntry in ecore(http://www.eclipse.org/emf/2002/Ec
 ecore::EStringToStringMapEntry
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::EStructuralFeature
@@ -456,6 +506,7 @@ EClass named EStructuralFeature in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EStructuralFeature
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::ETreeIterator
@@ -465,6 +516,7 @@ EDataType named ETreeIterator in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ETreeIterator
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::ETypeParameter
@@ -474,6 +526,7 @@ EClass named ETypeParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ETypeParameter
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ecore::ETypedElement
@@ -483,6 +536,7 @@ EClass named ETypedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ETypedElement
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 ()
@@ -492,6 +546,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 ()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 - 
@@ -501,6 +556,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 - 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 Boolean
@@ -510,6 +566,7 @@ Boolean
 Boolean
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 Integer
@@ -519,6 +576,7 @@ Integer
 Integer
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 OrderedSet{}
@@ -528,6 +586,7 @@ OrderedSet{}
 OrderedSet{}
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 Real
@@ -537,6 +596,7 @@ Real
 Real
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 Sequence{}
@@ -546,6 +606,7 @@ Sequence{}
 Sequence{}
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 String
@@ -555,6 +616,7 @@ String
 String
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 false
@@ -564,6 +626,7 @@ false
 false
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 if 
@@ -573,6 +636,7 @@ if
 if 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 let 
@@ -582,6 +646,7 @@ let
 let 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 not 
@@ -591,6 +656,7 @@ not
 not 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 null
@@ -600,6 +666,7 @@ null
 null
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 true
@@ -609,6 +676,7 @@ true
 true
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 
 * Label:
 {}
@@ -618,4 +686,5 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 {}
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 721 31 3 - 728 31 10
 

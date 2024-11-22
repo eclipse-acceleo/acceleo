@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,24 @@ public class Range implements IRange {
 	@Override
 	public IPosition getEnd() {
 		return end;
+	}
+
+	/**
+	 * Creates the {@link IRange} identified by the begin and end character indices in the given {@link String
+	 * text}.
+	 * 
+	 * @param beginCharacterIndex
+	 *            the (positive) begin character index.
+	 * @param endCharacterIndex
+	 *            the (positive) end character index.
+	 * @param text
+	 *            the (non-{@code null}) {@link String text}.
+	 * @return the corresponding {@link IRange}.
+	 */
+	public static IRange getCorrespondingRange(int beginCharacterIndex, int endCharacterIndex, String text) {
+		IPosition beginPosition = Position.getCorrespondingPosition(beginCharacterIndex, text);
+		IPosition endPosition = Position.getCorrespondingPosition(endCharacterIndex, text);
+		return new Range(beginPosition, endPosition);
 	}
 
 }

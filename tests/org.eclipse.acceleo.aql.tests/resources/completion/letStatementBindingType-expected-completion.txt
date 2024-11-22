@@ -1,65 +1,12 @@
 * Label:
-String
+ecore::EAnnotation
 * Description:
-String
+EClass named EAnnotation in ecore(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
-String
+ecore::EAnnotation
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-Integer
-* Description:
-Integer
-* Text:
-Integer
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-Real
-* Description:
-Real
-* Text:
-Real
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-Boolean
-* Description:
-Boolean
-* Text:
-Boolean
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-Sequence()
-* Description:
-Sequence()
-* Text:
-Sequence()
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-OrderedSet()
-* Description:
-OrderedSet()
-* Text:
-OrderedSet()
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-{}
-* Description:
-{}
-* Text:
-{}
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EAttribute
@@ -69,177 +16,7 @@ EClass named EAttribute in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EAttribute
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EAnnotation
-* Description:
-EClass named EAnnotation in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EAnnotation
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EClass
-* Description:
-EClass named EClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EClass
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EClassifier
-* Description:
-EClass named EClassifier in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EClassifier
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EDataType
-* Description:
-EClass named EDataType in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EDataType
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EEnum
-* Description:
-EClass named EEnum in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EEnum
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EEnumLiteral
-* Description:
-EClass named EEnumLiteral in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EEnumLiteral
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EFactory
-* Description:
-EClass named EFactory in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EFactory
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EModelElement
-* Description:
-EClass named EModelElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EModelElement
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::ENamedElement
-* Description:
-EClass named ENamedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::ENamedElement
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EObject
-* Description:
-EClass named EObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EObject
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EOperation
-* Description:
-EClass named EOperation in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EOperation
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EPackage
-* Description:
-EClass named EPackage in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EPackage
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EParameter
-* Description:
-EClass named EParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EParameter
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EReference
-* Description:
-EClass named EReference in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EReference
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EStructuralFeature
-* Description:
-EClass named EStructuralFeature in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EStructuralFeature
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::ETypedElement
-* Description:
-EClass named ETypedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::ETypedElement
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EStringToStringMapEntry
-* Description:
-EClass named EStringToStringMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EStringToStringMapEntry
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EGenericType
-* Description:
-EClass named EGenericType in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EGenericType
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::ETypeParameter
-* Description:
-EClass named ETypeParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::ETypeParameter
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EBigDecimal
@@ -249,6 +26,7 @@ EDataType named EBigDecimal in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBigDecimal
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EBigInteger
@@ -258,6 +36,7 @@ EDataType named EBigInteger in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBigInteger
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EBoolean
@@ -267,6 +46,7 @@ EDataType named EBoolean in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBoolean
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EBooleanObject
@@ -276,6 +56,7 @@ EDataType named EBooleanObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EBooleanObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EByte
@@ -285,6 +66,7 @@ EDataType named EByte in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EByte
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EByteArray
@@ -294,6 +76,7 @@ EDataType named EByteArray in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EByteArray
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EByteObject
@@ -303,6 +86,7 @@ EDataType named EByteObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EByteObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EChar
@@ -312,6 +96,7 @@ EDataType named EChar in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EChar
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::ECharacterObject
@@ -321,6 +106,37 @@ EDataType named ECharacterObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::ECharacterObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EClass
+* Description:
+EClass named EClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EClass
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EClassifier
+* Description:
+EClass named EClassifier in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EClassifier
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EDataType
+* Description:
+EClass named EDataType in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EDataType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EDate
@@ -330,6 +146,7 @@ EDataType named EDate in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDate
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EDiagnosticChain
@@ -339,6 +156,7 @@ EDataType named EDiagnosticChain in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDiagnosticChain
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EDouble
@@ -348,6 +166,7 @@ EDataType named EDouble in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDouble
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EDoubleObject
@@ -357,6 +176,7 @@ EDataType named EDoubleObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EDoubleObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EEList
@@ -366,6 +186,27 @@ EDataType named EEList in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EEList
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EEnum
+* Description:
+EClass named EEnum in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EEnum
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EEnumLiteral
+* Description:
+EClass named EEnumLiteral in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EEnumLiteral
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EEnumerator
@@ -375,6 +216,17 @@ EDataType named EEnumerator in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EEnumerator
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EFactory
+* Description:
+EClass named EFactory in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EFactory
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EFeatureMap
@@ -384,6 +236,7 @@ EDataType named EFeatureMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFeatureMap
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EFeatureMapEntry
@@ -393,6 +246,7 @@ EDataType named EFeatureMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFeatureMapEntry
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EFloat
@@ -402,6 +256,7 @@ EDataType named EFloat in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFloat
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EFloatObject
@@ -411,6 +266,17 @@ EDataType named EFloatObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EFloatObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EGenericType
+* Description:
+EClass named EGenericType in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EGenericType
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EInt
@@ -420,6 +286,7 @@ EDataType named EInt in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EInt
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EIntegerObject
@@ -429,105 +296,7 @@ EDataType named EIntegerObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
 ecore::EIntegerObject
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EJavaClass
-* Description:
-EDataType named EJavaClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EJavaClass
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EJavaObject
-* Description:
-EDataType named EJavaObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EJavaObject
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::ELong
-* Description:
-EDataType named ELong in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::ELong
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::ELongObject
-* Description:
-EDataType named ELongObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::ELongObject
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EMap
-* Description:
-EDataType named EMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EMap
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EResource
-* Description:
-EDataType named EResource in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EResource
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EResourceSet
-* Description:
-EDataType named EResourceSet in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EResourceSet
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EShort
-* Description:
-EDataType named EShort in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EShort
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EShortObject
-* Description:
-EDataType named EShortObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EShortObject
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::EString
-* Description:
-EDataType named EString in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::EString
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-
-* Label:
-ecore::ETreeIterator
-* Description:
-EDataType named ETreeIterator in ecore(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-ecore::ETreeIterator
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 
 * Label:
 ecore::EInvocationTargetException
@@ -537,4 +306,375 @@ EDataType named EInvocationTargetException in ecore(http://www.eclipse.org/emf/2
 ecore::EInvocationTargetException
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EJavaClass
+* Description:
+EDataType named EJavaClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EJavaClass
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EJavaObject
+* Description:
+EDataType named EJavaObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EJavaObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::ELong
+* Description:
+EDataType named ELong in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::ELong
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::ELongObject
+* Description:
+EDataType named ELongObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::ELongObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EMap
+* Description:
+EDataType named EMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EMap
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EModelElement
+* Description:
+EClass named EModelElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EModelElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::ENamedElement
+* Description:
+EClass named ENamedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::ENamedElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EObject
+* Description:
+EClass named EObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EOperation
+* Description:
+EClass named EOperation in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EOperation
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EPackage
+* Description:
+EClass named EPackage in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EPackage
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EParameter
+* Description:
+EClass named EParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EParameter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EReference
+* Description:
+EClass named EReference in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EReference
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EResource
+* Description:
+EDataType named EResource in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EResource
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EResourceSet
+* Description:
+EDataType named EResourceSet in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EResourceSet
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EShort
+* Description:
+EDataType named EShort in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EShort
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EShortObject
+* Description:
+EDataType named EShortObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EShortObject
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EString
+* Description:
+EDataType named EString in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EString
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EStringToStringMapEntry
+* Description:
+EClass named EStringToStringMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EStringToStringMapEntry
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::EStructuralFeature
+* Description:
+EClass named EStructuralFeature in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::EStructuralFeature
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::ETreeIterator
+* Description:
+EDataType named ETreeIterator in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::ETreeIterator
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::ETypeParameter
+* Description:
+EClass named ETypeParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::ETypeParameter
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+ecore::ETypedElement
+* Description:
+EClass named ETypedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+ecore::ETypedElement
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+()
+* Description:
+()
+* Text:
+()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+- 
+* Description:
+- 
+* Text:
+- 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+Boolean
+* Description:
+Boolean
+* Text:
+Boolean
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+Integer
+* Description:
+Integer
+* Text:
+Integer
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+OrderedSet{}
+* Description:
+OrderedSet{}
+* Text:
+OrderedSet{}
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+Real
+* Description:
+Real
+* Text:
+Real
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+Sequence{}
+* Description:
+Sequence{}
+* Text:
+Sequence{}
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+String
+* Description:
+String
+* Text:
+String
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+false
+* Description:
+false
+* Text:
+false
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+if 
+* Description:
+if 
+* Text:
+if 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+let 
+* Description:
+let 
+* Text:
+let 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+not 
+* Description:
+not 
+* Text:
+not 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+null
+* Description:
+null
+* Text:
+null
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+true
+* Description:
+true
+* Text:
+true
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
+
+* Label:
+{}
+* Description:
+{}
+* Text:
+{}
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1308 55 20 - 1326 55 38
 

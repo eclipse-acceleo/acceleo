@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -502,7 +502,7 @@ public final class AcceleoSyntacticCompletionProposals {
 								+ ": appends the generated contents to the end of the existing file."
 								+ LIST_ITEM_CLOSE + LIST_ITEM_OPEN + createLabel
 								+ ": no content is generated." + LIST_ITEM_CLOSE + LIST_CLOSE, openModeKind
-										.getName(), AcceleoPackage.Literals.FILE_STATEMENT);
+										.getName(), AcceleoPackage.Literals.FILE_STATEMENT, null);
 			}).collect(Collectors.toList());
 
 	/**
@@ -536,7 +536,7 @@ public final class AcceleoSyntacticCompletionProposals {
 								+ ": accessible only to this Module, and other Modules extending this Module."
 								+ LIST_ITEM_CLOSE + LIST_ITEM_OPEN + privateLabel
 								+ ": accessible only to this Module." + LIST_ITEM_CLOSE + LIST_CLOSE,
-						visibilityKind.getName() + SPACE, AcceleoPackage.Literals.MODULE_ELEMENT);
+						visibilityKind.getName() + SPACE, AcceleoPackage.Literals.MODULE_ELEMENT, null);
 			}).collect(Collectors.toList());
 	////
 
@@ -560,7 +560,7 @@ public final class AcceleoSyntacticCompletionProposals {
 	private static AcceleoCompletionProposal createSyntacticCompletionProposal(String insertedText,
 			String descriptionSentenceBeforeCode, EClass acceleoType) {
 		return new AcceleoCompletionProposal(insertedText, descriptionSentenceBeforeCode + NEWLINE + CODE_OPEN
-				+ insertedText + CODE_CLOSE, insertedText, acceleoType);
+				+ insertedText + CODE_CLOSE, insertedText, acceleoType, null);
 	}
 
 }

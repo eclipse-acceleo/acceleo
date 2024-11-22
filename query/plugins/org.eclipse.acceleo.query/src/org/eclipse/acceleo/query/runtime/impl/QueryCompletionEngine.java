@@ -76,7 +76,7 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 
 		if (prefix != null) {
 			result.setReplacementOffset(offset - prefix.length());
-			result.setReplacementLength(prefix.length());
+			result.setReplacementLength(prefix.length() + remaining.length());
 		}
 
 		return result;
@@ -152,7 +152,7 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 	 * @return the {@link String} containing only identifier part after the cursor if any, <code>null</code>
 	 *         or an empty {@link String} otherwise
 	 */
-	private String getRemaining(String expression, int offset) {
+	public static String getRemaining(String expression, int offset) {
 		final String result;
 
 		if (expression == null) {
@@ -162,7 +162,8 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			int end = offset;
 			while (end < length) {
 				char charAt = expression.charAt(end);
-				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_') {
+				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_'
+						|| charAt == ':') {
 					++end;
 				} else {
 					break;

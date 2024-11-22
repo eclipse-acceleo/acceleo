@@ -6,6 +6,7 @@ EReference named eAnnotations in EModelElement(http://www.eclipse.org/emf/2002/E
 eAnnotations
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eClassifiers
@@ -15,6 +16,7 @@ EReference named eClassifiers in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 eClassifiers
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eFactoryInstance
@@ -24,6 +26,7 @@ EReference named eFactoryInstance in EPackage(http://www.eclipse.org/emf/2002/Ec
 eFactoryInstance
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eSubpackages
@@ -33,6 +36,7 @@ EReference named eSubpackages in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 eSubpackages
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eSuperPackage
@@ -42,6 +46,7 @@ EReference named eSuperPackage in EPackage(http://www.eclipse.org/emf/2002/Ecore
 eSuperPackage
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 name
@@ -51,6 +56,7 @@ EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
 name
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 nsPrefix
@@ -60,6 +66,7 @@ EAttribute named nsPrefix in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 nsPrefix
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 nsURI
@@ -69,6 +76,7 @@ EAttribute named nsURI in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 nsURI
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 ancestors()
@@ -78,6 +86,7 @@ ancestors(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a Sequence 
 ancestors()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 ancestors()
@@ -87,6 +96,7 @@ ancestors(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List<br
 ancestors()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 ancestors()
@@ -96,6 +106,7 @@ ancestors(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.ECl
 ancestors()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eAllContents()
@@ -105,6 +116,7 @@ eAllContents(eObject: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a seq
 eAllContents()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eAllContents()
@@ -114,6 +126,7 @@ eAllContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = Lis
 eAllContents()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eAllContents()
@@ -123,6 +136,7 @@ eAllContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore
 eAllContents()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eClass()
@@ -132,6 +146,7 @@ eClass(eObject: org.eclipse.emf.ecore.EObject) = EClass<br><br>Returns the EClas
 eClass()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContainer()
@@ -141,6 +156,7 @@ eContainer(eObject: org.eclipse.emf.ecore.EObject) = EObject<br><br>Returns the 
 eContainer()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContainer()
@@ -150,6 +166,7 @@ eContainer(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.E
 eContainer()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContainerOrSelf()
@@ -159,6 +176,7 @@ eContainerOrSelf(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.e
 eContainerOrSelf()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContainingFeature()
@@ -168,6 +186,7 @@ eContainingFeature(eObject: org.eclipse.emf.ecore.EObject) = EStructuralFeature<
 eContainingFeature()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContainmentFeature()
@@ -177,6 +196,7 @@ eContainmentFeature(eObject: org.eclipse.emf.ecore.EObject) = EReference<br><br>
 eContainmentFeature()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContents()
@@ -186,6 +206,7 @@ eContents(eObject: org.eclipse.emf.ecore.EObject) = List<br><br>Returns the cont
 eContents()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContents()
@@ -195,6 +216,7 @@ eContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = List<b
 eContents()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eContents()
@@ -204,6 +226,7 @@ eContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EC
 eContents()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eCrossReferences()
@@ -213,6 +236,7 @@ eCrossReferences(eObject: org.eclipse.emf.ecore.EObject) = Object<br><br>Returns
 eCrossReferences()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eGet()
@@ -222,6 +246,7 @@ eGet(eObject: org.eclipse.emf.ecore.EObject, featureName: java.lang.String) = Ob
 eGet()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eGet()
@@ -231,6 +256,7 @@ eGet(eObject: org.eclipse.emf.ecore.EObject, feature: org.eclipse.emf.ecore.EStr
 eGet()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eGet()
@@ -240,6 +266,7 @@ eGet(eObject: org.eclipse.emf.ecore.EObject, feature: org.eclipse.emf.ecore.EStr
 eGet()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eInverse()
@@ -249,6 +276,7 @@ eInverse(eObject: org.eclipse.emf.ecore.EObject) = Set<br><br>Returns the set co
 eInverse()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eInverse()
@@ -258,6 +286,7 @@ eInverse(eObject: org.eclipse.emf.ecore.EObject, featureName: java.lang.String) 
 eInverse()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eInverse()
@@ -267,6 +296,7 @@ eInverse(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.ECl
 eInverse()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 eResource()
@@ -276,6 +306,7 @@ eResource(eObject: org.eclipse.emf.ecore.EObject) = Resource<br><br>Returns the 
 eResource()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 followingSiblings()
@@ -285,6 +316,7 @@ followingSiblings(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a S
 followingSiblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 followingSiblings()
@@ -294,6 +326,7 @@ followingSiblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) =
 followingSiblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 followingSiblings()
@@ -303,6 +336,7 @@ followingSiblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.e
 followingSiblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 getEAnnotation()
@@ -312,6 +346,7 @@ EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002
 getEAnnotation()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 getEClassifier()
@@ -321,6 +356,7 @@ EOperation named getEClassifier in EPackage(http://www.eclipse.org/emf/2002/Ecor
 getEClassifier()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 getURIFragment()
@@ -330,6 +366,7 @@ getURIFragment(eObject: org.eclipse.emf.ecore.EObject) = String<br><br>Returns t
 getURIFragment()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 lineSeparator()
@@ -339,6 +376,7 @@ lineSeparator(obj: java.lang.Object) = String<br><br>Gets the platform line sepa
 lineSeparator()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 myQuery()
@@ -348,6 +386,7 @@ myQuery()
 myQuery()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 myTemplate()
@@ -357,6 +396,7 @@ myTemplate()
 myTemplate()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 myTemplate1()
@@ -366,6 +406,7 @@ myTemplate1()
 myTemplate1()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 oclAsType()
@@ -375,6 +416,7 @@ oclAsType(object: java.lang.Object, type: java.lang.Object) = Object<br><br>Cast
 oclAsType()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 oclIsKindOf()
@@ -384,6 +426,7 @@ oclIsKindOf(object: java.lang.Object, type: java.lang.Object) = Boolean<br><br>E
 oclIsKindOf()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 oclIsTypeOf()
@@ -393,6 +436,7 @@ oclIsTypeOf(object: java.lang.Object, type: java.lang.Object) = Boolean<br><br>E
 oclIsTypeOf()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 precedingSiblings()
@@ -402,6 +446,7 @@ precedingSiblings(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a S
 precedingSiblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 precedingSiblings()
@@ -411,6 +456,7 @@ precedingSiblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) =
 precedingSiblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 precedingSiblings()
@@ -420,6 +466,7 @@ precedingSiblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.e
 precedingSiblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 siblings()
@@ -429,6 +476,7 @@ siblings(self: org.eclipse.emf.ecore.EObject) = List<br><br>Returns a Sequence c
 siblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 siblings()
@@ -438,6 +486,7 @@ siblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List<br>
 siblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 siblings()
@@ -447,6 +496,7 @@ siblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.ECla
 siblings()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 toString()
@@ -456,6 +506,7 @@ toString(self: java.lang.Object) = String<br><br>Returns a string representation
 toString()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 
 * Label:
 trace()
@@ -465,4 +516,5 @@ trace(self: java.lang.Object) = String<br><br>Returns a string representation of
 trace()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1337 55 49 - 1349 55 61
 

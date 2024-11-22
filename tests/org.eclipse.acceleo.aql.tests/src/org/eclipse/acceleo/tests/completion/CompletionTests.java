@@ -225,6 +225,15 @@ public class CompletionTests {
 			}
 			builder.append(typeAsString);
 			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			if (proposal.getReplacement() != null) {
+				builder.append("Replacement: ");
+				builder.append(proposal.getReplacement().getStart().getPosition() + " " + proposal
+						.getReplacement().getStart().getLine() + " " + proposal.getReplacement().getStart()
+								.getColumn() + " - ");
+				builder.append(proposal.getReplacement().getEnd().getPosition() + " " + proposal
+						.getReplacement().getEnd().getLine() + " " + proposal.getReplacement().getEnd()
+								.getColumn() + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			}
 			builder.append(AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 		}
 

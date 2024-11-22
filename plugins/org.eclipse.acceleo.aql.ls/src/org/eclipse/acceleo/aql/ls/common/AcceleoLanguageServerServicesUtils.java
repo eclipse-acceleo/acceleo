@@ -33,6 +33,8 @@ import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
+import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 
 /**
  * Utility methods to make the Acceleo and LSP4J APIs work together.
@@ -83,7 +85,13 @@ public final class AcceleoLanguageServerServicesUtils {
 					// If there is no description then the documentation is simply the text.
 					completionItem.setDocumentation(text);
 				}
-				completionItem.setInsertText(text);
+				if (acceleoCompletionProposal.getReplacement() == null) {
+					completionItem.setInsertText(text);
+				} else {
+					final TextEdit replacement = new TextEdit(AcceleoLanguageServerPositionUtils.getRange(
+							acceleoCompletionProposal.getReplacement()), text);
+					completionItem.setTextEdit(Either.forLeft(replacement));
+				}
 				completionItem.setLabel(acceleoCompletionProposal.getLabel());
 				completionItem.setKind(getKind(acceleoCompletionProposal));
 

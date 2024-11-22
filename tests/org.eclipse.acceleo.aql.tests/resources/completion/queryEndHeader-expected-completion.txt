@@ -15,6 +15,7 @@ http://www.eclipse.org/acceleo/4.0#//Query
 + 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 508 22 101 - 508 22 101
 
 * Label:
 <> 
@@ -24,6 +25,7 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 <> 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 508 22 101 - 508 22 101
 
 * Label:
 = 
@@ -33,4 +35,5 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 = 
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 508 22 101 - 508 22 101
 
