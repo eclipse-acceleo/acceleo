@@ -348,29 +348,6 @@
       <h3>Services available for all types</h3>
     </div>
 
-        <h3>String + Object : String</h3>
-        <p>
-          Returns the concatenation of the current string and the given object "any" (as a String).
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>'times ' + 42</td>
-              <td>'times 42'</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Object + String : String</h3>
         <p>
           Returns the concatenation of self (as a String) and the given string "s".
@@ -386,6 +363,29 @@
             <tr>
               <td>42 + ' times'</td>
               <td>'42 times'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>String + Object : String</h3>
+        <p>
+          Returns the concatenation of the current string and the given object "any" (as a String).
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'times ' + 42</td>
+              <td>'times 42'</td>
             </tr>
           </tbody>
         </table>
@@ -905,6 +905,29 @@ receiver: 42
         </p>
         <hr />
 
+        <h3>Sequence->append(Object) : Sequence</h3>
+        <p>
+          Inserts the given object in a copy of the given sequence at the last position.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->append('f')</td>
+              <td>Sequence{'a', 'b', 'c', 'f'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
         <h3>OrderedSet->append(Object) : OrderedSet</h3>
         <p>
           Inserts the given object in a copy of the given set at the last position. If the set already contained the given object, it is moved to the last position.
@@ -924,29 +947,6 @@ receiver: 42
             <tr>
               <td>OrderedSet{'a', 'b', 'c'}->append('b')</td>
               <td>OrderedSet{'a', 'c', 'b'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>Sequence->append(Object) : Sequence</h3>
-        <p>
-          Inserts the given object in a copy of the given sequence at the last position.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->append('f')</td>
-              <td>Sequence{'a', 'b', 'c', 'f'}</td>
             </tr>
           </tbody>
         </table>
@@ -1036,33 +1036,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>OrderedSet->at(Integer) : Object</h3>
-        <p>
-          Returns the element at the specified position in the set.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->at(1)</td>
-              <td>'a'</td>
-            </tr>
-            <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->at(2)</td>
-              <td>'b'</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Sequence->at(Integer) : Object</h3>
         <p>
           Returns the element at the specified position in the sequence.
@@ -1081,6 +1054,33 @@ receiver: 42
             </tr>
             <tr>
               <td>Sequence{'a', 'b', 'c'}->at(2)</td>
+              <td>'b'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>OrderedSet->at(Integer) : Object</h3>
+        <p>
+          Returns the element at the specified position in the set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->at(1)</td>
+              <td>'a'</td>
+            </tr>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->at(2)</td>
               <td>'b'</td>
             </tr>
           </tbody>
@@ -1113,29 +1113,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>OrderedSet->collect( x | ... ) : OrderedSet{Object}</h3>
-        <p>
-          Returns a set containing the result of applying "lambda" on all elements contained in the current set, maintaining order.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->collect(str | str.toUpper())</td>
-              <td>OrderedSet{'A', 'B', 'C'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Sequence->collect( x | ... ) : Sequence{Object}</h3>
         <p>
           Returns a sequence containing the result of applying "lambda" on all elements contained in the current sequence, maintaining order.
@@ -1159,9 +1136,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>OrderedSet->concat(Collection) : OrderedSet</h3>
+        <h3>OrderedSet->collect( x | ... ) : OrderedSet{Object}</h3>
         <p>
-          Returns the concatenation of the current set with the given collection.
+          Returns a set containing the result of applying "lambda" on all elements contained in the current set, maintaining order.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -1172,31 +1149,14 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>OrderedSet{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})</td>
-              <td>OrderedSet{'a', 'b', 'c', 'd', 'e'}</td>
+              <td>OrderedSet{'a', 'b', 'c'}->collect(str | str.toUpper())</td>
+              <td>OrderedSet{'A', 'B', 'C'}</td>
             </tr>
           </tbody>
         </table>
         <p>
           
         </p>
-        <h4>In other languages</h4>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Language</th>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Acceleo 3 (MTL)</td>
-              <td>OrderedSet{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})</td>
-              <td>OrderedSet{'a', 'b', 'c', 'd', 'e'}</td>
-            </tr>
-          </tbody>
-        </table>
         <hr />
 
         <h3>Sequence->concat(Collection) : Sequence</h3>
@@ -1234,6 +1194,46 @@ receiver: 42
               <td>Acceleo 3 (MTL)</td>
               <td>Sequence{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})</td>
               <td>Sequence{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+
+        <h3>OrderedSet->concat(Collection) : OrderedSet</h3>
+        <p>
+          Returns the concatenation of the current set with the given collection.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})</td>
+              <td>OrderedSet{'a', 'b', 'c', 'd', 'e'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <h4>In other languages</h4>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Acceleo 3 (MTL)</td>
+              <td>OrderedSet{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})</td>
+              <td>OrderedSet{'a', 'b', 'c', 'd', 'e'}</td>
             </tr>
           </tbody>
         </table>
@@ -1293,9 +1293,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>OrderedSet->drop(Integer) : OrderedSet</h3>
+        <h3>Sequence->dropRight(Integer) : Sequence</h3>
         <p>
-          Returns a set of elements after the given index in the given set
+          Returns a sequence of elements before the given index in the given sequence
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -1306,31 +1306,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->drop(2)</td>
-              <td>OrderedSet{'c'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>Sequence->drop(Integer) : Sequence</h3>
-        <p>
-          Returns a sequence of elements after the given index in the given sequence
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->drop(2)</td>
-              <td>Sequence{'c'}</td>
+              <td>Sequence{'a', 'b', 'c'}->dropRight(2)</td>
+              <td>Sequence{'a'}</td>
             </tr>
           </tbody>
         </table>
@@ -1362,9 +1339,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Sequence->dropRight(Integer) : Sequence</h3>
+        <h3>Sequence->drop(Integer) : Sequence</h3>
         <p>
-          Returns a sequence of elements before the given index in the given sequence
+          Returns a sequence of elements after the given index in the given sequence
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -1375,8 +1352,31 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>Sequence{'a', 'b', 'c'}->dropRight(2)</td>
-              <td>Sequence{'a'}</td>
+              <td>Sequence{'a', 'b', 'c'}->drop(2)</td>
+              <td>Sequence{'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>OrderedSet->drop(Integer) : OrderedSet</h3>
+        <p>
+          Returns a set of elements after the given index in the given set
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->drop(2)</td>
+              <td>OrderedSet{'c'}</td>
             </tr>
           </tbody>
         </table>
@@ -1408,33 +1408,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Collection->excludes(Object) : Boolean</h3>
-        <p>
-          Indicates if the given collection doesn't contain the given object.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->excludes('a')</td>
-              <td>false</td>
-            </tr>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->excludes('d')</td>
-              <td>true</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Collection->excludesAll(Collection) : Boolean</h3>
         <p>
           Indicates if no elements from the second collection are contained in the first collection
@@ -1454,6 +1427,33 @@ receiver: 42
             <tr>
               <td>Sequence{'a', 'b'}->excludesAll(OrderedSet{'a', 'f'})</td>
               <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>Collection->excludes(Object) : Boolean</h3>
+        <p>
+          Indicates if the given collection doesn't contain the given object.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->excludes('a')</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->excludes('d')</td>
+              <td>true</td>
             </tr>
           </tbody>
         </table>
@@ -1531,6 +1531,29 @@ receiver: 42
         </p>
         <hr />
 
+        <h3>Sequence->filter(Class) : Sequence</h3>
+        <p>
+          Keeps only instances of the given primitive type (String, Integer, Real, Boolean) from the given sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 1, 3.14}->filter(String)</td>
+              <td>Sequence{'a'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
         <h3>Sequence->filter(EClassifier) : Sequence</h3>
         <p>
           Keeps only instances of the given EClassifier in the given sequence.
@@ -1558,6 +1581,33 @@ receiver: 42
         </p>
         <hr />
 
+        <h3>Sequence->filter(OrderedSet{EClassifier}) : Sequence</h3>
+        <p>
+          Keeps only instances of the given EClassifier in the given sequence.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})</td>
+              <td>Sequence{anEClass, anEReference}</td>
+            </tr>
+            <tr>
+              <td>Sequence{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})</td>
+              <td>Sequence{anEAttribute, anEPackage}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
         <h3>OrderedSet->filter(Class) : OrderedSet</h3>
         <p>
           Keeps only instances of the given primitive type (String, Integer, Real, Boolean) from the given set.
@@ -1573,56 +1623,6 @@ receiver: 42
             <tr>
               <td>OrderedSet{'a', 1, 3.14}->filter(String)</td>
               <td>OrederedSet{'a'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>OrderedSet->filter(OrderedSet{EClassifier}) : OrderedSet</h3>
-        <p>
-          Keeps only instances of the given set of EClassifier from the given set.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>OrderedSet{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})</td>
-              <td>OrderedSet{anEClass, anEReference}</td>
-            </tr>
-            <tr>
-              <td>OrderedSet{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})</td>
-              <td>OrderedSet{anEAttribute, anEPackage}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>Sequence->filter(Class) : Sequence</h3>
-        <p>
-          Keeps only instances of the given primitive type (String, Integer, Real, Boolean) from the given sequence.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 1, 3.14}->filter(String)</td>
-              <td>Sequence{'a'}</td>
             </tr>
           </tbody>
         </table>
@@ -1658,9 +1658,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Sequence->filter(OrderedSet{EClassifier}) : Sequence</h3>
+        <h3>OrderedSet->filter(OrderedSet{EClassifier}) : OrderedSet</h3>
         <p>
-          Keeps only instances of the given EClassifier in the given sequence.
+          Keeps only instances of the given set of EClassifier from the given set.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -1671,12 +1671,12 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>Sequence{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})</td>
-              <td>Sequence{anEClass, anEReference}</td>
+              <td>OrderedSet{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})</td>
+              <td>OrderedSet{anEClass, anEReference}</td>
             </tr>
             <tr>
-              <td>Sequence{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})</td>
-              <td>Sequence{anEAttribute, anEPackage}</td>
+              <td>OrderedSet{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})</td>
+              <td>OrderedSet{anEAttribute, anEPackage}</td>
             </tr>
           </tbody>
         </table>
@@ -1735,33 +1735,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Collection->includes(Object) : Boolean</h3>
-        <p>
-          Indicates if the given collection contains the given object.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->includes('a')</td>
-              <td>true</td>
-            </tr>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->includes('d')</td>
-              <td>false</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Collection->includesAll(Collection) : Boolean</h3>
         <p>
           Indicates if all elements from the second collection are contained in the first collection
@@ -1780,6 +1753,33 @@ receiver: 42
             </tr>
             <tr>
               <td>Sequence{'a', 'b', 'c'}->includesAll(OrderedSet{'a', 'f'})</td>
+              <td>false</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>Collection->includes(Object) : Boolean</h3>
+        <p>
+          Indicates if the given collection contains the given object.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->includes('a')</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->includes('d')</td>
               <td>false</td>
             </tr>
           </tbody>
@@ -1835,6 +1835,29 @@ receiver: 42
         </p>
         <hr />
 
+        <h3>Collection->indexOfSlice(Collection) : Integer</h3>
+        <p>
+          Returns the index of the other collection in the given collection
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->indexOfSlice(Sequence{'b', 'c'})</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
         <h3>Sequence->indexOf(Object) : Integer</h3>
         <p>
           Returns the index of the given object in the given sequence ([1..size]).
@@ -1881,9 +1904,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Collection->indexOfSlice(Collection) : Integer</h3>
+        <h3>Sequence->insertAt(Integer, Object) : Sequence</h3>
         <p>
-          Returns the index of the other collection in the given collection
+          Inserts the given object in a copy of the given sequence at the given position ([1..size]).
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -1894,8 +1917,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>Sequence{'a', 'b', 'c'}->indexOfSlice(Sequence{'b', 'c'})</td>
-              <td>2</td>
+              <td>Sequence{'a', 'b', 'c'}->insertAt(2, 'f')</td>
+              <td>Sequence{'a', 'f', 'b', 'c'}</td>
             </tr>
           </tbody>
         </table>
@@ -1927,9 +1950,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Sequence->insertAt(Integer, Object) : Sequence</h3>
+        <h3>Sequence->intersection(Collection) : Sequence</h3>
         <p>
-          Inserts the given object in a copy of the given sequence at the given position ([1..size]).
+          Creates a sequence with elements from the given sequence that are present in both the current sequence and the given other {@code Collection}. Iteration order will match that of the current sequence. Duplicates from the first list will all be kept in the result if they also are in the second one, but duplicates from the second list will be dumped even if they are present in the first.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -1940,8 +1963,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>Sequence{'a', 'b', 'c'}->insertAt(2, 'f')</td>
-              <td>Sequence{'a', 'f', 'b', 'c'}</td>
+              <td>Sequence{'a', 'b', 'c'}->intersection(OrderedSet{'a', 'f'})</td>
+              <td>Sequence{'a'}</td>
             </tr>
           </tbody>
         </table>
@@ -1965,29 +1988,6 @@ receiver: 42
             <tr>
               <td>OrderedSet{'a', 'b', 'c'}->intersection(OrderedSet{'a', 'f'})</td>
               <td>OrderedSet{'a'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>Sequence->intersection(Collection) : Sequence</h3>
-        <p>
-          Creates a sequence with elements from the given sequence that are present in both the current sequence and the given other {@code Collection}. Iteration order will match that of the current sequence. Duplicates from the first list will all be kept in the result if they also are in the second one, but duplicates from the second list will be dumped even if they are present in the first.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->intersection(OrderedSet{'a', 'f'})</td>
-              <td>Sequence{'a'}</td>
             </tr>
           </tbody>
         </table>
@@ -2050,9 +2050,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>OrderedSet->last() : Object</h3>
+        <h3>Collection->lastIndexOfSlice(Collection) : Integer</h3>
         <p>
-          Returns the last element of the given set.
+          Returns the last index of the other collection in the given collection
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -2063,31 +2063,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->last()</td>
-              <td>'c'</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>Sequence->last() : Object</h3>
-        <p>
-          Returns the last element of the given sequence.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->last()</td>
-              <td>'c'</td>
+              <td>Sequence{'a', 'b', 'c', 'a', 'b', 'c'}->lastIndexOfSlice(Sequence{'b', 'c'})</td>
+              <td>5</td>
             </tr>
           </tbody>
         </table>
@@ -2142,9 +2119,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Collection->lastIndexOfSlice(Collection) : Integer</h3>
+        <h3>Sequence->last() : Object</h3>
         <p>
-          Returns the last index of the other collection in the given collection
+          Returns the last element of the given sequence.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -2155,8 +2132,31 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>Sequence{'a', 'b', 'c', 'a', 'b', 'c'}->lastIndexOfSlice(Sequence{'b', 'c'})</td>
-              <td>5</td>
+              <td>Sequence{'a', 'b', 'c'}->last()</td>
+              <td>'c'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>OrderedSet->last() : Object</h3>
+        <p>
+          Returns the last element of the given set.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->last()</td>
+              <td>'c'</td>
             </tr>
           </tbody>
         </table>
@@ -2273,29 +2273,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>OrderedSet->prepend(Object) : OrderedSet</h3>
-        <p>
-          Inserts the given object in a copy of the given set at the first position. If the set already contained the given object, it is moved to the first position.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->prepend('f')</td>
-              <td>OrderedSet{'f', 'a', 'b', 'c'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Sequence->prepend(Object) : Sequence</h3>
         <p>
           Inserts the given object in a copy of the given sequence at the first position.
@@ -2311,6 +2288,29 @@ receiver: 42
             <tr>
               <td>Sequence{'a', 'b', 'c'}->prepend('f')</td>
               <td>Sequence{'f', 'a', 'b', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>OrderedSet->prepend(Object) : OrderedSet</h3>
+        <p>
+          Inserts the given object in a copy of the given set at the first position. If the set already contained the given object, it is moved to the first position.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->prepend('f')</td>
+              <td>OrderedSet{'f', 'a', 'b', 'c'}</td>
             </tr>
           </tbody>
         </table>
@@ -2411,29 +2411,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>OrderedSet->select( x | ... ) : OrderedSet</h3>
-        <p>
-          Select returns a filtered version of the specified set. Only elements for which the given "lambda" evaluates to true will be present in the returned set.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->select(str | str.equals('a'))</td>
-              <td>OrderedSet{'a'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Sequence->select( x | ... ) : Sequence</h3>
         <p>
           Select returns a filtered version of the specified sequence. Only elements for which the given "lambda" evaluates to true will be present in the returned sequence.
@@ -2457,9 +2434,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Collection->sep(Object, Object, Object) : Sequence{Object}</h3>
+        <h3>OrderedSet->select( x | ... ) : OrderedSet</h3>
         <p>
-          Inserts the given separator between each elements of the given collection, the given prefix before the first element, and the given suffix after the last element.
+          Select returns a filtered version of the specified set. Only elements for which the given "lambda" evaluates to true will be present in the returned set.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -2470,8 +2447,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>Sequence{'a', 'b', 'c'}->sep('[', '-', ']')</td>
-              <td>Sequence{'[', 'a', '-', 'b', '-', 'c', ']'}</td>
+              <td>OrderedSet{'a', 'b', 'c'}->select(str | str.equals('a'))</td>
+              <td>OrderedSet{'a'}</td>
             </tr>
           </tbody>
         </table>
@@ -2499,6 +2476,29 @@ receiver: 42
             <tr>
               <td>OrderedSet{'a', 'b', 'c'}->sep('-')</td>
               <td>Sequence{'a', '-', 'b', '-', 'c'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>Collection->sep(Object, Object, Object) : Sequence{Object}</h3>
+        <p>
+          Inserts the given separator between each elements of the given collection, the given prefix before the first element, and the given suffix after the last element.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->sep('[', '-', ']')</td>
+              <td>Sequence{'[', 'a', '-', 'b', '-', 'c', ']'}</td>
             </tr>
           </tbody>
         </table>
@@ -2603,6 +2603,52 @@ receiver: 42
         </p>
         <hr />
 
+        <h3>OrderedSet->subOrderedSet(Integer, Integer) : OrderedSet</h3>
+        <p>
+          Returns a subset of the given set
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>OrderedSet{'a', 'b', 'c'}->subOrderedSet(1, 2)</td>
+              <td>OrderedSet{'a', 'b'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>Sequence->subSequence(Integer, Integer) : Sequence</h3>
+        <p>
+          Returns a subset of the given sequence
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>Sequence{'a', 'b', 'c'}->subSequence(1, 2)</td>
+              <td>Sequence{'a', 'b'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
         <h3>Sequence - Collection : Sequence</h3>
         <p>
           Returns the difference of the current sequence and the given collection.
@@ -2692,52 +2738,6 @@ receiver: 42
         </table>
         <hr />
 
-        <h3>OrderedSet->subOrderedSet(Integer, Integer) : OrderedSet</h3>
-        <p>
-          Returns a subset of the given set
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->subOrderedSet(1, 2)</td>
-              <td>OrderedSet{'a', 'b'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>Sequence->subSequence(Integer, Integer) : Sequence</h3>
-        <p>
-          Returns a subset of the given sequence
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>Sequence{'a', 'b', 'c'}->subSequence(1, 2)</td>
-              <td>Sequence{'a', 'b'}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>Collection->sum() : Number</h3>
         <p>
           Sums elements of the given collection if possible.
@@ -2753,29 +2753,6 @@ receiver: 42
             <tr>
               <td>Sequence{1, 2, 3, 4}->sum()</td>
               <td>10</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>OrderedSet->union(OrderedSet) : OrderedSet</h3>
-        <p>
-          Returns a set containing all the elements of the first and second sets
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>OrderedSet{'a', 'b', 'c'}->union(OrderedSet{'d', 'c'})</td>
-              <td>OrderedSet{'a', 'b', 'c', 'd'}</td>
             </tr>
           </tbody>
         </table>
@@ -2806,15 +2783,10 @@ receiver: 42
           
         </p>
         <hr />
-  </section>
-  <section id="services">
-    <div class="page-header">
-      <h3>Services available for Comparables</h3>
-    </div>
 
-        <h3>Comparable > Comparable : Boolean</h3>
+        <h3>OrderedSet->union(OrderedSet) : OrderedSet</h3>
         <p>
-          Compares "a" to "b" and return "true" if "a" is greater than "b".
+          Returns a set containing all the elements of the first and second sets
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -2825,12 +2797,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>'Hello' > 'Abc'</td>
-              <td>true</td>
-            </tr>
-            <tr>
-              <td>'Hello' > 'Hello'</td>
-              <td>false</td>
+              <td>OrderedSet{'a', 'b', 'c'}->union(OrderedSet{'d', 'c'})</td>
+              <td>OrderedSet{'a', 'b', 'c', 'd'}</td>
             </tr>
           </tbody>
         </table>
@@ -2838,6 +2806,11 @@ receiver: 42
           
         </p>
         <hr />
+  </section>
+  <section id="services">
+    <div class="page-header">
+      <h3>Services available for Comparables</h3>
+    </div>
 
         <h3>Comparable >= Comparable : Boolean</h3>
         <p>
@@ -2866,9 +2839,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Comparable < Comparable : Boolean</h3>
+        <h3>Comparable > Comparable : Boolean</h3>
         <p>
-          Compares "a" to "b" and return "true" if "a" is less than "b".
+          Compares "a" to "b" and return "true" if "a" is greater than "b".
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -2879,12 +2852,12 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>'Hello' < 'Hello'</td>
-              <td>false</td>
+              <td>'Hello' > 'Abc'</td>
+              <td>true</td>
             </tr>
             <tr>
-              <td>'Hello' < 'World'</td>
-              <td>true</td>
+              <td>'Hello' > 'Hello'</td>
+              <td>false</td>
             </tr>
           </tbody>
         </table>
@@ -2911,6 +2884,33 @@ receiver: 42
             </tr>
             <tr>
               <td>'Hello' <='World'</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>Comparable < Comparable : Boolean</h3>
+        <p>
+          Compares "a" to "b" and return "true" if "a" is less than "b".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello' < 'Hello'</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>'Hello' < 'World'</td>
               <td>true</td>
             </tr>
           </tbody>
@@ -2994,29 +2994,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>EObject.eAllContents(OrderedSet{EClass}) : Sequence{EObject}</h3>
-        <p>
-          Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>anEPackage.eAllContents({ecore::EPackage | ecore::EClass})</td>
-              <td>Sequence{ePackage, eClass, ...}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>EObject.eAllContents(EClass) : Sequence{EObject}</h3>
         <p>
           Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass
@@ -3040,6 +3017,29 @@ receiver: 42
         </p>
         <hr />
 
+        <h3>EObject.eAllContents(OrderedSet{EClass}) : Sequence{EObject}</h3>
+        <p>
+          Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEPackage.eAllContents({ecore::EPackage | ecore::EClass})</td>
+              <td>Sequence{ePackage, eClass, ...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
         <h3>EObject.eClass() : EClass</h3>
         <p>
           Returns the EClass of the specified EObject
@@ -3055,6 +3055,29 @@ receiver: 42
             <tr>
               <td>anEObject.eClass()</td>
               <td>anEClass</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>EObject.eContainerOrSelf(EClass) : EObject</h3>
+        <p>
+          Returns self or the first container of the specified EObject that matches the given type
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>firstEAttribute.eContainerOrSelf(ecore::EAttribute)</td>
+              <td>firstEAttribute</td>
             </tr>
           </tbody>
         </table>
@@ -3101,29 +3124,6 @@ receiver: 42
             <tr>
               <td>firstEAttribute.eContainer(ecore::EPackage)</td>
               <td>anEPackage</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
-        <h3>EObject.eContainerOrSelf(EClass) : EObject</h3>
-        <p>
-          Returns self or the first container of the specified EObject that matches the given type
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>firstEAttribute.eContainerOrSelf(ecore::EAttribute)</td>
-              <td>firstEAttribute</td>
             </tr>
           </tbody>
         </table>
@@ -3270,9 +3270,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>EObject.eGet(String) : Object</h3>
+        <h3>EObject.eGet(EStructuralFeature) : Object</h3>
         <p>
-          Handles calls to the operation "eGet". This will fetch the value of the feature named "featureName" on "source"
+          Handles calls to the operation "eGet". This will fetch the value of the given feature on "source"
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -3283,7 +3283,7 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>anEObject.eGet(aFeatureName)</td>
+              <td>anEObject.eGet(aFeature)</td>
               <td>aValue</td>
             </tr>
           </tbody>
@@ -3316,9 +3316,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>EObject.eGet(EStructuralFeature) : Object</h3>
+        <h3>EObject.eGet(String) : Object</h3>
         <p>
-          Handles calls to the operation "eGet". This will fetch the value of the given feature on "source"
+          Handles calls to the operation "eGet". This will fetch the value of the feature named "featureName" on "source"
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -3329,7 +3329,7 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>anEObject.eGet(aFeature)</td>
+              <td>anEObject.eGet(aFeatureName)</td>
               <td>aValue</td>
             </tr>
           </tbody>
@@ -3362,29 +3362,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>EObject.eInverse(String) : OrderedSet{EObject}</h3>
-        <p>
-          Returns the elements from the set of the inverse references of the receiver that are referencing the receiver using a feature with the given name.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>anEObject.eInverse(aFeatureName)</td>
-              <td>OrderedSet{firstReferencingEObject, secondReferencingEObject...}</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>EObject.eInverse(EClassifier) : OrderedSet{EObject}</h3>
         <p>
           Returns the elements of the given type from the set of the inverse references of the receiver.
@@ -3407,13 +3384,36 @@ receiver: 42
           
         </p>
         <hr />
+
+        <h3>EObject.eInverse(String) : OrderedSet{EObject}</h3>
+        <p>
+          Returns the elements from the set of the inverse references of the receiver that are referencing the receiver using a feature with the given name.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>anEObject.eInverse(aFeatureName)</td>
+              <td>OrderedSet{firstReferencingEObject, secondReferencingEObject...}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
   </section>
   <section id="services">
     <div class="page-header">
       <h3>Property services</h3>
     </div>
 
-        <h3>String.getProperty(Sequence{Object}) : String</h3>
+        <h3>String.getProperty() : String</h3>
         <p>
           Get the property value for the given key.
         </p>
@@ -3436,7 +3436,7 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.getProperty() : String</h3>
+        <h3>String.getProperty(Sequence{Object}) : String</h3>
         <p>
           Get the property value for the given key.
         </p>
@@ -3494,15 +3494,15 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>Resource.getURI() : URI</h3>
-        <p>
-          Returns the URI of the given Resource. This service is equivalent to a direct call to Resource#getURI()
-        </p>
-        <hr />
-
         <h3>EObject.getURIFragment() : String</h3>
         <p>
           Returns the URI fragment from the given EObject in its Resource.
+        </p>
+        <hr />
+
+        <h3>Resource.getURI() : URI</h3>
+        <p>
+          Returns the URI of the given Resource. This service is equivalent to a direct call to Resource#getURI()
         </p>
         <hr />
 
@@ -3759,33 +3759,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.isAlpha() : Boolean</h3>
-        <p>
-          Returns "true" if self consists only of alphabetical characters, "false" otherwise.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>'abc123'.isAlpha()</td>
-              <td>false</td>
-            </tr>
-            <tr>
-              <td>'abcdef'.isAlpha()</td>
-              <td>true</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>String.isAlphaNum() : Boolean</h3>
         <p>
           Returns "true" if self consists only of alphanumeric characters, "false" otherwise.
@@ -3813,9 +3786,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.last(Integer) : String</h3>
+        <h3>String.isAlpha() : Boolean</h3>
         <p>
-          Returns the "n" last characters of the current String, or the current String if its size is less than "n".
+          Returns "true" if self consists only of alphabetical characters, "false" otherwise.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -3826,8 +3799,12 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>'HelloWorld'.last(5)</td>
-              <td>'World'</td>
+              <td>'abc123'.isAlpha()</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>'abcdef'.isAlpha()</td>
+              <td>true</td>
             </tr>
           </tbody>
         </table>
@@ -3874,6 +3851,29 @@ receiver: 42
             <tr>
               <td>'HelloHello'.lastIndex('Hello', 7)</td>
               <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>String.last(Integer) : String</h3>
+        <p>
+          Returns the "n" last characters of the current String, or the current String if its size is less than "n".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.last(5)</td>
+              <td>'World'</td>
             </tr>
           </tbody>
         </table>
@@ -4013,29 +4013,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.replace(String, String) : String</h3>
-        <p>
-          Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>'Hello'.replace('(.*)ll', 'Wh')</td>
-              <td>'Who'</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>String.replaceAll(String, String) : String</h3>
         <p>
           Replaces each substring of the current String that matches the given regular expression "regex" with the String "replacement".
@@ -4060,6 +4037,29 @@ receiver: 42
         <hr />
 
         <h3>String.replaceFirst(String, String) : String</h3>
+        <p>
+          Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'Hello'.replace('(.*)ll', 'Wh')</td>
+              <td>'Who'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>String.replace(String, String) : String</h3>
         <p>
           Replaces the first substring of the current String that matches the regular expression "regex" with the String "replacement".
         </p>
@@ -4182,29 +4182,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.substitute(String, String) : String</h3>
-        <p>
-          Substitutes the first occurrence of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>'WorldWorld'.substitute('World', 'Hello')</td>
-              <td>'HelloWorld'</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>String.substituteAll(String, String) : String</h3>
         <p>
           Substitutes all occurences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
@@ -4251,9 +4228,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.substring(Integer, Integer) : String</h3>
+        <h3>String.substitute(String, String) : String</h3>
         <p>
-          Returns a string containing all characters from self starting from index lower up to index upper included. Both lower and upper parameters should be contained between 1 and self.size() included. Lower cannot be greater than upper.
+          Substitutes the first occurrence of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -4264,8 +4241,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>'HelloWorld'.substring(1, 5)</td>
-              <td>'Hello'</td>
+              <td>'WorldWorld'.substitute('World', 'Hello')</td>
+              <td>'HelloWorld'</td>
             </tr>
           </tbody>
         </table>
@@ -4293,6 +4270,29 @@ receiver: 42
             <tr>
               <td>'HelloWorld'.substring(1)</td>
               <td>'HelloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>String.substring(Integer, Integer) : String</h3>
+        <p>
+          Returns a string containing all characters from self starting from index lower up to index upper included. Both lower and upper parameters should be contained between 1 and self.size() included. Lower cannot be greater than upper.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.substring(1, 5)</td>
+              <td>'Hello'</td>
             </tr>
           </tbody>
         </table>
@@ -4355,29 +4355,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.toLower() : String</h3>
-        <p>
-          Returns the current String with all characters transformed to lower case.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>'HelloWorld'.toLower()</td>
-              <td>'helloworld'</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>String.toLowerFirst() : String</h3>
         <p>
           Returns the self string with the first characters transformed to lower case.
@@ -4393,6 +4370,29 @@ receiver: 42
             <tr>
               <td>'HelloWorld'.toLowerFirst()</td>
               <td>'helloWorld'</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>String.toLower() : String</h3>
+        <p>
+          Returns the current String with all characters transformed to lower case.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'HelloWorld'.toLower()</td>
+              <td>'helloworld'</td>
             </tr>
           </tbody>
         </table>
@@ -4424,29 +4424,6 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.toUpper() : String</h3>
-        <p>
-          Returns the current String with all characters transformed to upper case.
-        </p>
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th>Expression</th>
-              <th>Result</th>
-            </tr>
-          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
-          <tbody>
-            <tr>
-              <td>'HelloWorld'.toUpper()</td>
-              <td>'HELLOWORLD'</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          
-        </p>
-        <hr />
-
         <h3>String.toUpperFirst() : String</h3>
         <p>
           Returns the current String with the first characters transformed to upper case.
@@ -4470,9 +4447,9 @@ receiver: 42
         </p>
         <hr />
 
-        <h3>String.tokenize(String) : Sequence{String}</h3>
+        <h3>String.toUpper() : String</h3>
         <p>
-          Splits the current String by using the given "delimiter" into a collection of String
+          Returns the current String with all characters transformed to upper case.
         </p>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
@@ -4483,8 +4460,8 @@ receiver: 42
           </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
           <tbody>
             <tr>
-              <td>'a, b, c, d'.tokenize(', ')</td>
-              <td>['a', 'b', 'c', 'd']</td>
+              <td>'HelloWorld'.toUpper()</td>
+              <td>'HELLOWORLD'</td>
             </tr>
           </tbody>
         </table>
@@ -4508,6 +4485,29 @@ receiver: 42
             <tr>
               <td>'a, b, c, d'.tokenize()</td>
               <td>['a,', 'b,', 'c,', 'd']</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>String.tokenize(String) : Sequence{String}</h3>
+        <p>
+          Splits the current String by using the given "delimiter" into a collection of String
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>'a, b, c, d'.tokenize(', ')</td>
+              <td>['a', 'b', 'c', 'd']</td>
             </tr>
           </tbody>
         </table>

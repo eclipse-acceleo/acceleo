@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.doc.internal;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -442,18 +443,15 @@ public final class AQLHelpContentUtils {
 		Method[] methods = serviceProviderClass.getMethods();
 
 		Method[] sortedMethods = Arrays.copyOf(methods, methods.length);
-
 		Comparator<Method> comparator = new Comparator<Method>() {
 			@Override
 			public int compare(Method o1, Method o2) {
-				return o1.getName().compareTo(o2.getName());
+				return getSortSignature(o1).compareTo(getSortSignature(o2));
 			}
 		};
 		Arrays.sort(sortedMethods, 0, sortedMethods.length, comparator);
 
-		for (
-
-		Method method : sortedMethods) {
+		for (Method method : sortedMethods) {
 			if (method.isAnnotationPresent(Documentation.class)) {
 				Documentation serviceDocumentation = method.getAnnotation(Documentation.class);
 
@@ -531,6 +529,24 @@ public final class AQLHelpContentUtils {
 		buffers.add(servicesSection);
 
 		return buffers;
+	}
+
+	/**
+	 * Gets the signature of the given {@link Method} for sorting purpose.
+	 * 
+	 * @param method
+	 *            the {@link Method}
+	 * @return the signature of the given {@link Method} for sorting purpose
+	 */
+	private static String getSortSignature(Method method) {
+		final StringBuilder res = new StringBuilder();
+
+		res.append(method.getName());
+		for (Parameter parameter : method.getParameters()) {
+			res.append(parameter.getName() + parameter.getType().getSimpleName());
+		}
+
+		return res.toString();
 	}
 
 	/**
