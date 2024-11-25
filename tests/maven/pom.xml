@@ -17,10 +17,10 @@
   <artifactId>org.eclipse.acceleo-parent</artifactId>
   <version>4.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Acceleo Maven Parent</name>
+  <name>Acceleo Maven Test Parent</name>
 
   <properties>
-    <maven-repository>repository</maven-repository>
+    <maven-repository>../../maven/repository</maven-repository>
     <maven.compiler.source>7</maven.compiler.source>
     <maven.compiler.target>7</maven.compiler.target>
     <copy-dependencies-version>3.8.1</copy-dependencies-version>
@@ -31,26 +31,13 @@
   <repositories>
     <repository>
       <id>Acceleo Repository</id>
-      <url>${deployURL}-p2</url>
+      <url>${deployURL}</url>
     </repository>
   </repositories>
 
-  <distributionManagement>
-    <repository>
-      <id>repo.eclipse.org</id>
-      <name>Acceleo Repository - Releases</name>
-      <url>${deployURL}</url>
-    </repository>
-    <snapshotRepository>
-      <id>repo.eclipse.org</id>
-      <name>Acceleo Repository - Snapshots</name>
-      <url>${deployURL}</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <modules>
-    <module>aql</module>
-    <module>acceleo</module>
+    <module>org.eclipse.acceleo.query.maven.tests</module>
+    <module>org.eclipse.acceleo.aql.maven.tests</module>
   </modules>
 
   <profiles>

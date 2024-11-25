@@ -8,4 +8,6 @@ pom.xml.releaseBackup
 pom.xml.tag
 release.properties
 .DS_Store
+releng/maven/repository-p2/
 releng/maven/repository/
+

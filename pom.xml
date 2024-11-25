@@ -68,7 +68,7 @@
     <sonar.language>java</sonar.language>
     <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
 
-    <maven-repository>releng/maven/repository</maven-repository>
+    <maven-repository>releng/maven/repository-p2</maven-repository>
   </properties>
 
   <scm>
