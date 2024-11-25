@@ -15,19 +15,19 @@
     <parent>
         <groupId>org.eclipse.acceleo</groupId>
         <artifactId>org.eclipse.acceleo-parent</artifactId>
-        <version>4.0.1-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>org.eclipse.acceleo.aql.maven.tests</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>  
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.acceleo</groupId>
             <artifactId>acceleo</artifactId>
-            <version>4.0.1-SNAPSHOT</version>
+            <version>4.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
