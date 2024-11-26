@@ -88,11 +88,6 @@ public final class AcceleoSyntacticCompletionProposals {
 	public static final String LIST_ITEM_CLOSE = AcceleoCompletionProposal.DESCRIPTION_LIST_ITEM_CLOSE;
 
 	/**
-	 * A space.
-	 */
-	public static final String SPACE = " ";
-
-	/**
 	 * A quote.
 	 */
 	public static final AcceleoCompletionProposal QUOTE_DOUBLE = new AcceleoCompletionProposal(
@@ -114,19 +109,19 @@ public final class AcceleoSyntacticCompletionProposals {
 	 * A comma, followed by a space.
 	 */
 	public static final AcceleoCompletionProposal COMMA_SPACE = new AcceleoCompletionProposal(
-			AcceleoParser.COMMA, AcceleoParser.COMMA + SPACE, null);
+			AcceleoParser.COMMA, AcceleoParser.COMMA + AcceleoParser.SPACE, null);
 
 	/**
 	 * A colon, followed by a space.
 	 */
 	public static final AcceleoCompletionProposal COLON_SPACE = new AcceleoCompletionProposal(
-			AcceleoParser.COLON, AcceleoParser.COLON + SPACE, null);
+			AcceleoParser.COLON, AcceleoParser.COLON + AcceleoParser.SPACE, null);
 
 	/**
 	 * An equal sign, followed by a space.
 	 */
 	public static final AcceleoCompletionProposal EQUAL_SPACE = new AcceleoCompletionProposal(
-			AcceleoParser.EQUAL, AcceleoParser.EQUAL + SPACE, null);
+			AcceleoParser.EQUAL, AcceleoParser.EQUAL + AcceleoParser.SPACE, null);
 	////
 
 	// Comment and Documentation
@@ -222,7 +217,7 @@ public final class AcceleoSyntacticCompletionProposals {
 	 * The start of the guard of a {@link Template}.
 	 */
 	public static final AcceleoCompletionProposal TEMPLATE_GUARD_START = createSyntacticCompletionProposal(
-			AcceleoParser.TEMPLATE_GUARD + SPACE + AcceleoParser.OPEN_PARENTHESIS,
+			AcceleoParser.TEMPLATE_GUARD + AcceleoParser.SPACE + AcceleoParser.OPEN_PARENTHESIS,
 			"Inserts the start of a template guard:", AcceleoPackage.Literals.TEMPLATE);
 
 	/**
@@ -536,7 +531,8 @@ public final class AcceleoSyntacticCompletionProposals {
 								+ ": accessible only to this Module, and other Modules extending this Module."
 								+ LIST_ITEM_CLOSE + LIST_ITEM_OPEN + privateLabel
 								+ ": accessible only to this Module." + LIST_ITEM_CLOSE + LIST_CLOSE,
-						visibilityKind.getName() + SPACE, AcceleoPackage.Literals.MODULE_ELEMENT, null);
+						visibilityKind.getName() + AcceleoParser.SPACE,
+						AcceleoPackage.Literals.MODULE_ELEMENT, null);
 			}).collect(Collectors.toList());
 	////
 

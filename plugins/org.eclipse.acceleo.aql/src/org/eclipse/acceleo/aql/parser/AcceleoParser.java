@@ -93,6 +93,11 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 public class AcceleoParser {
 
 	/**
+	 * A space.
+	 */
+	public static final String SPACE = " ";
+
+	/**
 	 * The acceleo URI protocol.
 	 */
 	public static final String ACCELEOENV_URI_PROTOCOL = "acceleoenv::";
@@ -123,19 +128,24 @@ public class AcceleoParser {
 	public static final String EMPTY_EXPRESSION_STATEMENT = TEXT_END + SLASH_END;
 
 	/**
+	 * The comment keyword.
+	 */
+	public static final String COMMENT = "comment";
+
+	/**
 	 * Start of {@link BlockComment}.
 	 */
-	public static final String BLOCK_COMMENT_START = "[comment]";
+	public static final String BLOCK_COMMENT_START = TEXT_END + COMMENT + NO_SLASH_END;
 
 	/**
 	 * End of {@link BlockComment}.
 	 */
-	public static final String BLOCK_COMMENT_END = "[/comment]";
+	public static final String BLOCK_COMMENT_END = "[/" + COMMENT + NO_SLASH_END;
 
 	/**
 	 * Start of {@link Comment}.
 	 */
-	public static final String COMMENT_START = "[comment ";
+	public static final String COMMENT_START = TEXT_END + COMMENT + SPACE;
 
 	/**
 	 * End of {@link Comment}.
@@ -143,9 +153,14 @@ public class AcceleoParser {
 	public static final String COMMENT_END = SLASH_END;
 
 	/**
+	 * The module keyword.
+	 */
+	public static final String MODULE = "module";
+
+	/**
 	 * Start of {@link Module} header.
 	 */
-	public static final String MODULE_HEADER_START = "[module ";
+	public static final String MODULE_HEADER_START = TEXT_END + MODULE + SPACE;
 
 	/**
 	 * End of {@link Module} header.
@@ -193,9 +208,14 @@ public class AcceleoParser {
 	public static final String QUOTE = "'";
 
 	/**
+	 * The template keyword.
+	 */
+	public static final String TEMPLATE = "template";
+
+	/**
 	 * Start of {@link Template} header.
 	 */
-	public static final String TEMPLATE_HEADER_START = "[template ";
+	public static final String TEMPLATE_HEADER_START = TEXT_END + TEMPLATE + SPACE;
 
 	/**
 	 * Start of {@link Template} header.
@@ -208,9 +228,14 @@ public class AcceleoParser {
 	public static final String TEMPLATE_GUARD = "?";
 
 	/**
+	 * The post keyword.
+	 */
+	public static final String POST = "post";
+
+	/**
 	 * Post of {@link Template}.
 	 */
-	public static final String TEMPLATE_POST = "post(";
+	public static final String TEMPLATE_POST = POST + OPEN_PARENTHESIS;
 
 	/**
 	 * End block prefix.
@@ -220,12 +245,12 @@ public class AcceleoParser {
 	/**
 	 * End of {@link Template}.
 	 */
-	public static final String TEMPLATE_END = END_BLOCK_PREFIX + "template]";
+	public static final String TEMPLATE_END = END_BLOCK_PREFIX + TEMPLATE + NO_SLASH_END;
 
 	/**
 	 * Start of {@link ExpressionStatement}.
 	 */
-	public static final String EXPRESSION_STATEMENT_START = "[";
+	public static final String EXPRESSION_STATEMENT_START = TEXT_END;
 
 	/**
 	 * End of {@link ExpressionStatement}.
@@ -233,9 +258,14 @@ public class AcceleoParser {
 	public static final String EXPRESSION_STATEMENT_END = SLASH_END;
 
 	/**
+	 * The protected keyword.
+	 */
+	public static final String PROTECTED = "protected";
+
+	/**
 	 * Start of {@link ProtectedArea} header.
 	 */
-	public static final String PROTECTED_AREA_HEADER_START = "[protected ";
+	public static final String PROTECTED_AREA_HEADER_START = TEXT_END + PROTECTED + SPACE;
 
 	/**
 	 * End of {@link ProtectedArea} header.
@@ -243,24 +273,39 @@ public class AcceleoParser {
 	public static final String PROTECTED_AREA_HEADER_END = NO_SLASH_END;
 
 	/**
+	 * The startTagPrefix keyword.
+	 */
+	public static final String START_TAG_PREFIX = "startTagPrefix";
+
+	/**
 	 * {@link ProtectedArea} start tag prefix.
 	 */
-	public static final String PROTECTED_AREA_START_TAG_PREFIX = "startTagPrefix(";
+	public static final String PROTECTED_AREA_START_TAG_PREFIX = START_TAG_PREFIX + OPEN_PARENTHESIS;
+
+	/**
+	 * The endTagPrefix keyword.
+	 */
+	public static final String END_TAG_PREFIX = "endTagPrefix";
 
 	/**
 	 * {@link ProtectedArea} end tag prefix.
 	 */
-	public static final String PROTECTED_AREA_END_TAG_PREFIX = "endTagPrefix(";
+	public static final String PROTECTED_AREA_END_TAG_PREFIX = END_TAG_PREFIX + OPEN_PARENTHESIS;
 
 	/**
 	 * End of {@link ProtectedArea}.
 	 */
-	public static final String PROTECTED_AREA_END = END_BLOCK_PREFIX + "protected]";
+	public static final String PROTECTED_AREA_END = END_BLOCK_PREFIX + PROTECTED + NO_SLASH_END;
+
+	/**
+	 * The file keyword.
+	 */
+	public static final String FILE = "file";
 
 	/**
 	 * Start of {@link FileStatement} header.
 	 */
-	public static final String FILE_HEADER_START = "[file ";
+	public static final String FILE_HEADER_START = TEXT_END + FILE + SPACE;
 
 	/**
 	 * End of {@link FileStatement} header.
@@ -270,12 +315,17 @@ public class AcceleoParser {
 	/**
 	 * End of {@link FileStatement}.
 	 */
-	public static final String FILE_END = END_BLOCK_PREFIX + "file]";
+	public static final String FILE_END = END_BLOCK_PREFIX + FILE + NO_SLASH_END;
+
+	/**
+	 * The let keyword.
+	 */
+	public static final String LET = "let";
 
 	/**
 	 * Start of {@link LetStatement} header.
 	 */
-	public static final String LET_HEADER_START = "[let ";
+	public static final String LET_HEADER_START = TEXT_END + LET + SPACE;
 
 	/**
 	 * End of {@link LetStatement} header.
@@ -285,17 +335,27 @@ public class AcceleoParser {
 	/**
 	 * End of {@link LetStatement}.
 	 */
-	public static final String LET_END = END_BLOCK_PREFIX + "let]";
+	public static final String LET_END = END_BLOCK_PREFIX + LET + NO_SLASH_END;
+
+	/**
+	 * The for keyword.
+	 */
+	public static final String FOR = "for";
 
 	/**
 	 * Start of {@link ForStatement} header.
 	 */
-	public static final String FOR_HEADER_START = "[for ";
+	public static final String FOR_HEADER_START = TEXT_END + FOR + SPACE;
+
+	/**
+	 * The separator keyword.
+	 */
+	public static final String SEPARATOR = "separator";
 
 	/**
 	 * Start of {@link ForStatement} header.
 	 */
-	public static final String FOR_SEPARATOR = "separator(";
+	public static final String FOR_SEPARATOR = SEPARATOR + OPEN_PARENTHESIS;
 
 	/**
 	 * End of {@link ForStatement} header.
@@ -305,12 +365,17 @@ public class AcceleoParser {
 	/**
 	 * End of {@link ForStatement}.
 	 */
-	public static final String FOR_END = END_BLOCK_PREFIX + "for]";
+	public static final String FOR_END = END_BLOCK_PREFIX + FOR + NO_SLASH_END;
+
+	/**
+	 * The if keyword.
+	 */
+	public static final String IF = "if";
 
 	/**
 	 * Start of {@link IfStatement} header.
 	 */
-	public static final String IF_HEADER_START = "[if ";
+	public static final String IF_HEADER_START = TEXT_END + IF + SPACE;
 
 	/**
 	 * End of {@link IfStatement} header.
@@ -318,24 +383,39 @@ public class AcceleoParser {
 	public static final String IF_HEADER_END = NO_SLASH_END;
 
 	/**
-	 * End of {@link IfStatement}.
+	 * The elseif keyword.
 	 */
-	public static final String IF_ELSEIF = "[elseif ";
+	public static final String ELSEIF = "elseif";
 
 	/**
 	 * End of {@link IfStatement}.
 	 */
-	public static final String IF_ELSE = "[else]";
+	public static final String IF_ELSEIF = TEXT_END + ELSEIF + SPACE;
+
+	/**
+	 * The else keyword.
+	 */
+	public static final String ELSE = "else";
 
 	/**
 	 * End of {@link IfStatement}.
 	 */
-	public static final String IF_END = END_BLOCK_PREFIX + "if]";
+	public static final String IF_ELSE = TEXT_END + ELSE + NO_SLASH_END;
+
+	/**
+	 * End of {@link IfStatement}.
+	 */
+	public static final String IF_END = END_BLOCK_PREFIX + IF + NO_SLASH_END;
+
+	/**
+	 * The query keyword.
+	 */
+	public static final String QUERY = "query";
 
 	/**
 	 * Start of {@link Query}.
 	 */
-	public static final String QUERY_START = "[query ";
+	public static final String QUERY_START = TEXT_END + QUERY + SPACE;
 
 	/**
 	 * End of {@link Query}.
@@ -343,9 +423,14 @@ public class AcceleoParser {
 	public static final String QUERY_END = SLASH_END;
 
 	/**
+	 * The import keyword.
+	 */
+	public static final String IMPORT = "import";
+
+	/**
 	 * Start of {@link Import}.
 	 */
-	public static final String IMPORT_START = "[import ";
+	public static final String IMPORT_START = TEXT_END + IMPORT + SPACE;
 
 	/**
 	 * End of {@link Import}.

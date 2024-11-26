@@ -86,11 +86,6 @@ import org.eclipse.emf.ecore.EPackage;
 public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 
 	/**
-	 * A space.
-	 */
-	private static final String SPACE = " ";
-
-	/**
 	 * The {@link Pattern} to find empty module metamodel part of the {@link Module}.
 	 */
 	private static final Pattern EMPTY_MODULE_METAMODEL_PATTERN = Pattern.compile("\\(\\s*\\)");
@@ -216,8 +211,8 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		// use a TextStatement to serialize exactly the original code
 		final String indent = moduleText.substring(offsetStart - columnStart, offsetStart);
 		final String text = indent + moduleText.substring(positions.getStartPositions(containingStatement),
-				positions.getEndPositions(containingStatement)).replaceAll("\\R\\s*", "$0" + SPACE + SPACE)
-				+ newLine + indent;
+				positions.getEndPositions(containingStatement)).replaceAll("\\R\\s*", "$0"
+						+ AcceleoParser.SPACE + AcceleoParser.SPACE) + newLine + indent;
 		textStatement.setValue(text);
 		body.getStatements().add(textStatement);
 		letStatement.setBody(body);
@@ -268,8 +263,9 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 				final int line = positions.getEndLines(lastParameter);
 				final int column = positions.getEndColumns(lastParameter);
 				final AstTextReplacement textReplacement = new AstTextReplacement(uri, AcceleoParser.COMMA
-						+ SPACE + varRef.getVariableName() + AcceleoParser.COLON + SPACE
-						+ AstSerializer.STRING_TYPE, offset, line, column, offset, line, column);
+						+ AcceleoParser.SPACE + varRef.getVariableName() + AcceleoParser.COLON
+						+ AcceleoParser.SPACE + AstSerializer.STRING_TYPE, offset, line, column, offset, line,
+						column);
 				fix.getTextReplacements().add(textReplacement);
 				res.add(fix);
 			} else {
@@ -281,8 +277,8 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 					final int line = linesAndColumns[offset][0];
 					final int column = linesAndColumns[offset][1];
 					final AstTextReplacement textReplacement = new AstTextReplacement(uri, varRef
-							.getVariableName() + AcceleoParser.COLON + SPACE + AstSerializer.STRING_TYPE,
-							offset, line, column, offset, line, column);
+							.getVariableName() + AcceleoParser.COLON + AcceleoParser.SPACE
+							+ AstSerializer.STRING_TYPE, offset, line, column, offset, line, column);
 					fix.getTextReplacements().add(textReplacement);
 					res.add(fix);
 				}
@@ -295,8 +291,9 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 				final int line = positions.getEndLines(lastParameter);
 				final int column = positions.getEndColumns(lastParameter);
 				final AstTextReplacement textReplacement = new AstTextReplacement(uri, AcceleoParser.COMMA
-						+ SPACE + varRef.getVariableName() + AcceleoParser.COLON + SPACE
-						+ AstSerializer.STRING_TYPE, offset, line, column, offset, line, column);
+						+ AcceleoParser.SPACE + varRef.getVariableName() + AcceleoParser.COLON
+						+ AcceleoParser.SPACE + AstSerializer.STRING_TYPE, offset, line, column, offset, line,
+						column);
 				fix.getTextReplacements().add(textReplacement);
 				res.add(fix);
 			} else {
@@ -308,8 +305,8 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 					final int line = linesAndColumns[offset][0];
 					final int column = linesAndColumns[offset][1];
 					final AstTextReplacement textReplacement = new AstTextReplacement(uri, varRef
-							.getVariableName() + AcceleoParser.COLON + SPACE + AstSerializer.STRING_TYPE,
-							offset, line, column, offset, line, column);
+							.getVariableName() + AcceleoParser.COLON + AcceleoParser.SPACE
+							+ AstSerializer.STRING_TYPE, offset, line, column, offset, line, column);
 					fix.getTextReplacements().add(textReplacement);
 					res.add(fix);
 				}
@@ -430,8 +427,8 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 					line = positions.getEndLines(lastMetamodel);
 					column = positions.getEndColumns(lastMetamodel);
 					final AstTextReplacement textReplacement = new AstTextReplacement(uri, AcceleoParser.COMMA
-							+ SPACE + AcceleoParser.QUOTE + ePkg.getNsURI() + AcceleoParser.QUOTE, offset,
-							line, column, offset, line, column);
+							+ AcceleoParser.SPACE + AcceleoParser.QUOTE + ePkg.getNsURI()
+							+ AcceleoParser.QUOTE, offset, line, column, offset, line, column);
 					fix.getTextReplacements().add(textReplacement);
 					res.add(fix);
 				}
@@ -602,8 +599,8 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 					line = positions.getEndLines(lastMetamodel);
 					column = positions.getEndColumns(lastMetamodel);
 					final AstTextReplacement textReplacement = new AstTextReplacement(uri, AcceleoParser.COMMA
-							+ SPACE + AcceleoParser.QUOTE + ePkg.getNsURI() + AcceleoParser.QUOTE, offset,
-							line, column, offset, line, column);
+							+ AcceleoParser.SPACE + AcceleoParser.QUOTE + ePkg.getNsURI()
+							+ AcceleoParser.QUOTE, offset, line, column, offset, line, column);
 					fix.getTextReplacements().add(textReplacement);
 					res.add(fix);
 				}
@@ -830,7 +827,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		replacement.append(" ");
 		replacement.append(serviceName);
 		replacement.append("(");
-		final StringJoiner joiner = new StringJoiner(AcceleoParser.COMMA + SPACE);
+		final StringJoiner joiner = new StringJoiner(AcceleoParser.COMMA + AcceleoParser.SPACE);
 		int i = 0;
 		for (IType type : argumentTypes) {
 			joiner.add(getJavaStringType(type) + " " + parameterNames.get(i++));
@@ -905,7 +902,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 
 		res.append(serviceName);
 		res.append(AcceleoParser.OPEN_PARENTHESIS);
-		final StringJoiner joiner = new StringJoiner(AcceleoParser.COMMA + SPACE);
+		final StringJoiner joiner = new StringJoiner(AcceleoParser.COMMA + AcceleoParser.SPACE);
 
 		for (IType argumentType : argumentTypes) {
 			joiner.add(argumentType.toString());

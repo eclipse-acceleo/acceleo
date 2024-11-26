@@ -56,12 +56,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	/**
 	 * The indentation space.
 	 */
-	private static final String INDENTATION_SPACE = "  ";
-
-	/**
-	 * A space.
-	 */
-	public static final String SPACE = " ";
+	private static final String INDENTATION_SPACE = AcceleoParser.SPACE + AcceleoParser.SPACE;
 
 	/**
 	 * A dummy {@link Object} to prevent switching in super types.
@@ -127,9 +122,9 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 			builder.append(" : ");
 			builder.append(querySerializer.serialize(binding.getType().getAst()));
 		}
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		builder.append(bindingSeparator);
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		doSwitch(binding.getInitExpression());
 
 		return DUMMY;
@@ -144,7 +139,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 				currentIndentation = "";
 			} else {
 				for (int i = 0; i < currentBlockHeaderStartColumn; i++) {
-					blockIndentation.append(SPACE);
+					blockIndentation.append(AcceleoParser.SPACE);
 				}
 				if (block.getStatements().isEmpty()) {
 					currentIndentation = blockIndentation.toString();
@@ -215,7 +210,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		if (expressionStatement.getExpression() != null && (expressionStatement.getExpression()
 				.getAql() instanceof Conditional || expressionStatement.getExpression()
 						.getAql() instanceof Let)) {
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 		}
 		doSwitch(expressionStatement.getExpression());
 		builder.append(AcceleoParser.EXPRESSION_STATEMENT_END);
@@ -233,11 +228,11 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		doSwitch(fileStatement.getUrl());
 		builder.append(AcceleoParser.COMMA);
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		builder.append(fileStatement.getMode().getName());
 		if (fileStatement.getCharset() != null) {
 			builder.append(AcceleoParser.COMMA);
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			doSwitch(fileStatement.getCharset());
 		}
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
@@ -260,7 +255,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 
 		if (forStatement.getSeparator() != null) {
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.FOR_SEPARATOR);
 			doSwitch(forStatement.getSeparator());
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
@@ -339,7 +334,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 				for (Binding binding : letStatement.getVariables()) {
 					doSwitch(binding);
 					builder.append(AcceleoParser.COMMA);
-					builder.append(SPACE);
+					builder.append(AcceleoParser.SPACE);
 				}
 				previousBuilder.append(builder.substring(0, builder.length() - 2));
 			} finally {
@@ -369,11 +364,11 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		if (module.getEncoding() != null) {
 			builder.append(AcceleoParser.COMMENT_START);
 			builder.append(AcceleoParser.ENCODING_TAG);
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.EQUAL);
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(module.getEncoding());
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.COMMENT_END);
 			insertNewLine();
 		}
@@ -391,7 +386,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 				for (Metamodel metamodel : module.getMetamodels()) {
 					doSwitch(metamodel);
 					builder.append(AcceleoParser.COMMA);
-					builder.append(SPACE);
+					builder.append(AcceleoParser.SPACE);
 				}
 				previousBuilder.append(builder.substring(0, builder.length() - 2));
 			} finally {
@@ -400,7 +395,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		}
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		if (module.getExtends() != null) {
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.EXTENDS);
 			doSwitch(module.getExtends());
 		}
@@ -479,13 +474,13 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		doSwitch(protectedArea.getId());
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		if (protectedArea.getStartTagPrefix() != null) {
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.PROTECTED_AREA_START_TAG_PREFIX);
 			doSwitch(protectedArea.getStartTagPrefix());
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		}
 		if (protectedArea.getEndTagPrefix() != null) {
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.PROTECTED_AREA_END_TAG_PREFIX);
 			doSwitch(protectedArea.getEndTagPrefix());
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
@@ -505,7 +500,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		}
 		builder.append(AcceleoParser.QUERY_START);
 		builder.append(query.getVisibility());
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		builder.append(query.getName());
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		if (!query.getParameters().isEmpty()) {
@@ -515,7 +510,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 				for (Variable parameter : query.getParameters()) {
 					doSwitch(parameter);
 					builder.append(AcceleoParser.COMMA);
-					builder.append(SPACE);
+					builder.append(AcceleoParser.SPACE);
 				}
 				previousBuilder.append(builder.substring(0, builder.length() - 2));
 			} finally {
@@ -523,15 +518,15 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 			}
 		}
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		if (query.getType() != null) {
 			builder.append(AcceleoParser.COLON);
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(querySerializer.serialize(query.getType().getAst()));
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 		}
 		builder.append(AcceleoParser.EQUAL);
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		doSwitch(query.getBody());
 		builder.append(AcceleoParser.QUERY_END);
 
@@ -547,7 +542,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		updateCurrentBlockHeaderStartColumn();
 		builder.append(AcceleoParser.TEMPLATE_HEADER_START);
 		builder.append(template.getVisibility());
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		builder.append(template.getName());
 		builder.append(AcceleoParser.OPEN_PARENTHESIS);
 		if (!template.getParameters().isEmpty()) {
@@ -557,7 +552,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 				for (Variable parameter : template.getParameters()) {
 					doSwitch(parameter);
 					builder.append(AcceleoParser.COMMA);
-					builder.append(SPACE);
+					builder.append(AcceleoParser.SPACE);
 				}
 				previousBuilder.append(builder.substring(0, builder.length() - 2));
 			} finally {
@@ -566,15 +561,15 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 		}
 		builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		if (template.getGuard() != null) {
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.TEMPLATE_GUARD);
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.OPEN_PARENTHESIS);
 			doSwitch(template.getGuard());
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
 		}
 		if (template.getPost() != null) {
-			builder.append(SPACE);
+			builder.append(AcceleoParser.SPACE);
 			builder.append(AcceleoParser.TEMPLATE_POST);
 			doSwitch(template.getPost());
 			builder.append(AcceleoParser.CLOSE_PARENTHESIS);
@@ -599,9 +594,9 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	public Object caseVariable(Variable variable) {
 		final String variableName = AstBuilder.protectWithUnderscore(variable.getName());
 		builder.append(variableName);
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		builder.append(AcceleoParser.COLON);
-		builder.append(SPACE);
+		builder.append(AcceleoParser.SPACE);
 		builder.append(querySerializer.serialize(variable.getType().getAst()));
 
 		return DUMMY;

@@ -55,6 +55,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
+import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
@@ -87,11 +88,6 @@ import org.eclipse.acceleo.util.AcceleoSwitch;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class ModuleAstSerializer extends AcceleoSwitch<Void> {
-
-	/**
-	 * The space character.
-	 */
-	private static final String SPACE = " ";
 
 	/** Prefix we'll use for the error messages on missing names. */
 	private static final String MISSING_NAME_MESSAGE_PREFIX = "missing name: ";
@@ -897,7 +893,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseNewLineStatement(NewLineStatement newLineStatement) {
 		builder.append("NEW_LINE ");
 		if (newLineStatement.isIndentationNeeded()) {
-			builder.append("(indentationNeeded)" + SPACE);
+			builder.append("(indentationNeeded)" + AcceleoParser.SPACE);
 		}
 		return null;
 	}

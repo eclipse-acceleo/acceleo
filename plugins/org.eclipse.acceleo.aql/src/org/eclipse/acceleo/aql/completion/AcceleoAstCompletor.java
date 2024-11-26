@@ -61,6 +61,8 @@ import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplat
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
@@ -158,11 +160,6 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 * The comparator of {@link ICompletionProposal}.
 	 */
 	private static final Comparator<ICompletionProposal> COMPLETION_PROPOSAL_COMPARATOR = new ProposalComparator();
-
-	/**
-	 * A space.
-	 */
-	private static final String SPACE = " ";
 
 	/**
 	 * The {@link IQualifiedNameQueryEnvironment}.
@@ -629,7 +626,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	public List<AcceleoCompletionProposal> caseErrorExpression(ErrorExpression errorExpression) {
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 
-		if (errorExpression.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
+		if (errorExpression.getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			res.addAll(getAqlCompletionProposals(getVariables(errorExpression), acceleoValidationResult
 					.getValidationResult(errorExpression.getAst())));
 		}
@@ -745,7 +742,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 				res.add(AcceleoSyntacticCompletionProposals.COLON_SPACE);
 			}
 			res.add(new AcceleoCompletionProposal(errorBinding.getMissingAffectationSymbole(), errorBinding
-					.getMissingAffectationSymbole() + SPACE, AcceleoPackage.Literals.BINDING));
+					.getMissingAffectationSymbole() + AcceleoParser.SPACE, AcceleoPackage.Literals.BINDING));
 		} else if (errorBinding.getInitExpression().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {
 			final AcceleoASTNode context = (AcceleoASTNode)errorBinding.eContainer().eContainer();
@@ -766,11 +763,65 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			res.addAll(getAqlCompletionProposals(getVariables(errorExpressionStatement),
 					acceleoValidationResult.getValidationResult(errorExpressionStatement.getExpression()
 							.getAst())));
+			if (errorExpressionStatement.getExpression().getAst()
+					.getAst() instanceof org.eclipse.acceleo.query.ast.ErrorExpression) {
+				res.addAll(getHeaderStarts(""));
+			}
 		} else if (errorExpressionStatement.getMissingEndHeader() != -1) {
 			res.addAll(getAqlCompletionProposals(getVariables(errorExpressionStatement),
 					acceleoValidationResult.getValidationResult(errorExpressionStatement.getExpression()
 							.getAst())));
 			res.add(AcceleoSyntacticCompletionProposals.STATEMENT_EXPRESSION_END);
+			final Expression ast = errorExpressionStatement.getExpression().getAst().getAst();
+			if (ast instanceof VarRef) {
+				res.addAll(getHeaderStarts(((VarRef)ast).getVariableName()));
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of header starts {@link AcceleoCompletionProposal}.
+	 * 
+	 * @param variableName
+	 *            the variable name
+	 * @return the {@link List} of header starts {@link AcceleoCompletionProposal}
+	 */
+	private List<AcceleoCompletionProposal> getHeaderStarts(String variableName) {
+		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
+
+		if (AcceleoParser.COMMENT.startsWith(variableName)) {
+			final String completion = AcceleoParser.COMMENT + AcceleoParser.SPACE;
+			res.add(new AcceleoCompletionProposal(completion, completion, AcceleoPackage.Literals.COMMENT));
+		}
+		if (AcceleoParser.FILE.startsWith(variableName)) {
+			final String completion = AcceleoParser.FILE + AcceleoParser.SPACE
+					+ AcceleoParser.OPEN_PARENTHESIS;
+			res.add(new AcceleoCompletionProposal(completion, completion,
+					AcceleoPackage.Literals.FILE_STATEMENT));
+		}
+		if (AcceleoParser.PROTECTED.startsWith(variableName)) {
+			final String completion = AcceleoParser.PROTECTED + AcceleoParser.SPACE
+					+ AcceleoParser.OPEN_PARENTHESIS;
+			res.add(new AcceleoCompletionProposal(completion, completion,
+					AcceleoPackage.Literals.PROTECTED_AREA));
+		}
+		if (AcceleoParser.FOR.startsWith(variableName)) {
+			final String completion = AcceleoParser.FOR + AcceleoParser.SPACE
+					+ AcceleoParser.OPEN_PARENTHESIS;
+			res.add(new AcceleoCompletionProposal(completion, completion,
+					AcceleoPackage.Literals.FOR_STATEMENT));
+		}
+		if (AcceleoParser.IF.startsWith(variableName)) {
+			final String completion = AcceleoParser.IF + AcceleoParser.SPACE + AcceleoParser.OPEN_PARENTHESIS;
+			res.add(new AcceleoCompletionProposal(completion, completion,
+					AcceleoPackage.Literals.FILE_STATEMENT));
+		}
+		if (AcceleoParser.LET.startsWith(variableName)) {
+			final String completion = AcceleoParser.LET + AcceleoParser.SPACE;
+			res.add(new AcceleoCompletionProposal(completion, completion,
+					AcceleoPackage.Literals.LET_STATEMENT));
 		}
 
 		return res;

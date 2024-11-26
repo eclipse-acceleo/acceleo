@@ -708,3 +708,57 @@ Replacement: 1011 42 5 - 1021 42 15
 http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 1011 42 5 - 1021 42 15
 
+* Label:
+comment 
+* Description:
+Inserts the following text: <pre>comment </pre>
+* Text:
+comment 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Comment
+
+* Label:
+file (
+* Description:
+Inserts the following text: <pre>file (</pre>
+* Text:
+file (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//FileStatement
+
+* Label:
+protected (
+* Description:
+Inserts the following text: <pre>protected (</pre>
+* Text:
+protected (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ProtectedArea
+
+* Label:
+for (
+* Description:
+Inserts the following text: <pre>for (</pre>
+* Text:
+for (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//ForStatement
+
+* Label:
+if (
+* Description:
+Inserts the following text: <pre>if (</pre>
+* Text:
+if (
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//FileStatement
+
+* Label:
+let 
+* Description:
+Inserts the following text: <pre>let </pre>
+* Text:
+let 
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//LetStatement
+
