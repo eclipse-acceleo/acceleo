@@ -429,6 +429,31 @@ public final class AQLUtils {
 	}
 
 	/**
+	 * Gets the AQL {@link String} representation of the given {@link Set} of {@link IType}.
+	 * 
+	 * @param types
+	 *            the {@link Set} of {@link IType}
+	 * @return the AQL {@link String} representation of the given {@link Set} of {@link IType}
+	 */
+	public static String getAqlTypeString(Set<IType> types) {
+		final StringBuilder res = new StringBuilder();
+
+		if (types != null && !types.isEmpty()) {
+			if (types.size() == 1) {
+				res.append(getAqlTypeString(types.iterator().next()));
+			} else {
+				final StringJoiner joiner = new StringJoiner(" | ", "{", "}");
+				for (IType type : types) {
+					joiner.add(getAqlTypeString(type));
+				}
+				res.append(joiner.toString());
+			}
+		}
+
+		return res.toString();
+	}
+
+	/**
 	 * Gets the line number and the column number for each offsets of the given text.
 	 * 
 	 * @param text

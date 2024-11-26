@@ -1,7 +1,7 @@
 * Label:
 self
 * Description:
-Variable self
+Variable self = String
 * Text:
 self
 * Type (optional):

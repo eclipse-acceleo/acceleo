@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -424,8 +424,46 @@ public class AQLUtilsTests {
 	}
 
 	@Test
-	public void getAqlTypeStringNull() {
-		final String res = AQLUtils.getAqlTypeString(null);
+	public void getAqlTypeStringNullSet() {
+		final String res = AQLUtils.getAqlTypeString((Set<IType>)null);
+
+		assertEquals("", res);
+	}
+
+	@Test
+	public void getAqlTypeStringSetEmpty() {
+		final Set<IType> types = new LinkedHashSet<>();
+		types.add(new ClassType(null, String.class));
+
+		final String res = AQLUtils.getAqlTypeString(types);
+
+		assertEquals("String", res);
+	}
+
+	@Test
+	public void getAqlTypeStringSetOne() {
+		final Set<IType> types = new LinkedHashSet<>();
+		final String res = AQLUtils.getAqlTypeString(types);
+
+		assertEquals("", res);
+	}
+
+	@Test
+	public void getAqlTypeStringSet() {
+		final Set<IType> types = new LinkedHashSet<>();
+		types.add(new ClassType(null, String.class));
+		types.add(new EClassifierType(null, EcorePackage.eINSTANCE.getEPackage()));
+		types.add(new ClassType(null, Integer.class));
+		types.add(new SetType(null, new ClassType(null, Integer.class)));
+
+		final String res = AQLUtils.getAqlTypeString(types);
+
+		assertEquals("{String | ecore::EPackage | Integer | OrderedSet(Integer)}", res);
+	}
+
+	@Test
+	public void getAqlTypeStringNullIType() {
+		final String res = AQLUtils.getAqlTypeString((IType)null);
 
 		assertEquals("", res);
 	}

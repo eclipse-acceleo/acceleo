@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
+import java.util.Set;
+
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * A variable {@link ICompletionProposal}.
@@ -25,63 +29,46 @@ public class VariableCompletionProposal implements ICompletionProposal {
 	private final String varName;
 
 	/**
+	 * The {@link Set} of possible {@link IType}.
+	 */
+	private Set<IType> types;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param varName
 	 *            the variable name
+	 * @param types
+	 *            the {@link Set} of possible {@link IType}
 	 */
-	public VariableCompletionProposal(String varName) {
+	public VariableCompletionProposal(String varName, Set<IType> types) {
 		this.varName = varName;
+		this.types = types;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getProposal()
-	 */
 	@Override
 	public String getProposal() {
 		return varName;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getCursorOffset()
-	 */
 	@Override
 	public int getCursorOffset() {
 		return varName.length();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getObject()
-	 */
 	@Override
 	public String getObject() {
 		return varName;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return getProposal();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
-	 */
 	@Override
 	public String getDescription() {
-		return "Variable " + varName;
+		return "Variable " + varName + " = " + AQLUtils.getAqlTypeString(types);
 	}
 
 }

@@ -11,12 +11,13 @@
 package org.eclipse.acceleo.query.parser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Error;
@@ -65,9 +66,9 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	private final CompletionServices services;
 
 	/**
-	 * The {@link Set} of variable names.
+	 * The {@link Map} of variable names to their {@link Set} of {@link IType}.
 	 */
-	private List<String> variableNames;
+	private Map<String, Set<IType>> variableTypes;
 
 	/**
 	 * The {@link IValidationResult}.
@@ -87,17 +88,18 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	/**
 	 * Gets the {@link List} of {@link ICompletionProposal} for the given {@link IValidationResult}.
 	 * 
-	 * @param varNames
-	 *            the {@link Set} of variable names
+	 * @param variableTypes
+	 *            the {@link Map} of variable names to their {@link Set} of {@link IType}
 	 * @param validationRes
 	 *            the {@link IValidationResult} to complete.
 	 * @return the {@link List} of {@link ICompletionProposal}
 	 */
-	public List<ICompletionProposal> getProposals(Set<String> varNames, IValidationResult validationRes) {
+	public List<ICompletionProposal> getProposals(Map<String, Set<IType>> variableTypes,
+			IValidationResult validationRes) {
 		final List<ICompletionProposal> result;
 
 		this.validationResult = validationRes;
-		this.variableNames = new ArrayList<String>(varNames);
+		this.variableTypes = variableTypes;
 
 		final List<Error> errors = validationRes.getAstResult().getErrors();
 		if (errors.size() > 0) {
@@ -154,14 +156,17 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 				final Let let = (Let)current;
 				for (Binding binding : let.getBindings()) {
 					if (binding.getName() != null) {
-						variableNames.add(binding.getName());
+						variableTypes.put(binding.getName(), AQLUtils.getTypes(services.getQueryEnvironment(),
+								binding.getType()));
 					}
 				}
 			} else if (current instanceof Lambda) {
 				final Lambda lambda = (Lambda)current;
 				for (VariableDeclaration declaration : lambda.getParameters()) {
 					if (declaration.getName() != null) {
-						variableNames.add(declaration.getName());
+						final Set<IType> possibleTypes = validationResult.getPossibleTypes(declaration
+								.getExpression());
+						variableTypes.put(declaration.getName(), possibleTypes);
 					}
 				}
 			}
@@ -171,7 +176,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 				current = null;
 			}
 		}
-		Collections.sort(variableNames);
 	}
 
 	@Override
@@ -192,7 +196,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		result.addAll(getExpressionTextPrefixes());
-		result.addAll(services.getVariableProposals(variableNames));
+		result.addAll(services.getVariableProposals(variableTypes));
 		result.addAll(services.getEClassifierProposals());
 		result.addAll(services.getEEnumLiteralProposals());
 
@@ -305,8 +309,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 				} else if (!object.getArguments().isEmpty()) {
 					final Expression lastArgument = object.getArguments().get(object.getArguments().size()
 							- 1);
-					if (lastArgument instanceof VarRef && !variableNames.contains(((VarRef)lastArgument)
-							.getVariableName())) {
+					if (lastArgument instanceof VarRef && !variableTypes.keySet().contains(
+							((VarRef)lastArgument).getVariableName())) {
 						result.add(new TextCompletionProposal(": ", 0));
 						result.add(new TextCompletionProposal("| ", 0));
 					} else {

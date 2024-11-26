@@ -70,7 +70,7 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 
 		final IQueryValidationEngine builder = new QueryValidationEngine(queryEnvironment);
 		final IValidationResult validationResult = builder.validate(toParse, variableTypes);
-		result = new CompletionResult(completor.getProposals(variableTypes.keySet(), validationResult));
+		result = new CompletionResult(completor.getProposals(variableTypes, validationResult));
 		result.setPrefix(prefix);
 		result.setRemaining(remaining);
 

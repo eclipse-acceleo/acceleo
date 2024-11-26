@@ -1,7 +1,7 @@
 * Label:
 myParam
 * Description:
-Variable myParam
+Variable myParam = ecore::EPackage
 * Text:
 myParam
 * Type (optional):
@@ -11,7 +11,7 @@ Replacement: 1371 57 5 - 1381 57 15
 * Label:
 myVariable
 * Description:
-Variable myVariable
+Variable myVariable = ecore::EClassifier
 * Text:
 myVariable
 * Type (optional):

@@ -1,7 +1,7 @@
 * Label:
 myParam
 * Description:
-Variable myParam
+Variable myParam = ecore::EPackage
 * Text:
 myParam
 * Type (optional):
@@ -11,7 +11,7 @@ Replacement: 983 40 53 - 993 40 63
 * Label:
 myVariable
 * Description:
-Variable myVariable
+Variable myVariable = Sequence(ecore::EClassifier)
 * Text:
 myVariable
 * Type (optional):
@@ -21,7 +21,7 @@ Replacement: 983 40 53 - 993 40 63
 * Label:
 myVariableIndex
 * Description:
-Variable myVariableIndex
+Variable myVariableIndex = Integer
 * Text:
 myVariableIndex
 * Type (optional):

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl.completion;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -24,35 +29,45 @@ public class VariableCompletionProposalTests {
 
 	@Test
 	public void getCursorOffset() {
-		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar");
+		Set<IType> types = new LinkedHashSet<>();
+		types.add(new ClassType(null, String.class));
+		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar", types);
 
 		assertEquals(5, proposal.getCursorOffset());
 	}
 
 	@Test
 	public void getProposal() {
-		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar");
+		Set<IType> types = new LinkedHashSet<>();
+		types.add(new ClassType(null, String.class));
+		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar", types);
 
 		assertEquals("myVar", proposal.getProposal());
 	}
 
 	@Test
 	public void getDescription() {
-		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar");
+		Set<IType> types = new LinkedHashSet<>();
+		types.add(new ClassType(null, String.class));
+		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar", types);
 
-		assertEquals("Variable myVar", proposal.getDescription());
+		assertEquals("Variable myVar = String", proposal.getDescription());
 	}
 
 	@Test
 	public void getObject() {
-		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar");
+		Set<IType> types = new LinkedHashSet<>();
+		types.add(new ClassType(null, String.class));
+		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar", types);
 
 		assertEquals("myVar", proposal.getObject());
 	}
 
 	@Test
 	public void testToString() {
-		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar");
+		Set<IType> types = new LinkedHashSet<>();
+		types.add(new ClassType(null, String.class));
+		final VariableCompletionProposal proposal = new VariableCompletionProposal("myVar", types);
 
 		assertEquals("myVar", proposal.toString());
 	}

@@ -1,7 +1,7 @@
 * Label:
 myParam
 * Description:
-Variable myParam
+Variable myParam = ecore::EPackage
 * Text:
 myParam
 * Type (optional):
@@ -11,7 +11,7 @@ Replacement: 2039 76 11 - 2046 76 18
 * Label:
 myVariable1
 * Description:
-Variable myVariable1
+Variable myVariable1 = ecore::EClassifier
 * Text:
 myVariable1
 * Type (optional):
@@ -21,7 +21,7 @@ Replacement: 2039 76 11 - 2046 76 18
 * Label:
 myVariable2
 * Description:
-Variable myVariable2
+Variable myVariable2 = ecore::EClassifier
 * Text:
 myVariable2
 * Type (optional):
@@ -31,7 +31,7 @@ Replacement: 2039 76 11 - 2046 76 18
 * Label:
 myVariable3
 * Description:
-Variable myVariable3
+Variable myVariable3 = Sequence(ecore::EClassifier)
 * Text:
 myVariable3
 * Type (optional):
@@ -41,7 +41,7 @@ Replacement: 2039 76 11 - 2046 76 18
 * Label:
 myVariable3Index
 * Description:
-Variable myVariable3Index
+Variable myVariable3Index = Integer
 * Text:
 myVariable3Index
 * Type (optional):
@@ -51,7 +51,7 @@ Replacement: 2039 76 11 - 2046 76 18
 * Label:
 myVariable4
 * Description:
-Variable myVariable4
+Variable myVariable4 = Sequence(ecore::EClassifier)
 * Text:
 myVariable4
 * Type (optional):
@@ -61,7 +61,7 @@ Replacement: 2039 76 11 - 2046 76 18
 * Label:
 myVariable4Index
 * Description:
-Variable myVariable4Index
+Variable myVariable4Index = Integer
 * Text:
 myVariable4Index
 * Type (optional):

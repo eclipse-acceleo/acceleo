@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.CallType;
@@ -54,15 +56,15 @@ public class CompletionServices extends ValidationServices {
 	/**
 	 * Gets the {@link List} of {@link VariableCompletionProposal} for variables.
 	 * 
-	 * @param variableNames
-	 *            the variables names.
+	 * @param variableTypes
+	 *            the {@link Map} of variable names to their {@link Set} of {@link IType}
 	 * @return the {@link List} of {@link VariableCompletionProposal} for variables
 	 */
-	public List<VariableCompletionProposal> getVariableProposals(List<String> variableNames) {
+	public List<VariableCompletionProposal> getVariableProposals(Map<String, Set<IType>> variableTypes) {
 		final List<VariableCompletionProposal> result = new ArrayList<VariableCompletionProposal>();
 
-		for (String varName : variableNames) {
-			result.add(new VariableCompletionProposal(varName));
+		for (Entry<String, Set<IType>> entry : variableTypes.entrySet()) {
+			result.add(new VariableCompletionProposal(entry.getKey(), entry.getValue()));
 		}
 
 		return result;
