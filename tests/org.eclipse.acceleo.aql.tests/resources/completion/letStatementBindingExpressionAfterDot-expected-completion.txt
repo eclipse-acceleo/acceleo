@@ -381,7 +381,7 @@ Replacement: 1337 55 49 - 1349 55 61
 * Label:
 myQuery()
 * Description:
-<br> * My query has a nice comment.<br> * @param myParam the input EPackage<br>*
+public myQuery(myParam : ecore::EPackage) = ecore::EClassifier<br><br> * My query has a nice comment.<br> * @param myParam the input EPackage<br>*
 * Text:
 myQuery()
 * Type (optional):
@@ -391,7 +391,7 @@ Replacement: 1337 55 49 - 1349 55 61
 * Label:
 myTemplate()
 * Description:
-<br> * My template has a nice comment.<br> * @param myParam the input EPackage<br>*
+public myTemplate(myParam : ecore::EPackage) = String<br><br> * My template has a nice comment.<br> * @param myParam the input EPackage<br>*
 * Text:
 myTemplate()
 * Type (optional):
@@ -401,7 +401,7 @@ Replacement: 1337 55 49 - 1349 55 61
 * Label:
 myTemplate1()
 * Description:
-
+public myTemplate1(myParam : ecore::EPackage) = String
 * Text:
 myTemplate1()
 * Type (optional):

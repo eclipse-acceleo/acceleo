@@ -10,10 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.completion.proposals;
 
+import java.util.StringJoiner;
+
+import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.evaluation.QueryService;
+import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
-import org.eclipse.acceleo.query.services.StringServices;
 
 /**
  * {@link IServiceCompletionProposal} for {@link QueryService}.
@@ -26,6 +31,16 @@ public class QueryServiceCompletionProposal implements IServiceCompletionProposa
 	 * The {@link QueryService}.
 	 */
 	private final QueryService service;
+
+	/**
+	 * The {@link AstSerializer}.
+	 */
+	private final AstSerializer aqlSerializer = new AstSerializer();
+
+	/**
+	 * The {@link AcceleoAstSerializer}<
+	 */
+	private final AcceleoAstSerializer accleeoSerializer = new AcceleoAstSerializer("");
 
 	/**
 	 * Constructor.
@@ -60,16 +75,26 @@ public class QueryServiceCompletionProposal implements IServiceCompletionProposa
 
 	@Override
 	public String getDescription() {
-		final String res;
+		final StringBuilder res = new StringBuilder();
 
-		if (service.getOrigin().getDocumentation() != null) {
-			res = StringServices.NEW_LINE_PATTERN.matcher(service.getOrigin().getDocumentation().getBody()
-					.getValue()).replaceAll("<br>");
-		} else {
-			res = "";
+		res.append(service.getOrigin().getVisibility() + " " + service.getOrigin().getName());
+		StringJoiner joiner = new StringJoiner(", ", "(", ")");
+		for (Variable parameter : service.getOrigin().getParameters()) {
+			joiner.add(accleeoSerializer.serialize(parameter));
+		}
+		res.append(joiner.toString());
+		final Expression returnTypeExpression = service.getOrigin().getType().getAst();
+		if (returnTypeExpression != null) {
+			res.append(" = ");
+			res.append(aqlSerializer.serialize(returnTypeExpression));
 		}
 
-		return res;
+		if (service.getOrigin().getDocumentation() != null) {
+			res.append("\n");
+			res.append(service.getOrigin().getDocumentation().getBody().getValue());
+		}
+
+		return res.toString();
 	}
 
 	@Override

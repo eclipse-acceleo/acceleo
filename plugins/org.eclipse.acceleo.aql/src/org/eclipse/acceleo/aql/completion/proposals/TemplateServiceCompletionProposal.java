@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.completion.proposals;
 
+import java.util.StringJoiner;
+
+import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
+import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
+import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
-import org.eclipse.acceleo.query.services.StringServices;
 
 /**
  * {@link IServiceCompletionProposal} for {@link TemplateService}.
@@ -26,6 +30,16 @@ public class TemplateServiceCompletionProposal implements IServiceCompletionProp
 	 * The {@link TemplateService}.
 	 */
 	private final TemplateService service;
+
+	/**
+	 * The {@link AstSerializer}.
+	 */
+	private final AstSerializer aqlSerializer = new AstSerializer();
+
+	/**
+	 * The {@link AcceleoAstSerializer}<
+	 */
+	private final AcceleoAstSerializer accleeoSerializer = new AcceleoAstSerializer("");
 
 	/**
 	 * Constructor.
@@ -60,16 +74,22 @@ public class TemplateServiceCompletionProposal implements IServiceCompletionProp
 
 	@Override
 	public String getDescription() {
-		final String res;
+		final StringBuilder res = new StringBuilder();
+
+		res.append(service.getOrigin().getVisibility() + " " + service.getOrigin().getName());
+		StringJoiner joiner = new StringJoiner(", ", "(", ")");
+		for (Variable parameter : service.getOrigin().getParameters()) {
+			joiner.add(accleeoSerializer.serialize(parameter));
+		}
+		res.append(joiner.toString());
+		res.append(" = String");
 
 		if (service.getOrigin().getDocumentation() != null) {
-			res = StringServices.NEW_LINE_PATTERN.matcher(service.getOrigin().getDocumentation().getBody()
-					.getValue()).replaceAll("<br>");
-		} else {
-			res = "";
+			res.append("\n");
+			res.append(service.getOrigin().getDocumentation().getBody().getValue());
 		}
 
-		return res;
+		return res.toString();
 	}
 
 	@Override
