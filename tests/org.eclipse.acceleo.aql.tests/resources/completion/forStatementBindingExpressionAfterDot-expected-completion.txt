@@ -341,7 +341,7 @@ Replacement: 878 36 50 - 890 36 62
 * Label:
 getEAnnotation()
 * Description:
-EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+getEAnnotation(source: ecore::EString) = ecore::EAnnotation<br>EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 getEAnnotation()
 * Type (optional):
@@ -351,7 +351,7 @@ Replacement: 878 36 50 - 890 36 62
 * Label:
 getEClassifier()
 * Description:
-EOperation named getEClassifier in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+getEClassifier(name: ecore::EString) = ecore::EClassifier<br>EOperation named getEClassifier in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 getEClassifier()
 * Type (optional):

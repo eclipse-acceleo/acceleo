@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
@@ -128,6 +129,25 @@ public class EOperationServiceCompletionProposal implements ICompletionProposal 
 	@Override
 	public String getDescription() {
 		StringBuffer result = new StringBuffer();
+		result.append(eOperation.getName());
+		final StringJoiner joiner = new StringJoiner(", ", "(", ")");
+		for (EParameter parameter : eOperation.getEParameters()) {
+			if (parameter.getEType() == null) {
+				joiner.add(parameter.getName());
+			} else {
+				joiner.add(parameter.getName() + ": " + getEClassifierString(parameter.getEType()));
+			}
+		}
+		result.append(joiner.toString());
+		if (eOperation.getEType() != null) {
+			result.append(" = ");
+			if (eOperation.isMany()) {
+				result.append("Sequence(" + getEClassifierString(eOperation.getEType()) + ")");
+			} else {
+				result.append(getEClassifierString(eOperation.getEType()));
+			}
+		}
+		result.append('\n');
 		result.append(eOperation.eClass().getName());
 		result.append(" named ");
 		result.append(eOperation.getName());
@@ -144,4 +164,17 @@ public class EOperationServiceCompletionProposal implements ICompletionProposal 
 		return result.toString();
 	}
 
+	private String getEClassifierString(EClassifier eClassifier) {
+		final String res;
+
+		if (eClassifier == null) {
+			res = "";
+		} else if (eClassifier.getEPackage() == null) {
+			res = eClassifier.getName();
+		} else {
+			res = eClassifier.getEPackage().getName() + "::" + eClassifier.getName();
+		}
+
+		return res;
+	}
 }

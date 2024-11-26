@@ -341,7 +341,7 @@ Replacement: 1382 57 16 - 1386 57 20
 * Label:
 getClassifierID()
 * Description:
-EOperation named getClassifierID in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+getClassifierID() = ecore::EInt<br>EOperation named getClassifierID in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 getClassifierID()
 * Type (optional):
@@ -351,7 +351,7 @@ Replacement: 1382 57 16 - 1386 57 20
 * Label:
 getEAnnotation()
 * Description:
-EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+getEAnnotation(source: ecore::EString) = ecore::EAnnotation<br>EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 getEAnnotation()
 * Type (optional):
@@ -371,7 +371,7 @@ Replacement: 1382 57 16 - 1386 57 20
 * Label:
 isInstance()
 * Description:
-EOperation named isInstance in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+isInstance(object: ecore::EJavaObject) = ecore::EBoolean<br>EOperation named isInstance in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 isInstance()
 * Type (optional):

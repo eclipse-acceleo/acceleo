@@ -261,7 +261,7 @@ Replacement: 729 31 11 - 733 31 15
 * Label:
 getEAnnotation()
 * Description:
-EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+getEAnnotation(source: ecore::EString) = ecore::EAnnotation<br>EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 getEAnnotation()
 * Type (optional):
