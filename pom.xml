@@ -50,20 +50,17 @@
 
     <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/acceleo/org.eclipse.acceleo.git</tycho.scmUrl>
 
-    <asciidoc-version>2.0.0-RC.1</asciidoc-version>
-    <jruby.version>9.2.8.0</jruby.version>
-    <asciidoctorj.version>2.1.0</asciidoctorj.version>
+    <asciidoctor-maven-plugin-version>2.0.0-RC.1</asciidoctor-maven-plugin-version>
+    <jruby-complete-version>9.2.8.0</jruby-complete-version>
+    <asciidoctorj-version>2.1.0</asciidoctorj-version>
 
-    <maven-checkstyle-version>2.0</maven-checkstyle-version>
-    <maven-enforcer-version>3.0.0-M3</maven-enforcer-version>
+    <maven-checkstyle-plugin-version>2.0</maven-checkstyle-plugin-version>
+    <maven-enforcer-plugin-version>3.5.0</maven-enforcer-plugin-version>
     <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
-    <checkstyle-version>3.1.1</checkstyle-version>
-    <maven-antrun-version>1.7</maven-antrun-version>
-    <findbugs-maven-version>3.0.0</findbugs-maven-version>
-    <maven-pmd-version>3.1</maven-pmd-version>
-    <eclipse-jarsigner-version>1.3.4</eclipse-jarsigner-version>
-    <maven-jxr-version>2.3</maven-jxr-version>
-    <jacoco-maven-version>0.7.1.201405082137</jacoco-maven-version>
+    <findbugs-maven-plugin-version>3.0.5</findbugs-maven-plugin-version>
+    <maven-pmd-plugin-version>3.15.1</maven-pmd-plugin-version>
+    <eclipse-jarsigner-plugin-version>1.3.4</eclipse-jarsigner-plugin-version>
+    <maven-jxr-plugin-version>3.6.0</maven-jxr-plugin-version>
 
     <!-- Sonar properties -->
     <sonar.language>java</sonar.language>
@@ -266,7 +263,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>${maven-enforcer-version}</version>
+        <version>${maven-enforcer-plugin-version}</version>
         <executions>
           <execution>
             <id>enforce</id>
@@ -302,7 +299,7 @@
         <plugin>
           <groupId>org.eclipse.cbi.maven.plugins</groupId>
           <artifactId>eclipse-jarsigner-plugin</artifactId>
-          <version>${eclipse-jarsigner-version}</version>
+          <version>${eclipse-jarsigner-plugin-version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -313,19 +310,14 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <version>${maven-antrun-version}</version>
-        </plugin>
-        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>findbugs-maven-plugin</artifactId>
-          <version>${findbugs-maven-version}</version>
+          <version>${findbugs-maven-plugin-version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>${maven-pmd-version}</version>
+          <version>${maven-pmd-plugin-version}</version>
           <configuration>
             <sourceEncoding>${java-resource-encoding}</sourceEncoding>
             <targetJdk>${target-java-version}</targetJdk>
@@ -334,7 +326,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${maven-checkstyle-version}</version>
+          <version>${maven-checkstyle-plugin-version}</version>
           <configuration>
             <encoding>${java-source-encoding}</encoding>
           </configuration>
@@ -342,22 +334,22 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jxr-plugin</artifactId>
-          <version>${maven-jxr-version}</version>
+          <version>${maven-jxr-plugin-version}</version>
         </plugin>
         <plugin>
           <groupId>org.asciidoctor</groupId>
           <artifactId>asciidoctor-maven-plugin</artifactId>
-          <version>${asciidoc-version}</version>
+          <version>${asciidoctor-maven-plugin-version}</version>
           <dependencies>
             <dependency>
               <groupId>org.jruby</groupId>
               <artifactId>jruby-complete</artifactId>
-              <version>${jruby.version}</version>
+              <version>${jruby-complete-version}</version>
             </dependency>
             <dependency>
               <groupId>org.asciidoctor</groupId>
               <artifactId>asciidoctorj</artifactId>
-              <version>${asciidoctorj.version}</version>
+              <version>${asciidoctorj-version}</version>
             </dependency>
           </dependencies>
         </plugin>
