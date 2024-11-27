@@ -3472,4 +3472,24 @@ public class BuildTest {
 				.getArguments().get(1));
 	}
 
+	@Test
+	public void expressionWithSuffix() {
+		AstResult build = engine.build("self.eClass()name");
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("text remaining after expresion \"name\".", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+	}
+
+	@Test
+	public void expressionWithSuffix1() {
+		AstResult build = engine.build("self.eClass()any text here");
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("text remaining after expresion \"any text here\".", build.getDiagnostic().getChildren()
+				.get(0).getMessage());
+	}
+
 }

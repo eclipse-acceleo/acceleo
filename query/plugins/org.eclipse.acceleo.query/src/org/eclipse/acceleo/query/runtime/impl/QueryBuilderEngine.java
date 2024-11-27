@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,11 +82,6 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 			// parser.setTrace(true);
 			parser.setErrorHandler(new DefaultErrorStrategy() {
 
-				/**
-				 * {@inheritDoc}
-				 *
-				 * @see org.antlr.v4.runtime.DefaultErrorStrategy#sync(org.antlr.v4.runtime.Parser)
-				 */
 				@Override
 				public void sync(Parser recognizer) throws RecognitionException {
 					// nothing to do here
@@ -95,6 +90,15 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 			});
 			parser.entry();
 			result = astBuilder.getAstResult();
+			if (result.getDiagnostic().getSeverity() != Diagnostic.ERROR) {
+				final int expressionEndPosition = result.getEndPosition(result.getAst());
+				if (expressionEndPosition < expression.length()) {
+					final String suffix = expression.substring(expressionEndPosition);
+					((BasicDiagnostic)result.getDiagnostic()).add(new BasicDiagnostic(Diagnostic.ERROR,
+							AstBuilderListener.PLUGIN_ID, 0, "text remaining after expresion \"" + suffix
+									+ "\".", new Object[] {suffix }));
+				}
+			}
 		} else {
 			ErrorExpression errorExpression = (ErrorExpression)EcoreUtil.create(AstPackage.eINSTANCE
 					.getErrorExpression());
@@ -102,6 +106,12 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 			errors.add(errorExpression);
 			final Positions<ASTNode> positions = new Positions<>();
 			if (expression != null) {
+				positions.setIdentifierStartPositions(errorExpression, Integer.valueOf(0));
+				positions.setIdentifierStartLines(errorExpression, Integer.valueOf(0));
+				positions.setIdentifierStartColumns(errorExpression, Integer.valueOf(0));
+				positions.setIdentifierEndPositions(errorExpression, Integer.valueOf(0));
+				positions.setIdentifierEndLines(errorExpression, Integer.valueOf(0));
+				positions.setIdentifierEndColumns(errorExpression, Integer.valueOf(0));
 				positions.setStartPositions(errorExpression, Integer.valueOf(0));
 				positions.setStartLines(errorExpression, Integer.valueOf(0));
 				positions.setStartColumns(errorExpression, Integer.valueOf(0));
