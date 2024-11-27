@@ -56,6 +56,7 @@
 
     <maven-checkstyle-version>2.0</maven-checkstyle-version>
     <maven-enforcer-version>3.0.0-M3</maven-enforcer-version>
+    <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
     <checkstyle-version>3.1.1</checkstyle-version>
     <maven-antrun-version>1.7</maven-antrun-version>
     <findbugs-maven-version>3.0.0</findbugs-maven-version>
@@ -363,24 +364,14 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.4.0</version>
-          <executions>
-            <execution>
-              <id>auto-clean</id>
-              <phase>initialize</phase>
-              <goals>
-                <goal>clean</goal>
-              </goals>
-              <configuration>
-                <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                <filesets>
-                  <fileset>
-                    <directory>${maven-repository}</directory>
-                  </fileset>
-                </filesets>
-              </configuration>
-            </execution>
-          </executions>
+          <version>${maven-clean-plugin-version}</version>
+          <configuration>
+            <filesets>
+              <fileset>
+                <directory>${maven-repository}</directory>
+              </fileset>
+            </filesets>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

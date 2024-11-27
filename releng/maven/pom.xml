@@ -25,6 +25,7 @@
     <maven.compiler.target>7</maven.compiler.target>
     <copy-dependencies-version>3.8.1</copy-dependencies-version>
     <maven-deploy-plugin-version>3.1.3</maven-deploy-plugin-version>
+    <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
     <deployURL>file://${maven.multiModuleProjectDirectory}/${maven-repository}</deployURL>
   </properties>
 
@@ -52,6 +53,23 @@
     <module>aql</module>
     <module>acceleo</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean-plugin-version}</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${maven-repository}</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <profile>
