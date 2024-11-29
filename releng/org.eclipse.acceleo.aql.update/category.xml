@@ -66,6 +66,7 @@
    <bundle id="org.eclipse.lsp4e.debug"/>
    <bundle id="org.eclipse.mylyn.wikitext.markdown"/>
    <bundle id="org.eclipse.mylyn.wikitext"/>
+   <bundle id="org.apache.commons.lang3"/>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
          Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.).
