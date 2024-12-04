@@ -557,4 +557,4 @@ bc. <repositories>
   </dependency>
 </dependencies>
 
-The following "test project":https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.query.maven.tests can be used as an example.
+The following "test project":https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.query.maven.tests can be used as an example.

@@ -5292,6 +5292,7 @@ receiver: 42
 		</ul>
 		<p>Services are responsible for:</p>
 		<ul>
+			<li>Provide arguments types : used for lookup for validation and evaluation</li>
 			<li>return type: give a return type at validation time. This type can be static or dynamic to a specific call</li>
 			<li>completion proposals: give a list of completion proposals</li>
 			<li>invoke: returning the result at runtime</li>
@@ -5419,7 +5420,7 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 &lt;/dependencies&gt;
 </code></pre>
 		<p>The following 
-			<a href="https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.query.maven.tests">test project</a> can be used as an example.
+			<a href="https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.query.maven.tests">test project</a> can be used as an example.
 		</p>
 	
     </div>

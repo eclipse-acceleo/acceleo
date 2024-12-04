@@ -117,4 +117,4 @@ If you use the source folder for your template make sure you include them as res
 </project>
 ----
 
-The following https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as an example.
+The following https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as an example.
