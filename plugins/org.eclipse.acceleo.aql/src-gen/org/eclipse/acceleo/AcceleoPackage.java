@@ -836,13 +836,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_COMMENT__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Missing Space</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_COMMENT__MISSING_SPACE = ERROR_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 2;
+	int ERROR_COMMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Error Comment</em>' class. <!-- begin-user-doc --> <!--
@@ -851,7 +860,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_COMMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Error Comment</em>' class. <!-- begin-user-doc --> <!--
@@ -889,6 +898,15 @@ public interface AcceleoPackage extends EPackage {
 	 * @ordered
 	 */
 	int ERROR_BLOCK_COMMENT__BODY = ERROR_COMMENT__BODY;
+
+	/**
+	 * The feature id for the '<em><b>Missing Space</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BLOCK_COMMENT__MISSING_SPACE = ERROR_COMMENT__MISSING_SPACE;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -4117,6 +4135,17 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorComment();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorComment#getMissingSpace
+	 * <em>Missing Space</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Missing Space</em>'.
+	 * @see org.eclipse.acceleo.ErrorComment#getMissingSpace()
+	 * @see #getErrorComment()
+	 * @generated
+	 */
+	EAttribute getErrorComment_MissingSpace();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorComment#getMissingEndHeader
 	 * <em>Missing End Header</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -6047,6 +6076,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ERROR_COMMENT = eINSTANCE.getErrorComment();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Space</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_COMMENT__MISSING_SPACE = eINSTANCE.getErrorComment_MissingSpace();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing End Header</b></em>' attribute feature. <!--

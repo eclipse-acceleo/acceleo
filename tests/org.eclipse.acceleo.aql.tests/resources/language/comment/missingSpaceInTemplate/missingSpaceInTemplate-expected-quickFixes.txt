@@ -1,0 +1,8 @@
+//@moduleElements.1/@body/@statements.0/@body/@statements.0/@expression/@aql
+Add parameter comment
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/comment/missingSpaceInTemplate/missingSpaceInTemplate.mtl [146, 3, 53, 146, 3, 53] , comment: String
+Surround with Let: comment
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/comment/missingSpaceInTemplate/missingSpaceInTemplate.mtl [197, 5, 4, 208, 6, 0] [let comment : String = '']
+      [comment/]
+  
+    [/let]

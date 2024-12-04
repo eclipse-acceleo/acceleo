@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.ErrorComment;
 import org.eclipse.acceleo.ErrorMargin;
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
@@ -415,6 +416,26 @@ public class ModuleQuickFixesSwitch extends AcceleoSwitch<List<IAstQuickFix>> {
 		while (text.charAt(currentPosition) != '[' && currentPosition > 0) {
 			currentPosition--;
 			res--;
+		}
+
+		return res;
+	}
+
+	@Override
+	public List<IAstQuickFix> caseErrorComment(ErrorComment errorComment) {
+		final List<IAstQuickFix> res = new ArrayList<>();
+
+		if (errorComment.getMissingSpace() != -1) {
+			final IAstQuickFix fix = new AstQuickFix("Add missing space");
+			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+			final URI uri = resolver.getSourceURI(moduleQualifiedName);
+			final int offset = errorComment.getMissingSpace() - 1;
+			final int line = linesAndColumns[offset][0];
+			final int column = linesAndColumns[offset][1];
+			final AstTextReplacement textReplacement = new AstTextReplacement(uri, AcceleoParser.SPACE,
+					offset, line, column, offset, line, column);
+			fix.getTextReplacements().add(textReplacement);
+			res.add(fix);
 		}
 
 		return res;

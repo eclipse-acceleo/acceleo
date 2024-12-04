@@ -66,6 +66,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Comment/body"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorComment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorComment/missingSpace"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorComment/missingEndHeader"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//CommentBody">

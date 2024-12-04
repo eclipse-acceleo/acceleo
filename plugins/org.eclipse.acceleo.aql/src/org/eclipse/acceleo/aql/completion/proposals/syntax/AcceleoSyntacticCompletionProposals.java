@@ -152,6 +152,12 @@ public final class AcceleoSyntacticCompletionProposals {
 			AcceleoPackage.Literals.BLOCK_COMMENT);
 
 	/**
+	 * The space of a {@link Comment}.
+	 */
+	public static final AcceleoCompletionProposal COMMENT_SPACE = createSyntacticCompletionProposal(
+			AcceleoParser.SPACE, "Inserts a space:", AcceleoPackage.Literals.COMMENT);
+
+	/**
 	 * The start of a {@link Documentation}.
 	 */
 	public static final AcceleoCompletionProposal DOCUMENTATION_START = createSyntacticCompletionProposal(

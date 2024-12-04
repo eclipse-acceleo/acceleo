@@ -1,0 +1,16 @@
+
+header position 0..69
+module missingSpaceAndEnd
+  metamodel http://www.eclipse.org/emf/2002/Ecore (28..66)
+  *** error comment ***
+  missing space: 79
+  missing end header: -1
+  [comment 
+[comment @main  (79..95) /] (71..97)
+  
+  public template myTemplate(myParam : EPackage (126..151))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (163..184) mode overwrite (197..200)
+    [/file] (156..207)
+     (newLineNeeded) (207..208) (153..208)
+  [/template] (98..219) (0..219)

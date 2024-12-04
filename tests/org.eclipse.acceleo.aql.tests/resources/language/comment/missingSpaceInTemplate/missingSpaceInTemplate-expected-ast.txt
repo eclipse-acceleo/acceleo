@@ -1,0 +1,13 @@
+
+header position 0..73
+module missingSpaceInTemplate
+  metamodel http://www.eclipse.org/emf/2002/Ecore (32..70)
+  [comment @main  (84..90) /] (75..92)
+  
+  public template myTemplate(myParam : EPackage (121..146))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (158..179) mode overwrite
+      [comment (198..205)/] (newLineNeeded (197..208) (192..210)
+    [/file] (151..217)
+     (newLineNeeded) (217..218) (148..218)
+  [/template] (93..229) (0..229)

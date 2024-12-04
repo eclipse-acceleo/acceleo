@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -63,6 +63,7 @@ public class ErrorCommentItemProvider extends ItemProviderAdapter implements IEd
 			super.getPropertyDescriptors(object);
 
 			addMultiLinesPropertyDescriptor(object);
+			addMissingSpacePropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -82,6 +83,22 @@ public class ErrorCommentItemProvider extends ItemProviderAdapter implements IEd
 								"_UI_Statement_type"), //$NON-NLS-1$
 						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
 						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Missing Space feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMissingSpacePropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_ErrorComment_missingSpace_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_ErrorComment_missingSpace_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_ErrorComment_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.ERROR_COMMENT__MISSING_SPACE, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -167,6 +184,7 @@ public class ErrorCommentItemProvider extends ItemProviderAdapter implements IEd
 
 		switch (notification.getFeatureID(ErrorComment.class)) {
 		case AcceleoPackage.ERROR_COMMENT__MULTI_LINES:
+		case AcceleoPackage.ERROR_COMMENT__MISSING_SPACE:
 		case AcceleoPackage.ERROR_COMMENT__MISSING_END_HEADER:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;

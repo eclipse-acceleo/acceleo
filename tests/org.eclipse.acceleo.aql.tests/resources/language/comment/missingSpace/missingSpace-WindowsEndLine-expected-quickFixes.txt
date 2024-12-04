@@ -1,0 +1,6 @@
+//@moduleElements.0
+Add missing space
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/comment/missingSpace/missingSpace.mtl [74, 2, 10, 74, 2, 10]  
+//@moduleElements.0/@body
+Add missing space
+Replace file:/home/development/git/acceleo/tests/org.eclipse.acceleo.aql.tests/resources/language/comment/missingSpace/missingSpace.mtl [74, 2, 10, 74, 2, 10]  

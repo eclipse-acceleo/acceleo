@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  * <li>{@link org.eclipse.acceleo.impl.ErrorCommentImpl#isMultiLines <em>Multi Lines</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorCommentImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorCommentImpl#getMissingSpace <em>Missing Space</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorCommentImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
  *
@@ -68,6 +69,26 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 	 * @ordered
 	 */
 	protected CommentBody body;
+
+	/**
+	 * The default value of the '{@link #getMissingSpace() <em>Missing Space</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingSpace()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_SPACE_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingSpace() <em>Missing Space</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingSpace()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingSpace = MISSING_SPACE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute. <!--
@@ -190,6 +211,30 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 	 * @generated
 	 */
 	@Override
+	public int getMissingSpace() {
+		return missingSpace;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMissingSpace(int newMissingSpace) {
+		int oldMissingSpace = missingSpace;
+		missingSpace = newMissingSpace;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_COMMENT__MISSING_SPACE,
+					oldMissingSpace, missingSpace));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -234,6 +279,8 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 				return isMultiLines();
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				return getBody();
+			case AcceleoPackage.ERROR_COMMENT__MISSING_SPACE:
+				return getMissingSpace();
 			case AcceleoPackage.ERROR_COMMENT__MISSING_END_HEADER:
 				return getMissingEndHeader();
 		}
@@ -253,6 +300,9 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 				return;
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				setBody((CommentBody)newValue);
+				return;
+			case AcceleoPackage.ERROR_COMMENT__MISSING_SPACE:
+				setMissingSpace((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_COMMENT__MISSING_END_HEADER:
 				setMissingEndHeader((Integer)newValue);
@@ -275,6 +325,9 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				setBody((CommentBody)null);
 				return;
+			case AcceleoPackage.ERROR_COMMENT__MISSING_SPACE:
+				setMissingSpace(MISSING_SPACE_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_COMMENT__MISSING_END_HEADER:
 				setMissingEndHeader(MISSING_END_HEADER_EDEFAULT);
 				return;
@@ -294,6 +347,8 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 				return multiLines != MULTI_LINES_EDEFAULT;
 			case AcceleoPackage.ERROR_COMMENT__BODY:
 				return body != null;
+			case AcceleoPackage.ERROR_COMMENT__MISSING_SPACE:
+				return missingSpace != MISSING_SPACE_EDEFAULT;
 			case AcceleoPackage.ERROR_COMMENT__MISSING_END_HEADER:
 				return missingEndHeader != MISSING_END_HEADER_EDEFAULT;
 		}
@@ -377,6 +432,8 @@ public class ErrorCommentImpl extends MinimalEObjectImpl.Container implements Er
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (multiLines: "); //$NON-NLS-1$
 		result.append(multiLines);
+		result.append(", missingSpace: "); //$NON-NLS-1$
+		result.append(missingSpace);
 		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);
 		result.append(')');

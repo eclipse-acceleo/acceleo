@@ -659,6 +659,8 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorComment(ErrorComment errorComment) {
 		builder.append("*** error comment ***");
 		newLine();
+		builder.append("missing space: " + errorComment.getMissingSpace());
+		newLine();
 		builder.append("missing end header: " + errorComment.getMissingEndHeader());
 		newLine();
 		return null;

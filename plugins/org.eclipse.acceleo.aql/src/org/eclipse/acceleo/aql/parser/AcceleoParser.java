@@ -143,9 +143,14 @@ public class AcceleoParser {
 	public static final String BLOCK_COMMENT_END = "[/" + COMMENT + NO_SLASH_END;
 
 	/**
+	 * Start of {@link ErrorComment} with a missing space.
+	 */
+	public static final String COMMENT_START_MISSING_SPACE = TEXT_END + COMMENT;
+
+	/**
 	 * Start of {@link Comment}.
 	 */
-	public static final String COMMENT_START = TEXT_END + COMMENT + SPACE;
+	public static final String COMMENT_START = COMMENT_START_MISSING_SPACE + SPACE;
 
 	/**
 	 * End of {@link Comment}.
@@ -788,7 +793,7 @@ public class AcceleoParser {
 	 */
 	protected List<Comment> parseCommentsOrModuleDocumentations() {
 		final List<Comment> comments = new ArrayList<Comment>();
-		Comment comment = parseComment();
+		Comment comment = parseComment(true);
 		ModuleDocumentation documentation = parseModuleDocumentation();
 		while (comment != null || documentation != null) {
 			if (comment != null) {
@@ -798,7 +803,7 @@ public class AcceleoParser {
 				comments.add(documentation);
 			}
 			skipSpaces();
-			comment = parseComment();
+			comment = parseComment(true);
 			documentation = parseModuleDocumentation();
 		}
 		return comments;
@@ -878,17 +883,29 @@ public class AcceleoParser {
 	/**
 	 * Parses a {@link Comment} or a {@link BlockComment}.
 	 * 
+	 * @param errorOnMissingSpace
+	 *            if <code>true</code> return an {@link ErrorComment} if the space after the comment tag is
+	 *            missing, returns <code>null</code> otherwise
 	 * @return the created {@link Comment} or {@link BlockComment} if any recognized, <code>null</code>
 	 *         otherwise
 	 */
-	protected Comment parseComment() {
+	protected Comment parseComment(boolean errorOnMissingSpace) {
 		final Comment res;
 		if (text.startsWith(BLOCK_COMMENT_START, currentPosition)) {
-			res = createComment(BLOCK_COMMENT_START, BLOCK_COMMENT_END, AcceleoPackage.eINSTANCE
-					.getBlockComment(), AcceleoPackage.eINSTANCE.getErrorBlockComment());
+			final EClass blockCommentEClass = AcceleoPackage.eINSTANCE.getBlockComment();
+			final EClass errorBlockCommentEClass = AcceleoPackage.eINSTANCE.getErrorBlockComment();
+			res = createComment(BLOCK_COMMENT_START, BLOCK_COMMENT_END, blockCommentEClass,
+					errorBlockCommentEClass);
 		} else if (text.startsWith(COMMENT_START, currentPosition)) {
-			res = createComment(COMMENT_START, COMMENT_END, AcceleoPackage.eINSTANCE.getComment(),
-					AcceleoPackage.eINSTANCE.getErrorComment());
+			final EClass commentEClass = AcceleoPackage.eINSTANCE.getComment();
+			final EClass errorCommentEClass = AcceleoPackage.eINSTANCE.getErrorComment();
+			res = createComment(COMMENT_START, COMMENT_END, commentEClass, errorCommentEClass);
+		} else if (errorOnMissingSpace && text.startsWith(COMMENT_START_MISSING_SPACE, currentPosition)) {
+			final EClass errorCommentEClass = AcceleoPackage.eINSTANCE.getErrorComment();
+			final int missingSpacePosition = currentPosition + COMMENT_START_MISSING_SPACE.length();
+			res = createComment(COMMENT_START_MISSING_SPACE, COMMENT_END, errorCommentEClass,
+					errorCommentEClass);
+			((ErrorComment)res).setMissingSpace(missingSpacePosition);
 		} else {
 			res = null;
 		}
@@ -1113,18 +1130,20 @@ public class AcceleoParser {
 			final int missingEndHeader = readMissingString(MODULE_HEADER_END);
 			final int endHeaderPosition = currentPosition;
 			skipSpaces();
+			final List<ModuleElement> moduleElements = new ArrayList<>();
 			List<Comment> elementComments = parseCommentsOrModuleElementDocumentations();
 			skipSpaces();
 			final List<Import> imports = new ArrayList<Import>();
 			Import imported = parseImport();
 			while (imported != null) {
+				moduleElements.addAll(elementComments);
 				imports.add(imported);
 				skipSpaces();
 				elementComments = parseCommentsOrModuleElementDocumentations();
 				skipSpaces();
 				imported = parseImport();
 			}
-			final List<ModuleElement> moduleElements = parseModuleElements(elementComments);
+			moduleElements.addAll(parseModuleElements(elementComments));
 			final int endPosition = currentPosition;
 			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1;
 			if (missingParenthesis || missingEPackage != -1 || missingEndHeader != -1) {
@@ -1309,7 +1328,7 @@ public class AcceleoParser {
 	 */
 	protected List<Comment> parseCommentsOrModuleElementDocumentations() {
 		final List<Comment> comments = new ArrayList<Comment>();
-		Comment comment = parseComment();
+		Comment comment = parseComment(true);
 		ModuleElementDocumentation documentation = parseModuleElementDocumentation();
 		while (comment != null || documentation != null) {
 			if (comment != null) {
@@ -1319,7 +1338,7 @@ public class AcceleoParser {
 				comments.add(documentation);
 			}
 			skipSpaces();
-			comment = parseComment();
+			comment = parseComment(true);
 			documentation = parseModuleElementDocumentation();
 		}
 		return comments;
@@ -1736,7 +1755,7 @@ public class AcceleoParser {
 						if (protectedArea != null) {
 							res = protectedArea;
 						} else {
-							final Comment comment = parseComment();
+							final Comment comment = parseComment(false);
 							if (comment != null) {
 								res = comment;
 							} else {

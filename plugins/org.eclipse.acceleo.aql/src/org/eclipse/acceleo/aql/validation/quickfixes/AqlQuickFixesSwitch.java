@@ -327,8 +327,8 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 			final int offset = positions.getEndPositions(errorCall);
 			final int line = positions.getEndLines(errorCall);
 			final int column = positions.getEndColumns(errorCall);
-			final AstTextReplacement textReplacement = new AstTextReplacement(uri, ")", offset, line, column,
-					offset, line, column);
+			final AstTextReplacement textReplacement = new AstTextReplacement(uri,
+					AcceleoParser.CLOSE_PARENTHESIS, offset, line, column, offset, line, column);
 			fix.getTextReplacements().add(textReplacement);
 			res.add(fix);
 		}

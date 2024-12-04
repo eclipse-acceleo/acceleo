@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.acceleo.Comment;
+import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.ast.ASTNode;
@@ -77,6 +79,11 @@ public class AcceleoQuickFixesSwitch extends ComposedSwitch<List<IAstQuickFix>> 
 			errors = validationResult.getValidationMessages(call).stream().filter(m -> m
 					.getLevel() == ValidationMessageLevel.ERROR).collect(Collectors.toList());
 			localNode = call;
+		} else if (node instanceof CommentBody) {
+			final Comment comment = (Comment)node.eContainer();
+			errors = validationResult.getValidationMessages(comment).stream().filter(m -> m
+					.getLevel() == ValidationMessageLevel.ERROR).collect(Collectors.toList());
+			localNode = comment;
 		} else {
 			errors = validationResult.getValidationMessages(node).stream().filter(m -> m
 					.getLevel() == ValidationMessageLevel.ERROR).collect(Collectors.toList());

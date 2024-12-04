@@ -279,7 +279,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	public List<AcceleoCompletionProposal> caseErrorComment(ErrorComment errorComment) {
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 
-		if (errorComment.getMissingEndHeader() != -1) {
+		if (errorComment.getMissingSpace() != -1) {
+			res.add(AcceleoSyntacticCompletionProposals.COMMA_SPACE);
+		} else if (errorComment.getMissingEndHeader() != -1) {
 			if (errorComment instanceof ErrorBlockComment) {
 				res.add(AcceleoSyntacticCompletionProposals.BLOCK_COMMENT_END);
 			} else {

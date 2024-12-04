@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2024 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -18,6 +18,7 @@ package org.eclipse.acceleo;
  * The following features are supported:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.ErrorComment#getMissingSpace <em>Missing Space</em>}</li>
  * <li>{@link org.eclipse.acceleo.ErrorComment#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
  *
@@ -26,6 +27,29 @@ package org.eclipse.acceleo;
  * @generated
  */
 public interface ErrorComment extends org.eclipse.acceleo.Error, Comment {
+	/**
+	 * Returns the value of the '<em><b>Missing Space</b></em>' attribute. The default value is
+	 * <code>"-1"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Missing Space</em>' attribute.
+	 * @see #setMissingSpace(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorComment_MissingSpace()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingSpace();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorComment#getMissingSpace <em>Missing Space</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Missing Space</em>' attribute.
+	 * @see #getMissingSpace()
+	 * @generated
+	 */
+	void setMissingSpace(int value);
+
 	/**
 	 * Returns the value of the '<em><b>Missing End Header</b></em>' attribute. The default value is
 	 * <code>"-1"</code>. <!-- begin-user-doc -->

@@ -867,8 +867,18 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorComment_MissingEndHeader() {
+	public EAttribute getErrorComment_MissingSpace() {
 		return (EAttribute)errorCommentEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getErrorComment_MissingEndHeader() {
+		return (EAttribute)errorCommentEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2394,6 +2404,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEReference(commentEClass, COMMENT__BODY);
 
 		errorCommentEClass = createEClass(ERROR_COMMENT);
+		createEAttribute(errorCommentEClass, ERROR_COMMENT__MISSING_SPACE);
 		createEAttribute(errorCommentEClass, ERROR_COMMENT__MISSING_END_HEADER);
 
 		commentBodyEClass = createEClass(COMMENT_BODY);
@@ -2800,6 +2811,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(errorCommentEClass, ErrorComment.class, "ErrorComment", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getErrorComment_MissingSpace(), ecorePackage.getEInt(), "missingSpace", "-1", 1, 1, //$NON-NLS-1$//$NON-NLS-2$
+				ErrorComment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getErrorComment_MissingEndHeader(), ecorePackage.getEInt(), "missingEndHeader", "-1", //$NON-NLS-1$//$NON-NLS-2$
 				1, 1, ErrorComment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

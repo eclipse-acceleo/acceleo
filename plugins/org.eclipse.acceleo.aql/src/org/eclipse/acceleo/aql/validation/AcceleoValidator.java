@@ -403,7 +403,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseErrorComment(ErrorComment errorComment) {
-		if (errorComment.getMissingEndHeader() != -1) {
+		if (errorComment.getMissingSpace() != -1) {
+			final String message = getMissingTokenMessage(AcceleoParser.SPACE);
+			addMessage(errorComment, ValidationMessageLevel.ERROR, message, errorComment.getMissingSpace(),
+					errorComment.getMissingSpace());
+		} else if (errorComment.getMissingEndHeader() != -1) {
 			final String message;
 			if (errorComment instanceof ErrorBlockComment) {
 				message = getMissingTokenMessage(AcceleoParser.BLOCK_COMMENT_END);
