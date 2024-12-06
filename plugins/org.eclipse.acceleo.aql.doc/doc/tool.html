@@ -837,8 +837,8 @@ Clicking on any element of the stack will simultaneously display the correspondi
 </div>
 <div class="paragraph">
 <p>The <strong>Variables</strong> view displays currently accessible variables.
-In the example below, the execution has met a breakpoint when computing <code>Attributes</code> for a class, so the current input is a class.
-The Variables view tells us that the current class is called <code>EAttribute</code>.</p>
+In the example below, the execution has met a breakpoint on line 58.
+The Variables view tells us that the current package is an EPackage called traceability. We can also see the blockoutput that list text produced by each statement of the current block. We find each previous text statement and the expression retrieving the name of the pkg variable.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -916,8 +916,11 @@ Here is an example of a deactivated breakpoint in this view:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>There is just one additional information to enter, which is the path to the profiling result file where Acceleo will store the profiling information of subsequent executions. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
+<p>There is just two additional information to enter, which are the path to the profiling result file where Acceleo will store the profiling information of subsequent executions and the format it should be saved <code>TREE</code> or <code>FLAT</code>. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
 You can simply select a folder in this dialog, in which the profile file will be created.</p>
+</div>
+<div class="paragraph">
+<p>The profile format will <code>TREE</code> will provide more details about the exectution tree but will also grow bigger than the <code>FLAT</code> format that contains less information on the execution tree.</p>
 </div>
 </div>
 <div class="sect3">
@@ -937,7 +940,7 @@ You can simply select a folder in this dialog, in which the profile file will be
 <p>For each generated file, there is one entry in the root node of the profile.</p>
 </div>
 <div class="paragraph">
-<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a [for &#8230;&#8203; ] instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
+<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a <code>[for &#8230;&#8203; ]</code> instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
 </div>
 </div>
 <div class="sect3">
@@ -955,6 +958,22 @@ You can simply select a folder in this dialog, in which the profile file will be
 </div>
 <div class="paragraph">
 <p>To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="title">Before launching the profiling for code coverage</div>
+<div class="paragraph">
+<p>Make sure you generate on an empty output folder for accurate results.
+The content of existing <a href="language.html#_protected_area">protected area</a> won&#8217;t be generated if its identifier exists in the output file.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1008,7 +1027,7 @@ You can simply select a folder in this dialog, in which the profile file will be
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-05 10:39:45 +0200
+Last updated 2024-12-06 09:53:13 +0100
 </div>
 </div>
 </body>

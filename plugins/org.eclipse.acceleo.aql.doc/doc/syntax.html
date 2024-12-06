@@ -450,22 +450,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_syntax">2. Syntax</a>
 <ul class="sectlevel2">
 <li><a href="#_comment">2.1. Comment</a></li>
-<li><a href="#_module">2.2. Module</a></li>
-<li><a href="#_identifier">2.3. Identifier</a></li>
-<li><a href="#_module_documentation">2.4. Module Documentation</a></li>
-<li><a href="#_metamodel">2.5. Metamodel</a></li>
-<li><a href="#_import">2.6. Import</a></li>
-<li><a href="#_module_reference">2.7. Module Reference</a></li>
-<li><a href="#_module_qualified_name">2.8. Module Qualified Name</a></li>
-<li><a href="#_module_element">2.9. Module Element</a></li>
-<li><a href="#_template">2.10. Template</a></li>
-<li><a href="#_visibility">2.11. Visibility</a></li>
-<li><a href="#_parameter">2.12. Parameter</a></li>
-<li><a href="#_statement">2.13. Statement</a></li>
-<li><a href="#_aql_expression">2.14. AQL Expression</a></li>
-<li><a href="#_aql_type_literal">2.15. AQL Type Literal</a></li>
-<li><a href="#_query">2.16. Query</a></li>
-<li><a href="#_module_element_documentation">2.17. Module Element documentation</a></li>
+<li><a href="#_commentblock">2.2. CommentBlock</a></li>
+<li><a href="#_module">2.3. Module</a></li>
+<li><a href="#_identifier">2.4. Identifier</a></li>
+<li><a href="#_module_documentation">2.5. Module Documentation</a></li>
+<li><a href="#_metamodel">2.6. Metamodel</a></li>
+<li><a href="#_import">2.7. Import</a></li>
+<li><a href="#_module_reference">2.8. Module Reference</a></li>
+<li><a href="#_module_qualified_name">2.9. Module Qualified Name</a></li>
+<li><a href="#_module_element">2.10. Module Element</a></li>
+<li><a href="#_template">2.11. Template</a></li>
+<li><a href="#_visibility">2.12. Visibility</a></li>
+<li><a href="#_parameter">2.13. Parameter</a></li>
+<li><a href="#_statement">2.14. Statement</a></li>
+<li><a href="#_aql_expression">2.15. AQL Expression</a></li>
+<li><a href="#_aql_type_literal">2.16. AQL Type Literal</a></li>
+<li><a href="#_query">2.17. Query</a></li>
+<li><a href="#_module_element_documentation">2.18. Module Element documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -498,7 +499,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module">2.2. Module</h3>
+<h3 id="_commentblock">2.2. CommentBlock</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_commentblock">CommentBlock</a> = '[comment] ' ... '[/comment]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module">2.3. Module</h3>
 <div class="paragraph">
 <p>The module is the top level element of a .mtl file. It represent a namespace declaring <a href="#_template">Template</a> and <a href="#_query">Query</a>. The name of the module is qualified by the location of the file in the source folder.</p>
 </div>
@@ -515,7 +524,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_identifier">2.3. Identifier</h3>
+<h3 id="_identifier">2.4. Identifier</h3>
 <div class="paragraph">
 <p>An identifier is used to name elements that need to be identified, or reference element that can be identified.</p>
 </div>
@@ -526,7 +535,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_documentation">2.4. Module Documentation</h3>
+<h3 id="_module_documentation">2.5. Module Documentation</h3>
 <div class="paragraph">
 <p>The module documentation should contains a description of the <a href="#_module">Module</a>.</p>
 </div>
@@ -554,7 +563,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_metamodel">2.5. Metamodel</h3>
+<h3 id="_metamodel">2.6. Metamodel</h3>
 <div class="paragraph">
 <p>This is the declaration of metamodels used by the module. Metamodels are referenced using their EPackage nsURI between simple quote.</p>
 </div>
@@ -565,7 +574,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_import">2.6. Import</h3>
+<h3 id="_import">2.7. Import</h3>
 <div class="paragraph">
 <p>This allows a module to import other <a href="#_module">Module</a> or service classes.</p>
 </div>
@@ -576,7 +585,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_reference">2.7. Module Reference</h3>
+<h3 id="_module_reference">2.8. Module Reference</h3>
 <div class="paragraph">
 <p>The module reference is a qualified reference to a <a href="#_module">Module</a></p>
 </div>
@@ -587,7 +596,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_qualified_name">2.8. Module Qualified Name</h3>
+<h3 id="_module_qualified_name">2.9. Module Qualified Name</h3>
 <div class="paragraph">
 <p>A module&#8217;s name is qualified according to its location in the source folder of a project.</p>
 </div>
@@ -598,7 +607,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_element">2.9. Module Element</h3>
+<h3 id="_module_element">2.10. Module Element</h3>
 <div class="paragraph">
 <p>A module element is either a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
 </div>
@@ -609,7 +618,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_template">2.10. Template</h3>
+<h3 id="_template">2.11. Template</h3>
 <div class="paragraph">
 <p>A template returns a String produced using its contained <a href="#_statement">Statement</a>, it can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
 </div>
@@ -620,7 +629,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-ebnf" data-lang="ebnf"><a href="#_template">Template</a> =
 
-'[template ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ('?' <a href="#_aql_expression">AQL Expression</a>)? ('post (' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
+'[template ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ('post (' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
 
 (<a href="#_statement">Statement</a>)*
 
@@ -629,7 +638,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_visibility">2.11. Visibility</h3>
+<h3 id="_visibility">2.12. Visibility</h3>
 <div class="paragraph">
 <p>The visibility defines the scope in which a <a href="#_module_element">Module Element</a> can be called as a service.</p>
 </div>
@@ -640,7 +649,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_parameter">2.12. Parameter</h3>
+<h3 id="_parameter">2.13. Parameter</h3>
 <div class="paragraph">
 <p>A parameter is used to pass a value from the caller to a callee. This value can be later referenced using its identifier.</p>
 </div>
@@ -651,7 +660,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_statement">2.13. Statement</h3>
+<h3 id="_statement">2.14. Statement</h3>
 <div class="paragraph">
 <p>A statement is a directive used to produce an output or control the execution flow.</p>
 </div>
@@ -663,7 +672,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_file_statement">2.13.1. File Statement</h4>
+<h4 id="_file_statement">2.14.1. File Statement</h4>
 <div class="paragraph">
 <p>This statement is used to start the generation of a new file. Strings returned by a statement contained directly or indirectly in the execution flow, will be generated into that file.</p>
 </div>
@@ -683,7 +692,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_for_statement">2.13.2. For Statement</h4>
+<h4 id="_for_statement">2.14.2. For Statement</h4>
 <div class="paragraph">
 <p>This statement loops over a list of values and return the concatenation of all returned String.</p>
 </div>
@@ -700,7 +709,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_if_statement">2.13.3. If Statement</h4>
+<h4 id="_if_statement">2.14.3. If Statement</h4>
 <div class="paragraph">
 <p>This statement create a branch in the execution flow and return the String of one of its branch according to the <a href="#_aql_expression">AQL Expression</a> evaluated to true. If a condition doesn&#8217;t evaluate to a boolean an empty String is generated and an error is logged.</p>
 </div>
@@ -725,7 +734,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_let_statement">2.13.4. Let Statement</h4>
+<h4 id="_let_statement">2.14.4. Let Statement</h4>
 <div class="paragraph">
 <p>This statement allows to compute one or more <a href="#_aql_expression">AQL Expression</a> and reference their value using an identifier. It can be used to improve readability of the template or increase performance when using the same <a href="#_aql_expression">AQL Expression</a> many times in a block of <a href="#_statement">Statement</a>.</p>
 </div>
@@ -742,7 +751,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_protected_area">2.13.5. Protected Area</h4>
+<h4 id="_protected_area">2.14.5. Protected Area</h4>
 <div class="paragraph">
 <p>This statement declares an identified area in the generated file. If the generated file exists and a protected area with the same identifier exists in its contents, then the existing content of this area is directly returned. If it doesn&#8217;t exist, then the concatenation of the body&#8217;s statements results is returned.</p>
 </div>
@@ -763,7 +772,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect3">
-<h4 id="_expression_statement">2.13.6. Expression Statement</h4>
+<h4 id="_expression_statement">2.14.6. Expression Statement</h4>
 <div class="paragraph">
 <p>This statement returns the String representation of the evaluation of its <a href="#_aql_expression">AQL Expression</a>.</p>
 </div>
@@ -774,14 +783,14 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect3">
-<h4 id="_text_statement">2.13.7. Text Statement</h4>
+<h4 id="_text_statement">2.14.7. Text Statement</h4>
 <div class="paragraph">
 <p>This is any other text outside of '[' and ']'.</p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_aql_expression">2.14. AQL Expression</h3>
+<h3 id="_aql_expression">2.15. AQL Expression</h3>
 <div class="paragraph">
 <p>This is an Acceleo Query Language expression. It is used to navigate through models and call services. In the context of Acceleo, <a href="#_template">Template</a> and <a href="#_query">Query</a> can be called as services.</p>
 </div>
@@ -790,13 +799,13 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect2">
-<h3 id="_aql_type_literal">2.15. AQL Type Literal</h3>
+<h3 id="_aql_type_literal">2.16. AQL Type Literal</h3>
 <div class="paragraph">
 <p>This is a type literal as defined in the Acceleo Query Language.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_query">2.16. Query</h3>
+<h3 id="_query">2.17. Query</h3>
 <div class="paragraph">
 <p>A query references an <a href="#_aql_expression">AQL Expression</a> with parameters and can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
 </div>
@@ -809,7 +818,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_element_documentation">2.17. Module Element documentation</h3>
+<h3 id="_module_element_documentation">2.18. Module Element documentation</h3>
 <div class="paragraph">
 <p>The documentation of a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
 </div>
@@ -834,7 +843,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-09 16:19:19 +0200
+Last updated 2024-12-05 16:45:27 +0100
 </div>
 </div>
 <-- TODO there should be a better way to add the BNF language support... -->

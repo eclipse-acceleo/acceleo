@@ -25,6 +25,13 @@ A comment can be used to document any part of the <<Module>>. It generates nothi
 <<Comment>> = '[comment ' ... '/]'
 ----
 
+=== CommentBlock
+
+[source,ebnf,subs=+macros]
+----
+<<CommentBlock>> = '[comment] ' ... '[/comment]'
+----
+
 === Module
 
 The module is the top level element of a .mtl file. It represent a namespace declaring <<Template>> and <<Query>>. The name of the module is qualified by the location of the file in the source folder.
@@ -129,7 +136,7 @@ Also a <<Module>> can contain a template used as entry point of the generation. 
 ----
 <<Template>> =
 
-'[template ' <<Visibility>> <<Identifier>> '(' <<Parameter>>(',' <<Parameter>>)* ')' ('?' <<AQL Expression>>)? ('post (' <<AQL Expression>> ')')? ']'
+'[template ' <<Visibility>> <<Identifier>> '(' <<Parameter>>(',' <<Parameter>>)* ')' ('post (' <<AQL Expression>> ')')? ']'
 
 (<<Statement>>)*
 

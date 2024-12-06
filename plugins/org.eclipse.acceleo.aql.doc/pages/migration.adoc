@@ -2,9 +2,22 @@ This section was written to describe the behavior changes between the two versio
 
 === How to migrate Acceleo 3 templates to Acceleo 4
 
-==== The migration tool
+There are two ways to launch the migration of your Acceleo 4 project. The first one is by installing the migration feature in your Acceleo 3 environment, the second one by using the migration tool in command line.
 
-The migration tool consists on a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) required to perform a migration. 
+==== The migration from your Acceleo 3 environment
+
+First make a copy of your Acceleo 3 environment or create a new Acceleo 3 environment for the migration.
+Then you need to <<install.adoc#,install>> the `Acceleo 3 to Acceleo 4 migrator` feature.
+Before launching the migration you need to make sure your Acceleo 3 projects are built properly. One way to do this can be to check the output folder of your plugin (usually the bin folder) to check the presence of *.emtl files.
+Then you can use the following menu on your Acceleo 3 projects:
+
+image::images/MigrationMenu.png[Migration Menu]
+
+This will ask you to select an output folder for migrated projects.
+
+==== The migration tool in command line
+
+The migration tool consists of a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) to perform a migration. 
 
 ==== Launching a migration
 
@@ -20,7 +33,6 @@ java -jar migrator.jar myProject/src output
 ----
 The converted .mtl files will be created in the output folder, accordingly to the folder structure in the source project.
 
- 
 === Language Changes
 
 ==== Modules
@@ -51,7 +63,7 @@ The Acceleo 3 module declaration allowed users to declare multiple "extends" mod
 
 Acceleo 4 modules can only define a single extended module.
 
-*Only the first extended module was taken into account* in Acceleo 3 so the migration just strips all but the first extended modules' name.
+*Only the first extended module was taken into account* in Acceleo 3 so the migration just strips all but the first extended module names.
 
 ===== module imports
 

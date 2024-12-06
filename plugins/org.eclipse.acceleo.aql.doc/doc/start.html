@@ -488,31 +488,56 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>In the <strong>Package Explorer</strong>, expand the project and select the source folder <strong>src</strong>,</p>
 </li>
 <li>
-<p>Select the menu item <strong>File &gt; New &gt; File</strong> to open the <strong>New File</strong> wizard,</p>
-</li>
-<li>
-<p>Select the <strong>src</strong> folder as parent folder,</p>
-</li>
-<li>
-<p>Enter the File name with the extension <strong>.mtl</strong>, for example: <code>MyTemplate.mtl</code>,</p>
-</li>
-<li>
-<p>Then click <strong>Finish</strong>.</p>
+<p>Select the menu item <strong>File &gt; New &gt; Other&#8230;&#8203;</strong>,</p>
 </li>
 </ol>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/NewFile.png" alt="NewFile">
+<img src="images/NewOtherMenu.png" alt="New other&#8230;&#8203; menu">
 </div>
 </div>
-<div class="paragraph">
-<p>An empty editor opens, you can start writing your generation template.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the <strong>Acceleo 4 &gt; Acceleo module file</strong> wizard,</p>
+</li>
+</ol>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/NewTemplate.png" alt="NewTemplate">
+<img src="images/NewWizardDialog.png" alt="Acceleo module file">
 </div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>This will open the following wizard page where you can define the module parameters,</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewModuleWizard.png" alt="Acceleo module file wizard page">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Then click <strong>Finish</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The will create the following module file.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewModuleContents.png" alt="New module contents">
+</div>
+</div>
+<div class="paragraph">
+<p>For now it will generate a file with an empty line.</p>
 </div>
 <div class="paragraph">
 <p>In order to launch an Acceleo generator, you just have to right-click on your main module and use the <strong>Run As</strong> menu.</p>
@@ -556,7 +581,8 @@ You just have to select:</p>
 <div class="title">After launching the generation</div>
 <div class="paragraph">
 <p>Check that your generation is finished by opening the <strong>Console</strong> view.
-You should see a message like this <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.</p>
+The console title should change to <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.
+The last line in the console should be the generation summary <code>Files: 1, Lost Files: 0, Errors: 0, Warnings: 0, Infos: 0</code>.</p>
 </div>
 </td>
 </tr>
@@ -565,7 +591,7 @@ You should see a message like this <code>&lt;terminated&gt; generate.mtl[Acceleo
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-09 16:19:19 +0200
+Last updated 2024-12-05 16:41:01 +0100
 </div>
 </div>
 </body>

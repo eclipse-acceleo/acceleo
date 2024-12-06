@@ -20,19 +20,19 @@ resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put
 
 [source,java]
 ---------
-final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
+		.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
 final Map<String, String> options = new HashMap<>();
-options.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
-options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
 final ArrayList<Exception> exceptions = new ArrayList<>();
 final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver, new ResourceSetImpl(), options);
-final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels, false);
-// evaluator can be null if you don't plan to evaluate and only need to validate
+
+resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+
+final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
+		options, resolver, resourceSetForModels, false);
 AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), "\n");
 
-// allow Acceleo module loading
 resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-// allow Java class loading
 resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 final Object resolved = resolver.resolve(moduleQualifiedName);
@@ -71,7 +71,7 @@ final Resource resource = resourceSetForModels.getResource(uri, true);
 final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels.getURIConverter(), new DefaultWriterFactory());
 final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
-AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI);
+AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI, new BasicMonitor());
 ----
 
 == Unit test module

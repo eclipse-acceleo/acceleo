@@ -20,9 +20,10 @@ If you already have created a launch configuration you can access the launch con
 In this menu, you will have access to the Acceleo Launch configuration. 
 You just have to select:
 
-* your main *module file*, 
+* your main *module file*,
 * your input *model file*,
-* the *destination folder* of the generation.
+* the *destination folder* of the generation
+* the *end of line* you want in your generated document.
 
 image::images/LaunchConfig.png[Launch Configuration]
 
@@ -30,7 +31,8 @@ image::images/LaunchConfig.png[Launch Configuration]
 [IMPORTANT]
 ====
 Check that your generation is finished by opening the *Console* view.
-You should see a message like this `<terminated> generate.mtl[Acceleo4]`.
+The console title should change to `<terminated> traceability (Workspace)[Acceleo4]`.
+The last line in the console should be the generation summary `Files: 2, Lost Files: 0, Errors: 0, Warnings: 0, Infos: 0`.
 ====
 
 === Maven/Tycho
@@ -81,3 +83,29 @@ models::
 The URI of the models that will be fed to the main module of the generation. This cannot be empty and needs to be an URI that eclipse is capable of resolving. In this example we're using a `platform:/plugin/...` URI since we've bundled the input model into our generator project.
 target::
 The destination URI for this generation. Generated files will use this folder as their root to resolve against. *Note* that this needs to end in a trailing `/`.
+
+Alternatively, if you <<tool.adoc#_java_launchers,generated the main class>> you can also use it in your maven configuration:
+
+----
+<plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>exec-maven-plugin</artifactId>
+  <version>3.5.0</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>java</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <mainClass>org.eclipse.python4capella.ecore.gen.python.main.MainGenerator</mainClass>
+    <arguments>
+      <argument>file://model/sample.xmi</argument>
+      <argument>file:/${project.build.directory}/generated/</argument>
+    </arguments>
+  </configuration>
+</plugin>
+----
+
+In this case you will have to add needed maven dependencies to your generator.

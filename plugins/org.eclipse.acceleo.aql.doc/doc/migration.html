@@ -454,10 +454,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="sect2">
 <h3 id="_how_to_migrate_acceleo_3_templates_to_acceleo_4">How to migrate Acceleo 3 templates to Acceleo 4</h3>
-<div class="sect3">
-<h4 id="_the_migration_tool">The migration tool</h4>
 <div class="paragraph">
-<p>The migration tool consists on a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) required to perform a migration.</p>
+<p>There are two ways to launch the migration of your Acceleo 4 project. The first one is by installing the migration feature in your Acceleo 3 environment, the second one by using the migration tool in command line.</p>
+</div>
+<div class="sect3">
+<h4 id="_the_migration_from_your_acceleo_3_environment">The migration from your Acceleo 3 environment</h4>
+<div class="paragraph">
+<p>First make a copy of your Acceleo 3 environment or create a new Acceleo 3 environment for the migration.
+Then you need to <a href="install.html">install</a> the <code>Acceleo 3 to Acceleo 4 migrator</code> feature.
+Before launching the migration you need to make sure your Acceleo 3 projects are built properly. One way to do this can be to check the output folder of your plugin (usually the bin folder) to check the presence of *.emtl files.
+Then you can use the following menu on your Acceleo 3 projects:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/MigrationMenu.png" alt="Migration Menu">
+</div>
+</div>
+<div class="paragraph">
+<p>This will ask you to select an output folder for migrated projects.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_migration_tool_in_command_line">The migration tool in command line</h4>
+<div class="paragraph">
+<p>The migration tool consists of a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) to perform a migration.</p>
 </div>
 </div>
 <div class="sect3">
@@ -526,7 +546,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Acceleo 4 modules can only define a single extended module.</p>
 </div>
 <div class="paragraph">
-<p><strong>Only the first extended module was taken into account</strong> in Acceleo 3 so the migration just strips all but the first extended modules' name.</p>
+<p><strong>Only the first extended module was taken into account</strong> in Acceleo 3 so the migration just strips all but the first extended module names.</p>
 </div>
 </div>
 <div class="sect4">
@@ -1027,7 +1047,7 @@ Thus the migration tool translates each Set into an OrderedSet and each Bag into
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-09 16:19:19 +0200
+Last updated 2024-12-05 16:10:34 +0100
 </div>
 </div>
 </body>

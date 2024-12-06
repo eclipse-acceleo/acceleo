@@ -480,19 +480,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+<pre class="highlight"><code class="language-java" data-lang="java">final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
+		.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
 final Map&lt;String, String&gt; options = new HashMap&lt;&gt;();
-options.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
-options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
 final ArrayList&lt;Exception&gt; exceptions = new ArrayList&lt;&gt;();
 final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver, new ResourceSetImpl(), options);
-final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels, false);
-// evaluator can be null if you don't plan to evaluate and only need to validate
+
+resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+
+final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
+		options, resolver, resourceSetForModels, false);
 AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), "\n");
 
-// allow Acceleo module loading
 resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-// allow Java class loading
 resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 final Object resolved = resolver.resolve(moduleQualifiedName);
@@ -539,7 +539,7 @@ List&lt;AcceleoCompletionProposal&gt; completionProposals = acceleoCompletor.get
 final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels.getURIConverter(), new DefaultWriterFactory());
 final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
-AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI);</code></pre>
+AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI, new BasicMonitor());</code></pre>
 </div>
 </div>
 </div>
@@ -601,7 +601,7 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-12-03 10:23:35 +0100
+Last updated 2024-12-05 16:54:16 +0100
 </div>
 </div>
 </body>

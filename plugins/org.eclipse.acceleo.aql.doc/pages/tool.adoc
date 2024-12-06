@@ -186,8 +186,8 @@ The *Debug* view (on the top left) displays the stack of the current execution.
 Clicking on any element of the stack will simultaneously display the corresponding Acceleo code in the edition area.
 
 The *Variables* view displays currently accessible variables. 
-In the example below, the execution has met a breakpoint when computing `Attributes` for a class, so the current input is a class. 
-The Variables view tells us that the current class is called `EAttribute`.
+In the example below, the execution has met a breakpoint on line 58. 
+The Variables view tells us that the current package is an EPackage called traceability. We can also see the blockoutput that list text produced by each statement of the current block. We find each previous text statement and the expression retrieving the name of the pkg variable.
 
 image::images/VariablesView.png[VariablesView]
 
@@ -222,8 +222,10 @@ A configuration page appears, which looks very much like the traditional launch 
 
 image::images/ProfileLaunchConfiguration.png[Profiler Launch Configuration]
 
-There is just one additional information to enter, which is the path to the profiling result file where Acceleo will store the profiling information of subsequent executions. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
+There is just two additional information to enter, which are the path to the profiling result file where Acceleo will store the profiling information of subsequent executions and the format it should be saved `TREE` or `FLAT`. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
 You can simply select a folder in this dialog, in which the profile file will be created.
+
+The profile format will `TREE` will provide more details about the exectution tree but will also grow bigger than the `FLAT` format that contains less information on the execution tree.
 
 ==== Acceleo Profile Files
 
@@ -235,7 +237,7 @@ The above image shows the content of an mtlp file, and correspondances between t
 
 For each generated file, there is one entry in the root node of the profile.
 
-Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a [for ... ] instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.
+Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a `[for ... ]` instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.
 
 ==== Coverage informations
 
@@ -246,6 +248,14 @@ You can double-click on the module in the profile editor (or on any module eleme
 image::images/Coverage.png[Coverage]
 
 To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.
+
+.Before launching the profiling for code coverage
+[IMPORTANT]
+====
+Make sure you generate on an empty output folder for accurate results.
+The content of existing <<language.adoc#_protected_area,protected area>> won't be generated if its identifier exists in the output file.
+====
+
 
 === Java launchers
 

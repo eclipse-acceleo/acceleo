@@ -494,7 +494,10 @@ You just have to select:</p>
 <p>your input <strong>model file</strong>,</p>
 </li>
 <li>
-<p>the <strong>destination folder</strong> of the generation.</p>
+<p>the <strong>destination folder</strong> of the generation</p>
+</li>
+<li>
+<p>the <strong>end of line</strong> you want in your generated document.</p>
 </li>
 </ul>
 </div>
@@ -513,7 +516,8 @@ You just have to select:</p>
 <div class="title">After launching the generation</div>
 <div class="paragraph">
 <p>Check that your generation is finished by opening the <strong>Console</strong> view.
-You should see a message like this <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.</p>
+The console title should change to <code>&lt;terminated&gt; traceability (Workspace)[Acceleo4]</code>.
+The last line in the console should be the generation summary <code>Files: 2, Lost Files: 0, Errors: 0, Warnings: 0, Infos: 0</code>.</p>
 </div>
 </td>
 </tr>
@@ -601,11 +605,40 @@ Once packaged, generation can be started through the command line <code>mvn clea
 </dd>
 </dl>
 </div>
+<div class="paragraph">
+<p>Alternatively, if you <a href="tool.html#_java_launchers">generated the main class</a> you can also use it in your maven configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;plugin&gt;
+  &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+  &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;3.5.0&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;java&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+  &lt;configuration&gt;
+    &lt;mainClass&gt;org.eclipse.python4capella.ecore.gen.python.main.MainGenerator&lt;/mainClass&gt;
+    &lt;arguments&gt;
+      &lt;argument&gt;file://model/sample.xmi&lt;/argument&gt;
+      &lt;argument&gt;file:/${project.build.directory}/generated/&lt;/argument&gt;
+    &lt;/arguments&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case you will have to add needed maven dependencies to your generator.</p>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-09-16 11:16:52 +0200
+Last updated 2024-12-06 09:45:11 +0100
 </div>
 </div>
 </body>

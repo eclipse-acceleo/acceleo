@@ -508,32 +508,33 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_syntax">7. Syntax</a>
 <ul class="sectlevel2">
 <li><a href="#_comment">7.1. Comment</a></li>
-<li><a href="#_module_2">7.2. Module</a></li>
-<li><a href="#_identifier">7.3. Identifier</a></li>
-<li><a href="#_module_documentation">7.4. Module Documentation</a></li>
-<li><a href="#_metamodel">7.5. Metamodel</a></li>
-<li><a href="#_import">7.6. Import</a></li>
-<li><a href="#_module_reference">7.7. Module Reference</a></li>
-<li><a href="#_module_qualified_name">7.8. Module Qualified Name</a></li>
-<li><a href="#_module_element">7.9. Module Element</a></li>
-<li><a href="#_template_2">7.10. Template</a></li>
-<li><a href="#_visibility">7.11. Visibility</a></li>
-<li><a href="#_parameter">7.12. Parameter</a></li>
-<li><a href="#_statement">7.13. Statement</a>
+<li><a href="#_commentblock">7.2. CommentBlock</a></li>
+<li><a href="#_module_2">7.3. Module</a></li>
+<li><a href="#_identifier">7.4. Identifier</a></li>
+<li><a href="#_module_documentation">7.5. Module Documentation</a></li>
+<li><a href="#_metamodel">7.6. Metamodel</a></li>
+<li><a href="#_import">7.7. Import</a></li>
+<li><a href="#_module_reference">7.8. Module Reference</a></li>
+<li><a href="#_module_qualified_name">7.9. Module Qualified Name</a></li>
+<li><a href="#_module_element">7.10. Module Element</a></li>
+<li><a href="#_template_2">7.11. Template</a></li>
+<li><a href="#_visibility">7.12. Visibility</a></li>
+<li><a href="#_parameter">7.13. Parameter</a></li>
+<li><a href="#_statement">7.14. Statement</a>
 <ul class="sectlevel3">
-<li><a href="#_file_statement">7.13.1. File Statement</a></li>
-<li><a href="#_for_statement">7.13.2. For Statement</a></li>
-<li><a href="#_if_statement">7.13.3. If Statement</a></li>
-<li><a href="#_let_statement">7.13.4. Let Statement</a></li>
-<li><a href="#_protected_area_2">7.13.5. Protected Area</a></li>
-<li><a href="#_expression_statement">7.13.6. Expression Statement</a></li>
-<li><a href="#_text_statement">7.13.7. Text Statement</a></li>
+<li><a href="#_file_statement">7.14.1. File Statement</a></li>
+<li><a href="#_for_statement">7.14.2. For Statement</a></li>
+<li><a href="#_if_statement">7.14.3. If Statement</a></li>
+<li><a href="#_let_statement">7.14.4. Let Statement</a></li>
+<li><a href="#_protected_area_2">7.14.5. Protected Area</a></li>
+<li><a href="#_expression_statement">7.14.6. Expression Statement</a></li>
+<li><a href="#_text_statement">7.14.7. Text Statement</a></li>
 </ul>
 </li>
-<li><a href="#_aql_expression">7.14. AQL Expression</a></li>
-<li><a href="#_aql_type_literal">7.15. AQL Type Literal</a></li>
-<li><a href="#_query_2">7.16. Query</a></li>
-<li><a href="#_module_element_documentation">7.17. Module Element documentation</a></li>
+<li><a href="#_aql_expression">7.15. AQL Expression</a></li>
+<li><a href="#_aql_type_literal">7.16. AQL Type Literal</a></li>
+<li><a href="#_query_2">7.17. Query</a></li>
+<li><a href="#_module_element_documentation">7.18. Module Element documentation</a></li>
 </ul>
 </li>
 <li><a href="#_launching_an_acceleo_generation">8. Launching an Acceleo generation</a>
@@ -555,8 +556,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_how_to_migrate_acceleo_3_templates_to_acceleo_4">7.1. How to migrate Acceleo 3 templates to Acceleo 4</a>
 <ul class="sectlevel3">
-<li><a href="#_the_migration_tool">7.1.1. The migration tool</a></li>
-<li><a href="#_launching_a_migration">7.1.2. Launching a migration</a></li>
+<li><a href="#_the_migration_from_your_acceleo_3_environment">7.1.1. The migration from your Acceleo 3 environment</a></li>
+<li><a href="#_the_migration_tool_in_command_line">7.1.2. The migration tool in command line</a></li>
+<li><a href="#_launching_a_migration">7.1.3. Launching a migration</a></li>
 </ul>
 </li>
 <li><a href="#_language_changes">7.2. Language Changes</a>
@@ -619,7 +621,7 @@ It can be used to generate any kind of text file: code, configuration, documenta
 <h2 id="_installation">2. Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you have an existing Eclipse installation and simply wish to install Acceleo in it, you can install it from the <strong>Update Site</strong>, available here <a href="https://download.eclipse.org/acceleo/updates/releases/4.0/" class="bare">https://download.eclipse.org/acceleo/updates/releases/4.0/</a>.</p>
+<p>If you have an existing Eclipse installation and simply wish to install Acceleo in it, you can install it from one of the <strong>Update Sites</strong>, available here <a href="https://download.eclipse.org/acceleo/updates/releases/4.0/" class="bare">https://download.eclipse.org/acceleo/updates/releases/4.0/</a>.</p>
 </div>
 <div class="paragraph">
 <p>When installing the update site you must ensure that <strong>"Contact all update sites during install to find required software"</strong> is checked and that in the <strong>"Manage&#8230;&#8203;"</strong> dialog, the <strong>"Latest Eclipse Release"</strong> update site is checked.</p>
@@ -634,7 +636,7 @@ It can be used to generate any kind of text file: code, configuration, documenta
 <p><span class="image"><img src="images/InstallFeaturesAndPlugins.png" alt="Minimal features and plugins to install"></span></p>
 </div>
 <div class="paragraph">
-<p>For those of you who need to retrieve the source code of Acceleo, it is available on Git: <a href="https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/" class="bare">https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/</a>.</p>
+<p>For those of you who need to retrieve the source code of Acceleo, it is available on Github: <a href="https://github.com/eclipse-acceleo/acceleo/" class="bare">https://github.com/eclipse-acceleo/acceleo/</a>.</p>
 </div>
 </div>
 </div>
@@ -689,31 +691,56 @@ It can be used to generate any kind of text file: code, configuration, documenta
 <p>In the <strong>Package Explorer</strong>, expand the project and select the source folder <strong>src</strong>,</p>
 </li>
 <li>
-<p>Select the menu item <strong>File &gt; New &gt; File</strong> to open the <strong>New File</strong> wizard,</p>
-</li>
-<li>
-<p>Select the <strong>src</strong> folder as parent folder,</p>
-</li>
-<li>
-<p>Enter the File name with the extension <strong>.mtl</strong>, for example: <code>MyTemplate.mtl</code>,</p>
-</li>
-<li>
-<p>Then click <strong>Finish</strong>.</p>
+<p>Select the menu item <strong>File &gt; New &gt; Other&#8230;&#8203;</strong>,</p>
 </li>
 </ol>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/NewFile.png" alt="NewFile">
+<img src="images/NewOtherMenu.png" alt="New other&#8230;&#8203; menu">
 </div>
 </div>
-<div class="paragraph">
-<p>An empty editor opens, you can start writing your generation template.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the <strong>Acceleo 4 &gt; Acceleo module file</strong> wizard,</p>
+</li>
+</ol>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/NewTemplate.png" alt="NewTemplate">
+<img src="images/NewWizardDialog.png" alt="Acceleo module file">
 </div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>This will open the following wizard page where you can define the module parameters,</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewModuleWizard.png" alt="Acceleo module file wizard page">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Then click <strong>Finish</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The will create the following module file.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/NewModuleContents.png" alt="New module contents">
+</div>
+</div>
+<div class="paragraph">
+<p>For now it will generate a file with an empty line.</p>
 </div>
 <div class="paragraph">
 <p>In order to launch an Acceleo generator, you just have to right-click on your main module and use the <strong>Run As</strong> menu.</p>
@@ -757,7 +784,8 @@ You just have to select:</p>
 <div class="title">After launching the generation</div>
 <div class="paragraph">
 <p>Check that your generation is finished by opening the <strong>Console</strong> view.
-You should see a message like this <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.</p>
+The console title should change to <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.
+The last line in the console should be the generation summary <code>Files: 1, Lost Files: 0, Errors: 0, Warnings: 0, Infos: 0</code>.</p>
 </div>
 </td>
 </tr>
@@ -1156,8 +1184,8 @@ Clicking on any element of the stack will simultaneously display the correspondi
 </div>
 <div class="paragraph">
 <p>The <strong>Variables</strong> view displays currently accessible variables.
-In the example below, the execution has met a breakpoint when computing <code>Attributes</code> for a class, so the current input is a class.
-The Variables view tells us that the current class is called <code>EAttribute</code>.</p>
+In the example below, the execution has met a breakpoint on line 58.
+The Variables view tells us that the current package is an EPackage called traceability. We can also see the blockoutput that list text produced by each statement of the current block. We find each previous text statement and the expression retrieving the name of the pkg variable.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1235,8 +1263,11 @@ Here is an example of a deactivated breakpoint in this view:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>There is just one additional information to enter, which is the path to the profiling result file where Acceleo will store the profiling information of subsequent executions. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
+<p>There is just two additional information to enter, which are the path to the profiling result file where Acceleo will store the profiling information of subsequent executions and the format it should be saved <code>TREE</code> or <code>FLAT</code>. Profile files must have the file extension .mtlp. If you try another file extension, the configuration page displays an error message and the configuration cannot be saved.
 You can simply select a folder in this dialog, in which the profile file will be created.</p>
+</div>
+<div class="paragraph">
+<p>The profile format will <code>TREE</code> will provide more details about the exectution tree but will also grow bigger than the <code>FLAT</code> format that contains less information on the execution tree.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1256,7 +1287,7 @@ You can simply select a folder in this dialog, in which the profile file will be
 <p>For each generated file, there is one entry in the root node of the profile.</p>
 </div>
 <div class="paragraph">
-<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a [for &#8230;&#8203; ] instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
+<p>Inside of each generated file block, there is profiling information for each template instruction. The containment of profiled data follows the structure of executed templates. For example, a <code>[for &#8230;&#8203; ]</code> instruction contains other template calls, so the profiled data has a node for the for which contains a node for each template call executed inside this for.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1274,6 +1305,22 @@ You can simply select a folder in this dialog, in which the profile file will be
 </div>
 <div class="paragraph">
 <p>To get rid of the coverage highlighting you can simply close the editor and reopen the file from the explorer.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="title">Before launching the profiling for code coverage</div>
+<div class="paragraph">
+<p>Make sure you generate on an empty output folder for accurate results.
+The content of existing <a href="#_protected_area">protected area</a> won&#8217;t be generated if its identifier exists in the output file.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1417,7 +1464,7 @@ You can simply select a folder in this dialog, in which the profile file will be
 <p>A Template is a set of Acceleo statements used to generate text. It is delimited by <code>[template &#8230;&#8203;][/template]</code> tags.</p>
 </div>
 <div class="paragraph">
-<p>The template signature must include the visbility and the name, and can optionally define a post-treatment expression.</p>
+<p>The template signature must include the visibility and the name, and can optionally define a post-treatment expression.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1738,10 +1785,27 @@ In order to keep template code indentation from interfering with the generated o
 <div class="ulist">
 <ul>
 <li>
+<p>for inlined blocks (no line break after the block header):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the content of the block is generated as is</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>for indented blocks (with a line break after the block header):</p>
+<div class="ulist">
+<ul>
+<li>
 <p>each block has a <strong>mandatory indentation</strong> of <strong>two characters</strong> that will not be generated in the output (in yellow below)</p>
 </li>
 <li>
 <p>when generating a block if the last generated line is not empty, it is repeated at the beginning of each line generated by the block (in red below)</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -1771,6 +1835,9 @@ In order to keep template code indentation from interfering with the generated o
 </div>
 <div class="paragraph">
 <p>Their is one exception to this rule, an empty line in the module will generate an empty line in the output. This allows to either generate an empty line that use indentation or an empty line regardless of current indentation:</p>
+</div>
+<div class="paragraph">
+<p>This set of rules allows the caller of a template to define the position line and column where the text will be inserted while the called template focus only on the text it has to produce. This allows to generate the same text with the same template even if it needs to be inserted in different parts of the output document with different indentations.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1873,7 +1940,15 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_2">7.2. Module</h3>
+<h3 id="_commentblock">7.2. CommentBlock</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_commentblock">CommentBlock</a> = '[comment] ' ... '[/comment]'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_2">7.3. Module</h3>
 <div class="paragraph">
 <p>The module is the top level element of a .mtl file. It represent a namespace declaring <a href="#_template">Template</a> and <a href="#_query">Query</a>. The name of the module is qualified by the location of the file in the source folder.</p>
 </div>
@@ -1890,7 +1965,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_identifier">7.3. Identifier</h3>
+<h3 id="_identifier">7.4. Identifier</h3>
 <div class="paragraph">
 <p>An identifier is used to name elements that need to be identified, or reference element that can be identified.</p>
 </div>
@@ -1901,7 +1976,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_documentation">7.4. Module Documentation</h3>
+<h3 id="_module_documentation">7.5. Module Documentation</h3>
 <div class="paragraph">
 <p>The module documentation should contains a description of the <a href="#_module">Module</a>.</p>
 </div>
@@ -1929,7 +2004,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_metamodel">7.5. Metamodel</h3>
+<h3 id="_metamodel">7.6. Metamodel</h3>
 <div class="paragraph">
 <p>This is the declaration of metamodels used by the module. Metamodels are referenced using their EPackage nsURI between simple quote.</p>
 </div>
@@ -1940,7 +2015,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_import">7.6. Import</h3>
+<h3 id="_import">7.7. Import</h3>
 <div class="paragraph">
 <p>This allows a module to import other <a href="#_module">Module</a> or service classes.</p>
 </div>
@@ -1951,7 +2026,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_reference">7.7. Module Reference</h3>
+<h3 id="_module_reference">7.8. Module Reference</h3>
 <div class="paragraph">
 <p>The module reference is a qualified reference to a <a href="#_module">Module</a></p>
 </div>
@@ -1962,7 +2037,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_qualified_name">7.8. Module Qualified Name</h3>
+<h3 id="_module_qualified_name">7.9. Module Qualified Name</h3>
 <div class="paragraph">
 <p>A module&#8217;s name is qualified according to its location in the source folder of a project.</p>
 </div>
@@ -1973,7 +2048,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_element">7.9. Module Element</h3>
+<h3 id="_module_element">7.10. Module Element</h3>
 <div class="paragraph">
 <p>A module element is either a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
 </div>
@@ -1984,7 +2059,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_template_2">7.10. Template</h3>
+<h3 id="_template_2">7.11. Template</h3>
 <div class="paragraph">
 <p>A template returns a String produced using its contained <a href="#_statement">Statement</a>, it can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
 </div>
@@ -1995,7 +2070,7 @@ Acceleo 4 Syntax</p>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#_template">Template</a> =
 
-'[template ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ('?' <a href="#_aql_expression">AQL Expression</a>)? ('post (' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
+'[template ' <a href="#_visibility">Visibility</a> <a href="#_identifier">Identifier</a> '(' <a href="#_parameter">Parameter</a>(',' <a href="#_parameter">Parameter</a>)* ')' ('post (' <a href="#_aql_expression">AQL Expression</a> ')')? ']'
 
 (<a href="#_statement">Statement</a>)*
 
@@ -2004,7 +2079,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_visibility">7.11. Visibility</h3>
+<h3 id="_visibility">7.12. Visibility</h3>
 <div class="paragraph">
 <p>The visibility defines the scope in which a <a href="#_module_element">Module Element</a> can be called as a service.</p>
 </div>
@@ -2015,7 +2090,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_parameter">7.12. Parameter</h3>
+<h3 id="_parameter">7.13. Parameter</h3>
 <div class="paragraph">
 <p>A parameter is used to pass a value from the caller to a callee. This value can be later referenced using its identifier.</p>
 </div>
@@ -2026,7 +2101,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_statement">7.13. Statement</h3>
+<h3 id="_statement">7.14. Statement</h3>
 <div class="paragraph">
 <p>A statement is a directive used to produce an output or control the execution flow.</p>
 </div>
@@ -2038,7 +2113,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_file_statement">7.13.1. File Statement</h4>
+<h4 id="_file_statement">7.14.1. File Statement</h4>
 <div class="paragraph">
 <p>This statement is used to start the generation of a new file. Strings returned by a statement contained directly or indirectly in the execution flow, will be generated into that file.</p>
 </div>
@@ -2058,7 +2133,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_for_statement">7.13.2. For Statement</h4>
+<h4 id="_for_statement">7.14.2. For Statement</h4>
 <div class="paragraph">
 <p>This statement loops over a list of values and return the concatenation of all returned String.</p>
 </div>
@@ -2075,7 +2150,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_if_statement">7.13.3. If Statement</h4>
+<h4 id="_if_statement">7.14.3. If Statement</h4>
 <div class="paragraph">
 <p>This statement create a branch in the execution flow and return the String of one of its branch according to the <a href="#_aql_expression">AQL Expression</a> evaluated to true. If a condition doesn&#8217;t evaluate to a boolean an empty String is generated and an error is logged.</p>
 </div>
@@ -2100,7 +2175,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_let_statement">7.13.4. Let Statement</h4>
+<h4 id="_let_statement">7.14.4. Let Statement</h4>
 <div class="paragraph">
 <p>This statement allows to compute one or more <a href="#_aql_expression">AQL Expression</a> and reference their value using an identifier. It can be used to improve readability of the template or increase performance when using the same <a href="#_aql_expression">AQL Expression</a> many times in a block of <a href="#_statement">Statement</a>.</p>
 </div>
@@ -2117,7 +2192,7 @@ Acceleo 4 Syntax</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_protected_area_2">7.13.5. Protected Area</h4>
+<h4 id="_protected_area_2">7.14.5. Protected Area</h4>
 <div class="paragraph">
 <p>This statement declares an identified area in the generated file. If the generated file exists and a protected area with the same identifier exists in its contents, then the existing content of this area is directly returned. If it doesn&#8217;t exist, then the concatenation of the body&#8217;s statements results is returned.</p>
 </div>
@@ -2138,7 +2213,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect3">
-<h4 id="_expression_statement">7.13.6. Expression Statement</h4>
+<h4 id="_expression_statement">7.14.6. Expression Statement</h4>
 <div class="paragraph">
 <p>This statement returns the String representation of the evaluation of its <a href="#_aql_expression">AQL Expression</a>.</p>
 </div>
@@ -2149,14 +2224,14 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect3">
-<h4 id="_text_statement">7.13.7. Text Statement</h4>
+<h4 id="_text_statement">7.14.7. Text Statement</h4>
 <div class="paragraph">
 <p>This is any other text outside of '[' and ']'.</p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_aql_expression">7.14. AQL Expression</h3>
+<h3 id="_aql_expression">7.15. AQL Expression</h3>
 <div class="paragraph">
 <p>This is an Acceleo Query Language expression. It is used to navigate through models and call services. In the context of Acceleo, <a href="#_template">Template</a> and <a href="#_query">Query</a> can be called as services.</p>
 </div>
@@ -2165,13 +2240,13 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect2">
-<h3 id="_aql_type_literal">7.15. AQL Type Literal</h3>
+<h3 id="_aql_type_literal">7.16. AQL Type Literal</h3>
 <div class="paragraph">
 <p>This is a type literal as defined in the Acceleo Query Language.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_query_2">7.16. Query</h3>
+<h3 id="_query_2">7.17. Query</h3>
 <div class="paragraph">
 <p>A query references an <a href="#_aql_expression">AQL Expression</a> with parameters and can be called as a service. It can be preceded by a <a href="#_module_element_documentation">Module Element documentation</a>.</p>
 </div>
@@ -2184,7 +2259,7 @@ If an unkown protected area id is encountered in a pre-existing generated docume
 </div>
 </div>
 <div class="sect2">
-<h3 id="_module_element_documentation">7.17. Module Element documentation</h3>
+<h3 id="_module_element_documentation">7.18. Module Element documentation</h3>
 <div class="paragraph">
 <p>The documentation of a <a href="#_template">Template</a> or a <a href="#_query">Query</a>.</p>
 </div>
@@ -2256,7 +2331,10 @@ You just have to select:</p>
 <p>your input <strong>model file</strong>,</p>
 </li>
 <li>
-<p>the <strong>destination folder</strong> of the generation.</p>
+<p>the <strong>destination folder</strong> of the generation</p>
+</li>
+<li>
+<p>the <strong>end of line</strong> you want in your generated document.</p>
 </li>
 </ul>
 </div>
@@ -2275,7 +2353,8 @@ You just have to select:</p>
 <div class="title">After launching the generation</div>
 <div class="paragraph">
 <p>Check that your generation is finished by opening the <strong>Console</strong> view.
-You should see a message like this <code>&lt;terminated&gt; generate.mtl[Acceleo4]</code>.</p>
+The console title should change to <code>&lt;terminated&gt; traceability (Workspace)[Acceleo4]</code>.
+The last line in the console should be the generation summary <code>Files: 2, Lost Files: 0, Errors: 0, Warnings: 0, Infos: 0</code>.</p>
 </div>
 </td>
 </tr>
@@ -2363,6 +2442,35 @@ Once packaged, generation can be started through the command line <code>mvn clea
 </dd>
 </dl>
 </div>
+<div class="paragraph">
+<p>Alternatively, if you <a href="#_java_launchers">generated the main class</a> you can also use it in your maven configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;plugin&gt;
+  &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+  &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;3.5.0&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;java&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+  &lt;configuration&gt;
+    &lt;mainClass&gt;org.eclipse.python4capella.ecore.gen.python.main.MainGenerator&lt;/mainClass&gt;
+    &lt;arguments&gt;
+      &lt;argument&gt;file://model/sample.xmi&lt;/argument&gt;
+      &lt;argument&gt;file:/${project.build.directory}/generated/&lt;/argument&gt;
+    &lt;/arguments&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case you will have to add needed maven dependencies to your generator.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2397,19 +2505,19 @@ Once packaged, generation can be started through the command line <code>mvn clea
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
+		.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
 final Map&lt;String, String&gt; options = new HashMap&lt;&gt;();
-options.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
-options.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
 final ArrayList&lt;Exception&gt; exceptions = new ArrayList&lt;&gt;();
 final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver, new ResourceSetImpl(), options);
-final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(options, resolver, resourceSetForModels, false);
-// evaluator can be null if you don't plan to evaluate and only need to validate
+
+resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+
+final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
+		options, resolver, resourceSetForModels, false);
 AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), "\n");
 
-// allow Acceleo module loading
 resolver.addLoader(new ModuleLoader(new AcceleoParser(), evaluator));
-// allow Java class loading
 resolver.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 final Object resolved = resolver.resolve(moduleQualifiedName);
@@ -2456,7 +2564,7 @@ List&lt;AcceleoCompletionProposal&gt; completionProposals = acceleoCompletor.get
 final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels.getURIConverter(), new DefaultWriterFactory());
 final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
-AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI);</code></pre>
+AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy, targetURI, logURI, new BasicMonitor());</code></pre>
 </div>
 </div>
 </div>
@@ -2511,7 +2619,7 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 </div>
 </div>
 <div class="paragraph">
-<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/releng/maven/org.eclipse.acceleo.aql.maven.tests">test project</a> can be used as an example.</p>
+<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests">test project</a> can be used as an example.</p>
 </div>
 </div>
 </div>
@@ -2523,14 +2631,34 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 </div>
 <div class="sect2">
 <h3 id="_how_to_migrate_acceleo_3_templates_to_acceleo_4">7.1. How to migrate Acceleo 3 templates to Acceleo 4</h3>
-<div class="sect3">
-<h4 id="_the_migration_tool">7.1.1. The migration tool</h4>
 <div class="paragraph">
-<p>The migration tool consists on a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) required to perform a migration.</p>
+<p>There are two ways to launch the migration of your Acceleo 4 project. The first one is by installing the migration feature in your Acceleo 3 environment, the second one by using the migration tool in command line.</p>
+</div>
+<div class="sect3">
+<h4 id="_the_migration_from_your_acceleo_3_environment">7.1.1. The migration from your Acceleo 3 environment</h4>
+<div class="paragraph">
+<p>First make a copy of your Acceleo 3 environment or create a new Acceleo 3 environment for the migration.
+Then you need to <a href="#">install</a> the <code>Acceleo 3 to Acceleo 4 migrator</code> feature.
+Before launching the migration you need to make sure your Acceleo 3 projects are built properly. One way to do this can be to check the output folder of your plugin (usually the bin folder) to check the presence of *.emtl files.
+Then you can use the following menu on your Acceleo 3 projects:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/MigrationMenu.png" alt="Migration Menu">
+</div>
+</div>
+<div class="paragraph">
+<p>This will ask you to select an output folder for migrated projects.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_launching_a_migration">7.1.2. Launching a migration</h4>
+<h4 id="_the_migration_tool_in_command_line">7.1.2. The migration tool in command line</h4>
+<div class="paragraph">
+<p>The migration tool consists of a java standalone utility deployed as a jar file, "migrator.jar". There is a library folder aside containing all of the required jars (Acceleo 3, Acceleo 4) to perform a migration.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_launching_a_migration">7.1.3. Launching a migration</h4>
 <div class="paragraph">
 <p>The migration tool requires a fully built Acceleo 3 project as input: the project folder must contain a bin/ folder with all of the compiled (.emtl) versions of the .mtl source files.</p>
 </div>
@@ -2595,7 +2723,7 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 <p>Acceleo 4 modules can only define a single extended module.</p>
 </div>
 <div class="paragraph">
-<p><strong>Only the first extended module was taken into account</strong> in Acceleo 3 so the migration just strips all but the first extended modules' name.</p>
+<p><strong>Only the first extended module was taken into account</strong> in Acceleo 3 so the migration just strips all but the first extended module names.</p>
 </div>
 </div>
 <div class="sect4">
