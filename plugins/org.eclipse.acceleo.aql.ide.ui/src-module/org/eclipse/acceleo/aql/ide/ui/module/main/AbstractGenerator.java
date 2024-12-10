@@ -134,7 +134,7 @@ public abstract class AbstractGenerator {
 	 *            the {@link Set} of package names
 	 */
 	@SuppressWarnings("restriction")
-	protected void addexportPackages(IProject project, Set<String> packages) {
+	protected void addExportPackages(IProject project, Set<String> packages) {
 		final IPluginModelBase model = PluginRegistry.findModel(project);
 		if (model instanceof IBundlePluginModelBase) {
 			final IBundle bundle = ((IBundlePluginModelBase)model).getBundleModel().getBundle();

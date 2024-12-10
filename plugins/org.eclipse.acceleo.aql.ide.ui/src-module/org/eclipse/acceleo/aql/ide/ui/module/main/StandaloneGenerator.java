@@ -140,6 +140,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 		dependencyBundleNames = new LinkedHashSet<>();
 		dependencyBundleNames.add("org.eclipse.acceleo.query");
 		dependencyBundleNames.add("org.eclipse.acceleo.aql");
+		dependencyBundleNames.add("org.eclipse.acceleo.aql.profiler");
 		dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 
 		synchronized(this) {
@@ -348,7 +349,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 			addPluginDependencies(moduleFile.getProject(), dependencyBundleNames);
 			final String packageName = new Services().getJavaPackage(modelModule);
 			if (!packageName.isEmpty()) {
-				addexportPackages(moduleFile.getProject(), Collections.singleton(packageName));
+				addExportPackages(moduleFile.getProject(), Collections.singleton(packageName));
 			}
 		} catch (CoreException e) {
 			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
