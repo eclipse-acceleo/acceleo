@@ -86,6 +86,10 @@ public class MigrateToAcceleo4Handler extends AbstractHandler {
 					final Path targetPath = new File(targetString).toPath();
 					final File logFile = targetPath.resolve("Acceleo4migation.log").toFile();
 					if (!logFile.exists()) {
+						final File parentFolder = logFile.getParentFile();
+						if (!parentFolder.exists()) {
+							parentFolder.mkdirs();
+						}
 						logFile.createNewFile();
 					}
 
