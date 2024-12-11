@@ -157,9 +157,8 @@ public class EvaluationServiceStatusTests {
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
-		assertEquals(
-				"serviceThrowsException(java.lang.Object) with arguments [1] failed:\n\tThis is the purpose of this service.",
-				child.getMessage());
+		assertTrue(child.getMessage().startsWith(
+				"serviceThrowsException(java.lang.Object) with arguments [1] failed:\n\tjava.lang.NullPointerException: This is the purpose of this service."));
 		assertTrue(child.getException() instanceof AcceleoQueryEvaluationException);
 		assertTrue(child.getException().getCause() instanceof NullPointerException);
 		assertEquals("This is the purpose of this service.", child.getException().getCause().getMessage());

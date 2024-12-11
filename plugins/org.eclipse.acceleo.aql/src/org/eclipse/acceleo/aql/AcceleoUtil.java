@@ -370,7 +370,7 @@ public final class AcceleoUtil {
 				writer.append(getLocation((ASTNode)diagnostic.getData().get(0)));
 			}
 			writer.append(": ");
-			writer.append(diagnostic.getMessage() + newLine);
+			writer.append(diagnostic.getMessage().replaceAll("\n", "\n" + nextIndentation) + newLine);
 			nextIndentation += "\t";
 		}
 		for (Diagnostic child : diagnostic.getChildren()) {

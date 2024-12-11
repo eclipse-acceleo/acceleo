@@ -584,7 +584,7 @@
     			if (!diagnostic.getData().isEmpty() && diagnostic.getData().get(0) instanceof ASTNode) {
     				stream.print(AcceleoUtil.getLocation((ASTNode)diagnostic.getData().get(0)));
     			}
-    			stream.println(": " + diagnostic.getMessage());
+    			stream.println(": " + diagnostic.getMessage().replaceAll("\n", "\n" + nextIndentation));
     			nextIndentation += "\t";
     		}
     		for (Diagnostic child : diagnostic.getChildren()) {

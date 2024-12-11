@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -233,10 +236,18 @@ public abstract class AbstractService<O> implements IService<O> {
 			final String message;
 			if (e.getCause() != null) {
 				cause = e.getCause();
+				if (e instanceof InvocationTargetException) {
+					final StringWriter sw = new StringWriter();
+					final PrintWriter pw = new PrintWriter(sw);
+					cause.printStackTrace(pw);
+					message = sw.toString().replaceAll("\n", "\n\t");
+				} else {
+					message = cause.getMessage();
+				}
 			} else {
 				cause = e;
+				message = cause.getMessage();
 			}
-			message = cause.getMessage();
 			throw new AcceleoQueryEvaluationException(getShortSignature() + " with arguments " + Arrays
 					.deepToString(arguments) + " failed:\n\t" + message, cause);
 		}
