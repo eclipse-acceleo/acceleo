@@ -107,9 +107,16 @@ public abstract class AbstractGenerator {
 				final StringJoiner joiner = new StringJoiner(",\n  ");
 				joiner.add(requiredBundleString);
 				for (String dependency : dependencyBundleNames) {
+					final String dependencyBundleName;
+					int lastSemiColonIndex = dependency.lastIndexOf(";");
+					if (lastSemiColonIndex >= 0) {
+						dependencyBundleName = dependency.substring(0, lastSemiColonIndex);
+					} else {
+						dependencyBundleName = dependency;
+					}
 					boolean foundInRequirement = false;
 					for (String requirement : requiredBundleString.split(",")) {
-						if (requirement.contains(dependency)) {
+						if (requirement.contains(dependencyBundleName)) {
 							foundInRequirement = true;
 							break;
 						}
