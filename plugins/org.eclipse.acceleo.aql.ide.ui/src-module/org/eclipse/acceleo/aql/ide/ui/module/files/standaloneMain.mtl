@@ -429,13 +429,13 @@
     	 */
     	protected AcceleoEvaluator createAcceleoEvaluator(URI targetURI, IQualifiedNameResolver resolver,
     			IQualifiedNameQueryEnvironment queryEnvironment) {
-    		AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), System
+    		final AcceleoEvaluator evaluator = new AcceleoEvaluator(queryEnvironment.getLookupEngine(), System
     				.lineSeparator());
 
     		// final Representation profilerModelRepresentation = Representation.TREE;
     		// final IProfiler profiler = ProfilerUtils.getProfiler(getModuleQualifiedName(),
     		// profilerModelRepresentation, ProfilerPackage.eINSTANCE.getProfilerFactory());
-    		// AcceleoEvaluator evaluator = new AcceleoProfilerEvaluator(queryEnvironment.getLookupEngine(),
+    		// final AcceleoEvaluator evaluator = new AcceleoProfilerEvaluator(queryEnvironment.getLookupEngine(),
     		// System
     		// .lineSeparator(), profiler);
 

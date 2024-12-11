@@ -138,9 +138,10 @@ public class StandaloneGenerator extends AbstractGenerator {
 		modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
 		modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
 		dependencyBundleNames = new LinkedHashSet<>();
-		dependencyBundleNames.add("org.eclipse.acceleo.query");
-		dependencyBundleNames.add("org.eclipse.acceleo.aql");
-		dependencyBundleNames.add("org.eclipse.acceleo.aql.profiler");
+		dependencyBundleNames.add("org.eclipse.acceleo.query;bundle-version=\"[8.0.3,9.0.0)\"");
+		dependencyBundleNames.add("org.eclipse.acceleo.aql;bundle-version=\"[4.1.0,5.0.0)\"");
+		dependencyBundleNames.add("org.eclipse.acceleo.aql.profiler;bundle-version=\"[4.1.0,5.0.0)\"");
+		dependencyBundleNames.add("org.antlr.runtime;bundle-version=\"[4.10.1,4.10.2)\"");
 		dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 
 		synchronized(this) {
