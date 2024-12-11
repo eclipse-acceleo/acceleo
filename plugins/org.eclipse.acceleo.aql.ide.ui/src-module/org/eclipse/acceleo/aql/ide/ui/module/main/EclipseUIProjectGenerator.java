@@ -143,6 +143,10 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 				Map<String, Object> variables = new LinkedHashMap<>();
 				variables.put(main.getParameters().get(0).getName(), modelModules);
 				variables.put(main.getParameters().get(1).getName(), projectUIName);
+				// We register model modules EPackage for type resolution
+				for (Module modelModule : modelModules) {
+					AcceleoUtil.registerEPackage(queryEnvironment, resolver, modelModule);
+				}
 				AcceleoUtil.generate(main, variables, evaluator, queryEnvironment, strategy, targetURI,
 						logURI, monitor);
 			} finally {
