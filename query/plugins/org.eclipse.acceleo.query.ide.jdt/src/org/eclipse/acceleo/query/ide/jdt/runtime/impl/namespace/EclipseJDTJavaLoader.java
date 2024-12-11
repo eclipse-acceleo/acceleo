@@ -98,7 +98,7 @@ public class EclipseJDTJavaLoader extends JavaLoader {
 						if (typeResource != null) {
 							sourceURI = typeResource.getLocationURI();
 							parser.setSource(type.getCompilationUnit());
-						} else {
+						} else if (type.getSource() != null) {
 							try {
 								sourceURI = new URI(replaceUriFragment(toJDTUri(type.getClassFile())
 										.toASCIIString(), SYNTAX_SERVER_ID));
