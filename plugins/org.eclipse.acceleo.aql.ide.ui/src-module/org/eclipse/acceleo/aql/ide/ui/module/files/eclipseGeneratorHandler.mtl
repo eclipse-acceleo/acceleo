@@ -73,7 +73,7 @@
     					final [module.getEclipseClassName()/] generator;
     					try {
     						if (selected instanceof [module.getReceiverClassName()/]) {
-    							generator = new MainGeneratorEclipse(([module.getReceiverClassName()/])selected);
+    							generator = new [module.getEclipseClassName()/](([module.getReceiverClassName()/])selected);
     							generator.generate(childMonitor);
     						} else if (selected instanceof IFile) {
     							generator = new [module.getEclipseClassName()/]((IFile)selected);
