@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020  Obeo.
+ * Copyright (c) 2020, 2024  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.namespace;
 
-import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
@@ -23,12 +22,6 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
  */
 public class QualifiedNameQueryEnvironment extends QueryEnvironment implements IQualifiedNameQueryEnvironment {
 
-	/** The package provider used by this environment. */
-	private final EPackageProvider packageProvider;
-
-	/** The lookup engine used by this environment. */
-	private QualifiedNameLookupEngine lookupEngine;
-
 	/**
 	 * Constructor.
 	 * 
@@ -36,17 +29,11 @@ public class QualifiedNameQueryEnvironment extends QueryEnvironment implements I
 	 *            The environment keeping track of Acceleo's context.
 	 */
 	public QualifiedNameQueryEnvironment(IQualifiedNameResolver resolver) {
-		this.packageProvider = new EPackageProvider();
 		this.lookupEngine = new QualifiedNameLookupEngine(this, resolver);
 	}
 
 	@Override
-	public EPackageProvider getEPackageProvider() {
-		return packageProvider;
-	}
-
-	@Override
 	public QualifiedNameLookupEngine getLookupEngine() {
-		return lookupEngine;
+		return (QualifiedNameLookupEngine)lookupEngine;
 	}
 }

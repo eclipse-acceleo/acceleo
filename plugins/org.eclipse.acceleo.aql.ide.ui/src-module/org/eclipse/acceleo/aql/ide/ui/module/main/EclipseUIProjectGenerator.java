@@ -126,7 +126,6 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 				AcceleoParser.QUALIFIER_SEPARATOR, true);
 
 		final List<Module> modelModules = new ArrayList<>();
-		dependencyBundleNames = new LinkedHashSet<>();
 		for (IFile file : projectModuleFiles) {
 			final java.net.URI binaryURI = workspaceResolver.getBinaryURI(file.getLocation().toFile()
 					.toURI());
@@ -134,19 +133,21 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 			final String modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
 			final Module modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
 			modelModules.add(modelModule);
+		}
+		// We register model modules EPackage for type resolution
+		for (Module modelModule : modelModules) {
+			AcceleoUtil.registerEPackage(queryEnvironment, resolver, modelModule);
+		}
+		dependencyBundleNames = new LinkedHashSet<>();
+		for (Module modelModule : modelModules) {
 			dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 		}
-
 		synchronized(this) {
 			beforeGeneration(queryEnvironment, workspaceResolver);
 			try {
 				Map<String, Object> variables = new LinkedHashMap<>();
 				variables.put(main.getParameters().get(0).getName(), modelModules);
 				variables.put(main.getParameters().get(1).getName(), projectUIName);
-				// We register model modules EPackage for type resolution
-				for (Module modelModule : modelModules) {
-					AcceleoUtil.registerEPackage(queryEnvironment, resolver, modelModule);
-				}
 				AcceleoUtil.generate(main, variables, evaluator, queryEnvironment, strategy, targetURI,
 						logURI, monitor);
 			} finally {
@@ -342,6 +343,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		if (existingProject != null && existingProject.exists()) {
 			if (existingProject.isOpen()) {
 				try {
+					addPluginDependencies(existingProject, dependencyBundleNames);
 					existingProject.getParent().refreshLocal(IResource.DEPTH_INFINITE,
 							new NullProgressMonitor());
 				} catch (CoreException e) {

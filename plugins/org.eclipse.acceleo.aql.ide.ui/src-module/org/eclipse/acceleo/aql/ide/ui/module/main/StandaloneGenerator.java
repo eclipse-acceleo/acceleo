@@ -45,7 +45,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
@@ -84,21 +83,6 @@ public class StandaloneGenerator extends AbstractGenerator {
 	 */
 	public StandaloneGenerator(IFile moduleFile) {
 		this.moduleFile = moduleFile;
-	}
-
-	/**
-	 * Registers the given {@link EPackage} in the given {@link IQualifiedNameQueryEnvironment} recursively.
-	 * 
-	 * @param environment
-	 *            the {@link IQualifiedNameQueryEnvironment}
-	 * @param ePackage
-	 *            the {@link EPackage}
-	 */
-	private static void registerEPackage(IQualifiedNameQueryEnvironment environment, EPackage ePackage) {
-		environment.registerEPackage(ePackage);
-		for (EPackage child : ePackage.getESubpackages()) {
-			registerEPackage(environment, child);
-		}
 	}
 
 	/**
@@ -142,6 +126,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 		dependencyBundleNames.add("org.eclipse.acceleo.aql;bundle-version=\"[4.1.0,5.0.0)\"");
 		dependencyBundleNames.add("org.eclipse.acceleo.aql.profiler;bundle-version=\"[4.1.0,5.0.0)\"");
 		dependencyBundleNames.add("org.antlr.runtime;bundle-version=\"[4.10.1,4.10.2)\"");
+		AcceleoUtil.registerEPackage(queryEnvironment, workspaceResolver, modelModule);
 		dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 
 		synchronized(this) {
@@ -203,12 +188,10 @@ public class StandaloneGenerator extends AbstractGenerator {
 	 * @return the created {@link IQualifiedNameQueryEnvironment}
 	 */
 	protected IQualifiedNameQueryEnvironment createAcceleoQueryEnvironment(Map<String, String> options,
-			final IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
+			IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
 		final IQualifiedNameQueryEnvironment queryEnvironment = AcceleoUtil.newAcceleoQueryEnvironment(
 				options, resolver, resourceSetForModels, false);
-		for (String nsURI : new ArrayList<String>(EPackage.Registry.INSTANCE.keySet())) {
-			registerEPackage(queryEnvironment, EPackage.Registry.INSTANCE.getEPackage(nsURI));
-		}
+
 		return queryEnvironment;
 	}
 
