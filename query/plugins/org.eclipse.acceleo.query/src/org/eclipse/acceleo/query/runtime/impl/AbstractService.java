@@ -299,14 +299,17 @@ public abstract class AbstractService<O> implements IService<O> {
 		final String res;
 
 		if (argType instanceof Set<?>) {
-			if (((Set<?>)argType).size() > 1) {
+			final Set<?> types = (Set<?>)argType;
+			if (types.size() > 1) {
 				final StringJoiner joiner = new StringJoiner(" | ");
-				for (Object type : (Set<?>)argType) {
+				for (Object type : types) {
 					joiner.add(getTypeString(type));
 				}
 				res = joiner.toString();
+			} else if (types.size() == 1) {
+				res = getTypeString(types.iterator().next());
 			} else {
-				res = getTypeString(((Set<?>)argType).iterator().next());
+				res = "???";
 			}
 		} else if (argType instanceof Class<?>) {
 			res = ((Class<?>)argType).getCanonicalName();
