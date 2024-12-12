@@ -49,11 +49,15 @@ public class AcceleoPropertyTester extends org.eclipse.core.expressions.Property
 						if (activeEditor instanceof TextEditor) {
 							final IDocument document = ((TextEditor)activeEditor).getDocumentProvider()
 									.getDocument(activeEditor.getEditorInput());
-							final boolean startAtNewLine = selection.getOffset() == 0 || document.get()
-									.charAt(selection.getOffset() - 1) == '\n' || document.get().charAt(
-											selection.getOffset() - 1) == '\r';
-							res = startAtNewLine && !(selection.isEmpty() && selection.getText().endsWith(
-									"\n") || selection.getText().endsWith("\r"));
+							if (selection.getOffset() - 1 < document.getLength()) {
+								final boolean startAtNewLine = selection.getOffset() == 0 || document.get()
+										.charAt(selection.getOffset() - 1) == '\n' || document.get().charAt(
+												selection.getOffset() - 1) == '\r';
+								res = startAtNewLine && !(selection.isEmpty() && selection.getText().endsWith(
+										"\n") || selection.getText().endsWith("\r"));
+							} else {
+								res = false;
+							}
 						} else {
 							res = false;
 						}
