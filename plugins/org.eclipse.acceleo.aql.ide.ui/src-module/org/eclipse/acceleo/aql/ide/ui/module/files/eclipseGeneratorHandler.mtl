@@ -92,7 +92,8 @@
     		try {
     			PlatformUI.getWorkbench().getProgressService().run(true, true, generateRunnable);
     		} catch (InvocationTargetException e) {
-    			Activator.getDefault().log(new Status(IStatus.ERROR, getClass(), "Couldn't generate.", e));
+    			Activator.getDefault()
+    				.log(new Status(IStatus.ERROR, getClass(), "Couldn't generate.", e.getTargetException()));
     		} catch (InterruptedException e) {
     			Activator.getDefault().log(new Status(IStatus.ERROR, getClass(), "Couldn't generate.", e));
     		}
