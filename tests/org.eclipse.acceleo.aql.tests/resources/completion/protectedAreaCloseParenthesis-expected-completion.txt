@@ -1,7 +1,7 @@
 * Label:
 name
 * Description:
-EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
+EAttribute name: ecore::EString [0..1] in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 name
 * Type (optional):

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2024 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,41 +38,21 @@ public class EFeatureCompletionProposal implements ICompletionProposal {
 		this.feature = feature;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getProposal()
-	 */
 	@Override
 	public String getProposal() {
 		return AstBuilder.protectWithUnderscore(feature.getName());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getCursorOffset()
-	 */
 	@Override
 	public int getCursorOffset() {
 		return getProposal().length();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getObject()
-	 */
 	@Override
 	public EStructuralFeature getObject() {
 		return feature;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
@@ -109,17 +89,13 @@ public class EFeatureCompletionProposal implements ICompletionProposal {
 		return String.valueOf(bound);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
-	 */
 	@Override
 	public String getDescription() {
-		StringBuffer result = new StringBuffer();
+		final StringBuffer result = new StringBuffer();
+
 		result.append(feature.eClass().getName());
-		result.append(" named ");
-		result.append(feature.getName());
+		result.append(" ");
+		result.append(toString());
 		result.append(" in ");
 		result.append(feature.getEContainingClass().getName());
 		result.append('(');
@@ -130,6 +106,7 @@ public class EFeatureCompletionProposal implements ICompletionProposal {
 			result.append('\n');
 			result.append(doc);
 		}
+
 		return result.toString();
 	}
 

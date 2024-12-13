@@ -1,7 +1,7 @@
 * Label:
 defaultValue
 * Description:
-EAttribute named defaultValue in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+EAttribute defaultValue: ecore::EJavaObject [0..1] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 defaultValue
 * Type (optional):
@@ -11,7 +11,7 @@ Replacement: 1022 42 16 - 1026 42 20
 * Label:
 eAnnotations
 * Description:
-EReference named eAnnotations in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+EReference eAnnotations: ecore::EAnnotation [0..*] in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 eAnnotations
 * Type (optional):
@@ -21,7 +21,7 @@ Replacement: 1022 42 16 - 1026 42 20
 * Label:
 ePackage
 * Description:
-EReference named ePackage in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+EReference ePackage: ecore::EPackage [0..1] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 ePackage
 * Type (optional):
@@ -31,7 +31,7 @@ Replacement: 1022 42 16 - 1026 42 20
 * Label:
 eTypeParameters
 * Description:
-EReference named eTypeParameters in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+EReference eTypeParameters: ecore::ETypeParameter [0..*] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 eTypeParameters
 * Type (optional):
@@ -41,7 +41,7 @@ Replacement: 1022 42 16 - 1026 42 20
 * Label:
 instanceClass
 * Description:
-EAttribute named instanceClass in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+EAttribute instanceClass: ecore::EJavaClass [0..1] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 instanceClass
 * Type (optional):
@@ -51,7 +51,7 @@ Replacement: 1022 42 16 - 1026 42 20
 * Label:
 instanceClassName
 * Description:
-EAttribute named instanceClassName in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+EAttribute instanceClassName: ecore::EString [0..1] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 instanceClassName
 * Type (optional):
@@ -61,7 +61,7 @@ Replacement: 1022 42 16 - 1026 42 20
 * Label:
 instanceTypeName
 * Description:
-EAttribute named instanceTypeName in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
+EAttribute instanceTypeName: ecore::EString [0..1] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 instanceTypeName
 * Type (optional):
@@ -71,7 +71,7 @@ Replacement: 1022 42 16 - 1026 42 20
 * Label:
 name
 * Description:
-EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
+EAttribute name: ecore::EString [0..1] in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 name
 * Type (optional):
