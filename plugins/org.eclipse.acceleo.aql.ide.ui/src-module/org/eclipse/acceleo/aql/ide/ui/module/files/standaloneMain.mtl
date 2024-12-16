@@ -308,6 +308,7 @@
 
     		res.put(AcceleoUtil.LOG_URI_OPTION, "acceleo.log");
     		res.put(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());
+    		// res.put(AQLUtils.PROPERTIES_URIS_OPTION, "file1.properties,file2.properties");
 
     		return res;
     	}
