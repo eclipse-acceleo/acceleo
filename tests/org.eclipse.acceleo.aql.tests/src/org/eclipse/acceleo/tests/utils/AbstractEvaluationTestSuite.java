@@ -117,6 +117,8 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
 				.getURIConverter(), new DefaultWriterFactory());
+		AcceleoUtil.registerEPackage(queryEnvironment, queryEnvironment.getLookupEngine().getResolver(),
+				module);
 		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy, memoryDestination, null,
 				new BasicMonitor());
 
@@ -185,6 +187,8 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
 				.getURIConverter(), new DefaultWriterFactory());
+		AcceleoUtil.registerEPackage(queryEnvironmentWindowsEndLine, queryEnvironmentWindowsEndLine
+				.getLookupEngine().getResolver(), module);
 		AcceleoUtil.generate(evaluatorWindowsEndLine, queryEnvironmentWindowsEndLine, module, model, strategy,
 				memoryDestination, null, new BasicMonitor());
 

@@ -656,7 +656,7 @@ public final class AcceleoUtil {
 				}
 				for (Import imprt : currentModule.getImports()) {
 					final Object resolved = resolver.resolve(imprt.getModule().getQualifiedName());
-					if (resolved instanceof Module && res.add(currentModule)) {
+					if (resolved instanceof Module && res.add((Module)resolved)) {
 						addedModules.add((Module)resolved);
 					}
 				}

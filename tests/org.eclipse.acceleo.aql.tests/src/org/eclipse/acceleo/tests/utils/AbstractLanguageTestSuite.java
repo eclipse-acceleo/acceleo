@@ -247,7 +247,11 @@ public abstract class AbstractLanguageTestSuite {
 		final Object resolved = resolver.resolve(qualifiedName);
 		if (resolved instanceof Module) {
 			astResult = ((Module)resolved).getAst();
-			AcceleoUtil.registerEPackage(queryEnvironment, resolver, (Module)resolved);
+			for (Metamodel metamodel : astResult.getModule().getMetamodels()) {
+				if (metamodel.getReferencedPackage() != null) {
+					queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
+				}
+			}
 		} else {
 			astResult = null;
 		}
@@ -255,8 +259,11 @@ public abstract class AbstractLanguageTestSuite {
 		final Object resolvedWindowsEndLine = resolverWindowsEndLine.resolve(qualifiedName);
 		if (resolvedWindowsEndLine instanceof Module) {
 			astResultWindowsEndLine = ((Module)resolvedWindowsEndLine).getAst();
-			AcceleoUtil.registerEPackage(queryEnvironmentWindowsEndLine, resolverWindowsEndLine,
-					(Module)resolvedWindowsEndLine);
+			for (Metamodel metamodel : astResultWindowsEndLine.getModule().getMetamodels()) {
+				if (metamodel.getReferencedPackage() != null) {
+					queryEnvironmentWindowsEndLine.registerEPackage(metamodel.getReferencedPackage());
+				}
+			}
 		} else {
 			astResultWindowsEndLine = null;
 		}
