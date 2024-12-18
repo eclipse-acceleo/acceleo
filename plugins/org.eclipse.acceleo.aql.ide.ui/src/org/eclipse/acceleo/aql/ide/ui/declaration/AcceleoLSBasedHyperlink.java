@@ -40,6 +40,8 @@ public class AcceleoLSBasedHyperlink implements IHyperlink {
 
 	private static final String DASH_SEPARATOR = " - "; //$NON-NLS-1$
 
+	private static final String FILE = "file"; //$NON-NLS-1$
+
 	private final Either<Location, LocationLink> location;
 
 	private final IRegion highlightRegion;
@@ -94,8 +96,7 @@ public class AcceleoLSBasedHyperlink implements IHyperlink {
 			String uri = this.location.isLeft() ? this.location.getLeft().getUri()
 					: this.location.getRight().getTargetUri();
 			if (uri != null) {
-				if (uri.startsWith(LSPEclipseUtils.FILE_URI) && uri.length() > LSPEclipseUtils.FILE_URI
-						.length()) {
+				if (uri.startsWith(FILE) && uri.length() > FILE.length()) {
 					Range range = this.location.isLeft() ? this.location.getLeft().getRange()
 							: this.location.getRight().getTargetSelectionRange();
 					int line = -1;
