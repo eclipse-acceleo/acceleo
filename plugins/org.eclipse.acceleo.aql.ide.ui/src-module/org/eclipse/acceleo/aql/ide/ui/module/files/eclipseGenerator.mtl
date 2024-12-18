@@ -49,6 +49,7 @@
       import org.eclipse.emf.common.util.URI;
       import org.eclipse.emf.ecore.EClass;
       import org.eclipse.emf.ecore.EObject;
+      import org.eclipse.emf.ecore.resource.Resource;
       import org.eclipse.emf.ecore.resource.ResourceSet;
       import org.eclipse.jface.dialogs.IDialogConstants;
       import org.eclipse.swt.widgets.Display;
@@ -151,14 +152,14 @@
     	 */
     	@Override
     	protected List<EObject> getValues(IQualifiedNameQueryEnvironment queryEnvironment,
-    			Map<EClass, List<EObject>> valuesCache, TypeLiteral type, ResourceSet resourceSetForModels,
+    			Map<EClass, List<EObject>> valuesCache, TypeLiteral type, ResourceSet resourceSetForModels, List<Resource> modelResources,
     			Monitor monitor) {
     		final List<EObject> res;
     
     		if (values != null) {
     			res = values;
     		} else {
-    			res = super.getValues(queryEnvironment, valuesCache, type, resourceSetForModels, monitor);
+    			res = super.getValues(queryEnvironment, valuesCache, type, resourceSetForModels, modelResources, monitor);
     		}
     
     		return res;

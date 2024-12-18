@@ -55,7 +55,6 @@
       import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
       import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
       import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
-      import org.eclipse.acceleo.query.services.ResourceServices;
       import org.eclipse.emf.common.util.BasicDiagnostic;
       import org.eclipse.emf.common.util.BasicMonitor.Printing;
       import org.eclipse.emf.common.util.Diagnostic;
@@ -69,6 +68,10 @@
       import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
       [module.getAllEPackages().getJavaImport()->sep('\n')/]
+      [if (module.getAllEPackages()->hasUML())]
+        import org.eclipse.uml2.uml.resource.UMLResource;
+        import org.eclipse.uml2.uml.util.UMLUtil;
+      [/if]
 
     [/protected]
 
@@ -187,7 +190,7 @@
 
     		monitor.beginTask("Generating", resources.size() + 1 + mainTemplates.size() * resources.size() + 1);
     		// load models
-    		loadResources(resourceSetForModels, resources, monitor);
+    		final List<Resource> modelResources = loadResources(resourceSetForModels, resources, monitor);
 
     		monitor.subTask("Before generation");
     		beforeGeneration(evaluator, queryEnvironment, module, resourceSetForModels, strategy, targetURI,
@@ -199,7 +202,7 @@
     				final EClassifierTypeLiteral eClassifierTypeLiteral = (EClassifierTypeLiteral)template
     						.getParameters().get(0).getType().getAst();
     				final List<EObject> values = getValues(queryEnvironment, valuesCache, eClassifierTypeLiteral,
-    						resourceSetForModels, monitor);
+    						resourceSetForModels, modelResources, monitor);
 
     				final String parameterName = template.getParameters().get(0).getName();
     				Map<String, Object> variables = new LinkedHashMap<>();
@@ -261,17 +264,19 @@
     	 * @param type
     	 *            the {@link TypeLiteral}
     	 * @param resourceSetForModels
-    	 *            the {@link ResourceServices} for models
+    	 *            the {@link ResourceSet} for models
+    	 * @param modelResources
+    	 *            the {@link List} of loaded {@link Resource}
     	 * @param monitor
     	 *            the progress {@link Monitor}, it must consumes the resources.size()
     	 * @return the {@link List} of {@link EObject} values to use
     	 * @generated
     	 */
     	protected List<EObject> getValues(IQualifiedNameQueryEnvironment queryEnvironment,
-    			final Map<EClass, List<EObject>> valuesCache, TypeLiteral type,
-    			ResourceSet resourceSetForModels, Monitor monitor) {
-    		final List<EObject> values = AcceleoUtil.getValues(type, queryEnvironment, resourceSetForModels
-    				.getResources(), valuesCache, monitor);
+    			Map<EClass, List<EObject>> valuesCache, TypeLiteral type,
+    			ResourceSet resourceSetForModels, List<Resource> modelResources, Monitor monitor) {
+    		final List<EObject> values = AcceleoUtil.getValues(type, queryEnvironment, modelResources,
+    				valuesCache, monitor);
     		return values;
     	}
 
@@ -356,6 +361,23 @@
     		// initialize EPackages
     		[module.getAllEPackages().getJavaInitialize()->sep('\n')/]
 
+    		[if (module.getAllEPackages()->hasUML())]
+    		  // Initialize the ResourceSet for UML
+    		  UMLUtil.init(resourceSetForModels);
+    		  resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+    		  		UMLResource.Factory.INSTANCE);
+
+    		  // register profiles
+    		  // UMLRealTimePackage.eINSTANCE.getName();
+
+    		  // Load and register dynamic profiles
+    		  // final URI profileURI = URI.createFileURI("my.profile.uml");
+    		  // final Resource profileResource = resourceSetForModels.getResource(profileURI, true);
+    		  // final Profile profile = (Profile) profileResource.getContents().get(0);
+    		  // final EPackage profileDefinition = profile.getDefinition();
+    		  // resourceSetForModels.getPackageRegistry().put(profileDefinition.getNsURI(), profileDefinition);
+    		[/if]
+
     		// register default XMI resource factory
     		resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
     				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
@@ -370,17 +392,25 @@
     	 *            the {@link List} of resource names to load
     	 * @param monitor
     	 *            the progress {@link Monitor}, it must consumes the number of resources
+    	 * @return the {@link List} of loaded {@link Resource}
     	 * @generated
     	 */
-    	protected void loadResources(ResourceSet resourceSetForModels, List<String> resources, Monitor monitor) {
+    	protected List<Resource> loadResources(ResourceSet resourceSetForModels, List<String> resources, Monitor monitor) {
+    		final List<Resource> res = new ArrayList<>();
+
     		for (String resource : resources) {
     			monitor.subTask("Loading " + resource);
-    			resourceSetForModels.getResource(URI.createURI(resource, true), true);
+    			final Resource loaded = resourceSetForModels.getResource(URI.createURI(resource, true), true);
+    			if (loaded != null) {
+    				res.add(loaded);
+    			}
     			monitor.worked(1);
     			if (monitor.isCanceled()) {
     				break;
     			}
     		}
+
+    	return res;
     	}
 
     	/**
