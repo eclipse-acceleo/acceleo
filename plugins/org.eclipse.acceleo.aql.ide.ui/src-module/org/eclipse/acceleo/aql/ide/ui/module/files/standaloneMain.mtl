@@ -69,8 +69,7 @@
 
       [module.getAllEPackages().getJavaImport()->sep('\n')/]
       [if (module.getAllEPackages()->hasUML())]
-        import org.eclipse.uml2.uml.resource.UMLResource;
-        import org.eclipse.uml2.uml.util.UMLUtil;
+        import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
       [/if]
 
     [/protected]
@@ -363,9 +362,7 @@
 
     		[if (module.getAllEPackages()->hasUML())]
     		  // Initialize the ResourceSet for UML
-    		  UMLUtil.init(resourceSetForModels);
-    		  resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-    		  		UMLResource.Factory.INSTANCE);
+    		  UMLResourcesUtil.init(resourceSetForModels);
 
     		  // register profiles
     		  // UMLRealTimePackage.eINSTANCE.getName();

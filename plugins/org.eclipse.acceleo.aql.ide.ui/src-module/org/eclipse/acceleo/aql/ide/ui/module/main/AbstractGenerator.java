@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,6 +72,11 @@ public abstract class AbstractGenerator {
 					}
 				}
 			}
+		}
+
+		// handle UML2 dependencies
+		if (res.contains("org.eclipse.uml2.uml")) {
+			res.add("org.eclipse.uml2.uml.resources");
 		}
 
 		return res;
