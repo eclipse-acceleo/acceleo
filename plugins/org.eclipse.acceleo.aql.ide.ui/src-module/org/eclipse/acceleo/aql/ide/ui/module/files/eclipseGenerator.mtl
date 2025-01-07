@@ -139,11 +139,40 @@
     	 * Constructor.
     	 * 
     	 * @param selected
+    	 *            the selected {@link IFile}
+    	 * @param target
+    	 *            the target folder of the generation
+    	 * @generated
+    	 */
+    	public [module.getEclipseClassName()/](IFile selected, String target) {
+    		super(Collections.singletonList(URI.createFileURI(selected.getLocation().toString()).toString()),
+    			target);
+    		this.values = null;
+    	}
+    
+    	/**
+    	 * Constructor.
+    	 * 
+    	 * @param selected
     	 *            the selected {@link [module.getReceiverClassName()/]}
     	 * @generated
     	 */
     	public [module.getEclipseClassName()/]([module.getReceiverClassName()/] selected) {
     		super(Collections.emptyList(), getTarget(selected));
+    		this.values = Collections.singletonList(selected);
+    	}
+    
+    	/**
+    	 * Constructor.
+    	 * 
+    	 * @param selected
+    	 *            the selected {@link [module.getReceiverClassName()/]}
+    	 * @param target
+    	 *            the target folder of the generation
+    	 * @generated
+    	 */
+    	public [module.getEclipseClassName()/]([module.getReceiverClassName()/] selected, String target) {
+    		super(Collections.emptyList(), target);
     		this.values = Collections.singletonList(selected);
     	}
     
