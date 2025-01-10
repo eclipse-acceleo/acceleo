@@ -81,8 +81,16 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 		 */
 		if (result == null) {
 			String start = currentStack.getStartingQualifiedName();
-			result = lookupExtendedService(start, name, argumentTypes, IService.Visibility.PROTECTED,
-					IService.Visibility.PUBLIC);
+			final IService<?> inLastExtendHierachyService = lookupExtendedService(last, null, name,
+					argumentTypes, IService.Visibility.PROTECTED, IService.Visibility.PUBLIC);
+			if (inLastExtendHierachyService != null) {
+				if (start.equals(last)) {
+					result = inLastExtendHierachyService;
+				} else {
+					result = lookupExtendedService(start, last, name, argumentTypes,
+							IService.Visibility.PROTECTED, IService.Visibility.PUBLIC);
+				}
+			}
 		}
 
 		/*
@@ -106,7 +114,10 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 	 * matching the given name and arguments.
 	 * 
 	 * @param startQualifiedName
-	 *            The module qualified name we're considering as the "root" of our extends hierarchy.
+	 *            The module qualified name we're considering as the "bottom" of our extends hierarchy.
+	 * @param stopQualifiedName
+	 *            The module qualified name we're considering as the "top" of our extends hierarchy if any,
+	 *            <code>null</code> to lookup in all the hierarchy.
 	 * @param name
 	 *            The name of the service we're looking for.
 	 * @param argumentTypes
@@ -115,20 +126,22 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 	 *            The IService.Visibility to consider for our services.
 	 * @return The service matching the criteria if any, <code>null</code> if none.
 	 */
-	private IService<?> lookupExtendedService(String startQualifiedName, String name, IType[] argumentTypes,
-			IService.Visibility... candidateVisibilities) {
+	private IService<?> lookupExtendedService(String startQualifiedName, String stopQualifiedName,
+			String name, IType[] argumentTypes, IService.Visibility... candidateVisibilities) {
 		final IService<?> service = getLookupEngine(startQualifiedName).lookup(name, argumentTypes);
 		IService<?> result = null;
+
 		if (service != null && isVisible(service, candidateVisibilities)) {
 			result = service;
 		}
-		if (result == null) {
+		if (result == null && !startQualifiedName.equals(stopQualifiedName)) {
 			final String extendedModuleQualifiedName = resolver.getExtend(startQualifiedName);
 			if (extendedModuleQualifiedName != null) {
-				result = lookupExtendedService(extendedModuleQualifiedName, name, argumentTypes,
-						candidateVisibilities);
+				result = lookupExtendedService(extendedModuleQualifiedName, stopQualifiedName, name,
+						argumentTypes, candidateVisibilities);
 			}
 		}
+
 		return result;
 	}
 
@@ -147,14 +160,16 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 	 */
 	private IService<?> lookupImportedService(String start, String name, IType[] argumentTypes) {
 		IService<?> result = null;
+
 		for (String imported : resolver.getImports(start)) {
-			final IService<?> service = lookupExtendedService(imported, name, argumentTypes,
+			final IService<?> service = lookupExtendedService(imported, null, name, argumentTypes,
 					IService.Visibility.PUBLIC);
 			if (service != null) {
 				result = service;
 				break;
 			}
 		}
+
 		return result;
 	}
 
@@ -369,13 +384,25 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 		final String start = currentStack.getStartingQualifiedName();
 		final String extendQualifiedName = getExtend(start);
 		if (extendQualifiedName != null) {
-			result = lookupExtendedService(extendQualifiedName, name, argumentTypes,
+			result = lookupExtendedService(extendQualifiedName, null, name, argumentTypes,
 					IService.Visibility.PROTECTED, IService.Visibility.PUBLIC);
 		} else {
 			result = null;
 		}
 
 		return result;
+	}
+
+	@Override
+	public boolean isInExtends(String startQualifiedName, String calleeQualifiedName) {
+		String currentQualifiedName = startQualifiedName;
+		while (currentQualifiedName != null) {
+			if (currentQualifiedName.equals(calleeQualifiedName)) {
+				return true;
+			}
+			currentQualifiedName = getExtend(currentQualifiedName);
+		}
+		return false;
 	}
 
 }

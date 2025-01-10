@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -235,13 +235,22 @@ public abstract class AbstractService<O> implements IService<O> {
 			final Throwable cause;
 			final String message;
 			if (e.getCause() != null) {
-				cause = e.getCause();
 				if (e instanceof InvocationTargetException) {
+					cause = e.getCause();
 					final StringWriter sw = new StringWriter();
 					final PrintWriter pw = new PrintWriter(sw);
 					cause.printStackTrace(pw);
 					message = sw.toString().replaceAll("\n", "\n\t");
+				} else if (e instanceof AcceleoQueryEvaluationException) {
+					if (e.getCause().getCause() != null) {
+						cause = e.getCause().getCause();
+						message = cause.getMessage();
+					} else {
+						cause = e.getCause();
+						message = cause.getMessage();
+					}
 				} else {
+					cause = e.getCause();
 					message = cause.getMessage();
 				}
 			} else {

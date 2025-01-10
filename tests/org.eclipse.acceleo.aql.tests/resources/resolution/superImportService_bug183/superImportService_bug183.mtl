@@ -1,0 +1,9 @@
+[module superImportService_bug183('http://www.eclipse.org/emf/2002/Ecore')extends resolution::superImportService_bug183::super/]
+
+[comment @main /]
+[template public template(param1 : ecore::EClass)]
+  [file (param1.name + '.txt', overwrite)]
+    generated from super_import_service_bug_183.template(EClass)
+    [param1.super:template()/]
+  [/file]
+[/template]

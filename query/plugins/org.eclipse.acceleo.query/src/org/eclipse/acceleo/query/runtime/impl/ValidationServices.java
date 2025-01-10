@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	/**
 	 * Log message used when an internal validation error is encountered.
 	 */
-	public static final String INTERNAL_ERROR_MSG = "An internal error occured during validation of a query";
+	public static final String INTERNAL_ERROR_MSG = "An internal error occurred during validation of a query";
 
 	/**
 	 * Log message used when a variable is present in the types map but has no types.
@@ -167,9 +167,8 @@ public class ValidationServices extends AbstractLanguageServices {
 	public ServicesValidationResult callType(Call call, IValidationResult validationResult,
 			String serviceName, List<Set<IType>> argTypes) {
 		if (argTypes.size() == 0) {
-			throw new AcceleoQueryValidationException(
-					"An internal error occured during validation of a query : at least one argument must be specified for service "
-							+ serviceName + ".");
+			throw new AcceleoQueryValidationException(INTERNAL_ERROR_MSG
+					+ " : at least one argument must be specified for service " + serviceName + ".");
 		}
 		try {
 			final ServicesValidationResult result = new ServicesValidationResult(queryEnvironment, this);

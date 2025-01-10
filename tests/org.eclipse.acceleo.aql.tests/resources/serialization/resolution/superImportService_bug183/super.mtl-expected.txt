@@ -1,0 +1,8 @@
+[module super('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import resolution::superImportService_bug183::imported/]
+
+[template public template(param1 : ecore::EClass)]
+  generated from super.template(EClass)
+  [param1.otherTemplate()/]
+[/template]

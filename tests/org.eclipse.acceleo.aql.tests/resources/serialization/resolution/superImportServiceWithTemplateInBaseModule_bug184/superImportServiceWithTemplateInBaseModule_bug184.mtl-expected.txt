@@ -1,0 +1,13 @@
+[module superImportServiceWithTemplateInBaseModule_bug184('http://www.eclipse.org/emf/2002/Ecore') extends resolution::superImportServiceWithTemplateInBaseModule_bug184::super/]
+
+[comment @main /]
+[template public template(param1 : ecore::EClass)]
+  [file (param1.name + '.txt', overwrite)]
+    generated from superImportServiceWithTemplateInBaseModule_bug184.template(EClass)
+    [param1.super:template()/]
+  [/file]
+[/template]
+
+[template public otherTemplate(param1 : ecore::EClass)]
+  generated from superImportServiceWithTemplateInBaseModule_bug184.otherTemplate(EClass)
+[/template]

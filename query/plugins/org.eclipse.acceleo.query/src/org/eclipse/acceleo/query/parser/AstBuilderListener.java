@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -761,7 +761,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * Message logged when an internal error occurs.
 	 */
-	private static final String INTERNAL_ERROR_MSG = "Internal exception occured while evaluating an expression";
+	private static final String INTERNAL_ERROR_MSG = "Internal exception occurred while parsing an expression";
 
 	/**
 	 * The evaluation stack used to hold temporary results.

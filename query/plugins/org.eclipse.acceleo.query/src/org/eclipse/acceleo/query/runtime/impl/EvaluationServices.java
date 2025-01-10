@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 	/**
 	 * Log message used when an internal evaluation error is encountered.
 	 */
-	private static final String INTERNAL_ERROR_MSG = "An internal error occured during evaluation of a query";
+	private static final String INTERNAL_ERROR_MSG = "An internal error occurred during evaluation of a query";
 
 	/**
 	 * Creates a new {@link EvaluationServices} instance given a lookupEngine and logging flag.
@@ -198,9 +198,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 
 		final String serviceName = call.getServiceName();
 		if (arguments.length == 0) {
-			throw new AcceleoQueryEvaluationException(
-					"An internal error occured during evaluation of a query : at least one argument must be specified for service "
-							+ serviceName + ".");
+			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG
+					+ " : at least one argument must be specified for service " + serviceName + ".");
 		}
 		try {
 			final IType[] argumentTypes = new IType[arguments.length];

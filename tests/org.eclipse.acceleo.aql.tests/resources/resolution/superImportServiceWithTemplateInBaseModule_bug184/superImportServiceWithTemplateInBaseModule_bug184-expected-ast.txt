@@ -1,0 +1,19 @@
+
+header position 0..176
+module superImportServiceWithTemplateInBaseModule_bug184
+  metamodel http://www.eclipse.org/emf/2002/Ecore (59..97)
+  extends resolution::superImportServiceWithTemplateInBaseModule_bug184::super (106..174)
+  [comment @main  (187..193) /] (178..195)
+  
+  public template template(param1 : EClass (222..244))
+  @main
+    [file url .add(.aqlFeatureAccess(param1, 'name'), '.txt') (256..276) mode overwrite
+      generated from superImportServiceWithTemplateInBaseModule_bug184.template(EClass) (newLineNeeded) (294..376)
+      [.super:template(param1) (381..404)/] (newLineNeeded (380..407) (289..409)
+    [/file] (249..416)
+     (newLineNeeded) (416..417) (246..417)
+  [/template] (196..428)
+  
+  public template otherTemplate(param1 : EClass (461..483))
+    generated from superImportServiceWithTemplateInBaseModule_bug184.otherTemplate(EClass) (newLineNeeded) (488..575) (485..575)
+  [/template] (430..586) (0..586)

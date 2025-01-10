@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,5 +111,17 @@ public interface IQualifiedNameLookupEngine extends ILookupEngine {
 	 *         <code>null</code> otherwise
 	 */
 	IService<?> superServiceLookup(String name, IType[] argumentTypes);
+
+	/**
+	 * Tells if the callee qualified name is in the extends hierarchy of the start qualified name.
+	 * 
+	 * @param startQualifiedName
+	 *            the bottom the the extends hierarchy
+	 * @param calleeQualifiedName
+	 *            the callee qualified name
+	 * @return <code>true</code> if the callee qualified name is in the extends hierarchy of the start
+	 *         qualified name, <code>false</code> otherwise
+	 */
+	boolean isInExtends(String startQualifiedName, String calleeQualifiedName);
 
 }

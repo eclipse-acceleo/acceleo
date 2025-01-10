@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,10 @@ import org.eclipse.acceleo.query.runtime.impl.AbstractService;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 
 /**
- * An implementation that {@link IQualifiedNameLookupEngine#pushContext(String) push extends},
- * {@link IQualifiedNameLookupEngine#pushContext(String) push imports},
- * {@link IQualifiedNameLookupEngine#popContext(String) pop}.
+ * An implementation that {@link IQualifiedNameLookupEngine#pushContext(String) pushes extends},
+ * {@link IQualifiedNameLookupEngine#pushImportsContext(String, String) pushes imports},
+ * {@link IQualifiedNameLookupEngine#popContext(String) pops} {@link IQualifiedNameLookupEngine}'s
+ * {@link IQualifiedNameLookupEngine#getCurrentContext() current context}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
@@ -66,18 +67,20 @@ public abstract class AbstractQualifiedNameService<O> extends AbstractService<O>
 	}
 
 	private void startInvoke() {
-		String currentQualifiedName = lookupEngine.getCurrentContext().getStartingQualifiedName();
-		if (currentQualifiedName != contextQualifiedName) {
+		final String startQualifiedName = lookupEngine.getCurrentContext().getStartingQualifiedName();
+		if (startQualifiedName != contextQualifiedName) {
 			// The module element we're calling is not from our current stack's tip.
 			// If it is in our current module's hierarchy, we only need to push the new module element on the
 			// stack.
-			if (isInExtends(currentQualifiedName, contextQualifiedName)) {
+			if (lookupEngine.isInExtends(startQualifiedName, contextQualifiedName)) {
 				lookupEngine.pushContext(contextQualifiedName);
 			} else {
 				// We can only be here if the module we're calling is in our imports or their respective
 				// hierarchy. We need to change the environment current namespace to said import.
+				final String currentQualifiedName = lookupEngine.getCurrentContext().peek();
 				final Optional<String> importedModule = lookupEngine.getImports(currentQualifiedName).stream()
-						.filter(imported -> isInExtends(imported, contextQualifiedName)).findFirst();
+						.filter(imported -> lookupEngine.isInExtends(imported, contextQualifiedName))
+						.findFirst();
 				if (importedModule.isPresent()) {
 					lookupEngine.pushImportsContext(importedModule.get(), contextQualifiedName);
 				} else {
@@ -89,17 +92,6 @@ public abstract class AbstractQualifiedNameService<O> extends AbstractService<O>
 		} else {
 			lookupEngine.pushContext(contextQualifiedName);
 		}
-	}
-
-	private boolean isInExtends(String start, String calleeQualifiedName) {
-		String currentQualifiedName = start;
-		while (currentQualifiedName != null) {
-			if (currentQualifiedName.equals(calleeQualifiedName)) {
-				return true;
-			}
-			currentQualifiedName = lookupEngine.getExtend(currentQualifiedName);
-		}
-		return false;
 	}
 
 	private void endInvoke() {
