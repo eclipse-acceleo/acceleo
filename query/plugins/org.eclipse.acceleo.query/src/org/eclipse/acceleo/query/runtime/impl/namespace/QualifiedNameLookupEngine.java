@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -150,7 +150,7 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 		for (String imported : resolver.getImports(start)) {
 			final IService<?> service = lookupExtendedService(imported, name, argumentTypes,
 					IService.Visibility.PUBLIC);
-			if (service != null && service.getVisibility() == IService.Visibility.PUBLIC) {
+			if (service != null) {
 				result = service;
 				break;
 			}
