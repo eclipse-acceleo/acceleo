@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2024  Obeo.
+ * Copyright (c) 2016, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1057,8 +1057,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 							new HashMap<String, Object>(peekVariables()) });
 			generationResult.addDiagnostic(diagnostic);
 			res = EMPTY_RESULT;
-		} else {
+		} else if (!protectedAreaIDs.isEmpty()) {
+			// if we are in a FleStatement
 			res = getProtectedAreaContent(protectedArea, id);
+		} else {
+			res = EMPTY_RESULT;
 		}
 
 		return res;
