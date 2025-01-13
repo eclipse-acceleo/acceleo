@@ -65,45 +65,48 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 
 	@Override
 	public IService<?> lookup(String name, IType[] argumentTypes) {
+		final IService<?> result;
+
 		final CallStack currentStack = getCurrentContext();
 
 		/* PRIVATE query or template in the same module as our current (last of the stack) */
-		String last = currentStack.peek();
+		final String last = currentStack.peek();
 		final IService<?> lastService = getLookupEngine(last).lookup(name, argumentTypes);
-		IService<?> result = null;
 		if (lastService != null && lastService.getVisibility() == IService.Visibility.PRIVATE) {
 			result = lastService;
-		}
-
-		/*
-		 * PUBLIC or PROTECTED template or query in the extends hierarchy of our "lowest" module in that
-		 * hierarchy (first of the stack)
-		 */
-		if (result == null) {
-			String start = currentStack.getStartingQualifiedName();
+		} else {
+			/*
+			 * PUBLIC or PROTECTED template or query in the extends hierarchy of our "lowest" module in that
+			 * hierarchy (first of the stack)
+			 */
+			final String start = currentStack.getStartingQualifiedName();
 			final IService<?> inLastExtendHierachyService = lookupExtendedService(last, null, name,
 					argumentTypes, IService.Visibility.PROTECTED, IService.Visibility.PUBLIC);
 			if (inLastExtendHierachyService != null) {
 				if (start.equals(last)) {
 					result = inLastExtendHierachyService;
 				} else {
-					result = lookupExtendedService(start, last, name, argumentTypes,
-							IService.Visibility.PROTECTED, IService.Visibility.PUBLIC);
+					final IService<?> overridingService = lookupExtendedService(start, last, name,
+							argumentTypes, IService.Visibility.PROTECTED, IService.Visibility.PUBLIC);
+					if (overridingService != null) {
+						result = overridingService;
+					} else {
+						result = inLastExtendHierachyService;
+					}
+				}
+			} else {
+				/*
+				 * We couldn't find a template or query matching that in our current extends hierarchy, try
+				 * the imports of our current (last of the stack) module for a PUBLIC matching module element.
+				 */
+				final IService<?> importedService = lookupImportedService(last, name, argumentTypes);
+				if (importedService != null) {
+					result = importedService;
+				} else {
+					/* There is no module element matching our target, fall back to regular services. */
+					result = super.lookup(name, argumentTypes);
 				}
 			}
-		}
-
-		/*
-		 * We couldn't find a template or query matching that in our current extends hierarchy, try the
-		 * imports of our current (last of the stack) module for a PUBLIC matching module element.
-		 */
-		if (result == null) {
-			result = lookupImportedService(last, name, argumentTypes);
-		}
-
-		/* There is no module element matching our target, fall back to regular services. */
-		if (result == null) {
-			result = super.lookup(name, argumentTypes);
 		}
 
 		return result;
@@ -128,18 +131,21 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 	 */
 	private IService<?> lookupExtendedService(String startQualifiedName, String stopQualifiedName,
 			String name, IType[] argumentTypes, IService.Visibility... candidateVisibilities) {
-		final IService<?> service = getLookupEngine(startQualifiedName).lookup(name, argumentTypes);
-		IService<?> result = null;
+		IService<?> result;
 
-		if (service != null && isVisible(service, candidateVisibilities)) {
-			result = service;
-		}
-		if (result == null && !startQualifiedName.equals(stopQualifiedName)) {
+		final IService<?> localService = getLookupEngine(startQualifiedName).lookup(name, argumentTypes);
+		if (localService != null && isVisible(localService, candidateVisibilities)) {
+			result = localService;
+		} else if (!startQualifiedName.equals(stopQualifiedName)) {
 			final String extendedModuleQualifiedName = resolver.getExtend(startQualifiedName);
 			if (extendedModuleQualifiedName != null) {
 				result = lookupExtendedService(extendedModuleQualifiedName, stopQualifiedName, name,
 						argumentTypes, candidateVisibilities);
+			} else {
+				result = null;
 			}
+		} else {
+			result = null;
 		}
 
 		return result;
