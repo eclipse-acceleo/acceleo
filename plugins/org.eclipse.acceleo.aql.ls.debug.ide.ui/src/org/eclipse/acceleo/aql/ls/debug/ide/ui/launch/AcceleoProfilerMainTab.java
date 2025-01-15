@@ -216,8 +216,8 @@ public class AcceleoProfilerMainTab extends AcceleoMainTab {
 		final Group group = new Group(parent, parent.getStyle());
 		group.setLayout(new GridLayout(2, false));
 		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		group.setText("Profile model:");
-		final Combo res = new Combo(group, SWT.BORDER);
+		group.setText("Profile model representation:");
+		final Combo res = new Combo(group, SWT.BORDER | SWT.READ_ONLY);
 		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		res.addModifyListener(new ModifyListener() {
 			@Override
