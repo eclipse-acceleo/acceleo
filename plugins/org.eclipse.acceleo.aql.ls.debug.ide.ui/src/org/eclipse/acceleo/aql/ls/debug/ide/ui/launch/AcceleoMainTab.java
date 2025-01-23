@@ -390,7 +390,7 @@ public class AcceleoMainTab extends AbstractLaunchConfigurationTab {
 		final Group group = new Group(parent, parent.getStyle());
 		group.setLayout(new GridLayout(2, false));
 		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		group.setText("Enf of line:");
+		group.setText("End of line:");
 		unixEndLineButton = new Button(group, SWT.RADIO);
 		unixEndLineButton.setText("Unix");
 		unixEndLineButton.addListener(SWT.Selection, e -> {
