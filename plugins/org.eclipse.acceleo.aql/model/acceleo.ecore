@@ -100,7 +100,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AcceleoASTNode" abstract="true" interface="true"
-      eSuperTypes="http://www.eclipse.org/acceleo/query/1.0#//ASTNode"/>
+      eSuperTypes="http://www.eclipse.org/acceleo/query/8.0#//ASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"
       eSuperTypes="#//AcceleoASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//AcceleoASTNode">
@@ -112,7 +112,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="TypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//ASTResult"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeAql" lowerBound="1"
-        eType="ecore:EClass http://www.eclipse.org/acceleo/query/1.0#//Expression"
+        eType="ecore:EClass http://www.eclipse.org/acceleo/query/8.0#//Expression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="VisibilityKind">
@@ -193,7 +193,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="#//AcceleoASTNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ast" lowerBound="1" eType="#//ASTResult"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="aql" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/acceleo/query/1.0#//Expression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="aql" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/acceleo/query/8.0#//Expression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorExpression" eSuperTypes="#//Error #//Expression"/>

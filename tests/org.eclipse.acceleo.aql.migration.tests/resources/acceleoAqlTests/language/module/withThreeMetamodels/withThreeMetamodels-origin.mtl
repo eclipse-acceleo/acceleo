@@ -1,1 +1,1 @@
-[module withThreeMetamodels('http://www.eclipse.org/emf/2002/Ecore','http://www.eclipse.org/acceleo/query/1.0','http://www.eclipse.org/emf/2002/GenModel')/]
+[module withThreeMetamodels('http://www.eclipse.org/emf/2002/Ecore','http://www.eclipse.org/acceleo/query/8.0','http://www.eclipse.org/emf/2002/GenModel')/]

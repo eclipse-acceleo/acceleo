@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module missingCallTypeB('http://www.eclipse.org/acceleo/query/1.0')/]
+[module missingCallTypeB('http://www.eclipse.org/acceleo/query/8.0')/]
 
 [template public myOtherTemplate(parameter : ast::Expression)]
   Some Text

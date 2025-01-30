@@ -2,5 +2,5 @@
 header position 0..156
 module withThreeMetamodels
   metamodel http://www.eclipse.org/emf/2002/Ecore (29..67)
-  metamodel http://www.eclipse.org/acceleo/query/1.0 (69..110)
+  metamodel http://www.eclipse.org/acceleo/query/8.0 (69..110)
   metamodel http://www.eclipse.org/emf/2002/GenModel (112..153) (0..156)
