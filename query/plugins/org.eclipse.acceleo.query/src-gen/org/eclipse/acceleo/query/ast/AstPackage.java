@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015, 2023 Obeo.
+ *  Copyright (c) 2015, 2025 Obeo.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public interface AstPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eclipse.org/acceleo/query/1.0";
+	String eNS_URI = "http://www.eclipse.org/acceleo/query/8.0";
 
 	/**
 	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->

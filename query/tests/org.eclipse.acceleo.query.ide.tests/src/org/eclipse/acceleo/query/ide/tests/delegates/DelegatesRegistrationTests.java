@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,25 +27,25 @@ public class DelegatesRegistrationTests {
 	@Test
 	public void validationDelegateRegistration() {
 		assertTrue(EValidator.ValidationDelegate.Registry.INSTANCE
-				.getValidationDelegate("http://www.eclipse.org/acceleo/query/1.0") instanceof AQLValidationDelegate);
+				.getValidationDelegate("http://www.eclipse.org/acceleo/query/8.0") instanceof AQLValidationDelegate);
 	}
 
 	@Test
 	public void settingDelegateFactoryRegistration() {
 		assertTrue(EStructuralFeature.Internal.SettingDelegate.Factory.Registry.INSTANCE
-				.getFactory("http://www.eclipse.org/acceleo/query/1.0") instanceof AQLSettingDelegateFactory);
+				.getFactory("http://www.eclipse.org/acceleo/query/8.0") instanceof AQLSettingDelegateFactory);
 	}
 
 	@Test
 	public void invocationDelegateFactoryRegistration() {
 		assertTrue(EOperation.Internal.InvocationDelegate.Factory.Registry.INSTANCE
-				.getFactory("http://www.eclipse.org/acceleo/query/1.0") instanceof AQLInvocationDelegateFactory);
+				.getFactory("http://www.eclipse.org/acceleo/query/8.0") instanceof AQLInvocationDelegateFactory);
 	}
 
 	@Test
 	public void queryDelegateFactoryRegistration() {
 		assertTrue(QueryDelegate.Factory.Registry.INSTANCE
-				.getFactory("http://www.eclipse.org/acceleo/query/1.0") instanceof AQLQueryDelegateFactory);
+				.getFactory("http://www.eclipse.org/acceleo/query/8.0") instanceof AQLQueryDelegateFactory);
 	}
 
 }

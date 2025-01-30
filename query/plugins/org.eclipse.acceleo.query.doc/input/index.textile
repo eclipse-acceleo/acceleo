@@ -317,7 +317,7 @@ First you need to add the following EAnnotation on your EPackage:
 
 * source = http://www.eclipse.org/emf/2002/Ecore
 ** key = validationDelegates
-** value = http://www.eclipse.org/acceleo/query/1.0
+** value = http://www.eclipse.org/acceleo/query/8.0
 
 Then you need to list all constraints on an EClassifier:
 
@@ -327,7 +327,7 @@ Then you need to list all constraints on an EClassifier:
 
 Then for constraints that need to be implemented with AQL, add the following EAnnotation on the EClassifier:
 
-* source = http://www.eclipse.org/acceleo/query/1.0
+* source = http://www.eclipse.org/acceleo/query/8.0
 ** key = constraint1
 ** value = <AQL expression>
 
@@ -339,11 +339,11 @@ First you need to add the following EAnnotation on your EPackage:
 
 * source = http://www.eclipse.org/emf/2002/Ecore
 ** key = settingDelegates
-** value = http://www.eclipse.org/acceleo/query/1.0
+** value = http://www.eclipse.org/acceleo/query/8.0
 
 Then on an EStructuralFeature you can add the following EAnnotation:
 
-* source = http://www.eclipse.org/acceleo/query/1.0
+* source = http://www.eclipse.org/acceleo/query/8.0
 ** key = derivation
 ** value = <AQL expression>
 
@@ -355,11 +355,11 @@ First you need to add the following EAnnotation on your EPackage:
 
 * source = http://www.eclipse.org/emf/2002/Ecore
 ** key = invocationDelegates
-** value = http://www.eclipse.org/acceleo/query/1.0
+** value = http://www.eclipse.org/acceleo/query/8.0
 
 Then on an EOperation you can add the following EAnnotation:
 
-* source = http://www.eclipse.org/acceleo/query/1.0
+* source = http://www.eclipse.org/acceleo/query/8.0
 ** key = body
 ** value = <AQL expression>
 

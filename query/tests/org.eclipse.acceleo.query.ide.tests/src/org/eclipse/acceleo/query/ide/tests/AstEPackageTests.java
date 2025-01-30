@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,12 +23,12 @@ public class AstEPackageTests {
 
 	@Test
 	public void ePackageRegistration() {
-		assertNotNull(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/acceleo/query/1.0"));
+		assertNotNull(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/acceleo/query/8.0"));
 	}
 
 	@Test
 	public void genModelRegistration() {
 		assertNotNull(EcorePlugin.getEPackageNsURIToGenModelLocationMap(true).get(
-				"http://www.eclipse.org/acceleo/query/1.0").toString());
+				"http://www.eclipse.org/acceleo/query/8.0").toString());
 	}
 }
