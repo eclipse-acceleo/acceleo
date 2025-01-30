@@ -127,9 +127,9 @@ An AQL expression denoting the output file name. Must evaluate to a String.
 open mode::
 The open mode for the file. This can be one of:
 +
-* *(Not Supported Yet)* append : Append to the end of the file if it already exists, create it otherwise.
-* overwrite : Overwrite the whole file if it already exists, create it otherwise.
-* create : Do not change the file if it already exists, create it otherwise.
+* append : Append to the end of the file if it already exists, creates it otherwise.
+* overwrite : Overwrite the whole file if it already exists, creates it otherwise.
+* create : Do not change the file if it already exists, creates it otherwise.
 charset::
 This can be used to tell Acceleo which charset to use for the generated file. This is optional and will default to UTF-8
 
