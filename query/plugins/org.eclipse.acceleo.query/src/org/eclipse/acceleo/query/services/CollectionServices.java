@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1298,7 +1298,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A new sequence, or null if the given collection is null",
 		examples = {
-			@Example(expression = "Sequence{'a', 'b', 'c'}->sep('[', '-', ']')", result = "Sequence{'[', 'a', '-', 'b', '-', 'c', ']'}")
+			@Example(expression = "Sequence{'a', 'b', 'c'}->sep('[', '-', ']')", result = "Sequence{'[', 'a', '-', 'b', '-', 'c', ']'}"),
+			@Example(expression = "Sequence{}->sep('[', '-', ']')", result = "Sequence{'[', ']'}")
 		}
 	)
 	// @formatter:on
@@ -1310,6 +1311,38 @@ public class CollectionServices extends AbstractServiceProvider {
 			result.addAll(sep(collection, separator));
 		}
 		result.add(suffix);
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Inserts the given separator between each elements of the given collection, the given prefix " +
+				"before the first element, and the given suffix after the last element.",
+		params = {
+			@Param(name = "collection", value = "The input collection"),
+			@Param(name = "prefix", value = "The prefix"),
+			@Param(name = "separator", value = "The separator to insert"),
+			@Param(name = "suffix", value = "The suffix"),
+			@Param(name = "ifEmpty", value = "true to generate the prefix and suffit when the collection is empty, false otherwise")
+		},
+		result = "A new sequence, or null if the given collection is null",
+		examples = {
+			@Example(expression = "Sequence{'a', 'b', 'c'}->sep('[', '-', ']', true)", result = "Sequence{'[', 'a', '-', 'b', '-', 'c', ']'}"),
+			@Example(expression = "Sequence{}->sep('[', '-', ']', true)", result = "Sequence{'[', ']'}"),
+			@Example(expression = "Sequence{}->sep('[', '-', ']', false)", result = "Sequence{}")
+		}
+	)
+	// @formatter:on
+	public List<Object> sep(Collection<?> collection, Object prefix, Object separator, Object suffix,
+			boolean ifEmpty) {
+		final List<Object> result;
+
+		if (collection != null && (ifEmpty || !collection.isEmpty())) {
+			result = sep(collection, prefix, separator, suffix);
+		} else {
+			result = Collections.emptyList();
+		}
 
 		return result;
 	}

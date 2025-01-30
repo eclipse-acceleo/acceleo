@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -3280,6 +3280,82 @@ public class CollectionServicesTest {
 		assertEquals(separator, result.get(6));
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
 		assertEquals(suffix, result.get(8));
+	}
+
+	@Test
+	public void testSepPrefixSuffixTrue() {
+		final List<Object> list = new ArrayList<>();
+		list.add(this);
+		list.add("");
+		list.add(EcorePackage.eINSTANCE);
+		list.add(EcorePackage.eINSTANCE.getEClass());
+		final Object prefix = new Object();
+		final Object separator = new Object();
+		final Object suffix = new Object();
+
+		final List<Object> result = collectionServices.sep(list, prefix, separator, suffix, true);
+
+		assertEquals(9, result.size());
+		assertEquals(prefix, result.get(0));
+		assertEquals(this, result.get(1));
+		assertEquals(separator, result.get(2));
+		assertEquals("", result.get(3));
+		assertEquals(separator, result.get(4));
+		assertEquals(EcorePackage.eINSTANCE, result.get(5));
+		assertEquals(separator, result.get(6));
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
+		assertEquals(suffix, result.get(8));
+	}
+
+	@Test
+	public void testSepPrefixSuffixTrueEmpty() {
+		final List<Object> list = new ArrayList<>();
+		final Object prefix = new Object();
+		final Object separator = new Object();
+		final Object suffix = new Object();
+
+		final List<Object> result = collectionServices.sep(list, prefix, separator, suffix, true);
+
+		assertEquals(2, result.size());
+		assertEquals(prefix, result.get(0));
+		assertEquals(suffix, result.get(1));
+	}
+
+	@Test
+	public void testSepPrefixSuffixFalse() {
+		final List<Object> list = new ArrayList<>();
+		list.add(this);
+		list.add("");
+		list.add(EcorePackage.eINSTANCE);
+		list.add(EcorePackage.eINSTANCE.getEClass());
+		final Object prefix = new Object();
+		final Object separator = new Object();
+		final Object suffix = new Object();
+
+		final List<Object> result = collectionServices.sep(list, prefix, separator, suffix, false);
+
+		assertEquals(9, result.size());
+		assertEquals(prefix, result.get(0));
+		assertEquals(this, result.get(1));
+		assertEquals(separator, result.get(2));
+		assertEquals("", result.get(3));
+		assertEquals(separator, result.get(4));
+		assertEquals(EcorePackage.eINSTANCE, result.get(5));
+		assertEquals(separator, result.get(6));
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
+		assertEquals(suffix, result.get(8));
+	}
+
+	@Test
+	public void testSepPrefixSuffixFalseEmpty() {
+		final List<Object> list = new ArrayList<>();
+		final Object prefix = new Object();
+		final Object separator = new Object();
+		final Object suffix = new Object();
+
+		final List<Object> result = collectionServices.sep(list, prefix, separator, suffix, false);
+
+		assertEquals(0, result.size());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
