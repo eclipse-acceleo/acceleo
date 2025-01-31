@@ -473,12 +473,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				}
 			}
 		} else {
-			if (lastLineOfLastStatement.isEmpty()) {
+			if (lastLineOfLastStatement.isEmpty() || !expressionStatement.isNewLineNeeded()) {
 				// empty text with new line at the beginning of a line is a no operation
 				// see NewLineStatement
 				res = EMPTY_RESULT;
 			} else {
 				res = newLine;
+				lastLineOfLastStatement = "";
 			}
 		}
 
