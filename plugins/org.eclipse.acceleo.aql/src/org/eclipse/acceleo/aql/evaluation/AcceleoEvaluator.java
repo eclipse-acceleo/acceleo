@@ -439,35 +439,46 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			indentation = getIndentation();
 		}
 		String expressionValue = toString(doSwitch(expressionStatement.getExpression()));
-		final boolean endsWithNewLine = expressionValue.endsWith(newLine);
-		if (!indentation.isEmpty()) {
-			expressionValue = NEW_LINE_PATTERN.matcher(expressionValue).replaceAll(newLine + Matcher
-					.quoteReplacement(indentation));
-			if (endsWithNewLine) {
-				expressionValue = expressionValue.substring(0, expressionValue.length() - indentation
-						.length());
+		if (!expressionValue.isEmpty()) {
+			final boolean endsWithNewLine = expressionValue.endsWith(newLine);
+			if (!indentation.isEmpty()) {
+				expressionValue = NEW_LINE_PATTERN.matcher(expressionValue).replaceAll(newLine + Matcher
+						.quoteReplacement(indentation));
+				if (endsWithNewLine) {
+					expressionValue = expressionValue.substring(0, expressionValue.length() - indentation
+							.length());
+				}
+			} else {
+				expressionValue = NEW_LINE_PATTERN.matcher(expressionValue).replaceAll(newLine);
+			}
+			if (expressionStatement.isNewLineNeeded() && !endsWithNewLine) {
+				if (lastLineOfLastStatement.isEmpty()) {
+					res = peekIndentationContext().indentation + expressionValue + newLine;
+				} else {
+					res = expressionValue + newLine;
+				}
+				lastLineOfLastStatement = "";
+			} else {
+				if (lastLineOfLastStatement.isEmpty()) {
+					res = peekIndentationContext().indentation + expressionValue;
+				} else {
+					res = expressionValue;
+				}
+				final int lastIndexOfNewLine = res.lastIndexOf(newLine);
+				if (lastIndexOfNewLine != -1) {
+					lastLineOfLastStatement = res.substring(lastIndexOfNewLine + newLine.length(), res
+							.length());
+				} else {
+					lastLineOfLastStatement = lastLineOfLastStatement + res;
+				}
 			}
 		} else {
-			expressionValue = NEW_LINE_PATTERN.matcher(expressionValue).replaceAll(newLine);
-		}
-		if (expressionStatement.isNewLineNeeded() && !endsWithNewLine) {
 			if (lastLineOfLastStatement.isEmpty()) {
-				res = peekIndentationContext().indentation + expressionValue + newLine;
+				// empty text with new line at the beginning of a line is a no operation
+				// see NewLineStatement
+				res = EMPTY_RESULT;
 			} else {
-				res = expressionValue + newLine;
-			}
-			lastLineOfLastStatement = "";
-		} else {
-			if (lastLineOfLastStatement.isEmpty()) {
-				res = peekIndentationContext().indentation + expressionValue;
-			} else {
-				res = expressionValue;
-			}
-			final int lastIndexOfNewLine = res.lastIndexOf(newLine);
-			if (lastIndexOfNewLine != -1) {
-				lastLineOfLastStatement = res.substring(lastIndexOfNewLine + newLine.length(), res.length());
-			} else {
-				lastLineOfLastStatement = lastLineOfLastStatement + res;
+				res = newLine;
 			}
 		}
 

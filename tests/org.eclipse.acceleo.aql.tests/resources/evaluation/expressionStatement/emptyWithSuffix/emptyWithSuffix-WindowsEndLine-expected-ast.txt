@@ -1,0 +1,16 @@
+
+header position 0..66
+module emptyWithSuffix
+  metamodel http://www.eclipse.org/emf/2002/Ecore (25..63)
+  [comment @main  (79..85) /] (70..87)
+  
+  public template myTemplate(myParam : EPackage (117..142))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (155..176) mode overwrite
+      Text before. (newLineNeeded) (195..209)
+      ['' (214..216)/] (213..218)
+      Suffix (newLineNeeded) (218..226)
+      Text after (newLineNeeded) (230..242) (189..244)
+    [/file] (148..251)
+     (newLineNeeded) (251..253) (144..253)
+  [/template] (89..264) (0..264)
