@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (C) 2015, 2022 Obeo
+   Copyright (C) 2015, 2025 Obeo
 
    All rights reserved. This program and the accompanying materials
    are made available under the terms of the Eclipse Public License v2.0
@@ -22,7 +22,7 @@
 
   <artifactId>org.eclipse.acceleo.query.doc</artifactId>
   <version>8.0.3-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>  
+  <packaging>eclipse-plugin</packaging>
 
   <build>
    <plugins>
@@ -30,27 +30,62 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
       </plugin>
-    
+
       <plugin>  
-        <groupId>org.codehaus.mojo</groupId>  
-        <artifactId>exec-maven-plugin</artifactId>  
-        <version>1.1.1</version>  
-        <executions>  
-          <execution>  
-            <phase>test</phase>  
-            <goals>  
-              <goal>java</goal>  
-            </goals>  
-            <configuration>  
-              <mainClass>org.eclipse.acceleo.query.doc.internal.DocumentationGenerator</mainClass>  
-              <arguments>  
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1.1</version>
+        <executions>
+          <execution>
+            <phase>test</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <mainClass>org.eclipse.acceleo.query.doc.internal.DocumentationGenerator</mainClass>
+              <arguments>
                 <argument>${project.basedir}</argument>
-              </arguments>  
-            </configuration>  
-          </execution>  
-        </executions>  
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.asciidoctor</groupId>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <version>2.2.3</version>
+        <configuration>
+          <sourceHighlighter>highlight.js</sourceHighlighter>
+          <icons>font</icons>
+          <sourceDirectory>pages</sourceDirectory>
+          <outputDirectory>doc</outputDirectory>
+          <preserveDirectories>true</preserveDirectories>
+          <!--
+            Relative to source directory.
+            defaults to "images" but we don't want the asciidoctor-maven-plugin to alter our images path so use "." (otherwise,
+            it will automatically change all images paths in our output to a path that doesn't exist).
+          -->
+          <imagesDir>.</imagesDir>
+        </configuration>
+        <executions>
+          <execution>
+            <id>output-html</id>
+            <phase>test</phase>
+            <goals>
+              <goal>process-asciidoc</goal>
+            </goals>
+            <configuration>
+              <backend>html5</backend>
+              <attributes>
+                <docinfo>private-footer</docinfo>
+                <toc/>
+              </attributes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
-  
+
 </project>
