@@ -270,12 +270,12 @@ Parameters:
 | `anything.oclAsType(null)` | `throws an exception`
 |===
 
-|===
 *In other languages*
 
+|===
 | *Language* | *Expression* | *Result* |
-| `Acceleo 3 (MTL)` | `anEPackage.oclAsType(ecore::EPackage) | anEPackage`
-| `Acceleo 3 (MTL)` | `anEPackage.oclAsType(ecore::EClass) | oclInvalid`
+| `Acceleo 3 (MTL)` | `anEPackage.oclAsType(ecore::EPackage)` | `anEPackage`
+| `Acceleo 3 (MTL)` | `anEPackage.oclAsType(ecore::EClass)` | `oclInvalid`
 |===
 
 
@@ -452,12 +452,12 @@ Parameters:
 | `Sequence{'a', 'b', 'c'} + OrderedSet{'c', 'e'}` | `Sequence{'a', 'b', 'c', 'c', 'e'}`
 |===
 
-|===
 *In other languages*
 
+|===
 | *Language* | *Expression* | *Result* |
-| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'} + Sequence{'d', 'e'} | Sequence{'a', 'b', 'c', 'd', 'e'}`
-| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'e'}) | Sequence{'a', 'b', 'c', 'c', 'e'}`
+| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'} + Sequence{'d', 'e'}` | `Sequence{'a', 'b', 'c', 'd', 'e'}`
+| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'e'})` | `Sequence{'a', 'b', 'c', 'c', 'e'}`
 |===
 
 
@@ -475,11 +475,11 @@ Parameters:
 | `OrderedSet{'a', 'b', 'c'} + OrderedSet{'c', 'b', 'f'}` | `OrderedSet{'a', 'b', 'c', 'f'}`
 |===
 
-|===
 *In other languages*
 
+|===
 | *Language* | *Expression* | *Result* |
-| `Acceleo 3 (MTL)` | `OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'}) | OrderedSet{'a', 'b', 'c', 'f'}`
+| `Acceleo 3 (MTL)` | `OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})` | `OrderedSet{'a', 'b', 'c', 'f'}`
 |===
 
 
@@ -665,11 +665,11 @@ Parameters:
 | `Sequence{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})` | `Sequence{'a', 'b', 'c', 'd', 'e'}`
 |===
 
-|===
 *In other languages*
 
+|===
 | *Language* | *Expression* | *Result* |
-| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'}) | Sequence{'a', 'b', 'c', 'd', 'e'}`
+| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})` | `Sequence{'a', 'b', 'c', 'd', 'e'}`
 |===
 
 
@@ -687,11 +687,11 @@ Parameters:
 | `OrderedSet{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})` | `OrderedSet{'a', 'b', 'c', 'd', 'e'}`
 |===
 
-|===
 *In other languages*
 
+|===
 | *Language* | *Expression* | *Result* |
-| `Acceleo 3 (MTL)` | `OrderedSet{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'}) | OrderedSet{'a', 'b', 'c', 'd', 'e'}`
+| `Acceleo 3 (MTL)` | `OrderedSet{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})` | `OrderedSet{'a', 'b', 'c', 'd', 'e'}`
 |===
 
 
@@ -1616,12 +1616,12 @@ Parameters:
 | `Sequence{'a', 'b', 'c'} - OrderedSet{'c', 'b', 'f'}` | `Sequence{'a'}`
 |===
 
-|===
 *In other languages*
 
+|===
 | *Language* | *Expression* | *Result* |
-| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.removeAll(Sequence{'c', 'b', 'f'}) | Sequence{'a'}`
-| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'}) | Sequence{'a'}`
+| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.removeAll(Sequence{'c', 'b', 'f'})` | `Sequence{'a'}`
+| `Acceleo 3 (MTL)` | `Sequence{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'})` | `Sequence{'a'}`
 |===
 
 
@@ -1639,11 +1639,11 @@ Parameters:
 | `OrderedSet{'a', 'b', 'c'} - OrderedSet{'c', 'b', 'f'}` | `OrderedSet{'a'}`
 |===
 
-|===
 *In other languages*
 
+|===
 | *Language* | *Expression* | *Result* |
-| `Acceleo 3 (MTL)` | `OrderedSet{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'}) | OrderedSet{'a'}`
+| `Acceleo 3 (MTL)` | `OrderedSet{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'})` | `OrderedSet{'a'}`
 |===
 
 
@@ -3167,7 +3167,7 @@ Completion on the AST:
 
 To get a fresh environment you can use one of the following snippet:
 
-[listing]
+[source,java]
 ----
 IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 
@@ -3177,7 +3177,7 @@ To get an environment with predefined services.
 
 or
 
-[listing]
+[source,java]
 ----
 IQueryEnvironment queryEnvironment = Query.newEnvironment(null);
 
@@ -3189,7 +3189,7 @@ Note that you can also provide a CrossReferenceProvider to define the scope of c
 
 You can register new services Class as follow:
 
-[listing]
+[source,java]
 ----
 ServiceRegistrationResult registrationResult = queryEnvironment.registerServicePackage(MyServices.class);
 
@@ -3199,7 +3199,7 @@ The registration result contains information about services overrides.
 
 You can also register your EPackages. Only registered EPackages are used to validate and evaluate AQL expression.
 
-[listing]
+[source,java]
 ----
 queryEnvironment.registerEPackage(MyEPackage.eINSTANCE);
 
@@ -3207,7 +3207,7 @@ queryEnvironment.registerEPackage(MyEPackage.eINSTANCE);
 
 In some cases you might also want to create custom mappings between an EClass and its Class. A basic case is the use of EMap:
 
-[listing]
+[source,java]
 ----
 queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 
@@ -3262,7 +3262,7 @@ For more advanced services, you can also use lambdas as argument. In this case t
 
 You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]. It's possible to use the following extension point to register your link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]:
 
-[listing]
+[source,xml]
 ----
 <extension
      point="org.eclipse.acceleo.query.ide.servicesConfigurator">
@@ -3278,7 +3278,7 @@ You might need to initialize your services Java Class with some context. One way
 
 The first step is building your expression from a String to an AST:
 
-[listing]
+[source,java]
 ----
 QueryBuilderEngine builder = new QueryBuilderEngine();
 AstResult astResult = builder.build("self.name");
@@ -3289,7 +3289,7 @@ AstResult astResult = builder.build("self.name");
 
 To evaluate an AQL expression you can use the QueryEvaluationEngine
 
-[listing]
+[source,java]
 ----
 QueryEvaluationEngine engine = new QueryEvaluationEngine(queryEnvironment);
 Map<String, Object> variables = new HashMap<>();
@@ -3304,7 +3304,7 @@ Here we only use one variable for demonstration purpose.
 
 This step is optional for evaluation. You can evaluate an AQL expression without validating it in the first place.
 
-[listing]
+[source,java]
 ----
 Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
 Set<IType> selfTypes = new LinkedHashSet<IType>();
@@ -3319,7 +3319,7 @@ IValidationResult validationResult = validator.validate(variableTypes, astResult
 
 To do this use the QueryCompletionEngine, it will build the query and validate it for you. It will also compute needed prefix and suffix if any:
 
-[listing]
+[source,java]
 ----
 Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
 Set<IType> selfTypes = new LinkedHashSet<IType>();
@@ -3353,7 +3353,7 @@ You can integrate AQL to your own language. AQL provides some generic classes an
 
 You can use AQL in your maven project with the following repository and dependency:
 
-[listing]
+[source,xml]
 ----
 <repositories>
   <repository>

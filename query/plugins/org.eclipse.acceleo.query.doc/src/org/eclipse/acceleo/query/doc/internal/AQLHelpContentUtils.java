@@ -228,14 +228,14 @@ public final class AQLHelpContentUtils {
 					servicesSection.append("|===").append(LS).append(LS);
 
 					if (others.size() > 0) {
-						servicesSection.append("|===").append(LS);
 						servicesSection.append("*In other languages*").append(LS).append(LS);
+						servicesSection.append("|===").append(LS);
 						servicesSection.append("| *Language* | *Expression* | *Result* |").append(LS);
 						for (Other alternate : others) {
 							servicesSection.append("| `").append(alternate.language().replace("|", "\\|"))
 									.append("` | `").append(alternate.expression().replace("|", "\\|"))
-									.append(" | ").append(alternate.result().replace("|", "\\|")).append("`")
-									.append(LS);
+									.append("` | `").append(alternate.result().replace("|", "\\|")).append(
+											"`").append(LS);
 						}
 						servicesSection.append("|===").append(LS).append(LS);
 					}
