@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="doc/index.html" label="Acceleo Query Language">
+		<topic href="doc/index.html#_overview" label="Overview"></topic>
+		<topic href="doc/index.html#_introduction" label="Introduction"></topic>
+		<topic href="doc/index.html#_syntax" label="Syntax">
+			<topic href="doc/index.html#_basics" label="Basics"></topic>
+			<topic href="doc/index.html#_working_with_collections" label="Working with collections"></topic>
+			<topic href="doc/index.html#_navigation_axes" label="Navigation axes"></topic>
+			<topic href="doc/index.html#_conditions" label="Conditions"></topic>
+			<topic href="doc/index.html#_walkthrough_using_an_uml_example" label="Walkthrough using an UML example">
+				<topic href="doc/index.html#_econtainer" label="eContainer()"></topic>
+				<topic href="doc/index.html#_econtents" label="eContents()"></topic>
+				<topic href="doc/index.html#_select" label="select()"></topic>
+				<topic href="doc/index.html#_eallcontents" label="eAllContents()"></topic>
+				<topic href="doc/index.html#_einverse" label="eInverse()"></topic>
+			</topic>
+		</topic>
+		<topic href="doc/index.html#_language_reference" label="Language Reference">
+			<topic href="doc/index.html#_services_available_for_all_types" label="Services available for all types">
+				<topic href="doc/index.html#_object_string_string" label="Object + String : String"></topic>
+				<topic href="doc/index.html#_string_object_string" label="String + Object : String"></topic>
+				<topic href="doc/index.html#_object_lt_gt_object_boolean" label="Object &lt;&gt; Object : Boolean"></topic>
+				<topic href="doc/index.html#_object_object_boolean" label="Object = Object : Boolean"></topic>
+				<topic href="doc/index.html#_object_oclastype_object_object" label="Object.oclAsType(Object) : Object"></topic>
+				<topic href="doc/index.html#_object_ocliskindof_object_boolean" label="Object.oclIsKindOf(Object) : Boolean"></topic>
+				<topic href="doc/index.html#_object_oclistypeof_object_boolean" label="Object.oclIsTypeOf(Object) : Boolean"></topic>
+				<topic href="doc/index.html#_object_tostring_string" label="Object.toString() : String"></topic>
+				<topic href="doc/index.html#_object_trace_string" label="Object.trace() : String"></topic>
+			</topic>
+			<topic href="doc/index.html#_services_available_for_booleans" label="Services available for Booleans">
+				<topic href="doc/index.html#_boolean_and_boolean_boolean" label="Boolean.and(Boolean) : Boolean"></topic>
+				<topic href="doc/index.html#_boolean_implies_boolean_boolean" label="Boolean.implies(Boolean) : Boolean"></topic>
+				<topic href="doc/index.html#_boolean_not_boolean" label="Boolean.not() : Boolean"></topic>
+				<topic href="doc/index.html#_boolean_or_boolean_boolean" label="Boolean.or(Boolean) : Boolean"></topic>
+				<topic href="doc/index.html#_boolean_xor_boolean_boolean" label="Boolean.xor(Boolean) : Boolean"></topic>
+			</topic>
+			<topic href="doc/index.html#_services_available_for_collections" label="Services available for Collections">
+				<topic href="doc/index.html#_sequence_collection_sequence" label="Sequence + Collection : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_collection_orderedset" label="OrderedSet + Collection : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_any_x_object" label="Collection-&gt;any( x | ... ) : Object"></topic>
+				<topic href="doc/index.html#_sequence_gt_append_object_sequence" label="Sequence-&gt;append(Object) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_append_object_orderedset" label="OrderedSet-&gt;append(Object) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_asorderedset_orderedset" label="Collection-&gt;asOrderedSet() : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_assequence_sequence" label="Collection-&gt;asSequence() : Sequence"></topic>
+				<topic href="doc/index.html#_collection_gt_asset_orderedset" label="Collection-&gt;asSet() : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_gt_at_integer_object" label="Sequence-&gt;at(Integer) : Object"></topic>
+				<topic href="doc/index.html#_orderedset_gt_at_integer_object" label="OrderedSet-&gt;at(Integer) : Object"></topic>
+				<topic href="doc/index.html#_collection_gt_closure_x_orderedset_object" label="Collection-&gt;closure( x | ... ) : OrderedSet{Object}"></topic>
+				<topic href="doc/index.html#_sequence_gt_collect_x_sequence_object" label="Sequence-&gt;collect( x | ... ) : Sequence{Object}"></topic>
+				<topic href="doc/index.html#_orderedset_gt_collect_x_orderedset_object" label="OrderedSet-&gt;collect( x | ... ) : OrderedSet{Object}"></topic>
+				<topic href="doc/index.html#_sequence_gt_concat_collection_sequence" label="Sequence-&gt;concat(Collection) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_concat_collection_orderedset" label="OrderedSet-&gt;concat(Collection) : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_object_gt_count_object_integer" label="Sequence{Object}-&gt;count(Object) : Integer"></topic>
+				<topic href="doc/index.html#_orderedset_gt_count_object_integer" label="OrderedSet-&gt;count(Object) : Integer"></topic>
+				<topic href="doc/index.html#_sequence_gt_dropright_integer_sequence" label="Sequence-&gt;dropRight(Integer) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_dropright_integer_orderedset" label="OrderedSet-&gt;dropRight(Integer) : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_gt_drop_integer_sequence" label="Sequence-&gt;drop(Integer) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_drop_integer_orderedset" label="OrderedSet-&gt;drop(Integer) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_endswith_collection_boolean" label="Collection-&gt;endsWith(Collection) : Boolean"></topic>
+				<topic href="doc/index.html#_collection_gt_excludesall_collection_boolean" label="Collection-&gt;excludesAll(Collection) : Boolean"></topic>
+				<topic href="doc/index.html#_collection_gt_excludes_object_boolean" label="Collection-&gt;excludes(Object) : Boolean"></topic>
+				<topic href="doc/index.html#_sequence_gt_excluding_object_sequence" label="Sequence-&gt;excluding(Object) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_excluding_object_orderedset" label="OrderedSet-&gt;excluding(Object) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_exists_x_boolean" label="Collection-&gt;exists( x | ... ) : Boolean"></topic>
+				<topic href="doc/index.html#_sequence_gt_filter_class_sequence" label="Sequence-&gt;filter(Class) : Sequence"></topic>
+				<topic href="doc/index.html#_sequence_gt_filter_eclassifier_sequence" label="Sequence-&gt;filter(EClassifier) : Sequence"></topic>
+				<topic href="doc/index.html#_sequence_gt_filter_orderedset_eclassifier_sequence" label="Sequence-&gt;filter(OrderedSet{EClassifier}) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_filter_class_orderedset" label="OrderedSet-&gt;filter(Class) : OrderedSet"></topic>
+				<topic href="doc/index.html#_orderedset_gt_filter_eclassifier_orderedset" label="OrderedSet-&gt;filter(EClassifier) : OrderedSet"></topic>
+				<topic href="doc/index.html#_orderedset_gt_filter_orderedset_eclassifier_orderedset" label="OrderedSet-&gt;filter(OrderedSet{EClassifier}) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_first_object" label="Collection-&gt;first() : Object"></topic>
+				<topic href="doc/index.html#_collection_gt_forall_x_boolean" label="Collection-&gt;forAll( x | ... ) : Boolean"></topic>
+				<topic href="doc/index.html#_collection_gt_includesall_collection_boolean" label="Collection-&gt;includesAll(Collection) : Boolean"></topic>
+				<topic href="doc/index.html#_collection_gt_includes_object_boolean" label="Collection-&gt;includes(Object) : Boolean"></topic>
+				<topic href="doc/index.html#_sequence_gt_including_object_sequence" label="Sequence-&gt;including(Object) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_including_object_orderedset" label="OrderedSet-&gt;including(Object) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_indexofslice_collection_integer" label="Collection-&gt;indexOfSlice(Collection) : Integer"></topic>
+				<topic href="doc/index.html#_sequence_gt_indexof_object_integer" label="Sequence-&gt;indexOf(Object) : Integer"></topic>
+				<topic href="doc/index.html#_orderedset_gt_indexof_object_integer" label="OrderedSet-&gt;indexOf(Object) : Integer"></topic>
+				<topic href="doc/index.html#_sequence_gt_insertat_integer_object_sequence" label="Sequence-&gt;insertAt(Integer, Object) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_insertat_integer_object_orderedset" label="OrderedSet-&gt;insertAt(Integer, Object) : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_gt_intersection_collection_sequence" label="Sequence-&gt;intersection(Collection) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_intersection_collection_orderedset" label="OrderedSet-&gt;intersection(Collection) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_isempty_boolean" label="Collection-&gt;isEmpty() : Boolean"></topic>
+				<topic href="doc/index.html#_collection_gt_isunique_x_boolean" label="Collection-&gt;isUnique( x | ... ) : Boolean"></topic>
+				<topic href="doc/index.html#_collection_gt_lastindexofslice_collection_integer" label="Collection-&gt;lastIndexOfSlice(Collection) : Integer"></topic>
+				<topic href="doc/index.html#_sequence_gt_lastindexof_object_integer" label="Sequence-&gt;lastIndexOf(Object) : Integer"></topic>
+				<topic href="doc/index.html#_orderedset_gt_lastindexof_object_integer" label="OrderedSet-&gt;lastIndexOf(Object) : Integer"></topic>
+				<topic href="doc/index.html#_sequence_gt_last_object" label="Sequence-&gt;last() : Object"></topic>
+				<topic href="doc/index.html#_orderedset_gt_last_object" label="OrderedSet-&gt;last() : Object"></topic>
+				<topic href="doc/index.html#_collection_gt_max_number" label="Collection-&gt;max() : Number"></topic>
+				<topic href="doc/index.html#_collection_gt_min_number" label="Collection-&gt;min() : Number"></topic>
+				<topic href="doc/index.html#_collection_gt_notempty_boolean" label="Collection-&gt;notEmpty() : Boolean"></topic>
+				<topic href="doc/index.html#_collection_gt_one_x_boolean" label="Collection-&gt;one( x | ... ) : Boolean"></topic>
+				<topic href="doc/index.html#_sequence_gt_prepend_object_sequence" label="Sequence-&gt;prepend(Object) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_prepend_object_orderedset" label="OrderedSet-&gt;prepend(Object) : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_gt_reject_x_sequence" label="Sequence-&gt;reject( x | ... ) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_reject_x_orderedset" label="OrderedSet-&gt;reject( x | ... ) : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_gt_reverse_sequence" label="Sequence-&gt;reverse() : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_reverse_orderedset" label="OrderedSet-&gt;reverse() : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_gt_select_x_sequence" label="Sequence-&gt;select( x | ... ) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_select_x_orderedset" label="OrderedSet-&gt;select( x | ... ) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_sep_object_sequence_object" label="Collection-&gt;sep(Object) : Sequence{Object}"></topic>
+				<topic href="doc/index.html#_collection_gt_sep_object_object_object_sequence_object" label="Collection-&gt;sep(Object, Object, Object) : Sequence{Object}"></topic>
+				<topic href="doc/index.html#_collection_gt_sep_object_object_object_boolean_sequence_object" label="Collection-&gt;sep(Object, Object, Object, boolean) : Sequence{Object}"></topic>
+				<topic href="doc/index.html#_collection_gt_size_integer" label="Collection-&gt;size() : Integer"></topic>
+				<topic href="doc/index.html#_sequence_gt_sortedby_x_sequence" label="Sequence-&gt;sortedBy( x | ... ) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_sortedby_x_orderedset" label="OrderedSet-&gt;sortedBy( x | ... ) : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_startswith_collection_boolean" label="Collection-&gt;startsWith(Collection) : Boolean"></topic>
+				<topic href="doc/index.html#_orderedset_gt_suborderedset_integer_integer_orderedset" label="OrderedSet-&gt;subOrderedSet(Integer, Integer) : OrderedSet"></topic>
+				<topic href="doc/index.html#_sequence_gt_subsequence_integer_integer_sequence" label="Sequence-&gt;subSequence(Integer, Integer) : Sequence"></topic>
+				<topic href="doc/index.html#_sequence_collection_sequence_2" label="Sequence - Collection : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_collection_orderedset_2" label="OrderedSet - Collection : OrderedSet"></topic>
+				<topic href="doc/index.html#_collection_gt_sum_number" label="Collection-&gt;sum() : Number"></topic>
+				<topic href="doc/index.html#_sequence_gt_union_sequence_sequence" label="Sequence-&gt;union(Sequence) : Sequence"></topic>
+				<topic href="doc/index.html#_orderedset_gt_union_orderedset_orderedset" label="OrderedSet-&gt;union(OrderedSet) : OrderedSet"></topic>
+			</topic>
+			<topic href="doc/index.html#_services_available_for_comparables" label="Services available for Comparables">
+				<topic href="doc/index.html#_comparable_gt_comparable_boolean" label="Comparable &gt;= Comparable : Boolean"></topic>
+				<topic href="doc/index.html#_comparable_gt_comparable_boolean_2" label="Comparable &gt; Comparable : Boolean"></topic>
+				<topic href="doc/index.html#_comparable_lt_comparable_boolean" label="Comparable &lt;= Comparable : Boolean"></topic>
+				<topic href="doc/index.html#_comparable_lt_comparable_boolean_2" label="Comparable &lt; Comparable : Boolean"></topic>
+			</topic>
+			<topic href="doc/index.html#_services_available_for_eobjects" label="Services available for EObjects">
+				<topic href="doc/index.html#_eclass_allinstances_sequence_eobject" label="EClass.allInstances() : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_orderedset_eclass_gt_allinstances_sequence_eobject" label="OrderedSet{EClass}-&gt;allInstances() : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_eallcontents_sequence_eobject" label="EObject.eAllContents() : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_eallcontents_eclass_sequence_eobject" label="EObject.eAllContents(EClass) : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_eallcontents_orderedset_eclass_sequence_eobject" label="EObject.eAllContents(OrderedSet{EClass}) : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_eclass_eclass" label="EObject.eClass() : EClass"></topic>
+				<topic href="doc/index.html#_eobject_econtainerorself_eclass_eobject" label="EObject.eContainerOrSelf(EClass) : EObject"></topic>
+				<topic href="doc/index.html#_eobject_econtainer_eobject" label="EObject.eContainer() : EObject"></topic>
+				<topic href="doc/index.html#_eobject_econtainer_eclass_eobject" label="EObject.eContainer(EClass) : EObject"></topic>
+				<topic href="doc/index.html#_eobject_econtainingfeature_estructuralfeature" label="EObject.eContainingFeature() : EStructuralFeature"></topic>
+				<topic href="doc/index.html#_eobject_econtainmentfeature_ereference" label="EObject.eContainmentFeature() : EReference"></topic>
+				<topic href="doc/index.html#_eobject_econtents_sequence_eobject" label="EObject.eContents() : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_econtents_eclass_sequence_eobject" label="EObject.eContents(EClass) : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_econtents_orderedset_eclass_sequence_eobject" label="EObject.eContents(OrderedSet{EClass}) : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_ecrossreferences_object" label="EObject.eCrossReferences() : Object"></topic>
+				<topic href="doc/index.html#_eobject_eget_estructuralfeature_object" label="EObject.eGet(EStructuralFeature) : Object"></topic>
+				<topic href="doc/index.html#_eobject_eget_estructuralfeature_boolean_object" label="EObject.eGet(EStructuralFeature, boolean) : Object"></topic>
+				<topic href="doc/index.html#_eobject_eget_string_object" label="EObject.eGet(String) : Object"></topic>
+				<topic href="doc/index.html#_eobject_einverse_orderedset_eobject" label="EObject.eInverse() : OrderedSet{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_einverse_eclassifier_orderedset_eobject" label="EObject.eInverse(EClassifier) : OrderedSet{EObject}"></topic>
+				<topic href="doc/index.html#_eobject_einverse_string_orderedset_eobject" label="EObject.eInverse(String) : OrderedSet{EObject}"></topic>
+			</topic>
+			<topic href="doc/index.html#_property_services" label="Property services">
+				<topic href="doc/index.html#_string_getproperty_string" label="String.getProperty() : String"></topic>
+				<topic href="doc/index.html#_string_getproperty_sequence_object_string" label="String.getProperty(Sequence{Object}) : String"></topic>
+			</topic>
+			<topic href="doc/index.html#_services_available_for_resources_and_uris" label="Services available for Resources and URIs">
+				<topic href="doc/index.html#_eobject_eresource_resource" label="EObject.eResource() : Resource"></topic>
+				<topic href="doc/index.html#_uri_fileextension_string" label="URI.fileExtension() : String"></topic>
+				<topic href="doc/index.html#_resource_getcontents_sequence_eobject" label="Resource.getContents() : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_resource_getcontents_eclass_sequence_eobject" label="Resource.getContents(EClass) : Sequence{EObject}"></topic>
+				<topic href="doc/index.html#_resource_geteobject_string_eobject" label="Resource.getEObject(String) : EObject"></topic>
+				<topic href="doc/index.html#_eobject_geturifragment_string" label="EObject.getURIFragment() : String"></topic>
+				<topic href="doc/index.html#_resource_geturi_uri" label="Resource.getURI() : URI"></topic>
+				<topic href="doc/index.html#_uri_isplatformplugin_boolean" label="URI.isPlatformPlugin() : Boolean"></topic>
+				<topic href="doc/index.html#_uri_isplatformresource_boolean" label="URI.isPlatformResource() : Boolean"></topic>
+				<topic href="doc/index.html#_uri_lastsegment_string" label="URI.lastSegment() : String"></topic>
+			</topic>
+			<topic href="doc/index.html#_services_available_for_strings" label="Services available for Strings">
+				<topic href="doc/index.html#_string_string_string" label="String + String : String"></topic>
+				<topic href="doc/index.html#_string_at_integer_string" label="String.at(Integer) : String"></topic>
+				<topic href="doc/index.html#_string_characters_sequence_string" label="String.characters() : Sequence{String}"></topic>
+				<topic href="doc/index.html#_string_concat_string_string" label="String.concat(String) : String"></topic>
+				<topic href="doc/index.html#_string_contains_string_boolean" label="String.contains(String) : Boolean"></topic>
+				<topic href="doc/index.html#_string_endswith_string_boolean" label="String.endsWith(String) : Boolean"></topic>
+				<topic href="doc/index.html#_string_equalsignorecase_string_boolean" label="String.equalsIgnoreCase(String) : Boolean"></topic>
+				<topic href="doc/index.html#_string_first_integer_string" label="String.first(Integer) : String"></topic>
+				<topic href="doc/index.html#_string_index_string_integer" label="String.index(String) : Integer"></topic>
+				<topic href="doc/index.html#_string_index_string_integer_integer" label="String.index(String, Integer) : Integer"></topic>
+				<topic href="doc/index.html#_string_isalphanum_boolean" label="String.isAlphaNum() : Boolean"></topic>
+				<topic href="doc/index.html#_string_isalpha_boolean" label="String.isAlpha() : Boolean"></topic>
+				<topic href="doc/index.html#_string_lastindex_string_integer" label="String.lastIndex(String) : Integer"></topic>
+				<topic href="doc/index.html#_string_lastindex_string_integer_integer" label="String.lastIndex(String, Integer) : Integer"></topic>
+				<topic href="doc/index.html#_string_last_integer_string" label="String.last(Integer) : String"></topic>
+				<topic href="doc/index.html#_object_lineseparator_string" label="Object.lineSeparator() : String"></topic>
+				<topic href="doc/index.html#_string_matches_string_boolean" label="String.matches(String) : Boolean"></topic>
+				<topic href="doc/index.html#_string_prefix_string_string" label="String.prefix(String) : String"></topic>
+				<topic href="doc/index.html#_string_removeemptylines_string" label="String.removeEmptyLines() : String"></topic>
+				<topic href="doc/index.html#_string_removelineseparators_string" label="String.removeLineSeparators() : String"></topic>
+				<topic href="doc/index.html#_string_replaceall_string_string_string" label="String.replaceAll(String, String) : String"></topic>
+				<topic href="doc/index.html#_string_replacefirst_string_string_string" label="String.replaceFirst(String, String) : String"></topic>
+				<topic href="doc/index.html#_string_replace_string_string_string" label="String.replace(String, String) : String"></topic>
+				<topic href="doc/index.html#_string_size_integer" label="String.size() : Integer"></topic>
+				<topic href="doc/index.html#_string_startswith_string_boolean" label="String.startsWith(String) : Boolean"></topic>
+				<topic href="doc/index.html#_string_strcmp_string_integer" label="String.strcmp(String) : Integer"></topic>
+				<topic href="doc/index.html#_string_strstr_string_boolean" label="String.strstr(String) : Boolean"></topic>
+				<topic href="doc/index.html#_string_substituteall_string_string_string" label="String.substituteAll(String, String) : String"></topic>
+				<topic href="doc/index.html#_string_substitutefirst_string_string_string" label="String.substituteFirst(String, String) : String"></topic>
+				<topic href="doc/index.html#_string_substitute_string_string_string" label="String.substitute(String, String) : String"></topic>
+				<topic href="doc/index.html#_string_substring_integer_string" label="String.substring(Integer) : String"></topic>
+				<topic href="doc/index.html#_string_substring_integer_integer_string" label="String.substring(Integer, Integer) : String"></topic>
+				<topic href="doc/index.html#_string_toboolean_boolean" label="String.toBoolean() : Boolean"></topic>
+				<topic href="doc/index.html#_string_tointeger_integer" label="String.toInteger() : Integer"></topic>
+				<topic href="doc/index.html#_string_tolowerfirst_string" label="String.toLowerFirst() : String"></topic>
+				<topic href="doc/index.html#_string_tolower_string" label="String.toLower() : String"></topic>
+				<topic href="doc/index.html#_string_toreal_double" label="String.toReal() : Double"></topic>
+				<topic href="doc/index.html#_string_toupperfirst_string" label="String.toUpperFirst() : String"></topic>
+				<topic href="doc/index.html#_string_toupper_string" label="String.toUpper() : String"></topic>
+				<topic href="doc/index.html#_string_tokenize_sequence_string" label="String.tokenize() : Sequence{String}"></topic>
+				<topic href="doc/index.html#_string_tokenize_string_sequence_string" label="String.tokenize(String) : Sequence{String}"></topic>
+				<topic href="doc/index.html#_string_trim_string" label="String.trim() : String"></topic>
+			</topic>
+			<topic href="doc/index.html#_services_available_for_prompting_user_for_values_using_the_console" label="Services available for prompting user for values using the console.">
+				<topic href="doc/index.html#_string_promptdouble_double" label="String.promptDouble() : Double"></topic>
+				<topic href="doc/index.html#_string_promptfloat_float" label="String.promptFloat() : Float"></topic>
+				<topic href="doc/index.html#_string_promptinteger_integer" label="String.promptInteger() : Integer"></topic>
+				<topic href="doc/index.html#_string_promptlong_long" label="String.promptLong() : Long"></topic>
+				<topic href="doc/index.html#_string_promptstring_string" label="String.promptString() : String"></topic>
+			</topic>
+			<topic href="doc/index.html#_syntax_reference" label="Syntax Reference">
+				<topic href="doc/index.html#_references" label="References"></topic>
+				<topic href="doc/index.html#_operators" label="Operators"></topic>
+				<topic href="doc/index.html#_structures" label="Structures"></topic>
+				<topic href="doc/index.html#_literals" label="Literals"></topic>
+				<topic href="doc/index.html#_type_literals" label="Type literals"></topic>
+			</topic>
+		</topic>
+		<topic href="doc/index.html#_migrating_from_mtl_queries" label="Migrating from MTL queries">
+			<topic href="doc/index.html#_implicit_variable_references" label="Implicit variable references"></topic>
+			<topic href="doc/index.html#_collect_and_flatten" label="Collect and flatten"></topic>
+			<topic href="doc/index.html#_type_literals_amp_children_epackages" label="Type literals &amp;amp; children EPackages"></topic>
+			<topic href="doc/index.html#_enumeration_literals_amp_children_epackages" label="Enumeration literals &amp;amp; children EPackages"></topic>
+			<topic href="doc/index.html#_collections" label="Collections"></topic>
+			<topic href="doc/index.html#_renamed_operations" label="Renamed operations"></topic>
+			<topic href="doc/index.html#_typing" label="Typing"></topic>
+			<topic href="doc/index.html#_null_handling" label="null handling"></topic>
+		</topic>
+		<topic href="doc/index.html#_migrating_from_acceleo2_queries" label="Migrating from Acceleo2 queries">
+			<topic href="doc/index.html#_eclassifier_references" label="EClassifier references"></topic>
+			<topic href="doc/index.html#_types_and_cast" label="Types and cast"></topic>
+			<topic href="doc/index.html#_econtainer_typename" label="eContainer(&apos;TypeName&apos;)"></topic>
+		</topic>
+		<topic href="doc/index.html#_emf_integration" label="EMF integration">
+			<topic href="doc/index.html#_validation_delegate" label="Validation Delegate"></topic>
+			<topic href="doc/index.html#_setting_delegate" label="Setting Delegate"></topic>
+			<topic href="doc/index.html#_invocation_delegate" label="Invocation Delegate"></topic>
+		</topic>
+		<topic href="doc/index.html#_using_aql_programmatically" label="Using AQL programmatically">
+			<topic href="doc/index.html#_type_validation" label="Type validation"></topic>
+			<topic href="doc/index.html#_completion" label="Completion"></topic>
+			<topic href="doc/index.html#_creating_and_setting_the_environment" label="Creating and setting the environment"></topic>
+			<topic href="doc/index.html#_services" label="Services"></topic>
+			<topic href="doc/index.html#_building_an_aql_expression" label="Building an AQL expression"></topic>
+			<topic href="doc/index.html#_evaluating_an_aql_expression" label="Evaluating an AQL expression"></topic>
+			<topic href="doc/index.html#_validating_an_aql_expression_optional" label="Validating an AQL expression (optional)"></topic>
+			<topic href="doc/index.html#_completing_an_aql_expression" label="Completing an AQL expression"></topic>
+			<topic href="doc/index.html#_jface_viewer_configuration" label="JFace Viewer configuration"></topic>
+			<topic href="doc/index.html#_integrating_in_other_languages" label="Integrating in other languages"></topic>
+			<topic href="doc/index.html#_maven" label="Maven"></topic>
+		</topic>
+</toc>
