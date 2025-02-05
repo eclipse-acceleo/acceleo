@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -3478,7 +3478,7 @@ public class BuildTest {
 
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals("text remaining after expresion \"name\".", build.getDiagnostic().getChildren().get(0)
+		assertEquals("text remaining after expression \"name\".", build.getDiagnostic().getChildren().get(0)
 				.getMessage());
 	}
 
@@ -3488,7 +3488,7 @@ public class BuildTest {
 
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals("text remaining after expresion \"any text here\".", build.getDiagnostic().getChildren()
+		assertEquals("text remaining after expression \"any text here\".", build.getDiagnostic().getChildren()
 				.get(0).getMessage());
 	}
 

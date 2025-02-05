@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,7 +95,7 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 				if (expressionEndPosition < expression.length()) {
 					final String suffix = expression.substring(expressionEndPosition);
 					((BasicDiagnostic)result.getDiagnostic()).add(new BasicDiagnostic(Diagnostic.ERROR,
-							AstBuilderListener.PLUGIN_ID, 0, "text remaining after expresion \"" + suffix
+							AstBuilderListener.PLUGIN_ID, 0, "text remaining after expression \"" + suffix
 									+ "\".", new Object[] {suffix }));
 				}
 			}
