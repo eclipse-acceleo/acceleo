@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -3182,13 +3182,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_IF_STATEMENT__ELSE = ERROR_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Missing Space</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_IF_STATEMENT__MISSING_SPACE = ERROR_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
@@ -3197,7 +3206,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+	int ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3206,7 +3215,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 6;
+	int ERROR_IF_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -3215,7 +3224,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 7;
+	int ERROR_IF_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Error If Statement</em>' class. <!-- begin-user-doc -->
@@ -3224,7 +3233,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
+	int ERROR_IF_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Error If Statement</em>' class. <!-- begin-user-doc --> <!--
@@ -5405,6 +5414,17 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorIfStatement();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingSpace
+	 * <em>Missing Space</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Missing Space</em>'.
+	 * @see org.eclipse.acceleo.ErrorIfStatement#getMissingSpace()
+	 * @see #getErrorIfStatement()
+	 * @generated
+	 */
+	EAttribute getErrorIfStatement_MissingSpace();
+
+	/**
 	 * Returns the meta object for the attribute
 	 * '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingOpenParenthesis <em>Missing Open
 	 * Parenthesis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7083,6 +7103,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ERROR_IF_STATEMENT = eINSTANCE.getErrorIfStatement();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Space</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_IF_STATEMENT__MISSING_SPACE = eINSTANCE.getErrorIfStatement_MissingSpace();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing Open Parenthesis</b></em>' attribute feature. <!--

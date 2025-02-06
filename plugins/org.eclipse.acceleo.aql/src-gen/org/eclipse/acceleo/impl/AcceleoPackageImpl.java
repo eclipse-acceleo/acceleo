@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -2017,7 +2017,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorIfStatement_MissingOpenParenthesis() {
+	public EAttribute getErrorIfStatement_MissingSpace() {
 		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -2027,7 +2027,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorIfStatement_MissingCloseParenthesis() {
+	public EAttribute getErrorIfStatement_MissingOpenParenthesis() {
 		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -2037,7 +2037,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorIfStatement_MissingEndHeader() {
+	public EAttribute getErrorIfStatement_MissingCloseParenthesis() {
 		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -2047,8 +2047,18 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorIfStatement_MissingEnd() {
+	public EAttribute getErrorIfStatement_MissingEndHeader() {
 		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getErrorIfStatement_MissingEnd() {
+		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -2556,6 +2566,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEReference(ifStatementEClass, IF_STATEMENT__ELSE);
 
 		errorIfStatementEClass = createEClass(ERROR_IF_STATEMENT);
+		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_SPACE);
 		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS);
 		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS);
 		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_END_HEADER);
@@ -3159,6 +3170,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(errorIfStatementEClass, ErrorIfStatement.class, "ErrorIfStatement", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getErrorIfStatement_MissingSpace(), ecorePackage.getEInt(), "missingSpace", "-1", 1, 1, //$NON-NLS-1$//$NON-NLS-2$
+				ErrorIfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getErrorIfStatement_MissingOpenParenthesis(), ecorePackage.getEInt(),
 				"missingOpenParenthesis", "-1", 1, 1, ErrorIfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, //$NON-NLS-1$//$NON-NLS-2$
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

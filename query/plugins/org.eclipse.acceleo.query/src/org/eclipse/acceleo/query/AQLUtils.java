@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.regex.Matcher;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -55,6 +56,7 @@ import org.eclipse.acceleo.query.runtime.impl.ECrossReferenceAdapterCrossReferen
 import org.eclipse.acceleo.query.runtime.impl.ResourceSetRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.configurator.IOptionProvider;
 import org.eclipse.acceleo.query.services.configurator.IResourceSetConfigurator;
 import org.eclipse.acceleo.query.services.configurator.IResourceSetConfiguratorDescriptor;
@@ -252,25 +254,64 @@ public final class AQLUtils {
 	 * @return the corresponding {@link AcceleoAQLResult}
 	 */
 	public static AcceleoAQLResult parseWhileAqlExpression(String expression) {
-		final AcceleoAQLResult result;
+		AcceleoAQLResult result;
 
 		if (expression != null && expression.length() > 0) {
-			AstBuilderListener astBuilder = new AstBuilderListener();
-			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
-			QueryLexer lexer = new QueryLexer(input);
-			lexer.setTokenFactory(new CommonTokenFactory(true));
-			lexer.removeErrorListeners();
-			lexer.addErrorListener(astBuilder.getErrorListener());
-			TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
-			QueryParser parser = new QueryParser(tokens);
-			parser.addParseListener(astBuilder);
-			parser.removeErrorListeners();
-			parser.addErrorListener(astBuilder.getErrorListener());
-			// parser.setTrace(true);
-			parser.expression();
-			result = new AcceleoAQLResult(astBuilder.getAstResult(), rewindWhiteSpaces(expression, parser
-					.getCurrentToken().getStartIndex()));
+			try {
+				AstBuilderListener astBuilder = new AstBuilderListener();
+				CharStream input = new UnbufferedCharStream(new StringReader(expression), expression
+						.length());
+				QueryLexer lexer = new QueryLexer(input);
+				lexer.setTokenFactory(new CommonTokenFactory(true));
+				lexer.removeErrorListeners();
+				lexer.addErrorListener(astBuilder.getErrorListener());
+				TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
+				QueryParser parser = new QueryParser(tokens);
+				parser.addParseListener(astBuilder);
+				parser.removeErrorListeners();
+				parser.addErrorListener(astBuilder.getErrorListener());
+				// parser.setTrace(true);
+				parser.expression();
+				result = new AcceleoAQLResult(astBuilder.getAstResult(), rewindWhiteSpaces(expression, parser
+						.getCurrentToken().getStartIndex()));
+				// CHECKSTYLE:OFF
+			} catch (Exception e) {
+				// CHECKSTYLE:ON
+				org.eclipse.acceleo.query.ast.ErrorExpression errorExpression = (org.eclipse.acceleo.query.ast.ErrorExpression)EcoreUtil
+						.create(AstPackage.eINSTANCE.getErrorExpression());
+				List<org.eclipse.acceleo.query.ast.Error> aqlErrors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
+						1);
+				aqlErrors.add(errorExpression);
 
+				final Positions<ASTNode> aqlPositions = new Positions<>();
+				if (expression != null) {
+					aqlPositions.setIdentifierStartPositions(errorExpression, Integer.valueOf(0));
+					aqlPositions.setIdentifierStartLines(errorExpression, Integer.valueOf(0));
+					aqlPositions.setIdentifierStartColumns(errorExpression, Integer.valueOf(0));
+					aqlPositions.setIdentifierEndPositions(errorExpression, Integer.valueOf(0));
+					aqlPositions.setIdentifierEndLines(errorExpression, Integer.valueOf(0));
+					aqlPositions.setIdentifierEndColumns(errorExpression, Integer.valueOf(0));
+					aqlPositions.setStartPositions(errorExpression, Integer.valueOf(0));
+					aqlPositions.setStartLines(errorExpression, Integer.valueOf(0));
+					aqlPositions.setStartColumns(errorExpression, Integer.valueOf(0));
+					aqlPositions.setEndPositions(errorExpression, Integer.valueOf(expression.length()));
+					final Matcher matcher = StringServices.NEW_LINE_PATTERN.matcher(expression);
+					int lastLineNumber = 0;
+					int lastNewLineEndIndex = 0;
+					while (matcher.find()) {
+						lastLineNumber++;
+						lastNewLineEndIndex = matcher.end();
+					}
+					aqlPositions.setEndLines(errorExpression, Integer.valueOf(lastLineNumber));
+					final int lastColumnNumber = expression.length() - lastNewLineEndIndex;
+					aqlPositions.setEndColumns(errorExpression, Integer.valueOf(lastColumnNumber));
+				}
+				final BasicDiagnostic diagnostic = new BasicDiagnostic();
+				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
+						"Invalid expression \"" + expression + "\"", new Object[] {errorExpression }));
+				result = new AcceleoAQLResult(new AstResult(errorExpression, aqlPositions, aqlErrors,
+						diagnostic), 0);
+			}
 		} else {
 			org.eclipse.acceleo.query.ast.ErrorExpression errorExpression = (org.eclipse.acceleo.query.ast.ErrorExpression)EcoreUtil
 					.create(AstPackage.eINSTANCE.getErrorExpression());

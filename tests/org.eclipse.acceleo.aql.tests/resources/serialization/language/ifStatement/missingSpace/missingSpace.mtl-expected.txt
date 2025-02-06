@@ -1,0 +1,7 @@
+[module missingSpace('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public myTemplate(myParam : ecore::EPackage)]
+  [if (myParam.eClassifiers->size() = 0)]
+    some static text.
+  [/if]
+[/template]

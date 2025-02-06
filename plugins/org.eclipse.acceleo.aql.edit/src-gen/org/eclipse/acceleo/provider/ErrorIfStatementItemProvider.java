@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -63,6 +63,7 @@ public class ErrorIfStatementItemProvider extends ItemProviderAdapter implements
 			super.getPropertyDescriptors(object);
 
 			addMultiLinesPropertyDescriptor(object);
+			addMissingSpacePropertyDescriptor(object);
 			addMissingOpenParenthesisPropertyDescriptor(object);
 			addMissingCloseParenthesisPropertyDescriptor(object);
 			addMissingEndHeaderPropertyDescriptor(object);
@@ -85,6 +86,22 @@ public class ErrorIfStatementItemProvider extends ItemProviderAdapter implements
 								"_UI_Statement_type"), //$NON-NLS-1$
 						AcceleoPackage.Literals.STATEMENT__MULTI_LINES, true, false, false,
 						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Missing Space feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addMissingSpacePropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_ErrorIfStatement_missingSpace_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_ErrorIfStatement_missingSpace_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_ErrorIfStatement_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.ERROR_IF_STATEMENT__MISSING_SPACE, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -221,6 +238,7 @@ public class ErrorIfStatementItemProvider extends ItemProviderAdapter implements
 
 		switch (notification.getFeatureID(ErrorIfStatement.class)) {
 		case AcceleoPackage.ERROR_IF_STATEMENT__MULTI_LINES:
+		case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_SPACE:
 		case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
 		case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 		case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_END_HEADER:

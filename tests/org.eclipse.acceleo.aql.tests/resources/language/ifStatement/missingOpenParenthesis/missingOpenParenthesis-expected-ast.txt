@@ -5,6 +5,7 @@ module missingOpenParenthesis
   
   public template myTemplate(myParam : EPackage (103..128))
     *** error if statement ***
+    missing space: -1
     missing open parenthesis: 137
     missing close parenthesis: -1
     missing end header: -1

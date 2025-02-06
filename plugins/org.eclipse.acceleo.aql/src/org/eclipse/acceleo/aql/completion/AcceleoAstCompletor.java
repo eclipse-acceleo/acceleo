@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -911,7 +911,9 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	public List<AcceleoCompletionProposal> caseErrorIfStatement(ErrorIfStatement errorIfStatement) {
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 
-		if (errorIfStatement.getMissingOpenParenthesis() != -1) {
+		if (errorIfStatement.getMissingSpace() != -1) {
+			res.add(AcceleoSyntacticCompletionProposals.SPACE);
+		} else if (errorIfStatement.getMissingOpenParenthesis() != -1) {
 			res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 		} else if (errorIfStatement.getCondition().getAst()
 				.getAst() instanceof org.eclipse.acceleo.query.ast.Error) {

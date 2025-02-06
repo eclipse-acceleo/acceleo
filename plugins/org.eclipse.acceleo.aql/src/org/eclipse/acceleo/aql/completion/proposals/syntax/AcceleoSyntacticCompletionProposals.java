@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -92,6 +92,12 @@ public final class AcceleoSyntacticCompletionProposals {
 	 */
 	public static final AcceleoCompletionProposal QUOTE_DOUBLE = new AcceleoCompletionProposal(
 			AcceleoParser.QUOTE, AcceleoParser.QUOTE, null);
+
+	/**
+	 * A space.
+	 */
+	public static final AcceleoCompletionProposal SPACE = new AcceleoCompletionProposal(AcceleoParser.SPACE,
+			AcceleoParser.SPACE, null);
 
 	/**
 	 * An open parenthesis.

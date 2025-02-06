@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -18,6 +18,7 @@ package org.eclipse.acceleo;
  * The following features are supported:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.acceleo.ErrorIfStatement#getMissingSpace <em>Missing Space</em>}</li>
  * <li>{@link org.eclipse.acceleo.ErrorIfStatement#getMissingOpenParenthesis <em>Missing Open
  * Parenthesis</em>}</li>
  * <li>{@link org.eclipse.acceleo.ErrorIfStatement#getMissingCloseParenthesis <em>Missing Close
@@ -31,6 +32,29 @@ package org.eclipse.acceleo;
  * @generated
  */
 public interface ErrorIfStatement extends org.eclipse.acceleo.Error, IfStatement {
+	/**
+	 * Returns the value of the '<em><b>Missing Space</b></em>' attribute. The default value is
+	 * <code>"-1"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Missing Space</em>' attribute.
+	 * @see #setMissingSpace(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorIfStatement_MissingSpace()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingSpace();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingSpace <em>Missing
+	 * Space</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Missing Space</em>' attribute.
+	 * @see #getMissingSpace()
+	 * @generated
+	 */
+	void setMissingSpace(int value);
+
 	/**
 	 * Returns the value of the '<em><b>Missing Open Parenthesis</b></em>' attribute. The default value is
 	 * <code>"-1"</code>. <!-- begin-user-doc -->

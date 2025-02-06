@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -91,6 +91,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	/** Prefix we'll use for the error messages on missing names. */
 	private static final String MISSING_NAME_MESSAGE_PREFIX = "missing name: ";
+
+	/** Prefix we'll use for the error messages on a missing open parenthesis. */
+	private static final String MISSING_SPACE_MESSAGE_PREFIX = "missing space: ";
 
 	/** Prefix we'll use for the error messages on a missing open parenthesis. */
 	private static final String MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX = "missing open parenthesis: ";
@@ -780,6 +783,8 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	@Override
 	public Void caseErrorIfStatement(ErrorIfStatement errorIfStatement) {
 		builder.append("*** error if statement ***");
+		newLine();
+		builder.append(MISSING_SPACE_MESSAGE_PREFIX + errorIfStatement.getMissingSpace());
 		newLine();
 		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX + errorIfStatement
 				.getMissingOpenParenthesis());

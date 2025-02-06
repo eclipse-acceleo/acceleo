@@ -209,6 +209,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//IfStatement/else"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorIfStatement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorIfStatement/missingSpace"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorIfStatement/missingOpenParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorIfStatement/missingCloseParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorIfStatement/missingEndHeader"/>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getCondition <em>Condition</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getThen <em>Then</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getElse <em>Else</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingSpace <em>Missing Space</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingOpenParenthesis <em>Missing Open
  * Parenthesis</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingCloseParenthesis <em>Missing Close
@@ -96,6 +97,26 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * @ordered
 	 */
 	protected Block else_;
+
+	/**
+	 * The default value of the '{@link #getMissingSpace() <em>Missing Space</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingSpace()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_SPACE_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingSpace() <em>Missing Space</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getMissingSpace()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingSpace = MISSING_SPACE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
@@ -382,6 +403,30 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	@Override
+	public int getMissingSpace() {
+		return missingSpace;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setMissingSpace(int newMissingSpace) {
+		int oldMissingSpace = missingSpace;
+		missingSpace = newMissingSpace;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_IF_STATEMENT__MISSING_SPACE, oldMissingSpace, missingSpace));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -509,6 +554,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 				return getThen();
 			case AcceleoPackage.ERROR_IF_STATEMENT__ELSE:
 				return getElse();
+			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_SPACE:
+				return getMissingSpace();
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS:
@@ -540,6 +587,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 				return;
 			case AcceleoPackage.ERROR_IF_STATEMENT__ELSE:
 				setElse((Block)newValue);
+				return;
+			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_SPACE:
+				setMissingSpace((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis((Integer)newValue);
@@ -577,6 +627,9 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 			case AcceleoPackage.ERROR_IF_STATEMENT__ELSE:
 				setElse((Block)null);
 				return;
+			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_SPACE:
+				setMissingSpace(MISSING_SPACE_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
@@ -609,6 +662,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 				return then != null;
 			case AcceleoPackage.ERROR_IF_STATEMENT__ELSE:
 				return else_ != null;
+			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_SPACE:
+				return missingSpace != MISSING_SPACE_EDEFAULT;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS:
@@ -694,6 +749,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (multiLines: "); //$NON-NLS-1$
 		result.append(multiLines);
+		result.append(", missingSpace: "); //$NON-NLS-1$
+		result.append(missingSpace);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$

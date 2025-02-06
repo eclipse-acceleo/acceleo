@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2024 Obeo.
+ * Copyright (c) 2016, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -381,6 +381,11 @@ public class AcceleoParser {
 	 * Start of {@link IfStatement} header.
 	 */
 	public static final String IF_HEADER_START = TEXT_END + IF + SPACE;
+
+	/**
+	 * Start of {@link IfStatement} header with missing space.
+	 */
+	public static final String IF_HEADER_START_MISSING_SPACE = TEXT_END + IF + OPEN_PARENTHESIS;
 
 	/**
 	 * End of {@link IfStatement} header.
@@ -1801,11 +1806,22 @@ public class AcceleoParser {
 	protected IfStatement parseIfStatement(String startTag) {
 		final IfStatement res;
 
-		if (text.startsWith(startTag, currentPosition)) {
+		final int missingSpace;
+		if (text.startsWith(IF_HEADER_START_MISSING_SPACE, currentPosition)) {
+			missingSpace = currentPosition + IF_HEADER_START_MISSING_SPACE.length() - 1;
+
+		} else {
+			missingSpace = -1;
+		}
+		if (text.startsWith(startTag, currentPosition) || missingSpace != -1) {
 			final int startPosition = currentPosition;
 			final int thenSignificantTextColumn = columns[startPosition] + INDENTATION;
 			final int thenHeaderStartLine = lines[startPosition];
-			currentPosition += startTag.length();
+			if (missingSpace != -1) {
+				currentPosition = missingSpace;
+			} else {
+				currentPosition += startTag.length();
+			}
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
@@ -1837,9 +1853,10 @@ public class AcceleoParser {
 			} else {
 				missingEnd = -1;
 			}
-			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1 || missingEndHeader != -1
-					|| missingEnd != -1) {
+			if (missingSpace != -1 || missingOpenParenthesis != -1 || missingCloseParenthesis != -1
+					|| missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorIfStatement();
+				((ErrorIfStatement)res).setMissingSpace(missingSpace);
 				((ErrorIfStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorIfStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorIfStatement)res).setMissingEndHeader(missingEndHeader);
