@@ -6,13 +6,13 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.1.0</version>
     <relativePath>../../..</relativePath>
   </parent>
 
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>acceleo-rcptt</artifactId>
-  <version>4.1.0-SNAPSHOT</version>
+  <version>4.1.0</version>
   <packaging>eclipse-target-definition</packaging>
 
 </project>

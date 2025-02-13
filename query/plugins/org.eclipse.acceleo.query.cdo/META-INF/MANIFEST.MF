@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.query.cdo;singleton:=true
-Bundle-Version: 8.0.3.qualifier
+Bundle-Version: 8.0.3
 Export-Package: org.eclipse.acceleo.query.cdo,
  org.eclipse.acceleo.query.cdo.providers.configuration,
  org.eclipse.acceleo.query.cdo.services.configurator

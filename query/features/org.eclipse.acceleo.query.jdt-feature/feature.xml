@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.query.jdt"
       label="%featureName"
-      version="8.0.3.qualifier"
+      version="8.0.3"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2">
