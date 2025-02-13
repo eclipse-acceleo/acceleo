@@ -3358,14 +3358,14 @@ You can use AQL in your maven project with the following repository and dependen
 <repositories>
   <repository>
     <id>Acceleo Repository</id>
-    <url>https://download.eclipse.org/acceleo/updates/releases/4.0/...</url>
+    <url>https://download.eclipse.org/acceleo/updates/releases/4.1/...</url>
   </repository>
 </repositories>
 <dependencies>
   <dependency>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>aql</artifactId>
-    <version>8.0.2</version>
+    <version>8.0.3</version>
   </dependency>
 </dependencies>
 

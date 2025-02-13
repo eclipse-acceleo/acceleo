@@ -87,14 +87,14 @@ You can use Acceleo 4 in your maven project with the following repository and de
 <repositories>
   <repository>
     <id>Acceleo Repository</id>
-    <url>https://download.eclipse.org/acceleo/updates/releases/4.0/...</url>
+    <url>https://download.eclipse.org/acceleo/updates/releases/4.1/...</url>
   </repository>
 </repositories>
 <dependencies>
   <dependency>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>acceleo</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
   </dependency>
 </dependencies>
 ----
