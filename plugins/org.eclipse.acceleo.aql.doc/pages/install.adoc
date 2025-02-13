@@ -1,4 +1,4 @@
-If you have an existing Eclipse installation and simply wish to install Acceleo in it, you can install it from one of the *Update Sites*, available here https://download.eclipse.org/acceleo/updates/releases/4.0/.
+If you have an existing Eclipse installation and simply wish to install Acceleo in it, you can install it from one of the *Update Sites*, available here https://download.eclipse.org/acceleo/updates/releases/.
 
 When installing the update site you must ensure that *"Contact all update sites during install to find required software"* is checked and that in the *"Manage..."* dialog, the *"Latest Eclipse Release"* update site is checked.
 
