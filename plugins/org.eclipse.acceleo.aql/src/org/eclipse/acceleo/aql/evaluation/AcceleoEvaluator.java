@@ -1073,6 +1073,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			// if we are in a FleStatement
 			res = getProtectedAreaContent(protectedArea, id);
 		} else {
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
+					"The protected area can't be generated outside a file block.", new Object[] {
+							protectedArea, new HashMap<String, Object>(peekVariables()) });
+			generationResult.addDiagnostic(diagnostic);
 			res = EMPTY_RESULT;
 		}
 

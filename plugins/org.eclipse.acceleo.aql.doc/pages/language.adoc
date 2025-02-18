@@ -208,7 +208,7 @@ See also the <<syntax#_let_statemnet,Let Statement syntax documentation>>.
 
 ==== Protected Area
 
-The purpose of protected areas is incremental generation.
+The purpose of protected areas is incremental generation. Protected areas can only be used in <<_file_block,File Block>> since the output URI is needed to load existing protected contents.
 
 A protected area defines a set of statements that should only be generated if the generated file doesn't exist on disk or it does not contain an area with the specified protected area's identifier.
 
