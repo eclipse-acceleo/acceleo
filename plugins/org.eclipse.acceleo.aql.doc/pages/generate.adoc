@@ -40,7 +40,7 @@ The last line in the console should be the generation summary `Files: 2, Lost Fi
 Acceleo provides a specific eclipse application that can be used from command line or tycho in order to start a generation.
 In order to use the launcher, you will need to first package all of your generator projects into an update site, then use this update site as input of the application.
 
-An example is available in the Acceleo repository and can be checked out at: https://git.eclipse.org/c/acceleo/org.eclipse.acceleo.git/tree/examples/MavenLauncher
+An example is available in the Acceleo repository and can be checked out at: https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher
 
 This example includes:
 
