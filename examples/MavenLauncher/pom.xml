@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (C) 2011, 2025 Obeo
+
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v1.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v10.html
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+
+  <groupId>org.eclipse.acceleo</groupId>
+  <artifactId>org.eclipse.acceleo.aql.launcher-parent</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Acceleo Launcher Parent</name>
+
+  <properties>
+    <tycho-version>4.0.8</tycho-version>
+    <tycho-extras-version>4.0.8</tycho-extras-version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-compiler-plugin</artifactId>
+          <version>${tycho-version}</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+            <source>${source-java-version}</source>
+            <target>${target-java-version}</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+  <profiles>
+    <profile>
+      <id>compile</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>org.eclipse.acceleo.aql.launcher.sample</module>
+        <module>org.eclipse.acceleo.aql.launcher.sample-feature</module>
+        <module>org.eclipse.acceleo.aql.launcher.sample-site</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>generate</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho.extras</groupId>
+            <artifactId>tycho-eclipserun-plugin</artifactId>
+            <version>${tycho-version}</version>
+            <configuration>
+              <repositories>
+                <!-- The repository built from the "compile" profile which contains our generator projects. -->
+                <repository>
+                  <id>Acceleo generator</id>
+                  <layout>p2</layout>
+                  <url>${project.baseUri}/org.eclipse.acceleo.aql.launcher.sample-site/target/repository/</url>
+                </repository>
+                <!-- Acceleo 4 repository containing the launcher feature. -->
+                <repository>
+                  <id>Acceleo 4</id>
+                  <layout>p2</layout>
+                  <url>https://download.eclipse.org/acceleo/updates/releases/4.1/R202502130921/</url>
+                </repository>
+                <!-- Eclipse repository for all other dependencies. -->
+                <repository>
+                  <id>Eclipse 2024-06 update site</id>
+                  <layout>p2</layout>
+                  <url>https://download.eclipse.org/releases/2024-06/</url>
+                </repository>
+              </repositories>
+              <applicationsArgs>
+                <args>-consoleLog</args>
+                <args>-application</args>
+                <args>org.eclipse.acceleo.aql.launcher.AcceleoLauncher</args>
+                <args>-data</args>
+                <args>${project.build.directory}/wks</args>
+                <args>-bundle</args>
+                <args>org.eclipse.acceleo.aql.launcher.sample</args>
+                <args>-module</args>
+                <args>org::eclipse::acceleo::aql::launcher::sample::main</args>
+                <args>-models</args>
+                <args>platform:/plugin/org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi</args>
+                <args>-target</args>
+                <args>file:/${project.build.directory}/generated/</args>
+              </applicationsArgs>
+              <dependencies>
+                <dependency>
+                  <artifactId>org.eclipse.rcp</artifactId>
+                  <type>eclipse-feature</type>
+                </dependency>
+                <!-- We need the actual launcher application -->
+                <dependency>
+                  <artifactId>org.eclipse.acceleo.aql.launcher</artifactId>
+                  <type>eclipse-feature</type>
+                </dependency>
+                <!-- And the bundle containing our templates must be present -->
+                <dependency>
+                  <artifactId>org.eclipse.acceleo.aql.launcher.sample</artifactId>
+                  <type>eclipse-plugin</type>
+                </dependency>
+              </dependencies>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>eclipse-run</goal>
+                </goals>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
