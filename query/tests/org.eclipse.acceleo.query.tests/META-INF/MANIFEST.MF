@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.acceleo.query.tests;singleton:=true
 Automatic-Module-Name: org.eclipse.acceleo.query.tests
-Bundle-Version: 8.0.3
+Bundle-Version: 8.0.4.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Name: %pluginName

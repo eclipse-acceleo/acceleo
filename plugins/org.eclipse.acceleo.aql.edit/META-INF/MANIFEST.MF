@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.aql.edit;singleton:=true
 Automatic-Module-Name: org.eclipse.acceleo.aql.edit
-Bundle-Version: 4.1.0
+Bundle-Version: 4.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.acceleo.provider.AcceleoEditPlugin$Implementation
 Bundle-Vendor: %providerName
