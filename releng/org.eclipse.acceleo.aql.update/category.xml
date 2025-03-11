@@ -67,6 +67,16 @@
    <bundle id="org.eclipse.mylyn.wikitext.markdown"/>
    <bundle id="org.eclipse.mylyn.wikitext"/>
    <bundle id="org.apache.commons.lang3"/>
+   <!-- dependencies -->
+   <bundle id="com.google.gson"/>
+   <bundle id="org.jsoup"/>
+   <bundle id="org.eclipse.tm4e.core"/>
+   <bundle id="org.eclipse.tm4e.ui"/>
+   <bundle id="org.eclipse.tm4e.languageconfiguration"/>
+   <bundle id="org.jcodings"/>
+   <bundle id="org.joni"/>
+   <bundle id="org.snakeyaml.engine"/>
+   <bundle id="org.eclipse.tm4e.registry"/>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
          Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.).
