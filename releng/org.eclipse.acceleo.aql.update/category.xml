@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <!-- AQL -->
    <feature id="org.eclipse.acceleo.query">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.ui">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.ui.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.jdt">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.jdt.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.cdo">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.cdo.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <!--feature id="org.eclipse.acceleo.query.sirius">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.sirius.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.query"/>
    </feature-->
+   <!-- Acceleo -->
    <feature id="org.eclipse.acceleo.aql.feature">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.feature.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql"/>
    </feature>
+   <!-- Acceleo extra -->
    <feature id="org.eclipse.acceleo.aql.launcher">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql.extra"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.launcher.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql.extra"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.migration">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql.extra"/>
    </feature>
    <feature id="org.eclipse.acceleo.aql.migration.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql.extra"/>
    </feature>
    <feature id="org.eclipse.acceleo.ui.interpreter">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql.extra"/>
    </feature>
    <feature id="org.eclipse.acceleo.ui.interpreter.source">
-      <category name="org.eclipse.acceleo"/>
+      <category name="org.eclipse.acceleo.aql.extra"/>
    </feature>
-   <feature id="org.eclipse.license" version="0.0.0">
-       <category name="M2Doc"/>
-   </feature>
+   <feature id="org.eclipse.license" version="0.0.0"/>
+
    <bundle id="org.antlr.runtime"/>
    <bundle id="org.eclipse.lsp4j"/>
    <bundle id="org.eclipse.lsp4j.debug"/>
@@ -67,6 +69,7 @@
    <bundle id="org.eclipse.mylyn.wikitext.markdown"/>
    <bundle id="org.eclipse.mylyn.wikitext"/>
    <bundle id="org.apache.commons.lang3"/>
+
    <!-- dependencies -->
    <bundle id="com.google.gson"/>
    <bundle id="org.jsoup"/>
@@ -77,9 +80,20 @@
    <bundle id="org.joni"/>
    <bundle id="org.snakeyaml.engine"/>
    <bundle id="org.eclipse.tm4e.registry"/>
-   <category-def name="org.eclipse.acceleo" label="Acceleo">
+
+   <category-def name="org.eclipse.acceleo.aql" label="Acceleo">
       <description>
          Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.).
+      </description>
+   </category-def>
+   <category-def name="org.eclipse.acceleo.aql.extra" label="Acceleo (extra)">
+      <description>
+         Acceleo extra tooling (migration, launcher, interpreter).
+      </description>
+   </category-def>
+   <category-def name="org.eclipse.acceleo.query" label="Acceleo Query Language">
+      <description>
+         Acceleo Query Language is a language to navigate and request Eclipe Modeling Framework models.
       </description>
    </category-def>
 </site>

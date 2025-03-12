@@ -7,7 +7,7 @@ There are two ways to launch the migration of your Acceleo 4 project. The first 
 ==== The migration from your Acceleo 3 environment
 
 First make a copy of your Acceleo 3 environment or create a new Acceleo 3 environment for the migration.
-Then you need to <<install.adoc#,install>> the `Acceleo 3 to Acceleo 4 migrator` feature.
+Then you need to <<install.adoc#,install>> the `Acceleo 3 to Acceleo 4 migrator` feature in the `Acceleo (extra)` category.
 Before launching the migration you need to make sure your Acceleo 3 projects are built properly. One way to do this can be to check the output folder of your plugin (usually the bin folder) to check the presence of *.emtl files.
 Then you can use the following menu on your Acceleo 3 projects:
 

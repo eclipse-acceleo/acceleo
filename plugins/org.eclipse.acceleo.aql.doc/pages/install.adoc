@@ -4,7 +4,7 @@ When installing the update site you must ensure that *"Contact all update sites 
 
 image:images/InstallDependencies.png[Install Acceleo]
 
-For a minimal installation you can select the following features and plugins:
+For a minimal installation you can select the `Acceleo` feature:
 
 image:images/InstallFeaturesAndPlugins.png[Minimal features and plugins to install]
 
