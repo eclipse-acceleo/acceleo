@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,11 +13,17 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Error;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IProposalFilter;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * Result of a
@@ -50,20 +56,35 @@ public class CompletionResult implements ICompletionResult {
 	private int replacementLength;
 
 	/**
+	 * The {@link IValidationResult}.
+	 */
+	private IValidationResult validationResult;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param proposals
 	 *            the {@link List} of {@link ICompletionProposal}
+	 * @deprecated see {@link #CompletionResult(List, IValidationResult)}
 	 */
 	public CompletionResult(List<ICompletionProposal> proposals) {
-		this.proposals = proposals;
+		this(proposals, null);
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#getProposals(org.eclipse.acceleo.query.runtime.IProposalFilter)
+	 * Constructor.
+	 * 
+	 * @param proposals
+	 *            the {@link List} of {@link ICompletionProposal}
+	 * @param validationResult
+	 *            THE {@link IValidationResult}
+	 * @since 8.0.4
 	 */
+	public CompletionResult(List<ICompletionProposal> proposals, IValidationResult validationResult) {
+		this.proposals = proposals;
+		this.validationResult = validationResult;
+	}
+
 	@Override
 	public List<ICompletionProposal> getProposals(IProposalFilter filter) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
@@ -77,93 +98,66 @@ public class CompletionResult implements ICompletionResult {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#sort(java.util.Comparator)
-	 */
 	@Override
 	public void sort(Comparator<ICompletionProposal> comparator) {
 		Collections.sort(proposals, comparator);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#getPrefix()
-	 */
 	@Override
 	public String getPrefix() {
 		return prefix;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#setPrefix(java.lang.String)
-	 */
 	@Override
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#getRemaining()
-	 */
 	@Override
 	public String getRemaining() {
 		return remaining;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#setRemaining(java.lang.String)
-	 */
 	@Override
 	public void setRemaining(String remaining) {
 		this.remaining = remaining;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#getReplacementLength()
-	 */
 	@Override
 	public int getReplacementLength() {
 		return replacementLength;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#getReplacementOffset()
-	 */
 	@Override
 	public int getReplacementOffset() {
 		return replacementOffset;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#setReplacementLength(int)
-	 */
 	@Override
 	public void setReplacementLength(int replacementLength) {
 		this.replacementLength = replacementLength;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#setReplacementOffset(int)
-	 */
 	@Override
 	public void setReplacementOffset(int offset) {
 		this.replacementOffset = offset;
 	}
+
+	@Override
+	public IValidationResult getIValidationResult() {
+		return validationResult;
+	}
+
+	@Override
+	public Set<IType> getPossibleReceiverTypes() {
+		final Set<IType> result = new LinkedHashSet<>();
+
+		final Error error = getIValidationResult().getErrorToComplete();
+		if (error instanceof ErrorCall) {
+			result.addAll(validationResult.getPossibleTypes(((ErrorCall)error).getArguments().get(0)));
+		}
+
+		return result;
+	}
+
 }

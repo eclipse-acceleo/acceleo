@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
+import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstResult;
@@ -144,5 +145,14 @@ public interface IValidationResult {
 	 * @since 8.0.1
 	 */
 	List<IService<?>> getDeclarationIService(Call call);
+
+	/**
+	 * Gets the {@link Error} to use for completion starting point. It's the first error that
+	 * {@link AstResult#getEndPosition(Expression) end} at the end of the {@link Expression}.
+	 * 
+	 * @return the {@link Error} to use for completion starting point if any, <code>null</code> otherwise
+	 * @since 8.0.4
+	 */
+	Error getErrorToComplete();
 
 }

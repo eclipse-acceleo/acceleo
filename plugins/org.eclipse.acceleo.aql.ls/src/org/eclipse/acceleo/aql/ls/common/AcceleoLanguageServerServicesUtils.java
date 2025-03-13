@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,13 +71,17 @@ public final class AcceleoLanguageServerServicesUtils {
 	 * @return the {@link List} of {@link CompletionItem} corresponding to {@code acceleoCompletionProposals}.
 	 */
 	public static List<CompletionItem> transform(List<AcceleoCompletionProposal> acceleoCompletionProposals) {
+		final List<CompletionItem> res = new ArrayList<>();
+
 		Objects.requireNonNull(acceleoCompletionProposals);
 
-		return acceleoCompletionProposals.stream().map(acceleoCompletionProposal -> {
+		int index = 1;
+		for (AcceleoCompletionProposal acceleoCompletionProposal : acceleoCompletionProposals) {
 			String text = acceleoCompletionProposal.getText();
 
 			if (text != null) {
 				CompletionItem completionItem = new CompletionItem();
+				completionItem.setSortText(String.valueOf(index++));
 				String proposalDescription = acceleoCompletionProposal.getDescription();
 				if (proposalDescription != null) {
 					completionItem.setDocumentation(proposalDescription);
@@ -96,15 +100,16 @@ public final class AcceleoLanguageServerServicesUtils {
 				completionItem.setKind(getKind(acceleoCompletionProposal));
 
 				// Keep the same List order.
-				String sortText = String.join("", Collections.nCopies(acceleoCompletionProposals.indexOf(
-						acceleoCompletionProposal), "a"));
+				String sortText = String.join("", Collections.nCopies(index++, "a"));
 				completionItem.setSortText(sortText);
-				return completionItem;
+				res.add(completionItem);
 			} else {
 				throw new IllegalArgumentException("The text proposed by an " + acceleoCompletionProposal
 						.getClass().getCanonicalName() + " should not be null.");
 			}
-		}).collect(Collectors.toList());
+		}
+
+		return res;
 	}
 
 	/**

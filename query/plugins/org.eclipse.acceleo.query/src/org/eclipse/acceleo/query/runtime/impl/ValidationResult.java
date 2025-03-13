@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Declaration;
+import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstResult;
@@ -236,6 +237,28 @@ public class ValidationResult implements IValidationResult {
 	@Override
 	public List<IService<?>> getDeclarationIService(Call call) {
 		return serviceDeclarations.getOrDefault(call, Collections.emptyList());
+	}
+
+	@Override
+	public Error getErrorToComplete() {
+		Error result;
+
+		final List<Error> errors = getAstResult().getErrors();
+		if (!errors.isEmpty()) {
+			result = errors.get(0);
+			int currentEnd = astResult.getEndPosition(result);
+			for (Error error : errors) {
+				int end = astResult.getEndPosition(error);
+				if (end > currentEnd) {
+					currentEnd = end;
+					result = error;
+				}
+			}
+		} else {
+			result = null;
+		}
+
+		return result;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,10 @@ package org.eclipse.acceleo.query.runtime;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+
+import org.eclipse.acceleo.query.runtime.impl.ValidationResult;
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * Result of a {@link IQueryCompletionEngine#getCompletion(String, int, java.util.Map) completion}.
@@ -102,4 +106,20 @@ public interface ICompletionResult {
 	 * @since 4.1
 	 */
 	void setReplacementLength(int replacementLength);
+
+	/**
+	 * Gets the {@link ValidationResult}.
+	 * 
+	 * @return the {@link IValidationResult}
+	 * @since 8.0.4
+	 */
+	IValidationResult getIValidationResult();
+
+	/**
+	 * Gets the {@link Set} of possible receiver {@link IType}.
+	 * 
+	 * @return the {@link Set} of possible receiver {@link IType}
+	 * @since 8.0.4
+	 */
+	Set<IType> getPossibleReceiverTypes();
 }

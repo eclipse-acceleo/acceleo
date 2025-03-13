@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,12 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 	/**
 	 * The environment containing all necessary information and used to execute query services.
 	 */
-	private IReadOnlyQueryEnvironment queryEnvironment;
+	private final IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
+	 * The {@link AstCompletor}
+	 */
+	private final AstCompletor completor;
 
 	/**
 	 * Constructor. It takes an {@link IReadOnlyQueryEnvironment} as parameter.
@@ -46,20 +51,14 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 	 */
 	public QueryCompletionEngine(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
+		this.completor = new AstCompletor(new CompletionServices(queryEnvironment));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IQueryCompletionEngine#getCompletion(java.lang.String, int,
-	 *      java.util.Map)
-	 */
 	@Override
 	public ICompletionResult getCompletion(String expression, int offset,
 			Map<String, Set<IType>> variableTypes) {
 		final ICompletionResult result;
 
-		final AstCompletor completor = new AstCompletor(new CompletionServices(queryEnvironment));
 		if (offset < 0 || (expression != null && offset > expression.length())) {
 			throw new IllegalArgumentException("offset (" + offset
 					+ ") must be in the range of the given expression: \"" + expression + "\"");
@@ -70,7 +69,8 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 
 		final IQueryValidationEngine builder = new QueryValidationEngine(queryEnvironment);
 		final IValidationResult validationResult = builder.validate(toParse, variableTypes);
-		result = new CompletionResult(completor.getProposals(variableTypes, validationResult));
+		result = new CompletionResult(completor.getProposals(variableTypes, validationResult),
+				validationResult);
 		result.setPrefix(prefix);
 		result.setRemaining(remaining);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -301,12 +301,6 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		qualifiedNameToObject.put(qualifiedName, null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver#register(java.lang.String,
-	 *      java.lang.Object)
-	 */
 	@Override
 	public void register(String qualifiedName, Object object) {
 		final ILoader loader = getLoaderFor(object);
@@ -421,11 +415,6 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		return res;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver#getContextQualifiedName(org.eclipse.acceleo.query.runtime.IService)
-	 */
 	@Override
 	public String getContextQualifiedName(IService<?> service) {
 		return serviceToContextQualifiedName.get(service);

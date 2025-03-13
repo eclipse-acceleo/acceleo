@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,8 @@ import org.eclipse.acceleo.aql.completion.proposals.syntax.AcceleoSyntacticCompl
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposal;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplateCompletionProposalsProvider;
 import org.eclipse.acceleo.aql.completion.proposals.templates.AcceleoCodeTemplates;
+import org.eclipse.acceleo.aql.evaluation.QueryService;
+import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
@@ -66,6 +69,7 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.BasicFilter;
@@ -78,12 +82,16 @@ import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionPropo
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.namespace.Range;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation.IRange;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -102,6 +110,77 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 */
 	private static class ProposalComparator implements Comparator<ICompletionProposal> {
 
+		/**
+		 * The current qualified name.
+		 */
+		private String currentQualifiedName;
+
+		/**
+		 * The closure of extended modules.
+		 */
+		private final Set<String> extended;
+
+		/**
+		 * The {@link IQualifiedNameResolver}.
+		 */
+		private IQualifiedNameResolver resolver;
+
+		/**
+		 * The {@link Set} of receiver {@link EClass}.
+		 */
+		private final Set<EClass> receiverEClasses;
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param queryEnvironment
+		 *            the {@link IQualifiedNameQueryEnvironment}
+		 * @param possibleReceiverTypes
+		 *            the {@link Set} of possible receiver {@link IType}
+		 */
+		public ProposalComparator(IQualifiedNameQueryEnvironment queryEnvironment,
+				Set<IType> possibleReceiverTypes) {
+			this.currentQualifiedName = queryEnvironment.getLookupEngine().getCurrentContext().peek();
+			this.resolver = queryEnvironment.getLookupEngine().getResolver();
+			extended = getAllExtended(resolver, currentQualifiedName);
+			receiverEClasses = new HashSet<>();
+			for (IType possibleReceiverType : possibleReceiverTypes) {
+				if (possibleReceiverType instanceof EClassifierType) {
+					if (((EClassifierType)possibleReceiverType).getType() instanceof EClass) {
+						receiverEClasses.add((EClass)((EClassifierType)possibleReceiverType).getType());
+					}
+				} else if (possibleReceiverType instanceof ClassType) {
+					for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getEClassifiers(
+							((ClassType)possibleReceiverType).getType())) {
+						if (eClassifier instanceof EClass) {
+							receiverEClasses.add((EClass)eClassifier);
+						}
+					}
+				}
+			}
+		}
+
+		/**
+		 * Gets the closure of extended qualified names.
+		 * 
+		 * @param resolver
+		 *            the {@link IQualifiedNameResolver}
+		 * @param currentQualifiedName
+		 *            the current qualified name
+		 * @return
+		 */
+		private Set<String> getAllExtended(IQualifiedNameResolver resolver, String currentQualifiedName) {
+			final Set<String> res = new HashSet<>();
+
+			String superQualifiedName = resolver.getExtend(currentQualifiedName);
+			while (superQualifiedName != null) {
+				res.add(superQualifiedName);
+				superQualifiedName = resolver.getExtend(superQualifiedName);
+			}
+
+			return res;
+		}
+
 		@Override
 		public int compare(ICompletionProposal o1, ICompletionProposal o2) {
 			final int res;
@@ -109,15 +188,17 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 			final int value1 = getValue(o1);
 			final int value2 = getValue(o2);
 
-			if (o1 instanceof IServiceCompletionProposal && o2 instanceof IServiceCompletionProposal) {
-				res = ((IServiceCompletionProposal)o1).getObject().getShortSignature().compareTo(
-						((IServiceCompletionProposal)o2).getObject().getShortSignature());
-			} else if (value1 > value2) {
+			if (value1 > value2) {
 				res = 1;
 			} else if (value1 < value2) {
 				res = -1;
 			} else if (o1 != null && o2 != null) {
-				res = o1.getProposal().compareTo(o2.getProposal());
+				if (o1 instanceof IServiceCompletionProposal && o2 instanceof IServiceCompletionProposal) {
+					res = ((IServiceCompletionProposal)o1).getObject().getShortSignature().compareTo(
+							((IServiceCompletionProposal)o2).getObject().getShortSignature());
+				} else {
+					res = o1.getProposal().compareTo(o2.getProposal());
+				}
 			} else {
 				res = 0;
 			}
@@ -139,27 +220,39 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 					|| proposal instanceof VariableDeclarationCompletionProposal) {
 				res = 0;
 			} else if (proposal instanceof EFeatureCompletionProposal) {
-				res = 1;
+				if (receiverEClasses.contains(((EFeatureCompletionProposal)proposal).getObject()
+						.getEContainingClass())) {
+					res = 1;
+				} else {
+					res = 2;
+				}
 			} else if (proposal instanceof IServiceCompletionProposal
 					|| proposal instanceof EOperationServiceCompletionProposal) {
-				res = 2;
+				if (proposal.getObject() instanceof TemplateService || proposal
+						.getObject() instanceof QueryService) {
+					final String serviceQualifiedName = resolver.getContextQualifiedName((IService<?>)proposal
+							.getObject());
+					if (currentQualifiedName.equals(serviceQualifiedName)) {
+						res = 3;
+					} else if (extended.contains(serviceQualifiedName)) {
+						res = 4;
+					} else {
+						res = 5;
+					}
+				} else {
+					res = 6;
+				}
 			} else if (proposal instanceof EClassifierCompletionProposal
-					|| proposal instanceof EEnumLiteralCompletionProposal
-					|| proposal instanceof EFeatureCompletionProposal) {
-				res = 3;
+					|| proposal instanceof EEnumLiteralCompletionProposal) {
+				res = 7;
 			} else {
-				res = 4;
+				res = 8;
 			}
 
 			return res;
 		}
 
 	}
-
-	/**
-	 * The comparator of {@link ICompletionProposal}.
-	 */
-	private static final Comparator<ICompletionProposal> COMPLETION_PROPOSAL_COMPARATOR = new ProposalComparator();
 
 	/**
 	 * The {@link IQualifiedNameQueryEnvironment}.
@@ -1011,7 +1104,10 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 				.length());
 		final ICompletionResult completionResult = aqlCompletionEngine.getCompletion(expression, position
 				- startPosition, variables);
-		completionResult.sort(COMPLETION_PROPOSAL_COMPARATOR);
+		final ProposalComparator comparator = new ProposalComparator(queryEnvironment, completionResult
+				.getPossibleReceiverTypes());
+
+		completionResult.sort(comparator);
 		final List<ICompletionProposal> aqlProposals = completionResult.getProposals(new BasicFilter(
 				completionResult));
 		final List<AcceleoCompletionProposal> aqlProposalsAsAcceleoProposals = aqlProposals.stream().map(

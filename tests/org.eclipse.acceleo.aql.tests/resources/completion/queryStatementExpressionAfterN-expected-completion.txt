@@ -1,29 +1,9 @@
 * Label:
-eAnnotations
-* Description:
-EReference eAnnotations: ecore::EAnnotation [0..*] in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-eAnnotations
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 729 31 11 - 733 31 15
-
-* Label:
 eFactoryInstance
 * Description:
 EReference eFactoryInstance: ecore::EFactory [1..1] in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 eFactoryInstance
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 729 31 11 - 733 31 15
-
-* Label:
-name
-* Description:
-EAttribute name: ecore::EString [0..1] in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-name
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 729 31 11 - 733 31 15
@@ -44,6 +24,26 @@ nsURI
 EAttribute nsURI: ecore::EString [0..1] in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 nsURI
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 729 31 11 - 733 31 15
+
+* Label:
+eAnnotations
+* Description:
+EReference eAnnotations: ecore::EAnnotation [0..*] in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+eAnnotations
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 729 31 11 - 733 31 15
+
+* Label:
+name
+* Description:
+EAttribute name: ecore::EString [0..1] in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+name
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 729 31 11 - 733 31 15

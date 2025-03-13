@@ -9,16 +9,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 1382 57 16 - 1386 57 20
 
 * Label:
-eAnnotations
-* Description:
-EReference eAnnotations: ecore::EAnnotation [0..*] in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-eAnnotations
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 1382 57 16 - 1386 57 20
-
-* Label:
 ePackage
 * Description:
 EReference ePackage: ecore::EPackage [0..1] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
@@ -64,6 +54,16 @@ instanceTypeName
 EAttribute instanceTypeName: ecore::EString [0..1] in EClassifier(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 instanceTypeName
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 1382 57 16 - 1386 57 20
+
+* Label:
+eAnnotations
+* Description:
+EReference eAnnotations: ecore::EAnnotation [0..*] in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+eAnnotations
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 1382 57 16 - 1386 57 20

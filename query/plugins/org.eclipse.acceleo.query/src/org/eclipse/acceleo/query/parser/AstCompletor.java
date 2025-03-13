@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,9 +101,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		this.validationResult = validationRes;
 		this.variableTypes = variableTypes;
 
-		final List<Error> errors = validationRes.getAstResult().getErrors();
-		if (errors.size() > 0) {
-			final Error errorToComplete = getErrorToComplete(validationRes.getAstResult(), errors);
+		final Error errorToComplete = validationRes.getErrorToComplete();
+		if (errorToComplete != null) {
 			completeVariablesNames(errorToComplete);
 			result = doSwitch(errorToComplete);
 		} else {
@@ -111,32 +110,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 					.getAst());
 			result = getExpressionTextFollows(possibleTypes);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the {@link Error} to use for completion starting point. It's the first error that
-	 * {@link AstResult#getEndPosition(Expression) end} at the end of the {@link Expression}.
-	 * 
-	 * @param astResult
-	 *            the {@link AstResult}
-	 * @param errors
-	 *            the possible {@link Error}
-	 * @return the {@link Error} to use for completion starting point
-	 */
-	private Error getErrorToComplete(AstResult astResult, List<Error> errors) {
-		Error result = errors.get(0);
-
-		int currentEnd = astResult.getEndPosition(result);
-		for (int i = 1; i < errors.size(); i++) {
-			final Error error = errors.get(i);
-			int end = astResult.getEndPosition(error);
-			if (end > currentEnd) {
-				currentEnd = end;
-				result = error;
-			}
 		}
 
 		return result;

@@ -1,14 +1,4 @@
 * Label:
-eAnnotations
-* Description:
-EReference eAnnotations: ecore::EAnnotation [0..*] in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-eAnnotations
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 729 31 11 - 733 31 15
-
-* Label:
 eClassifiers
 * Description:
 EReference eClassifiers: ecore::EClassifier [0..*] in EPackage(http://www.eclipse.org/emf/2002/Ecore)
@@ -49,16 +39,6 @@ http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 729 31 11 - 733 31 15
 
 * Label:
-name
-* Description:
-EAttribute name: ecore::EString [0..1] in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
-* Text:
-name
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 729 31 11 - 733 31 15
-
-* Label:
 nsPrefix
 * Description:
 EAttribute nsPrefix: ecore::EString [0..1] in EPackage(http://www.eclipse.org/emf/2002/Ecore)
@@ -74,6 +54,56 @@ nsURI
 EAttribute nsURI: ecore::EString [0..1] in EPackage(http://www.eclipse.org/emf/2002/Ecore)
 * Text:
 nsURI
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 729 31 11 - 733 31 15
+
+* Label:
+eAnnotations
+* Description:
+EReference eAnnotations: ecore::EAnnotation [0..*] in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+eAnnotations
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 729 31 11 - 733 31 15
+
+* Label:
+name
+* Description:
+EAttribute name: ecore::EString [0..1] in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
+* Text:
+name
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 729 31 11 - 733 31 15
+
+* Label:
+myQuery()
+* Description:
+public myQuery(myParam : ecore::EPackage) = ecore::EClassifier<br><br> * My query has a nice comment.<br> * @param myParam the input EPackage<br>*
+* Text:
+myQuery()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 729 31 11 - 733 31 15
+
+* Label:
+myTemplate()
+* Description:
+public myTemplate(myParam : ecore::EPackage) = String<br><br> * My template has a nice comment.<br> * @param myParam the input EPackage<br>*
+* Text:
+myTemplate()
+* Type (optional):
+http://www.eclipse.org/acceleo/4.0#//Expression
+Replacement: 729 31 11 - 733 31 15
+
+* Label:
+myTemplate1()
+* Description:
+public myTemplate1(myParam : ecore::EPackage) = String
+* Text:
+myTemplate1()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 729 31 11 - 733 31 15
@@ -374,36 +404,6 @@ lineSeparator()
 lineSeparator(obj: java.lang.Object) = String<br><br>Gets the platform line separator.<br><br>  @param obj<br>        Any object<br><br>  @return<br>        '\n' (Unix) or '\r\n' (Dos) or '\r' (Mac Os Classic)<br><br>
 * Text:
 lineSeparator()
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 729 31 11 - 733 31 15
-
-* Label:
-myQuery()
-* Description:
-public myQuery(myParam : ecore::EPackage) = ecore::EClassifier<br><br> * My query has a nice comment.<br> * @param myParam the input EPackage<br>*
-* Text:
-myQuery()
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 729 31 11 - 733 31 15
-
-* Label:
-myTemplate()
-* Description:
-public myTemplate(myParam : ecore::EPackage) = String<br><br> * My template has a nice comment.<br> * @param myParam the input EPackage<br>*
-* Text:
-myTemplate()
-* Type (optional):
-http://www.eclipse.org/acceleo/4.0#//Expression
-Replacement: 729 31 11 - 733 31 15
-
-* Label:
-myTemplate1()
-* Description:
-public myTemplate1(myParam : ecore::EPackage) = String
-* Text:
-myTemplate1()
 * Type (optional):
 http://www.eclipse.org/acceleo/4.0#//Expression
 Replacement: 729 31 11 - 733 31 15
