@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Acceleo" uid="org.eclipse.acceleo.aql.rcpttproduct" id="org.eclipse.acceleo.aql.rcpttproduct" application="org.eclipse.ui.ide.workbench" version="4.1.0.qualifier" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="true">
+<product name="Acceleo" uid="org.eclipse.acceleo.aql.rcpttproduct" id="org.eclipse.acceleo.aql.rcpttproduct" application="org.eclipse.ui.ide.workbench" version="4.1.1.qualifier" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <text>
          Acceleo
 
-Version  4.1.0
+Version  4.1.1
       </text>
    </aboutInfo>
 
