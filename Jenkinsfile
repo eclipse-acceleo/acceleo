@@ -15,7 +15,7 @@ pipeline {
 	
 	environment {
 		// Target platforms and profiles to build against (must correspond to a profile in the parent pom.xml)
-		PROFILES = 'PROFILES-2024-03,updatesite'
+		PROFILES = 'platform-2024-03,updatesite'
 	}
 	
 	stages {
