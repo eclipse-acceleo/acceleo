@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -608,11 +608,13 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		try {
 			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 			final java.net.URI binaryURI = resolver.getBinaryURI(new java.net.URI("file://" + path));
-			final String moduleQualifiedName = resolver.getQualifiedName(binaryURI);
-			if (moduleQualifiedName != null) {
-				final Object resolved = resolver.resolve(moduleQualifiedName);
-				if (resolved instanceof Module) {
-					moduleAstResult = ((Module)resolved).getAst();
+			if (binaryURI != null) {
+				final String moduleQualifiedName = resolver.getQualifiedName(binaryURI);
+				if (moduleQualifiedName != null) {
+					final Object resolved = resolver.resolve(moduleQualifiedName);
+					if (resolved instanceof Module) {
+						moduleAstResult = ((Module)resolved).getAst();
+					}
 				}
 			}
 		} catch (URISyntaxException e) {

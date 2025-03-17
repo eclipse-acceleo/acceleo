@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -424,22 +424,26 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 
 		final IWorkspaceRoot workspaceRoot = javaProject.getProject().getWorkspace().getRoot();
 		final IFile sourceFile = workspaceRoot.getFileForLocation(new Path(sourceURI.getPath()));
-		final IClasspathEntry entry = getContainingEntry(javaProject, sourceFile);
-		if (entry != null) {
-			if (entry.getContentKind() == IPackageFragmentRoot.K_BINARY) {
-				res = sourceURI;
-			} else if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE) {
-				// TODO check forWorkspace and the project to the class path entry
-				final IPath relativePath = sourceFile.getFullPath().makeRelativeTo(entry.getPath());
-				final IPath binaryPath = javaProject.getOutputLocation().append(relativePath);
-				final IFile binaryFile = workspaceRoot.getFile(binaryPath);
-				if (binaryFile.exists()) {
-					res = binaryFile.getLocationURI();
+		if (sourceFile != null) {
+			final IClasspathEntry entry = getContainingEntry(javaProject, sourceFile);
+			if (entry != null) {
+				if (entry.getContentKind() == IPackageFragmentRoot.K_BINARY) {
+					res = sourceURI;
+				} else if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE) {
+					// TODO check forWorkspace and the project to the class path entry
+					final IPath relativePath = sourceFile.getFullPath().makeRelativeTo(entry.getPath());
+					final IPath binaryPath = javaProject.getOutputLocation().append(relativePath);
+					final IFile binaryFile = workspaceRoot.getFile(binaryPath);
+					if (binaryFile.exists()) {
+						res = binaryFile.getLocationURI();
+					} else {
+						res = null;
+					}
 				} else {
-					res = null;
+					throw new IllegalStateException("unknown classpath entry content kind.");
 				}
 			} else {
-				throw new IllegalStateException("unknown classpath entry content kind.");
+				res = null;
 			}
 		} else {
 			res = null;
