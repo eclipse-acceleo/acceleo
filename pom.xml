@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (C) 2011, 2024 Obeo
+   Copyright (C) 2011, 2025 Obeo
 
    All rights reserved. This program and the accompanying materials
    are made available under the terms of the Eclipse Public License v2.0
@@ -151,8 +151,6 @@
     <module>plugins/org.eclipse.acceleo.aql.profiler</module>
     <module>plugins/org.eclipse.acceleo.aql.profiler.edit</module>
     <module>plugins/org.eclipse.acceleo.aql.profiler.editor</module>
-
-    <module>releng/org.eclipse.acceleo.aql.update</module>
   </modules>
 
   <build>
@@ -396,6 +394,16 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>updatesite</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <modules>
+        <module>releng/org.eclipse.acceleo.aql.update</module>
+      </modules>
     </profile>
 
     <profile>

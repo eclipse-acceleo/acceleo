@@ -14,8 +14,8 @@ pipeline {
 	}
 	
 	environment {
-		// Target platform to build against (must correspond to a profile in the parent pom.xml)
-		PLATFORM = 'platform-2024-03'
+		// Target platforms and profiles to build against (must correspond to a profile in the parent pom.xml)
+		PROFILES = 'PROFILES-2024-03,updatesite'
 	}
 	
 	stages {
@@ -32,7 +32,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean deploy -P$PLATFORM -DbuildQualifier=`date +%Y%m%d%H%M` -Psign"
+					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M` -Psign"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 					sh "mvn clean verify -f tests/maven/pom.xml"
 				}
@@ -55,7 +55,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean deploy -P$PLATFORM -DbuildQualifier=`date +%Y%m%d%H%M` -Psign"
+					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M` -Psign"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 					sh "mvn clean verify -f tests/maven/pom.xml"
 				}
@@ -73,7 +73,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean deploy -P$PLATFORM -DbuildQualifier=`date +%Y%m%d%H%M`"
+					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M`"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 					sh "mvn clean verify -f tests/maven/pom.xml"
 				}
