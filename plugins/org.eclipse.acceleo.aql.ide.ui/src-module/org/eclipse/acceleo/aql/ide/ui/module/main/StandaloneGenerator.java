@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,28 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui.module.main;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
@@ -37,6 +51,7 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -47,6 +62,11 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Eclipse launcher for org::eclipse::python4capella::ecore::gen::python::main::standalone.
@@ -54,6 +74,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class StandaloneGenerator extends AbstractGenerator {
+
+	/**
+	 * The Maven indentation.
+	 */
+	private static final String MAVEN_INDENTATION = "    ";
 
 	/**
 	 * The main {@link Module} {@link IFile}.
@@ -122,10 +147,14 @@ public class StandaloneGenerator extends AbstractGenerator {
 		modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
 		modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
 		dependencyBundleNames = new LinkedHashSet<>();
-		dependencyBundleNames.add("org.eclipse.acceleo.query;bundle-version=\"[8.0.3,9.0.0)\"");
-		dependencyBundleNames.add("org.eclipse.acceleo.aql;bundle-version=\"[4.1.0,5.0.0)\"");
-		dependencyBundleNames.add("org.eclipse.acceleo.aql.profiler;bundle-version=\"[4.1.0,5.0.0)\"");
-		dependencyBundleNames.add("org.antlr.runtime;bundle-version=\"[4.10.1,4.10.2)\"");
+		dependencyBundleNames.add("org.eclipse.acceleo.query;bundle-version=\"[" + getAQLVersionLowerBound()
+				+ "," + getAQLVersionUpperBound() + ")\"");
+		dependencyBundleNames.add("org.eclipse.acceleo.aql;bundle-version=\"[" + getAcceleoVersionLowerBound()
+				+ "," + getAcceleoVersionUpperBound() + ")\"");
+		dependencyBundleNames.add("org.eclipse.acceleo.aql.profiler;bundle-version=\"["
+				+ getAcceleoVersionLowerBound() + "," + getAcceleoVersionUpperBound() + ")\"");
+		dependencyBundleNames.add("org.antlr.runtime;bundle-version=\"[" + getANTLRVersionLowerBound() + ","
+				+ getANTLRVersionUpperBound() + ")\"");
 		AcceleoUtil.registerEPackage(queryEnvironment, workspaceResolver, modelModule);
 		dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 
@@ -330,15 +359,217 @@ public class StandaloneGenerator extends AbstractGenerator {
 		Services.initialize(null, null);
 		try {
 			moduleFile.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-			addPluginDependencies(moduleFile.getProject(), dependencyBundleNames);
-			final String packageName = new Services().getJavaPackage(modelModule);
-			if (!packageName.isEmpty()) {
-				addExportPackages(moduleFile.getProject(), Collections.singleton(packageName));
+			if (isInPluginProject(moduleFile)) {
+				addPluginDependencies(moduleFile.getProject(), dependencyBundleNames);
+				final String packageName = new Services().getJavaPackage(modelModule);
+				if (!packageName.isEmpty()) {
+					addExportPackages(moduleFile.getProject(), Collections.singleton(packageName));
+				}
+			} else if (isInMavenProject(moduleFile)) {
+				updateMavenPom(moduleFile.getProject());
 			}
 		} catch (CoreException e) {
 			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
 					"could not refresh " + moduleFile.getParent().getFullPath(), e));
 		}
+	}
+
+	/**
+	 * Updates (dependencies and resources) the Maven pom.xml file for the given {@link IProject}.
+	 * 
+	 * @param project
+	 *            the {@link IProject}
+	 */
+	private void updateMavenPom(IProject project) {
+		final IFile pomFile = project.getFile("pom.xml");
+		if (pomFile.isAccessible()) {
+			final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			try {
+				final DocumentBuilder db = dbf.newDocumentBuilder();
+				final Document pom = db.parse(pomFile.getContents());
+				final NodeList projectList = pom.getElementsByTagName("project");
+				if (projectList.getLength() > 0) {
+					final Node pomProject = projectList.item(0);
+					if (pomProject instanceof Element) {
+						final boolean dependenciesUpdated = addMavenDependencies(pom, (Element)pomProject);
+						final boolean resourcesUpdated = updateResources(pom, (Element)pomProject);
+						if (dependenciesUpdated || resourcesUpdated) {
+							try {
+								final Transformer tr = TransformerFactory.newInstance().newTransformer();
+								tr.setOutputProperty(OutputKeys.METHOD, "xml");
+								tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+								final ByteArrayOutputStream ouputStream = new ByteArrayOutputStream();
+								tr.transform(new DOMSource(pom), new StreamResult(ouputStream));
+								pomFile.setContents(new ByteArrayInputStream(ouputStream.toByteArray()), true,
+										true, new NullProgressMonitor());
+							} catch (TransformerException te) {
+								AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR,
+										getClass(), "can't write pom.xml file for " + moduleFile.getParent()
+												.getFullPath(), te));
+							}
+						}
+					}
+				}
+			} catch (ParserConfigurationException | SAXException | IOException | CoreException e) {
+				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
+						"can't load pom.xml file for " + moduleFile.getParent().getFullPath(), e));
+			}
+		}
+	}
+
+	private boolean addMavenDependencies(Document pom, Element project) {
+		boolean res;
+
+		// get already existing dependencies
+		final Set<String> knownDependencies = new HashSet<>();
+		final NodeList dependenciesList = project.getElementsByTagName("dependencies");
+		final Node dependencies;
+		if (dependenciesList.getLength() > 0) {
+			for (int i = 0; i < dependenciesList.getLength(); i++) {
+				final Node currentDependencies = dependenciesList.item(i);
+				if (currentDependencies instanceof Element) {
+					final NodeList artifactIds = ((Element)currentDependencies).getElementsByTagName(
+							"artifactId");
+					if (artifactIds != null) {
+						for (int j = 0; j < artifactIds.getLength(); j++) {
+							knownDependencies.add(artifactIds.item(j).getTextContent());
+						}
+					}
+				}
+			}
+			dependencies = dependenciesList.item(0);
+		} else {
+			dependencies = pom.createElement("dependencies");
+			project.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
+			project.appendChild(dependencies);
+			dependencies.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
+			project.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
+
+		}
+		if (!knownDependencies.contains("acceleo")) {
+			addMavenDependencyNode(pom, dependencies, "org.eclipse.acceleo", "acceleo", "["
+					+ getAcceleoVersionLowerBound() + "," + getAcceleoVersionUpperBound() + ")");
+			res = true;
+		} else {
+			res = false;
+		}
+
+		return res;
+	}
+
+	private void addMavenDependencyNode(Document pom, Node dependencies, String groupIdString,
+			String artifactIdString, String versionString) {
+		if (dependencies instanceof Element) {
+			final Element dependency = pom.createElement("dependency");
+			dependencies.appendChild(pom.createTextNode(MAVEN_INDENTATION));
+			dependencies.appendChild(dependency);
+			dependencies.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
+			// groupId
+			final Element groupId = pom.createElement("groupId");
+			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
+			dependency.appendChild(groupId);
+			groupId.setTextContent(groupIdString);
+			// groupId
+			final Element artifactId = pom.createElement("artifactId");
+			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
+			dependency.appendChild(artifactId);
+			artifactId.setTextContent(artifactIdString);
+			// version
+			final Element version = pom.createElement("version");
+			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
+			dependency.appendChild(version);
+			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION));
+			version.setTextContent(versionString);
+		}
+	}
+
+	private boolean updateResources(Document pom, Element project) {
+		// build
+		final NodeList buildList = project.getElementsByTagName("build");
+		final Element build;
+		final boolean buildCreated;
+		if (buildList.getLength() > 0 && buildList.item(0) instanceof Element) {
+			build = (Element)buildList.item(0);
+			buildCreated = false;
+		} else {
+			build = pom.createElement("build");
+			project.appendChild(pom.createTextNode(System.lineSeparator() + System.lineSeparator()
+					+ MAVEN_INDENTATION));
+			build.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
+			project.appendChild(build);
+			project.appendChild(pom.createTextNode(System.lineSeparator()));
+			buildCreated = true;
+		}
+		// resources
+		final NodeList resourcesList = build.getElementsByTagName("resources");
+		final Element resources;
+		final boolean resourcesCreated;
+		final boolean needResourceNode;
+		if (resourcesList.getLength() > 0 && resourcesList.item(0) instanceof Element) {
+			resources = (Element)resourcesList.item(0);
+			boolean needNewResource = true;
+			found: for (int i = 0; i < resourcesList.getLength(); i++) {
+				if (resourcesList.item(i) instanceof Element) {
+					final Element currentResources = (Element)resourcesList.item(i);
+					final NodeList includeList = currentResources.getElementsByTagName("include");
+					for (int j = 0; j < includeList.getLength(); j++) {
+						if (includeList.item(j) instanceof Element) {
+							final Element include = (Element)includeList.item(j);
+							if (include.getTextContent().contains("mtl")) {
+								needNewResource = false;
+								break found;
+							}
+						}
+					}
+				}
+			}
+			needResourceNode = needNewResource;
+			resourcesCreated = false;
+		} else {
+			resources = pom.createElement("resources");
+			build.appendChild(pom.createTextNode(MAVEN_INDENTATION));
+			build.appendChild(resources);
+			build.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
+			resourcesCreated = true;
+			needResourceNode = true;
+		}
+
+		if (needResourceNode) {
+			// resource
+			final Element resource = pom.createElement("resource");
+			resources.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
+			resources.appendChild(resource);
+			resources.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION));
+			// directory
+			final Element directory = pom.createElement("directory");
+			resource.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION + MAVEN_INDENTATION));
+			directory.setTextContent("${project.basedir}/src/main/java");
+			resource.appendChild(directory);
+			// includes
+			final Element includes = pom.createElement("includes");
+			resource.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION + MAVEN_INDENTATION));
+			resource.appendChild(includes);
+			resource.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
+			// includes
+			final Element include = pom.createElement("include");
+			include.setTextContent("**/*.mtl");
+			includes.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION + MAVEN_INDENTATION + MAVEN_INDENTATION));
+			includes.appendChild(include);
+			includes.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
+					+ MAVEN_INDENTATION + MAVEN_INDENTATION + MAVEN_INDENTATION));
+
+		}
+		return buildCreated || resourcesCreated || needResourceNode;
 	}
 
 }

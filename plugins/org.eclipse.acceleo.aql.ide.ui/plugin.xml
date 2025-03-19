@@ -95,7 +95,7 @@
             class="org.eclipse.acceleo.aql.ide.ui.property.AcceleoPropertyTester"
             id="org.eclipse.acceleo.aql.ide.ui.property.propertyTester"
             namespace="org.eclipse.acceleo.aql.ide.ui.property"
-            properties="isMain,isBlockSelection,isAcceleoTextSelection"
+            properties="isMain,isBlockSelection,isAcceleoTextSelection,isInPluginProject,isInMavenProject"
             type="java.lang.Object">
       </propertyTester>
    </extension>
@@ -182,6 +182,10 @@
                      <test
                            forcePluginActivation="true"
                            property="org.eclipse.acceleo.aql.ide.ui.property.isMain">
+                     </test>
+                     <test
+                           forcePluginActivation="true"
+                           property="org.eclipse.acceleo.aql.ide.ui.property.isInPluginProject">
                      </test>
                   </and>
                </iterate>
@@ -272,6 +276,25 @@
                   icon="icons/AcceleoEditor.gif"
                   id="org.eclipse.acceleo.aql.ide.ui.menus.createEclipseUIProjectCommand">
             </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <and>
+                        <instanceof
+                              value="org.eclipse.core.resources.IFile">
+                        </instanceof>
+                        <test
+                              forcePluginActivation="true"
+                              property="org.eclipse.acceleo.aql.ide.ui.property.isMain">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </menu>
       </menuContribution>
       <menuContribution

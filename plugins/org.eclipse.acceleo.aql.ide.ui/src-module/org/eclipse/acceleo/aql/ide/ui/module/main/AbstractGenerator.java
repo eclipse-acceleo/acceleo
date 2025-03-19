@@ -15,16 +15,22 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.StringJoiner;
 
+import org.antlr.v4.runtime.Lexer;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
+import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
+import org.eclipse.acceleo.aql.ide.ui.property.AcceleoPropertyTester;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.core.expressions.IPropertyTester;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
@@ -34,8 +40,14 @@ import org.eclipse.pde.internal.core.ibundle.IManifestHeader;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleReference;
 import org.osgi.framework.Constants;
+import org.osgi.framework.Version;
 
 public abstract class AbstractGenerator {
+
+	/**
+	 * The {@link AcceleoPropertyTester}.
+	 */
+	private final IPropertyTester propertyTester = new AcceleoPropertyTester();
 
 	/**
 	 * Gets the Set of dependency bundle names.
@@ -183,6 +195,124 @@ public abstract class AbstractGenerator {
 
 			((IBundlePluginModelBase)model).save();
 		}
+	}
+
+	/**
+	 * Tells if the given {@link IResource} is a plug-in project.
+	 * 
+	 * @param resource
+	 *            the {@link IResource} to test
+	 * @return <code>true</code> if the given {@link IResource} is a plug-in project, <code>false</code>
+	 *         otherwise
+	 */
+	protected boolean isInPluginProject(IResource resource) {
+		return propertyTester.test(resource, AcceleoPropertyTester.IS_IN_PLUGIN_PROJECT, null, Boolean.TRUE);
+	}
+
+	/**
+	 * Tells if the given {@link IResource} is a Maven project.
+	 * 
+	 * @param resource
+	 *            the {@link IResource} to test
+	 * @return <code>true</code> if the given {@link IResource} is a plug-in project, <code>false</code>
+	 *         otherwise
+	 */
+	protected boolean isInMavenProject(IResource resource) {
+		return propertyTester.test(resource, AcceleoPropertyTester.IS_IN_MAVEN_PROJECT, null, Boolean.TRUE);
+	}
+
+	/**
+	 * Gets the Acceleo version lower bound.
+	 * 
+	 * @return the Acceleo version lower bound
+	 */
+	protected String getAcceleoVersionLowerBound() {
+		final Version version = AcceleoUIPlugin.getDefault().getBundle().getVersion();
+
+		return new Version(version.getMajor(), version.getMinor(), version.getMicro()).toString();
+	}
+
+	/**
+	 * Gets the Acceleo version upper bound.
+	 * 
+	 * @return the Acceleo version upper bound
+	 */
+	protected String getAcceleoVersionUpperBound() {
+		final Version version = AcceleoUIPlugin.getDefault().getBundle().getVersion();
+
+		return new Version(version.getMajor() + 1, 0, 0).toString();
+	}
+
+	/**
+	 * Gets the Acceleo version lower bound.
+	 * 
+	 * @return the Acceleo version lower bound
+	 */
+	protected String getAQLVersionLowerBound() {
+		final Version version;
+
+		final ClassLoader aqlClassloader = AQLUtils.class.getClassLoader();
+		if (aqlClassloader instanceof BundleReference) {
+			version = ((BundleReference)aqlClassloader).getBundle().getVersion();
+		} else {
+			version = new Version(8, 0, 0);
+		}
+
+		return new Version(version.getMajor(), version.getMinor(), version.getMicro()).toString();
+	}
+
+	/**
+	 * Gets the AQL version upper bound.
+	 * 
+	 * @return the AQL version upper bound
+	 */
+	protected String getAQLVersionUpperBound() {
+		final Version version;
+
+		final ClassLoader aqlClassloader = AQLUtils.class.getClassLoader();
+		if (aqlClassloader instanceof BundleReference) {
+			version = ((BundleReference)aqlClassloader).getBundle().getVersion();
+		} else {
+			version = new Version(8, 0, 0);
+		}
+
+		return new Version(version.getMajor() + 1, 0, 0).toString();
+	}
+
+	/**
+	 * Gets the ANTLR version lower bound.
+	 * 
+	 * @return the ANTLR version lower bound
+	 */
+	protected String getANTLRVersionLowerBound() {
+		final Version version;
+
+		final ClassLoader aqlClassloader = AQLUtils.class.getClassLoader();
+		if (aqlClassloader instanceof BundleReference) {
+			version = ((BundleReference)aqlClassloader).getBundle().getVersion();
+		} else {
+			version = new Version(8, 0, 0);
+		}
+
+		return new Version(version.getMajor(), version.getMinor(), version.getMicro()).toString();
+	}
+
+	/**
+	 * Gets the ANTLR version upper bound.
+	 * 
+	 * @return the ANTLR version upper bound
+	 */
+	protected String getANTLRVersionUpperBound() {
+		final Version version;
+
+		final ClassLoader antlrClassloader = Lexer.class.getClassLoader();
+		if (antlrClassloader instanceof BundleReference) {
+			version = ((BundleReference)antlrClassloader).getBundle().getVersion();
+		} else {
+			version = new Version(4, 10, 1);
+		}
+
+		return new Version(version.getMajor(), version.getMinor(), version.getMicro() + 1).toString();
 	}
 
 }
