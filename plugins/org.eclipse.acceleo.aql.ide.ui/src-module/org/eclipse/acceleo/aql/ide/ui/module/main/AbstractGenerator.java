@@ -12,6 +12,7 @@ package org.eclipse.acceleo.aql.ide.ui.module.main;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -20,6 +21,8 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
+import org.eclipse.acceleo.aql.evaluation.strategy.IWriterFactory;
+import org.eclipse.acceleo.aql.evaluation.strategy.PreviewWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.property.AcceleoPropertyTester;
 import org.eclipse.acceleo.query.AQLUtils;
@@ -29,13 +32,11 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.expressions.IPropertyTester;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
-import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.pde.internal.core.ibundle.IBundle;
-import org.eclipse.pde.internal.core.ibundle.IBundlePluginModelBase;
+import org.eclipse.pde.internal.core.ibundle.IBundleModel;
 import org.eclipse.pde.internal.core.ibundle.IManifestHeader;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleReference;
@@ -48,6 +49,11 @@ public abstract class AbstractGenerator {
 	 * The {@link AcceleoPropertyTester}.
 	 */
 	private final IPropertyTester propertyTester = new AcceleoPropertyTester();
+
+	/**
+	 * The {@link IWriterFactory}.
+	 */
+	private IWriterFactory writeractory;
 
 	/**
 	 * Gets the Set of dependency bundle names.
@@ -95,105 +101,95 @@ public abstract class AbstractGenerator {
 	}
 
 	/**
-	 * Adds needed plugin dependencies to the given {@link IProject}.
+	 * Adds needed plugin dependencies to the given {@link IBundleModel}.
 	 * 
-	 * @param project
-	 *            the {@link IProject}
+	 * @param model
+	 *            the {@link IBundleModel}
 	 * @param dependencyBundleNames
 	 *            the {@link Set} of dependency bundle names
 	 */
 	@SuppressWarnings("restriction")
-	protected void addPluginDependencies(IProject project, Set<String> dependencyBundleNames) {
-		final IPluginModelBase model = PluginRegistry.findModel(project);
-		if (model instanceof IBundlePluginModelBase) {
-			final IBundle bundle = ((IBundlePluginModelBase)model).getBundleModel().getBundle();
-			final IManifestHeader manifestHeader = bundle.getManifestHeader(Constants.REQUIRE_BUNDLE);
-			final String requiredBundleString;
-			if (manifestHeader != null) {
-				requiredBundleString = manifestHeader.getValue();
-			} else {
-				requiredBundleString = null;
+	protected void addPluginDependencies(IBundleModel model, Set<String> dependencyBundleNames) {
+		final IBundle bundle = model.getBundle();
+		final IManifestHeader manifestHeader = bundle.getManifestHeader(Constants.REQUIRE_BUNDLE);
+		final String requiredBundleString;
+		if (manifestHeader != null) {
+			requiredBundleString = manifestHeader.getValue();
+		} else {
+			requiredBundleString = null;
+		}
+		if (requiredBundleString == null) {
+			final StringJoiner joiner = new StringJoiner(",\n  ");
+			for (String dependency : dependencyBundleNames) {
+				joiner.add(dependency);
 			}
-			if (requiredBundleString == null) {
-				final StringJoiner joiner = new StringJoiner(",\n  ");
-				for (String dependency : dependencyBundleNames) {
+			bundle.setHeader(Constants.REQUIRE_BUNDLE, joiner.toString());
+		} else {
+			final StringJoiner joiner = new StringJoiner(",\n  ");
+			joiner.add(requiredBundleString);
+			for (String dependency : dependencyBundleNames) {
+				final String dependencyBundleName;
+				int lastSemiColonIndex = dependency.lastIndexOf(";");
+				if (lastSemiColonIndex >= 0) {
+					dependencyBundleName = dependency.substring(0, lastSemiColonIndex);
+				} else {
+					dependencyBundleName = dependency;
+				}
+				boolean foundInRequirement = false;
+				for (String requirement : requiredBundleString.split(",")) {
+					if (requirement.contains(dependencyBundleName)) {
+						foundInRequirement = true;
+						break;
+					}
+				}
+				if (!foundInRequirement) {
 					joiner.add(dependency);
 				}
 				bundle.setHeader(Constants.REQUIRE_BUNDLE, joiner.toString());
-			} else {
-				final StringJoiner joiner = new StringJoiner(",\n  ");
-				joiner.add(requiredBundleString);
-				for (String dependency : dependencyBundleNames) {
-					final String dependencyBundleName;
-					int lastSemiColonIndex = dependency.lastIndexOf(";");
-					if (lastSemiColonIndex >= 0) {
-						dependencyBundleName = dependency.substring(0, lastSemiColonIndex);
-					} else {
-						dependencyBundleName = dependency;
-					}
-					boolean foundInRequirement = false;
-					for (String requirement : requiredBundleString.split(",")) {
-						if (requirement.contains(dependencyBundleName)) {
-							foundInRequirement = true;
-							break;
-						}
-					}
-					if (!foundInRequirement) {
-						joiner.add(dependency);
-					}
-					bundle.setHeader(Constants.REQUIRE_BUNDLE, joiner.toString());
-				}
 			}
-
-			((IBundlePluginModelBase)model).save();
 		}
 	}
 
 	/**
-	 * Adds needed plugin dependencies to the given {@link IProject}.
+	 * Adds needed plugin dependencies to the given {@link IBundleModel}.
 	 * 
-	 * @param project
-	 *            the {@link IProject}
+	 * @param model
+	 *            the {@link IBundleModel}
 	 * @param packages
 	 *            the {@link Set} of package names
 	 */
 	@SuppressWarnings("restriction")
-	protected void addExportPackages(IProject project, Set<String> packages) {
-		final IPluginModelBase model = PluginRegistry.findModel(project);
-		if (model instanceof IBundlePluginModelBase) {
-			final IBundle bundle = ((IBundlePluginModelBase)model).getBundleModel().getBundle();
-			final IManifestHeader manifestHeader = bundle.getManifestHeader(Constants.EXPORT_PACKAGE);
-			final String exportedPackageString;
-			if (manifestHeader != null) {
-				exportedPackageString = manifestHeader.getValue();
-			} else {
-				exportedPackageString = null;
+	protected void addExportPackages(IBundleModel model, Set<String> packages) {
+		final IBundle bundle = model.getBundle();
+		final IManifestHeader manifestHeader = bundle.getManifestHeader(Constants.EXPORT_PACKAGE);
+		final String exportedPackageString;
+		if (manifestHeader != null) {
+			exportedPackageString = manifestHeader.getValue();
+		} else {
+			exportedPackageString = null;
+		}
+		if (exportedPackageString == null) {
+			final StringJoiner joiner = new StringJoiner(",\n  ");
+			for (String dependency : packages) {
+				joiner.add(dependency);
 			}
-			if (exportedPackageString == null) {
-				final StringJoiner joiner = new StringJoiner(",\n  ");
-				for (String dependency : packages) {
+			bundle.setHeader(Constants.EXPORT_PACKAGE, joiner.toString());
+		} else {
+			final StringJoiner joiner = new StringJoiner(",\n  ");
+			joiner.add(exportedPackageString);
+			for (String dependency : packages) {
+				boolean foundInExportedPacakges = false;
+				for (String requirement : exportedPackageString.split(",")) {
+					if (requirement.contains(dependency)) {
+						foundInExportedPacakges = true;
+						break;
+					}
+				}
+				if (!foundInExportedPacakges) {
 					joiner.add(dependency);
 				}
 				bundle.setHeader(Constants.EXPORT_PACKAGE, joiner.toString());
-			} else {
-				final StringJoiner joiner = new StringJoiner(",\n  ");
-				joiner.add(exportedPackageString);
-				for (String dependency : packages) {
-					boolean foundInExportedPacakges = false;
-					for (String requirement : exportedPackageString.split(",")) {
-						if (requirement.contains(dependency)) {
-							foundInExportedPacakges = true;
-							break;
-						}
-					}
-					if (!foundInExportedPacakges) {
-						joiner.add(dependency);
-					}
-					bundle.setHeader(Constants.EXPORT_PACKAGE, joiner.toString());
-				}
 			}
-
-			((IBundlePluginModelBase)model).save();
 		}
 	}
 
@@ -287,11 +283,11 @@ public abstract class AbstractGenerator {
 	protected String getANTLRVersionLowerBound() {
 		final Version version;
 
-		final ClassLoader aqlClassloader = AQLUtils.class.getClassLoader();
+		final ClassLoader aqlClassloader = Lexer.class.getClassLoader();
 		if (aqlClassloader instanceof BundleReference) {
 			version = ((BundleReference)aqlClassloader).getBundle().getVersion();
 		} else {
-			version = new Version(8, 0, 0);
+			version = new Version(4, 10, 0);
 		}
 
 		return new Version(version.getMajor(), version.getMinor(), version.getMicro()).toString();
@@ -313,6 +309,45 @@ public abstract class AbstractGenerator {
 		}
 
 		return new Version(version.getMajor(), version.getMinor(), version.getMicro() + 1).toString();
+	}
+
+	/**
+	 * Gets the {@link IWriterFactory}.
+	 * 
+	 * @return the {@link IWriterFactory}
+	 */
+	protected IWriterFactory getWriterFactory() {
+		if (writeractory == null) {
+			writeractory = createWriterFactory();
+		}
+		return writeractory;
+	}
+
+	/**
+	 * Creates a {@link IWriterFactory}.
+	 * 
+	 * @return the created {@link IWriterFactory}
+	 */
+	protected IWriterFactory createWriterFactory() {
+		return new PreviewWriterFactory();
+	}
+
+	/**
+	 * Gets the preview {@link Map}.
+	 * 
+	 * @return the preview {@link Map}
+	 */
+	public Map<URI, String> getPreview() {
+		final Map<URI, String> res;
+
+		IWriterFactory factory = getWriterFactory();
+		if (factory instanceof PreviewWriterFactory) {
+			res = ((PreviewWriterFactory)factory).getPreview();
+		} else {
+			res = Collections.emptyMap();
+		}
+
+		return res;
 	}
 
 }

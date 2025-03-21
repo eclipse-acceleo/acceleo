@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2023, 2024 Obeo. 
+ *  Copyright (c) 2023, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -36,6 +36,11 @@ public class AcceleoUIPlugin extends AbstractUIPlugin {
 	 * The add image key.
 	 */
 	public static final String ADD_IMG_KEY = "add";
+
+	/**
+	 * The Acceleo editor key.
+	 */
+	public static final String ACCELEO_EDITOR = "AcceleoEditor";
 
 	/**
 	 * The plug-in ID.
@@ -109,6 +114,8 @@ public class AcceleoUIPlugin extends AbstractUIPlugin {
 					+ "/icons/add.gif")));
 			reg.put(DELETE_IMG_KEY, ImageDescriptor.createFromURL(new URL("platform:/plugin/" + PLUGIN_ID
 					+ "/icons/delete.gif")));
+			reg.put(ACCELEO_EDITOR, ImageDescriptor.createFromURL(new URL("platform:/plugin/" + PLUGIN_ID
+					+ "/icons/AcceleoEditor.gif")));
 		} catch (MalformedURLException e) {
 			getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 		}

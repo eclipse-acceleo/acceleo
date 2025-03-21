@@ -42,5 +42,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.expressions,
  org.eclipse.ui.editors,
  org.eclipse.pde.core,
- org.eclipse.ui.workbench.texteditor
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.compare
 Automatic-Module-Name: org.eclipse.acceleo.aql.ide.ui

@@ -21,6 +21,7 @@ Version  4.1.1
 --add-opens java.base/java.lang=ALL-UNNAMED
 --add-modules=ALL-SYSTEM
 -Djava.security.manager=allow
+-Duser.name=username
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
@@ -137,6 +138,7 @@ Exhibit A – Form of Secondary Licenses Notice
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.epp.mpc"/>
       <feature id="org.eclipse.rcptt.platform"/>
+      <feature id="org.eclipse.m2e.feature"/>
    </features>
 
    <configurations>

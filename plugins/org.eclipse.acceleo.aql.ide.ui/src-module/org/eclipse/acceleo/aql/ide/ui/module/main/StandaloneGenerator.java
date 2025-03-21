@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui.module.main;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,7 +28,6 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -39,7 +40,6 @@ import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
-import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.module.services.Services;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -62,6 +62,8 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.pde.internal.core.bundle.WorkspaceBundleModel;
+import org.eclipse.pde.internal.core.project.PDEProject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -244,7 +246,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 
 	protected IAcceleoGenerationStrategy createGenerationStrategy(final ResourceSet resourceSetForModels) {
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels
-				.getURIConverter(), new AcceleoWorkspaceWriterFactory());
+				.getURIConverter(), getWriterFactory());
 		return strategy;
 	}
 
@@ -360,10 +362,20 @@ public class StandaloneGenerator extends AbstractGenerator {
 		try {
 			moduleFile.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
 			if (isInPluginProject(moduleFile)) {
-				addPluginDependencies(moduleFile.getProject(), dependencyBundleNames);
-				final String packageName = new Services().getJavaPackage(modelModule);
-				if (!packageName.isEmpty()) {
-					addExportPackages(moduleFile.getProject(), Collections.singleton(packageName));
+				IFile manifest = PDEProject.getManifest(moduleFile.getProject());
+				if (manifest.isAccessible()) {
+					final WorkspaceBundleModel model = new WorkspaceBundleModel(manifest);
+					model.load();
+					addPluginDependencies(model, dependencyBundleNames);
+					final String packageName = new Services().getJavaPackage(modelModule);
+					if (!packageName.isEmpty()) {
+						addExportPackages(model, Collections.singleton(packageName));
+					}
+					final Writer writer = new StringWriter();
+					final PrintWriter printWriter = new PrintWriter(writer);
+					model.save(printWriter);
+					getPreview().put(URI.createFileURI(manifest.getLocation().toFile().getAbsolutePath()),
+							writer.toString());
 				}
 			} else if (isInMavenProject(moduleFile)) {
 				updateMavenPom(moduleFile.getProject());
@@ -396,12 +408,11 @@ public class StandaloneGenerator extends AbstractGenerator {
 						if (dependenciesUpdated || resourcesUpdated) {
 							try {
 								final Transformer tr = TransformerFactory.newInstance().newTransformer();
-								tr.setOutputProperty(OutputKeys.METHOD, "xml");
-								tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 								final ByteArrayOutputStream ouputStream = new ByteArrayOutputStream();
 								tr.transform(new DOMSource(pom), new StreamResult(ouputStream));
-								pomFile.setContents(new ByteArrayInputStream(ouputStream.toByteArray()), true,
-										true, new NullProgressMonitor());
+								getPreview().put(URI.createFileURI(pomFile.getLocation().toFile()
+										.getAbsolutePath()), new String(ouputStream.toByteArray())
+												.toString());
 							} catch (TransformerException te) {
 								AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR,
 										getClass(), "can't write pom.xml file for " + moduleFile.getParent()
@@ -417,6 +428,15 @@ public class StandaloneGenerator extends AbstractGenerator {
 		}
 	}
 
+	/**
+	 * Adds the maven dependencies to the given {@link Document} and project {@link Element}.
+	 * 
+	 * @param pom
+	 *            the pom {@link Document}
+	 * @param project
+	 *            the project {@link Element}
+	 * @return <code>true</code> if the {@link Document} has been modified, <code>false</code> otherwise.
+	 */
 	private boolean addMavenDependencies(Document pom, Element project) {
 		boolean res;
 
@@ -457,6 +477,20 @@ public class StandaloneGenerator extends AbstractGenerator {
 		return res;
 	}
 
+	/**
+	 * Adds a dependency {@link Node} to the given dependency {@link Node}.
+	 * 
+	 * @param pom
+	 *            the pom {@link Document}
+	 * @param dependencies
+	 *            the dependencies {@link Node}
+	 * @param groupIdString
+	 *            the group ID {@link String}
+	 * @param artifactIdString
+	 *            the artifact ID {@link String}
+	 * @param versionString
+	 *            the version {@link String}
+	 */
 	private void addMavenDependencyNode(Document pom, Node dependencies, String groupIdString,
 			String artifactIdString, String versionString) {
 		if (dependencies instanceof Element) {
@@ -487,6 +521,15 @@ public class StandaloneGenerator extends AbstractGenerator {
 		}
 	}
 
+	/**
+	 * Updates the given pom {@link Document} to add the resource {@link Node}
+	 * 
+	 * @param pom
+	 *            the pom {@link Document}
+	 * @param project
+	 *            the project {@link Node}
+	 * @return <code>true</code> if the {@link Document} has been modified, <code>false</code> otherwise.
+	 */
 	private boolean updateResources(Document pom, Element project) {
 		// build
 		final NodeList buildList = project.getElementsByTagName("build");
@@ -569,6 +612,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 					+ MAVEN_INDENTATION + MAVEN_INDENTATION + MAVEN_INDENTATION));
 
 		}
+
 		return buildCreated || resourcesCreated || needResourceNode;
 	}
 

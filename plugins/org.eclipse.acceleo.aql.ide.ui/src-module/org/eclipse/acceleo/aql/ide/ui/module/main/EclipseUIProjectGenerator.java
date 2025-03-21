@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,9 @@ package org.eclipse.acceleo.aql.ide.ui.module.main;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -26,6 +29,7 @@ import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.strategy.IWriterFactory;
 import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.module.services.Services;
@@ -51,6 +55,8 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.pde.internal.core.bundle.WorkspaceBundleModel;
+import org.eclipse.pde.internal.core.project.PDEProject;
 
 /**
  * Eclipse launcher for org::eclipse::python4capella::ecore::gen::python::main::eclipseUIProject.
@@ -80,6 +86,16 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 	protected Set<String> dependencyBundleNames;
 
 	/**
+	 * The project UI absolute path.
+	 */
+	private final String projectUIAbsolutePath;
+
+	/**
+	 * the project file path.
+	 */
+	private final String projectFilePath;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param projectModuleFiles
@@ -90,6 +106,8 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		this.projectUIName = projectModuleFiles.get(0).getProject().getName() + ".ide.ui";
 		this.destinationFolder = projectModuleFiles.get(0).getProject().getLocation().toFile().getParentFile()
 				.getAbsolutePath();
+		projectUIAbsolutePath = destinationFolder + File.separatorChar + projectUIName;
+		projectFilePath = projectUIAbsolutePath + File.separatorChar + ".project";
 	}
 
 	/**
@@ -231,7 +249,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 
 	protected IAcceleoGenerationStrategy createGenerationStrategy(final ResourceSet resourceSetForModels) {
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(resourceSetForModels
-				.getURIConverter(), new AcceleoWorkspaceWriterFactory());
+				.getURIConverter(), getWriterFactory());
 		return strategy;
 	}
 
@@ -342,30 +360,58 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		final IProject existingProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectUIName);
 		if (existingProject != null && existingProject.exists()) {
 			if (existingProject.isOpen()) {
-				try {
-					addPluginDependencies(existingProject, dependencyBundleNames);
-					existingProject.getParent().refreshLocal(IResource.DEPTH_INFINITE,
-							new NullProgressMonitor());
-				} catch (CoreException e) {
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
-							"could not refresh " + existingProject.getParent().getFullPath(), e));
+				IFile manifest = PDEProject.getManifest(existingProject);
+				if (manifest.isAccessible()) {
+					final WorkspaceBundleModel model = new WorkspaceBundleModel(manifest);
+					model.load();
+					addPluginDependencies(model, dependencyBundleNames);
+
+					final Writer writer = new StringWriter();
+					final PrintWriter printWriter = new PrintWriter(writer);
+					model.save(printWriter);
+					getPreview().put(URI.createFileURI(manifest.getLocation().toFile().getAbsolutePath()),
+							writer.toString());
+					try {
+						existingProject.getParent().refreshLocal(IResource.DEPTH_INFINITE,
+								new NullProgressMonitor());
+					} catch (CoreException e) {
+						AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
+								"could not refresh " + existingProject.getParent().getFullPath(), e));
+					}
 				}
 			}
 		} else {
-			final String projectUIAbsolutePath = destinationFolder + File.separatorChar + projectUIName;
 			try {
-				final String projectFilePath = projectUIAbsolutePath + File.separatorChar + ".project";
 				final IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(
 						new Path(projectFilePath));
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(description.getName());
 				project.create(description, null);
 				project.open(null);
-				addPluginDependencies(project, dependencyBundleNames);
+				IFile manifest = PDEProject.getManifest(project);
+				if (manifest.isAccessible()) {
+					final WorkspaceBundleModel model = new WorkspaceBundleModel(manifest);
+					model.load();
+					addPluginDependencies(model, dependencyBundleNames);
+					model.save();
+				}
 			} catch (CoreException e) {
 				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
 						"couldn't import project " + projectUIAbsolutePath, e));
 			}
 		}
+	}
+
+	@Override
+	protected IWriterFactory createWriterFactory() {
+		final IWriterFactory res;
+
+		if (new File(projectFilePath).exists()) {
+			res = super.createWriterFactory();
+		} else {
+			res = new AcceleoWorkspaceWriterFactory();
+		}
+
+		return res;
 	}
 
 }

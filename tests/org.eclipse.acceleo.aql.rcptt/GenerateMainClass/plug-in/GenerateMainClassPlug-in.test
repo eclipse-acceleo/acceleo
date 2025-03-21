@@ -1,0 +1,64 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _qJ-qYAiZEfC07LF6VSMd-w,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: GenerateMainClassPlug-in
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _nO6AYAiZEfC07LF6VSMd-w
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 3/25/25, 10:20 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
+    -path "Initialize Generator Launcher/Java Main Class" | click -metaKeys ""
+with [get-window "Generation comparison"] {
+    get-tree | select "test/META-INF/MANIFEST.MF" | double-click
+    get-button "Copy Current Change from Left to Right" | click -metaKeys ""
+    get-button Commit | click -metaKeys ""
+}
+get-view "Package Explorer" | get-tree | select "test/META-INF/MANIFEST.MF" | double-click
+get-editor test | get-tab-folder | get-tab-item "MANIFEST.MF" | click
+get-editor test | get-text-viewer | get-property text | equals "Manifest-Version: 1.0\n"
+    + "Bundle-ManifestVersion: 2\n"
+    + "Bundle-Name: Test\n"
+    + "Bundle-SymbolicName: test\n"
+    + "Bundle-Version: 1.0.0.qualifier\n"
+    + "Export-Package: test\n"
+    + "Require-Bundle: org.eclipse.acceleo.query;bundle-version=\"[8.0.4,9.0.0)\",\n"
+    + "  org.eclipse.acceleo.aql;bundle-version=\"[4.1.1,5.0.0)\",\n"
+    + "  org.eclipse.acceleo.aql.profiler;bundle-version=\"[4.1.1,5.0.0)\",\n"
+    + "  org.antlr.runtime;bundle-version=\"[4.10.1,4.10.2)\",\n"
+    + "  org.eclipse.emf.ecore\n"
+    + "Automatic-Module-Name: test\n"
+    + "Bundle-RequiredExecutionEnvironment: JavaSE-17" | verify-true
+with [get-editor test | get-text-viewer] {
+    select-range 9 1 11 1
+    key-type BackSpace
+    key-type "M1+s"
+}
+get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-menu 
+    -path "Initialize Generator Launcher/Java Main Class" | click -metaKeys ""
+with [get-window "Generation comparison"] {
+    get-tree | select "test/META-INF/MANIFEST.MF" | double-click
+    get-button "Copy Current Change from Left to Right" | click -metaKeys ""
+    get-button Commit | click -metaKeys ""
+}
+get-editor test | get-text-viewer | get-property text | equals "Manifest-Version: 1.0\n"
+    + "Bundle-ManifestVersion: 2\n"
+    + "Bundle-Name: Test\n"
+    + "Bundle-SymbolicName: test\n"
+    + "Bundle-Version: 1.0.0.qualifier\n"
+    + "Export-Package: test\n"
+    + "Require-Bundle: org.eclipse.acceleo.query;bundle-version=\"[8.0.4,9.0.0)\",\n"
+    + " org.eclipse.acceleo.aql;bundle-version=\"[4.1.1,5.0.0)\",\n"
+    + " org.eclipse.emf.ecore,\n"
+    + "  org.eclipse.acceleo.aql.profiler;bundle-version=\"[4.1.1,5.0.0)\",\n"
+    + "  org.antlr.runtime;bundle-version=\"[4.10.1,4.10.2)\"\n"
+    + "Automatic-Module-Name: test\n"
+    + "Bundle-RequiredExecutionEnvironment: JavaSE-17" | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
