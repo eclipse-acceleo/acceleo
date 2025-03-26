@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.acceleo.aql.ide.evaluation.writer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Collections;
@@ -49,27 +48,51 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 	 */
 	private final String lineDelimiter;
 
+	/**
+	 * Creates a writer for the given target {@link URI}.
+	 * 
+	 * @param targetURI
+	 *            URI of the target {@link URI}.
+	 * @param uriConverter
+	 *            URI Converter to use for this writer's target.
+	 * @param charset
+	 *            The charset for our written content.
+	 */
 	public AcceleoWorkspaceURIWriter(URI targetURI, URIConverter uriConverter, Charset charset,
 			String lineDelimiter) {
-		super(targetURI, uriConverter, charset);
+		this(targetURI, uriConverter, charset, lineDelimiter, null);
+	}
+
+	/**
+	 * Creates a writer for the given target {@link URI}.
+	 * 
+	 * @param targetURI
+	 *            URI of the target {@link URI}.
+	 * @param uriConverter
+	 *            URI Converter to use for this writer's target.
+	 * @param charset
+	 *            The charset for our written content.
+	 * @param preview
+	 *            the preview {@link Map} or <code>null</code> for no preview
+	 */
+	public AcceleoWorkspaceURIWriter(URI targetURI, URIConverter uriConverter, Charset charset,
+			String lineDelimiter, Map<URI, String> preview) {
+		super(targetURI, uriConverter, charset, preview);
 		this.lineDelimiter = lineDelimiter;
 	}
 
 	@Override
-	public void close() throws IOException {
-		if (!uriConverter.exists(getTargetURI(), EMPTY_OPTION_MAP)) {
-			super.close();
+	protected String getContent() throws IOException {
+		final String res;
+
+		if (uriConverter.exists(getTargetURI(), EMPTY_OPTION_MAP)) {
+			res = mergeURIContent(getTargetURI(), getBuilder(), getCharset());
+			;
 		} else {
-			final String mergedContent = mergeURIContent(getTargetURI(), getBuilder(), getCharset());
-			if (mergedContent != null) {
-				try (final OutputStream output = uriConverter.createOutputStream(getTargetURI());
-						final OutputStreamWriter writer = new OutputStreamWriter(output, getCharset());) {
-					writer.append(mergedContent);
-				}
-			} else {
-				super.close();
-			}
+			res = super.getContent();
 		}
+
+		return res;
 	}
 
 	private String mergeURIContent(URI targetURI, StringBuilder stringBuilder, Charset contentCharset)

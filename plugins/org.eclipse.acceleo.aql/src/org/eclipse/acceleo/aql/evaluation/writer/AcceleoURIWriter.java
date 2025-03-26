@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.acceleo.aql.evaluation.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -42,15 +43,30 @@ public class AcceleoURIWriter extends AbstractAcceleoWriter {
 	 *            The charset for our written content.
 	 */
 	public AcceleoURIWriter(URI targetURI, URIConverter uriConverter, Charset charset) {
-		super(targetURI, charset);
+		this(targetURI, uriConverter, charset, null);
+	}
+
+	/**
+	 * Creates a writer for the given target {@link URI}.
+	 * 
+	 * @param targetURI
+	 *            URI of the target {@link URI}.
+	 * @param uriConverter
+	 *            URI Converter to use for this writer's target.
+	 * @param charset
+	 *            The charset for our written content.
+	 * @param preview
+	 *            the preview {@link Map} or <code>null</code> for no preview
+	 */
+	public AcceleoURIWriter(URI targetURI, URIConverter uriConverter, Charset charset,
+			Map<URI, String> preview) {
+		super(targetURI, charset, preview);
 		this.uriConverter = uriConverter;
 	}
 
 	@Override
-	public void close() throws IOException {
-		try (final OutputStream output = uriConverter.createOutputStream(getTargetURI())) {
-			output.write(getBuilder().toString().getBytes(getCharset()));
-		}
+	protected OutputStream createOutputStream() throws IOException {
+		return uriConverter.createOutputStream(getTargetURI());
 	}
 
 }

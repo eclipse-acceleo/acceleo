@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 
@@ -49,16 +50,33 @@ public class AcceleoFileWriter extends AbstractAcceleoWriter {
 	 *            <code>false</code> otherwise
 	 */
 	public AcceleoFileWriter(File target, Charset charset, boolean append) {
-		super(URI.createFileURI(target.getAbsolutePath()), charset);
+		this(target, charset, append, null);
+	}
+
+	/**
+	 * Creates a writer for the given target {@link URI}.
+	 * 
+	 * @param target
+	 *            the target {@link File}.
+	 * @param uriConverter
+	 *            URI Converter to use for this writer's target.
+	 * @param charset
+	 *            The charset for our written content.
+	 * @param append
+	 *            <code>true</code> if the {@link FileOutputStream} should be opened in append mode,
+	 *            <code>false</code> otherwise
+	 * @param preview
+	 *            the preview {@link Map} or <code>null</code> for no preview
+	 */
+	public AcceleoFileWriter(File target, Charset charset, boolean append, Map<URI, String> preview) {
+		super(URI.createFileURI(target.getAbsolutePath()), charset, preview);
 		this.target = target;
 		this.append = append;
 	}
 
 	@Override
-	public void close() throws IOException {
-		try (final OutputStream output = new FileOutputStream(target, append)) {
-			output.write(getBuilder().toString().getBytes(getCharset()));
-		}
+	protected OutputStream createOutputStream() throws IOException {
+		return new FileOutputStream(target, append);
 	}
 
 }

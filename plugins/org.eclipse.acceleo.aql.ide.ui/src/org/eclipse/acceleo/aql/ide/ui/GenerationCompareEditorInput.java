@@ -21,7 +21,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.aql.AcceleoUtil;
-import org.eclipse.acceleo.aql.evaluation.strategy.PreviewWriterFactory;
 import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.CompareEditorInput;
 import org.eclipse.compare.ITypedElement;

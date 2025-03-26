@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.ide.ui.module.main;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +23,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.strategy.IWriterFactory;
-import org.eclipse.acceleo.aql.evaluation.strategy.PreviewWriterFactory;
+import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.property.AcceleoPropertyTester;
 import org.eclipse.acceleo.query.AQLUtils;
@@ -54,6 +55,11 @@ public abstract class AbstractGenerator {
 	 * The {@link IWriterFactory}.
 	 */
 	private IWriterFactory writeractory;
+
+	/**
+	 * The preview {@link Map}.
+	 */
+	private final Map<URI, String> preview = new LinkedHashMap<>();
 
 	/**
 	 * Gets the Set of dependency bundle names.
@@ -329,7 +335,7 @@ public abstract class AbstractGenerator {
 	 * @return the created {@link IWriterFactory}
 	 */
 	protected IWriterFactory createWriterFactory() {
-		return new PreviewWriterFactory();
+		return new AcceleoWorkspaceWriterFactory(preview);
 	}
 
 	/**
@@ -341,8 +347,8 @@ public abstract class AbstractGenerator {
 		final Map<URI, String> res;
 
 		IWriterFactory factory = getWriterFactory();
-		if (factory instanceof PreviewWriterFactory) {
-			res = ((PreviewWriterFactory)factory).getPreview();
+		if (preview != null) {
+			res = preview;
 		} else {
 			res = Collections.emptyMap();
 		}
