@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -144,7 +144,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 		switch (openMode) {
 			case CREATE:
 				if (exists) {
-					writer = new NullWriter(uri, charset);
+					writer = new NullWriter(uri, charset, lineDelimiter);
 				} else {
 					writer = writerFactory.createWriter(OpenModeKind.CREATE, uri, uriConverter, charset,
 							lineDelimiter);
@@ -171,7 +171,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 				break;
 			default:
 				// TODO shouldn't happen, fall back to a null writer and log
-				writer = new NullWriter(uri, charset);
+				writer = new NullWriter(uri, charset, lineDelimiter);
 				break;
 		}
 

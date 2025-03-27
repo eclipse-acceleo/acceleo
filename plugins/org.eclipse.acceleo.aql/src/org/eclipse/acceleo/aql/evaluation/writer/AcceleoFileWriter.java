@@ -48,28 +48,14 @@ public class AcceleoFileWriter extends AbstractAcceleoWriter {
 	 * @param append
 	 *            <code>true</code> if the {@link FileOutputStream} should be opened in append mode,
 	 *            <code>false</code> otherwise
-	 */
-	public AcceleoFileWriter(File target, Charset charset, boolean append) {
-		this(target, charset, append, null);
-	}
-
-	/**
-	 * Creates a writer for the given target {@link URI}.
-	 * 
-	 * @param target
-	 *            the target {@link File}.
-	 * @param uriConverter
-	 *            URI Converter to use for this writer's target.
-	 * @param charset
-	 *            The charset for our written content.
-	 * @param append
-	 *            <code>true</code> if the {@link FileOutputStream} should be opened in append mode,
-	 *            <code>false</code> otherwise
+	 * @param lineDelimiter
+	 *            the line delimiter
 	 * @param preview
 	 *            the preview {@link Map} or <code>null</code> for no preview
 	 */
-	public AcceleoFileWriter(File target, Charset charset, boolean append, Map<URI, String> preview) {
-		super(URI.createFileURI(target.getAbsolutePath()), charset, preview);
+	public AcceleoFileWriter(File target, Charset charset, boolean append, String lineDelimiter,
+			Map<URI, String> preview) {
+		super(URI.createFileURI(target.getAbsolutePath()), charset, lineDelimiter, preview);
 		this.target = target;
 		this.append = append;
 	}

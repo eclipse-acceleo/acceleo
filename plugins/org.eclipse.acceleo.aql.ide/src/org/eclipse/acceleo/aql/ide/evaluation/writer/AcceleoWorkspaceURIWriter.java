@@ -44,11 +44,6 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 	private static final Map<String, Object> EMPTY_OPTION_MAP = Collections.emptyMap();
 
 	/**
-	 * The line delimiter.
-	 */
-	private final String lineDelimiter;
-
-	/**
 	 * Creates a writer for the given target {@link URI}.
 	 * 
 	 * @param targetURI
@@ -57,28 +52,14 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 	 *            URI Converter to use for this writer's target.
 	 * @param charset
 	 *            The charset for our written content.
-	 */
-	public AcceleoWorkspaceURIWriter(URI targetURI, URIConverter uriConverter, Charset charset,
-			String lineDelimiter) {
-		this(targetURI, uriConverter, charset, lineDelimiter, null);
-	}
-
-	/**
-	 * Creates a writer for the given target {@link URI}.
-	 * 
-	 * @param targetURI
-	 *            URI of the target {@link URI}.
-	 * @param uriConverter
-	 *            URI Converter to use for this writer's target.
-	 * @param charset
-	 *            The charset for our written content.
+	 * @param lineDelimiter
+	 *            the line delimiter
 	 * @param preview
 	 *            the preview {@link Map} or <code>null</code> for no preview
 	 */
 	public AcceleoWorkspaceURIWriter(URI targetURI, URIConverter uriConverter, Charset charset,
 			String lineDelimiter, Map<URI, String> preview) {
-		super(targetURI, uriConverter, charset, preview);
-		this.lineDelimiter = lineDelimiter;
+		super(targetURI, uriConverter, charset, lineDelimiter, preview);
 	}
 
 	@Override
@@ -148,11 +129,11 @@ public class AcceleoWorkspaceURIWriter extends AcceleoURIWriter {
 
 			// Print a time stamp of the current copy
 			StringBuilder timestamp = new StringBuilder();
-			timestamp.append(lineDelimiter).append(Calendar.getInstance().getTime().toString()).append(
-					lineDelimiter);
+			timestamp.append(getLineDelimiter()).append(Calendar.getInstance().getTime().toString()).append(
+					getLineDelimiter());
 			timestamp.append(
 					"================================================================================"); //$NON-NLS-1$
-			timestamp.append(lineDelimiter);
+			timestamp.append(getLineDelimiter());
 
 			destination.write(timestamp.toString().getBytes(getCharset()));
 

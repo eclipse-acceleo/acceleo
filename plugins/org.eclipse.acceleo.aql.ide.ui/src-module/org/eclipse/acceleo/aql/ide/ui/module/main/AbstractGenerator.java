@@ -23,8 +23,8 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.evaluation.strategy.IWriterFactory;
-import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
+import org.eclipse.acceleo.aql.ide.ui.evaluation.strategy.AcceleoUIWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.property.AcceleoPropertyTester;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.parser.AstValidator;
@@ -335,7 +335,7 @@ public abstract class AbstractGenerator {
 	 * @return the created {@link IWriterFactory}
 	 */
 	protected IWriterFactory createWriterFactory() {
-		return new AcceleoWorkspaceWriterFactory(preview);
+		return new AcceleoUIWorkspaceWriterFactory(preview);
 	}
 
 	/**

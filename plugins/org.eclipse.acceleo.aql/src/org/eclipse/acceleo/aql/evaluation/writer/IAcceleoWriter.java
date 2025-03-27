@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,5 +37,18 @@ public interface IAcceleoWriter extends Closeable {
 	 */
 	Charset getCharset();
 
+	/**
+	 * Gets the line delimiter.
+	 * 
+	 * @return the line delimiter
+	 */
+	String getLineDelimiter();
+
+	/**
+	 * Appends the given content.
+	 * 
+	 * @param content
+	 *            the content
+	 */
 	void append(String content);
 }

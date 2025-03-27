@@ -45,6 +45,11 @@ public abstract class AbstractAcceleoWriter implements IAcceleoWriter {
 	private final StringBuilder builder = new StringBuilder(INITIAL_SIZE);
 
 	/**
+	 * The line delimiter.
+	 */
+	private String lineDelimiter;
+
+	/**
 	 * The preview {@link Map}.
 	 */
 	private final Map<URI, String> preview;
@@ -58,12 +63,16 @@ public abstract class AbstractAcceleoWriter implements IAcceleoWriter {
 	 *            URI Converter to use for this writer's target.
 	 * @param charset
 	 *            The charset for our written content.
+	 * @param linedelimiter
+	 *            the line delimiter
 	 * @param preview
 	 *            the preview {@link Map} if any, <code>null</code> for no preview
 	 */
-	public AbstractAcceleoWriter(URI targetURI, Charset charset, Map<URI, String> preview) {
+	public AbstractAcceleoWriter(URI targetURI, Charset charset, String linedelimiter,
+			Map<URI, String> preview) {
 		this.targetURI = targetURI;
 		this.charset = charset;
+		this.lineDelimiter = linedelimiter;
 		this.preview = preview;
 	}
 
@@ -80,6 +89,11 @@ public abstract class AbstractAcceleoWriter implements IAcceleoWriter {
 	@Override
 	public Charset getCharset() {
 		return charset;
+	}
+
+	@Override
+	public String getLineDelimiter() {
+		return lineDelimiter;
 	}
 
 	/**

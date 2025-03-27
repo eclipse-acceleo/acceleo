@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,19 +27,30 @@ public class NullWriter implements IAcceleoWriter {
 	 */
 	private final URI targetURI;
 
+	/**
+	 * The {@link Charset}.
+	 */
 	private final Charset charset;
+
+	/**
+	 * The line separator.
+	 */
+	private String lineSeparator;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param targetURI
 	 *            the target {@link URI}
+	 * @param lineSeparator
+	 *            the line separator
 	 * @param charset
 	 *            The {@link Charset} for our written content.
 	 */
-	public NullWriter(URI targetURI, Charset charset) {
+	public NullWriter(URI targetURI, Charset charset, String lineSeparator) {
 		this.targetURI = targetURI;
 		this.charset = charset;
+		this.lineSeparator = lineSeparator;
 	}
 
 	@Override
@@ -61,4 +72,10 @@ public class NullWriter implements IAcceleoWriter {
 	public Charset getCharset() {
 		return charset;
 	}
+
+	@Override
+	public String getLineDelimiter() {
+		return lineSeparator;
+	}
+
 }

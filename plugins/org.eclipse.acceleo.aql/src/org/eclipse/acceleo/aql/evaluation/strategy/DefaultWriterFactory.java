@@ -72,9 +72,10 @@ public class DefaultWriterFactory implements IWriterFactory {
 				final boolean exists = uriConverter.exists(uri, EMPTY_OPTION_MAP);
 				final String fileString = uri.toFileString();
 				if (fileString != null) {
-					res = new AcceleoFileWriter(new File(fileString), charset, true, getPreview());
+					res = new AcceleoFileWriter(new File(fileString), charset, true, lineDelimiter,
+							getPreview());
 				} else {
-					res = new AcceleoURIWriter(uri, uriConverter, charset, getPreview());
+					res = new AcceleoURIWriter(uri, uriConverter, charset, lineDelimiter, getPreview());
 					if (exists) {
 						try (InputStream contentInputStream = uriConverter.createInputStream(uri)) {
 							final String content = AcceleoUtil.getContent(contentInputStream, charset.name());
@@ -85,7 +86,7 @@ public class DefaultWriterFactory implements IWriterFactory {
 				break;
 
 			default:
-				res = new AcceleoURIWriter(uri, uriConverter, charset, getPreview());
+				res = new AcceleoURIWriter(uri, uriConverter, charset, lineDelimiter, getPreview());
 				break;
 		}
 

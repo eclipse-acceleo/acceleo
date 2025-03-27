@@ -30,8 +30,8 @@ import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.IWriterFactory;
-import org.eclipse.acceleo.aql.ide.evaluation.strategy.AcceleoWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
+import org.eclipse.acceleo.aql.ide.ui.evaluation.strategy.AcceleoUIWorkspaceWriterFactory;
 import org.eclipse.acceleo.aql.ide.ui.module.services.Services;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
@@ -408,7 +408,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		if (new File(projectFilePath).exists()) {
 			res = super.createWriterFactory();
 		} else {
-			res = new AcceleoWorkspaceWriterFactory();
+			res = new AcceleoUIWorkspaceWriterFactory();
 		}
 
 		return res;

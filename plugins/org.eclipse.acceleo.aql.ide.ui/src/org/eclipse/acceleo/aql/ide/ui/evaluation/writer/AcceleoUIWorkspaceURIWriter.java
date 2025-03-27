@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,29 +8,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.evaluation.writer;
+package org.eclipse.acceleo.aql.ide.ui.evaluation.writer;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import org.eclipse.acceleo.aql.ide.evaluation.writer.AcceleoWorkspaceURIWriter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
- * The default {@link URI} writer used by Acceleo.
- * <p>
- * Data will be written to the disk without any verification about the workspace or VCS. Do not use with
- * pessimistic locking VCS or if JMerge is needed.
- * </p>
+ * This {@link AcceleoWorkspaceURIWriter} will try to format the Java code with the JDT.
  * 
- * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AcceleoURIWriter extends AbstractAcceleoWriter {
-
-	/** {@link URIConverter} to use for this writer's target. */
-	protected final URIConverter uriConverter;
+public class AcceleoUIWorkspaceURIWriter extends AcceleoWorkspaceURIWriter {
 
 	/**
 	 * Creates a writer for the given target {@link URI}.
@@ -46,15 +39,23 @@ public class AcceleoURIWriter extends AbstractAcceleoWriter {
 	 * @param preview
 	 *            the preview {@link Map} or <code>null</code> for no preview
 	 */
-	public AcceleoURIWriter(URI targetURI, URIConverter uriConverter, Charset charset, String lineDelimiter,
-			Map<URI, String> preview) {
-		super(targetURI, charset, lineDelimiter, preview);
-		this.uriConverter = uriConverter;
+	public AcceleoUIWorkspaceURIWriter(URI targetURI, URIConverter uriConverter, Charset charset,
+			String lineDelimiter, Map<URI, String> preview) {
+		super(targetURI, uriConverter, charset, lineDelimiter, preview);
 	}
 
 	@Override
-	protected OutputStream createOutputStream() throws IOException {
-		return uriConverter.createOutputStream(getTargetURI());
+	protected String getContent() throws IOException {
+		final String res;
+
+		final String content = super.getContent();
+		if (content != null) {
+			res = JDTFormaterUtils.getFormatedCode(getTargetURI(), content, getLineDelimiter());
+		} else {
+			res = content;
+		}
+
+		return res;
 	}
 
 }
