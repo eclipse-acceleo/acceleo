@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,10 +130,12 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 				final AcceleoProject project = workspace.getProject(openedDocumentUri);
 				final IQueryWorkspaceQualifiedNameResolver resolver = workspace.getResolver(project);
 				final URI binaryURI = resolver.getBinaryURI(openedDocumentUri);
-				workspace.addResource(project, binaryURI);
-				openedAcceleoTextDocument = workspace.getDocument(openedDocumentUri);
-				if (openedAcceleoTextDocument != null) {
-					openedAcceleoTextDocument.validateAndPublishResults();
+				if (binaryURI != null) {
+					workspace.addResource(project, binaryURI);
+					openedAcceleoTextDocument = workspace.getDocument(openedDocumentUri);
+					if (openedAcceleoTextDocument != null) {
+						openedAcceleoTextDocument.validateAndPublishResults();
+					}
 				}
 			}
 			if (openedAcceleoTextDocument == null) {
