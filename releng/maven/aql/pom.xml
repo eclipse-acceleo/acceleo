@@ -100,8 +100,11 @@
             </goals>
             <configuration>
               <file>target/lib/org.eclipse.acceleo.annotations-${project.version}.jar</file>
-              <pomFile>target/lib/org.eclipse.acceleo.annotations-${project.version}.pom</pomFile>
-              <generatePom>false</generatePom>
+              <groupId>org.eclipse.acceleo</groupId>
+              <artifactId>org.eclipse.acceleo.annotations</artifactId>
+              <version>${project.version}</version>
+              <packaging>jar</packaging>
+              <generatePom>true</generatePom>
               <url>${deployURL}</url>
             </configuration>
           </execution>
@@ -113,8 +116,11 @@
             </goals>
             <configuration>
               <file>target/lib/org.eclipse.acceleo.query-${project.version}.jar</file>
-              <pomFile>target/lib/org.eclipse.acceleo.query-${project.version}.pom</pomFile>
-              <generatePom>false</generatePom>
+              <groupId>org.eclipse.acceleo</groupId>
+              <artifactId>org.eclipse.acceleo.query</artifactId>
+              <version>${project.version}</version>
+              <packaging>jar</packaging>
+              <generatePom>true</generatePom>
               <url>${deployURL}</url>
             </configuration>
           </execution>
