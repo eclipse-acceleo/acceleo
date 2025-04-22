@@ -10,4 +10,4 @@ release.properties
 .DS_Store
 releng/maven/repository-p2/
 releng/maven/repository/
-
+examples/MavenLauncher/releng/maven/repository-p2/

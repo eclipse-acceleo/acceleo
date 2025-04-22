@@ -8,6 +8,16 @@
    http://www.eclipse.org/legal/epl-v10.html
 -->
 
+<!--
+USAGE:
+- build
+  mvn clean deploy -Pcompile
+- generage with Elcipse launcher
+  mvn clean verify -Pgenerate-eclipse-launcher
+- generage with maven standalone main class
+  mvn clean exec:java -Pgenerate-maven-main-class
+-->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -26,57 +36,101 @@
   <properties>
     <tycho-version>4.0.8</tycho-version>
     <tycho-extras-version>4.0.8</tycho-extras-version>
+    <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
+    <maven-repository-p2>releng/maven/repository-p2</maven-repository-p2>
   </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-packaging-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-          <archive>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-compiler-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-            <source>${source-java-version}</source>
-            <target>${target-java-version}</target>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-  
   <profiles>
     <profile>
       <id>compile</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
+
+      <distributionManagement>
+        <repository>
+          <id>generator</id>
+          <name>Generator Repository - Releases</name>
+          <url>file://${maven.multiModuleProjectDirectory}/${maven-repository-p2}</url>
+        </repository>
+        <snapshotRepository>
+          <id>generator</id>
+          <name>Generator Repository - Snapshots</name>
+          <url>file://${maven.multiModuleProjectDirectory}/${maven-repository-p2}</url>
+        </snapshotRepository>
+      </distributionManagement>
+
+      <repositories>
+        <!-- Acceleo 4 p2 repository. -->
+        <repository>
+          <id>Acceleo 4</id>
+          <layout>p2</layout>
+          <url>https://download.eclipse.org/acceleo/updates/nightly/4.1.1.202504181604/</url>
+        </repository>
+        <!-- Eclipse p2 repository for all other dependencies. -->
+        <repository>
+          <id>Eclipse 2024-06 update site</id>
+          <layout>p2</layout>
+          <url>https://download.eclipse.org/releases/2024-06/</url>
+        </repository>
+      </repositories>
+
       <modules>
         <module>org.eclipse.acceleo.aql.launcher.sample</module>
+        <module>org.eclipse.acceleo.aql.launcher.sample.ide.ui</module>
         <module>org.eclipse.acceleo.aql.launcher.sample-feature</module>
         <module>org.eclipse.acceleo.aql.launcher.sample-site</module>
       </modules>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-maven-plugin</artifactId>
+            <version>${tycho-version}</version>
+            <extensions>true</extensions>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-packaging-plugin</artifactId>
+            <version>${tycho-version}</version>
+            <configuration>
+              <archive>
+                <addMavenDescriptor>false</addMavenDescriptor>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.eclipse.tycho</groupId>
+              <artifactId>tycho-compiler-plugin</artifactId>
+              <version>${tycho-version}</version>
+              <configuration>
+                <encoding>UTF-8</encoding>
+                <source>${source-java-version}</source>
+                <target>${target-java-version}</target>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-clean-plugin</artifactId>
+              <version>${maven-clean-plugin-version}</version>
+              <configuration>
+                <filesets>
+                  <fileset>
+                    <directory>${maven-repository-p2}</directory>
+                  </fileset>
+                </filesets>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
     <profile>
-      <id>generate</id>
+      <id>generate-eclipse-launcher</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -88,17 +142,17 @@
             <version>${tycho-version}</version>
             <configuration>
               <repositories>
-                <!-- The repository built from the "compile" profile which contains our generator projects. -->
+                <!-- The p2 repository built from the "compile" profile which contains our generator projects. -->
                 <repository>
                   <id>Acceleo generator</id>
                   <layout>p2</layout>
-                  <url>${project.baseUri}/org.eclipse.acceleo.aql.launcher.sample-site/target/repository/</url>
+                  <url>file://${maven.multiModuleProjectDirectory}/org.eclipse.acceleo.aql.launcher.sample-site/target/repository/</url>
                 </repository>
-                <!-- Acceleo 4 repository containing the launcher feature. -->
+                <!-- Acceleo 4 p2 repository containing the launcher feature. -->
                 <repository>
                   <id>Acceleo 4</id>
                   <layout>p2</layout>
-                  <url>https://download.eclipse.org/acceleo/updates/releases/4.1/R202502130921/</url>
+                  <url>https://download.eclipse.org/acceleo/updates/nightly/4.1.1.202504181604/</url>
                 </repository>
                 <!-- Eclipse repository for all other dependencies. -->
                 <repository>
@@ -107,21 +161,7 @@
                   <url>https://download.eclipse.org/releases/2024-06/</url>
                 </repository>
               </repositories>
-              <applicationsArgs>
-                <args>-consoleLog</args>
-                <args>-application</args>
-                <args>org.eclipse.acceleo.aql.launcher.AcceleoLauncher</args>
-                <args>-data</args>
-                <args>${project.build.directory}/wks</args>
-                <args>-bundle</args>
-                <args>org.eclipse.acceleo.aql.launcher.sample</args>
-                <args>-module</args>
-                <args>org::eclipse::acceleo::aql::launcher::sample::main</args>
-                <args>-models</args>
-                <args>platform:/plugin/org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi</args>
-                <args>-target</args>
-                <args>file:/${project.build.directory}/generated/</args>
-              </applicationsArgs>
+
               <dependencies>
                 <dependency>
                   <artifactId>org.eclipse.rcp</artifactId>
@@ -138,7 +178,24 @@
                   <type>eclipse-plugin</type>
                 </dependency>
               </dependencies>
+
+              <applicationsArgs>
+                <args>-consoleLog</args>
+                <args>-application</args>
+                <args>org.eclipse.acceleo.aql.launcher.AcceleoLauncher</args>
+                <args>-data</args>
+                <args>${project.build.directory}/wks</args>
+                <args>-bundle</args>
+                <args>org.eclipse.acceleo.aql.launcher.sample</args>
+                <args>-module</args>
+                <args>org::eclipse::acceleo::aql::launcher::sample::main</args>
+                <args>-models</args>
+                <args>platform:/plugin/org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi</args>
+                <args>-target</args>
+                <args>file:/${project.build.directory}/generated/</args>
+              </applicationsArgs>
             </configuration>
+
             <executions>
               <execution>
                 <goals>
@@ -147,6 +204,64 @@
                 <phase>verify</phase>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>generate-maven-main-class</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+
+      <repositories>
+        <!-- The repository built from the "compile" profile which contains our generator projects. The deploy directive created a Maven repository. -->
+        <repository>
+          <id>Acceleo generator</id>
+          <url>file://${maven.multiModuleProjectDirectory}/${maven-repository-p2}</url>
+        </repository>
+        <!-- Acceleo 4 maven repository -->
+        <repository>
+          <id>Acceleo 4</id>
+          <url>https://download.eclipse.org/acceleo/updates/nightly/4.1.1.202504181604/</url>
+        </repository>
+      </repositories>
+
+      <dependencies>
+        <!-- generator dependency -->
+        <dependency>
+          <groupId>org.eclipse.acceleo</groupId>
+          <artifactId>org.eclipse.acceleo.aql.launcher.sample</artifactId>
+          <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Acceleo dependency -->
+        <dependency>
+          <groupId>org.eclipse.acceleo</groupId>
+          <artifactId>acceleo</artifactId>
+          <version>4.1.1-SNAPSHOT</version>
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+           <groupId>org.codehaus.mojo</groupId>
+           <artifactId>exec-maven-plugin</artifactId>
+           <version>3.5.0</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <mainClass>org.eclipse.acceleo.aql.launcher.sample.MainGenerator</mainClass>
+              <arguments>
+                <argument>org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi</argument>
+                <argument>${project.build.directory}/generated/</argument>
+              </arguments>
+            </configuration>
           </plugin>
         </plugins>
       </build>

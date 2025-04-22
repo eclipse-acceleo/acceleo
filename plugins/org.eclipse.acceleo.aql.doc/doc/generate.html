@@ -527,11 +527,7 @@ The last line in the console should be the generation summary <code>Files: 2, Lo
 <div class="sect2">
 <h3 id="_maventycho">Maven/Tycho</h3>
 <div class="paragraph">
-<p>Acceleo provides a specific eclipse application that can be used from command line or tycho in order to start a generation.
-In order to use the launcher, you will need to first package all of your generator projects into an update site, then use this update site as input of the application.</p>
-</div>
-<div class="paragraph">
-<p>An example is available in the Acceleo repository and can be checked out at: <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher" class="bare">https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher</a></p>
+<p>A sample project is provided to illustrate how an Acceleo generator can be used inside of Eclipse and also in standalone (outside of Eclipse). Note that you can also use Acceleo in a pure standalone environment and without the need of a plug-in project. The source code can be found <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher">here</a>. All build and generation steps are in different Maven profile in the parent pom file for the purpose of the demonstration, but you can split them in different pom files and build projects if needed.</p>
 </div>
 <div class="paragraph">
 <p>This example includes:</p>
@@ -542,7 +538,10 @@ In order to use the launcher, you will need to first package all of your generat
 <p>A generator project <code>org.eclipse.acceleo.aql.launcher.sample</code>,</p>
 </li>
 <li>
-<p>A feature including this project <code>org.eclipse.acceleo.aql.launcher.sample-feature</code>,</p>
+<p>A generator project Eclipse UI menu contributions <code>org.eclipse.acceleo.aql.launcher.sample.ide.ui</code>,</p>
+</li>
+<li>
+<p>A feature including above plug-ins <code>org.eclipse.acceleo.aql.launcher.sample-feature</code>,</p>
 </li>
 <li>
 <p>An update site including this feature <code>org.eclipse.acceleo.aql.launcher.sample-site</code>,</p>
@@ -552,9 +551,27 @@ In order to use the launcher, you will need to first package all of your generat
 </li>
 </ul>
 </div>
+<div class="sect3">
+<h4 id="_compilation">Compilation</h4>
 <div class="paragraph">
-<p>The packaging can be started through the command line <code>mvn clean verify</code>.
-Once packaged, generation can be started through the command line <code>mvn clean verify -Pgenerate</code>.</p>
+<p>The first step is to compile our generator plug-in. We will use Maven and Tycho. Tycho is used to build Eclipse plug-ins and manage dependencies form P2 repositories. In this step we will create a P2 repository to install our generator inside of Eclipse and also a Maven repository to launch the generation from Maven. The Maven repository is optional, it&#8217;s needed to launch the generator in standalone from Maven.</p>
+</div>
+<div class="paragraph">
+<p>You can run the <code>compile</code> profile with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>mvn clean deploy -Pcompile</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It will create a P2 repository that you can install inside of Eclipse <code>org.eclipse.acceleo.aql.launcher.sample-site/target/repository/</code>. It also produce a Maven repository that will be used to start the generator main class from Maven <code>releng/maven/repository-p2/</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_eclipse_application">Eclipse application</h4>
+<div class="paragraph">
+<p>Acceleo provides a specific eclipse application that can be used from command line or Tycho in order to start a generation. To launch the application on our generator, we will need to reference the P2 repository we built in the previous step and add a dependency to our sample generator. If you choose to run your generator in this mode, all Eclipse mechanisms will work, access to the platform, extension points&#8230;&#8203;</p>
 </div>
 <div class="paragraph">
 <p>The application takes a number of arguments that will have to be customized through the pom.xml file:</p>
@@ -606,7 +623,21 @@ Once packaged, generation can be started through the command line <code>mvn clea
 </dl>
 </div>
 <div class="paragraph">
-<p>Alternatively, if you <a href="tool.html#_java_launchers">generated the main class</a> you can also use it in your maven configuration:</p>
+<p>You can run the <code>generate-eclipse-launcher</code> profile with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>mvn clean verify -Pgenerate-eclipse-launcher</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_standalone_main_class">Standalone main class</h4>
+<div class="paragraph">
+<p>This allows you to run your generator in a standalone fashion. If you have Eclipse specific code in your generator or services, you won&#8217;t be able to run the generator in standalone. You will need to <a href="tool.html#_java_launchers">generated the main class</a> to use it in your Maven configuration:</p>
+</div>
+<div class="paragraph">
+<p>In this profile we need to reference the Maven repository built in the first step and add a dependency to the generator.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -622,23 +653,29 @@ Once packaged, generation can be started through the command line <code>mvn clea
     &lt;/execution&gt;
   &lt;/executions&gt;
   &lt;configuration&gt;
-    &lt;mainClass&gt;org.eclipse.python4capella.ecore.gen.python.main.MainGenerator&lt;/mainClass&gt;
+    &lt;mainClass&gt;org.eclipse.acceleo.aql.launcher.sample.MainGenerator&lt;/mainClass&gt;
     &lt;arguments&gt;
-      &lt;argument&gt;file://model/sample.xmi&lt;/argument&gt;
-      &lt;argument&gt;file:/${project.build.directory}/generated/&lt;/argument&gt;
+      &lt;argument&gt;org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi&lt;/argument&gt;
+      &lt;argument&gt;${project.build.directory}/generated/&lt;/argument&gt;
     &lt;/arguments&gt;
   &lt;/configuration&gt;
 &lt;/plugin&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In this case you will have to add needed maven dependencies to your generator.</p>
+<p>You can run the <code>generate-maven-main-class</code> profile with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>mvn clean exec:java -Pgenerate-maven-main-class</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-10 09:51:08 +0100
+Last updated 2025-04-22 11:15:50 +0200
 </div>
 </div>
 </body>

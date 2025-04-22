@@ -37,20 +37,31 @@ The last line in the console should be the generation summary `Files: 2, Lost Fi
 
 === Maven/Tycho
 
-Acceleo provides a specific eclipse application that can be used from command line or tycho in order to start a generation.
-In order to use the launcher, you will need to first package all of your generator projects into an update site, then use this update site as input of the application.
-
-An example is available in the Acceleo repository and can be checked out at: https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher
+A sample project is provided to illustrate how an Acceleo generator can be used inside of Eclipse and also in standalone (outside of Eclipse). Note that you can also use Acceleo in a pure standalone environment and without the need of a plug-in project. The source code can be found https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher[here]. All build and generation steps are in different Maven profile in the parent pom file for the purpose of the demonstration, but you can split them in different pom files and build projects if needed.
 
 This example includes:
 
 * A generator project `org.eclipse.acceleo.aql.launcher.sample`,
-* A feature including this project `org.eclipse.acceleo.aql.launcher.sample-feature`,
+* A generator project Eclipse UI menu contributions `org.eclipse.acceleo.aql.launcher.sample.ide.ui`,
+* A feature including above plug-ins `org.eclipse.acceleo.aql.launcher.sample-feature`,
 * An update site including this feature `org.eclipse.acceleo.aql.launcher.sample-site`,
 * A `pom.xml` file that can be used to both package the generator and start the generation.
 
-The packaging can be started through the command line `mvn clean verify`.
-Once packaged, generation can be started through the command line `mvn clean verify -Pgenerate`.
+==== Compilation
+
+The first step is to compile our generator plug-in. We will use Maven and Tycho. Tycho is used to build Eclipse plug-ins and manage dependencies form P2 repositories. In this step we will create a P2 repository to install our generator inside of Eclipse and also a Maven repository to launch the generation from Maven. The Maven repository is optional, it's needed to launch the generator in standalone from Maven.
+
+You can run the `compile` profile with the following command:
+
+----
+mvn clean deploy -Pcompile
+----
+
+It will create a P2 repository that you can install inside of Eclipse `org.eclipse.acceleo.aql.launcher.sample-site/target/repository/`. It also produce a Maven repository that will be used to start the generator main class from Maven `releng/maven/repository-p2/`.
+
+==== Eclipse application
+
+Acceleo provides a specific eclipse application that can be used from command line or Tycho in order to start a generation. To launch the application on our generator, we will need to reference the P2 repository we built in the previous step and add a dependency to our sample generator. If you choose to run your generator in this mode, all Eclipse mechanisms will work, access to the platform, extension points...
 
 The application takes a number of arguments that will have to be customized through the pom.xml file:
 
@@ -84,7 +95,17 @@ The URI of the models that will be fed to the main module of the generation. Thi
 target::
 The destination URI for this generation. Generated files will use this folder as their root to resolve against. *Note* that this needs to end in a trailing `/`.
 
-Alternatively, if you <<tool.adoc#_java_launchers,generated the main class>> you can also use it in your maven configuration:
+You can run the `generate-eclipse-launcher` profile with the following command:
+
+----
+mvn clean verify -Pgenerate-eclipse-launcher
+----
+
+==== Standalone main class
+
+This allows you to run your generator in a standalone fashion. If you have Eclipse specific code in your generator or services, you won't be able to run the generator in standalone. You will need to <<tool.adoc#_java_launchers,generated the main class>> to use it in your Maven configuration:
+
+In this profile we need to reference the Maven repository built in the first step and add a dependency to the generator.
 
 ----
 <plugin>
@@ -99,13 +120,18 @@ Alternatively, if you <<tool.adoc#_java_launchers,generated the main class>> you
     </execution>
   </executions>
   <configuration>
-    <mainClass>org.eclipse.python4capella.ecore.gen.python.main.MainGenerator</mainClass>
+    <mainClass>org.eclipse.acceleo.aql.launcher.sample.MainGenerator</mainClass>
     <arguments>
-      <argument>file://model/sample.xmi</argument>
-      <argument>file:/${project.build.directory}/generated/</argument>
+      <argument>org.eclipse.acceleo.aql.launcher.sample/model/sample.xmi</argument>
+      <argument>${project.build.directory}/generated/</argument>
     </arguments>
   </configuration>
 </plugin>
 ----
 
-In this case you will have to add needed maven dependencies to your generator.
+You can run the `generate-maven-main-class` profile with the following command:
+
+----
+mvn clean exec:java -Pgenerate-maven-main-class
+----
+
