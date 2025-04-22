@@ -38,6 +38,11 @@ P2_TIMESTAMP=$(date +"%s000")
 NIGHTLY_COUNT=10
 VERSION=$(echo ${QUALIFIER} | cut -d"." -f1-3)
 
+ssh "${SSH_ACCOUNT}" -T <<EOF
+  pushd ${NIGHTLIES_FOLDER}
+    rm -rf *
+  popd
+EOF
 ssh "${SSH_ACCOUNT}" mkdir -p ${NIGHTLIES_FOLDER}/${QUALIFIER}
 scp -rp ${UPDATE_ZIP} "${SSH_ACCOUNT}:${NIGHTLIES_FOLDER}/${QUALIFIER}"
 
