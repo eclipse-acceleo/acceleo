@@ -60,7 +60,7 @@ ssh "${SSH_ACCOUNT}" -T <<EOF
   popd
   
   pushd ${NIGHTLIES_FOLDER}/latest
-    rm -r *
+    rm -fr *
     cp -r ../${QUALIFIER}/* .
   popd
 
