@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 
 <!--
- Copyright (c) 2008, 2024 Obeo.
+ Copyright (c) 2008, 2025 Obeo.
  
  All rights reserved. This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
@@ -95,7 +95,7 @@
             class="org.eclipse.acceleo.aql.ide.ui.property.AcceleoPropertyTester"
             id="org.eclipse.acceleo.aql.ide.ui.property.propertyTester"
             namespace="org.eclipse.acceleo.aql.ide.ui.property"
-            properties="isMain,isBlockSelection,isAcceleoTextSelection,isInPluginProject,isInMavenProject"
+            properties="isMain,isBlockSelection,isAcceleoTextSelection,isInJavaProject,isInPluginProject,isInMavenProject"
             type="java.lang.Object">
       </propertyTester>
    </extension>
@@ -115,6 +115,11 @@
             categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
             id="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIProjectCommand"
             name="Eclipse UI Project">
+      </command>
+      <command
+            categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
+            id="org.eclipse.acceleo.aql.ide.ui.commands.createGenerationPomCommand"
+            name="Generation Pom">
       </command>
       <command
             categoryId="org.eclipse.acceleo.aql.ide.ui.commands.category"
@@ -161,6 +166,10 @@
                            forcePluginActivation="true"
                            property="org.eclipse.acceleo.aql.ide.ui.property.isMain">
                      </test>
+                     <test
+                           forcePluginActivation="true"
+                           property="org.eclipse.acceleo.aql.ide.ui.property.isInJavaProject">
+                     </test>
                   </and>
                </iterate>
             </with>
@@ -189,6 +198,35 @@
                      </test>
                   </and>
                </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.eclipse.acceleo.aql.ide.ui.handlers.CreateGenerationPomHandler"
+            commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGenerationPomCommand">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFile">
+                     </instanceof>
+                     <test
+                           forcePluginActivation="true"
+                           property="org.eclipse.acceleo.aql.ide.ui.property.isMain">
+                     </test>
+                     <test
+                           forcePluginActivation="true"
+                           property="org.eclipse.acceleo.aql.ide.ui.property.isInMavenProject">
+                     </test>
+                  </and>
+               </iterate>
+               <count
+                     value="1">
+               </count>
             </with>
          </enabledWhen>
       </handler>
@@ -275,6 +313,11 @@
                   commandId="org.eclipse.acceleo.aql.ide.ui.commands.createEclipseUIProjectCommand"
                   icon="icons/AcceleoEditor.gif"
                   id="org.eclipse.acceleo.aql.ide.ui.menus.createEclipseUIProjectCommand">
+            </command>
+            <command
+                  commandId="org.eclipse.acceleo.aql.ide.ui.commands.createGenerationPomCommand"
+                  icon="icons/AcceleoEditor.gif"
+                  id="org.eclipse.acceleo.aql.ide.ui.menus.createGenerationPomCommand">
             </command>
             <visibleWhen
                   checkEnabled="false">

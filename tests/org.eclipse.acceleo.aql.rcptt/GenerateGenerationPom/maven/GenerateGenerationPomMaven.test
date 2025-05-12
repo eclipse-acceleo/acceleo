@@ -1,0 +1,208 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _AaWbsBxPEfC6RpeNKUAxlw,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: GenerateGenerationPomMaven
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _AabUMBxPEfC6RpeNKUAxlw
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 4/24/25, 10:46 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src\\/main\\/java/test/test.mtl" | get-menu 
+    -path "Initialize Generator Launcher/Generation Pom" | click -metaKeys ""
+get-window -class WizardDialog | get-editbox -index 9 | get-property text 
+    | equals "The generation pom folder cannot be empty." | verify-true
+with [get-window -class WizardDialog] {
+    get-group "Pom Destination folder:" | get-button "Workspace..." | click -metaKeys ""
+    with [get-window "Select the destination folder"] {
+        get-tree | select "test/generation"
+        get-button OK | click -metaKeys ""
+    }
+}
+get-window -class WizardDialog | get-editbox -index 9 | get-property text 
+    | equals "The input generation model cannot be empty." | verify-true
+with [get-window -class WizardDialog] {
+    get-group "Generation model file:" | get-button "Workspace..." | click -metaKeys ""
+    get-window "Select the model file" | get-table | select "test.xmi - test\\/generation\\/model" | double-click
+}
+get-window -class WizardDialog | get-editbox -index 9 | get-property text 
+    | equals "The output generation folder cannot be empty." | verify-true
+with [get-window -class WizardDialog] {
+    get-group "Generation target folder:" | get-button "Workspace..." | click -metaKeys ""
+    with [get-window "Select the destination folder"] {
+        get-tree | select "test/generation/generated"
+        get-button OK | click -metaKeys ""
+    }
+}
+with [get-window -class WizardDialog] {
+    with [get-group "Generation:"] {
+        get-editbox -after [get-label "groupId:"] | get-property text | equals test | verify-true
+        get-editbox -after [get-label "artifactId:"] | get-property text | equals "test-generation" | verify-true
+        get-editbox -after [get-label "version:"] | get-property text | equals "0.0.1-SNAPSHOT" | verify-true
+    }
+    with [get-group "Generator:"] {
+        get-editbox -after [get-label "groupId:"] | get-property text | equals test | verify-true
+        get-editbox -after [get-label "artifactId:"] | get-property text | equals test | verify-true
+        get-editbox -after [get-label "version:"] | get-property text | equals "0.0.1-SNAPSHOT" | verify-true
+    }
+}
+with [get-window -class WizardDialog] {
+    get-button Finish | click -metaKeys ""
+    with [get-window "Generation comparison"] {
+        get-tree | select "test/pom.xml" | double-click
+        get-button "Next Difference" | click -metaKeys ""
+        get-button "Copy Current Change from Left to Right" | click -metaKeys ""
+        get-button Commit | click -metaKeys ""
+    }
+}
+get-view "Package Explorer" | get-tree | select "test/generation/pom.xml" | double-click
+get-editor "test/generation/pom.xml" | get-text-viewer | get-property text 
+    | equals "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    + "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n"
+    + "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+    + "    xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n"
+    + "    <modelVersion>4.0.0</modelVersion>\n\n"
+    + "    <groupId>test</groupId>\n"
+    + "    <artifactId>test-generation</artifactId>\n"
+    + "    <version>0.0.1-SNAPSHOT</version>\n"
+    + "    <packaging>jar</packaging>\n\n"
+    + "    <repositories>\n"
+    + "        <repository>\n"
+    + "            <id>acceleo-repository</id>\n"
+    + "            <name>Acceleo Repository</name>\n"
+    + "            <!-- Change to the Acceleo version you want to use -->\n"
+    + "            <url>https://download.eclipse.org/acceleo/updates/releases/4.1/R202502130921/</url>\n"
+    + "        </repository>\n"
+    + "        <!-- Change to the repository where your generator has been deployed -->\n"
+    + "        <!--repository>\n"
+    + "            <id>test-repository</id>\n"
+    + "            <name>Test Repository</name>\n"
+    + "            <url></url>\n"
+    + "        </repository-->\n"
+    + "    </repositories>\n\n"
+    + "    <dependencies>\n"
+    + "        <dependency>\n"
+    + "            <groupId>test</groupId>\n"
+    + "            <artifactId>test</artifactId>\n"
+    + "            <version>0.0.1-SNAPSHOT</version>\n"
+    + "        </dependency>\n"
+    + "    </dependencies>\n\n"
+    + "    <build>\n"
+    + "        <plugins>\n"
+    + "            <plugin>\n"
+    + "                <groupId>org.codehaus.mojo</groupId>\n"
+    + "                <artifactId>exec-maven-plugin</artifactId>\n"
+    + "                <version>3.5.0</version>\n"
+    + "                <executions>\n"
+    + "                    <execution>\n"
+    + "                        <goals>\n"
+    + "                            <goal>java</goal>\n"
+    + "                        </goals>\n"
+    + "                    </execution>\n"
+    + "                </executions>\n"
+    + "                <configuration>\n"
+    + "                    <mainClass>test.TestGenerator</mainClass>\n"
+    + "                    <arguments>\n"
+    + "                        <argument>model/test.xmi</argument>\n"
+    + "                        <argument>generated/</argument>\n"
+    + "                    </arguments>\n"
+    + "                </configuration>\n"
+    + "            </plugin>\n"
+    + "        </plugins>\n"
+    + "    </build>\n"
+    + "</project>" | verify-true
+with [get-editor "test/generation/pom.xml" | get-text-viewer] {
+    select-range 12 1 58 1
+    key-type BackSpace
+    key-type "M1+s"
+}
+get-view "Package Explorer" | get-tree | select "test/src\\/main\\/java/test/test.mtl" | get-menu 
+    -path "Initialize Generator Launcher/Generation Pom" | click -metaKeys ""
+with [get-window -class WizardDialog | get-group "Generation:"] {
+    get-editbox -after [get-label "groupId:"] | get-property "isEnabled()" | equals true | verify-true
+    get-editbox -after [get-label "artifactId:"] | get-property "isEnabled()" | equals true | verify-true
+    get-editbox -after [get-label "version:"] | get-property "getEnabled()" | equals true | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-group "Pom Destination folder:" | get-button "Workspace..." | click -metaKeys ""
+    with [get-window "Select the destination folder"] {
+        get-tree | select "test/generation"
+        get-button OK | click -metaKeys ""
+    }
+}
+with [get-window -class WizardDialog | get-group "Generation:"] {
+    get-editbox -after [get-label "groupId:"] | get-property "isEnabled()" | equals false | verify-true
+    get-editbox -after [get-label "artifactId:"] | get-property "isEnabled()" | equals false | verify-true
+    get-editbox -after [get-label "version:"] | get-property "isEnabled()" | equals false | verify-true
+}
+with [get-window -class WizardDialog] {
+    get-group "Generation model file:" | get-button "Workspace..." | click -metaKeys ""
+    get-window "Select the model file" | get-table | select "test.xmi - test\\/generation\\/model" | double-click
+    get-group "Generation target folder:" | get-button "Workspace..." | click -metaKeys ""
+    with [get-window "Select the destination folder"] {
+        get-tree | select "test/generation/generated"
+        get-button OK | click -metaKeys ""
+    }
+    get-button Finish | click -metaKeys ""
+    with [get-window "Generation comparison"] {
+        get-tree | select "test/generation/pom.xml" | double-click
+        get-button "Next Difference" | click -metaKeys ""
+        get-button "Copy Current Change from Left to Right" | click -metaKeys ""
+        get-button Commit | click -metaKeys ""
+    }
+}
+get-editor "test/generation/pom.xml" | get-text-viewer | get-property text 
+    | equals "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    + "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n"
+    + "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+    + "    xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n"
+    + "    <modelVersion>4.0.0</modelVersion>\n\n"
+    + "    <groupId>test</groupId>\n"
+    + "    <artifactId>test-generation</artifactId>\n"
+    + "    <version>0.0.1-SNAPSHOT</version>\n"
+    + "    <packaging>jar</packaging>\n\n"
+    + "    <repositories>\n"
+    + "        <repository>\n"
+    + "            <id>acceleo-repository</id>\n"
+    + "            <name>Acceleo Repository</name>\n"
+    + "            <url>https://download.eclipse.org/acceleo/updates/releases/4.1/R202502130921/</url>\n"
+    + "        </repository>\n"
+    + "    </repositories>\n\n"
+    + "    <dependencies>\n"
+    + "        <dependency>\n"
+    + "            <groupId>test</groupId>\n"
+    + "            <artifactId>test</artifactId>\n"
+    + "            <version>0.0.1-SNAPSHOT</version>\n"
+    + "        </dependency>\n"
+    + "    </dependencies>\n\n\n"
+    + "    <build>\n"
+    + "        <plugins>\n"
+    + "            <plugin>\n"
+    + "                <groupId>org.codehaus.mojo</groupId>\n"
+    + "                <artifactId>exec-maven-plugin</artifactId>\n"
+    + "                <version>3.5.0</version>\n"
+    + "                <executions>\n"
+    + "                    <execution>\n"
+    + "                        <goals>\n"
+    + "                            <goal>java</goal>\n"
+    + "                        </goals>\n"
+    + "                    </execution>\n"
+    + "                </executions>\n"
+    + "                <configuration>\n"
+    + "                    <mainClass>test.TestGenerator</mainClass>\n"
+    + "                    <arguments>\n"
+    + "                        <argument>model/test.xmi</argument>\n"
+    + "                        <argument>generated/</argument>\n"
+    + "                    </arguments>\n"
+    + "                </configuration>\n"
+    + "            </plugin>\n"
+    + "        </plugins>\n"
+    + "    </build>\n"
+    + "</project>" | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

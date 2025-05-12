@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,7 +106,7 @@ public class ModulePage extends WizardPage {
 					.getResult()[0] instanceof IFile) {
 				initializeContentFile.setText(((IFile)dialog.getResult()[0]).getFullPath().toString());
 			}
-			updateModuleContiguration();
+			updateModuleConfiguration();
 		}
 	}
 
@@ -257,7 +257,7 @@ public class ModulePage extends WizardPage {
 		this.createInitializeGroup(pageGroup);
 
 		setControl(pageGroup);
-		updateModuleContiguration();
+		updateModuleConfiguration();
 	}
 
 	/**
@@ -296,7 +296,7 @@ public class ModulePage extends WizardPage {
 		moduleContainer.setLayoutData(gd);
 		moduleContainer.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 		moduleContainerBrowseButton = new Button(pageGroup, SWT.PUSH);
@@ -305,7 +305,7 @@ public class ModulePage extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleBrowseWorkspace();
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 
@@ -325,7 +325,7 @@ public class ModulePage extends WizardPage {
 		moduleName.setLayoutData(gridData);
 		moduleName.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 
@@ -360,7 +360,7 @@ public class ModulePage extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleSelectMetamodelURI();
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 		removeButton = new Button(tableButtonComposite, SWT.PUSH);
@@ -383,7 +383,7 @@ public class ModulePage extends WizardPage {
 						.getText())) {
 					metamodelType.setText("");
 				}
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 		this.createHelpButton(tableButtonComposite, AcceleoUIMessages.getString(
@@ -411,7 +411,7 @@ public class ModulePage extends WizardPage {
 		moduleElementName.setLayoutData(gridData);
 		moduleElementName.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 		this.createHelpButton(pageGroup, AcceleoUIMessages.getString(
@@ -442,7 +442,7 @@ public class ModulePage extends WizardPage {
 				final int dialogResult = dialog.open();
 				if (dialogResult == IDialogConstants.OK_ID) {
 					metamodelType.setText(dialog.getSelectedType());
-					updateModuleContiguration();
+					updateModuleConfiguration();
 				}
 
 			}
@@ -460,7 +460,7 @@ public class ModulePage extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				switchModuleElementKind();
-				updateModuleContiguration();
+				updateModuleConfiguration();
 				updateModuleContainer();
 			}
 		});
@@ -472,7 +472,7 @@ public class ModulePage extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				switchModuleElementKind();
-				updateModuleContiguration();
+				updateModuleConfiguration();
 				updateModuleContainer();
 			}
 		});
@@ -492,7 +492,7 @@ public class ModulePage extends WizardPage {
 		generateDocumentation.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 		this.createHelpButton(pageGroup, AcceleoUIMessages.getString(
@@ -507,7 +507,7 @@ public class ModulePage extends WizardPage {
 		generateFile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 				updateModuleContainer();
 			}
 		});
@@ -522,7 +522,7 @@ public class ModulePage extends WizardPage {
 		isMain.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 				updateModuleContainer();
 			}
 		});
@@ -548,7 +548,7 @@ public class ModulePage extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				switchInitializeContent();
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 		this.createHelpButton(pageGroup, AcceleoUIMessages.getString(
@@ -569,14 +569,14 @@ public class ModulePage extends WizardPage {
 		initializeContentFile.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 
 			}
 		});
 		initializeContentFile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateModuleContiguration();
+				updateModuleConfiguration();
 			}
 		});
 
@@ -637,7 +637,7 @@ public class ModulePage extends WizardPage {
 	/**
 	 * Update the module thanks to the data from the composite.
 	 */
-	private void updateModuleContiguration() {
+	private void updateModuleConfiguration() {
 		moduleConfiguration.setModuleName(moduleName.getText());
 
 		IPath path = new Path(moduleContainer.getText());

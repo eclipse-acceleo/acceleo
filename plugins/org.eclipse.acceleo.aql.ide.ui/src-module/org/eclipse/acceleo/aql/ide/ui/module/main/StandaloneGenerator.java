@@ -18,7 +18,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -71,26 +70,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Eclipse launcher for org::eclipse::python4capella::ecore::gen::python::main::standalone.
+ * Eclipse launcher for org::eclipse::acceleo::aql::ide::ui::module::main::standalone.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class StandaloneGenerator extends AbstractGenerator {
 
 	/**
-	 * The Maven indentation.
-	 */
-	private static final String MAVEN_INDENTATION = "    ";
-
-	/**
 	 * The main {@link Module} {@link IFile}.
 	 */
 	private final IFile moduleFile;
-
-	/**
-	 * The model {@link Module} qualified name.
-	 */
-	protected String modelModuleQualifiedName;
 
 	/**
 	 * The model {@link Module}.
@@ -143,11 +132,10 @@ public class StandaloneGenerator extends AbstractGenerator {
 		final IQualifiedNameResolver workspaceResolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				getClass().getClassLoader(), moduleFile.getProject(), AcceleoParser.QUALIFIER_SEPARATOR,
 				true);
-		final java.net.URI binaryURI = workspaceResolver.getBinaryURI(moduleFile.getLocation().toFile()
-				.toURI());
 		workspaceResolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
-		modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
-		modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
+		final String modelModuleQualifiedName = getQualifiedNameFromSourceFile(moduleFile);
+		final String moduleAbsolutePath = moduleFile.getLocation().toFile().getAbsolutePath();
+		modelModule = loadModelModule(URI.createFileURI(moduleAbsolutePath), modelModuleQualifiedName);
 		dependencyBundleNames = new LinkedHashSet<>();
 		dependencyBundleNames.add("org.eclipse.acceleo.query;bundle-version=\"[" + getAQLVersionLowerBound()
 				+ "," + getAQLVersionUpperBound() + ")\"");
@@ -403,7 +391,11 @@ public class StandaloneGenerator extends AbstractGenerator {
 				if (projectList.getLength() > 0) {
 					final Node pomProject = projectList.item(0);
 					if (pomProject instanceof Element) {
-						final boolean dependenciesUpdated = addMavenDependencies(pom, (Element)pomProject);
+						final List<MavenDependency> dependencies = new ArrayList<>();
+						dependencies.add(new MavenDependency("org.eclipse.acceleo", "acceleo", "["
+								+ getAcceleoVersionLowerBound() + "," + getAcceleoVersionUpperBound() + ")"));
+						final boolean dependenciesUpdated = addMavenDependencies(pom, (Element)pomProject,
+								dependencies);
 						final boolean resourcesUpdated = updateResources(pom, (Element)pomProject);
 						if (dependenciesUpdated || resourcesUpdated) {
 							try {
@@ -429,106 +421,13 @@ public class StandaloneGenerator extends AbstractGenerator {
 	}
 
 	/**
-	 * Adds the maven dependencies to the given {@link Document} and project {@link Element}.
-	 * 
-	 * @param pom
-	 *            the pom {@link Document}
-	 * @param project
-	 *            the project {@link Element}
-	 * @return <code>true</code> if the {@link Document} has been modified, <code>false</code> otherwise.
-	 */
-	private boolean addMavenDependencies(Document pom, Element project) {
-		boolean res;
-
-		// get already existing dependencies
-		final Set<String> knownDependencies = new HashSet<>();
-		final NodeList dependenciesList = project.getElementsByTagName("dependencies");
-		final Node dependencies;
-		if (dependenciesList.getLength() > 0) {
-			for (int i = 0; i < dependenciesList.getLength(); i++) {
-				final Node currentDependencies = dependenciesList.item(i);
-				if (currentDependencies instanceof Element) {
-					final NodeList artifactIds = ((Element)currentDependencies).getElementsByTagName(
-							"artifactId");
-					if (artifactIds != null) {
-						for (int j = 0; j < artifactIds.getLength(); j++) {
-							knownDependencies.add(artifactIds.item(j).getTextContent());
-						}
-					}
-				}
-			}
-			dependencies = dependenciesList.item(0);
-		} else {
-			dependencies = pom.createElement("dependencies");
-			project.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
-			project.appendChild(dependencies);
-			dependencies.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
-			project.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
-
-		}
-		if (!knownDependencies.contains("acceleo")) {
-			addMavenDependencyNode(pom, dependencies, "org.eclipse.acceleo", "acceleo", "["
-					+ getAcceleoVersionLowerBound() + "," + getAcceleoVersionUpperBound() + ")");
-			res = true;
-		} else {
-			res = false;
-		}
-
-		return res;
-	}
-
-	/**
-	 * Adds a dependency {@link Node} to the given dependency {@link Node}.
-	 * 
-	 * @param pom
-	 *            the pom {@link Document}
-	 * @param dependencies
-	 *            the dependencies {@link Node}
-	 * @param groupIdString
-	 *            the group ID {@link String}
-	 * @param artifactIdString
-	 *            the artifact ID {@link String}
-	 * @param versionString
-	 *            the version {@link String}
-	 */
-	private void addMavenDependencyNode(Document pom, Node dependencies, String groupIdString,
-			String artifactIdString, String versionString) {
-		if (dependencies instanceof Element) {
-			final Element dependency = pom.createElement("dependency");
-			dependencies.appendChild(pom.createTextNode(MAVEN_INDENTATION));
-			dependencies.appendChild(dependency);
-			dependencies.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION));
-			// groupId
-			final Element groupId = pom.createElement("groupId");
-			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
-					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
-			dependency.appendChild(groupId);
-			groupId.setTextContent(groupIdString);
-			// groupId
-			final Element artifactId = pom.createElement("artifactId");
-			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
-					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
-			dependency.appendChild(artifactId);
-			artifactId.setTextContent(artifactIdString);
-			// version
-			final Element version = pom.createElement("version");
-			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
-					+ MAVEN_INDENTATION + MAVEN_INDENTATION));
-			dependency.appendChild(version);
-			dependency.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
-					+ MAVEN_INDENTATION));
-			version.setTextContent(versionString);
-		}
-	}
-
-	/**
-	 * Updates the given pom {@link Document} to add the resource {@link Node}
+	 * Updates the given pom {@link Document} to add the resource {@link Node}.
 	 * 
 	 * @param pom
 	 *            the pom {@link Document}
 	 * @param project
 	 *            the project {@link Node}
-	 * @return <code>true</code> if the {@link Document} has been modified, <code>false</code> otherwise.
+	 * @return <code>true</code> if the {@link Document} has been modified, <code>false</code> otherwise
 	 */
 	private boolean updateResources(Document pom, Element project) {
 		// build

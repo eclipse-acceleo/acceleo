@@ -1,0 +1,86 @@
+[comment encoding = UTF-8 /]
+[module generationPom('http://www.eclipse.org/acceleo/4.0')/]
+
+[import org::eclipse::acceleo::aql::ide::ui::module::requests::requests/]
+[import org::eclipse::acceleo::aql::ide::ui::module::services::Services/]
+
+[**
+ * Generate the plugin.xml file.
+ * @param module the Module to generate
+ * @param generatorGroupId the generator group ID
+ * @param generatorArtifactId the generator artifact ID
+ * @param generatorVersion the generator version
+ * @param generationGroupId the generation group ID
+ * @param generationArtifactId the generation artifact ID
+ * @param generationVersion the generation version
+ * @param modelPath the model path to use as input of the generation
+ * @param targetFolderPath the target folder path to use as output of the generation
+ */]
+[template public generationPomFile(module : acceleo::Module, generatorGroupId : String, generatorArtifactId : String, generatorVersion : String, generationGroupId : String, generationArtifactId : String, generationVersion : String, modelPath : String, targetFolderPath : String)]
+  [file ('pom.xml', create, 'UTF-8')]
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+
+        <groupId>[generationGroupId/]</groupId>
+        <artifactId>[generationArtifactId/]</artifactId>
+        <version>[generationVersion/]</version>
+        <packaging>jar</packaging>
+
+        <repositories>
+            <repository>
+                <id>acceleo-repository</id>
+                <name>Acceleo Repository</name>
+                <!-- Change to the Acceleo version you want to use -->
+                <url>https://download.eclipse.org/acceleo/updates/releases/4.1/R202502130921/</url>
+            </repository>
+            <!-- Change to the repository where your generator has been deployed -->
+            <!--repository>
+                <id>[generatorArtifactId/]-repository</id>
+                <name>[generatorArtifactId.toUpperFirst()/] Repository</name>
+                <url></url>
+            </repository-->
+        </repositories>
+
+        <dependencies>
+            <dependency>
+                <groupId>[generatorGroupId/]</groupId>
+                <artifactId>[generatorArtifactId/]</artifactId>
+                <version>[generatorVersion/]</version>
+            </dependency>
+        </dependencies>
+
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.5.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>java</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        [let package = module.getJavaPackage()]
+                          [if (package.size() <> 0)]
+                            <mainClass>[package/].[module.getClassName()/]</mainClass>
+                          [else]
+                            <mainClass>[module.getClassName()/]</mainClass>
+                          [/if]
+                        [/let]
+                        <arguments>
+                            <argument>[modelPath/]</argument>
+                            <argument>[targetFolderPath/]</argument>
+                        </arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </project>
+  [/file]
+[/template]

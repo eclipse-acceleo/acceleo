@@ -265,9 +265,14 @@ You can select a module file that contains a main template to generate the Java 
 ** It creates a Java main class next to your module
 ** It can be integrated in other application outside or inside of Eclipse
 * *Eclipse UI Project* that will generate an Eclipse plugin
+** only available if the project containing the main module file is a plug-in project
 ** It creates an Eclipse plugin projet next to your generator project
 ** It extends the standalone class (the standalone main class will be generated)
 ** It contribute a menu to objects that can be passed to your main template
+* *Generation Pom* that will generate a pom file to launch the generation
+** only available if the project containing the main module file is a Maven project
+** It creates a pom file that can launch a generation using the Java Main Class (the standalone main class will be generated)
+** If the pom file already exists, it will add an execution to launch the generation
 
 
 image::images/JavaGenerators.png[Java Generators]

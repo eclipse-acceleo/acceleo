@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.lsp4e.LSPEclipseUtils;
@@ -45,6 +46,11 @@ public class AcceleoPropertyTester extends org.eclipse.core.expressions.Property
 	 * The "isAcceleoTextSelection" property.
 	 */
 	public final static String IS_ACCELEO_TEXT_SELECTION = "isAcceleoTextSelection";
+
+	/**
+	 * The "isInJavaProject" property.
+	 */
+	public final static String IS_IN_JAVA_PROJECT = "isInJavaProject";
 
 	/**
 	 * The "isInPluginProject" property.
@@ -139,6 +145,10 @@ public class AcceleoPropertyTester extends org.eclipse.core.expressions.Property
 				} else {
 					res = false;
 				}
+				break;
+
+			case IS_IN_JAVA_PROJECT:
+				res = hasNature(receiver, JavaCore.NATURE_ID);
 				break;
 
 			case IS_IN_PLUGIN_PROJECT:

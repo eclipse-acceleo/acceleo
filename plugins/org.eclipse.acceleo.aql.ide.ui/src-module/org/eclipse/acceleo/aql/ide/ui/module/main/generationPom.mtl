@@ -1,0 +1,27 @@
+[comment encoding = UTF-8 /]
+[**
+ * Generate the generation pom.xml.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module generationPom('http://www.eclipse.org/acceleo/4.0')/]
+
+[import org::eclipse::acceleo::aql::ide::ui::module::files::generationPom/]
+
+[**
+ * Generate the Java main class for a main module.
+ * @param module the module containing a main template
+ * @param generatorGroupId the generator group ID
+ * @param generatorArtifactId the generator artifact ID
+ * @param generatorVersion the generator version
+ * @param generationGroupId the generation group ID
+ * @param generationArtifactId the generation artifact ID
+ * @param generationVersion the generation version
+ * @param modelPath the model path to use as input of the generation
+ * @param targetFolderPath the target folder path to use as output of the generation
+ * @main
+ */]
+[template public standalone(module : acceleo::Module, generatorGroupId : String, generatorArtifactId : String, generatorVersion : String, generationGroupId : String, generationArtifactId : String, generationVersion : String, modelPath : String, targetFolderPath : String)]
+  [module.generationPomFile(generatorGroupId, generatorArtifactId, generatorVersion, generationGroupId, generationArtifactId, generationVersion, modelPath, targetFolderPath)/]
+[/template]

@@ -1355,6 +1355,9 @@ The content of existing <a href="#_protected_area">protected area</a> won&#8217;
 <div class="ulist">
 <ul>
 <li>
+<p>only available if the project containing the main module file is a plug-in project</p>
+</li>
+<li>
 <p>It creates an Eclipse plugin projet next to your generator project</p>
 </li>
 <li>
@@ -1362,6 +1365,22 @@ The content of existing <a href="#_protected_area">protected area</a> won&#8217;
 </li>
 <li>
 <p>It contribute a menu to objects that can be passed to your main template</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Generation Pom</strong> that will generate a pom file to launch the generation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>only available if the project containing the main module file is a Maven project</p>
+</li>
+<li>
+<p>It creates a pom file that can launch a generation using the Java Main Class (the standalone main class will be generated)</p>
+</li>
+<li>
+<p>If the pom file already exists, it will add an execution to launch the generation</p>
 </li>
 </ul>
 </div>

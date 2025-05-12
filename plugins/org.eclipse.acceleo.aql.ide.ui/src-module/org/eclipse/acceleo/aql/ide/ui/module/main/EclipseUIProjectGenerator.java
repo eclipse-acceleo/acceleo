@@ -59,7 +59,7 @@ import org.eclipse.pde.internal.core.bundle.WorkspaceBundleModel;
 import org.eclipse.pde.internal.core.project.PDEProject;
 
 /**
- * Eclipse launcher for org::eclipse::python4capella::ecore::gen::python::main::eclipseUIProject.
+ * Eclipse launcher for org::eclipse::acceleo::aql::ide::ui::module::main::eclipseUIProject.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
@@ -142,14 +142,14 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		final IQualifiedNameResolver workspaceResolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				getClass().getClassLoader(), projectModuleFiles.get(0).getProject(),
 				AcceleoParser.QUALIFIER_SEPARATOR, true);
+		workspaceResolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
 
 		final List<Module> modelModules = new ArrayList<>();
 		for (IFile file : projectModuleFiles) {
-			final java.net.URI binaryURI = workspaceResolver.getBinaryURI(file.getLocation().toFile()
-					.toURI());
-			workspaceResolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
-			final String modelModuleQualifiedName = workspaceResolver.getQualifiedName(binaryURI);
-			final Module modelModule = (Module)workspaceResolver.resolve(modelModuleQualifiedName);
+			final String modelModuleQualifiedName = getQualifiedNameFromSourceFile(file);
+			final String moduleAbsolutePath = file.getLocation().toFile().getAbsolutePath();
+			final Module modelModule = loadModelModule(URI.createFileURI(moduleAbsolutePath),
+					modelModuleQualifiedName);
 			modelModules.add(modelModule);
 		}
 		// We register model modules EPackage for type resolution

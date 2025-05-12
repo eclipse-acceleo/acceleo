@@ -1002,6 +1002,9 @@ The content of existing <a href="language.html#_protected_area">protected area</
 <div class="ulist">
 <ul>
 <li>
+<p>only available if the project containing the main module file is a plug-in project</p>
+</li>
+<li>
 <p>It creates an Eclipse plugin projet next to your generator project</p>
 </li>
 <li>
@@ -1009,6 +1012,22 @@ The content of existing <a href="language.html#_protected_area">protected area</
 </li>
 <li>
 <p>It contribute a menu to objects that can be passed to your main template</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Generation Pom</strong> that will generate a pom file to launch the generation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>only available if the project containing the main module file is a Maven project</p>
+</li>
+<li>
+<p>It creates a pom file that can launch a generation using the Java Main Class (the standalone main class will be generated)</p>
+</li>
+<li>
+<p>If the pom file already exists, it will add an execution to launch the generation</p>
 </li>
 </ul>
 </div>
@@ -1027,7 +1046,7 @@ The content of existing <a href="language.html#_protected_area">protected area</
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-12-06 09:53:13 +0100
+Last updated 2025-04-24 15:33:37 +0200
 </div>
 </div>
 </body>
