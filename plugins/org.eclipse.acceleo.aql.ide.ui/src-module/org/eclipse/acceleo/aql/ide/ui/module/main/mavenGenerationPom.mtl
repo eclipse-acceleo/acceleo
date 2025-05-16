@@ -1,11 +1,11 @@
 [comment encoding = UTF-8 /]
 [**
- * Generate the generation pom.xml.
+ * Generate the Maven generation pom.xml.
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  * @version 1.0.0
  * @since 1.0.0
  */]
-[module generationPom('http://www.eclipse.org/acceleo/4.0')/]
+[module mavenGenerationPom('http://www.eclipse.org/acceleo/4.0')/]
 
 [import org::eclipse::acceleo::aql::ide::ui::module::files::generationPom/]
 

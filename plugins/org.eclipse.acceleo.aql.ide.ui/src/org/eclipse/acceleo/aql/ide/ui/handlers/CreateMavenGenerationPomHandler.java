@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui.handlers;
 
-import org.eclipse.acceleo.aql.ide.ui.wizard.GenerationPomWizard;
+import org.eclipse.acceleo.aql.ide.ui.wizard.MavenGenerationPomWizard;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -24,13 +24,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class CreateGenerationPomHandler extends AbstractHandler {
+public class CreateMavenGenerationPomHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
 
-		GenerationPomWizard wizard = new GenerationPomWizard();
+		MavenGenerationPomWizard wizard = new MavenGenerationPomWizard();
 		wizard.init(PlatformUI.getWorkbench(), selection);
 		final WizardDialog dialog = new WizardDialog(null, wizard);
 		dialog.open();

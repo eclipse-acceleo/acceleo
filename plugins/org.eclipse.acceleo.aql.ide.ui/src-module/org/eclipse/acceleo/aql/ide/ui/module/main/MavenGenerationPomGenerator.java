@@ -70,11 +70,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Eclipse launcher for org::eclipse::python4capella::ecore::gen::python::main::standalone.
+ * Eclipse launcher for org::eclipse::acceleo::aql::ide::ui::module::main::mavenGenerationPom.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class GenerationPomGenerator extends AbstractGenerator {
+public class MavenGenerationPomGenerator extends AbstractGenerator {
 
 	/**
 	 * The main {@link Module} {@link IFile}.
@@ -92,12 +92,12 @@ public class GenerationPomGenerator extends AbstractGenerator {
 	protected Module modelModule;
 
 	/**
-	 * The generated generation pom file path.
+	 * The generated Maven generation POM file path.
 	 */
 	protected String generatePomFilePath;
 
 	/**
-	 * The generation pom folder {@link URI}.
+	 * The Maven generation POM folder {@link URI}.
 	 */
 	protected final URI pomFoldertargetURI;
 
@@ -117,27 +117,27 @@ public class GenerationPomGenerator extends AbstractGenerator {
 	private String generatorVersion;
 
 	/**
-	 * The generation pom group Id.
+	 * The Maven generation POM group Id.
 	 */
 	private String generationGroupId;
 
 	/**
-	 * The generation pom artifact Id.
+	 * The Maven generation POM artifact Id.
 	 */
 	private String generationArtifactId;
 
 	/**
-	 * The generation pom version.
+	 * The Maven generation POM version.
 	 */
 	private String generationVersion;
 
 	/**
-	 * The generation model path relative to the generation pom.
+	 * The generation model path relative to the Maven generation POM.
 	 */
 	private String modelPath;
 
 	/**
-	 * The generation target path relative to the generation pom.
+	 * The generation target path relative to the Maven generation POM.
 	 */
 	private String targetFolderPath;
 
@@ -149,7 +149,7 @@ public class GenerationPomGenerator extends AbstractGenerator {
 	 * @param configuration
 	 *            the {@link GenerationPomConfiguration}
 	 */
-	public GenerationPomGenerator(IFile moduleFile, GenerationPomConfiguration configuration) {
+	public MavenGenerationPomGenerator(IFile moduleFile, GenerationPomConfiguration configuration) {
 		this.moduleFile = moduleFile;
 		generatePomFilePath = new File(configuration.getPomFolder()).getAbsolutePath() + File.separator
 				+ "pom.xml";
@@ -233,7 +233,7 @@ public class GenerationPomGenerator extends AbstractGenerator {
 	 * @return the module qualified name
 	 */
 	protected String getModuleQualifiedName() {
-		return "org::eclipse::acceleo::aql::ide::ui::module::main::generationPom";
+		return "org::eclipse::acceleo::aql::ide::ui::module::main::mavenGenerationPom";
 	}
 
 	protected String getGeneratorClassName() {

@@ -21,7 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.GenerationCompareEditorInput;
-import org.eclipse.acceleo.aql.ide.ui.module.main.GenerationPomGenerator;
+import org.eclipse.acceleo.aql.ide.ui.module.main.MavenGenerationPomGenerator;
 import org.eclipse.acceleo.aql.ide.ui.module.main.StandaloneGenerator;
 import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.CompareUI;
@@ -45,16 +45,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * The generation pom wizard.
+ * The maven generation pom wizard.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class GenerationPomWizard extends Wizard implements INewWizard {
+public class MavenGenerationPomWizard extends Wizard implements INewWizard {
 
 	/**
 	 * The ok status message.
 	 */
-	private static final String OK_MESSAGE = "Generation pom %s created.";
+	private static final String OK_MESSAGE = "Maven generation POM %s created.";
 
 	/**
 	 * The {@link Job} writing the {@link Module} file.
@@ -71,7 +71,7 @@ public class GenerationPomWizard extends Wizard implements INewWizard {
 		private final Map<URI, String> preview = new HashMap<>();
 
 		public FinishJob(GenerationPomConfiguration pomConfiguration) {
-			super("Creating generation pom file: " + pomConfiguration.getPomFolderURI());
+			super("Creating Maven generation POM file: " + pomConfiguration.getPomFolderURI());
 			this.pomConfiguration = pomConfiguration;
 		}
 
@@ -94,7 +94,7 @@ public class GenerationPomWizard extends Wizard implements INewWizard {
 			if (!monitor.isCanceled()) {
 				childMonitor = BasicMonitor.toMonitor(subMonitor.split(1));
 				try {
-					final GenerationPomGenerator generationPomGenerator = new GenerationPomGenerator(
+					final MavenGenerationPomGenerator generationPomGenerator = new MavenGenerationPomGenerator(
 							moduleFile, configuration);
 					generationPomGenerator.generate(childMonitor);
 					preview.putAll(generationPomGenerator.getPreview());
@@ -183,8 +183,8 @@ public class GenerationPomWizard extends Wizard implements INewWizard {
 				}
 			} catch (IOException | SAXException | ParserConfigurationException e) {
 				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, getClass(),
-						"Couldn't initialize generation pom configuration from " + moduleFile.getFullPath(),
-						e));
+						"Couldn't initialize Maven generation POM configuration from " + moduleFile
+								.getFullPath(), e));
 			}
 		}
 

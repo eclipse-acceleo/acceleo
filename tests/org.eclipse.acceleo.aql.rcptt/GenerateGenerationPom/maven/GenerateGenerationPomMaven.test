@@ -15,7 +15,7 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 get-view "Package Explorer" | get-tree | select "test/src\\/main\\/java/test/test.mtl" | get-menu 
-    -path "Initialize Generator Launcher/Generation Pom" | click -metaKeys ""
+    -path "Initialize Generator Launcher/Maven POM" | click -metaKeys ""
 get-window -class WizardDialog | get-editbox -index 9 | get-property text 
     | equals "The generation pom folder cannot be empty." | verify-true
 with [get-window -class WizardDialog] {
@@ -123,7 +123,7 @@ with [get-editor "test/generation/pom.xml" | get-text-viewer] {
     key-type "M1+s"
 }
 get-view "Package Explorer" | get-tree | select "test/src\\/main\\/java/test/test.mtl" | get-menu 
-    -path "Initialize Generator Launcher/Generation Pom" | click -metaKeys ""
+    -path "Initialize Generator Launcher/Maven POM" | click -metaKeys ""
 with [get-window -class WizardDialog | get-group "Generation:"] {
     get-editbox -after [get-label "groupId:"] | get-property "isEnabled()" | equals true | verify-true
     get-editbox -after [get-label "artifactId:"] | get-property "isEnabled()" | equals true | verify-true
