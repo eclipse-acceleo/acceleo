@@ -1,41 +1,165 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-
-<toc label="Acceleo Documentation">
-    <topic href="doc/install.html" label="Installation">
-    </topic>
-    <topic href="doc/start.html" label="Getting Started">
-    </topic>
-    <topic href="doc/tool.html" label="The Acceleo Tooling">
-	<topic href="doc/tool.html#_the_acceleo_editor" label="The Acceleo Editor">
-		<topic href="doc/tool.html#_syntax_highlighting" label="Syntax Highlighting"></topic>
-		<topic href="doc/tool.html#_content_assist" label="Content assist"></topic>
-		<topic href="doc/tool.html#_real_time_errors_detection" label="Real Time Errors Detection"></topic>
-		<topic href="doc/tool.html#_outlines" label="Outlines">
-			<topic href="doc/tool.html#_the_dynamic_outline" label="The dynamic outline"></topic>
-			<topic href="doc/tool.html#_the_quick_outline" label="The quick outline"></topic>
+<?xml version='1.0' encoding='utf-8'?>
+<toc href="doc/index.html" label="Acceleo">
+	<topic href="doc/index.html#introduction" label="Introduction"></topic>
+	<topic href="doc/index.html#installation" label="Installation"></topic>
+	<topic href="doc/index.html#getting-started" label="Getting Started"></topic>
+	<topic href="doc/index.html#the-acceleo-tooling" label="The Acceleo Tooling">
+		<topic href="doc/index.html#the-acceleo-editor" label="The Acceleo Editor">
+			<topic href="doc/index.html#syntax-highlighting" label="Syntax Highlighting"></topic>
+			<topic href="doc/index.html#content-assist" label="Content assist"></topic>
+			<topic href="doc/index.html#real-time-errors-detection" label="Real Time Errors Detection"></topic>
+			<topic href="doc/index.html#quick-fixes" label="Quick fixes"></topic>
+			<topic href="doc/index.html#outlines" label="Outlines">
+				<topic href="doc/index.html#the-dynamic-outline" label="The dynamic outline"></topic>
+				<topic href="doc/index.html#the-quick-outline" label="The quick outline"></topic>
+			</topic>
+			<topic href="doc/index.html#open-declaration" label="Open Declaration"></topic>
+			<topic href="doc/index.html#show-references" label="Show references"></topic>
+			<topic href="doc/index.html#refactoring" label="Refactoring">
+				<topic href="doc/index.html#rename" label="Rename"></topic>
+				<topic href="doc/index.html#extract-template" label="Extract template"></topic>
+				<topic href="doc/index.html#wrap-in-if" label="Wrap in if"></topic>
+				<topic href="doc/index.html#wrap-in-for" label="Wrap in for"></topic>
+				<topic href="doc/index.html#wrap-in-let" label="Wrap in let"></topic>
+				<topic href="doc/index.html#wrap-in-protected" label="Wrap in protected"></topic>
+			</topic>
 		</topic>
-		<topic href="doc/tool.html#_open_declaration" label="Open Declaration"></topic>
-		<topic href="doc/tool.html#_white_spaces" label="White spaces"></topic>
+		<topic href="doc/index.html#the-acceleo-debugger" label="The Acceleo Debugger">
+			<topic href="doc/index.html#breakpoints" label="Breakpoints"></topic>
+			<topic href="doc/index.html#step-by-step-execution" label="Step by step execution"></topic>
+		</topic>
+		<topic href="doc/index.html#acceleo-profiler" label="Acceleo Profiler">
+			<topic href="doc/index.html#launching-a-generation-with-the-profiler" label="Launching a generation with the profiler"></topic>
+			<topic href="doc/index.html#acceleo-profile-files" label="Acceleo Profile Files"></topic>
+			<topic href="doc/index.html#coverage-informations" label="Coverage informations"></topic>
+		</topic>
+		<topic href="doc/index.html#java-launchers" label="Java launchers"></topic>
 	</topic>
-	<topic href="doc/tool.html#_the_acceleo_debugger" label="The Acceleo Debugger">
-		<topic href="doc/tool.html#_breakpoints" label="Breakpoints"></topic>
-		<topic href="doc/tool.html#_step_by_step_execution" label="Step by step execution"></topic>
+	<topic href="doc/index.html#the-acceleo-language" label="The Acceleo Language">
+		<topic href="doc/index.html#language-documentation" label="Language Documentation">
+			<topic href="doc/index.html#intended-audience" label="Intended Audience"></topic>
+			<topic href="doc/index.html#module" label="Module">
+				<topic href="doc/index.html#imports" label="Imports"></topic>
+				<topic href="doc/index.html#module-elements" label="Module Elements"></topic>
+			</topic>
+			<topic href="doc/index.html#template" label="Template">
+				<topic href="doc/index.html#main-template" label="Main template"></topic>
+				<topic href="doc/index.html#file-block" label="File Block"></topic>
+				<topic href="doc/index.html#for-loops" label="For loops"></topic>
+				<topic href="doc/index.html#if-conditions" label="If conditions"></topic>
+				<topic href="doc/index.html#let-block" label="Let block"></topic>
+				<topic href="doc/index.html#protected-area" label="Protected Area"></topic>
+				<topic href="doc/index.html#variable" label="Variable"></topic>
+			</topic>
+			<topic href="doc/index.html#white-spaces" label="White spaces"></topic>
+			<topic href="doc/index.html#query" label="Query"></topic>
+		</topic>
+		<topic href="doc/index.html#syntax" label="Syntax">
+			<topic href="doc/index.html#comment" label="Comment"></topic>
+			<topic href="doc/index.html#commentblock" label="CommentBlock"></topic>
+			<topic href="doc/index.html#module-2" label="Module"></topic>
+			<topic href="doc/index.html#identifier" label="Identifier"></topic>
+			<topic href="doc/index.html#module-documentation" label="Module Documentation"></topic>
+			<topic href="doc/index.html#metamodel" label="Metamodel"></topic>
+			<topic href="doc/index.html#import" label="Import"></topic>
+			<topic href="doc/index.html#module-reference" label="Module Reference"></topic>
+			<topic href="doc/index.html#module-qualified-name" label="Module Qualified Name"></topic>
+			<topic href="doc/index.html#module-element" label="Module Element"></topic>
+			<topic href="doc/index.html#template-2" label="Template"></topic>
+			<topic href="doc/index.html#visibility" label="Visibility"></topic>
+			<topic href="doc/index.html#parameter" label="Parameter"></topic>
+			<topic href="doc/index.html#statement" label="Statement">
+				<topic href="doc/index.html#file-statement" label="File Statement"></topic>
+				<topic href="doc/index.html#for-statement" label="For Statement"></topic>
+				<topic href="doc/index.html#if-statement" label="If Statement"></topic>
+				<topic href="doc/index.html#let-statement" label="Let Statement"></topic>
+				<topic href="doc/index.html#protected-area-statement" label="Protected Area Statement"></topic>
+				<topic href="doc/index.html#expression-statement" label="Expression Statement"></topic>
+				<topic href="doc/index.html#text-statement" label="Text Statement"></topic>
+			</topic>
+			<topic href="doc/index.html#aql-expression" label="AQL Expression"></topic>
+			<topic href="doc/index.html#aql-type-literal" label="AQL Type Literal"></topic>
+			<topic href="doc/index.html#query-2" label="Query"></topic>
+			<topic href="doc/index.html#module-element-documentation" label="Module Element Documentation"></topic>
+		</topic>
 	</topic>
-	<topic href="doc/tool.html#_acceleo_profiler" label="Acceleo Profiler">
-		<topic href="doc/tool.html#_launching_a_generation_with_the_profiler" label="Launching a generation with the profiler"></topic>
-		<topic href="doc/tool.html#_acceleo_profile_files" label="Acceleo Profile Files"></topic>
-		<topic href="doc/tool.html#_coverage_informations" label="Coverage informations"></topic>
+	<topic href="doc/index.html#launching-an-acceleo-generation" label="Launching an Acceleo generation">
+		<topic href="doc/index.html#eclipse" label="Eclipse"></topic>
+		<topic href="doc/index.html#maven-tycho" label="Maven/Tycho">
+			<topic href="doc/index.html#compilation" label="Compilation"></topic>
+			<topic href="doc/index.html#eclipse-application" label="Eclipse application"></topic>
+			<topic href="doc/index.html#standalone-main-class" label="Standalone main class"></topic>
+		</topic>
 	</topic>
-    </topic>
-	<topic href="doc/language.html" label="Language">
+	<topic href="doc/index.html#using-acceleo-4-programmatically" label="Using Acceleo 4 programmatically">
+		<topic href="doc/index.html#parsing" label="Parsing"></topic>
+		<topic href="doc/index.html#validation" label="Validation"></topic>
+		<topic href="doc/index.html#completion" label="Completion"></topic>
+		<topic href="doc/index.html#generation" label="Generation"></topic>
+		<topic href="doc/index.html#unit-test-module" label="Unit test module"></topic>
+		<topic href="doc/index.html#maven" label="Maven"></topic>
 	</topic>
-	<topic href="doc/generate.html" label="Launching an Acceleo generation">
-	</topic>
-	<topic href="doc/syntax.html" label="Syntax">
-	</topic>
-	<topic href="doc/use.html" label="Using Acceleo 4 programmatically">
-	</topic>
-	<topic href="doc/migration.html" label="Migration">
+	<topic href="doc/index.html#migrate-acceleo-3-templates-to-acceleo-4" label="Migrate Acceleo 3 templates to Acceleo 4">
+		<topic href="doc/index.html#how-to-migrate-acceleo-3-templates-to-acceleo-4" label="How to migrate Acceleo 3 templates to Acceleo 4">
+			<topic href="doc/index.html#the-migration-from-your-acceleo-3-environment" label="The migration from your Acceleo 3 environment"></topic>
+			<topic href="doc/index.html#the-migration-tool-in-command-line" label="The migration tool in command line"></topic>
+			<topic href="doc/index.html#launching-a-migration" label="Launching a migration"></topic>
+		</topic>
+		<topic href="doc/index.html#language-changes" label="Language Changes">
+			<topic href="doc/index.html#modules" label="Modules">
+				<topic href="doc/index.html#module-name" label="module name"></topic>
+				<topic href="doc/index.html#multiple-inheritance" label="multiple inheritance"></topic>
+				<topic href="doc/index.html#module-imports" label="module imports"></topic>
+			</topic>
+			<topic href="doc/index.html#templates" label="Templates">
+				<topic href="doc/index.html#overriding" label="Overriding"></topic>
+				<topic href="doc/index.html#pre-conditions" label="Pre-conditions"></topic>
+				<topic href="doc/index.html#post-treatment" label="Post-treatment"></topic>
+				<topic href="doc/index.html#init-block" label="Init block"></topic>
+				<topic href="doc/index.html#namesakes" label="Namesakes"></topic>
+			</topic>
+			<topic href="doc/index.html#query-3" label="Query">
+				<topic href="doc/index.html#java-services" label="Java services"></topic>
+			</topic>
+			<topic href="doc/index.html#file-block-2" label="File Block"></topic>
+			<topic href="doc/index.html#for-block" label="For Block">
+				<topic href="doc/index.html#simplified-syntax" label="Simplified Syntax"></topic>
+				<topic href="doc/index.html#iteration-count" label="Iteration count"></topic>
+				<topic href="doc/index.html#before-separator-after" label="before, separator, after"></topic>
+				<topic href="doc/index.html#pre-condition" label="Pre-condition"></topic>
+				<topic href="doc/index.html#init-block-2" label="Init block"></topic>
+				<topic href="doc/index.html#ranges" label="Ranges"></topic>
+			</topic>
+			<topic href="doc/index.html#let-statement-2" label="Let Statement"></topic>
+			<topic href="doc/index.html#elselet-blocks" label="ElseLet Blocks"></topic>
+			<topic href="doc/index.html#invocation" label="Invocation">
+				<topic href="doc/index.html#template-3" label="Template"></topic>
+				<topic href="doc/index.html#query-4" label="Query"></topic>
+				<topic href="doc/index.html#for" label="For"></topic>
+				<topic href="doc/index.html#if" label="If"></topic>
+				<topic href="doc/index.html#let" label="let"></topic>
+				<topic href="doc/index.html#expression" label="Expression"></topic>
+			</topic>
+			<topic href="doc/index.html#module-element-call" label="Module Element Call">
+				<topic href="doc/index.html#template-invocation" label="Template invocation"></topic>
+				<topic href="doc/index.html#query-invocation" label="Query invocation"></topic>
+			</topic>
+			<topic href="doc/index.html#variable-2" label="Variable"></topic>
+			<topic href="doc/index.html#expressions" label="Expressions"></topic>
+			<topic href="doc/index.html#set-and-bags" label="Set and Bags"></topic>
+		</topic>
+		<topic href="doc/index.html#behavior-changes" label="Behavior Changes">
+			<topic href="doc/index.html#modules-2" label="Modules">
+				<topic href="doc/index.html#inheritance-behavior" label="inheritance behavior"></topic>
+			</topic>
+			<topic href="doc/index.html#query-5" label="Query">
+				<topic href="doc/index.html#validation-2" label="Validation"></topic>
+				<topic href="doc/index.html#cache" label="Cache"></topic>
+			</topic>
+			<topic href="doc/index.html#let-statement-3" label="Let Statement"></topic>
+		</topic>
+		<topic href="doc/index.html#limitations" label="Limitations">
+			<topic href="doc/index.html#comments" label="Comments"></topic>
+		</topic>
 	</topic>
 </toc>
