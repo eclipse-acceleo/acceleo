@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -822,7 +822,7 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Substitutes all occurences of the substring \"r\" in self by \"t\" and returns the resulting string." +
+		value = "Substitutes all occurrences of the substring \"r\" in self by \"t\" and returns the resulting string." +
 	            " Will return self if it contains no occurrence of the substring r.",
 		params = {
 			@Param(name = "self", value = "The current String"),
@@ -992,7 +992,7 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Converts the given String in a Sequence of Strings representing each caracter.",
+		value = "Converts the given String in a Sequence of Strings representing each character.",
 		params = {
 			@Param(name = "self", value = "The current String"),
 		},

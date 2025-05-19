@@ -627,7 +627,7 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns a set containing the result of applying \"lambda\" recursivly.",
+		value = "Returns a set containing the result of applying \"lambda\" recursively.",
 		params = {
 			@Param(name = "collection", value = "The original collection"),
 			@Param(name = "lambda", value = "The lambda expression")
@@ -1466,7 +1466,7 @@ public class CollectionServices extends AbstractServiceProvider {
 				"to \"true\".",
 		params = {
 			@Param(name = "collection", value = "The input collection"),
-			@Param(name = "lambda", value = "The lamba"),
+			@Param(name = "lambda", value = "The lambda"),
 		},
 		result = "The first element in the given collection for which the value returned by the lambda is \"true\"",
 		examples = {

@@ -7,6 +7,8 @@ Query and navigate in EMF models
 :icons: font
 :source-highlighter: highlightjs
 :listing-caption: Listing
+:idprefix: 
+:idseparator: -
 
 <<<
 
@@ -95,7 +97,7 @@ The following illustration demonstrate the result of the just typing `self` as a
 
 image:images/self.jpg[]  
 
-The variable *self* here is the *Class* named 'Invoice' in the model, as such the query `self` hightlight this instance.
+The variable *self* here is the *Class* named 'Invoice' in the model, as such the query `self` highlight this instance.
 
 ==== eContainer()
 
@@ -147,7 +149,7 @@ Comparing values with an enumeration is slightly different as the enumeration va
 
 image:images/self-econtainer-model-eallcontents.jpg[]
 
-The `eAllContents()` axe is used to browse direct and indirect children. It goes from the starting point to the leafs of the model. Here the expression starts with `self.eContainer(uml::Model)` which has we've seen before goes up until an instance of *Model* is found. From here `eAllContents` is executed returning all the direct and indirect childrens of the 'Travel Agency'  *model* instance.
+The `eAllContents()` axe is used to browse direct and indirect children. It goes from the starting point to the leafs of the model. Here the expression starts with `self.eContainer(uml::Model)` which has we've seen before goes up until an instance of *Model* is found. From here `eAllContents` is executed returning all the direct and indirect children of the 'Travel Agency'  *model* instance.
 
 image:images/econtainer-eallcontents-select-name-startswith.jpg[]
 
@@ -490,7 +492,7 @@ Gets the first element in the current collection for which the value returned by
 Parameters:
 
 * *collection*: The input collection
-* *lambda*: The lamba
+* *lambda*: The lambda
 
 |===
 | *Expression* | *Result*
@@ -608,7 +610,7 @@ Parameters:
 
 ==== Collection->closure( x | ... ) : OrderedSet{Object}
 
-Returns a set containing the result of applying "lambda" recursivly.
+Returns a set containing the result of applying "lambda" recursively.
 
 Parameters:
 
@@ -2223,7 +2225,7 @@ Parameters:
 
 ==== String.characters() : Sequence{String}
 
-Converts the given String in a Sequence of Strings representing each caracter.
+Converts the given String in a Sequence of Strings representing each character.
 
 Parameters:
 
@@ -2604,7 +2606,7 @@ Parameters:
 
 ==== String.substituteAll(String, String) : String
 
-Substitutes all occurences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
+Substitutes all occurrences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.
 
 Parameters:
 
@@ -3018,7 +3020,7 @@ Using AQL, you will now have to write either `collect(m | m.eAllContents(uml::Pr
 
 === Collect and flatten
 
-When a call or a feature acces is done on a collection the result is flattened for the first level. For instance a service returning a collection called on a collection will return a collection of elements and not a collection of collection of elements.
+When a call or a feature access is done on a collection the result is flattened for the first level. For instance a service returning a collection called on a collection will return a collection of elements and not a collection of collection of elements.
 
 === Type literals &amp; children EPackages
 
@@ -3241,26 +3243,26 @@ Since everything is a service feature access and operators are also services. Th
 
 * feature access: the service name is 'aqlFeatureAccess' and the first argument is the result of the previous expression and the second argument is the name of the feature.
 * operators:
-* not: service name 'not' and the result of the expression is passed as the first argument
-* - (unary minus): service name 'unaryMin'  and the result of the expression is passed as the first argument
-* * (multiplication): service name 'mult' two parameters, one for each operand
-* / (division): service name 'divOp' two parameters, one for each operand
-* + (addition): service name 'add' two parameters, one for each operand
-* - (subtraction): service name 'sub' two parameters, one for each operand
-* <= (less or equals than): service name 'lessThanEqual' two parameters, one for each operand
-* >= (more or equals than): service name 'greaterThanEqual' two parameters, one for each operand
-* != or <> (different): service name 'differs' two parameters, one for each operand
-* = or == (equals): service name 'equals' two parameters, one for each operand
-* < (less than): service name 'lessThan' two parameters, one for each operand
-* > (more than): service name 'greaterThan' two parameters, one for each operand
-* and: service name 'and' two parameters, one for each operand
-* or: service name 'or' two parameters, one for each operand
-* xor (exclusive or): service name 'xor' two parameters, one for each operand
-* implies: service name 'implies' two parameters, one for each operand
+** not: service name 'not' and the result of the expression is passed as the first argument
+** - (unary minus): service name 'unaryMin'  and the result of the expression is passed as the first argument
+** * (multiplication): service name 'mult' two parameters, one for each operand
+** / (division): service name 'divOp' two parameters, one for each operand
+** + (addition): service name 'add' two parameters, one for each operand
+** - (subtraction): service name 'sub' two parameters, one for each operand
+** <= (less or equals than): service name 'lessThanEqual' two parameters, one for each operand
+** >= (more or equals than): service name 'greaterThanEqual' two parameters, one for each operand
+** != or <> (different): service name 'differs' two parameters, one for each operand
+** = or == (equals): service name 'equals' two parameters, one for each operand
+** < (less than): service name 'lessThan' two parameters, one for each operand
+** > (more than): service name 'greaterThan' two parameters, one for each operand
+** and: service name 'and' two parameters, one for each operand
+** or: service name 'or' two parameters, one for each operand
+** xor (exclusive or): service name 'xor' two parameters, one for each operand
+** implies: service name 'implies' two parameters, one for each operand
 
-For more advanced services, you can also use lambdas as argument. In this case the service should take a collection as first argument and a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/LambdaValue.java[LambdaValue] as the second argument. Ad an example, you can have a look at the implementation of the select link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/collection/SelectService.java[service] and Java link:https://github.com/eclipse-acceleo/acceleo/blob/8f4dbce6140045128a5c1384f1e60bac2dd95797/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/CollectionServices.java#L406[Method].
+For more advanced services, you can also use lambdas as argument. In this case the service should take a collection as first argument and a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/LambdaValue.java[LambdaValue] as the second argument. As an example, you can have a look at the implementation of the select link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/collection/SelectService.java[service] and Java link:https://github.com/eclipse-acceleo/acceleo/blob/8f4dbce6140045128a5c1384f1e60bac2dd95797/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/CollectionServices.java#L406[Method].
 
-You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]. It's possible to use the following extension point to register your link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]:
+You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing an link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]. It's possible to use the following extension point to register your link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]:
 
 [source,xml]
 ----
@@ -3342,12 +3344,12 @@ You can easily integrate completion and syntax highlighting to your own JFace So
 You can integrate AQL to your own language. AQL provides some generic classes and interfaces to help you with the following topics:
 
 * Runtime:
-* resolve qualified names to find services with the interface link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameResolver.java[IQualifiedNameResolver]. This interface is responsible for mainly two things decide where services can be loaded like a class path in Java and what can be laoded using implementations of the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader] interface. It can then be used with an implementation of link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameQueryEnvironment.java[IQualifiedNameQueryEnvironment] that can be used as the query environment in the above examples.
-* import and/or extends qualified names to reuse or override services. This is done with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader].
+** resolve qualified names to find services with the interface link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameResolver.java[IQualifiedNameResolver]. This interface is responsible for mainly two things decide where services can be loaded like a class path in Java and what can be loaded using implementations of the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader] interface. It can then be used with an implementation of link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameQueryEnvironment.java[IQualifiedNameQueryEnvironment] that can be used as the query environment in the above examples.
+** import and/or extends qualified names to reuse or override services. This is done with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader].
 
-* Development environment (workspace): In this context the resolution should be divided if you work with projects where each project is resmonsible for the resolution of its own resources. That will prevent loading multiple times the same resource.
-* react to changes in the workspace, the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java[IQueryWorkspace] will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/... resources).
-* all the above (resolve/import/extends qualified names) with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java[IQueryWorkspaceQualifiedNameResolver].
+* Development environment (workspace): In this context the resolution should be divided if you work with projects where each project is responsible for the resolution of its own resources. That will prevent loading multiple times the same resource.
+** react to changes in the workspace, the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java[IQueryWorkspace] will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/... resources).
+** all the above (resolve/import/extends qualified names) with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java[IQueryWorkspaceQualifiedNameResolver].
 
 === Maven
 

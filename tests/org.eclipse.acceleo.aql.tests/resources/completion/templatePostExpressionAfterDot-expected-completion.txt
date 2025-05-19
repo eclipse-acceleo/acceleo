@@ -11,7 +11,7 @@ Replacement: 684 28 91 - 688 28 95
 * Label:
 characters()
 * Description:
-characters(self: java.lang.String) = List<br><br>Converts the given String in a Sequence of Strings representing each caracter.<br><br>  @param self<br>        The current String<br><br>  @return<br>        The Sequence of Strings representing each caracter<br><br>
+characters(self: java.lang.String) = List<br><br>Converts the given String in a Sequence of Strings representing each character.<br><br>  @param self<br>        The current String<br><br>  @return<br>        The Sequence of Strings representing each caracter<br><br>
 * Text:
 characters()
 * Type (optional):
@@ -371,7 +371,7 @@ Replacement: 684 28 91 - 688 28 95
 * Label:
 substituteAll()
 * Description:
-substituteAll(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String<br><br>Substitutes all occurences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.<br><br>  @param self<br>        The current String<br>  @param r<br>        The String to replace<br>  @param t<br>        The replacement String<br><br>  @return<br>        A new String<br><br>
+substituteAll(self: java.lang.String, r: java.lang.String, t: java.lang.String) = String<br><br>Substitutes all occurrences of the substring "r" in self by "t" and returns the resulting string. Will return self if it contains no occurrence of the substring r.<br><br>  @param self<br>        The current String<br>  @param r<br>        The String to replace<br>  @param t<br>        The replacement String<br><br>  @return<br>        A new String<br><br>
 * Text:
 substituteAll()
 * Type (optional):

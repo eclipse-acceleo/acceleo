@@ -1454,6 +1454,14 @@ The content of existing <a href="#protected-area">protected area</a> won&#8217;t
 <div class="paragraph">
 <p>See also the <a href="#import">Import</a> as well as the <a href="#module-reference">Module Reference</a> syntax documentation.</p>
 </div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[import org::eclipse::acceleo::aql::ide::ui::module::files::generationPom/]</pre>
+</div>
+</div>
 </div>
 <div class="sect4">
 <h5 id="module-elements">Module Elements</h5>
@@ -1700,7 +1708,7 @@ See also the <a href="#for-statement">For Statement syntax documentation</a>.</p
 <p><strong>Note</strong> that all variables are immutable. Nested <code>Let</code> blocks can override the value of a variable within their own scope, but the variable will go back to its former value once outside of the nested <code>Let</code>. This will produce a warning during validation.</p>
 </div>
 <div class="paragraph">
-<p>See also the <a href="#let-statemnet">Let Statement syntax documentation</a>.</p>
+<p>See also the <a href="#let-statement">Let Statement syntax documentation</a>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -1939,11 +1947,11 @@ In order to keep template code indentation from interfering with the generated o
 <div class="sect3">
 <h4 id="module-2">5.2.3. Module</h4>
 <div class="paragraph">
-<p>The module is the top level element of a .mtl file. It represent a namespace declaring <a href="#template-2">Template</a> and <a href="#query-2">Query</a>. The name of the module is qualified by the location of the file in the source folder.</p>
+<p>The module is the top level element of a <code>.mtl</code> file. It represent a namespace declaring <a href="#template-2">Template</a> and <a href="#query-2">Query</a>. The name of the module is qualified by the location of the file in the source folder.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#module">Module</a> =
+<pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#module-2">Module</a> =
 
 (<a href="#module-documentation">Module Documentation</a>)* '[module ' <a href="#identifier">Identifier</a> '(' <a href="#metamodel">Metamodel</a> ',' (<a href="#metamodel">Metamodel</a>)* ')' ('extends ' <a href="#module-reference">Module Reference</a>)? '/]'
 
@@ -2215,7 +2223,7 @@ If an unknown protected area id is encountered in a pre-existing generated docum
 <div class="sect4">
 <h5 id="text-statement">Text Statement</h5>
 <div class="paragraph">
-<p>This is any other text outside of '[' and ']'.</p>
+<p>This is any other text outside of '[' and ']'. Please see the <a href="#white_spaces">White Spaces</a> section for generation rule and template indentation.</p>
 </div>
 </div>
 </div>
@@ -2231,7 +2239,7 @@ If an unknown protected area id is encountered in a pre-existing generated docum
 <div class="sect3">
 <h4 id="aql-type-literal">5.2.16. AQL Type Literal</h4>
 <div class="paragraph">
-<p>This is a type literal as defined in the Acceleo Query Language.</p>
+<p>This is a type literal as defined in the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#type-literals">Acceleo Query Language</a>.</p>
 </div>
 </div>
 <div class="sect3">
@@ -2276,7 +2284,7 @@ If an unknown protected area id is encountered in a pre-existing generated docum
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section describe how to launch a generation from <a href="#eclipse">Eclipse</a> or <a href="#maventycho">Maven/Tycho</a>.
-Note that you can also use the <a href="#the-acceleo-debugger">The Acceleo Debugger</a> to run a module or directly use Acceleo 4 programmatically, see <a href="#generation">Generation</a>.</p>
+Note that you can also use <a href="#the-acceleo-debugger">The Acceleo Debugger</a> to run a module or directly use Acceleo 4 programmatically, see <a href="#generation">Generation</a>.</p>
 </div>
 <div class="sect2">
 <h3 id="eclipse">6.1. Eclipse</h3>
@@ -3239,7 +3247,7 @@ Thus the migration tool translates each Set into an OrderedSet and each Bag into
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-19 10:17:00 +0200
+Last updated 2025-05-19 11:19:35 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

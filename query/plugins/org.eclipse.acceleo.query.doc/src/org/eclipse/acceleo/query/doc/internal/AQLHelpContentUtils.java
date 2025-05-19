@@ -137,11 +137,6 @@ public final class AQLHelpContentUtils {
 	}
 
 	/**
-	 * The prefix to use to create internal links.
-	 */
-	public static final String AQL_HREF_PREFIX = "aql_service_";
-
-	/**
 	 * 2016 method signature generator.
 	 */
 	public static final Function<Method, StringBuffer> METHOD_SIGNATURE_GENERATOR_2016 = new MethodSignatureGenerator2016();
