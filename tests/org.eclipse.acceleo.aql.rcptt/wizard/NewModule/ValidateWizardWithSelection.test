@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _Eqh10AEiEe6wCshv5RDL9g
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 6/2/23, 10:51 AM
+Save-Time: 5/21/25, 10:04 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -22,7 +22,7 @@ with [get-window "Select a wizard"] {
 }
 with [get-window -class WizardDialog] {
     get-label "" -after [get-label File] -index 3 | get-property "image.path" 
-        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+        | equals "org.eclipse.jface/icons/full/message_warning.png" | verify-true
     get-editbox -after [get-label File] -index 1 | get-property text 
         | equals "The list of metamodel URIs used by the module is empty." | verify-true
     get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
@@ -38,11 +38,11 @@ with [get-window -class WizardDialog] {
     }
     with [get-button "Generate file"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Main template"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Initialize Contents"] {
         get-property enablement | equals true | verify-true
@@ -53,7 +53,7 @@ with [get-window -class WizardDialog] {
         get-property text | equals "" | verify-true
     }
     get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
-    get-button Finish | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
 }
 with [get-window -class WizardDialog] {
     get-button "Add metamodels to the module definition" | click -metaKeys ""
@@ -62,7 +62,7 @@ with [get-window -class WizardDialog] {
 }
 with [get-window -class WizardDialog] {
     get-label "" -after [get-label File] -index 3 | get-property "image.path" 
-        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+        | equals "org.eclipse.jface/icons/full/message_warning.png" | verify-true
     get-editbox -after [get-label File] -index 1 | get-property text 
         | equals "The type of the parameter of the module element cannot be empty." | verify-true
     get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
@@ -78,11 +78,11 @@ with [get-window -class WizardDialog] {
     }
     with [get-button "Generate file"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Main template"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Initialize Contents"] {
         get-property enablement | equals true | verify-true
@@ -93,7 +93,7 @@ with [get-window -class WizardDialog] {
         get-property text | equals "" | verify-true
     }
     get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
-    get-button Finish | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
 }
 with [get-window -class WizardDialog] {
     get-button "Select..." | click -metaKeys ""
@@ -115,11 +115,11 @@ with [get-window -class WizardDialog] {
     }
     with [get-button "Generate file"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Main template"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Initialize Contents"] {
         get-property enablement | equals true | verify-true
@@ -149,11 +149,11 @@ with [get-window -class WizardDialog] {
     }
     with [get-button "Generate file"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Main template"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Initialize Contents"] {
         get-property enablement | equals true | verify-true
@@ -187,7 +187,7 @@ with [get-window -class WizardDialog] {
     }
     with [get-button "Main template"] {
         get-property enablement | equals true | verify-true
-        get-property selected | equals false | verify-true
+        get-property selected | equals true | verify-true
     }
     with [get-button "Initialize Contents"] {
         get-property enablement | equals true | verify-true
@@ -347,7 +347,7 @@ with [get-window -class WizardDialog] {
 }
 with [get-window -class WizardDialog] {
     get-label "" -after [get-label File] -index 3 | get-property "image.path" 
-        | equals "org.eclipse.jface/icons/full/message_error.png" | verify-true
+        | equals "org.eclipse.jface/icons/full/message_warning.png" | verify-true
     get-editbox -after [get-label File] -index 1 | get-property text 
         | equals "The list of metamodel URIs used by the module is empty." | verify-true
     get-editbox -after [get-label "Parent Folder:"] | get-property text | equals "/test/src/test" | verify-true
@@ -378,7 +378,7 @@ with [get-window -class WizardDialog] {
         get-property text | equals "/test/src/test/ModuleServices.java" | verify-true
     }
     get-button "Browse..."  -after [get-label File] | get-property enablement | equals false | verify-true
-    get-button Finish | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
 }
 with [get-window -class WizardDialog] {
     get-button "Add metamodels to the module definition" | click -metaKeys ""

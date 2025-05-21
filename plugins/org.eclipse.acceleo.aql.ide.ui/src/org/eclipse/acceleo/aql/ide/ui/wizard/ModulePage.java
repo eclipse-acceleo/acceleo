@@ -364,7 +364,8 @@ public class ModulePage extends WizardPage {
 			}
 		});
 		removeButton = new Button(tableButtonComposite, SWT.PUSH);
-		Image removeImage = AcceleoUIPlugin.getDefault().getImageRegistry().get(AcceleoUIPlugin.DELETE_IMG_KEY);
+		Image removeImage = AcceleoUIPlugin.getDefault().getImageRegistry().get(
+				AcceleoUIPlugin.DELETE_IMG_KEY);
 		removeButton.setImage(removeImage);
 		removeButton.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.RemoveButton")); //$NON-NLS-1$
 		removeButton.addSelectionListener(new SelectionAdapter() {
@@ -500,6 +501,8 @@ public class ModulePage extends WizardPage {
 
 		// If module element kind == template then activated else desactivated
 		generateFile = new Button(pageGroup, SWT.CHECK);
+		generateFile.setSelection(true);
+		moduleConfiguration.setGenerateFile(true);
 		generateFile.setText(AcceleoUIMessages.getString("AcceleoModuleComposite.TemplateGenerateFile")); //$NON-NLS-1$
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
@@ -515,6 +518,8 @@ public class ModulePage extends WizardPage {
 				"AcceleoModuleComposite.TemplateGenerateFileHelp")); //$NON-NLS-1$
 
 		isMain = new Button(pageGroup, SWT.CHECK);
+		isMain.setSelection(true);
+		moduleConfiguration.setMainTemplate(true);
 		isMain.setText(AcceleoUIMessages.getString("AcceleoModuleComposite.TemplateMain")); //$NON-NLS-1$
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
@@ -688,27 +693,29 @@ public class ModulePage extends WizardPage {
 	 * Checks errors.
 	 */
 	private void checkErrors() {
-		IStatus status = new Status(IStatus.OK, AcceleoUIPlugin.PLUGIN_ID, null);
+		final IStatus status;
 
-		if (moduleConfiguration.getModuleName() == null || "".equals(moduleConfiguration.getModuleName())) { //$NON-NLS-1$
-			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.InvalidName"); //$NON-NLS-1$
+		if (moduleExists(moduleConfiguration.getProjectName(), moduleConfiguration.getParentFolder(),
+				moduleConfiguration.getModuleName())) {
+			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.FileAlreadyExists");
+			// $NON-NLS-1$
 			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
-		} else if (moduleConfiguration.getParentFolder() == null || "".equals(moduleConfiguration //$NON-NLS-1$
+		} else if (moduleConfiguration.getModuleName() == null || "".equals(moduleConfiguration
+				.getModuleName())) { // $NON-NLS-1$
+			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.InvalidName");
+			// $NON-NLS-1$
+			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
+		} else if (moduleConfiguration.getParentFolder() == null || "".equals(moduleConfiguration
+				// $NON-NLS-1$
 				.getParentFolder())) {
-			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.InvalidParentFolder"); //$NON-NLS-1$
+			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.InvalidParentFolder");
+			// $NON-NLS-1$
 			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
-		} else if (moduleConfiguration.getNsURIs() == null || moduleConfiguration.getNsURIs().size() == 0) {
-			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.EmptyMetamodelURIs"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
-		} else if (moduleConfiguration.getModuleElementName() == null || "".equals(moduleConfiguration //$NON-NLS-1$
+		} else if (moduleConfiguration.getModuleElementName() == null || "".equals(moduleConfiguration
+				// $NON-NLS-1$
 				.getModuleElementName())) {
 			String message = AcceleoUIMessages.getString(
 					"AcceleoModuleCompositeMessage.InvalidModuleElementName"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
-		} else if (moduleConfiguration.getModuleElementParameterType() == null || "".equals( //$NON-NLS-1$
-				moduleConfiguration.getModuleElementParameterType())) {
-			String message = AcceleoUIMessages.getString(
-					"AcceleoModuleCompositeMessage.InvalidModuleElementParameterType"); //$NON-NLS-1$
 			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
 		} else if (templateModuleElementKind.getSelection() && moduleConfiguration.isIsInitialized()
 				&& (moduleConfiguration.getInitializationPath() == null || "" //$NON-NLS-1$
@@ -721,13 +728,18 @@ public class ModulePage extends WizardPage {
 			String message = AcceleoUIMessages.getString(
 					"AcceleoModuleCompositeMessage.InvalidModuleElementInitializationPath"); //$NON-NLS-1$
 			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
-		} else if (moduleExists(moduleConfiguration.getProjectName(), moduleConfiguration.getParentFolder(),
-				moduleConfiguration.getModuleName())) {
-			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.FileAlreadyExists"); //$NON-NLS-1$
-			status = new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID, message);
+		} else if (moduleConfiguration.getNsURIs() == null || moduleConfiguration.getNsURIs().size() == 0) {
+			String message = AcceleoUIMessages.getString("AcceleoModuleCompositeMessage.EmptyMetamodelURIs");
+			// $NON-NLS-1$
+			status = new Status(IStatus.WARNING, AcceleoUIPlugin.PLUGIN_ID, message);
+		} else if (moduleConfiguration.getModuleElementParameterType() == null || "".equals( //$NON-NLS-1$
+				moduleConfiguration.getModuleElementParameterType())) {
+			String message = AcceleoUIMessages.getString(
+					"AcceleoModuleCompositeMessage.InvalidModuleElementParameterType"); //$NON-NLS-1$
+			status = new Status(IStatus.WARNING, AcceleoUIPlugin.PLUGIN_ID, message);
+		} else {
+			status = new Status(IStatus.OK, AcceleoUIPlugin.PLUGIN_ID, null);
 		}
-
-		setMessage(MODULE_ELEMENT_NAME, ERROR);
 
 		applyToStatusLine(status);
 	}
@@ -917,7 +929,8 @@ public class ModulePage extends WizardPage {
 				} catch (WrappedException e) {
 					// It catches an EMF WrappedException.
 					// It is very useful if the EMF registry is corrupted by other contributions.
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(ERROR, getClass(), e.getMessage(), e));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(ERROR, getClass(), e.getMessage(),
+							e));
 				}
 			} else {
 				for (int i = 0; i < result.length; i++) {
@@ -1000,18 +1013,21 @@ public class ModulePage extends WizardPage {
 	private boolean moduleExists(String projectName, String outputPath, String module) {
 		boolean result = false;
 
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		if (project.exists() && project.isAccessible()) {
-			IPath path = new Path(outputPath);
-			final IContainer container;
-			if (path.segmentCount() > 1) {
-				container = project.getFolder(path.removeFirstSegments(1));
-			} else {
-				container = project;
-			}
-			if (container.exists() && container.isAccessible()) {
-				IFile file = container.getFile(new Path(module + '.' + AcceleoParser.MODULE_FILE_EXTENSION));
-				result = file.exists() && file.isAccessible();
+		if (projectName != null) {
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+			if (project.exists() && project.isAccessible() && outputPath != null) {
+				IPath path = new Path(outputPath);
+				final IContainer container;
+				if (path.segmentCount() > 1) {
+					container = project.getFolder(path.removeFirstSegments(1));
+				} else {
+					container = project;
+				}
+				if (container.exists() && container.isAccessible()) {
+					IFile file = container.getFile(new Path(module + '.'
+							+ AcceleoParser.MODULE_FILE_EXTENSION));
+					result = file.exists() && file.isAccessible();
+				}
 			}
 		}
 

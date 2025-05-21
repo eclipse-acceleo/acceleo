@@ -135,6 +135,9 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 					openedAcceleoTextDocument = workspace.getDocument(openedDocumentUri);
 					if (openedAcceleoTextDocument != null) {
 						openedAcceleoTextDocument.validateAndPublishResults();
+					} else {
+						throw new IllegalStateException("Could not find the Acceleo Text Document at URI "
+								+ binaryURI + " please check if automatic built is enable");
 					}
 				}
 			}
