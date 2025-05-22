@@ -361,7 +361,7 @@ The content of existing <<protected-area,protected area>> won't be generated if 
 
 === Java launchers
 
-You can select a module file that contains a main template to generate the Java code that will launch your module. There are two menus under *Initialize Generator Launcher*:
+You can select a module file that contains a main template to generate the Java code that will launch your module. There are three menus under *Initialize Generator Launcher*:
 
 * *Java Main Class* that will generate a Java class that can be used in standalone
 ** It creates a Java main class next to your module
@@ -377,7 +377,7 @@ You can select a module file that contains a main template to generate the Java 
 ** If the pom file already exists, it will add an execution to launch the generation
 
 
-image::images/JavaGenerators.png[Java Generators]
+image::images/LauncherGenerators.png[Launcher Generators]
 
 All the code above is generated using Acceleo 4. You can extend and override the content of the generated files like you would with any Acceleo 4 generator. The source code is in this https://github.com/eclipse-acceleo/acceleo/tree/master/plugins/org.eclipse.acceleo.aql.ide.ui/src-module/[source folder].
 
