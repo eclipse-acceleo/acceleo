@@ -39,6 +39,12 @@ For those of you who need to retrieve the source code of Acceleo, it is availabl
 
 In this section, you will create a new project to work with Acceleo.
 
+[NOTE]
+====
+You can use other kind of Java projects like https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Fproject_wizards%2Fnew_plugin_project.htm&cp%3D4_3_9_0_0[Eclipse plug-in] or https://www.vogella.com/tutorials/EclipseMaven/article.html[Maven projects]. Here we use a simple Java project for simplicity.
+====
+
+
 First you need to create a *Java project*:
 
 1. Inside Eclipse select the menu item *File > New > Project...* to open the *New Project* wizard,
@@ -432,6 +438,11 @@ Importing modules can be done right after the module declaration line and requir
 ----
 
 *Note* that modules can only be referenced through their qualified name, even if they are located in the same package.
+
+[NOTE]
+====
+Modules can only be referenced through their qualified name, even if they are located in the same package. To be able to import or extends modules from other projects, you will need to make sure dependencies are correctly set. For Eclipse projects you will need to https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Feditors%2Fmanifest_editor%2Fruntime.htm[export the package] containing the referenced module and https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Feditors%2Fmanifest_editor%2Fdependencies.htm[add a dependency] to the current project. For Maven project you need to https://www.vogella.com/tutorials/EclipseMaven/article.html#adding-dependencies-to-your-project[add a dependency] to the current project.
+====
 
 See also the <<import,Import>> as well as the <<module-reference,Module Reference>> syntax documentation.
 

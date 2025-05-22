@@ -629,6 +629,20 @@ It can be used to generate any kind of text file: code, configuration, documenta
 <div class="paragraph">
 <p>In this section, you will create a new project to work with Acceleo.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can use other kind of Java projects like <a href="https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Fproject_wizards%2Fnew_plugin_project.htm&amp;cp%3D4_3_9_0_0">Eclipse plug-in</a> or <a href="https://www.vogella.com/tutorials/EclipseMaven/article.html">Maven projects</a>. Here we use a simple Java project for simplicity.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>First you need to create a <strong>Java project</strong>:</p>
 </div>
@@ -1450,6 +1464,20 @@ The content of existing <a href="#protected-area">protected area</a> won&#8217;t
 </div>
 <div class="paragraph">
 <p><strong>Note</strong> that modules can only be referenced through their qualified name, even if they are located in the same package.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Modules can only be referenced through their qualified name, even if they are located in the same package. To be able to import or extends modules from other projects, you will need to make sure dependencies are correctly set. For Eclipse projects you will need to <a href="https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Feditors%2Fmanifest_editor%2Fruntime.htm">export the package</a> containing the referenced module and <a href="https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Feditors%2Fmanifest_editor%2Fdependencies.htm">add a dependency</a> to the current project. For Maven project you need to <a href="https://www.vogella.com/tutorials/EclipseMaven/article.html#adding-dependencies-to-your-project">add a dependency</a> to the current project.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>See also the <a href="#import">Import</a> as well as the <a href="#module-reference">Module Reference</a> syntax documentation.</p>
@@ -3247,7 +3275,7 @@ Thus the migration tool translates each Set into an OrderedSet and each Bag into
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-21 14:55:23 +0200
+Last updated 2025-05-22 16:34:41 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
