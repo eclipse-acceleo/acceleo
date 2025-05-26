@@ -94,6 +94,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * An {@link AcceleoSwitch} that provides the {@link List} of {@link AcceleoCompletionProposal} for the
@@ -300,6 +301,11 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	private int position;
 
 	/**
+	 * The {@link EPackage.Registry} used for completion.
+	 */
+	private final Registry ePackageRegistry;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
@@ -311,6 +317,23 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 */
 	public AcceleoAstCompletor(IQualifiedNameQueryEnvironment queryEnvironment,
 			IAcceleoValidationResult acceleoValidationResult, String newLine) {
+		this(queryEnvironment, acceleoValidationResult, newLine, EPackage.Registry.INSTANCE);
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param queryEnvironment
+	 *            the (non-{@code null}) contextual {@link IQualifiedNameQueryEnvironment}.
+	 * @param acceleoValidationResult
+	 *            the (non-{@code null}) contextual {@link IAcceleoValidationResult}.
+	 * @param newLine
+	 *            the new line {@link String}
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
+	 */
+	public AcceleoAstCompletor(IQualifiedNameQueryEnvironment queryEnvironment,
+			IAcceleoValidationResult acceleoValidationResult, String newLine, EPackage.Registry ePackageRegistry) {
 		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
 		this.acceleoValidationResult = Objects.requireNonNull(acceleoValidationResult);
 
@@ -318,6 +341,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		this.acceleoCompletionProposalProvider = new AcceleoCompletionProposalsProvider(newLine);
 		this.newLine = newLine;
 		this.acceleoCodeTemplates = new AcceleoCodeTemplates(newLine);
+		this.ePackageRegistry = ePackageRegistry;
 	}
 
 	/**
@@ -422,7 +446,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 				res.add(AcceleoSyntacticCompletionProposals.OPEN_PARENTHESIS);
 			}
 		} else if (errorModule.getMissingEPackage() != -1) {
-			List<String> candidateMetamodelURIs = new ArrayList<>(EPackage.Registry.INSTANCE.keySet());
+			List<String> candidateMetamodelURIs = new ArrayList<>(ePackageRegistry.keySet());
 			Collections.sort(candidateMetamodelURIs);
 			for (String nsURI : candidateMetamodelURIs) {
 				String metamodelString = AcceleoParser.QUOTE + nsURI + AcceleoParser.QUOTE;
@@ -466,7 +490,7 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 		final List<AcceleoCompletionProposal> res = new ArrayList<AcceleoCompletionProposal>();
 
 		if (errorMetamodel.getFragment() != null) {
-			for (String nsURI : EPackage.Registry.INSTANCE.keySet()) {
+			for (String nsURI : ePackageRegistry.keySet()) {
 				if (nsURI.contains(errorMetamodel.getFragment())) {
 					res.add(new AcceleoCompletionProposal(nsURI, nsURI, AcceleoPackage.Literals.METAMODEL));
 				}

@@ -81,6 +81,7 @@ import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
@@ -544,6 +545,11 @@ public class AcceleoParser {
 	private List<Error> errors;
 
 	/**
+	 * The {@link EPackage.Registry} used to validate {@link Metamodel}.
+	 */
+	private Registry ePackageRegistry;
+
+	/**
 	 * Parses the encoding tag and return the encoding value.
 	 * 
 	 * @param source
@@ -591,7 +597,29 @@ public class AcceleoParser {
 	 */
 	public AcceleoAstResult parse(InputStream source, String charsetName, String moduleQualifiedName)
 			throws IOException {
-		return parse(AcceleoUtil.getContent(source, charsetName), charsetName, moduleQualifiedName);
+		return parse(AcceleoUtil.getContent(source, charsetName), charsetName, moduleQualifiedName,
+				EPackage.Registry.INSTANCE);
+	}
+
+	/**
+	 * Parses the given {@link InputStream}.
+	 * 
+	 * @param source
+	 *            the {@link InputStream}
+	 * @param charsetName
+	 *            The name of a supported {@link java.nio.charset.Charset
+	 *            </code>charset<code>}, <code>null</code> will default to {@link StandardCharsets#UTF_8}
+	 * @param moduleQualifiedName
+	 *            the qualified name of the {@link Module} (e.g. "path::to::module")
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
+	 * @return the parsed {@link AstResult}
+	 * @throws IOException
+	 *             if the {@link InputStream} can't be read
+	 */
+	public AcceleoAstResult parse(InputStream source, String charsetName, String moduleQualifiedName,
+			EPackage.Registry ePackageRegistry) throws IOException {
+		return parse(AcceleoUtil.getContent(source, charsetName), charsetName, moduleQualifiedName, ePackageRegistry);
 	}
 
 	/**
@@ -607,6 +635,25 @@ public class AcceleoParser {
 	 * @return the parsed {@link AstResult}
 	 */
 	public AcceleoAstResult parse(String source, String charsetName, String qualifiedName) {
+		return parse(source, charsetName, qualifiedName, EPackage.Registry.INSTANCE);
+	}
+
+	/**
+	 * Parses the given source text.
+	 * 
+	 * @param source
+	 *            the source text
+	 * @param charsetName
+	 *            The name of a supported {@link java.nio.charset.Charset
+	 *            </code>charset<code>}, <code>null</code> will default to {@link StandardCharsets#UTF_8}
+	 * @param qualifiedName
+	 *            the qualified name of the {@link Module} (e.g. "path::to::module").
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
+	 * @return the parsed {@link AstResult}
+	 */
+	public AcceleoAstResult parse(String source, String charsetName, String qualifiedName,
+			EPackage.Registry ePackageRegistry) {
 
 		this.currentPosition = skipEncoding(source);
 		this.text = source;
@@ -616,6 +663,7 @@ public class AcceleoParser {
 		this.positions = new Positions<>();
 		computeLinesAndColumns(text, textLength);
 		this.errors = new ArrayList<Error>();
+		this.ePackageRegistry = ePackageRegistry;
 
 		skipSpaces();
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
@@ -2224,7 +2272,7 @@ public class AcceleoParser {
 	protected EPackage getEPackage(String ePackageName) {
 		EPackage res = null;
 
-		for (Object object : EPackage.Registry.INSTANCE.values()) {
+		for (Object object : ePackageRegistry.values()) {
 			if (object instanceof EPackage) {
 				if (ePackageName.equals(((EPackage)object).getName())) {
 					res = (EPackage)object;
@@ -2426,7 +2474,7 @@ public class AcceleoParser {
 			}
 			final String nsURI = text.substring(currentPosition, nextQuote);
 			currentPosition = nextQuote;
-			final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
+			final EPackage ePackage = ePackageRegistry.getEPackage(nsURI);
 			final int missingEndQuote = readMissingString(QUOTE);
 			if (ePackage == null || missingEndQuote != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorMetamodel();

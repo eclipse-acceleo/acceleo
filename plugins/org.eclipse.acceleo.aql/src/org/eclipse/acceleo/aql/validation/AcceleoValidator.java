@@ -80,6 +80,7 @@ import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * Validates {@link Module}. A module can be parsed using {@link org.eclipse.acceleo.aql.parser.AcceleoParser
@@ -166,18 +167,37 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final Map<String, List<VarRef>> unresolvedVarRefsMapping = new HashMap<>();
 
 	/**
+	 * The {@link EPackage.Registry} used to validate.
+	 */
+	private final Registry ePackageRegistry;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IQualifiedNameQueryEnvironment}
 	 */
 	public AcceleoValidator(IQualifiedNameQueryEnvironment queryEnvironment) {
+		this(queryEnvironment, EPackage.Registry.INSTANCE);
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
+	 */
+	public AcceleoValidator(IQualifiedNameQueryEnvironment queryEnvironment,
+			EPackage.Registry ePackageRegistry) {
 		this.queryEnvironment = queryEnvironment;
 		this.stringType = new ClassType(queryEnvironment, String.class);
 		this.booleanType = new ClassType(queryEnvironment, boolean.class);
 		this.booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
 		this.integerType = new ClassType(queryEnvironment, Integer.class);
 		validator = new AstValidator(new ValidationServices(queryEnvironment));
+		this.ePackageRegistry = ePackageRegistry;
 	}
 
 	/**
@@ -450,7 +470,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
-		if (errorMetamodel.getFragment() != null && !EPackage.Registry.INSTANCE.containsKey(errorMetamodel
+		if (errorMetamodel.getFragment() != null && !ePackageRegistry.containsKey(errorMetamodel
 				.getFragment())) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, "Invalid metamodel " + errorMetamodel

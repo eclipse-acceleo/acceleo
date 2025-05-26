@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,6 +77,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * The Acceleo implementation of the {@link AstQuickFixesSwitch}.
@@ -131,11 +132,6 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	private final Positions<ASTNode> positions;
 
 	/**
-	 * The new line {@link String}.
-	 */
-	private final String newLine;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
@@ -152,6 +148,39 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	public AqlQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
 			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
 			String newLine) {
+		this(queryEnvironment, validationResult, moduleQualifiedName, moduleText, newLine,
+				EPackage.Registry.INSTANCE);
+	}
+
+	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
+	 * The {@link EPackage.Registry} used to create quick fixes.
+	 */
+	private final Registry ePackageRegistry;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IQualifiedNameQueryEnvironment}.
+	 * @param validationResult
+	 *            the {@link IAcceleoValidationResult}
+	 * @param moduleQualifiedName
+	 *            the {@link Module} qualified name
+	 * @param moduleText
+	 *            the text representation of the {@link Module}
+	 * @param newLine
+	 *            the new line {@link String}
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
+	 */
+	public AqlQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
+			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
+			String newLine, EPackage.Registry ePackageRegistry) {
 		super(validationResult.getAcceleoAstResult().getPositions());
 		this.queryEnvironment = queryEnvironment;
 		this.validationResult = validationResult;
@@ -160,6 +189,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		this.moduleText = moduleText;
 		this.linesAndColumns = AQLUtils.getLinesAndColumns(moduleText);
 		this.newLine = newLine;
+		this.ePackageRegistry = ePackageRegistry;
 
 		this.positions = validationResult.getAcceleoAstResult().getPositions();
 	}
@@ -563,7 +593,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 
 		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
 		final URI uri = resolver.getSourceURI(moduleQualifiedName);
-		for (Object obj : EPackage.Registry.INSTANCE.values()) {
+		for (Object obj : ePackageRegistry.values()) {
 			final EPackage ePkg;
 			if (obj instanceof EPackage.Descriptor) {
 				ePkg = ((EPackage.Descriptor)obj).getEPackage();
