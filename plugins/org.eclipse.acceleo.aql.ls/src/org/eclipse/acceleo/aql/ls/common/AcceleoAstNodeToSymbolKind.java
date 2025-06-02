@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,6 +88,7 @@ public class AcceleoAstNodeToSymbolKind extends AcceleoSwitch<SymbolKind> {
 		IValidationResult expressionValidationResult = this.acceleoValidationResult.getValidationResult(
 				expression.getAst());
 		Set<IType> possibleTypes = expressionValidationResult.getPossibleTypes(expression.getAst().getAst());
+
 		return getSymbolKindFor(possibleTypes);
 	}
 
@@ -98,28 +99,37 @@ public class AcceleoAstNodeToSymbolKind extends AcceleoSwitch<SymbolKind> {
 		// variableType);
 		// Set<IType> possibleTypes = variableTypeValidationResult.getPossibleTypes(variableType.getAst());
 		// return getSymbolKindFor(possibleTypes);
+
 		return SymbolKind.Property;
 	}
 
 	private SymbolKind getSymbolKindFor(Set<IType> possibleTypes) {
+		final SymbolKind res;
+
 		if (possibleTypes == null || possibleTypes.isEmpty()) {
-			return SymbolKind.Object;
+			res = SymbolKind.Object;
 		} else {
 			IType type = possibleTypes.iterator().next();
-			return getSymbolKindFor(type);
+			res = getSymbolKindFor(type);
 		}
+
+		return res;
 	}
 
 	private SymbolKind getSymbolKindFor(IType type) {
-		Object javaClassOrEClass = type.getType();
+		final SymbolKind res;
+
+		final Object javaClassOrEClass = type.getType();
 		if (javaClassOrEClass instanceof Class) {
-			return getSymbolKindFor((Class<?>)javaClassOrEClass);
+			res = getSymbolKindFor((Class<?>)javaClassOrEClass);
 		} else if (javaClassOrEClass instanceof EClass) {
-			return getSymbolKindFor((EClass)javaClassOrEClass);
+			res = getSymbolKindFor((EClass)javaClassOrEClass);
 		} else {
 			throw new IllegalArgumentException("Unexpected 'type' Object in " + type.toString() + ": "
 					+ javaClassOrEClass.toString() + " is neither a Java class nor an EClass instance.");
 		}
+
+		return res;
 	}
 
 	private SymbolKind getSymbolKindFor(EClass eClass) {
@@ -127,7 +137,8 @@ public class AcceleoAstNodeToSymbolKind extends AcceleoSwitch<SymbolKind> {
 	}
 
 	private SymbolKind getSymbolKindFor(Class<?> javaClass) {
-		SymbolKind symbolKind = SymbolKind.Object;
+		final SymbolKind symbolKind;
+
 		if (String.class.isAssignableFrom(javaClass)) {
 			symbolKind = SymbolKind.String;
 		} else if (Number.class.isAssignableFrom(javaClass)) {
@@ -138,7 +149,10 @@ public class AcceleoAstNodeToSymbolKind extends AcceleoSwitch<SymbolKind> {
 			symbolKind = SymbolKind.Array;
 		} else if (Enum.class.isAssignableFrom(javaClass)) {
 			symbolKind = SymbolKind.EnumMember;
+		} else {
+			symbolKind = SymbolKind.Object;
 		}
+
 		return symbolKind;
 	}
 	////
