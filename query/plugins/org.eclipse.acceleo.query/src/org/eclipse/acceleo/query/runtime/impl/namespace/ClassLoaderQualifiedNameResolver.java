@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.namespace;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -675,6 +676,18 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	@Override
 	public IQualifiedNameLookupEngine getLookupEngine() {
 		return lookupEngine;
+	}
+
+	@Override
+	public void dispose() {
+		// most/all classloader should be URLClassLoader
+		if (classLoader instanceof Closeable) {
+			try {
+				((Closeable)classLoader).close();
+			} catch (IOException e) {
+				// should not be an issue
+			}
+		}
 	}
 
 }
