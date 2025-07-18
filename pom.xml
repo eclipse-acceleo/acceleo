@@ -87,7 +87,7 @@
   </distributionManagement>
 
   <modules>
-    <module>releng/org.eclipse.acceleo.targetplatforms/2024-03</module>
+    <module>releng/org.eclipse.acceleo.targetplatforms/2024-06</module>
     
     <module>plugins/org.eclipse.acceleo.ui.interpreter</module>
     <module>features/org.eclipse.acceleo.ui.interpreter-feature</module>
@@ -369,12 +369,12 @@
 
   <profiles>
     <profile>
-      <id>platform-2024-03</id>
+      <id>platform-2024-06</id>
       <activation>
         <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
-          <value>2024-03</value>
+          <value>2024-06</value>
         </property>
       </activation>
       <build>
@@ -386,7 +386,7 @@
               <target>
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
-                  <artifactId>acceleo-2024-03</artifactId>
+                  <artifactId>acceleo-2024-06</artifactId>
                   <version>4.1.1-SNAPSHOT</version>
                 </artifact>
               </target>

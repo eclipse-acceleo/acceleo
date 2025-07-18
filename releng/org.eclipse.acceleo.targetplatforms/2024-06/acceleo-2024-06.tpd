@@ -1,4 +1,4 @@
-target "Acceleo 2024-03 Target Platform"
+target "Acceleo 2024-06 Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"
@@ -8,7 +8,7 @@ include "../common/cdo.tpd"
 
 with requirements
 
-location Eclipse_2024-03 "https://download.eclipse.org/releases/2024-06" {
+location Eclipse_2024-06 "https://download.eclipse.org/releases/2024-06" {
 	org.eclipse.sdk.feature.group lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
@@ -31,9 +31,10 @@ location Eclipse_2024-03 "https://download.eclipse.org/releases/2024-06" {
 	org.eclipse.tm4e.ui lazy
 	org.eclipse.tm4e.languageconfiguration lazy
 	
+	// for maven test project
 	org.eclipse.m2e.feature.feature.group lazy
 }
 
-location Eclipse_4.31_2024-03 "https://download.eclipse.org/eclipse/updates/4.31/" {
+location Eclipse_4.32_2024-06 "https://download.eclipse.org/eclipse/updates/4.32/" {
 	org.eclipse.ui.tests.harness lazy
 }
