@@ -1,0 +1,43 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _9jRHEFW4EfC2hLudpwarmQ,_Ayow4KrpEeqpkej7GeVvKQ
+Element-Name: GenerateMetamodelInWorkspaceMaven
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _FLakMFW5EfC2hLudpwarmQ
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 7/17/25, 11:44 AM
+Tags: fail
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree 
+    | select "test-metamodel/src\\/main\\/java/test.metamodel/generateInMetamodelPlugin.mtl" | double-click
+with [get-editor "generateInMetamodelPlugin.mtl" | get-text-viewer] {
+    set-caret-pos 20 25
+    open-declaration
+}
+get-editor "MyServicesInMetamodelPlugin.java" | get-text-viewer | get-property "getSelectionText()" 
+    | equals getMessageInMetamodelPlugin | verify-true
+
+get-view "Package Explorer" | get-tree | select "test/src\\/main\\/java/test/generate.mtl" | double-click
+with [get-editor "generate.mtl" | get-text-viewer] {
+    set-caret-pos 21 25
+    open-declaration
+}
+get-editor "MyServicesInMetamodelPlugin.java" | get-text-viewer | get-property "getSelectionText()" 
+    | equals getMessageInMetamodelPlugin | verify-true
+
+with [get-editor "generate.mtl"] {
+    click
+    with [get-text-viewer] {
+        set-caret-pos 22 16
+        open-declaration
+    }
+}
+get-editor "MyServices.java" | get-text-viewer | get-property "getSelectionText()" | equals getMessage | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

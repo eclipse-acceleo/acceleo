@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,8 @@ import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * Acceleo service for content assist / auto-completion.
@@ -35,9 +37,19 @@ import org.eclipse.emf.ecore.EObject;
 public class AcceleoCompletor {
 
 	/**
+	 * The name space for completion.
+	 */
+	private static final String TO_COMPLETION_NAMESPACE = "_reserved_::to::completion";
+
+	/**
 	 * The new line {@link String}.
 	 */
 	private String newLine;
+
+	/**
+	 * The {@link EPackage.Registry} used for completion.
+	 */
+	private final Registry ePackageRegistry;
 
 	/**
 	 * Constructor.
@@ -46,13 +58,21 @@ public class AcceleoCompletor {
 	 *            the new line {@link String}
 	 */
 	public AcceleoCompletor(String newLine) {
-		this.newLine = newLine;
+		this(newLine, EPackage.Registry.INSTANCE);
 	}
 
 	/**
-	 * The name space for completion.
+	 * Constructor.
+	 * 
+	 * @param newLine
+	 *            the new line {@link String}
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
 	 */
-	private static final String TO_COMPLETION_NAMESPACE = "_reserved_::to::completion";
+	public AcceleoCompletor(String newLine, Registry ePackageRegistry) {
+		this.newLine = newLine;
+		this.ePackageRegistry = ePackageRegistry;
+	}
 
 	/**
 	 * Provides the {@link List} of {@link AcceleoCompletionProposal completion proposals} available for the
@@ -88,7 +108,8 @@ public class AcceleoCompletor {
 				acceleoAstResult.getModule());
 		final List<AcceleoCompletionProposal> proposals;
 		try {
-			final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
+			final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment,
+					ePackageRegistry);
 			IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(
 					partialAcceleoAstResult, moduleQualifiedNameForCompletion);
 
@@ -135,7 +156,7 @@ public class AcceleoCompletor {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		AcceleoAstCompletor acceleoSyntaxCompletor = new AcceleoAstCompletor(queryEnvironment,
-				acceleoValidationResult, newLine);
+				acceleoValidationResult, newLine, ePackageRegistry);
 
 		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(computedModuleName, sourceFragment,
 				position, acceleoElementToComplete));

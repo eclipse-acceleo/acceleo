@@ -333,7 +333,8 @@ public class AcceleoAstCompletor extends AcceleoSwitch<List<AcceleoCompletionPro
 	 *            the {@link EPackage.Registry}
 	 */
 	public AcceleoAstCompletor(IQualifiedNameQueryEnvironment queryEnvironment,
-			IAcceleoValidationResult acceleoValidationResult, String newLine, EPackage.Registry ePackageRegistry) {
+			IAcceleoValidationResult acceleoValidationResult, String newLine,
+			EPackage.Registry ePackageRegistry) {
 		this.queryEnvironment = Objects.requireNonNull(queryEnvironment);
 		this.acceleoValidationResult = Objects.requireNonNull(acceleoValidationResult);
 

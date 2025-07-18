@@ -132,6 +132,16 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	private final Positions<ASTNode> positions;
 
 	/**
+	 * The new line {@link String}.
+	 */
+	private final String newLine;
+
+	/**
+	 * The {@link EPackage.Registry} used to create quick fixes.
+	 */
+	private final Registry ePackageRegistry;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
@@ -151,16 +161,6 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		this(queryEnvironment, validationResult, moduleQualifiedName, moduleText, newLine,
 				EPackage.Registry.INSTANCE);
 	}
-
-	/**
-	 * The new line {@link String}.
-	 */
-	private final String newLine;
-
-	/**
-	 * The {@link EPackage.Registry} used to create quick fixes.
-	 */
-	private final Registry ePackageRegistry;
 
 	/**
 	 * Constructor.

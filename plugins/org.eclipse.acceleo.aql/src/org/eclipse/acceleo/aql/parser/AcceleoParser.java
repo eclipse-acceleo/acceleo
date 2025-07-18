@@ -547,7 +547,24 @@ public class AcceleoParser {
 	/**
 	 * The {@link EPackage.Registry} used to validate {@link Metamodel}.
 	 */
-	private Registry ePackageRegistry;
+	private final Registry ePackageRegistry;
+
+	/**
+	 * Constructor.
+	 */
+	public AcceleoParser() {
+		this(EPackage.Registry.INSTANCE);
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
+	 */
+	public AcceleoParser(Registry ePackageRegistry) {
+		this.ePackageRegistry = ePackageRegistry;
+	}
 
 	/**
 	 * Parses the encoding tag and return the encoding value.
@@ -597,29 +614,7 @@ public class AcceleoParser {
 	 */
 	public AcceleoAstResult parse(InputStream source, String charsetName, String moduleQualifiedName)
 			throws IOException {
-		return parse(AcceleoUtil.getContent(source, charsetName), charsetName, moduleQualifiedName,
-				EPackage.Registry.INSTANCE);
-	}
-
-	/**
-	 * Parses the given {@link InputStream}.
-	 * 
-	 * @param source
-	 *            the {@link InputStream}
-	 * @param charsetName
-	 *            The name of a supported {@link java.nio.charset.Charset
-	 *            </code>charset<code>}, <code>null</code> will default to {@link StandardCharsets#UTF_8}
-	 * @param moduleQualifiedName
-	 *            the qualified name of the {@link Module} (e.g. "path::to::module")
-	 * @param ePackageRegistry
-	 *            the {@link EPackage.Registry}
-	 * @return the parsed {@link AstResult}
-	 * @throws IOException
-	 *             if the {@link InputStream} can't be read
-	 */
-	public AcceleoAstResult parse(InputStream source, String charsetName, String moduleQualifiedName,
-			EPackage.Registry ePackageRegistry) throws IOException {
-		return parse(AcceleoUtil.getContent(source, charsetName), charsetName, moduleQualifiedName, ePackageRegistry);
+		return parse(AcceleoUtil.getContent(source, charsetName), charsetName, moduleQualifiedName);
 	}
 
 	/**
@@ -635,25 +630,6 @@ public class AcceleoParser {
 	 * @return the parsed {@link AstResult}
 	 */
 	public AcceleoAstResult parse(String source, String charsetName, String qualifiedName) {
-		return parse(source, charsetName, qualifiedName, EPackage.Registry.INSTANCE);
-	}
-
-	/**
-	 * Parses the given source text.
-	 * 
-	 * @param source
-	 *            the source text
-	 * @param charsetName
-	 *            The name of a supported {@link java.nio.charset.Charset
-	 *            </code>charset<code>}, <code>null</code> will default to {@link StandardCharsets#UTF_8}
-	 * @param qualifiedName
-	 *            the qualified name of the {@link Module} (e.g. "path::to::module").
-	 * @param ePackageRegistry
-	 *            the {@link EPackage.Registry}
-	 * @return the parsed {@link AstResult}
-	 */
-	public AcceleoAstResult parse(String source, String charsetName, String qualifiedName,
-			EPackage.Registry ePackageRegistry) {
 
 		this.currentPosition = skipEncoding(source);
 		this.text = source;
@@ -663,7 +639,6 @@ public class AcceleoParser {
 		this.positions = new Positions<>();
 		computeLinesAndColumns(text, textLength);
 		this.errors = new ArrayList<Error>();
-		this.ePackageRegistry = ePackageRegistry;
 
 		skipSpaces();
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
@@ -2255,35 +2230,6 @@ public class AcceleoParser {
 			} else {
 				skipSpaces();
 				break;
-			}
-		}
-
-		return res;
-	}
-
-	/**
-	 * Gets the {@link EPackage} with the given {@link EPackage#getName() name}.
-	 * 
-	 * @param ePackageName
-	 *            the {@link EPackage#getName() name}
-	 * @return the {@link EPackage} with the given {@link EPackage#getName() name} if any, <code>null</code>
-	 *         otherwise
-	 */
-	protected EPackage getEPackage(String ePackageName) {
-		EPackage res = null;
-
-		for (Object object : ePackageRegistry.values()) {
-			if (object instanceof EPackage) {
-				if (ePackageName.equals(((EPackage)object).getName())) {
-					res = (EPackage)object;
-					break;
-				}
-			} else if (object instanceof EPackage.Descriptor) {
-				// TODO this code load all EPackages
-				final EPackage ePackage = ((EPackage.Descriptor)object).getEPackage();
-				if (ePackageName.equals(ePackage.getName())) {
-					res = ePackage;
-				}
 			}
 		}
 

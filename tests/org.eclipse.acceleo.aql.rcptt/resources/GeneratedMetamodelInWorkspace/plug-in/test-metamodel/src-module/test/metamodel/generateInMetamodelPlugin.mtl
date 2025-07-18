@@ -1,0 +1,22 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module generate.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module generateInMetamodelPlugin('https://www.eclipse.org/acceleo/my')/]
+
+[import test::metamodel::services::MyServicesInMetamodelPlugin/]
+
+[**
+ * The documentation of the template generateElement.
+ * @param parameter
+ * @main
+ */]
+[template public generateElement(root : my::Root)]
+  [file ('file.txt', overwrite, 'UTF-8')]
+    [root.name/]
+    [root.getMessageInMetamodelPlugin()/]
+  [/file]
+[/template]

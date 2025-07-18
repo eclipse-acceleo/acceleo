@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -178,9 +178,13 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	}
 
 	@Override
-	protected void validate(AcceleoProject project, IQualifiedNameResolver resolver, String qualifiedName) {
+	protected void validate(AcceleoProject project, IQualifiedNameResolver resolver, String qualifiedName,
+			boolean forEPackage) {
 		final AcceleoTextDocument acceleoTextDocument = project.getDocument(qualifiedName);
 		if (acceleoTextDocument != null) {
+			if (forEPackage) {
+				acceleoTextDocument.parseContents();
+			}
 			acceleoTextDocument.validateAndPublishResults();
 		}
 	}

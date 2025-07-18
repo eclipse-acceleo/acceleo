@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,8 +61,10 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironmen
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IWorkspaceRegistry;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.lsp4j.CodeAction;
@@ -196,11 +198,12 @@ public class AcceleoTextDocument {
 	/**
 	 * Parses the contents of this document and updates the cached AST.
 	 */
-	private void parseContents() {
+	public void parseContents() {
 		AcceleoAstResult parsingResult = null;
 
 		if (isOpened()) {
-			AcceleoParser acceleoParser = new AcceleoParser();
+			final IWorkspaceRegistry ePackageRegistry = getProject().getWorkspace().getEPackageRegistry();
+			AcceleoParser acceleoParser = new AcceleoParser(ePackageRegistry);
 			final String encoding;
 			try (InputStream is = new ByteArrayInputStream(this.contents.getBytes())) {
 				encoding = acceleoParser.parseEncoding(is);
@@ -240,18 +243,20 @@ public class AcceleoTextDocument {
 		}
 		try {
 			final IAcceleoValidationResult validationResults;
+			final IWorkspaceRegistry ePackageRegistry = getProject().getWorkspace().getEPackageRegistry();
 			if (isOpened()) {
 				String moduleQualifiedNameForValidation = VALIDATION_NAMESPACE
 						+ AcceleoParser.QUALIFIER_SEPARATOR + qualifiedName;
 				resolver.register(moduleQualifiedNameForValidation, acceleoAstResult.getModule());
 				try {
 					validationResults = validate(queryEnvironment, this.acceleoAstResult,
-							moduleQualifiedNameForValidation);
+							moduleQualifiedNameForValidation, ePackageRegistry);
 				} finally {
 					resolver.clear(Collections.singleton(moduleQualifiedNameForValidation));
 				}
 			} else {
-				validationResults = validate(queryEnvironment, acceleoAstResult, qualifiedName);
+				validationResults = validate(queryEnvironment, acceleoAstResult, qualifiedName,
+						ePackageRegistry);
 			}
 			this.acceleoValidationResult = validationResults;
 		} finally {
@@ -788,6 +793,8 @@ public class AcceleoTextDocument {
 	 *            the (non-{@code null}) {@link AcceleoAstResult}.
 	 * @param moduleQualifiedNameForValidation
 	 *            the context qualified name
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry}
 	 * @return the {@link IAcceleoValidationResult}.
 	 */
 	// FIXME the "synchronized" here is an ugly but convenient way to ensure that a validation finishes before
@@ -795,8 +802,8 @@ public class AcceleoTextDocument {
 	// for another validation
 	private static synchronized IAcceleoValidationResult validate(
 			IQualifiedNameQueryEnvironment queryEnvironment, AcceleoAstResult acceleoAstResult,
-			String moduleQualifiedNameForValidation) {
-		final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
+			String moduleQualifiedNameForValidation, IWorkspaceRegistry ePackageRegistry) {
+		final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment, ePackageRegistry);
 		final IAcceleoValidationResult validationResults = acceleoValidator.validate(acceleoAstResult,
 				moduleQualifiedNameForValidation);
 
@@ -920,9 +927,10 @@ public class AcceleoTextDocument {
 
 		final ASTNode astNode = acceleoAstResult.getAstNode(atEndIndex);
 		if (astNode != null) {
+			final IWorkspaceRegistry ePackageRegistry = getProject().getWorkspace().getEPackageRegistry();
 			final AcceleoQuickFixesSwitch quickFixesSwitch = new AcceleoQuickFixesSwitch(
 					getQueryEnvironment(), acceleoValidationResult, getModuleQualifiedName(), getContents(),
-					System.lineSeparator());
+					System.lineSeparator(), ePackageRegistry);
 			final List<IAstQuickFix> quickFixes = quickFixesSwitch.getQuickFixes(astNode);
 			res = quickFixes.stream().map(qf -> transform(qf)).collect(Collectors.toList());
 		} else {

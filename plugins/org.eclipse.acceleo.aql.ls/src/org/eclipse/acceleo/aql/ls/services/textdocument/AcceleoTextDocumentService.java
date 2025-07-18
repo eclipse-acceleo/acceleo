@@ -31,6 +31,7 @@ import org.eclipse.acceleo.aql.outline.AcceleoOutliner;
 import org.eclipse.acceleo.aql.outline.AcceleoSymbol;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IWorkspaceRegistry;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionContext;
 import org.eclipse.lsp4j.CodeActionParams;
@@ -242,7 +243,10 @@ public class AcceleoTextDocumentService implements TextDocumentService, Language
 			canceler.checkCanceled();
 
 			// Acceleo provides an API to access completion proposals.
-			final AcceleoCompletor acceleoCompletor = new AcceleoCompletor(System.lineSeparator());
+			final IWorkspaceRegistry ePackageRegistry = acceleoTextDocument.getProject().getWorkspace()
+					.getEPackageRegistry();
+			final AcceleoCompletor acceleoCompletor = new AcceleoCompletor(System.lineSeparator(),
+					ePackageRegistry);
 			final String source = acceleoTextDocument.getContents();
 			final int atIndex = AcceleoLanguageServerPositionUtils.getCorrespondingCharacterIndex(position,
 					source);

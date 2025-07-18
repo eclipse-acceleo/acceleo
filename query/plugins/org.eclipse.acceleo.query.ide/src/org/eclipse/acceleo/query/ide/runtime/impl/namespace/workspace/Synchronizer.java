@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.namespace.workspace.IWorkspaceResolverProvider;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryProject;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
@@ -69,7 +70,13 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 				res = shouldInitializationSynchronize(project);
 				if (resource.getType() == IResource.FILE && extensions.contains(resource
 						.getFileExtension())) {
-					resourcesToInitialize.add(resource);
+					if (JavaLoader.CLASS.equals(resource.getFileExtension())) {
+						// we register Java classes first to get a chance to register any EPackages generated
+						// in the workspace
+						resourcesToInitialize.add(0, resource);
+					} else {
+						resourcesToInitialize.add(resource);
+					}
 				} else if (resource.getType() == IResource.PROJECT) {
 					resourcesToInitialize.add(resource);
 				}
@@ -352,7 +359,9 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 		} else if (resource.getType() == IResource.FILE && extensions.contains(resource.getFileExtension())) {
 			final IFile file = (IFile)resource;
 			final URI uri = file.getLocationURI();
-			this.queryWorkspace.addResource(getProject(file.getProject()), uri);
+			synchronized(this) {
+				this.queryWorkspace.addResource(getOrCreateProject(queryWorkspace, file.getProject()), uri);
+			}
 		}
 	}
 

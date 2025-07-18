@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,12 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.workspace.Synchronizer;
+import org.eclipse.acceleo.query.runtime.impl.namespace.workspace.WorkspaceJavaLoaderWrapper;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IWorkspaceRegistry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -163,8 +166,12 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
 				AcceleoPlugin.getPlugin().getClass().getClassLoader(), eclipseProject,
 				AcceleoParser.QUALIFIER_SEPARATOR, true);
-		resolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
-		resolver.addLoader(QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, true));
+		final IWorkspaceRegistry ePackageRegistry = acceleoProject.getWorkspace().getEPackageRegistry();
+		final ModuleLoader moduleLoader = new ModuleLoader(new AcceleoParser(ePackageRegistry), null);
+		resolver.addLoader(new WorkspaceModuleLoaderWrapper(moduleLoader, acceleoProject.getWorkspace()));
+		final ILoader javaLoader = QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR,
+				true);
+		resolver.addLoader(new WorkspaceJavaLoaderWrapper(javaLoader, acceleoProject.getWorkspace()));
 
 		return QueryPlugin.getPlugin().createWorkspaceQualifiedNameResolver(eclipseProject, resolver,
 				synchronizer);

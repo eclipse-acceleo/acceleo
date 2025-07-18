@@ -23,6 +23,8 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.workspace.IWorkspaceRegistry;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * A workspace invalidates resolvers according to outside changes.
@@ -47,6 +49,11 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 	 * The mapping from a resolver to its project.
 	 */
 	private final Map<IQueryWorkspaceQualifiedNameResolver, P> resolverToProject = new LinkedHashMap<>();
+
+	/**
+	 * The {@link IWorkspaceRegistry}.
+	 */
+	private final IWorkspaceRegistry registry = new WorkspaceRegistry(this);
 
 	/**
 	 * Constructor.
@@ -92,7 +99,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 			// so we revalidate all that have been resolved in the dependency project
 			final Set<String> resolvedQualifiedNames = dependencyResolver.getResolvedQualifiedNames();
 			final Set<String> dependsOn = invalidate(dependency, dependencyResolver, resolvedQualifiedNames);
-			validate(dependency, dependencyResolver, dependsOn);
+			validate(dependency, dependencyResolver, dependsOn, false);
 		}
 	}
 
@@ -114,7 +121,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 		if (qualifiedName != null) {
 			// clean previous resolved values to resolve the new one
 			resolver.clear(Collections.singleton(qualifiedName));
-			validate(project, resolver, qualifiedName);
+			validate(project, resolver, qualifiedName, false);
 			Set<String> qualifiedNames = Collections.singleton(qualifiedName);
 			final Set<P> projectsToUpdate = new LinkedHashSet<P>();
 			projectsToUpdate.add(project);
@@ -124,7 +131,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 			for (P projectToUpdate : projectsToUpdate) {
 				final Set<String> dependsOn = invalidate(projectToUpdate, getResolver(projectToUpdate),
 						qualifiedNames);
-				validate(projectToUpdate, getResolver(projectToUpdate), dependsOn);
+				validate(projectToUpdate, getResolver(projectToUpdate), dependsOn, false);
 			}
 		}
 
@@ -190,7 +197,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 			for (String dependent : dependsOn) {
 				resolverToUpdate.resolve(dependent);
 			}
-			validate(projectToUpdate, resolverToUpdate, dependsOn);
+			validate(projectToUpdate, resolverToUpdate, dependsOn, false);
 		}
 	}
 
@@ -229,7 +236,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 		if (targetQualifiedName != null) {
 			// clean previous resolved values to resolve the new one
 			targetResolver.clear(Collections.singleton(targetQualifiedName));
-			validate(targetProject, targetResolver, targetQualifiedName);
+			validate(targetProject, targetResolver, targetQualifiedName, false);
 			final Set<P> projectsToUpdate = new LinkedHashSet<P>();
 			projectsToUpdate.add(targetProject);
 			for (IQueryWorkspaceQualifiedNameResolver dependencyResolver : getResolver(targetProject)
@@ -246,7 +253,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 		}
 		// then validate everything
 		for (Entry<P, Set<String>> entry : dependsOn.entrySet()) {
-			validate(entry.getKey(), getResolver(entry.getKey()), entry.getValue());
+			validate(entry.getKey(), getResolver(entry.getKey()), entry.getValue(), false);
 		}
 
 		return targetQualifiedName;
@@ -257,7 +264,8 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 		final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
 		final String qualifiedName = resolver.getQualifiedName(resource);
 		// this resource has been resolved before
-		if (qualifiedName != null && resolver.getResolvedQualifiedNames().contains(qualifiedName)) {
+		if (qualifiedName != null && (resolver.getResolvedQualifiedNames().contains(qualifiedName)
+				|| getEPackageRegistry().isEPackage(qualifiedName))) {
 			final Object resolved = resolver.resolve(qualifiedName);
 			final Set<String> qualifiedNames = new LinkedHashSet<>();
 			qualifiedNames.add(qualifiedName);
@@ -266,7 +274,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 				replaceResolver(project, resolver);
 			}
 			updateResourceContents(project, getResolver(project), resource);
-			validate(project, resolver, qualifiedName);
+			validate(project, resolver, qualifiedName, false);
 			propagateChanges(project, qualifiedNames);
 		}
 
@@ -326,7 +334,7 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 		for (String qualifiedName : qualifiedNames) {
 			resolver.resolve(qualifiedName);
 		}
-		validate(project, resolver, dependsOn);
+		validate(project, resolver, dependsOn, false);
 	}
 
 	/**
@@ -370,10 +378,13 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 	 *            the {@link IQualifiedNameResolver}
 	 * @param qualifiedNames
 	 *            the {@link Set} of qualified names
+	 * @param forEPackage
+	 *            <code>true</code> if the validation has been triggered by an {@link EPackage} change
 	 */
-	protected void validate(P project, IQualifiedNameResolver resolver, final Set<String> qualifiedNames) {
+	protected void validate(P project, IQualifiedNameResolver resolver, final Set<String> qualifiedNames,
+			boolean forEPackage) {
 		for (String qualifiedName : qualifiedNames) {
-			validate(project, resolver, qualifiedName);
+			validate(project, resolver, qualifiedName, forEPackage);
 		}
 	}
 
@@ -399,8 +410,11 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 	 *            the {@link IQualifiedNameResolver} for the passed project
 	 * @param qualifiedName
 	 *            the qualified name to validate
+	 * @param forEPackage
+	 *            <code>true</code> if the validation has been triggered by an {@link EPackage} change
 	 */
-	protected abstract void validate(P project, IQualifiedNameResolver resolver, String qualifiedName);
+	protected abstract void validate(P project, IQualifiedNameResolver resolver, String qualifiedName,
+			boolean forEPackage);
 
 	/**
 	 * Gets the lookup engine for the given qualified name in the given project.
@@ -425,5 +439,19 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 	 * @return the created {@link IQueryWorkspaceQualifiedNameResolver} for the given project
 	 */
 	protected abstract IQueryWorkspaceQualifiedNameResolver createResolver(P project);
+
+	@Override
+	public IWorkspaceRegistry getEPackageRegistry() {
+		return registry;
+	}
+
+	@Override
+	public void changeEPackage(String nsURI) {
+		final Set<String> dependOn = getEPackageRegistry().getDependsOn(nsURI);
+		for (Entry<P, IQueryWorkspaceQualifiedNameResolver> entry : projectToResolver.entrySet()) {
+			invalidate(entry.getKey(), entry.getValue(), dependOn);
+			validate(entry.getKey(), entry.getValue(), dependOn, true);
+		}
+	}
 
 }

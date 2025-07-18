@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated My -->
+      <package
+            uri="https://www.eclipse.org/acceleo/my"
+            class="test.metamodel.my.MyPackage"
+            genModel="model/My.genmodel"/>
+   </extension>
+
+</plugin>

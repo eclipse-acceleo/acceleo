@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@ package org.eclipse.acceleo.query.runtime.namespace.workspace;
 
 import java.net.URI;
 import java.util.Set;
+
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * A workspace invalidates resolvers according to outside changes.
@@ -109,5 +111,20 @@ public interface IQueryWorkspace<P> {
 	 * @return the {@link Set} of resource extensions to check
 	 */
 	public Set<String> getExtensions();
+
+	/**
+	 * Gets the {@link IWorkspaceRegistry}
+	 * 
+	 * @return the {@link IWorkspaceRegistry}
+	 */
+	public IWorkspaceRegistry getEPackageRegistry();
+
+	/**
+	 * Changes the given metamodel {@link EPackage#getNsURI() nsURI}.
+	 * 
+	 * @param nsURI
+	 *            the metamodel {@link EPackage#getNsURI() nsURI}
+	 */
+	public void changeEPackage(String nsURI);
 
 }
