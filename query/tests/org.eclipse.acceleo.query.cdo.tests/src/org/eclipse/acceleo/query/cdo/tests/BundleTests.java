@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public class BundleTests {
 	}
 
 	@Test
-	public void isRegisteredHTTPServiceConfigurator() {
+	public void isRegisteredCDOResourceSetConfigurator() {
 		boolean hasCDOResourceSetConfigurator = false;
 		for (IResourceSetConfigurator configurator : AQLUtils.getResourceSetConfigurators()) {
 			if (configurator instanceof CDOResourceSetConfigurator) {
