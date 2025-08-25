@@ -25,12 +25,12 @@
    <feature id="org.eclipse.acceleo.query.cdo.source">
       <category name="org.eclipse.acceleo.query"/>
    </feature>
-   <!--feature id="org.eclipse.acceleo.query.sirius">
+   <feature id="org.eclipse.acceleo.query.sirius">
       <category name="org.eclipse.acceleo.query"/>
    </feature>
    <feature id="org.eclipse.acceleo.query.sirius.source">
       <category name="org.eclipse.acceleo.query"/>
-   </feature-->
+   </feature>
    <!-- Acceleo -->
    <feature id="org.eclipse.acceleo.aql.feature">
       <category name="org.eclipse.acceleo.aql"/>
