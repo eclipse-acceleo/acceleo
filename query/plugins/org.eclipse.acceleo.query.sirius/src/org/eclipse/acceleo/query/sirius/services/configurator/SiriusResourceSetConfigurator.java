@@ -265,41 +265,32 @@ public class SiriusResourceSetConfigurator implements IResourceSetConfigurator {
     @Override
     public ResourceSet createResourceSetForModels(Object context, Map<String, String> options) {
         ResourceSet created = null;
-        final String sessionURIStr = options.get(AqlSiriusUtils.SIRIUS_SESSION_OPTION);
-        if (sessionURIStr != null && !sessionURIStr.isEmpty()) {
-            URI sessionURI = URI.createURI(sessionURIStr, false);
-            final String baseURIStr = options.get(AQLUtils.BASE_URI_OPTION);
-            if (baseURIStr != null) {
-                sessionURI = sessionURI.resolve(URI.createURI(baseURIStr));
-            }
-            if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
-                try {
-                    final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
-                    sessions.put(context, session);
-                    if (!session.isOpen()) {
-                        session.open(new NullProgressMonitor());
-                        sessionToClose.add(session);
-                    }
-                    created = session.getTransactionalEditingDomain().getResourceSet();
-                    SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
-                    created.eAdapters().add(transiantAttachment);
-                    transientAttachments.put(session, transiantAttachment);
-                    // CHECKSTYLE:OFF
-                } catch (Exception e) {
-                    // CHECKSTYLE:ON
-                    // TODO remove this workaround see https://support.jira.obeo.fr/browse/VP-5389
-                    if (PlatformUI.isWorkbenchRunning()) {
-                        MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                                "Unable to open Sirius Session",
-                                "Check the " + AqlSiriusUtils.SIRIUS_SESSION_OPTION
-                                    + " option or try to open the session manually by double clicking the .aird file:\n"
-                                    + e.getMessage());
-                    }
+        final Session session = AqlSiriusUtils.getSession(options, new NullProgressMonitor());
+        try {
+            if (session != null) {
+                sessions.put(context, session);
+                if (!session.isOpen()) {
+                    session.open(new NullProgressMonitor());
+                    sessionToClose.add(session);
                 }
-            } else {
-                throw new IllegalArgumentException("The Sirius session doesn't exist: " + sessionURI);
+                created = session.getTransactionalEditingDomain().getResourceSet();
+                SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
+                created.eAdapters().add(transiantAttachment);
+                transientAttachments.put(session, transiantAttachment);
+            }
+            // CHECKSTYLE:OFF
+        } catch (Exception e) {
+            // CHECKSTYLE:ON
+            // TODO remove this workaround see https://support.jira.obeo.fr/browse/VP-5389
+            if (PlatformUI.isWorkbenchRunning()) {
+                MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                        "Unable to open Sirius Session",
+                        "Check the " + AqlSiriusUtils.SIRIUS_SESSION_OPTION
+                            + " option or try to open the session manually by double clicking the .aird file:\n"
+                            + e.getMessage());
             }
         }
+
         return created;
     }
 
