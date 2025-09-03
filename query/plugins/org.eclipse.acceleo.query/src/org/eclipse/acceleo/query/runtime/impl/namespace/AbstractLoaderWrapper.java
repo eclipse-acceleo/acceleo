@@ -70,6 +70,11 @@ public class AbstractLoaderWrapper implements ILoader {
 	}
 
 	@Override
+	public List<String> getNsURIImports(Object object) {
+		return loader.getNsURIImports(object);
+	}
+
+	@Override
 	public String getExtends(Object object) {
 		return loader.getExtends(object);
 	}

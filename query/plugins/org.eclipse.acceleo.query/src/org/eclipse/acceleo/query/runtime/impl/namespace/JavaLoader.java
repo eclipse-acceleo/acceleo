@@ -77,6 +77,11 @@ public class JavaLoader extends AbstractLoader {
 	}
 
 	@Override
+	public List<String> getNsURIImports(Object object) {
+		return Collections.emptyList();
+	}
+
+	@Override
 	public String getExtends(Object object) {
 		return null;
 	}

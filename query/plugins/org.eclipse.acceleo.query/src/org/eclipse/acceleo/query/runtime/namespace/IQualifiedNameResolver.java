@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * Resolves qualified names.
@@ -174,6 +175,15 @@ public interface IQualifiedNameResolver {
 	 * @return the {@link List} of imported qualified name for the given qualified name
 	 */
 	List<String> getImports(String qualifiedName);
+
+	/**
+	 * Gets the {@link List} of {@link EPackage#getNsURI() nsURI} imported by the given {@link Object}.
+	 * 
+	 * @param object
+	 *            the {@link Object}
+	 * @return the {@link List} of {@link EPackage#getNsURI() nsURI} imported by the given {@link Object}
+	 */
+	List<String> getNsURIImports(String qualifiedName);
 
 	/**
 	 * Gets the {@link Set} of qualified name depending on the given qualified name. Opposite relation of

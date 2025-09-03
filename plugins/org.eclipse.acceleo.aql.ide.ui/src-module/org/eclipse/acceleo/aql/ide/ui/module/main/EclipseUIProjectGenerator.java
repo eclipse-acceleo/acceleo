@@ -35,6 +35,7 @@ import org.eclipse.acceleo.aql.ide.ui.evaluation.strategy.AcceleoUIWorkspaceWrit
 import org.eclipse.acceleo.aql.ide.ui.module.services.Services;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
@@ -53,6 +54,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.pde.internal.core.bundle.WorkspaceBundleModel;
@@ -135,7 +137,8 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		final IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);
 
 		final Module module = (Module)resolver.resolve(moduleQualifiedName);
-		AcceleoUtil.registerEPackage(queryEnvironment, resolver, module);
+		final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(resolver, moduleQualifiedName);
+		AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, nsURIs);
 		final Template main = AcceleoUtil.getMainTemplates(module).iterator().next();
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
@@ -151,10 +154,9 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 			final Module modelModule = loadModelModule(URI.createFileURI(moduleAbsolutePath),
 					modelModuleQualifiedName);
 			modelModules.add(modelModule);
-		}
-		// We register model modules EPackage for type resolution
-		for (Module modelModule : modelModules) {
-			AcceleoUtil.registerEPackage(queryEnvironment, resolver, modelModule);
+			final Set<String> modelNsURIs = AQLUtils.getAllNeededEPackages(resolver,
+					modelModuleQualifiedName);
+			AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, modelNsURIs);
 		}
 		dependencyBundleNames = new LinkedHashSet<>();
 		for (Module modelModule : modelModules) {

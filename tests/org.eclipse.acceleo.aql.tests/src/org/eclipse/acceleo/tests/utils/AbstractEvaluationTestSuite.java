@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2024 Obeo.
+ * Copyright (c) 2016, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoUtil;
@@ -32,9 +33,11 @@ import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.strategy.DefaultWriterFactory;
 import org.eclipse.acceleo.aql.evaluation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.Test;
@@ -117,8 +120,9 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
 				.getURIConverter(), new DefaultWriterFactory());
-		AcceleoUtil.registerEPackage(queryEnvironment, queryEnvironment.getLookupEngine().getResolver(),
-				module);
+		final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(queryEnvironment.getLookupEngine()
+				.getResolver(), qualifiedName);
+		AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, nsURIs);
 		AcceleoUtil.generate(evaluator, queryEnvironment, module, model, strategy, memoryDestination, null,
 				new BasicMonitor());
 
@@ -187,8 +191,9 @@ public abstract class AbstractEvaluationTestSuite extends AbstractLanguageTestSu
 		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final IAcceleoGenerationStrategy strategy = new DefaultGenerationStrategy(model.getResourceSet()
 				.getURIConverter(), new DefaultWriterFactory());
-		AcceleoUtil.registerEPackage(queryEnvironmentWindowsEndLine, queryEnvironmentWindowsEndLine
-				.getLookupEngine().getResolver(), module);
+		final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(queryEnvironmentWindowsEndLine
+				.getLookupEngine().getResolver(), qualifiedName);
+		AQLUtils.registerEPackages(queryEnvironmentWindowsEndLine, EPackage.Registry.INSTANCE, nsURIs);
 		AcceleoUtil.generate(evaluatorWindowsEndLine, queryEnvironmentWindowsEndLine, module, model, strategy,
 				memoryDestination, null, new BasicMonitor());
 

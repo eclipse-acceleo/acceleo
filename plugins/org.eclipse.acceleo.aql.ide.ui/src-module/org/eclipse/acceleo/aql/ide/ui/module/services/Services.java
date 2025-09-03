@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.ide.ui.module.services;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.AcceleoUtil;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
@@ -142,7 +144,18 @@ public class Services {
 	 *         {@link Module} dependencies
 	 */
 	public Set<EPackage> getAllEPackages(Module module) {
-		return AcceleoUtil.getAllNeededEPackages(workspaceResolver, module);
+		final Set<EPackage> res = new LinkedHashSet<>();
+
+		final String qualifiedName = getQualifiedName(module);
+		final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(workspaceResolver, qualifiedName);
+		for (String nsURI : nsURIs) {
+			final EPackage ePkg = EPackage.Registry.INSTANCE.getEPackage(nsURI);
+			if (ePkg != null) {
+				res.add(ePkg);
+			}
+		}
+
+		return res;
 	}
 
 	/**

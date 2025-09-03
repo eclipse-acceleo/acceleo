@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.emf.common.util.BasicMonitor.Printing;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.equinox.app.IApplication;
@@ -266,7 +267,8 @@ public class AcceleoLauncher implements IApplication {
 			final Module mainModule;
 			if (resolved instanceof Module) {
 				mainModule = (Module)resolved;
-				AcceleoUtil.registerEPackage(queryEnvironment, resolver, mainModule);
+				final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(resolver, moduleQualifiedName);
+				AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, nsURIs);
 			} else {
 				mainModule = null;
 			}

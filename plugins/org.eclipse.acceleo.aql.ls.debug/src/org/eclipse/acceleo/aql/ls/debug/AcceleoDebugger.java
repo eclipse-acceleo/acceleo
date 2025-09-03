@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.acceleo.AcceleoASTNode;
 import org.eclipse.acceleo.Block;
@@ -76,6 +77,7 @@ import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -510,7 +512,8 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		final Object resolved = resolver.resolve(moduleQualifiedName);
 		if (resolved instanceof Module) {
 			astResult = ((Module)resolved).getAst();
-			AcceleoUtil.registerEPackage(queryEnvironment, resolver, (Module)resolved);
+			final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(resolver, moduleQualifiedName);
+			AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, nsURIs);
 		}
 	}
 

@@ -37,6 +37,7 @@ import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * Resolve from a {@link ClassLoader}.
@@ -94,6 +95,11 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 * Mapping from qualifiedName to its imports.
 	 */
 	private final Map<String, List<String>> qualifiedNameToImports = new HashMap<String, List<String>>();
+
+	/**
+	 * Mapping from qualifiedName to its {@link EPackage#getNsURI() nsURI} imports.
+	 */
+	private final Map<String, List<String>> qualifiedNameToNsURIImports = new HashMap<String, List<String>>();
 
 	/**
 	 * Mapping from qualifiedName to qualified names that import it.
@@ -298,6 +304,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	 */
 	protected void dummyRegistration(String qualifiedName) {
 		qualifiedNameToImports.put(qualifiedName, Collections.emptyList());
+		qualifiedNameToNsURIImports.put(qualifiedName, Collections.emptyList());
 		qualifiedNameToExtend.put(qualifiedName, null);
 		qualifiedNameToObject.put(qualifiedName, null);
 	}
@@ -323,6 +330,8 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	protected void register(ILoader loader, String qualifiedName, Object object) {
 		final List<String> imports = loader.getImports(object);
 		qualifiedNameToImports.put(qualifiedName, imports);
+		final List<String> nsURIImports = loader.getNsURIImports(object);
+		qualifiedNameToNsURIImports.put(qualifiedName, nsURIImports);
 		for (String imp : imports) {
 			qualifiedNameImportedBy.computeIfAbsent(imp, qn -> new ArrayList<>()).add(qualifiedName);
 		}
@@ -381,6 +390,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 					}
 				}
 			}
+			qualifiedNameToNsURIImports.remove(qualifiedName);
 			final String extended = qualifiedNameToExtend.remove(qualifiedName);
 			if (extended != null) {
 				final List<String> extendedBy = qualifiedNameExtendedBy.get(extended);
@@ -447,6 +457,15 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		}
 
 		return qualifiedNameToImports.getOrDefault(qualifiedName, Collections.emptyList());
+	}
+
+	@Override
+	public List<String> getNsURIImports(String qualifiedName) {
+		if (!qualifiedNameToNsURIImports.containsKey(qualifiedName)) {
+			load(qualifiedName);
+		}
+
+		return qualifiedNameToNsURIImports.getOrDefault(qualifiedName, Collections.emptyList());
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
@@ -129,6 +130,21 @@ public class ModuleLoader extends AbstractLoader {
 				res.add(moduleRef.getQualifiedName());
 			}
 		}
+
+		return res;
+	}
+
+	@Override
+	public List<String> getNsURIImports(Object object) {
+		final List<String> res = new ArrayList<String>();
+
+		final Module module = (Module)object;
+		for (Metamodel metamodel : module.getMetamodels()) {
+			if (metamodel.getReferencedPackage() != null) {
+				res.add(metamodel.getReferencedPackage().getNsURI());
+			}
+		}
+
 		return res;
 	}
 

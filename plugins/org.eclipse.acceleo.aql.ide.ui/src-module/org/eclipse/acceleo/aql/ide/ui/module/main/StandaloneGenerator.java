@@ -43,6 +43,7 @@ import org.eclipse.acceleo.aql.ide.ui.AcceleoUIPlugin;
 import org.eclipse.acceleo.aql.ide.ui.module.services.Services;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
@@ -59,6 +60,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.pde.internal.core.bundle.WorkspaceBundleModel;
@@ -126,7 +128,8 @@ public class StandaloneGenerator extends AbstractGenerator {
 		final IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);
 
 		final Module module = (Module)resolver.resolve(moduleQualifiedName);
-		AcceleoUtil.registerEPackage(queryEnvironment, resolver, module);
+		final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(resolver, moduleQualifiedName);
+		AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, nsURIs);
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
 		final IQualifiedNameResolver workspaceResolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
@@ -145,7 +148,9 @@ public class StandaloneGenerator extends AbstractGenerator {
 				+ getAcceleoVersionLowerBound() + "," + getAcceleoVersionUpperBound() + ")\"");
 		dependencyBundleNames.add("org.antlr.runtime;bundle-version=\"[" + getANTLRVersionLowerBound() + ","
 				+ getANTLRVersionUpperBound() + ")\"");
-		AcceleoUtil.registerEPackage(queryEnvironment, workspaceResolver, modelModule);
+		final Set<String> modelNsURIs = AQLUtils.getAllNeededEPackages(workspaceResolver,
+				modelModuleQualifiedName);
+		AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, modelNsURIs);
 		dependencyBundleNames.addAll(getDependencyBundleNames(queryEnvironment, modelModule));
 
 		synchronized(this) {

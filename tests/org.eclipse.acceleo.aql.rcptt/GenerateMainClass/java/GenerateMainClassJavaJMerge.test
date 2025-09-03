@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _1CoCMAr6EfCsX_XF2qbZag
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 3/27/25, 4:27 PM
+Save-Time: 9/2/25, 4:55 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -116,7 +116,8 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "\t\tfinal AcceleoEvaluator evaluator = createAcceleoEvaluator(targetURI, resolver, queryEnvironment);\n"
     + "\t\tfinal IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);\n\n"
     + "\t\tfinal Module module = (Module) resolver.resolve(moduleQualifiedName);\n"
-    + "\t\tAcceleoUtil.registerEPackage(queryEnvironment, resolver, module);\n"
+    + "\t\tfinal Set<String> nsURIs = AQLUtils.getAllNeededEPackages(resolver, moduleQualifiedName);\n"
+    + "\t\tAQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, nsURIs);\n"
     + "\t\tfinal URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));\n"
     + "\t\tfinal List<Template> mainTemplates = getTemplates(module);\n\n"
     + "\t\tmonitor.beginTask(\"Generating\", resources.size() + 1 + mainTemplates.size() * resources.size() + 1);\n"
@@ -484,10 +485,10 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "\t}\n\n"
     + "}" | verify-true
 with [get-editor "TestGenerator.java" | get-text-viewer] {
-    select-range 121 17 121 18
+    select-range 122 17 122 18
     type-text "d NOT"
     key-type Left
-    select-range 124 9 124 10
+    select-range 125 9 125 10
     key-type Left
     key-type Enter
     key-type Up
@@ -594,7 +595,8 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "\t\tfinal AcceleoEvaluator evaluator = createAcceleoEvaluator(targetURI, resolver, queryEnvironment);\n"
     + "\t\tfinal IAcceleoGenerationStrategy strategy = createGenerationStrategy(resourceSetForModels);\n\n"
     + "\t\tfinal Module module = (Module) resolver.resolve(moduleQualifiedName);\n"
-    + "\t\tAcceleoUtil.registerEPackage(queryEnvironment, resolver, module);\n"
+    + "\t\tfinal Set<String> nsURIs = AQLUtils.getAllNeededEPackages(resolver, moduleQualifiedName);\n"
+    + "\t\tAQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, nsURIs);\n"
     + "\t\tfinal URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));\n"
     + "\t\tfinal List<Template> mainTemplates = getTemplates(module);\n\n"
     + "\t\tmonitor.beginTask(\"Generating\", resources.size() + 1 + mainTemplates.size() * resources.size() + 1);\n"

@@ -48,6 +48,7 @@ import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -938,6 +939,107 @@ public final class AQLUtils {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Gets the {@link List} of all needed qualified name dependencies for the given qualified name.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param qualifiedName
+	 *            the starting qualified name
+	 * @return the {@link List} of all needed qualified name dependences for the given qualified name
+	 */
+	public static Set<String> getAllNeededQualifiedNames(IQualifiedNameResolver resolver,
+			String qualifiedName) {
+		final Set<String> res = new LinkedHashSet<>();
+
+		Set<String> currentQualifiedNames = new LinkedHashSet<>();
+		res.add(qualifiedName);
+		currentQualifiedNames.add(qualifiedName);
+		do {
+			final Set<String> addedQualifiedNames = new LinkedHashSet<>();
+			for (String currentQualifiedName : currentQualifiedNames) {
+				final String extds = resolver.getExtend(currentQualifiedName);
+				if (extds != null) {
+					if (res.add(extds)) {
+						addedQualifiedNames.add(extds);
+					}
+				}
+				for (String imprt : resolver.getImports(currentQualifiedName)) {
+					if (res.add(imprt)) {
+						addedQualifiedNames.add(imprt);
+					}
+				}
+			}
+			currentQualifiedNames = addedQualifiedNames;
+		} while (!currentQualifiedNames.isEmpty());
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Set} all {@link EPackage #getNsURI() nsURI} used by the given qualified name and direct
+	 * and indirect qualified name dependencies.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 * @param qualifiedName
+	 *            the starting qualified name
+	 * @return the {@link Set} all {@link EPackage} used by the given {@link Module} and direct and indirect
+	 *         {@link Module} dependencies.
+	 */
+	public static Set<String> getAllNeededEPackages(IQualifiedNameResolver resolver, String qualifiedName) {
+		final Set<String> res = new LinkedHashSet<>();
+
+		for (String dependency : getAllNeededQualifiedNames(resolver, qualifiedName)) {
+			res.addAll(resolver.getNsURIImports(dependency));
+		}
+
+		return res;
+	}
+
+	/**
+	 * Registers the given {@link Set} of {@link EPackage#getNsURI() nsURIs} to the given
+	 * {@link IQueryEnvironment} using the given {@link EPackage.Registry}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IQueryEnvironment} used for registration
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry} used to resolve given {@link EPackage#getNsURI() nsURIs}
+	 * @param nsURIs
+	 *            the {@link Set} of {@link EPackage#getNsURI() nsURIs} to register
+	 * @return the {@link List} of {@link EPackage#getNsURI() nsURIs} that could not be registered
+	 */
+	public static List<String> registerEPackages(IQueryEnvironment queryEnvironment,
+			EPackage.Registry ePackageRegistry, Set<String> nsURIs) {
+		final List<String> res = new ArrayList<>();
+
+		for (String nsURI : nsURIs) {
+			final EPackage ePkg = ePackageRegistry.getEPackage(nsURI);
+			if (ePkg != null) {
+				registerEPackage(queryEnvironment, ePkg);
+			} else {
+				res.add(nsURI);
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Registers the given {@link EPackage} in the given {@link IQueryEnvironment} recursively.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IQueryEnvironment}
+	 * @param ePackage
+	 *            the {@link EPackage}
+	 */
+	private static void registerEPackage(IQueryEnvironment queryEnvironment, EPackage ePackage) {
+		queryEnvironment.registerEPackage(ePackage);
+		for (EPackage child : ePackage.getESubpackages()) {
+			registerEPackage(queryEnvironment, child);
+		}
 	}
 
 }

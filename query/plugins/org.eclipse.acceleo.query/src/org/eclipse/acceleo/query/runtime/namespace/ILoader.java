@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * Loads an {@link Object} from a qualified name.
@@ -95,13 +96,22 @@ public interface ILoader {
 			String contextQualifiedName);
 
 	/**
-	 * Gets the {@link List} of qualified names from the given {@link Object}.
+	 * Gets the {@link List} of qualified names imported by the given {@link Object}.
 	 * 
 	 * @param object
 	 *            the {@link Object}
 	 * @return the {@link List} of qualified names from the given {@link Object}
 	 */
 	List<String> getImports(Object object);
+
+	/**
+	 * Gets the {@link List} of {@link EPackage#getNsURI() nsURI} imported by the given {@link Object}.
+	 * 
+	 * @param object
+	 *            the {@link Object}
+	 * @return the {@link List} of {@link EPackage#getNsURI() nsURI} imported by the given {@link Object}
+	 */
+	List<String> getNsURIImports(Object object);
 
 	/**
 	 * Gets the super name space of the given {@link Object}.

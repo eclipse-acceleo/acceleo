@@ -158,6 +158,11 @@ public abstract class QueryWorkspaceQualifiedNameResolver implements IQueryWorks
 	}
 
 	@Override
+	public List<String> getNsURIImports(String qualifiedName) {
+		return resolver.getNsURIImports(qualifiedName);
+	}
+
+	@Override
 	public Set<String> getDependOn(String qualifiedName) {
 		return resolver.getDependOn(qualifiedName);
 	}
