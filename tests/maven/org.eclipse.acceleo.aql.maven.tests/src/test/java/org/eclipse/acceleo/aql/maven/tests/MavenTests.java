@@ -35,9 +35,10 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedName
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -60,7 +61,7 @@ public class MavenTests {
 		final String moduleQualifiedName = "org::eclipse::acceleo::aql::maven::tests::main";
 
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
-				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+				.getClassLoader(), EPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);
 		final Map<String, String> options = new HashMap<>();
 		final ArrayList<Exception> exceptions = new ArrayList<>();
 		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
@@ -117,7 +118,7 @@ public class MavenTests {
 		final String moduleQualifiedName = "org::eclipse::acceleo::aql::maven::tests::main";
 
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
-				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+				.getClassLoader(), EPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);
 		final Map<String, String> options = new HashMap<>();
 		final ArrayList<Exception> exceptions = new ArrayList<>();
 		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, resolver,
