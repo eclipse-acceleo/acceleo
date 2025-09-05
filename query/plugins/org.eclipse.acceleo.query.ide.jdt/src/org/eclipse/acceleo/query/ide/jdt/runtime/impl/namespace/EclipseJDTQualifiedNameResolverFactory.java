@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.acceleo.query.ide.runtime.namespace.IQualifiedNameResolverFac
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * The factory for {@link EclipseQualifiedNameResolver}.
@@ -26,10 +27,10 @@ import org.eclipse.core.resources.IProject;
 public class EclipseJDTQualifiedNameResolverFactory implements IQualifiedNameResolverFactory {
 
 	@Override
-	public IQualifiedNameResolver createResolver(ClassLoader classLoader, IProject project,
-			String qualifierSeparator, boolean forWorkspace) {
-		return new EclipseJDTQualifiedNameResolver(classLoader, project, qualifierSeparator, forWorkspace,
-				new ArrayList<>());
+	public IQualifiedNameResolver createResolver(ClassLoader classLoader, EPackage.Registry ePackageRegistry,
+			IProject project, String qualifierSeparator, boolean forWorkspace) {
+		return new EclipseJDTQualifiedNameResolver(classLoader, ePackageRegistry, project, qualifierSeparator,
+				forWorkspace, new ArrayList<>());
 	}
 
 	@Override

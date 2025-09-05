@@ -77,7 +77,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * The Acceleo implementation of the {@link AstQuickFixesSwitch}.
@@ -137,11 +136,6 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	private final String newLine;
 
 	/**
-	 * The {@link EPackage.Registry} used to create quick fixes.
-	 */
-	private final Registry ePackageRegistry;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
@@ -158,29 +152,6 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	public AqlQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
 			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
 			String newLine) {
-		this(queryEnvironment, validationResult, moduleQualifiedName, moduleText, newLine,
-				EPackage.Registry.INSTANCE);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IQualifiedNameQueryEnvironment}.
-	 * @param validationResult
-	 *            the {@link IAcceleoValidationResult}
-	 * @param moduleQualifiedName
-	 *            the {@link Module} qualified name
-	 * @param moduleText
-	 *            the text representation of the {@link Module}
-	 * @param newLine
-	 *            the new line {@link String}
-	 * @param ePackageRegistry
-	 *            the {@link EPackage.Registry}
-	 */
-	public AqlQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
-			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
-			String newLine, EPackage.Registry ePackageRegistry) {
 		super(validationResult.getAcceleoAstResult().getPositions());
 		this.queryEnvironment = queryEnvironment;
 		this.validationResult = validationResult;
@@ -189,9 +160,17 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		this.moduleText = moduleText;
 		this.linesAndColumns = AQLUtils.getLinesAndColumns(moduleText);
 		this.newLine = newLine;
-		this.ePackageRegistry = ePackageRegistry;
 
 		this.positions = validationResult.getAcceleoAstResult().getPositions();
+	}
+
+	/**
+	 * Gets the {@link IQualifiedNameQueryEnvironment}.
+	 * 
+	 * @return the {@link IQualifiedNameQueryEnvironment}
+	 */
+	protected IQualifiedNameQueryEnvironment getQueryEnvironment() {
+		return queryEnvironment;
 	}
 
 	@Override
@@ -224,7 +203,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	private List<IAstQuickFix> getSurroundWithLetStatementQuickFix(VarRef varRef,
 			final Statement containingStatement) {
 		final List<IAstQuickFix> res = new ArrayList<>();
-		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		final IQualifiedNameResolver resolver = getQueryEnvironment().getLookupEngine().getResolver();
 		final URI uri = resolver.getSourceURI(moduleQualifiedName);
 		final LetStatement letStatement = AcceleoPackage.eINSTANCE.getAcceleoFactory().createLetStatement();
 		final Block body = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBlock();
@@ -282,7 +261,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
 		final IAstQuickFix fix = new AstQuickFix("Add parameter " + varRef.getVariableName());
-		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		final IQualifiedNameResolver resolver = getQueryEnvironment().getLookupEngine().getResolver();
 		final URI uri = resolver.getSourceURI(moduleQualifiedName);
 		if (moduleElement instanceof Template) {
 			final Template template = (Template)moduleElement;
@@ -352,7 +331,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 
 		if (errorCall.isMissingEndParenthesis()) {
 			final IAstQuickFix fix = new AstQuickFix("Add missing closing parenthesis");
-			final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+			final IQualifiedNameResolver resolver = getQueryEnvironment().getLookupEngine().getResolver();
 			final URI uri = resolver.getSourceURI(moduleQualifiedName);
 			final int offset = positions.getEndPositions(errorCall);
 			final int line = positions.getEndLines(errorCall);
@@ -371,7 +350,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
 		if (!AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(call.getServiceName())) {
-			final IType returnType = new ClassType(queryEnvironment, String.class);
+			final IType returnType = new ClassType(getQueryEnvironment(), String.class);
 			final List<Set<IType>> argumentTypes = getArgumentPossibleTypes(call);
 			final List<EClassifier> missingEClassifiers = getEClassifiersWithMissingEPackages(argumentTypes);
 			if (!missingEClassifiers.isEmpty()) {
@@ -405,7 +384,11 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final Set<EPackage> knownPackages = new HashSet<>();
 		for (Metamodel metamodel : module.getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {
-				knownPackages.add(metamodel.getReferencedPackage());
+				final IQualifiedNameResolver resolver = getQueryEnvironment().getLookupEngine().getResolver();
+				final EPackage ePkg = resolver.getEPackage(metamodel.getReferencedPackage());
+				if (ePkg != null) {
+					knownPackages.add(ePkg);
+				}
 			}
 		}
 
@@ -429,7 +412,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 
 		for (EClassifier eClassifier : eClassifiers) {
 			if (eClassifier != null && eClassifier.getEPackage() != null) {
-				final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+				final IQualifiedNameResolver resolver = getQueryEnvironment().getLookupEngine().getResolver();
 				final URI uri = resolver.getSourceURI(moduleQualifiedName);
 				final EPackage ePkg = eClassifier.getEPackage();
 				final IAstQuickFix fix = new AstQuickFix("Add " + ePkg.getNsURI());
@@ -529,7 +512,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 				if (receiverPossibleType instanceof ICollectionType) {
 					receiverCollectionTypes.add(receiverPossibleType);
 				} else {
-					receiverCollectionTypes.add(new SetType(queryEnvironment, receiverPossibleType));
+					receiverCollectionTypes.add(new SetType(getQueryEnvironment(), receiverPossibleType));
 				}
 			}
 			res.add(receiverCollectionTypes);
@@ -557,7 +540,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final List<IAstQuickFix> res;
 
 		final String ePackageName = eClassifierTypeLiteral.getEPackageName();
-		if (queryEnvironment.getEPackageProvider().getEPackage(ePackageName).isEmpty()) {
+		if (getQueryEnvironment().getEPackageProvider().getEPackage(ePackageName).isEmpty()) {
 			res = getAddMetamodelsQuickFixes(ePackageName);
 		} else {
 			res = Collections.emptyList();
@@ -570,7 +553,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final List<IAstQuickFix> res;
 
 		final String ePackageName = enumLiteral.getEPackageName();
-		if (queryEnvironment.getEPackageProvider().getEPackage(ePackageName).isEmpty()) {
+		if (getQueryEnvironment().getEPackageProvider().getEPackage(ePackageName).isEmpty()) {
 			res = getAddMetamodelsQuickFixes(ePackageName);
 		} else {
 			res = Collections.emptyList();
@@ -591,19 +574,11 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 	private List<IAstQuickFix> getAddMetamodelsQuickFixes(final String ePackageName) {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
-		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		final IQualifiedNameResolver resolver = getQueryEnvironment().getLookupEngine().getResolver();
 		final URI uri = resolver.getSourceURI(moduleQualifiedName);
-		for (Object obj : ePackageRegistry.values()) {
-			final EPackage ePkg;
-			if (obj instanceof EPackage.Descriptor) {
-				ePkg = ((EPackage.Descriptor)obj).getEPackage();
-			} else if (obj instanceof EPackage) {
-				ePkg = (EPackage)obj;
-			} else {
-				// this should not happen
-				continue;
-			}
-			if (ePkg.getName().equals(ePackageName)) {
+		for (String nsURI : resolver.getAvailableNsURIs()) {
+			final EPackage ePkg = resolver.getEPackage(nsURI);
+			if (ePkg != null && ePkg.getName().equals(ePackageName)) {
 				final IAstQuickFix fix = new AstQuickFix("Add " + ePkg.getNsURI());
 				final int offset;
 				final int line;
@@ -659,7 +634,7 @@ public class AqlQuickFixesSwitch extends AstQuickFixesSwitch {
 		final List<IAstQuickFix> res = new ArrayList<>();
 
 		final String signature = getSignature(serviceName, argumentTypes);
-		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		final IQualifiedNameResolver resolver = getQueryEnvironment().getLookupEngine().getResolver();
 		final URI uri = resolver.getSourceURI(moduleQualifiedName);
 		if (isQueryModule(moduleQualifiedName)) {
 			final IAstQuickFix fix = new AstQuickFix("Add query " + signature + " to this module");

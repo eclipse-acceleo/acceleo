@@ -26,8 +26,6 @@ import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * Acceleo service for content assist / auto-completion.
@@ -47,31 +45,13 @@ public class AcceleoCompletor {
 	private String newLine;
 
 	/**
-	 * The {@link EPackage.Registry} used for completion.
-	 */
-	private final Registry ePackageRegistry;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param newLine
 	 *            the new line {@link String}
 	 */
 	public AcceleoCompletor(String newLine) {
-		this(newLine, EPackage.Registry.INSTANCE);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param newLine
-	 *            the new line {@link String}
-	 * @param ePackageRegistry
-	 *            the {@link EPackage.Registry}
-	 */
-	public AcceleoCompletor(String newLine, Registry ePackageRegistry) {
 		this.newLine = newLine;
-		this.ePackageRegistry = ePackageRegistry;
 	}
 
 	/**
@@ -108,8 +88,7 @@ public class AcceleoCompletor {
 				acceleoAstResult.getModule());
 		final List<AcceleoCompletionProposal> proposals;
 		try {
-			final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment,
-					ePackageRegistry);
+			final AcceleoValidator acceleoValidator = new AcceleoValidator(queryEnvironment);
 			IAcceleoValidationResult acceleoValidationResult = acceleoValidator.validate(
 					partialAcceleoAstResult, moduleQualifiedNameForCompletion);
 
@@ -156,7 +135,7 @@ public class AcceleoCompletor {
 		final List<AcceleoCompletionProposal> completionProposals = new ArrayList<>();
 
 		AcceleoAstCompletor acceleoSyntaxCompletor = new AcceleoAstCompletor(queryEnvironment,
-				acceleoValidationResult, newLine, ePackageRegistry);
+				acceleoValidationResult, newLine);
 
 		completionProposals.addAll(acceleoSyntaxCompletor.getCompletion(computedModuleName, sourceFragment,
 				position, acceleoElementToComplete));

@@ -199,6 +199,15 @@ public interface IQualifiedNameResolver {
 	Set<String> getDependOn(String qualifiedName);
 
 	/**
+	 * Gets the {@link Set} of qualified names that depend on the given {@link EPackage#getNsURI() nsURI}.
+	 * 
+	 * @param qualifiedName
+	 *            the {@link EPackage#getNsURI() nsURI}
+	 * @return the {@link Set} of qualified names that depend on the given {@link EPackage#getNsURI() nsURI}
+	 */
+	Set<String> getDependsOnNsURI(String nsURI);
+
+	/**
 	 * Gets the {@link Set} of available qualified names.
 	 * 
 	 * @return the {@link Set} of available qualified names
@@ -270,5 +279,22 @@ public interface IQualifiedNameResolver {
 	 * Disposes this resolver.
 	 */
 	void dispose();
+
+	/**
+	 * Gets the {@link EPackage} for the given {@link EPackage#getNsURI() nsURI}.
+	 * 
+	 * @param nsURI
+	 *            the {@link EPackage#getNsURI() nsURI}
+	 * @return the {@link EPackage} for the given {@link EPackage#getNsURI() nsURI} if any, <code>null</code>
+	 *         otherwise
+	 */
+	EPackage getEPackage(String nsURI);
+
+	/**
+	 * Gets the {@link Set} of available {@link EPackage#getNsURI() nsURIs}.
+	 * 
+	 * @return the {@link Set} of available {@link EPackage#getNsURI() nsURIs}
+	 */
+	Set<String> getAvailableNsURIs();
 
 }

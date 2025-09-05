@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedName
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * Eclipse resolver.
@@ -37,14 +38,16 @@ public class EclipseQualifiedNameResolver extends ClassLoaderQualifiedNameResolv
 	 * 
 	 * @param classLoader
 	 *            the default {@link ClassLoader}
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry} used to resolve {@link EPackage#getNsURI() nsURI}
 	 * @param project
 	 *            the {@link IProject}
 	 * @param qualifierSeparator
 	 *            the qualifier name separator
 	 */
-	public EclipseQualifiedNameResolver(ClassLoader classLoader, IProject project,
-			String qualifierSeparator) {
-		super(createProjectClassLoader(classLoader, project), qualifierSeparator);
+	public EclipseQualifiedNameResolver(ClassLoader classLoader, EPackage.Registry ePackageRegistry,
+			IProject project, String qualifierSeparator) {
+		super(createProjectClassLoader(classLoader, project), ePackageRegistry, qualifierSeparator);
 	}
 
 	/**

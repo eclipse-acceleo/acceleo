@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020, 2023 Obeo. 
+ *  Copyright (c) 2020, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.EPackage;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -163,8 +164,9 @@ public class QueryPlugin extends EMFPlugin {
 		 *            <code>true</code> for workspace use, local project resolution only
 		 * @return the {@link IQualifiedNameResolver} for the given {@link IProject}
 		 */
-		public IQualifiedNameResolver createQualifiedNameResolver(ClassLoader classLoader, IProject project,
-				String qualifierSeparator, boolean forWorkspace) {
+		public IQualifiedNameResolver createQualifiedNameResolver(ClassLoader classLoader,
+				EPackage.Registry ePackageRegistry, IProject project, String qualifierSeparator,
+				boolean forWorkspace) {
 			final IQualifiedNameResolver res;
 
 			final List<IResolverFactoryDescriptor> factoryDescriptors;
@@ -173,10 +175,11 @@ public class QueryPlugin extends EMFPlugin {
 			}
 
 			if (factoryDescriptors.isEmpty()) {
-				res = new EclipseQualifiedNameResolver(classLoader, project, qualifierSeparator);
+				res = new EclipseQualifiedNameResolver(classLoader, ePackageRegistry, project,
+						qualifierSeparator);
 			} else {
-				res = factoryDescriptors.get(0).getFactory().createResolver(classLoader, project,
-						qualifierSeparator, forWorkspace);
+				res = factoryDescriptors.get(0).getFactory().createResolver(classLoader, ePackageRegistry,
+						project, qualifierSeparator, forWorkspace);
 			}
 
 			return res;

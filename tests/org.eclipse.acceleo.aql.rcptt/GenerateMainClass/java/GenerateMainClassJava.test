@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _2X2UoAZYEfCQh6sgI8veIQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 9/2/25, 4:48 PM
+Save-Time: 9/5/25, 3:10 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -307,7 +307,7 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "\t */\n"
     + "\tprotected IQualifiedNameResolver createResolver() {\n"
     + "\t\tfinal IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass().getClassLoader(),\n"
-    + "\t\t\t\tAcceleoParser.QUALIFIER_SEPARATOR);\n\n"
+    + "\t\t\t\tEPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);\n\n"
     + "\t\treturn resolver;\n"
     + "\t}\n\n"
     + "\t/**\n"
@@ -485,7 +485,7 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "\t}\n\n"
     + "}" | verify-true
 with [get-editor "TestGenerator.java" | get-text-viewer] {
-    select-range 59 26 59 27
+    select-range 60 26 60 27
     key-type BackSpace
     key-type "M1+s"
 }
@@ -493,8 +493,8 @@ get-view "Package Explorer" | get-tree | select "test/src/test/test.mtl" | get-m
     -path "Initialize Generator Launcher/Java Main Class" | click -metaKeys ""
 get-window "Generation comparison" | get-tree | select "test/src/test/TestGenerator.java" | double-click
 get-window "Generation comparison" 
-    | get-label "Left: 59 : 1, Right: 59 : 1, incoming change #1 (Left: 59 : 59, Right: 59 : 59)" 
-    | get-property caption | equals "Left: 59 : 1, Right: 59 : 1, incoming change #1 (Left: 59 : 59, Right: 59 : 59)" 
+    | get-label "Left: 60 : 1, Right: 60 : 1, incoming change #1 (Left: 60 : 60, Right: 60 : 60)" 
+    | get-property caption | equals "Left: 60 : 1, Right: 60 : 1, incoming change #1 (Left: 60 : 60, Right: 60 : 60)" 
     | verify-true
 with [get-window "Generation comparison"] {
     get-button "Copy Current Change from Left to Right" | click -metaKeys ""
@@ -540,6 +540,7 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "import org.eclipse.emf.common.util.URI;\n"
     + "import org.eclipse.emf.ecore.EClass;\n"
     + "import org.eclipse.emf.ecore.EObject;\n"
+    + "import org.eclipse.emf.ecore.EPackage;\n"
     + "import org.eclipse.emf.ecore.resource.Resource;\n"
     + "import org.eclipse.emf.ecore.resource.ResourceSet;\n"
     + "import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;\n"
@@ -829,7 +830,7 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "\t */\n"
     + "\tprotected IQualifiedNameResolver createResolver() {\n"
     + "\t\tfinal IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass().getClassLoader(),\n"
-    + "\t\t\t\tAcceleoParser.QUALIFIER_SEPARATOR);\n\n"
+    + "\t\t\t\tEPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);\n\n"
     + "\t\treturn resolver;\n"
     + "\t}\n\n"
     + "\t/**\n"

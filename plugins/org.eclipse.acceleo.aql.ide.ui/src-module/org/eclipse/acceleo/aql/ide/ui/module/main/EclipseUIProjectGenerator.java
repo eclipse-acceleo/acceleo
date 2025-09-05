@@ -143,8 +143,8 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
 		final IQualifiedNameResolver workspaceResolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
-				getClass().getClassLoader(), projectModuleFiles.get(0).getProject(),
-				AcceleoParser.QUALIFIER_SEPARATOR, true);
+				getClass().getClassLoader(), EPackage.Registry.INSTANCE, projectModuleFiles.get(0)
+						.getProject(), AcceleoParser.QUALIFIER_SEPARATOR, true);
 		workspaceResolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
 
 		final List<Module> modelModules = new ArrayList<>();
@@ -208,7 +208,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 	 */
 	protected IQualifiedNameResolver createResolver() {
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass()
-				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+				.getClassLoader(), EPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);
 		return resolver;
 	}
 

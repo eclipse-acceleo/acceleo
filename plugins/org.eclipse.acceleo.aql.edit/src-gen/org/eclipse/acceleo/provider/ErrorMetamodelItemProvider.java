@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -61,7 +61,6 @@ public class ErrorMetamodelItemProvider extends ItemProviderAdapter implements I
 			super.getPropertyDescriptors(object);
 
 			addReferencedPackagePropertyDescriptor(object);
-			addFragmentPropertyDescriptor(object);
 			addMissingEndQuotePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -79,22 +78,7 @@ public class ErrorMetamodelItemProvider extends ItemProviderAdapter implements I
 						getResourceLocator(), getString("_UI_Metamodel_referencedPackage_feature"), //$NON-NLS-1$
 						getString("_UI_PropertyDescriptor_description", "_UI_Metamodel_referencedPackage_feature", //$NON-NLS-1$//$NON-NLS-2$
 								"_UI_Metamodel_type"), //$NON-NLS-1$
-						AcceleoPackage.Literals.METAMODEL__REFERENCED_PACKAGE, true, false, true, null, null, null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Fragment feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	protected void addFragmentPropertyDescriptor(Object object) {
-		itemPropertyDescriptors
-				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						getResourceLocator(), getString("_UI_ErrorMetamodel_fragment_feature"), //$NON-NLS-1$
-						getString("_UI_PropertyDescriptor_description", "_UI_ErrorMetamodel_fragment_feature", //$NON-NLS-1$//$NON-NLS-2$
-								"_UI_ErrorMetamodel_type"), //$NON-NLS-1$
-						AcceleoPackage.Literals.ERROR_METAMODEL__FRAGMENT, true, false, false,
+						AcceleoPackage.Literals.METAMODEL__REFERENCED_PACKAGE, true, false, true,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -133,7 +117,7 @@ public class ErrorMetamodelItemProvider extends ItemProviderAdapter implements I
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ErrorMetamodel) object).getFragment();
+		String label = ((ErrorMetamodel) object).getReferencedPackage();
 		return label == null || label.length() == 0 ? getString("_UI_ErrorMetamodel_type") : //$NON-NLS-1$
 				getString("_UI_ErrorMetamodel_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -150,7 +134,6 @@ public class ErrorMetamodelItemProvider extends ItemProviderAdapter implements I
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ErrorMetamodel.class)) {
-		case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
 		case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;

@@ -141,7 +141,7 @@ public class ModuleLoader extends AbstractLoader {
 		final Module module = (Module)object;
 		for (Metamodel metamodel : module.getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {
-				res.add(metamodel.getReferencedPackage().getNsURI());
+				res.add(metamodel.getReferencedPackage());
 			}
 		}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 
 /**
  * Outliner service, to provide the list of the various symbols declared in an Acceleo module.
@@ -26,9 +27,18 @@ import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
 public class AcceleoOutliner {
 
 	/**
-	 * Constructor.
+	 * The {@link IQualifiedNameResolver}.
 	 */
-	public AcceleoOutliner() {
+	private final IQualifiedNameResolver resolver;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
+	 */
+	public AcceleoOutliner(IQualifiedNameResolver resolver) {
+		this.resolver = resolver;
 	}
 
 	/**
@@ -42,7 +52,7 @@ public class AcceleoOutliner {
 	 */
 	public List<AcceleoSymbol> getAllDeclaredSymbols(IAcceleoValidationResult acceleoValidationResult) {
 		// The validation result contains type information we need for the outline.
-		AcceleoAstOutliner acceleoAstOutliner = new AcceleoAstOutliner(acceleoValidationResult);
+		AcceleoAstOutliner acceleoAstOutliner = new AcceleoAstOutliner(acceleoValidationResult, resolver);
 
 		Module acceleoModule = acceleoValidationResult.getAcceleoAstResult().getModule();
 		List<AcceleoSymbol> symbols = new ArrayList<>();

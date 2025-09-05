@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -18,7 +18,6 @@ package org.eclipse.acceleo;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.acceleo.ErrorMetamodel#getFragment <em>Fragment</em>}</li>
  * <li>{@link org.eclipse.acceleo.ErrorMetamodel#getMissingEndQuote <em>Missing End Quote</em>}</li>
  * </ul>
  *
@@ -27,33 +26,6 @@ package org.eclipse.acceleo;
  * @generated
  */
 public interface ErrorMetamodel extends org.eclipse.acceleo.Error, Metamodel {
-	/**
-	 * Returns the value of the '<em><b>Fragment</b></em>' attribute. <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Fragment</em>' attribute isn't clear, there really should be more of a
-	 * description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the value of the '<em>Fragment</em>' attribute.
-	 * @see #setFragment(String)
-	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorMetamodel_Fragment()
-	 * @model
-	 * @generated
-	 */
-	String getFragment();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorMetamodel#getFragment <em>Fragment</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @param value
-	 *            the new value of the '<em>Fragment</em>' attribute.
-	 * @see #getFragment()
-	 * @generated
-	 */
-	void setFragment(String value);
-
 	/**
 	 * Returns the value of the '<em><b>Missing End Quote</b></em>' attribute. The default value is
 	 * <code>"-1"</code>. <!-- begin-user-doc -->

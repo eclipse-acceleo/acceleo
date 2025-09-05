@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Metamodel;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -25,6 +26,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 
 /**
@@ -73,7 +75,8 @@ public class MetamodelItemProvider extends ItemProviderAdapter implements IEditi
 						getResourceLocator(), getString("_UI_Metamodel_referencedPackage_feature"), //$NON-NLS-1$
 						getString("_UI_PropertyDescriptor_description", "_UI_Metamodel_referencedPackage_feature", //$NON-NLS-1$//$NON-NLS-2$
 								"_UI_Metamodel_type"), //$NON-NLS-1$
-						AcceleoPackage.Literals.METAMODEL__REFERENCED_PACKAGE, true, false, true, null, null, null));
+						AcceleoPackage.Literals.METAMODEL__REFERENCED_PACKAGE, true, false, true,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -94,7 +97,9 @@ public class MetamodelItemProvider extends ItemProviderAdapter implements IEditi
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Metamodel_type"); //$NON-NLS-1$
+		String label = ((Metamodel) object).getReferencedPackage();
+		return label == null || label.length() == 0 ? getString("_UI_Metamodel_type") : //$NON-NLS-1$
+				getString("_UI_Metamodel_type") + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

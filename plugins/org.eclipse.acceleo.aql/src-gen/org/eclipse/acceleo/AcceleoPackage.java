@@ -451,7 +451,7 @@ public interface AcceleoPackage extends EPackage {
 	int METAMODEL = 2;
 
 	/**
-	 * The feature id for the '<em><b>Referenced Package</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Referenced Package</b></em>' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
@@ -488,7 +488,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_METAMODEL = 3;
 
 	/**
-	 * The feature id for the '<em><b>Referenced Package</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Referenced Package</b></em>' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
@@ -497,22 +497,13 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_METAMODEL__REFERENCED_PACKAGE = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Fragment</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_METAMODEL__FRAGMENT = ERROR_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Missing End Quote</b></em>' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL__MISSING_END_QUOTE = ERROR_FEATURE_COUNT + 2;
+	int ERROR_METAMODEL__MISSING_END_QUOTE = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Error Metamodel</em>' class. <!-- begin-user-doc --> <!--
@@ -521,7 +512,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_METAMODEL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Error Metamodel</em>' class. <!-- begin-user-doc --> <!--
@@ -3967,15 +3958,15 @@ public interface AcceleoPackage extends EPackage {
 	EClass getMetamodel();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.Metamodel#getReferencedPackage
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.Metamodel#getReferencedPackage
 	 * <em>Referenced Package</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the reference '<em>Referenced Package</em>'.
+	 * @return the meta object for the attribute '<em>Referenced Package</em>'.
 	 * @see org.eclipse.acceleo.Metamodel#getReferencedPackage()
 	 * @see #getMetamodel()
 	 * @generated
 	 */
-	EReference getMetamodel_ReferencedPackage();
+	EAttribute getMetamodel_ReferencedPackage();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorMetamodel <em>Error
@@ -3986,17 +3977,6 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getErrorMetamodel();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorMetamodel#getFragment
-	 * <em>Fragment</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the attribute '<em>Fragment</em>'.
-	 * @see org.eclipse.acceleo.ErrorMetamodel#getFragment()
-	 * @see #getErrorMetamodel()
-	 * @generated
-	 */
-	EAttribute getErrorMetamodel_Fragment();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorMetamodel#getMissingEndQuote
@@ -5947,7 +5927,7 @@ public interface AcceleoPackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EReference METAMODEL__REFERENCED_PACKAGE = eINSTANCE.getMetamodel_ReferencedPackage();
+		EAttribute METAMODEL__REFERENCED_PACKAGE = eINSTANCE.getMetamodel_ReferencedPackage();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl <em>Error
@@ -5958,14 +5938,6 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ERROR_METAMODEL = eINSTANCE.getErrorMetamodel();
-
-		/**
-		 * The meta object literal for the '<em><b>Fragment</b></em>' attribute feature. <!-- begin-user-doc
-		 * --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EAttribute ERROR_METAMODEL__FRAGMENT = eINSTANCE.getErrorMetamodel_Fragment();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing End Quote</b></em>' attribute feature. <!--

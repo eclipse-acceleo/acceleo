@@ -485,7 +485,7 @@ public class AcceleoDebugger extends AbstractDSLDebugger {
 		moduleFile = LSPEclipseUtils.findResourceFor((String)arguments.get(MODULE));
 		final IProject project = moduleFile.getProject();
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
-				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
+				AcceleoPlugin.getPlugin().getClass().getClassLoader(), EPackage.Registry.INSTANCE, project,
 				AcceleoParser.QUALIFIER_SEPARATOR, false);
 
 		newLine = options.getOrDefault(AcceleoUtil.NEW_LINE_OPTION, System.lineSeparator());

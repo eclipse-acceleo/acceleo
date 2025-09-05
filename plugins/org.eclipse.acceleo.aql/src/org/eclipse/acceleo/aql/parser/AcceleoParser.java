@@ -80,8 +80,6 @@ import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
@@ -543,28 +541,6 @@ public class AcceleoParser {
 	 * The {@link List} of {@link Error}.
 	 */
 	private List<Error> errors;
-
-	/**
-	 * The {@link EPackage.Registry} used to validate {@link Metamodel}.
-	 */
-	private final Registry ePackageRegistry;
-
-	/**
-	 * Constructor.
-	 */
-	public AcceleoParser() {
-		this(EPackage.Registry.INSTANCE);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param ePackageRegistry
-	 *            the {@link EPackage.Registry}
-	 */
-	public AcceleoParser(Registry ePackageRegistry) {
-		this.ePackageRegistry = ePackageRegistry;
-	}
 
 	/**
 	 * Parses the encoding tag and return the encoding value.
@@ -2420,17 +2396,15 @@ public class AcceleoParser {
 			}
 			final String nsURI = text.substring(currentPosition, nextQuote);
 			currentPosition = nextQuote;
-			final EPackage ePackage = ePackageRegistry.getEPackage(nsURI);
 			final int missingEndQuote = readMissingString(QUOTE);
-			if (ePackage == null || missingEndQuote != -1) {
+			if (missingEndQuote != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorMetamodel();
-				((ErrorMetamodel)res).setFragment(nsURI);
 				((ErrorMetamodel)res).setMissingEndQuote(missingEndQuote);
 				errors.add((ErrorMetamodel)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
 			}
-			res.setReferencedPackage(ePackage);
+			res.setReferencedPackage(nsURI);
 			setPositions(res, startPosition, currentPosition);
 		} else {
 			res = null;

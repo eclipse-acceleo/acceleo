@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
@@ -73,7 +74,7 @@ public class AcceleoEnvResourceFactory extends ResourceFactoryImpl {
 			dispose();
 		}
 		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
-				AcceleoPlugin.getPlugin().getClass().getClassLoader(), project,
+				AcceleoPlugin.getPlugin().getClass().getClassLoader(), EPackage.Registry.INSTANCE, project,
 				AcceleoParser.QUALIFIER_SEPARATOR, false);
 
 		final Map<String, String> options = new LinkedHashMap<>();

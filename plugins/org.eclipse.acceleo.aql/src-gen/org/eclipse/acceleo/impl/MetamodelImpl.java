@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -15,8 +15,6 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -34,6 +32,16 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metamodel {
 	/**
+	 * The default value of the '{@link #getReferencedPackage() <em>Referenced Package</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getReferencedPackage()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String REFERENCED_PACKAGE_EDEFAULT = null;
+
+	/**
 	 * The cached value of the '{@link #getReferencedPackage() <em>Referenced Package</em>}' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -41,7 +49,7 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	 * @generated
 	 * @ordered
 	 */
-	protected EPackage referencedPackage;
+	protected String referencedPackage = REFERENCED_PACKAGE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -68,26 +76,7 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	 * @generated
 	 */
 	@Override
-	public EPackage getReferencedPackage() {
-		if (referencedPackage != null && referencedPackage.eIsProxy()) {
-			InternalEObject oldReferencedPackage = (InternalEObject)referencedPackage;
-			referencedPackage = (EPackage)eResolveProxy(oldReferencedPackage);
-			if (referencedPackage != oldReferencedPackage) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.METAMODEL__REFERENCED_PACKAGE, oldReferencedPackage,
-							referencedPackage));
-			}
-		}
-		return referencedPackage;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EPackage basicGetReferencedPackage() {
+	public String getReferencedPackage() {
 		return referencedPackage;
 	}
 
@@ -97,8 +86,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	 * @generated
 	 */
 	@Override
-	public void setReferencedPackage(EPackage newReferencedPackage) {
-		EPackage oldReferencedPackage = referencedPackage;
+	public void setReferencedPackage(String newReferencedPackage) {
+		String oldReferencedPackage = referencedPackage;
 		referencedPackage = newReferencedPackage;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -114,9 +103,7 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-				if (resolve)
-					return getReferencedPackage();
-				return basicGetReferencedPackage();
+				return getReferencedPackage();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -130,7 +117,7 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-				setReferencedPackage((EPackage)newValue);
+				setReferencedPackage((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -145,7 +132,7 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-				setReferencedPackage((EPackage)null);
+				setReferencedPackage(REFERENCED_PACKAGE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -160,9 +147,27 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metam
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-				return referencedPackage != null;
+				return REFERENCED_PACKAGE_EDEFAULT == null ? referencedPackage != null
+						: !REFERENCED_PACKAGE_EDEFAULT.equals(referencedPackage);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (referencedPackage: "); //$NON-NLS-1$
+		result.append(referencedPackage);
+		result.append(')');
+		return result.toString();
 	}
 
 } // MetamodelImpl

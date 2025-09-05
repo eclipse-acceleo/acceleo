@@ -60,6 +60,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -210,10 +211,11 @@ public abstract class AbstractLanguageTestSuite {
 		final URL[] urls = new URL[] {testFolderFile.toPath().getName(0).toUri().toURL() };
 
 		final ClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
+		final EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader,
-				AcceleoParser.QUALIFIER_SEPARATOR);
+				ePackageRegistry, AcceleoParser.QUALIFIER_SEPARATOR);
 		final IQualifiedNameResolver resolverWindowsEndLine = new ClassLoaderQualifiedNameResolver(
-				classLoader, AcceleoParser.QUALIFIER_SEPARATOR);
+				classLoader, ePackageRegistry, AcceleoParser.QUALIFIER_SEPARATOR);
 
 		// TODO get options form ??? or list all possible options ?
 		// don't add any options ?
@@ -249,7 +251,10 @@ public abstract class AbstractLanguageTestSuite {
 			astResult = ((Module)resolved).getAst();
 			for (Metamodel metamodel : astResult.getModule().getMetamodels()) {
 				if (metamodel.getReferencedPackage() != null) {
-					queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
+					final EPackage ePkg = resolver.getEPackage(metamodel.getReferencedPackage());
+					if (ePkg != null) {
+						queryEnvironment.registerEPackage(ePkg);
+					}
 				}
 			}
 		} else {
@@ -261,7 +266,11 @@ public abstract class AbstractLanguageTestSuite {
 			astResultWindowsEndLine = ((Module)resolvedWindowsEndLine).getAst();
 			for (Metamodel metamodel : astResultWindowsEndLine.getModule().getMetamodels()) {
 				if (metamodel.getReferencedPackage() != null) {
-					queryEnvironmentWindowsEndLine.registerEPackage(metamodel.getReferencedPackage());
+					final EPackage ePkg = resolverWindowsEndLine.getEPackage(metamodel
+							.getReferencedPackage());
+					if (ePkg != null) {
+						queryEnvironmentWindowsEndLine.registerEPackage(ePkg);
+					}
 				}
 			}
 		} else {
@@ -270,7 +279,10 @@ public abstract class AbstractLanguageTestSuite {
 
 		for (Metamodel metamodel : astResult.getModule().getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {
-				queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
+				final EPackage ePkg = resolver.getEPackage(metamodel.getReferencedPackage());
+				if (ePkg != null) {
+					queryEnvironment.registerEPackage(ePkg);
+				}
 			}
 		}
 		final AcceleoValidator validator = new AcceleoValidator(queryEnvironment);
@@ -278,7 +290,10 @@ public abstract class AbstractLanguageTestSuite {
 
 		for (Metamodel metamodel : astResultWindowsEndLine.getModule().getMetamodels()) {
 			if (metamodel.getReferencedPackage() != null) {
-				queryEnvironmentWindowsEndLine.registerEPackage(metamodel.getReferencedPackage());
+				final EPackage ePkg = resolverWindowsEndLine.getEPackage(metamodel.getReferencedPackage());
+				if (ePkg != null) {
+					queryEnvironmentWindowsEndLine.registerEPackage(ePkg);
+				}
 			}
 		}
 		final AcceleoValidator validatorWindowsEndLine = new AcceleoValidator(queryEnvironmentWindowsEndLine);

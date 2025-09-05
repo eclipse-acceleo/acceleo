@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,9 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.validation.AcceleoValidationUtils;
 import org.eclipse.acceleo.aql.validation.IAcceleoValidationResult;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.util.AcceleoSwitch;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * An {@link AcceleoSwitch} to produce the 'main' {@link AcceleoSymbol} representing an element from the AST
@@ -34,14 +36,23 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 	private final IAcceleoValidationResult acceleoValidationResult;
 
 	/**
+	 * The {@link IQualifiedNameResolver}.
+	 */
+	private final IQualifiedNameResolver resolver;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param acceleoValidationResult
 	 *            the {@link IAcceleoValidationResult} resulting from validating the Acceleo contents of the
-	 *            elements we want to outline.
+	 *            elements we want to outline
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
 	 */
-	public AcceleoAstOutliner(IAcceleoValidationResult acceleoValidationResult) {
+	public AcceleoAstOutliner(IAcceleoValidationResult acceleoValidationResult,
+			IQualifiedNameResolver resolver) {
 		this.acceleoValidationResult = acceleoValidationResult;
+		this.resolver = resolver;
 	}
 
 	/**
@@ -67,8 +78,16 @@ public class AcceleoAstOutliner extends AcceleoSwitch<AcceleoSymbol> {
 	 */
 	@Override
 	public AcceleoSymbol caseMetamodel(Metamodel metamodel) {
-		String details = metamodel.getReferencedPackage().getNsURI();
-		return this.createSymbol(metamodel, metamodel.getReferencedPackage().getName(), details);
+		final String details = metamodel.getReferencedPackage();
+		final EPackage ePkg = resolver.getEPackage(metamodel.getReferencedPackage());
+		final String name;
+		if (ePkg != null) {
+			name = ePkg.getName();
+		} else {
+			name = details;
+		}
+
+		return this.createSymbol(metamodel, name, details);
 	}
 
 	@Override

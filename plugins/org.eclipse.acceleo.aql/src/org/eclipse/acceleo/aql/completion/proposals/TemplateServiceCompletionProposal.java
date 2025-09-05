@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import java.util.StringJoiner;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.aql.parser.AcceleoAstSerializer;
-import org.eclipse.acceleo.query.parser.AstSerializer;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 
@@ -32,12 +31,7 @@ public class TemplateServiceCompletionProposal implements IServiceCompletionProp
 	private final TemplateService service;
 
 	/**
-	 * The {@link AstSerializer}.
-	 */
-	private final AstSerializer aqlSerializer = new AstSerializer();
-
-	/**
-	 * The {@link AcceleoAstSerializer}<
+	 * The {@link AcceleoAstSerializer}
 	 */
 	private final AcceleoAstSerializer accleeoSerializer = new AcceleoAstSerializer("");
 

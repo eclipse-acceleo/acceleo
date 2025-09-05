@@ -12,6 +12,8 @@ package org.eclipse.acceleo.query.runtime.impl.namespace.workspace;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -23,6 +25,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -246,6 +249,27 @@ public abstract class QueryWorkspaceQualifiedNameResolver implements IQueryWorks
 	@Override
 	public IQualifiedNameLookupEngine getLookupEngine() {
 		return lookupEngine;
+	}
+
+	@Override
+	public Set<String> getAvailableNsURIs() {
+		final Set<String> res = new LinkedHashSet<>(resolver.getAvailableNsURIs());
+
+		for (IQueryWorkspaceQualifiedNameResolver dependency : getDependencies()) {
+			res.addAll(dependency.getAvailableNsURIs());
+		}
+
+		return res;
+	}
+
+	@Override
+	public Set<String> getDependsOnNsURI(String nsURI) {
+		return resolver.getDependsOnNsURI(nsURI);
+	}
+
+	@Override
+	public EPackage getEPackage(String nsURI) {
+		return delegateToFirstResolver(r -> r.getEPackage(nsURI));
 	}
 
 }

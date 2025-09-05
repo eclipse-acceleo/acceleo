@@ -36,11 +36,6 @@ public class DefaultWriterFactory implements IWriterFactory {
 	private static final Map<String, Object> EMPTY_OPTION_MAP = Collections.emptyMap();
 
 	/**
-	 * The {@link StringBuilder} initial size.
-	 */
-	private static final int INITIAL_SIZE = 1024;
-
-	/**
 	 * The preview {@link Map} form target {@link URI} to {@link String} contents.
 	 */
 	private final Map<URI, String> preview;

@@ -133,8 +133,8 @@ public class StandaloneGenerator extends AbstractGenerator {
 		final URI logURI = AcceleoUtil.getlogURI(targetURI, options.get(AcceleoUtil.LOG_URI_OPTION));
 
 		final IQualifiedNameResolver workspaceResolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
-				getClass().getClassLoader(), moduleFile.getProject(), AcceleoParser.QUALIFIER_SEPARATOR,
-				true);
+				getClass().getClassLoader(), EPackage.Registry.INSTANCE, moduleFile.getProject(),
+				AcceleoParser.QUALIFIER_SEPARATOR, true);
 		workspaceResolver.addLoader(new ModuleLoader(new AcceleoParser(), null));
 		final String modelModuleQualifiedName = getQualifiedNameFromSourceFile(moduleFile);
 		final String moduleAbsolutePath = moduleFile.getLocation().toFile().getAbsolutePath();
@@ -196,7 +196,7 @@ public class StandaloneGenerator extends AbstractGenerator {
 	 */
 	protected IQualifiedNameResolver createResolver() {
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass()
-				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+				.getClassLoader(), EPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);
 		return resolver;
 	}
 

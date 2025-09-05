@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _uWAckAiyEfC07LF6VSMd-w
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 9/2/25, 3:51 PM
+Save-Time: 9/5/25, 3:05 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -310,7 +310,7 @@ get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "
     + "\t */\n"
     + "\tprotected IQualifiedNameResolver createResolver() {\n"
     + "\t\tfinal IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass().getClassLoader(),\n"
-    + "\t\t\t\tAcceleoParser.QUALIFIER_SEPARATOR);\n\n"
+    + "\t\t\t\tEPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);\n\n"
     + "\t\treturn resolver;\n"
     + "\t}\n\n"
     + "\t/**\n"
@@ -754,7 +754,7 @@ get-editor "TestGeneratorEclipse.java" | get-text-viewer | get-property text
     + "\t\t\tActivator.getDefault().log(new Status(IStatus.ERROR, getClass(),\n"
     + "\t\t\t\t\t\"The Bundle \" + bundleIdentifier + \" must be available in the target platform.\"));\n"
     + "\t\t}\n"
-    + "\t\treturn new OSGiQualifiedNameResolver(bundle, AcceleoParser.QUALIFIER_SEPARATOR);\n"
+    + "\t\treturn new OSGiQualifiedNameResolver(bundle, EPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);\n"
     + "\t}\n\n"
     + "\t/**\n"
     + "\t * Gets the target folder for the selected {@link EPackage} or selected\n"

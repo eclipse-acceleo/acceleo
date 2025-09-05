@@ -26,7 +26,6 @@ import org.eclipse.acceleo.query.parser.quickfixes.IAstQuickFix;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 
 public class AcceleoQuickFixesSwitch extends ComposedSwitch<List<IAstQuickFix>> {
@@ -53,31 +52,9 @@ public class AcceleoQuickFixesSwitch extends ComposedSwitch<List<IAstQuickFix>> 
 	public AcceleoQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
 			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
 			String endLine) {
-		this(queryEnvironment, validationResult, moduleQualifiedName, moduleText, endLine,
-				EPackage.Registry.INSTANCE);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IQualifiedNameQueryEnvironment}.
-	 * @param validationResult
-	 *            the {@link IAcceleoValidationResult}
-	 * @param moduleQualifiedName
-	 *            the {@link Module} qualified name
-	 * @param moduleText
-	 *            the text representation of the {@link Module}
-	 * @param newLine
-	 *            the new line {@link String}
-	 * @param
-	 */
-	public AcceleoQuickFixesSwitch(IQualifiedNameQueryEnvironment queryEnvironment,
-			IAcceleoValidationResult validationResult, String moduleQualifiedName, String moduleText,
-			String endLine, EPackage.Registry ePackageRegistry) {
 		super();
 		addSwitch(new AqlQuickFixesSwitch(queryEnvironment, validationResult, moduleQualifiedName, moduleText,
-				endLine, ePackageRegistry));
+				endLine));
 		addSwitch(new ModuleQuickFixesSwitch(queryEnvironment, validationResult, moduleQualifiedName,
 				moduleText, endLine));
 		this.validationResult = validationResult;

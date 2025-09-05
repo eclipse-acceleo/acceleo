@@ -511,7 +511,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	@Override
 	public Void caseMetamodel(Metamodel metamodel) {
 		if (metamodel.getReferencedPackage() != null) {
-			builder.append("metamodel " + metamodel.getReferencedPackage().getNsURI());
+			builder.append("metamodel " + metamodel.getReferencedPackage());
 		} else {
 			builder.append("metamodel null");
 		}

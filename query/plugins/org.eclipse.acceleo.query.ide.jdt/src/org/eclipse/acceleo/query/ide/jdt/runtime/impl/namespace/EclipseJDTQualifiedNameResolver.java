@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -115,6 +116,8 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 	 * 
 	 * @param classLoader
 	 *            the {@link ClassLoader}
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry} used to resolve {@link EPackage#getNsURI() nsURI}
 	 * @param project
 	 *            the {@link IProject}
 	 * @param qualifierSeparator
@@ -124,10 +127,11 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 	 * @param dependencyProjectEntries
 	 *            dependency project entries {@link List}
 	 */
-	public EclipseJDTQualifiedNameResolver(ClassLoader classLoader, IProject project,
-			String qualifierSeparator, boolean forWorkspace, List<String> dependencyProjectEntries) {
+	public EclipseJDTQualifiedNameResolver(ClassLoader classLoader, EPackage.Registry ePackageRegistry,
+			IProject project, String qualifierSeparator, boolean forWorkspace,
+			List<String> dependencyProjectEntries) {
 		super(createProjectClassLoader(classLoader, project, forWorkspace, dependencyProjectEntries),
-				qualifierSeparator);
+				ePackageRegistry, qualifierSeparator);
 		this.project = JavaCore.create(project);
 		this.forWorkspace = forWorkspace;
 

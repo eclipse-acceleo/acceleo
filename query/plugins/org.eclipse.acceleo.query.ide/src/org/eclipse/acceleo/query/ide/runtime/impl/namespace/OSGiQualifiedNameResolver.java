@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.CallStack;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.emf.ecore.EPackage;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
@@ -45,11 +46,14 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 	 * 
 	 * @param bundle
 	 *            the bundle containing the modules and services we'll need during the generation
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry} used to resolve {@link EPackage#getNsURI() nsURI}
 	 * @param qualifierSeparator
 	 *            the qualifier name separator
 	 */
-	public OSGiQualifiedNameResolver(Bundle bundle, String qualifierSeparator) {
-		super(createBundleClassLoader(bundle), qualifierSeparator);
+	public OSGiQualifiedNameResolver(Bundle bundle, EPackage.Registry ePackageRegistry,
+			String qualifierSeparator) {
+		super(createBundleClassLoader(bundle), ePackageRegistry, qualifierSeparator);
 		this.bundle = bundle;
 	}
 

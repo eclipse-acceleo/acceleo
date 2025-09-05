@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.ISourceLocation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * Resolve from a {@link ClassLoader}.
@@ -97,14 +98,19 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private final Map<String, List<String>> qualifiedNameToImports = new HashMap<String, List<String>>();
 
 	/**
+	 * Mapping from qualifiedName to qualified names that import it.
+	 */
+	private final Map<String, List<String>> qualifiedNameImportedBy = new HashMap<String, List<String>>();
+
+	/**
 	 * Mapping from qualifiedName to its {@link EPackage#getNsURI() nsURI} imports.
 	 */
 	private final Map<String, List<String>> qualifiedNameToNsURIImports = new HashMap<String, List<String>>();
 
 	/**
-	 * Mapping from qualifiedName to qualified names that import it.
+	 * Mapping from {@link EPackage#getNsURI() nsURI} to qualified names that import it.
 	 */
-	private final Map<String, List<String>> qualifiedNameImportedBy = new HashMap<String, List<String>>();
+	private final Map<String, List<String>> nsURIImportedBy = new HashMap<String, List<String>>();
 
 	/**
 	 * Mapping from qualifiedName to its extend.
@@ -127,15 +133,24 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private final Map<String, List<String>> qualifiedNameExtendedBy = new HashMap<String, List<String>>();
 
 	/**
+	 * The {@link EPackage.Registry} used to resolve {@link EPackage#getNsURI() nsURI}.
+	 */
+	private final Registry ePackageRegistry;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param classLoader
 	 *            the {@link ClassLoader}
+	 * @param ePackageRegistry
+	 *            the {@link EPackage.Registry} used to resolve {@link EPackage#getNsURI() nsURI}
 	 * @param qualifierSeparator
 	 *            the qualifier name separator
 	 */
-	public ClassLoaderQualifiedNameResolver(ClassLoader classLoader, String qualifierSeparator) {
+	public ClassLoaderQualifiedNameResolver(ClassLoader classLoader, EPackage.Registry ePackageRegistry,
+			String qualifierSeparator) {
 		this.classLoader = classLoader;
+		this.ePackageRegistry = ePackageRegistry;
 		this.qualifierSeparator = qualifierSeparator;
 	}
 
@@ -330,10 +345,13 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	protected void register(ILoader loader, String qualifiedName, Object object) {
 		final List<String> imports = loader.getImports(object);
 		qualifiedNameToImports.put(qualifiedName, imports);
-		final List<String> nsURIImports = loader.getNsURIImports(object);
-		qualifiedNameToNsURIImports.put(qualifiedName, nsURIImports);
 		for (String imp : imports) {
 			qualifiedNameImportedBy.computeIfAbsent(imp, qn -> new ArrayList<>()).add(qualifiedName);
+		}
+		final List<String> nsURIImports = loader.getNsURIImports(object);
+		qualifiedNameToNsURIImports.put(qualifiedName, nsURIImports);
+		for (String imp : nsURIImports) {
+			nsURIImportedBy.computeIfAbsent(imp, qn -> new ArrayList<>()).add(qualifiedName);
 		}
 		final String ext = loader.getExtends(object);
 		qualifiedNameToExtend.put(qualifiedName, ext);
@@ -390,7 +408,15 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 					}
 				}
 			}
-			qualifiedNameToNsURIImports.remove(qualifiedName);
+			final List<String> importNsURIs = qualifiedNameToNsURIImports.remove(qualifiedName);
+			if (importNsURIs != null) {
+				for (String imported : importNsURIs) {
+					final List<String> importedBy = nsURIImportedBy.get(imported);
+					if (importedBy != null) {
+						importedBy.remove(qualifiedName);
+					}
+				}
+			}
 			final String extended = qualifiedNameToExtend.remove(qualifiedName);
 			if (extended != null) {
 				final List<String> extendedBy = qualifiedNameExtendedBy.get(extended);
@@ -707,6 +733,24 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 				// should not be an issue
 			}
 		}
+	}
+
+	@Override
+	public Set<String> getDependsOnNsURI(String nsURI) {
+		final Set<String> res = new LinkedHashSet<>(qualifiedNameImportedBy.getOrDefault(nsURI, Collections
+				.emptyList()));
+
+		return res;
+	}
+
+	@Override
+	public EPackage getEPackage(String nsURI) {
+		return ePackageRegistry.getEPackage(nsURI);
+	}
+
+	@Override
+	public Set<String> getAvailableNsURIs() {
+		return ePackageRegistry.keySet();
 	}
 
 }

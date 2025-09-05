@@ -51,7 +51,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -97,8 +96,8 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			final IFile moduleFile = moduleConfiguration.getModuleFile();
-			IStatus res = new Status(IStatus.OK, AcceleoUIPlugin.PLUGIN_ID, String.format(OK_MESSAGE, moduleFile
-					.getFullPath()));
+			IStatus res = new Status(IStatus.OK, AcceleoUIPlugin.PLUGIN_ID, String.format(OK_MESSAGE,
+					moduleFile.getFullPath()));
 
 			final org.eclipse.acceleo.Module module = AcceleoPackage.eINSTANCE.getAcceleoFactory()
 					.createModule();
@@ -126,8 +125,7 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 			module.setDocumentation(moduleDocumentation);
 			for (String nsURI : moduleConfiguration.getNsURIs()) {
 				final Metamodel metamodel = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
-				final EPackage ePkg = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-				metamodel.setReferencedPackage(ePkg);
+				metamodel.setReferencedPackage(nsURI);
 				module.getMetamodels().add(metamodel);
 			}
 
@@ -212,13 +210,13 @@ public class NewModuleWizard extends Wizard implements INewWizard {
 							.getCharset());
 				} catch (IOException e) {
 					fileContent = "";//$NON-NLS-1$
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
-							"unable to load intial file content.", e));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR,
+							AcceleoUIPlugin.PLUGIN_ID, "unable to load intial file content.", e));
 					e.printStackTrace();
 				} catch (CoreException e) {
 					fileContent = "";//$NON-NLS-1$
-					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, AcceleoUIPlugin.PLUGIN_ID,
-							"unable to load intial file content.", e));
+					AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR,
+							AcceleoUIPlugin.PLUGIN_ID, "unable to load intial file content.", e));
 				}
 				initialContent = fileContent;
 			} else {

@@ -697,8 +697,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getMetamodel_ReferencedPackage() {
-		return (EReference)metamodelEClass.getEStructuralFeatures().get(0);
+	public EAttribute getMetamodel_ReferencedPackage() {
+		return (EAttribute)metamodelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -717,18 +717,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getErrorMetamodel_Fragment() {
-		return (EAttribute)errorMetamodelEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
 	public EAttribute getErrorMetamodel_MissingEndQuote() {
-		return (EAttribute)errorMetamodelEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)errorMetamodelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2387,10 +2377,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_END_HEADER);
 
 		metamodelEClass = createEClass(METAMODEL);
-		createEReference(metamodelEClass, METAMODEL__REFERENCED_PACKAGE);
+		createEAttribute(metamodelEClass, METAMODEL__REFERENCED_PACKAGE);
 
 		errorMetamodelEClass = createEClass(ERROR_METAMODEL);
-		createEAttribute(errorMetamodelEClass, ERROR_METAMODEL__FRAGMENT);
 		createEAttribute(errorMetamodelEClass, ERROR_METAMODEL__MISSING_END_QUOTE);
 
 		importEClass = createEClass(IMPORT);
@@ -2771,15 +2760,12 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(metamodelEClass, Metamodel.class, "Metamodel", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMetamodel_ReferencedPackage(), ecorePackage.getEPackage(), null,
-				"referencedPackage", null, 1, 1, Metamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
-				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMetamodel_ReferencedPackage(), ecorePackage.getEString(), "referencedPackage", null, //$NON-NLS-1$
+				1, 1, Metamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorMetamodelEClass, ErrorMetamodel.class, "ErrorMetamodel", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getErrorMetamodel_Fragment(), ecorePackage.getEString(), "fragment", null, 0, 1, //$NON-NLS-1$
-				ErrorMetamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getErrorMetamodel_MissingEndQuote(), ecorePackage.getEInt(), "missingEndQuote", "-1", //$NON-NLS-1$//$NON-NLS-2$
 				1, 1, ErrorMetamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

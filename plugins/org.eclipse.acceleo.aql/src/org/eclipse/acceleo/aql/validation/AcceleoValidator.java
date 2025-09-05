@@ -75,12 +75,11 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.ServiceStore;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
 
 /**
  * Validates {@link Module}. A module can be parsed using {@link org.eclipse.acceleo.aql.parser.AcceleoParser
@@ -96,7 +95,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	public static final String DOESN_T_MATCH_RESOURCE_NAME = " doesn't match resource name ";
 
 	/**
-	 * The index varible suffix for {@link ForStatement} {@link Binding}.
+	 * The index variable suffix for {@link ForStatement} {@link Binding}.
 	 */
 	public static final String INDEX_SUFFIX = "Index";
 
@@ -167,37 +166,18 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final Map<String, List<VarRef>> unresolvedVarRefsMapping = new HashMap<>();
 
 	/**
-	 * The {@link EPackage.Registry} used to validate.
-	 */
-	private final Registry ePackageRegistry;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IQualifiedNameQueryEnvironment}
 	 */
 	public AcceleoValidator(IQualifiedNameQueryEnvironment queryEnvironment) {
-		this(queryEnvironment, EPackage.Registry.INSTANCE);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IQualifiedNameQueryEnvironment}
-	 * @param ePackageRegistry
-	 *            the {@link EPackage.Registry}
-	 */
-	public AcceleoValidator(IQualifiedNameQueryEnvironment queryEnvironment,
-			EPackage.Registry ePackageRegistry) {
 		this.queryEnvironment = queryEnvironment;
 		this.stringType = new ClassType(queryEnvironment, String.class);
 		this.booleanType = new ClassType(queryEnvironment, boolean.class);
 		this.booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
 		this.integerType = new ClassType(queryEnvironment, Integer.class);
 		validator = new AstValidator(new ValidationServices(queryEnvironment));
-		this.ePackageRegistry = ePackageRegistry;
 	}
 
 	/**
@@ -369,14 +349,21 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 *            the {@link Module}
 	 */
 	private void checkMetamodels(Module module) {
-		final Set<EPackage> ePackages = new HashSet<EPackage>();
+		final Set<String> ePackages = new HashSet<>();
 		for (Metamodel metamodel : module.getMetamodels()) {
 			doSwitch(metamodel);
 			if (metamodel.getReferencedPackage() != null) {
+				final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+				if (resolver.getEPackage(metamodel.getReferencedPackage()) == null) {
+					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
+					addMessage(metamodel, ValidationMessageLevel.ERROR, "Invalid metamodel " + metamodel
+							.getReferencedPackage(), acceleoAstResult.getStartPosition(metamodel),
+							acceleoAstResult.getEndPosition(metamodel));
+				}
 				if (!ePackages.add(metamodel.getReferencedPackage())) {
 					final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 					addMessage(module, ValidationMessageLevel.WARNING, metamodel.getReferencedPackage()
-							.getNsURI() + " already referenced", acceleoAstResult.getStartPosition(metamodel),
+							+ " already referenced", acceleoAstResult.getStartPosition(metamodel),
 							acceleoAstResult.getEndPosition(metamodel));
 				}
 			}
@@ -470,12 +457,12 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
-		if (errorMetamodel.getFragment() != null && !ePackageRegistry.containsKey(errorMetamodel
-				.getFragment())) {
+		final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+		if (resolver.getEPackage(errorMetamodel.getReferencedPackage()) == null) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, "Invalid metamodel " + errorMetamodel
-					.getFragment(), acceleoAstResult.getStartPosition(errorMetamodel), acceleoAstResult
-							.getEndPosition(errorMetamodel));
+					.getReferencedPackage(), acceleoAstResult.getStartPosition(errorMetamodel),
+					acceleoAstResult.getEndPosition(errorMetamodel));
 		} else if (errorMetamodel.getMissingEndQuote() != -1) {
 			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, getMissingTokenMessage(
 					AcceleoParser.QUOTE), errorMetamodel.getMissingEndQuote(), errorMetamodel

@@ -163,11 +163,11 @@ public class EclipseAcceleoLanguageServerContext implements IAcceleoLanguageServ
 		Objects.nonNull(acceleoProject);
 
 		final IProject eclipseProject = synchronizer.getOrCreateProject(acceleoProject);
-		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
-				AcceleoPlugin.getPlugin().getClass().getClassLoader(), eclipseProject,
-				AcceleoParser.QUALIFIER_SEPARATOR, true);
 		final IWorkspaceRegistry ePackageRegistry = acceleoProject.getWorkspace().getEPackageRegistry();
-		final ModuleLoader moduleLoader = new ModuleLoader(new AcceleoParser(ePackageRegistry), null);
+		final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
+				AcceleoPlugin.getPlugin().getClass().getClassLoader(), ePackageRegistry, eclipseProject,
+				AcceleoParser.QUALIFIER_SEPARATOR, true);
+		final ModuleLoader moduleLoader = new ModuleLoader(new AcceleoParser(), null);
 		resolver.addLoader(new WorkspaceModuleLoaderWrapper(moduleLoader, acceleoProject.getWorkspace()));
 		final ILoader javaLoader = QueryPlugin.getPlugin().createJavaLoader(AcceleoParser.QUALIFIER_SEPARATOR,
 				true);

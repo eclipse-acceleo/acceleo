@@ -239,7 +239,7 @@ public class AcceleoLauncher implements IApplication {
 	}
 
 	private GenerationResult launchGeneration() {
-		IQualifiedNameResolver resolver = new OSGiQualifiedNameResolver(bundle,
+		IQualifiedNameResolver resolver = new OSGiQualifiedNameResolver(bundle, EPackage.Registry.INSTANCE,
 				AcceleoParser.QUALIFIER_SEPARATOR);
 
 		// TODO get options form the launch configuration

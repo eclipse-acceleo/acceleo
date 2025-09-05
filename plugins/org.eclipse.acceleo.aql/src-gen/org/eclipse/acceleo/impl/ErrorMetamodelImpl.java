@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2021 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -16,8 +16,6 @@ import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -30,7 +28,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  * <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getReferencedPackage <em>Referenced
  * Package</em>}</li>
- * <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getFragment <em>Fragment</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getMissingEndQuote <em>Missing End Quote</em>}</li>
  * </ul>
  *
@@ -38,34 +35,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements ErrorMetamodel {
 	/**
-	 * The cached value of the '{@link #getReferencedPackage() <em>Referenced Package</em>}' reference. <!--
+	 * The default value of the '{@link #getReferencedPackage() <em>Referenced Package</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getReferencedPackage()
 	 * @generated
 	 * @ordered
 	 */
-	protected EPackage referencedPackage;
+	protected static final String REFERENCED_PACKAGE_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getFragment() <em>Fragment</em>}' attribute. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getReferencedPackage() <em>Referenced Package</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getFragment()
+	 * @see #getReferencedPackage()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String FRAGMENT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getFragment() <em>Fragment</em>}' attribute. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @see #getFragment()
-	 * @generated
-	 * @ordered
-	 */
-	protected String fragment = FRAGMENT_EDEFAULT;
+	protected String referencedPackage = REFERENCED_PACKAGE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingEndQuote() <em>Missing End Quote</em>}' attribute. <!--
@@ -112,26 +99,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 */
 	@Override
-	public EPackage getReferencedPackage() {
-		if (referencedPackage != null && referencedPackage.eIsProxy()) {
-			InternalEObject oldReferencedPackage = (InternalEObject)referencedPackage;
-			referencedPackage = (EPackage)eResolveProxy(oldReferencedPackage);
-			if (referencedPackage != oldReferencedPackage) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE, oldReferencedPackage,
-							referencedPackage));
-			}
-		}
-		return referencedPackage;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EPackage basicGetReferencedPackage() {
+	public String getReferencedPackage() {
 		return referencedPackage;
 	}
 
@@ -141,37 +109,13 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 */
 	@Override
-	public void setReferencedPackage(EPackage newReferencedPackage) {
-		EPackage oldReferencedPackage = referencedPackage;
+	public void setReferencedPackage(String newReferencedPackage) {
+		String oldReferencedPackage = referencedPackage;
 		referencedPackage = newReferencedPackage;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE, oldReferencedPackage,
 					referencedPackage));
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public String getFragment() {
-		return fragment;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public void setFragment(String newFragment) {
-		String oldFragment = fragment;
-		fragment = newFragment;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_METAMODEL__FRAGMENT,
-					oldFragment, fragment));
 	}
 
 	/**
@@ -207,11 +151,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
-				if (resolve)
-					return getReferencedPackage();
-				return basicGetReferencedPackage();
-			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
-				return getFragment();
+				return getReferencedPackage();
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
 				return getMissingEndQuote();
 		}
@@ -227,10 +167,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
-				setReferencedPackage((EPackage)newValue);
-				return;
-			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
-				setFragment((String)newValue);
+				setReferencedPackage((String)newValue);
 				return;
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
 				setMissingEndQuote((Integer)newValue);
@@ -248,10 +185,7 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
-				setReferencedPackage((EPackage)null);
-				return;
-			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
-				setFragment(FRAGMENT_EDEFAULT);
+				setReferencedPackage(REFERENCED_PACKAGE_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
 				setMissingEndQuote(MISSING_END_QUOTE_EDEFAULT);
@@ -269,9 +203,8 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
-				return referencedPackage != null;
-			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
-				return FRAGMENT_EDEFAULT == null ? fragment != null : !FRAGMENT_EDEFAULT.equals(fragment);
+				return REFERENCED_PACKAGE_EDEFAULT == null ? referencedPackage != null
+						: !REFERENCED_PACKAGE_EDEFAULT.equals(referencedPackage);
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
 				return missingEndQuote != MISSING_END_QUOTE_EDEFAULT;
 		}
@@ -325,8 +258,8 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (fragment: "); //$NON-NLS-1$
-		result.append(fragment);
+		result.append(" (referencedPackage: "); //$NON-NLS-1$
+		result.append(referencedPackage);
 		result.append(", missingEndQuote: "); //$NON-NLS-1$
 		result.append(missingEndQuote);
 		result.append(')');

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -475,7 +475,7 @@ public final class ModuleConverter extends AbstractConverter {
 		final Set<String> knownNsURIs = new HashSet<>();
 
 		for (Metamodel metamodel : outputModule.getMetamodels()) {
-			knownNsURIs.add(metamodel.getReferencedPackage().getNsURI());
+			knownNsURIs.add(metamodel.getReferencedPackage());
 		}
 
 		final Map<String, EPackage> missingEPackages = new LinkedHashMap<>();
@@ -511,7 +511,7 @@ public final class ModuleConverter extends AbstractConverter {
 
 		for (EPackage missingEPackage : missingEPackages.values()) {
 			final Metamodel metamodel = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
-			metamodel.setReferencedPackage(missingEPackage);
+			metamodel.setReferencedPackage(missingEPackage.getNsURI());
 			outputModule.getMetamodels().add(metamodel);
 		}
 
@@ -879,9 +879,9 @@ public final class ModuleConverter extends AbstractConverter {
 				// we create a dummy EPackage
 				EPackage dummy = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.createEPackage();
 				dummy.setNsURI(EcoreUtil.getURI(ePackage).toString().split("#")[0]);
-				metamodel.setReferencedPackage(dummy);
+				metamodel.setReferencedPackage(dummy.getNsURI());
 			} else {
-				metamodel.setReferencedPackage(ePackage);
+				metamodel.setReferencedPackage(ePackage.getNsURI());
 			}
 			res.add(metamodel);
 		}

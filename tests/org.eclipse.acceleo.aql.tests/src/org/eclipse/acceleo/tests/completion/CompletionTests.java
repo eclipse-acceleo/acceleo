@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@ import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironmen
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.tests.utils.AbstractLanguageTestSuite;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -127,7 +128,7 @@ public class CompletionTests {
 		final AcceleoCompletor completor = new AcceleoCompletor("\n");
 
 		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass()
-				.getClassLoader(), AcceleoParser.QUALIFIER_SEPARATOR);
+				.getClassLoader(), EPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);
 
 		// TODO get options form ??? or list all possible options ?
 		// don't add any options ?
@@ -153,7 +154,10 @@ public class CompletionTests {
 			final Module module = parsingResult.getModule();
 			for (Metamodel metamodel : module.getMetamodels()) {
 				if (metamodel.getReferencedPackage() != null) {
-					queryEnvironment.registerEPackage(metamodel.getReferencedPackage());
+					final EPackage ePkg = resolver.getEPackage(metamodel.getReferencedPackage());
+					if (ePkg != null) {
+						queryEnvironment.registerEPackage(ePkg);
+					}
 				}
 			}
 			resolver.register("org::eclipse::acceleo::tests::" + MODULE_NAME, module);

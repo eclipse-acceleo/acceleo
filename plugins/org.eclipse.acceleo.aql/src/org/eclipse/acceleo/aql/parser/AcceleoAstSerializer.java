@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -352,7 +352,7 @@ public class AcceleoAstSerializer extends AcceleoSwitch<Object> {
 	public Object caseMetamodel(Metamodel metamodel) {
 		builder.append(AcceleoParser.QUOTE);
 		if (metamodel.getReferencedPackage() != null) {
-			builder.append(metamodel.getReferencedPackage().getNsURI());
+			builder.append(metamodel.getReferencedPackage());
 		}
 		builder.append(AcceleoParser.QUOTE);
 
