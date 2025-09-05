@@ -493,7 +493,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseModuleReference(ModuleReference moduleReference) {
 		if (moduleReference.getQualifiedName() != null && queryEnvironment.getLookupEngine().getResolver()
-				.getURI(moduleReference.getQualifiedName()) == null) {
+				.resolve(moduleReference.getQualifiedName()) == null) {
 			final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not resolve " + moduleReference
 					.getQualifiedName(), acceleoAstResult.getStartPosition(moduleReference), acceleoAstResult
