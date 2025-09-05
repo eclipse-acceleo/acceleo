@@ -1,3 +1,4 @@
+qualified name quickFixes::callUnresolvedServiceGetterCollectionCall::callUnresolvedServiceGetterCollectionCall
 
 header position 0..92
 module callUnresolvedServiceGetterCollectionCall

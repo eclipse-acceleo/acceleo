@@ -1,3 +1,4 @@
+qualified name resolution::callBeforeTemplateDeclaration::callBeforeTemplateDeclaration
 
 header position 0..80
 module callBeforeTemplateDeclaration

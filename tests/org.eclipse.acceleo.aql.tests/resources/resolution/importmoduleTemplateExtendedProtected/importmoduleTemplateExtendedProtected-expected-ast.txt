@@ -1,3 +1,4 @@
+qualified name resolution::importmoduleTemplateExtendedProtected::importmoduleTemplateExtendedProtected
 
 header position 0..88
 module importmoduleTemplateExtendedProtected

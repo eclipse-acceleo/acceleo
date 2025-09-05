@@ -620,6 +620,7 @@ public class AcceleoParser {
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
 		skipSpaces();
 		final Module module = parseModule(comments);
+		module.setQualifiedName(qualifiedName);
 		module.setEncoding(charsetName);
 
 		final Resource containerEmfResource = new XMIResourceImpl(URI.createURI(ACCELEOENV_URI_PROTOCOL

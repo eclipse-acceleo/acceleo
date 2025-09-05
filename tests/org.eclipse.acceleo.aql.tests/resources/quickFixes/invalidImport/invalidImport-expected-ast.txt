@@ -1,3 +1,4 @@
+qualified name quickFixes::invalidImport::invalidImport
 
 header position 0..64
 module invalidImport

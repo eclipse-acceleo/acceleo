@@ -496,7 +496,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template && ((Template)element).isMain()) {
-				final String start = lookupEngine.getResolver().getQualifiedName(module);
+				final String start = module.getQualifiedName();
 				lookupEngine.pushImportsContext(start, start);
 				try {
 					doSwitch(element);

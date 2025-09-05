@@ -1,3 +1,4 @@
+qualified name language::comment::missingEnd::missingEnd
 	
  * My module has a nice comment.
  * @author Yvan Lussaud

@@ -1,3 +1,4 @@
+qualified name language::module::extraSpacesBefore::extraSpacesBefore
 
 header position 11..79
 module extraSpacesBefore

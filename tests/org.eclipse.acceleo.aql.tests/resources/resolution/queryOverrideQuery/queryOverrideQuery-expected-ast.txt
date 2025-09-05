@@ -1,3 +1,4 @@
+qualified name resolution::queryOverrideQuery::queryOverrideQuery
 
 header position 0..114
 module queryOverrideQuery

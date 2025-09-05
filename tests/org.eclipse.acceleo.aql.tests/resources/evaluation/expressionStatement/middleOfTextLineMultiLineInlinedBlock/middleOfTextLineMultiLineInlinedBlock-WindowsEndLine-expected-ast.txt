@@ -1,3 +1,4 @@
+qualified name evaluation::expressionStatement::middleOfTextLineMultiLineInlinedBlock::middleOfTextLineMultiLineInlinedBlock
 
 header position 0..88
 module middleOfTextLineMultiLineInlinedBlock

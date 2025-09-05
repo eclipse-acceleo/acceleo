@@ -1,3 +1,4 @@
+qualified name language::template::threeParametersExtraSpaces::threeParametersExtraSpaces
 
 header position 0..77
 module threeParametersExtraSpaces

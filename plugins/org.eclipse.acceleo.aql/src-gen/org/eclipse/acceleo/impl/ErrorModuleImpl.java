@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -53,6 +53,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getAst <em>Ast</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getEncoding <em>Encoding</em>}</li>
+ * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getQualifiedName <em>Qualified Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingOpenParenthesis <em>Missing Open
  * Parenthesis</em>}</li>
  * <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingEPackage <em>Missing EPackage</em>}</li>
@@ -233,6 +234,26 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * @ordered
 	 */
 	protected String encoding = ENCODING_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getQualifiedName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String QUALIFIED_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getQualifiedName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String qualifiedName = QUALIFIED_NAME_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}'
@@ -649,6 +670,30 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * @generated
 	 */
 	@Override
+	public String getQualifiedName() {
+		return qualifiedName;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setQualifiedName(String newQualifiedName) {
+		String oldQualifiedName = qualifiedName;
+		qualifiedName = newQualifiedName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_MODULE__QUALIFIED_NAME,
+					oldQualifiedName, qualifiedName));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
@@ -810,6 +855,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return getAst();
 			case AcceleoPackage.ERROR_MODULE__ENCODING:
 				return getEncoding();
+			case AcceleoPackage.ERROR_MODULE__QUALIFIED_NAME:
+				return getQualifiedName();
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
@@ -866,6 +913,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return;
 			case AcceleoPackage.ERROR_MODULE__ENCODING:
 				setEncoding((String)newValue);
+				return;
+			case AcceleoPackage.ERROR_MODULE__QUALIFIED_NAME:
+				setQualifiedName((String)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis((Integer)newValue);
@@ -924,6 +974,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_MODULE__ENCODING:
 				setEncoding(ENCODING_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_MODULE__QUALIFIED_NAME:
+				setQualifiedName(QUALIFIED_NAME_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
@@ -970,6 +1023,9 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
 			case AcceleoPackage.ERROR_MODULE__ENCODING:
 				return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
+			case AcceleoPackage.ERROR_MODULE__QUALIFIED_NAME:
+				return QUALIFIED_NAME_EDEFAULT == null ? qualifiedName != null
+						: !QUALIFIED_NAME_EDEFAULT.equals(qualifiedName);
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
@@ -1025,6 +1081,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 					return AcceleoPackage.MODULE__AST;
 				case AcceleoPackage.ERROR_MODULE__ENCODING:
 					return AcceleoPackage.MODULE__ENCODING;
+				case AcceleoPackage.ERROR_MODULE__QUALIFIED_NAME:
+					return AcceleoPackage.MODULE__QUALIFIED_NAME;
 				default:
 					return -1;
 			}
@@ -1075,6 +1133,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 					return AcceleoPackage.ERROR_MODULE__AST;
 				case AcceleoPackage.MODULE__ENCODING:
 					return AcceleoPackage.ERROR_MODULE__ENCODING;
+				case AcceleoPackage.MODULE__QUALIFIED_NAME:
+					return AcceleoPackage.ERROR_MODULE__QUALIFIED_NAME;
 				default:
 					return -1;
 			}
@@ -1105,6 +1165,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 		result.append(ast);
 		result.append(", encoding: "); //$NON-NLS-1$
 		result.append(encoding);
+		result.append(", qualifiedName: "); //$NON-NLS-1$
+		result.append(qualifiedName);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
 		result.append(", missingEPackage: "); //$NON-NLS-1$

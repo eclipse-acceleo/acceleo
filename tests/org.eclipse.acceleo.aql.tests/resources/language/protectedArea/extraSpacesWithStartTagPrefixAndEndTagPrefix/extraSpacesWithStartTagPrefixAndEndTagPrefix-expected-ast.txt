@@ -1,3 +1,4 @@
+qualified name language::protectedArea::extraSpacesWithStartTagPrefixAndEndTagPrefix::extraSpacesWithStartTagPrefixAndEndTagPrefix
 
 header position 0..95
 module extraSpacesWithStartTagPrefixAndEndTagPrefix

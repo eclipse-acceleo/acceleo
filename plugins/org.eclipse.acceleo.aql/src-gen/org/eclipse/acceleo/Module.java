@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -208,5 +208,28 @@ public interface Module extends NamedElement, DocumentedElement, AcceleoASTNode 
 	 * @generated
 	 */
 	void setEncoding(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Qualified Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Qualified Name</em>' attribute.
+	 * @see #setQualifiedName(String)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getModule_QualifiedName()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getQualifiedName();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.Module#getQualifiedName <em>Qualified Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Qualified Name</em>' attribute.
+	 * @see #getQualifiedName()
+	 * @generated
+	 */
+	void setQualifiedName(String value);
 
 } // Module

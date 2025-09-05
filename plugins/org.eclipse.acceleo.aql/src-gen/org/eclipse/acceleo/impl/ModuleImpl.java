@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2024 Obeo.
+ * Copyright (c) 2008, 2025 Obeo.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -203,6 +203,26 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 * @ordered
 	 */
 	protected String encoding = ENCODING_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getQualifiedName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String QUALIFIED_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getQualifiedName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String qualifiedName = QUALIFIED_NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -512,6 +532,30 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 	 * @generated
 	 */
 	@Override
+	public String getQualifiedName() {
+		return qualifiedName;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setQualifiedName(String newQualifiedName) {
+		String oldQualifiedName = qualifiedName;
+		qualifiedName = newQualifiedName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__QUALIFIED_NAME,
+					oldQualifiedName, qualifiedName));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AcceleoPackage.MODULE__DOCUMENTATION:
@@ -573,6 +617,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 				return getAst();
 			case AcceleoPackage.MODULE__ENCODING:
 				return getEncoding();
+			case AcceleoPackage.MODULE__QUALIFIED_NAME:
+				return getQualifiedName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -619,6 +665,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 			case AcceleoPackage.MODULE__ENCODING:
 				setEncoding((String)newValue);
 				return;
+			case AcceleoPackage.MODULE__QUALIFIED_NAME:
+				setQualifiedName((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -661,6 +710,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 			case AcceleoPackage.MODULE__ENCODING:
 				setEncoding(ENCODING_EDEFAULT);
 				return;
+			case AcceleoPackage.MODULE__QUALIFIED_NAME:
+				setQualifiedName(QUALIFIED_NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -693,6 +745,9 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
 			case AcceleoPackage.MODULE__ENCODING:
 				return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
+			case AcceleoPackage.MODULE__QUALIFIED_NAME:
+				return QUALIFIED_NAME_EDEFAULT == null ? qualifiedName != null
+						: !QUALIFIED_NAME_EDEFAULT.equals(qualifiedName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -782,6 +837,8 @@ public class ModuleImpl extends NamedElementImpl implements org.eclipse.acceleo.
 		result.append(ast);
 		result.append(", encoding: "); //$NON-NLS-1$
 		result.append(encoding);
+		result.append(", qualifiedName: "); //$NON-NLS-1$
+		result.append(qualifiedName);
 		result.append(')');
 		return result.toString();
 	}

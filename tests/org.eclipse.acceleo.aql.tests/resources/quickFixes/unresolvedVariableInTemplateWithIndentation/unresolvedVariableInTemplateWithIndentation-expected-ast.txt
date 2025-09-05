@@ -1,3 +1,4 @@
+qualified name quickFixes::unresolvedVariableInTemplateWithIndentation::unresolvedVariableInTemplateWithIndentation
 
 header position 0..94
 module unresolvedVariableInTemplateWithIndentation

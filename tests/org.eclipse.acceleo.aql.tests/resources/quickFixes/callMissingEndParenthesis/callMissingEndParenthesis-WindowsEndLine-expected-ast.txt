@@ -1,3 +1,4 @@
+qualified name quickFixes::callMissingEndParenthesis::callMissingEndParenthesis
 
 header position 0..76
 module callMissingEndParenthesis

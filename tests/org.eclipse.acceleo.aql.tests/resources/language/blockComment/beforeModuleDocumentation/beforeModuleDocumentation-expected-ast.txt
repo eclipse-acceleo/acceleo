@@ -1,3 +1,4 @@
+qualified name language::blockComment::beforeModuleDocumentation::beforeModuleDocumentation
 	
  * My module has a nice comment.
  * @author Yvan Lussaud

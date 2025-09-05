@@ -1,3 +1,4 @@
+qualified name language::moduleDocumentation::withEncoding::withEncoding
 	
  * My module has a nice comment.
  * @author Yvan Lussaud

@@ -1,3 +1,4 @@
+qualified name language::comment::withSpaceAfter::withSpaceAfter
 
 header position 30..95
 module withSpaceAfter

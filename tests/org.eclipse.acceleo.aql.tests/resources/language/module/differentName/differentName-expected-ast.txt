@@ -1,3 +1,4 @@
+qualified name language::module::differentName::differentName
 
 header position 0..69
 module otherDifferentName

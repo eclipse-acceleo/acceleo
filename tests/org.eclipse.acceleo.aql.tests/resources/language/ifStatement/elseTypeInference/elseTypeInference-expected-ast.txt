@@ -1,3 +1,4 @@
+qualified name language::ifStatement::elseTypeInference::elseTypeInference
 
 header position 0..68
 module elseTypeInference

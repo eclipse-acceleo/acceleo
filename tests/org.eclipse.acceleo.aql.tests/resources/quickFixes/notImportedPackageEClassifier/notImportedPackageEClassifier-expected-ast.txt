@@ -1,3 +1,4 @@
+qualified name quickFixes::notImportedPackageEClassifier::notImportedPackageEClassifier
 
 header position 0..80
 module notImportedPackageEClassifier

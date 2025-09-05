@@ -1,3 +1,4 @@
+qualified name quickFixes::invalidServiceExtends::invalidServiceExtends
 
 header position 0..125
 module invalidServiceExtends

@@ -1,3 +1,4 @@
+qualified name language::query::threeParameters::threeParameters
 
 header position 0..66
 module threeParameters

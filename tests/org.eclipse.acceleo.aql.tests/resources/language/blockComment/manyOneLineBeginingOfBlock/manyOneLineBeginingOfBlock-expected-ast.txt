@@ -1,3 +1,4 @@
+qualified name language::blockComment::manyOneLineBeginingOfBlock::manyOneLineBeginingOfBlock
 
 header position 0..77
 module manyOneLineBeginingOfBlock

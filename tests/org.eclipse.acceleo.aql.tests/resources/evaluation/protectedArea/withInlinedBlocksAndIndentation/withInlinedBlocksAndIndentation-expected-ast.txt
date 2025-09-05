@@ -1,3 +1,4 @@
+qualified name evaluation::protectedArea::withInlinedBlocksAndIndentation::withInlinedBlocksAndIndentation
 
 header position 0..82
 module withInlinedBlocksAndIndentation

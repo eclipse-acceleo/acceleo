@@ -1,3 +1,4 @@
+qualified name quickFixes::notImportedPackageEEnumLiteral::notImportedPackageEEnumLiteral
 
 header position 0..81
 module notImportedPackageEEnumLiteral

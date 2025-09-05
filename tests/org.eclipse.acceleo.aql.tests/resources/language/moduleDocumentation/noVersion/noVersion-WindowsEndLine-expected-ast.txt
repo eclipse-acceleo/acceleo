@@ -1,3 +1,4 @@
+qualified name language::moduleDocumentation::noVersion::noVersion
 	
  * My module has a nice comment.
  * @author Yvan Lussaud

@@ -1,3 +1,4 @@
+qualified name language::forStatement::notCollectionUsingVariable::notCollectionUsingVariable
 
 header position 0..77
 module notCollectionUsingVariable

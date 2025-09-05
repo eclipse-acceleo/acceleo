@@ -1,3 +1,4 @@
+qualified name language::protectedArea::protectedAreaHeaderEndInId::protectedAreaHeaderEndInId
 
 header position 0..77
 module protectedAreaHeaderEndInId

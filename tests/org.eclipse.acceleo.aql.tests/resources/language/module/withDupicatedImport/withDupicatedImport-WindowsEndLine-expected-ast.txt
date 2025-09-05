@@ -1,3 +1,4 @@
+qualified name language::module::withDupicatedImport::withDupicatedImport
 
 header position 0..70
 module withDupicatedImport

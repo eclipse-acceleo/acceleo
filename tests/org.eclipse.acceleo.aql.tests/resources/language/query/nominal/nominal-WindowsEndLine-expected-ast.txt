@@ -1,3 +1,4 @@
+qualified name language::query::nominal::nominal
 
 header position 0..58
 module nominal

@@ -261,8 +261,7 @@ public final class AcceleoUtil {
 			IQualifiedNameQueryEnvironment queryEnvironment, IAcceleoGenerationStrategy generationStrategy,
 			URI destination, URI logURI, Monitor monitor) {
 		generationStrategy.start(destination);
-		final String moduleQualifiedName = queryEnvironment.getLookupEngine().getResolver().getQualifiedName(
-				getContainingModule(template));
+		final String moduleQualifiedName = getContainingModule(template).getQualifiedName();
 		queryEnvironment.getLookupEngine().pushImportsContext(moduleQualifiedName, moduleQualifiedName);
 		monitor.subTask(moduleQualifiedName);
 		try {

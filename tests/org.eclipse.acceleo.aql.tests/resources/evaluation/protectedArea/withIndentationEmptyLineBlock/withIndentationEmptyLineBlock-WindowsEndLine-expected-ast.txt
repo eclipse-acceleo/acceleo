@@ -1,3 +1,4 @@
+qualified name evaluation::protectedArea::withIndentationEmptyLineBlock::withIndentationEmptyLineBlock
 
 header position 0..80
 module withIndentationEmptyLineBlock

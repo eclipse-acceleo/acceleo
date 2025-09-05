@@ -1,3 +1,4 @@
+qualified name quickFixes::unresolvedVariableInTemplate::unresolvedVariableInTemplate
 
 header position 0..79
 module unresolvedVariableInTemplate

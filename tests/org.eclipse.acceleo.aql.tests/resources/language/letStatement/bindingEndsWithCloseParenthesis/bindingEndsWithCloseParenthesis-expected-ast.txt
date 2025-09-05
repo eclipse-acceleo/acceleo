@@ -1,3 +1,4 @@
+qualified name language::letStatement::bindingEndsWithCloseParenthesis::bindingEndsWithCloseParenthesis
 
 header position 0..82
 module bindingEndsWithCloseParenthesis

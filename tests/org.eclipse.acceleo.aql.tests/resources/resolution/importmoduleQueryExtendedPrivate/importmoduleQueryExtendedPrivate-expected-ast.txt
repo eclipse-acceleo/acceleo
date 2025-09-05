@@ -1,3 +1,4 @@
+qualified name resolution::importmoduleQueryExtendedPrivate::importmoduleQueryExtendedPrivate
 
 header position 0..83
 module importmoduleQueryExtendedPrivate

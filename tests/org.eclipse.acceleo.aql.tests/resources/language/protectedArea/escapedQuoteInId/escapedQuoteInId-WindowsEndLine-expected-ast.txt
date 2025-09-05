@@ -1,3 +1,4 @@
+qualified name language::protectedArea::escapedQuoteInId::escapedQuoteInId
 
 header position 0..67
 module escapedQuoteInId

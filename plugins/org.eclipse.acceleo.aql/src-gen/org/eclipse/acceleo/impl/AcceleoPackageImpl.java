@@ -2369,6 +2369,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(moduleEClass, MODULE__END_HEADER_POSITION);
 		createEAttribute(moduleEClass, MODULE__AST);
 		createEAttribute(moduleEClass, MODULE__ENCODING);
+		createEAttribute(moduleEClass, MODULE__QUALIFIED_NAME);
 
 		errorModuleEClass = createEClass(ERROR_MODULE);
 		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_OPEN_PARENTHESIS);
@@ -2740,6 +2741,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getModule_Encoding(), ecorePackage.getEString(), "encoding", null, 0, 1, //$NON-NLS-1$
+				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModule_QualifiedName(), ecorePackage.getEString(), "qualifiedName", null, 1, 1, //$NON-NLS-1$
 				org.eclipse.acceleo.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3280,6 +3284,16 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	@Override
 	public EAttribute getModule_Encoding() {
 		return (EAttribute)moduleEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getModule_QualifiedName() {
+		return (EAttribute)moduleEClass.getEStructuralFeatures().get(8);
 	}
 
 	@Override

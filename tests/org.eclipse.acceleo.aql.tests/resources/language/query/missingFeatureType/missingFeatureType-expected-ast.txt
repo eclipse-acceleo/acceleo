@@ -1,3 +1,4 @@
+qualified name language::query::missingFeatureType::missingFeatureType
 
 header position 29..95
 module missingFeatureType

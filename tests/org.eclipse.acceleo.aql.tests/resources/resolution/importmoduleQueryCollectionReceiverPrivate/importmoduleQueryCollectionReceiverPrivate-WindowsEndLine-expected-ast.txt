@@ -1,3 +1,4 @@
+qualified name resolution::importmoduleQueryCollectionReceiverPrivate::importmoduleQueryCollectionReceiverPrivate
 
 header position 0..93
 module importmoduleQueryCollectionReceiverPrivate

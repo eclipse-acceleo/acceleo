@@ -1,3 +1,4 @@
+qualified name language::letStatement::threeBindingsUsingVariable::threeBindingsUsingVariable
 
 header position 0..77
 module threeBindingsUsingVariable

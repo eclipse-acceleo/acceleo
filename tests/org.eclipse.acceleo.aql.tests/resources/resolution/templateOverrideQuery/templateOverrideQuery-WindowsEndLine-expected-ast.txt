@@ -1,3 +1,4 @@
+qualified name resolution::templateOverrideQuery::templateOverrideQuery
 
 header position 0..120
 module templateOverrideQuery

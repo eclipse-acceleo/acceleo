@@ -1,3 +1,4 @@
+qualified name language::template::commentIsMain::commentIsMain
 
 header position 0..64
 module commentIsMain

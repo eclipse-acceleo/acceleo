@@ -1,3 +1,4 @@
+qualified name evaluation::letStatement::middleOfTextLineMultiLineInlined::middleOfTextLineMultiLineInlined
 
 header position 0..83
 module middleOfTextLineMultiLineInlined

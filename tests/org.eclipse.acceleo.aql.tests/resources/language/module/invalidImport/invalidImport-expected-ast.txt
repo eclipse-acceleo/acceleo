@@ -1,3 +1,4 @@
+qualified name language::module::invalidImport::invalidImport
 
 header position 0..64
 module invalidImport

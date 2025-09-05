@@ -1,3 +1,4 @@
+qualified name resolution::callBeforeQueryDeclaration::callBeforeQueryDeclaration
 
 header position 0..77
 module callBeforeQueryDeclaration

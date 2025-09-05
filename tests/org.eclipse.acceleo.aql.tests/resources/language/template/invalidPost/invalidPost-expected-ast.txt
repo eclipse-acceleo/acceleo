@@ -1,3 +1,4 @@
+qualified name language::template::invalidPost::invalidPost
 
 header position 0..62
 module invalidPost

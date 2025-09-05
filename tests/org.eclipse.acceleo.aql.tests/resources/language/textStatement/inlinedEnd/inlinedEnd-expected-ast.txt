@@ -1,3 +1,4 @@
+qualified name language::textStatement::inlinedEnd::inlinedEnd
 
 header position 0..61
 module inlinedEnd

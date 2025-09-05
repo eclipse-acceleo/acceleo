@@ -1,3 +1,4 @@
+qualified name language::comment::withEncoding::withEncoding
 
 header position 56..119
 module withEncoding

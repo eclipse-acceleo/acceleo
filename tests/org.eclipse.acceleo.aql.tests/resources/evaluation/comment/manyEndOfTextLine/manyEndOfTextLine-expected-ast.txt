@@ -1,3 +1,4 @@
+qualified name evaluation::comment::manyEndOfTextLine::manyEndOfTextLine
 
 header position 0..68
 module manyEndOfTextLine

@@ -3,6 +3,7 @@ missing open parenthesis: -1
 missing EPackage: -1
 missing close parenthesis: -1
 missing end header: 65
+qualified name language::module::missingEndHeader::missingEndHeader
 
 header position 0..65
 module missingEndHeader

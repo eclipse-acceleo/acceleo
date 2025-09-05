@@ -1,3 +1,4 @@
+qualified name language::protectedArea::withEndTagPrefixMissingClosingParenthesis::withEndTagPrefixMissingClosingParenthesis
 
 header position 0..92
 module withEndTagPrefixMissingClosingParenthesis

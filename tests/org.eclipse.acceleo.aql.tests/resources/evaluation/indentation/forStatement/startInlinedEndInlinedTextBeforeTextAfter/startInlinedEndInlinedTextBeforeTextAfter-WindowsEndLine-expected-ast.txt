@@ -1,3 +1,4 @@
+qualified name evaluation::indentation::forStatement::startInlinedEndInlinedTextBeforeTextAfter::startInlinedEndInlinedTextBeforeTextAfter
 
 header position 0..92
 module startInlinedEndInlinedTextBeforeTextAfter

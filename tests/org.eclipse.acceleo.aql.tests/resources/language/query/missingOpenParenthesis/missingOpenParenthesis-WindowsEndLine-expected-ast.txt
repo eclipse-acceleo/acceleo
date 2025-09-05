@@ -1,3 +1,4 @@
+qualified name language::query::missingOpenParenthesis::missingOpenParenthesis
 
 header position 0..73
 module missingOpenParenthesis

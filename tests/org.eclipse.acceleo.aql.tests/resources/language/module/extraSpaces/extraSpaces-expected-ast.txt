@@ -1,3 +1,4 @@
+qualified name language::module::extraSpaces::extraSpaces
 
 header position 0..77
 module extraSpaces

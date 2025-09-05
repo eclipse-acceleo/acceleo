@@ -1,3 +1,4 @@
+qualified name language::query::queryHeaderEndInId::queryHeaderEndInId
 
 header position 0..69
 module queryHeaderEndInId

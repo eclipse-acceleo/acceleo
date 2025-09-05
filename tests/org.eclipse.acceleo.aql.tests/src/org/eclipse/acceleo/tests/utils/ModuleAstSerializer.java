@@ -430,6 +430,8 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	@Override
 	public Void caseModule(Module module) {
+		 builder.append("qualified name " + module.getQualifiedName());
+		 newLine();
 		if (module.getDocumentation() != null) {
 			doSwitch(module.getDocumentation());
 		}

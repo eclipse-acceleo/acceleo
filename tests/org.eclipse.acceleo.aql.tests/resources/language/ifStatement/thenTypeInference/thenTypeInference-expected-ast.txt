@@ -1,3 +1,4 @@
+qualified name language::ifStatement::thenTypeInference::thenTypeInference
 
 header position 0..68
 module thenTypeInference

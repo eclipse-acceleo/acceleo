@@ -1,3 +1,4 @@
+qualified name services::sequencesServices::sequencesServices
 
 header position 0..68
 module sequencesServices

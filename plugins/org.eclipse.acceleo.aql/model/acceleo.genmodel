@@ -35,6 +35,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/endHeaderPosition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/ast"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/qualifiedName"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorModule">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorModule/missingOpenParenthesis"/>

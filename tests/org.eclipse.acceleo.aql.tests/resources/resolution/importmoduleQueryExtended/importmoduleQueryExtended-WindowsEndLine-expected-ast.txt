@@ -1,3 +1,4 @@
+qualified name resolution::importmoduleQueryExtended::importmoduleQueryExtended
 
 header position 0..76
 module importmoduleQueryExtended

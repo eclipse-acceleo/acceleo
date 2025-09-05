@@ -1,3 +1,4 @@
+qualified name quickFixes::invalidExtends::invalidExtends
 
 header position 0..108
 module invalidExtends

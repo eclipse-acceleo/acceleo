@@ -1,3 +1,4 @@
+qualified name services::acceleoServices::acceleoServices
 
 header position 0..66
 module acceleoServices

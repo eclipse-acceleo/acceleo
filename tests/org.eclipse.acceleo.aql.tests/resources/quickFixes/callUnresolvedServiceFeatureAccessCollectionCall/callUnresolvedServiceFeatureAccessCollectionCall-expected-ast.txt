@@ -1,3 +1,4 @@
+qualified name quickFixes::callUnresolvedServiceFeatureAccessCollectionCall::callUnresolvedServiceFeatureAccessCollectionCall
 
 header position 0..99
 module callUnresolvedServiceFeatureAccessCollectionCall

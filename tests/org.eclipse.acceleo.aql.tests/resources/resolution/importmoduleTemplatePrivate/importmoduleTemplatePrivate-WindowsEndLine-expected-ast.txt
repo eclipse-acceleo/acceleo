@@ -1,3 +1,4 @@
+qualified name resolution::importmoduleTemplatePrivate::importmoduleTemplatePrivate
 
 header position 0..78
 module importmoduleTemplatePrivate

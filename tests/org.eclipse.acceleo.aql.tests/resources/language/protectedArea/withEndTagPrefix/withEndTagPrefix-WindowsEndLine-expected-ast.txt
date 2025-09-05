@@ -1,3 +1,4 @@
+qualified name language::protectedArea::withEndTagPrefix::withEndTagPrefix
 
 header position 0..67
 module withEndTagPrefix

@@ -1,3 +1,4 @@
+qualified name language::letStatement::closeParenthesisInBinding::closeParenthesisInBinding
 
 header position 0..76
 module closeParenthesisInBinding

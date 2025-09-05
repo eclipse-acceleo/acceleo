@@ -1,3 +1,4 @@
+qualified name language::moduleDocumentation::noAuthor::noAuthor
 	
  * My module has a nice comment.
  * @version 0.1.0

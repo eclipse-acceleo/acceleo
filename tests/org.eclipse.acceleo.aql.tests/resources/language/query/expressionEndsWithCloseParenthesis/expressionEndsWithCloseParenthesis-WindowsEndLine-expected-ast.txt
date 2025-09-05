@@ -1,3 +1,4 @@
+qualified name language::query::expressionEndsWithCloseParenthesis::expressionEndsWithCloseParenthesis
 
 header position 0..85
 module expressionEndsWithCloseParenthesis

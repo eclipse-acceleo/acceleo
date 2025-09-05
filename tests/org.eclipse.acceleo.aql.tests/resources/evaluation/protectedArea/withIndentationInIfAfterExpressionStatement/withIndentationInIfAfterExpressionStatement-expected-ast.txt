@@ -1,3 +1,4 @@
+qualified name evaluation::protectedArea::withIndentationInIfAfterExpressionStatement::withIndentationInIfAfterExpressionStatement
 
 header position 0..94
 module withIndentationInIfAfterExpressionStatement

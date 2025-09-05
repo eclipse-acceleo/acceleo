@@ -1,3 +1,4 @@
+qualified name language::template::documentationIsMain::documentationIsMain
 
 header position 0..70
 module documentationIsMain

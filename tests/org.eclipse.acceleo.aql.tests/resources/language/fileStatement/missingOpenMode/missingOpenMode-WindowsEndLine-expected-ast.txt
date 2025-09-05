@@ -1,3 +1,4 @@
+qualified name language::fileStatement::missingOpenMode::missingOpenMode
 
 header position 0..66
 module missingOpenMode

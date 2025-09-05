@@ -1,3 +1,4 @@
+qualified name language::textStatement::nominalManyLines::nominalManyLines
 
 header position 0..67
 module nominalManyLines

@@ -1,3 +1,4 @@
+qualified name language::moduleDocumentation::withSpaceAfter::withSpaceAfter
 	
  * My module has a nice comment.
  * @author Yvan Lussaud

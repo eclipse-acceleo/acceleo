@@ -60,6 +60,7 @@ public class ModuleItemProvider extends NamedElementItemProvider {
 			addEndHeaderPositionPropertyDescriptor(object);
 			addAstPropertyDescriptor(object);
 			addEncodingPropertyDescriptor(object);
+			addQualifiedNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -189,6 +190,22 @@ public class ModuleItemProvider extends NamedElementItemProvider {
 	}
 
 	/**
+	 * This adds a property descriptor for the Qualified Name feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addQualifiedNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Module_qualifiedName_feature"), //$NON-NLS-1$
+						getString("_UI_PropertyDescriptor_description", "_UI_Module_qualifiedName_feature", //$NON-NLS-1$//$NON-NLS-2$
+								"_UI_Module_type"), //$NON-NLS-1$
+						AcceleoPackage.Literals.MODULE__QUALIFIED_NAME, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an
 	 * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
 	 * {@link org.eclipse.emf.edit.command.RemoveCommand} or
@@ -263,6 +280,7 @@ public class ModuleItemProvider extends NamedElementItemProvider {
 		case AcceleoPackage.MODULE__END_HEADER_POSITION:
 		case AcceleoPackage.MODULE__AST:
 		case AcceleoPackage.MODULE__ENCODING:
+		case AcceleoPackage.MODULE__QUALIFIED_NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case AcceleoPackage.MODULE__DOCUMENTATION:

@@ -1,3 +1,4 @@
+qualified name quickFixes::invalidServiceImport::invalidServiceImport
 
 header position 0..71
 module invalidServiceImport

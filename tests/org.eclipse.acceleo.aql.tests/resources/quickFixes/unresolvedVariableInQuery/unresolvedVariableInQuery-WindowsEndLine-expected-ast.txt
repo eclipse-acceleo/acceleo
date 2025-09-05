@@ -1,3 +1,4 @@
+qualified name quickFixes::unresolvedVariableInQuery::unresolvedVariableInQuery
 
 header position 0..76
 module unresolvedVariableInQuery

@@ -1,3 +1,4 @@
+qualified name resolution::superImportServiceWithTemplateInBaseModule_bug184::superImportServiceWithTemplateInBaseModule_bug184
 
 header position 0..176
 module superImportServiceWithTemplateInBaseModule_bug184

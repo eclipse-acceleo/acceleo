@@ -1,3 +1,4 @@
+qualified name language::protectedArea::idEndsWithCloseParenthesis::idEndsWithCloseParenthesis
 
 header position 0..77
 module idEndsWithCloseParenthesis

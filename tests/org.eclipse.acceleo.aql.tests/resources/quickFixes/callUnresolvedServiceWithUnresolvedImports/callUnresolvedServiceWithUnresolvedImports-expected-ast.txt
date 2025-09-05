@@ -1,3 +1,4 @@
+qualified name quickFixes::callUnresolvedServiceWithUnresolvedImports::callUnresolvedServiceWithUnresolvedImports
 
 header position 0..93
 module callUnresolvedServiceWithUnresolvedImports

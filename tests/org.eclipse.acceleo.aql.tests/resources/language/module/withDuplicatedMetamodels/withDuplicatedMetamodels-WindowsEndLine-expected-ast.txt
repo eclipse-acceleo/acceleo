@@ -1,3 +1,4 @@
+qualified name language::module::withDuplicatedMetamodels::withDuplicatedMetamodels
 
 header position 0..155
 module withDuplicatedMetamodels

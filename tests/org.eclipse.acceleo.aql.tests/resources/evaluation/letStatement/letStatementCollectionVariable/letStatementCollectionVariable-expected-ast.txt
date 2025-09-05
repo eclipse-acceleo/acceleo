@@ -1,3 +1,4 @@
+qualified name evaluation::letStatement::letStatementCollectionVariable::letStatementCollectionVariable
 
 header position 0..81
 module letStatementCollectionVariable

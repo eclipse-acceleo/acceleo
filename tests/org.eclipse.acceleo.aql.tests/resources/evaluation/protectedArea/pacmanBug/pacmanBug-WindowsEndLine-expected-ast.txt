@@ -1,3 +1,4 @@
+qualified name evaluation::protectedArea::pacmanBug::pacmanBug
 
 header position 0..60
 module pacmanBug

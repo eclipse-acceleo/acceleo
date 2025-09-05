@@ -1,3 +1,4 @@
+qualified name language::comment::missingSpaceInTemplate::missingSpaceInTemplate
 
 header position 0..73
 module missingSpaceInTemplate

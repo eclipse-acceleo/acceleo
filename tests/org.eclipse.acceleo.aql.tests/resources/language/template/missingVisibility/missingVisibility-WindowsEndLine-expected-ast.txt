@@ -1,3 +1,4 @@
+qualified name language::template::missingVisibility::missingVisibility
 
 header position 0..68
 module missingVisibility

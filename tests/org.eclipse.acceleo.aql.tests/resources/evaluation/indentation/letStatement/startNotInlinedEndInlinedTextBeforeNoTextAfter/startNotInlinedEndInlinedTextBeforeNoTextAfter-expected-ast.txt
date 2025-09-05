@@ -1,3 +1,4 @@
+qualified name evaluation::indentation::letStatement::startNotInlinedEndInlinedTextBeforeNoTextAfter::startNotInlinedEndInlinedTextBeforeNoTextAfter
 
 header position 0..97
 module startNotInlinedEndInlinedTextBeforeNoTextAfter

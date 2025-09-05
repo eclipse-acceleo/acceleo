@@ -1,3 +1,4 @@
+qualified name language::comment::beginingOfBlock::beginingOfBlock
 
 header position 0..66
 module beginingOfBlock
