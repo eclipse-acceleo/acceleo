@@ -61,6 +61,10 @@
             class="org.eclipse.acceleo.query.services.configurator.HTTPServiceConfigurator"
             language="org.eclipse.acceleo.query">
       </servicesConfigurators>
+      <servicesConfigurators
+            class="org.eclipse.acceleo.query.services.configurator.AQLServiceConfigurator"
+            language="org.eclipse.acceleo.query">
+      </servicesConfigurators>
    </extension>
 
 </plugin>

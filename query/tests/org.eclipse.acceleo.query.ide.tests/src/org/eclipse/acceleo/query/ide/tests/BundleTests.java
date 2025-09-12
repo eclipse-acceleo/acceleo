@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.ide.tests;
 
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.services.configurator.AQLServiceConfigurator;
 import org.eclipse.acceleo.query.services.configurator.HTTPServiceConfigurator;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.core.runtime.Platform;
@@ -55,6 +56,18 @@ public class BundleTests {
 			}
 		}
 		assertTrue(hasHTTPServiceConfigurator);
+	}
+
+	@Test
+	public void isRegisteredAQLServiceConfigurator() {
+		boolean hasAQLServiceConfigurator = false;
+		for (IServicesConfigurator configurator : AQLUtils.getServicesConfigurators(AQLUtils.AQL_LANGUAGE)) {
+			if (configurator instanceof AQLServiceConfigurator) {
+				hasAQLServiceConfigurator = true;
+				break;
+			}
+		}
+		assertTrue(hasAQLServiceConfigurator);
 	}
 
 }

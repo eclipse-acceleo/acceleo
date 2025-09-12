@@ -38,6 +38,11 @@ public class AqlResolverURIHandler implements URIHandler {
 	private static final String AQL_RESOLVE_PROTOCOL = "aqlresolve";
 
 	/**
+	 * The resource host.
+	 */
+	private static final String RESOURCE_HOST = "resource";
+
+	/**
 	 * The {@link IQualifiedNameResolver} used to {@link #createInputStream(URI, Map) create InputStream}.
 	 */
 	private final IQualifiedNameResolver resolver;
@@ -59,7 +64,13 @@ public class AqlResolverURIHandler implements URIHandler {
 
 	@Override
 	public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
-		final InputStream res = resolver.getInputStream(getResourceName(uri));
+		final InputStream res;
+
+		if (isResourceURI(uri)) {
+			res = resolver.getInputStream(getResourceName(uri));
+		} else {
+			res = null;
+		}
 
 		if (res == null) {
 			throw new IOException("No rersource " + uri.toString());
@@ -87,7 +98,7 @@ public class AqlResolverURIHandler implements URIHandler {
 	public boolean exists(URI uri, Map<?, ?> options) {
 		boolean res;
 
-		try (InputStream is = resolver.getInputStream(getResourceName(uri))) {
+		try (InputStream is = createInputStream(uri, null)) {
 			res = is != null;
 		} catch (IOException e) {
 			res = false;
@@ -111,13 +122,18 @@ public class AqlResolverURIHandler implements URIHandler {
 	 * 
 	 * @param uri
 	 *            the {@link URI} with {@link #AQL_RESOLVE_PROTOCOL}.
-	 * @return the resource name from the given {@link URI}
+	 * @return the resource name from the given {@link URI} if any, <code>null</code> otherwise
 	 */
 	public static String getResourceName(URI uri) {
 		final String res;
 
 		if (isAqlResolveURI(uri)) {
-			res = uri.path();
+			final String path = uri.path();
+			if (path != null && !path.isEmpty()) {
+				res = path.substring(1);
+			} else {
+				res = null;
+			}
 		} else {
 			res = null;
 		}
@@ -134,7 +150,29 @@ public class AqlResolverURIHandler implements URIHandler {
 	 *         <code>false</code> otherwise
 	 */
 	private static boolean isAqlResolveURI(URI uri) {
-		return AQL_RESOLVE_PROTOCOL.equals(uri.scheme().toLowerCase());
+		final boolean res;
+
+		if (AQL_RESOLVE_PROTOCOL.equals(uri.scheme().toLowerCase())) {
+			final String host = uri.host();
+			if (host != null) {
+				res = isResourceURI(uri);
+			} else {
+				res = false;
+			}
+		} else {
+			res = false;
+		}
+		return res;
+	}
+
+	/**
+	 * Tells if the given {@link URI}'s {@link URI#host() host} is {@link #RESOURCE_HOST}.
+	 * 
+	 * @return <code>true</code> if the given {@link URI}'s {@link URI#host() host} is {@link #RESOURCE_HOST},
+	 *         <code>false</code> otherwise
+	 */
+	private static boolean isResourceURI(URI uri) {
+		return RESOURCE_HOST.equals(uri.host().toLowerCase());
 	}
 
 	/**
@@ -144,8 +182,8 @@ public class AqlResolverURIHandler implements URIHandler {
 	 *            the resource name
 	 * @return the created AQL resolve {@link URI} for the given resource name
 	 */
-	public static URI createAqlResolverURI(String resourceName) {
-		return URI.createURI(AQL_RESOLVE_PROTOCOL + "://" + resourceName);
+	public static URI createAqlResourceResolverURI(String resourceName) {
+		return URI.createURI(AQL_RESOLVE_PROTOCOL + "://" + RESOURCE_HOST + "/" + resourceName);
 	}
 
 }
