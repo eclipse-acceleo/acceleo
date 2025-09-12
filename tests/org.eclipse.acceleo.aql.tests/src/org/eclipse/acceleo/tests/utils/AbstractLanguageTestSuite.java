@@ -243,7 +243,7 @@ public abstract class AbstractLanguageTestSuite {
 		resolverWindowsEndLine.addLoader(new JavaLoader(AcceleoParser.QUALIFIER_SEPARATOR, false));
 
 		String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
-				"::") + "::";
+				AcceleoParser.QUALIFIER_SEPARATOR) + AcceleoParser.QUALIFIER_SEPARATOR;
 		qualifiedName = namespace + moduleFile.getName().substring(0, moduleFile.getName().lastIndexOf('.'));
 
 		final Object resolved = resolver.resolve(qualifiedName);
