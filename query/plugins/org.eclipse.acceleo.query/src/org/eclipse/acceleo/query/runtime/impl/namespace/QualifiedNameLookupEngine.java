@@ -20,10 +20,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -53,11 +53,11 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
-	 *            the {@link IReadOnlyQueryEnvironment}
+	 *            the {@link IQualifiedNameQueryEnvironment}
 	 * @param resolver
 	 *            the {@link IQualifiedNameResolver}
 	 */
-	public QualifiedNameLookupEngine(IReadOnlyQueryEnvironment queryEnvironment,
+	public QualifiedNameLookupEngine(IQualifiedNameQueryEnvironment queryEnvironment,
 			IQualifiedNameResolver resolver) {
 		super(queryEnvironment);
 		this.resolver = resolver;
@@ -363,8 +363,8 @@ public class QualifiedNameLookupEngine extends CacheLookupEngine implements IQua
 	}
 
 	@Override
-	public IReadOnlyQueryEnvironment getQueryEnvironment() {
-		return queryEnvironment;
+	public IQualifiedNameQueryEnvironment getQueryEnvironment() {
+		return (IQualifiedNameQueryEnvironment)queryEnvironment;
 	}
 
 	@Override

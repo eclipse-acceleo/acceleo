@@ -13,7 +13,6 @@ package org.eclipse.acceleo.query.runtime.namespace;
 import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.namespace.CallStack;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -85,11 +84,11 @@ public interface IQualifiedNameLookupEngine extends ILookupEngine {
 	CallStack getCurrentContext();
 
 	/**
-	 * Gets the {@link IReadOnlyQueryEnvironment}.
+	 * Gets the {@link IQualifiedNameQueryEnvironment}.
 	 * 
-	 * @return the {@link IReadOnlyQueryEnvironment}
+	 * @return the {@link IQualifiedNameQueryEnvironment}
 	 */
-	IReadOnlyQueryEnvironment getQueryEnvironment();
+	IQualifiedNameQueryEnvironment getQueryEnvironment();
 
 	/**
 	 * Gets the {@link IQualifiedNameResolver}.
