@@ -12,10 +12,12 @@
 
 package org.eclipse.acceleo.query.ide;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.EclipseQualifiedNameResolver;
+import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameResolver;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.ResolverFactoryRegistryListener;
 import org.eclipse.acceleo.query.ide.runtime.impl.namespace.workspace.EclipseWorkspaceQualifiedNameResolver;
 import org.eclipse.acceleo.query.ide.runtime.namespace.IResolverFactoryDescriptor;
@@ -28,14 +30,19 @@ import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -241,6 +248,66 @@ public class QueryPlugin extends EMFPlugin {
 			}
 
 			return res;
+		}
+
+		/**
+		 * Creates a {@link IQualifiedNameResolver} for the given {@link URI}.
+		 * 
+		 * @param uri
+		 *            the {@link URI}
+		 * @param classLoader
+		 *            the parent {@link ClassLoader}
+		 * @param ePackageRegistry
+		 *            the {@link EPackage.Registry} to use to resolve {@link EPackage#getNsURI() nsURI}
+		 * @param qualifierSeparator
+		 *            the qualifier name separator
+		 * @param forWorkspace
+		 *            <code>true</code> for workspace use, local project resolution only
+		 * @return the created {@link IQualifiedNameResolver} for the given {@link URI}
+		 */
+		public IQualifiedNameResolver createResolver(URI uri, ClassLoader classLoader,
+				EPackage.Registry ePackageRegistry, String qualifierSeparator, boolean forWorkspace) {
+			final IQualifiedNameResolver res;
+
+			if (uri.isPlatformPlugin()) {
+				final String bundleName = uri.segment(1);
+				final Bundle bundle = Platform.getBundle(bundleName);
+				res = new OSGiQualifiedNameResolver(bundle, ePackageRegistry, qualifierSeparator);
+			} else if (uri.isPlatformResource()) {
+				final String projectName = uri.segment(1);
+				final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+				res = QueryPlugin.getPlugin().createQualifiedNameResolver(classLoader, ePackageRegistry,
+						project, qualifierSeparator, forWorkspace);
+			} else if (uri.isFile()) {
+				final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(uri
+						.path()));
+				final IProject project = file.getProject();
+				res = QueryPlugin.getPlugin().createQualifiedNameResolver(classLoader, ePackageRegistry,
+						project, qualifierSeparator, forWorkspace);
+			} else {
+				throw new IllegalArgumentException("don't know how to create a resolver for " + uri);
+			}
+
+			return res;
+		}
+
+		/**
+		 * Gets the qualified name of the given {@link URI} for the given {@link IQualifiedNameResolver}.
+		 * 
+		 * @param resolver
+		 *            the {@link IQualifiedNameResolver}
+		 * @param uri
+		 *            the {@link URI}
+		 * @return
+		 */
+		public String getQualifiedName(IQualifiedNameResolver resolver, URI uri) {
+			try {
+				return resolver.getQualifiedName(new java.net.URI(uri.path()));
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 		}
 
 	}
