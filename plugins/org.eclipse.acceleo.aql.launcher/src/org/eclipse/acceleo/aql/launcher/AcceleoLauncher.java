@@ -186,25 +186,29 @@ public class AcceleoLauncher implements IApplication {
 
 	private void validateArguments(CmdLineParser parser) throws CmdLineException {
 		if (models.length == 0 || models[0].length() == 0) {
-			throw new CmdLineException(parser, "The input model path cannot be empty.");
+			final String message = "The input model path cannot be empty.";
+			throw new CmdLineException(parser, message, new IllegalArgumentException(message));
 		}
 		if (bundleIdentifier.length() == 0) {
-			throw new CmdLineException(parser,
-					"The main module's containing bundle identifier cannot be empty.");
+			final String message = "The main module's containing bundle identifier cannot be empty.";
+			throw new CmdLineException(parser, message, new IllegalArgumentException(message));
 		}
 		if (moduleQualifiedName.length() == 0) {
-			throw new CmdLineException(parser, "The main module's qualified name cannot be empty.");
+			final String message = "The main module's qualified name cannot be empty.";
+			throw new CmdLineException(parser, message, new IllegalArgumentException(message));
 		}
 		if (target.length() == 0) {
-			throw new CmdLineException(parser, "The target folder path cannot be empty.");
+			final String message = "The target folder path cannot be empty.";
+			throw new CmdLineException(parser, message, new IllegalArgumentException(message));
 		}
 
 		modelURIs = convertToURIs(parser, models);
 		bundle = Platform.getBundle(bundleIdentifier);
 
 		if (bundle == null || bundle.getState() == Bundle.UNINSTALLED) {
-			throw new CmdLineException(parser, "The Bundle " + bundleIdentifier
-					+ " must be available in the target platform.");
+			final String message = "The Bundle " + bundleIdentifier
+					+ " must be available in the target platform.";
+			throw new CmdLineException(parser, message, new IllegalArgumentException(message));
 		}
 		try {
 			targetURI = URI.createURI(target);
