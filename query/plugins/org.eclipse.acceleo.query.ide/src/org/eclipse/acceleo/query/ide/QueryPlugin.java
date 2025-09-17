@@ -12,7 +12,6 @@
 
 package org.eclipse.acceleo.query.ide;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,7 @@ import org.eclipse.acceleo.query.ide.runtime.namespace.workspace.IWorkspaceResol
 import org.eclipse.acceleo.query.ide.services.configurator.ResourceSetConfiguratorRegistryListener;
 import org.eclipse.acceleo.query.ide.services.configurator.ServicesConfiguratorRegistryListener;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
 import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.ILoader;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
@@ -285,29 +285,10 @@ public class QueryPlugin extends EMFPlugin {
 				res = QueryPlugin.getPlugin().createQualifiedNameResolver(classLoader, ePackageRegistry,
 						project, qualifierSeparator, forWorkspace);
 			} else {
-				throw new IllegalArgumentException("don't know how to create a resolver for " + uri);
+				res = new ClassLoaderQualifiedNameResolver(classLoader, ePackageRegistry, qualifierSeparator);
 			}
 
 			return res;
-		}
-
-		/**
-		 * Gets the qualified name of the given {@link URI} for the given {@link IQualifiedNameResolver}.
-		 * 
-		 * @param resolver
-		 *            the {@link IQualifiedNameResolver}
-		 * @param uri
-		 *            the {@link URI}
-		 * @return
-		 */
-		public String getQualifiedName(IQualifiedNameResolver resolver, URI uri) {
-			try {
-				return resolver.getQualifiedName(new java.net.URI(uri.path()));
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
 		}
 
 	}
