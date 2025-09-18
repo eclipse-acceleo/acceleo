@@ -215,6 +215,7 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 				IRuntimeClasspathEntry[] entries = JavaRuntime.resolveRuntimeClasspathEntry(entry,
 						javaProject);
 				for (int j = 0; j < entries.length; j++) {
+					System.out.println(entries[j]);
 					String location = entries[j].getLocation();
 					if (location != null) {
 						if (forWorkspace) {
@@ -271,7 +272,13 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 
 		final String[] segments = location.replace("\\", "/").split("/");
 		final String lastSegment = segments[segments.length - 1];
-		res = lastSegment.split("_")[0];
+		final String builtBundleName = lastSegment.split("_")[0];
+		if (builtBundleName.equals(lastSegment)) {
+			// runtime dependency
+			res = segments[segments.length - 2];
+		} else {
+			res = builtBundleName;
+		}
 
 		return res;
 	}
