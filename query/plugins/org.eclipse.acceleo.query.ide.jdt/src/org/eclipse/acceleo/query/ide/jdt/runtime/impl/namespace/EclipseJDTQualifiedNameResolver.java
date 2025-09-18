@@ -215,7 +215,6 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 				IRuntimeClasspathEntry[] entries = JavaRuntime.resolveRuntimeClasspathEntry(entry,
 						javaProject);
 				for (int j = 0; j < entries.length; j++) {
-					System.out.println(entries[j]);
 					String location = entries[j].getLocation();
 					if (location != null) {
 						if (forWorkspace) {
