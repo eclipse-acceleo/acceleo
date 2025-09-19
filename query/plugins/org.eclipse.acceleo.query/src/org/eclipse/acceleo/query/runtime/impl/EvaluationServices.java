@@ -299,7 +299,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 				// implicit set conversion.
 				Set<Object> newReceiver = new LinkedHashSet<Object>();
 				// treat "null" as a non existing value. The auto-boxed set will then be empty.
-				if (receiver != null) {
+				if (receiver != null && receiver.getClass() != NullValue.class) {
 					newReceiver.add(receiver);
 				}
 				receiver = newReceiver;

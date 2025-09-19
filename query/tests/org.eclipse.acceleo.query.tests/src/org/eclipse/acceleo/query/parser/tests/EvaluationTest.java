@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -769,6 +769,16 @@ public class EvaluationTest {
 		assertTrue(result.getResult() instanceof List);
 		assertEquals(1, ((List<?>)result.getResult()).size());
 		assertEquals("EPackage", ((List<?>)result.getResult()).get(0));
+	}
+
+	@Test
+	public void testBug_218() {
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		varDefinitions.put("self", EcorePackage.eINSTANCE.getEcoreFactory().createEClass());
+
+		final EvaluationResult result = engine.eval(builder.build("self.name->size() = 0"), varDefinitions);
+
+		assertEquals(true, result.getResult());
 	}
 
 }
