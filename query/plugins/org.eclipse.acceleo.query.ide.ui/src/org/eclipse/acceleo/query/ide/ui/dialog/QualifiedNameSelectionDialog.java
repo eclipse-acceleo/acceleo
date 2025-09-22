@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2025 Obeo. 
+ *  Copyright (c) 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,12 +11,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ide.ui.dialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.query.AQLUtils;
-import org.eclipse.acceleo.query.validation.type.SequenceType;
-import org.eclipse.acceleo.query.validation.type.SetType;
-import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -38,11 +36,11 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 /**
- * Type selection dialog based on {@link AQLUtils#computeAvailableTypes(List, boolean, boolean, boolean)}.
+ * Type qualified name selection dialog based on a {@link IQualifiedNameResolver}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AQLTypeSelectionDialog extends MessageDialog {
+public class QualifiedNameSelectionDialog extends MessageDialog {
 
 	/**
 	 * The table minimum height.
@@ -57,45 +55,36 @@ public class AQLTypeSelectionDialog extends MessageDialog {
 	/**
 	 * The default type of the variable.
 	 */
-	private final String defaultType;
+	private final String defaultQualifiedName;
 
 	/**
-	 * The {@link List} of available types.
+	 * The {@link List} of available qualified names.
 	 */
-	private final List<String> availableTypes;
+	private final List<String> availableQualifiedNames;
 
 	/**
 	 * The selected type.
 	 */
-	private String selectedType;
+	private String selectedQualifiedName;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param parentShell
 	 *            the parent {@link Shell}
-	 * @param variableName
-	 *            the variable name
-	 * @param defaultType
-	 * @param nsURIs
-	 *            the {@link List} of regitered {@link EPackage#getNsURI() nsURI} the default type of the
-	 *            variable
-	 * @param includePrimitiveTypes
-	 *            <code>true</code> if we should include primitive types, <code>false</code> otherwise
-	 * @param includeSequenceTypes
-	 *            <code>true</code> if we should include {@link SequenceType}, <code>false</code> otherwise
-	 * @param includeSetTypes
-	 *            <code>true</code> if we should include {@link SetType}, <code>false</code> otherwise
+	 * @param message
+	 *            the message
+	 * @param defaultQualifiedName
+	 *            the default selected qualified name
+	 * @param resolver
+	 *            the {@link IQualifiedNameResolver}
 	 */
-	public AQLTypeSelectionDialog(Shell parentShell, String variableName, String defaultType,
-			List<String> uris, boolean includePrimitiveTypes, boolean includeSequenceTypes,
-			boolean includeSetTypes) {
-		super(parentShell, "Select a variable type for " + variableName, null, "Select a type.",
-				MessageDialog.QUESTION, new String[] {IDialogConstants.OK_LABEL,
-						IDialogConstants.CANCEL_LABEL }, 0);
-		this.defaultType = defaultType;
-		availableTypes = AQLUtils.computeAvailableTypes(uris, includePrimitiveTypes, includeSequenceTypes,
-				includeSetTypes);
+	public QualifiedNameSelectionDialog(Shell parentShell, String message, String defaultQualifiedName,
+			IQualifiedNameResolver resolver) {
+		super(parentShell, "Select a qualified name.", null, message, MessageDialog.QUESTION, new String[] {
+				IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0);
+		this.defaultQualifiedName = defaultQualifiedName;
+		availableQualifiedNames = new ArrayList<>(resolver.getAvailableQualifiedNames());
 	}
 
 	@Override
@@ -119,7 +108,7 @@ public class AQLTypeSelectionDialog extends MessageDialog {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				final Object selected = ((IStructuredSelection)event.getSelection()).getFirstElement();
-				selectedType = (String)selected;
+				selectedQualifiedName = (String)selected;
 			}
 		});
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -129,21 +118,21 @@ public class AQLTypeSelectionDialog extends MessageDialog {
 				buttonPressed(IDialogConstants.OK_ID);
 			}
 		});
-		treeViewer.setInput(availableTypes);
-		if (defaultType != null) {
-			treeViewer.setSelection(new StructuredSelection(defaultType));
+		treeViewer.setInput(availableQualifiedNames);
+		if (defaultQualifiedName != null) {
+			treeViewer.setSelection(new StructuredSelection(defaultQualifiedName));
 		}
 
 		return container;
 	}
 
 	/**
-	 * Gets the selected type.
+	 * Gets the selected qualified name.
 	 * 
-	 * @return the selected type
+	 * @return the selected qualified name
 	 */
-	public String getSelectedType() {
-		return selectedType;
+	public String getSelectedQualifiedName() {
+		return selectedQualifiedName;
 	}
 
 }
