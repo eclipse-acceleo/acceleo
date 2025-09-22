@@ -226,9 +226,8 @@ public class EclipseJDTQualifiedNameResolver extends ClassLoaderQualifiedNameRes
 							final Bundle bundle = getBundle(location);
 							if (bundle != null) {
 								dependencyBundlesList.add(bundle);
-							} else {
-								resolved.add(location);
 							}
+							resolved.add(location);
 						}
 					}
 				}
