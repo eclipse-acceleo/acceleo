@@ -4,7 +4,7 @@ Bundle-Name: Sample
 Bundle-SymbolicName: org.eclipse.acceleo.aql.launcher.sample
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.acceleo.aql.launcher.sample
-Require-Bundle: org.eclipse.acceleo.query;bundle-version="[8.0.4,9.0.0)",
+Require-Bundle: org.eclipse.acceleo.query;bundle-version="[8.1.0,9.0.0)",
  org.eclipse.acceleo.aql;bundle-version="[4.1.1,5.0.0)",
  org.eclipse.acceleo.aql.profiler;bundle-version="[4.1.1,5.0.0)",
  org.antlr.runtime;bundle-version="[4.10.1,4.10.2)",

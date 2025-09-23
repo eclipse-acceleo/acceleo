@@ -238,7 +238,7 @@ USAGE:
         <dependency>
           <groupId>org.eclipse.acceleo</groupId>
           <artifactId>acceleo</artifactId>
-          <version>4.1.1-SNAPSHOT</version>
+          <version>4.2.0-SNAPSHOT</version>
         </dependency>
       </dependencies>
 
