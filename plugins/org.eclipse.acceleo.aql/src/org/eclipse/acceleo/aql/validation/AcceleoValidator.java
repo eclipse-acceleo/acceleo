@@ -64,15 +64,14 @@ import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.parser.ModuleLoader;
 import org.eclipse.acceleo.query.ast.VarRef;
-import org.eclipse.acceleo.query.parser.AstValidator;
-import org.eclipse.acceleo.query.parser.CombineIterator;
+import org.eclipse.acceleo.query.parser.namespace.QualifiedNameAstValidator;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
-import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.ServiceStore;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
@@ -120,9 +119,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private final IQualifiedNameQueryEnvironment queryEnvironment;
 
 	/**
-	 * The {@link AstValidator}.
+	 * The {@link QualifiedNameAstValidator}.
 	 */
-	private final AstValidator validator;
+	private final QualifiedNameAstValidator validator;
 
 	/**
 	 * Local variable types usable during validation.
@@ -177,7 +176,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		this.booleanType = new ClassType(queryEnvironment, boolean.class);
 		this.booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
 		this.integerType = new ClassType(queryEnvironment, Integer.class);
-		validator = new AstValidator(new ValidationServices(queryEnvironment));
+		final QualifiedNameValidationServices services = new QualifiedNameValidationServices(
+				queryEnvironment);
+		validator = new QualifiedNameAstValidator(services);
 	}
 
 	/**
@@ -537,7 +538,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 			final Set<IType> returnTypes = new LinkedHashSet<>();
 			returnTypes.add(new ClassType(queryEnvironment, String.class));
-			validateOverriding(template, template.getName(), returnTypes, parameterTypes);
+			validateOverride(template, template.getName(), returnTypes, parameterTypes);
 			if (template.getGuard() != null) {
 				doSwitch(template.getGuard());
 			}
@@ -575,37 +576,13 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * @param parameterTypes
 	 *            the {@link List} of {@link Set} of possible parameter {@link IType}
 	 */
-	protected void validateOverriding(AcceleoASTNode node, String name, Set<IType> returnTypes,
+	protected void validateOverride(AcceleoASTNode node, String name, Set<IType> returnTypes,
 			List<Set<IType>> parameterTypes) {
-		final CombineIterator<IType> it = new CombineIterator<IType>(parameterTypes);
-		final StringBuilder builder = new StringBuilder();
-		while (it.hasNext()) {
-			final List<IType> types = it.next();
-			final IService<?> superService = queryEnvironment.getLookupEngine().superServiceLookup(name, types
-					.toArray(new IType[types.size()]));
-			if (superService != null) {
-				Set<IType> superReturnTypes = superService.getType(queryEnvironment);
-				final StringBuilder incompatibleTypeBuilder = new StringBuilder();
-				for (IType superReturnType : superReturnTypes) {
-					for (IType returnType : returnTypes) {
-						if (!superReturnType.isAssignableFrom(returnType)) {
-							incompatibleTypeBuilder.append("\t" + superReturnType + IS_INCOMPATIBLE_WITH
-									+ returnType + "\n");
-						}
-					}
-				}
-				if (incompatibleTypeBuilder.length() != 0) {
-					builder.append(superService.getLongSignature() + "\n");
-					builder.append(incompatibleTypeBuilder.toString());
-				}
-			}
-		}
-		if (builder.length() != 0) {
+		final String message = validator.validateOverrideReturnType(name, returnTypes, parameterTypes);
+		if (message != null) {
 			final int startPosition = result.getAcceleoAstResult().getIdentifierStartPosition(node);
 			final int endPosition = result.getAcceleoAstResult().getIdentifierEndPosition(node);
-			addMessage(node, ValidationMessageLevel.ERROR,
-					"Return type incompatible with overrided service:\n" + builder.substring(0, builder
-							.length() - 1), startPosition, endPosition);
+			addMessage(node, ValidationMessageLevel.ERROR, message, startPosition, endPosition);
 		}
 	}
 
@@ -685,7 +662,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 						.getPossibleTypes(query.getType().getAst()));
 				checkTypesCompatibility(query, possibleTypes, iTypes);
 
-				validateOverriding(query, query.getName(), iTypes, parameterTypes);
+				validateOverride(query, query.getName(), iTypes, parameterTypes);
 			}
 		} finally {
 			for (Variable parameter : query.getParameters()) {
@@ -810,17 +787,16 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Check compatibility between {@link Binding#getInitExpression() expression} {@link IType} and
-	 * {@link Binding#getType() declared} {@link IType}.
+	 * Check compatibility between possible types and declared types for the given {@link AcceleoASTNode}.
 	 * 
-	 * @param binding
-	 *            the {@link Binding}
+	 * @param node
+	 *            the {@link AcceleoASTNode}
 	 * @param possibleTypes
 	 *            the {@link Set} of {@link Binding#getInitExpression() expression} {@link IType}
 	 * @param declaredTypes
 	 *            the {@link Set} of {@link Binding#getType() declared} {@link IType}
 	 */
-	protected void checkTypesCompatibility(AcceleoASTNode binding, final Set<IType> possibleTypes,
+	protected void checkTypesCompatibility(AcceleoASTNode node, final Set<IType> possibleTypes,
 			final Set<IType> declaredTypes) {
 		for (IType possibleType : possibleTypes) {
 			List<IValidationMessage> messages = new ArrayList<IValidationMessage>();
@@ -828,19 +804,19 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			for (IType iType : declaredTypes) {
 				if (!iType.isAssignableFrom(possibleType)) {
 					if (forceCollectionBinding) {
-						messages.addAll(validateBindingTypeForceCollection(binding, iType, possibleType));
+						messages.addAll(validateBindingTypeForceCollection(node, iType, possibleType));
 					} else {
 						final AcceleoAstResult acceleoAstResult = result.getAcceleoAstResult();
 						messages.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
 								+ IS_INCOMPATIBLE_WITH + possibleType, acceleoAstResult.getStartPosition(
-										binding), acceleoAstResult.getEndPosition(binding)));
+										node), acceleoAstResult.getEndPosition(node)));
 					}
 				} else {
 					hasCompatibleType = true;
 				}
 			}
 			if (!hasCompatibleType) {
-				result.addMessages(binding, messages);
+				result.addMessages(node, messages);
 			}
 		}
 	}

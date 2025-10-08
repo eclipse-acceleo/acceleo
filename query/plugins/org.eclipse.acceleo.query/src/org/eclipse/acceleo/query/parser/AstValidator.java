@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1302,6 +1302,15 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Get the {@link ValidationServices}.
+	 * 
+	 * @return the {@link ValidationServices}
+	 */
+	protected ValidationServices getServices() {
+		return services;
 	}
 
 }
