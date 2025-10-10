@@ -69,20 +69,21 @@ public abstract class AbstractQualifiedNameService<O> extends AbstractService<O>
 	private void startInvoke() {
 		final String startQualifiedName = lookupEngine.getCurrentContext().getStartingQualifiedName();
 		if (startQualifiedName != contextQualifiedName) {
-			// The module element we're calling is not from our current stack's tip.
-			// If it is in our current module's hierarchy, we only need to push the new module element on the
-			// stack.
+			// This service we are calling is not in the qualified name currently at the top of the stack.
 			if (lookupEngine.isInExtends(startQualifiedName, contextQualifiedName)) {
+				// If it is in our current module's hierarchy, we need to push the context qualified name of
+				// this service on the stack
 				lookupEngine.pushContext(contextQualifiedName);
 			} else {
-				// We can only be here if the module we're calling is in our imports or their respective
-				// hierarchy. We need to change the environment current namespace to said import.
+				// We can only be here if the service we're calling is in imports from this service context
+				// qualified name or their respective hierarchy. We need to change the environment current
+				// namespace to said import.
 				final String currentQualifiedName = lookupEngine.getCurrentContext().peek();
-				final Optional<String> importedModule = lookupEngine.getImports(currentQualifiedName).stream()
-						.filter(imported -> lookupEngine.isInExtends(imported, contextQualifiedName))
+				final Optional<String> importedQualifiedName = lookupEngine.getImports(currentQualifiedName)
+						.stream().filter(imported -> lookupEngine.isInExtends(imported, contextQualifiedName))
 						.findFirst();
-				if (importedModule.isPresent()) {
-					lookupEngine.pushImportsContext(importedModule.get(), contextQualifiedName);
+				if (importedQualifiedName.isPresent()) {
+					lookupEngine.pushImportsContext(importedQualifiedName.get(), contextQualifiedName);
 				} else {
 					throw new IllegalStateException("The called service " + getLongSignature()
 							+ " was not imported nor extended from the current context: "
@@ -90,6 +91,8 @@ public abstract class AbstractQualifiedNameService<O> extends AbstractService<O>
 				}
 			}
 		} else {
+			// This service is in the qualified name currently at the top of the stack. But we push the
+			// context qualified name again so we can pop it after the call.
 			lookupEngine.pushContext(contextQualifiedName);
 		}
 	}
