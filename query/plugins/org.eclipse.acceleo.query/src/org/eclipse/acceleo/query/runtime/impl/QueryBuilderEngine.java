@@ -94,9 +94,11 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 				final int expressionEndPosition = result.getEndPosition(result.getAst());
 				if (expressionEndPosition < expression.length()) {
 					final String suffix = expression.substring(expressionEndPosition);
-					((BasicDiagnostic)result.getDiagnostic()).add(new BasicDiagnostic(Diagnostic.ERROR,
-							AstBuilderListener.PLUGIN_ID, 0, "text remaining after expression \"" + suffix
-									+ "\".", new Object[] {suffix }));
+					if (!wellFormedParenthesisAtEnd(expression, suffix)) {
+						((BasicDiagnostic)result.getDiagnostic()).add(new BasicDiagnostic(Diagnostic.ERROR,
+								AstBuilderListener.PLUGIN_ID, 0, "text remaining after expression \"" + suffix
+										+ "\".", new Object[] {suffix }));
+					}
 				}
 			}
 		} else {
@@ -126,6 +128,44 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Tells if the given expression and suffix represent a well formed parenthesis expression.
+	 * 
+	 * @param expression
+	 *            the expression
+	 * @param suffix
+	 *            the suffix
+	 * @return <code>true</code> if the given expression and suffix represent a well formed parenthesis
+	 *         expression, <code>false</code> otherwise
+	 */
+	private boolean wellFormedParenthesisAtEnd(String expression, String suffix) {
+		final boolean res;
+
+		boolean onlyParenthesisSuffix = true;
+		for (int i = 0; i < suffix.length(); i++) {
+			if (suffix.charAt(i) != ')') {
+				onlyParenthesisSuffix = false;
+				break;
+			}
+		}
+
+		if (onlyParenthesisSuffix) {
+			int parenthesisDepth = 0;
+			for (int i = 0; i < expression.length(); i++) {
+				if (expression.charAt(i) == '(') {
+					parenthesisDepth++;
+				} else if (expression.charAt(i) == ')') {
+					parenthesisDepth--;
+				}
+			}
+			res = parenthesisDepth == 0;
+		} else {
+			res = false;
+		}
+
+		return res;
 	}
 
 }

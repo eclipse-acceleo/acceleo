@@ -3492,4 +3492,38 @@ public class BuildTest {
 				.get(0).getMessage());
 	}
 
+	@Test
+	public void expressionInParenthesis() {
+		AstResult build = engine.build("(self)");
+
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void expressionInManyParenthesis() {
+		AstResult build = engine.build("(((((self)))))");
+
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void expressionEndsWithParenthesis() {
+		AstResult build = engine.build("true and (false or true)");
+
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void expressionInvalideParenthesisEndsWithParenthesis() {
+		AstResult build = engine.build("true and false or true)");
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("text remaining after expression \")\".", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+	}
+
 }
