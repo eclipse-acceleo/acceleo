@@ -137,32 +137,6 @@
               <url>${deployURL}</url>
             </configuration>
           </execution>
-          <execution>
-            <id>deploy-file-org.eclipse.emf.common</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>deploy-file</goal>
-            </goals>
-            <configuration>
-              <file>target/lib/org.eclipse.emf.common-2.43.0.jar</file>
-              <pomFile>target/lib/org.eclipse.emf.common-2.43.0.pom</pomFile>
-              <generatePom>false</generatePom>
-              <url>${deployURL}</url>
-            </configuration>
-          </execution>
-          <execution>
-            <id>deploy-file-org.eclipse.emf.ecore</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>deploy-file</goal>
-            </goals>
-            <configuration>
-              <file>target/lib/org.eclipse.emf.ecore-2.40.0.jar</file>
-              <pomFile>target/lib/org.eclipse.emf.ecore-2.40.0.pom</pomFile>
-              <generatePom>false</generatePom>
-              <url>${deployURL}</url>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
     </plugins>
