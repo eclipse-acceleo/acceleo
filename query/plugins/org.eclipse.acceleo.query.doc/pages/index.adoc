@@ -59,7 +59,7 @@ AQL can also call methods modeled as EOperations or defined through Java service
 
 === Working with collections
 
-Filtering a collection is generaly done using either `->filter(..)` to keep elements of a given type or `->select(..)` to keep elements which are validating a given condition.
+Filtering a collection is generally done using either `->filter(..)` to keep elements of a given type or `->select(..)` to keep elements which are validating a given condition.
 
 With `self` being an instance of *Family*, `self.members->filter(family::Man)`  will return all the members of the family which are mens and `self.members->select( p | p.name.startsWith('A'))` will return all the members of the family which have a name starting by the letter 'A'.
 
