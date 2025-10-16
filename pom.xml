@@ -88,9 +88,6 @@
 
   <modules>
     <module>releng/org.eclipse.acceleo.targetplatforms/2024-06</module>
-    
-    <module>plugins/org.eclipse.acceleo.ui.interpreter</module>
-    <module>features/org.eclipse.acceleo.ui.interpreter-feature</module>
 
     <module>query/plugins/org.eclipse.acceleo.annotations</module>
     <module>query/plugins/org.eclipse.acceleo.query</module>
@@ -142,10 +139,10 @@
     <module>plugins/org.eclipse.acceleo.aql.migration.ide.ui</module>
     <module>features/org.eclipse.acceleo.aql.migration-feature</module>
     <module>tests/org.eclipse.acceleo.aql.migration.tests</module>
-    
+
     <module>plugins/org.eclipse.acceleo.aql.launcher</module>
     <module>features/org.eclipse.acceleo.aql.launcher-feature</module>
-    
+
     <module>features/org.eclipse.acceleo.aql.feature</module>
 
     <module>plugins/org.eclipse.acceleo.aql.profiler</module>

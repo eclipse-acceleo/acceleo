@@ -51,12 +51,6 @@
    <feature id="org.eclipse.acceleo.aql.migration.source">
       <category name="org.eclipse.acceleo.aql.extra"/>
    </feature>
-   <feature id="org.eclipse.acceleo.ui.interpreter">
-      <category name="org.eclipse.acceleo.aql.extra"/>
-   </feature>
-   <feature id="org.eclipse.acceleo.ui.interpreter.source">
-      <category name="org.eclipse.acceleo.aql.extra"/>
-   </feature>
    <feature id="org.eclipse.license" version="0.0.0"/>
 
    <bundle id="org.antlr.runtime"/>
@@ -88,7 +82,7 @@
    </category-def>
    <category-def name="org.eclipse.acceleo.aql.extra" label="Acceleo (extra)">
       <description>
-         Acceleo extra tooling (migration, launcher, interpreter).
+         Acceleo extra tooling (migration, launcher).
       </description>
    </category-def>
    <category-def name="org.eclipse.acceleo.query" label="Acceleo Query Language">
