@@ -48,7 +48,7 @@
     <source-java-version>11</source-java-version>
     <target-java-version>${source-java-version}</target-java-version>
 
-    <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/acceleo/org.eclipse.acceleo.git</tycho.scmUrl>
+    <tycho.scmUrl>scm:git:https://github.com/eclipse-acceleo/acceleo.git</tycho.scmUrl>
 
     <asciidoctor-maven-plugin-version>2.0.0-RC.1</asciidoctor-maven-plugin-version>
     <jruby-complete-version>9.2.8.0</jruby-complete-version>
