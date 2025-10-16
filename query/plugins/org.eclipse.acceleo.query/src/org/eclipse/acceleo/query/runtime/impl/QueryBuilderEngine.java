@@ -153,11 +153,27 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 
 		if (onlyParenthesisSuffix) {
 			int parenthesisDepth = 0;
+			boolean inString = false;
+			boolean escaped = false;
 			for (int i = 0; i < expression.length(); i++) {
-				if (expression.charAt(i) == '(') {
-					parenthesisDepth++;
-				} else if (expression.charAt(i) == ')') {
-					parenthesisDepth--;
+				if (!inString) {
+					if (expression.charAt(i) == '(') {
+						parenthesisDepth++;
+					} else if (expression.charAt(i) == ')') {
+						parenthesisDepth--;
+					} else if (expression.charAt(i) == '\'') {
+						inString = true;
+					}
+				} else {
+					if (!escaped) {
+						if (expression.charAt(i) == '\'') {
+							inString = false;
+						} else if (expression.charAt(i) == '\\') {
+							escaped = true;
+						}
+					} else {
+						escaped = false;
+					}
 				}
 			}
 			res = parenthesisDepth == 0;

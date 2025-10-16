@@ -3526,4 +3526,24 @@ public class BuildTest {
 				.getMessage());
 	}
 
+	@Test
+	public void expressionInvalideParenthesisEndsWithParenthesisWithParenthesisInString() {
+		AstResult build = engine.build("true and 'false' = '(' or true)");
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("text remaining after expression \")\".", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+	}
+
+	@Test
+	public void expressionInvalideParenthesisEndsWithParenthesisWithParenthesisInStringAndEscape() {
+		AstResult build = engine.build("true and 'false' = '\\'(' or true)");
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("text remaining after expression \")\".", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+	}
+
 }
