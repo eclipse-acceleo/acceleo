@@ -9,3 +9,7 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202303020146
 	org.yaml.snakeyaml lazy
 	org.antlr.runtime [4.10.1,4.10.2)
 }
+
+location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2025-12/" {
+	org.antlr.antlr4-runtime [4.13.2,4.13.3)
+}

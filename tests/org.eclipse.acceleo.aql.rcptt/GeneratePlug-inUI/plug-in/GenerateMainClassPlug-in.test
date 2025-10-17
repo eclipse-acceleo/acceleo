@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _uWAckAiyEfC07LF6VSMd-w
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 9/5/25, 3:05 PM
+Save-Time: 10/17/25, 10:30 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -498,7 +498,7 @@ get-editor test | get-text-viewer | get-property text | equals "Manifest-Version
     + "Require-Bundle: org.eclipse.acceleo.query;bundle-version=\"[8.0.4,9.0.0)\",\n"
     + "  org.eclipse.acceleo.aql;bundle-version=\"[4.1.1,5.0.0)\",\n"
     + "  org.eclipse.acceleo.aql.profiler;bundle-version=\"[4.1.1,5.0.0)\",\n"
-    + "  org.antlr.runtime;bundle-version=\"[4.10.1,4.10.2)\",\n"
+    + "  org.antlr.antlr4-runtime;bundle-version=\"[4.13.2,4.13.3)\",\n"
     + "  org.eclipse.emf.ecore\n"
     + "Automatic-Module-Name: test\n"
     + "Bundle-RequiredExecutionEnvironment: JavaSE-17" | verify-true
@@ -516,7 +516,7 @@ get-editor "test.ide.ui" | get-text-viewer | get-property text | equals "Manifes
     + " org.eclipse.acceleo.aql.profiler;bundle-version=\"[4.1.0,5.0.0)\",\n"
     + " org.eclipse.acceleo.query;bundle-version=\"[8.0.3,9.0.0)\",\n"
     + " org.eclipse.acceleo.query.ide;bundle-version=\"[8.0.3,9.0.0)\",\n"
-    + " org.antlr.runtime;bundle-version=\"[4.10.1,4.10.2)\",\n"
+    + " org.antlr.antlr4-runtime;bundle-version=\"[4.13.2,4.13.3)\",\n"
     + " org.eclipse.core.resources,\n"
     + " org.eclipse.core.runtime,\n"
     + " test,\n"

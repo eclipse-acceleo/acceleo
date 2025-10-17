@@ -3,7 +3,6 @@ target "Acceleo 2024-06 Target Platform"
 include "../common/orbit.tpd"
 include "../common/license.tpd"
 include "../common/lsp.tpd"
-include "../common/rcptt.tpd"
 include "../common/cdo.tpd"
 
 with requirements

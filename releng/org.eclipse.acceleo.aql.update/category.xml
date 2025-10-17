@@ -53,7 +53,7 @@
    </feature>
    <feature id="org.eclipse.license" version="0.0.0"/>
 
-   <bundle id="org.antlr.runtime"/>
+   <bundle id="org.antlr.antlr4-runtime"/>
    <bundle id="org.eclipse.lsp4j"/>
    <bundle id="org.eclipse.lsp4j.debug"/>
    <bundle id="org.eclipse.lsp4j.jsonrpc"/>

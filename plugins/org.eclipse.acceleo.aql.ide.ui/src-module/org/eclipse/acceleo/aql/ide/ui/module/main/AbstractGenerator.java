@@ -386,7 +386,7 @@ public abstract class AbstractGenerator {
 		if (aqlClassloader instanceof BundleReference) {
 			version = ((BundleReference)aqlClassloader).getBundle().getVersion();
 		} else {
-			version = new Version(4, 10, 0);
+			version = new Version(4, 13, 2);
 		}
 
 		return new Version(version.getMajor(), version.getMinor(), version.getMicro()).toString();
@@ -404,7 +404,7 @@ public abstract class AbstractGenerator {
 		if (antlrClassloader instanceof BundleReference) {
 			version = ((BundleReference)antlrClassloader).getBundle().getVersion();
 		} else {
-			version = new Version(4, 10, 1);
+			version = new Version(4, 13, 1);
 		}
 
 		return new Version(version.getMajor(), version.getMinor(), version.getMicro() + 1).toString();

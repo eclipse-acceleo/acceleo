@@ -146,8 +146,8 @@ public class StandaloneGenerator extends AbstractGenerator {
 				+ "," + getAcceleoVersionUpperBound() + ")\"");
 		dependencyBundleNames.add("org.eclipse.acceleo.aql.profiler;bundle-version=\"["
 				+ getAcceleoVersionLowerBound() + "," + getAcceleoVersionUpperBound() + ")\"");
-		dependencyBundleNames.add("org.antlr.runtime;bundle-version=\"[" + getANTLRVersionLowerBound() + ","
-				+ getANTLRVersionUpperBound() + ")\"");
+		dependencyBundleNames.add("org.antlr.antlr4-runtime;bundle-version=\"[" + getANTLRVersionLowerBound()
+				+ "," + getANTLRVersionUpperBound() + ")\"");
 		final Set<String> modelNsURIs = AQLUtils.getAllNeededEPackages(workspaceResolver,
 				modelModuleQualifiedName);
 		AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, modelNsURIs);
@@ -514,7 +514,6 @@ public class StandaloneGenerator extends AbstractGenerator {
 			includes.appendChild(include);
 			includes.appendChild(pom.createTextNode(System.lineSeparator() + MAVEN_INDENTATION
 					+ MAVEN_INDENTATION + MAVEN_INDENTATION + MAVEN_INDENTATION));
-
 		}
 
 		return buildCreated || resourcesCreated || needResourceNode;

@@ -7,6 +7,6 @@ Export-Package: org.eclipse.acceleo.aql.launcher.sample
 Require-Bundle: org.eclipse.acceleo.query;bundle-version="[8.1.0,9.0.0)",
  org.eclipse.acceleo.aql;bundle-version="[4.1.1,5.0.0)",
  org.eclipse.acceleo.aql.profiler;bundle-version="[4.1.1,5.0.0)",
- org.antlr.runtime;bundle-version="[4.10.1,4.10.2)",
+ org.antlr.antlr4-runtime;bundle-version="[4.13.2,4.13.3)",
  org.eclipse.emf.ecore
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

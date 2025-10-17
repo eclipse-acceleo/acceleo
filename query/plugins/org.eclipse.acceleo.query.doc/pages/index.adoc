@@ -28,7 +28,7 @@ For those looking for a simple and fast interpreters for your EMF models, AQL ca
 * Strong validation: types are checked at validation time and the metamodels used are analyzed to do some basic type inference and avoid false positive errors.
 * Union types: In some context, a variable in a given query can have N potential types with N being often greater than one. AQL can embrace this fact without having to fall back to EObject as soon as there is more than one type.
 * A simple and straightforward implementation easily extensible with Java classes providing extension methods.
-* A very narrow dependency surface: AQL uses the very central parts of EMF, Guava and Antlr so that we could easily deploy AQL outside of Eclipse in a server or a standalone scenario.
+* A very narrow dependency surface: AQL uses the very central parts of EMF and ANTLR so that we could easily deploy AQL outside of Eclipse in a server or a standalone scenario.
 
 The AQL interpreter is used in Sirius with the prefix 'aql:'.
 

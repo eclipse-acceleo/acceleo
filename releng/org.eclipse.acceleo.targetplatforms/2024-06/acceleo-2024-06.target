@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Acceleo 2024-06 Target Platform" sequenceNumber="1752743862">
+<target name="Acceleo 2024-06 Target Platform" sequenceNumber="1760706808">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="com.google.guava" version="30.1.0.v20221112-0806"/>
@@ -10,6 +10,10 @@
       <unit id="org.yaml.snakeyaml" version="0.0.0"/>
       <unit id="org.antlr.runtime" version="4.10.1.v20230210-1433"/>
       <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20230302014618/repository"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.antlr.antlr4-runtime" version="4.13.2"/>
+      <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2025-12/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
@@ -28,11 +32,6 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.mylyn.wikitext.markdown" version="0.0.0"/>
       <repository location="https://download.eclipse.org/mylyn/updates/release/4.4.0/"/>
-    </location>
-    <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.rcptt.platform.feature.group" version="0.0.0"/>
-      <unit id="org.antlr.runtime" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/rcptt/release/2.5.4/repository"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>

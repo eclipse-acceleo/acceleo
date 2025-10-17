@@ -1,7 +1,7 @@
-// Generated from Query.g4 by ANTLR 4.10.1
+// Generated from Query.g4 by ANTLR 4.13.2
 
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class QueryParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.10.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -122,6 +122,7 @@ public class QueryParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class EntryContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -164,6 +165,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpressionContext extends ParserRuleContext {
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -175,6 +177,7 @@ public class QueryParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class VarRefContext extends ExpressionContext {
 		public TerminalNode Ident() { return getToken(QueryParser.Ident, 0); }
 		public VarRefContext(ExpressionContext ctx) { copyFrom(ctx); }
@@ -187,6 +190,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitVarRef(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AddContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -207,6 +211,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitAdd(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class NavContext extends ExpressionContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -224,6 +229,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitNav(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class OrContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -241,6 +247,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitOr(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class LetExprContext extends ExpressionContext {
 		public List<BindingContext> binding() {
 			return getRuleContexts(BindingContext.class);
@@ -261,6 +268,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitLetExpr(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ConditionalContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -278,6 +286,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitConditional(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class CompContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -298,6 +307,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitComp(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class NotContext extends ExpressionContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -312,6 +322,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitNot(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class MinContext extends ExpressionContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -326,6 +337,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitMin(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ImpliesContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -343,6 +355,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitImplies(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class MultContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -361,6 +374,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitMult(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class LitContext extends ExpressionContext {
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
@@ -375,6 +389,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AndContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -392,6 +407,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitAnd(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class XorContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -409,6 +425,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitXor(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ParenContext extends ExpressionContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -676,6 +693,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class BindingContext extends ParserRuleContext {
 		public TerminalNode Ident() { return getToken(QueryParser.Ident, 0); }
 		public ExpressionContext expression() {
@@ -736,6 +754,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class AddOpContext extends ParserRuleContext {
 		public AddOpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -781,6 +800,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class CompOpContext extends ParserRuleContext {
 		public CompOpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -805,7 +825,7 @@ public class QueryParser extends Parser {
 			{
 			setState(106);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__16) | (1L << T__18) | (1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << T__24))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 66715648L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -826,6 +846,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class NavigationSegmentContext extends ParserRuleContext {
 		public NavigationSegmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -837,6 +858,7 @@ public class QueryParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class CallOrApplyContext extends NavigationSegmentContext {
 		public ServiceCallContext serviceCall() {
 			return getRuleContext(ServiceCallContext.class,0);
@@ -851,6 +873,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitCallOrApply(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class CollectionCallContext extends NavigationSegmentContext {
 		public ServiceCallContext serviceCall() {
 			return getRuleContext(ServiceCallContext.class,0);
@@ -865,6 +888,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitCollectionCall(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class FeatureContext extends NavigationSegmentContext {
 		public TerminalNode Ident() { return getToken(QueryParser.Ident, 0); }
 		public FeatureContext(NavigationSegmentContext ctx) { copyFrom(ctx); }
@@ -928,6 +952,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ServiceCallContext extends ParserRuleContext {
 		public TerminalNode Ident() { return getToken(QueryParser.Ident, 0); }
 		public ArgumentsContext arguments() {
@@ -985,6 +1010,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class LambdaExpressionContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -1024,6 +1050,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ArgumentsContext extends ParserRuleContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -1061,7 +1088,7 @@ public class QueryParser extends Parser {
 			setState(140);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__6) | (1L << T__8) | (1L << T__12) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << T__32) | (1L << T__34) | (1L << T__36) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__40) | (1L << T__41) | (1L << T__42) | (1L << Integer) | (1L << Real) | (1L << String) | (1L << ErrorString) | (1L << Ident))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2198936282473094L) != 0)) {
 				{
 				setState(128);
 				_errHandler.sync(this);
@@ -1125,6 +1152,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpressionSequenceContext extends ParserRuleContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -1156,7 +1184,7 @@ public class QueryParser extends Parser {
 			setState(150);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__6) | (1L << T__8) | (1L << T__12) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << T__32) | (1L << T__34) | (1L << T__36) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__40) | (1L << T__41) | (1L << T__42) | (1L << Integer) | (1L << Real) | (1L << String) | (1L << ErrorString) | (1L << Ident))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2198936282473094L) != 0)) {
 				{
 				setState(142);
 				expression(0);
@@ -1192,6 +1220,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class LambdaContext extends ParserRuleContext {
 		public VariableDefinitionContext variableDefinition() {
 			return getRuleContext(VariableDefinitionContext.class,0);
@@ -1236,6 +1265,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariableDefinitionContext extends ParserRuleContext {
 		public TerminalNode Ident() { return getToken(QueryParser.Ident, 0); }
 		public TypeLiteralContext typeLiteral() {
@@ -1291,6 +1321,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class LiteralContext extends ParserRuleContext {
 		public LiteralContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1302,6 +1333,7 @@ public class QueryParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class EnumLitContext extends LiteralContext {
 		public List<TerminalNode> Ident() { return getTokens(QueryParser.Ident); }
 		public TerminalNode Ident(int i) {
@@ -1317,6 +1349,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitEnumLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class NullLitContext extends LiteralContext {
 		public NullLitContext(LiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1328,6 +1361,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitNullLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class TypeLitContext extends LiteralContext {
 		public TypeLiteralContext typeLiteral() {
 			return getRuleContext(TypeLiteralContext.class,0);
@@ -1342,6 +1376,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitTypeLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class IntegerLitContext extends LiteralContext {
 		public TerminalNode Integer() { return getToken(QueryParser.Integer, 0); }
 		public IntegerLitContext(LiteralContext ctx) { copyFrom(ctx); }
@@ -1354,6 +1389,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitIntegerLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class RealLitContext extends LiteralContext {
 		public TerminalNode Real() { return getToken(QueryParser.Real, 0); }
 		public RealLitContext(LiteralContext ctx) { copyFrom(ctx); }
@@ -1366,6 +1402,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitRealLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ErrorEnumLitContext extends LiteralContext {
 		public List<TerminalNode> Ident() { return getTokens(QueryParser.Ident); }
 		public TerminalNode Ident(int i) {
@@ -1381,6 +1418,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitErrorEnumLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class FalseLitContext extends LiteralContext {
 		public FalseLitContext(LiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1392,6 +1430,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitFalseLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class TrueLitContext extends LiteralContext {
 		public TrueLitContext(LiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1403,6 +1442,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitTrueLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExplicitSetLitContext extends LiteralContext {
 		public ExpressionSequenceContext expressionSequence() {
 			return getRuleContext(ExpressionSequenceContext.class,0);
@@ -1417,6 +1457,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitExplicitSetLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExplicitSeqLitContext extends LiteralContext {
 		public ExpressionSequenceContext expressionSequence() {
 			return getRuleContext(ExpressionSequenceContext.class,0);
@@ -1431,6 +1472,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitExplicitSeqLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ErrorStringLitContext extends LiteralContext {
 		public TerminalNode ErrorString() { return getToken(QueryParser.ErrorString, 0); }
 		public ErrorStringLitContext(LiteralContext ctx) { copyFrom(ctx); }
@@ -1443,6 +1485,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitErrorStringLit(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class StringLitContext extends LiteralContext {
 		public TerminalNode String() { return getToken(QueryParser.String, 0); }
 		public StringLitContext(LiteralContext ctx) { copyFrom(ctx); }
@@ -1594,6 +1637,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TypeLiteralContext extends ParserRuleContext {
 		public TypeLiteralContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1605,6 +1649,7 @@ public class QueryParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ClassifierSetTypeContext extends TypeLiteralContext {
 		public List<ClassifierTypeRuleContext> classifierTypeRule() {
 			return getRuleContexts(ClassifierTypeRuleContext.class);
@@ -1622,6 +1667,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitClassifierSetType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class SetTypeContext extends TypeLiteralContext {
 		public TypeLiteralContext typeLiteral() {
 			return getRuleContext(TypeLiteralContext.class,0);
@@ -1636,6 +1682,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitSetType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class SeqTypeContext extends TypeLiteralContext {
 		public TypeLiteralContext typeLiteral() {
 			return getRuleContext(TypeLiteralContext.class,0);
@@ -1650,6 +1697,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitSeqType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BooleanTypeContext extends TypeLiteralContext {
 		public BooleanTypeContext(TypeLiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1661,6 +1709,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitBooleanType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class RealTypeContext extends TypeLiteralContext {
 		public RealTypeContext(TypeLiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1672,6 +1721,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitRealType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ClsTypeContext extends TypeLiteralContext {
 		public ClassifierTypeRuleContext classifierTypeRule() {
 			return getRuleContext(ClassifierTypeRuleContext.class,0);
@@ -1686,6 +1736,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitClsType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class StrTypeContext extends TypeLiteralContext {
 		public StrTypeContext(TypeLiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1697,6 +1748,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitStrType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class IntTypeContext extends TypeLiteralContext {
 		public IntTypeContext(TypeLiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1824,6 +1876,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ClassifierTypeRuleContext extends ParserRuleContext {
 		public ClassifierTypeRuleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1835,6 +1888,7 @@ public class QueryParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ClassifierTypeContext extends ClassifierTypeRuleContext {
 		public List<TerminalNode> Ident() { return getTokens(QueryParser.Ident); }
 		public TerminalNode Ident(int i) {
@@ -1850,6 +1904,7 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitClassifierType(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ErrorClassifierTypeContext extends ClassifierTypeRuleContext {
 		public TerminalNode Ident() { return getToken(QueryParser.Ident, 0); }
 		public ErrorClassifierTypeContext(ClassifierTypeRuleContext ctx) { copyFrom(ctx); }

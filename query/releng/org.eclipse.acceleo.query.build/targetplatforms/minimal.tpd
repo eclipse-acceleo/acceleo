@@ -7,6 +7,6 @@ location Eclipse-Luna "http://download.eclipse.org/releases/luna" {
 	org.junit [4.11.0,5.0.0)
 }
 
-location Orbit "http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/" {
-	org.antlr.runtime [4.3.0,4.4.0)
+location Orbit "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2025-12/" {
+	org.antlr.antlr4-runtime [4.13.2,4.13.3)
 }

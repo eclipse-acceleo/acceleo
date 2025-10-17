@@ -1,7 +1,7 @@
-// Generated from Query.g4 by ANTLR 4.10.1
+// Generated from Query.g4 by ANTLR 4.13.2
 
 /*******************************************************************************
- * Copyright (c) 2015, 2024 Obeo.
+ * Copyright (c) 2015, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
+@SuppressWarnings("CheckReturnValue")
 public class QueryBaseListener implements QueryListener {
 	/**
 	 * {@inheritDoc}
