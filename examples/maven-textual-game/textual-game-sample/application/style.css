@@ -1,0 +1,198 @@
+html {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+img {
+    opacity: 0.8;
+    width: 190px;
+    height: 150px;
+    object-fit: cover;
+}
+
+#leftField {
+    height: 400px;
+    width: 150px;
+    position: static;
+    justify-content: center;
+}
+
+#middleField {
+    height: 400px;
+    width: 450px;
+    position: static;
+    justify-content: space-between;
+}
+
+#rightField {
+    height: 400px;
+    width: 200px;
+    position: static;
+    justify-content: space-between;
+}
+
+#textContainer {
+    padding: 10px;
+    margin: auto;
+    height: 300px;
+    width: 450px;
+    border: solid rgb(255, 255, 255) 5px;
+    background-color: rgb(17, 17, 17);
+    position: static;
+    box-sizing: border-box;
+    vertical-align: top;
+    text-align: start;
+    overflow-y: scroll;
+}
+
+#buttonContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+    top: 10px;
+    margin: auto;
+    width: 450px;
+    height: 90px;
+    border: solid rgb(255, 255, 255) 5px;
+    background-color: rgb(17, 17, 17);
+    position: relative;
+    box-sizing: border-box;
+    vertical-align: bottom;
+}
+
+#inventoryBox {
+    padding: 10px;
+    margin: auto;
+    width: 150px;
+    height: 400px;
+    border: solid rgb(255, 255, 255) 5px;
+    background-color: rgb(17, 17, 17);
+    position: static;
+    box-sizing: border-box;
+}
+
+#inventoryContainer {
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    gap: 5px;
+    position: relative;
+    top: 10px;
+    height: 340px;
+}
+
+#imageContainer {
+    width: 190px;
+    height: 150px;
+    border: solid rgb(255, 255, 255) 5px;
+    background-color: rgb(17, 17, 17);
+}
+
+#objectDescriptionContainer {
+    width: 200px;
+    height: 230px;
+    border: solid rgb(255, 255, 255) 5px;
+    position: relative;
+    top: 10px;
+    background-color: rgb(17, 17, 17);
+    text-align: start;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+}
+
+#objectDescriptionTextContainer {
+    width: 200px;
+    height: 130px;
+    position: relative;
+    top: 0px;
+    background-color: rgb(17, 17, 17);
+    text-align: start;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    overflow-y: scroll;
+}
+
+#objectButtonContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 170px;
+    height: 80px;
+    position: absolute;
+    bottom: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#objectText {
+    position: absolute;
+    top: 5px;
+    align-self: flex-start;
+}
+
+.parent {
+    margin: 1rem;
+    padding: 2rem 2rem;
+    text-align: center;
+}
+
+.child {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.greyButton {
+    background-color: rgb(17, 17, 17);
+    border: solid rgb(160, 160, 160) 3px;
+    color: rgb(160, 160, 160);
+    height: 60px;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.button {
+    background-color: rgb(17, 17, 17);
+    border: solid rgb(255, 255, 255) 3px;
+    color: rgb(255, 255, 255);
+    height: 60px;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.inventoryButton {
+    background-color: rgb(17, 17, 17);
+    border: solid rgb(255, 255, 255) 3px;
+    color: rgb(255, 255, 255);
+    height: 30px;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.objectActionButton {
+    background-color: rgb(17, 17, 17);
+    border: solid rgb(255, 255, 255) 3px;
+    color: rgb(255, 255, 255);
+    height: 30px;
+    font-family: "Lucida Console", "Courier New", monospace;
+
+}
+
+.yellowInventoryButton {
+    background-color: rgb(17, 17, 17);
+    border: solid #fff647 3px;
+    color: #fff647;
+    height: 30px;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.button:hover {
+    background-color: rgba(100, 255, 139, 0.3);
+    border: solid rgb(100, 255, 139) 3px;
+    color: rgb(100, 255, 139);
+}
+
+.inventoryButton:hover {
+    background-color: rgba(100, 255, 139, 0.3);
+    border: solid rgb(100, 255, 139) 3px;
+    color: rgb(100, 255, 139);
+}

@@ -1,0 +1,110 @@
+[comment encoding = UTF-8 /]
+[**
+ * Generates the application data structure.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module data('http://www.eclipse.org/acceleo/textualgame')/]
+
+[**
+ * Generates the application data structure.
+ * @param game the Game model root
+ */]
+[template public generateGameData(game : textualgame::Game)]
+  var data = {
+      "rooms": ['['/]
+          [game.rooms.generateRoomData()->sep(',\n')/]
+      ],
+      "items": ['['/]
+          [game.items.generateItemData()->sep(',\n')/]
+      ],
+      "startingState": {
+          "room": "[game.initialRoom.name/]",
+          "items": ['['/]"[game.initialItems.name->sep('", "')/]"]
+      }
+  }
+[/template]
+
+[**
+ * Generates the room data.
+ * @param room the Room
+ */]
+[template public generateRoomData(room : textualgame::Room) post(self.trim())]
+  {
+      "name": "[room.name/]",
+      "states": {
+          [room.states.generateStateData()->sep(',\n')/]
+      },
+      "state": "[room.defaultState.name/]",
+      "actionList": ['['/]
+          [room.actions.generateActionData()->sep(',\n')/]
+      ]
+  }
+[/template]
+
+[**
+ * Generates the room state data.
+ * @param state the RoomState
+ */]
+[template public generateStateData(state : textualgame::RoomState) post(self.trim())]
+  "[state.name/]": {
+      "description": "[state.description/]"
+      [if (state.isActive != null)]
+        // TODO isActive
+      [/if]
+  }
+[/template]
+
+[**
+ * Generates the action data.
+ * @param action the Action
+ */]
+[template public generateActionData(action : textualgame::Action) post(self.trim())]
+  {
+      "displayName": "[action.name/]",
+      [if (action.description != null and action.description.size() != 0)]
+        "displayText": "[action.description/]",
+      [/if]
+      "onClickFunction": function () {
+          [action.generateActionBody()/]
+      },
+      [if (action.isVisible != null)]
+        // TODO is isVisible
+      [/if]
+      [if (action.isEnabled != null)]
+        // TODO is isEnabled
+      [/if]
+      "isOneTime": [action.isOneTime/]
+  }
+[/template]
+
+[**
+ * Generates the action Javascript body.
+ * @param action the Action
+ */]
+[template public generateActionBody(action : textualgame::Action)]
+  // TODO implement generateActionBody for [action.eClass().name/]
+[/template]
+
+[**
+ * Generates the goto room Javascript body.
+ * @param action the GotoRoom action
+ */]
+[template public generateActionBody(action : textualgame::GotoRoom)]
+  gotoRoom("[action.room.name/]");
+[/template]
+
+[**
+ * Generates the item data.
+ * @param action the Item
+ */]
+[template public generateItemData(item : textualgame::Item) post(self.trim())]
+  {
+      "name": "[item.name/]",
+      "description": "[item.description/]",
+      "actionList": ['['/]
+          [item.actions.generateActionData()->sep(',\n')/]
+      ]
+  }
+[/template]

@@ -1,0 +1,18 @@
+[comment encoding = UTF-8 /]
+[**
+ * Generates the textual game.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module main('http://www.eclipse.org/acceleo/textualgame')/]
+
+[import org::eclipse::acceleo::textualgame::gen::html::files::application/]
+[**
+ * Generates the different Python files for the given EPackage.
+ * @param pkg the package to generate
+ * @main
+ */]
+[template public generate(game : textualgame::Game)]
+  [game.generateApplication()/]
+[/template]

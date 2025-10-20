@@ -1,0 +1,23 @@
+= Textual game turtorial
+Learn more about Acceleo in a maven environment
+:toc:
+:toclevels: 3
+:toc-title: Table of Content
+:sectnums:
+:icons: font
+:source-highlighter: highlightjs
+:listing-caption: Listing
+:idprefix: 
+:idseparator: -
+
+<<<
+
+== Introduction
+
+
+== Installation
+
+
+== Getting Started
+
+

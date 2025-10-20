@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/textual-game-metamodel/src/main/java" editDirectory="/org.eclipse.acceleo.textualgame.edit/src-gen"
+    editorDirectory="/org.eclipse.acceleo.textualgame.editor/src-gen" modelPluginID="org.eclipse.acceleo.textualgame"
+    modelName="Textualgame" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" commentFormatting="true" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="17.0" copyrightFields="false" operationReflection="true" importOrganizing="true"
+    cleanup="true">
+  <foreignModel>textualgame.ecore</foreignModel>
+  <genPackages prefix="Textualgame" basePackage="org.eclipse.acceleo" disposableProviderFactory="true"
+      ecorePackage="textualgame.ecore#/">
+    <genClasses ecoreClass="textualgame.ecore#//Game">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//Game/initialRoom"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//Game/initialItems"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//Game/rooms"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//Game/items"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//Room">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//Room/states"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//Room/defaultState"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//Room/actions"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//RoomState">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//RoomState/isActive"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="textualgame.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute textualgame.ecore#//NamedElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute textualgame.ecore#//NamedElement/description"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="textualgame.ecore#//Action"/>
+    <genClasses image="false" ecoreClass="textualgame.ecore#//ConditionalElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute textualgame.ecore#//ConditionalElement/isOneTime"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//ConditionalElement/isVisible"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//ConditionalElement/isEnabled"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="textualgame.ecore#//IllustratedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute textualgame.ecore#//IllustratedElement/image"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//Item">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference textualgame.ecore#//Item/actions"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//GotoRoom">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//GotoRoom/room"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//AddItemsToInventory">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//AddItemsToInventory/items"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//Restart"/>
+    <genClasses image="false" ecoreClass="textualgame.ecore#//Condition"/>
+    <genClasses ecoreClass="textualgame.ecore#//InRoom">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//InRoom/room"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//HasItems">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//HasItems/items"/>
+    </genClasses>
+    <genClasses ecoreClass="textualgame.ecore#//InRoomState">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference textualgame.ecore#//InRoomState/roomState"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

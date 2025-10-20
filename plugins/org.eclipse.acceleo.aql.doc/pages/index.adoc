@@ -1281,7 +1281,7 @@ If you use the source folder for your template make sure you include them as res
 </project>
 ----
 
-The following https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as an example.
+The following https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as a simple example. For a more complete example with a custom metamodel you can check the [textual game tutorial](https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc).
 
 == Migrate Acceleo 3 templates to Acceleo 4
 

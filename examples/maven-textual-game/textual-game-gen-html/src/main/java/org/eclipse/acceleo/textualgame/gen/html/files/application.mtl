@@ -1,0 +1,348 @@
+[comment encoding = UTF-8 /]
+[**
+ * Generates the application Javascript file.
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */]
+[module application('http://www.eclipse.org/acceleo/textualgame')/]
+
+[import org::eclipse::acceleo::textualgame::gen::html::data::data/]
+
+[**
+ * Generates the application Javascript file.
+ * @param game the Game model root
+ * @main
+ */]
+[template public generateApplication(game : textualgame::Game)]
+  [file ('app.js', overwrite, 'UTF-8')]
+    [game.generateGameData()/]
+
+    [game.generateGameEngine()/]  
+  [/file]
+[/template]
+
+[**
+ * Generates the application engine.
+ * @param game the Game model root
+ */]
+[template public generateGameEngine(game : textualgame::Game)]
+  
+  class GameState {
+      scenarioData;
+      currentInventory;
+      currentRoom;
+      constructor(scenarioData) {
+          this.scenarioData = scenarioData;
+          this.currentInventory = scenarioData.startingState.items;
+          this.currentRoom = scenarioData.startingState.room;
+      }
+  }
+
+  
+
+  
+
+  
+
+  /*
+  utils
+  */
+
+  function clearSection(container) {
+      while (container.childElementCount > 0) {
+          container.removeChild(container.lastChild);
+      }
+  }
+
+  function deepClone(obj) {
+      if (obj === null || typeof obj !== "object") return obj;
+      const copy = Array.isArray(obj) ? ['['/]] : {};
+      for (const key in obj) {
+          const value = obj['['/]key];
+          copy['['/]key] = deepClone(value);
+      }
+      return copy;
+  }
+
+  function nameToIndex(name, array) {
+      for (var i in array) {
+          if (array['['/]i].name === name) {
+              return i;
+          }
+      }
+      console.error("name not in array");
+  }
+
+  function printTextCenter(text) {
+      var texts = document.getElementById("textContainer");
+      while (texts.childElementCount > 0) {
+          texts.removeChild(texts.lastChild);
+      }
+
+      var textDiv = document.createElement("div");
+      textDiv.textContent = text;
+      texts.appendChild(textDiv);
+  }
+
+  function printTextObject(text) {
+      var objectDescriptionsTextContainer = document.getElementById("objectDescriptionTextContainer");
+      clearSection(objectDescriptionsTextContainer);
+      var textDiv = document.createElement("div");
+      textDiv.textContent = text;
+      textDiv.id = "objectText";
+      objectDescriptionsTextContainer.appendChild(textDiv);
+  }
+
+  
+
+  
+
+  
+  /*
+  inventory
+  */
+
+  function createObjectActionButton(action, itemName) {
+      var objectButtonContainer = document.getElementById("objectButtonContainer")
+      clearSection(objectButtonContainer);
+      var newButton = document.createElement("button");
+      if (Object.keys(action).includes("isEnabled") && action.isEnabled()) {
+          newButton.onclick = function () {
+              action.onClickFunction();
+              gotoRoom(currentState.currentRoom);
+              if (Object.keys(action).includes("displayText")) {
+                  printTextCenter(action.displayText);
+              }
+              if (Object.keys(action).includes("isOneTime") && action.isOneTime) {
+                  removeFromInventory(itemName);
+              }
+          };
+          newButton.className = "button";
+      }
+      else {
+          newButton.className = "greyButton";
+          newButton.onclick = function () { };
+      }
+      newButton.textContent = action.displayName;
+      objectButtonContainer.appendChild(newButton);
+  }
+
+  function createInventoryButton(itemName, flash = true) {
+      var newButton = document.createElement("button");
+      newButton.onclick = function () {
+          printTextObject(currentState.scenarioData.items['['/]nameToIndex(itemName, currentState.scenarioData.items)].description);
+          for (var i in currentState.scenarioData.items['['/]nameToIndex(itemName, currentState.scenarioData.items)].actionList) {
+              createObjectActionButton(currentState.scenarioData.items['['/]nameToIndex(itemName, currentState.scenarioData.items)].actionList['['/]i], itemName)
+          }
+      };
+      newButton.textContent = currentState.scenarioData.items['['/]nameToIndex(itemName, currentState.scenarioData.items)].name;
+      newButton.name = itemName;
+      newButton.className = "inventoryButton";
+      document.getElementById("inventoryContainer").appendChild(newButton);
+      currentState.currentInventory.push(currentState.scenarioData.items['['/]nameToIndex(itemName, currentState.scenarioData.items)].name);
+
+      //flash
+      if (flash) {
+          newButton.className = "yellowInventoryButton"
+          setTimeout(() => {
+              newButton.className = "inventoryButton";
+          }, 1000)
+      }
+  }
+
+  function initInventoy() {
+      var inventoryButtons = document.getElementById("inventoryContainer")
+      //supress all buttons in invetory
+      clearSection(inventoryButtons);
+      //load items from inventory
+      for (var itemId in currentState.currentInventory) {
+          createInventoryButton(currentState.scenarioData.startingState.items['['/]itemId], false);
+      }
+  }
+
+  function addToInventory(itemName) {
+      if (!currentState.currentInventory.includes(itemName)) {
+          createInventoryButton(itemName);
+      }
+  }
+
+  function removeFromInventory(itemName) {
+      inventoryButtons = document.getElementById("inventoryContainer")
+      if (currentState.currentInventory.includes(itemName)) {
+          index = currentState.currentInventory.indexOf(itemName);
+          if (index > -1) {
+              currentState.currentInventory.splice(index, 1);
+          }
+          for (var i in inventoryButtons.childNodes) {
+              if (inventoryButtons.childNodes['['/]i].name == itemName) {
+                  inventoryButtons.removeChild(inventoryButtons.childNodes['['/]i]);
+                  break;
+              }
+          }
+      }
+      else {
+          console.log("you don't have the item to remove");
+      }
+  }
+
+  function posessItems(itemNames) {
+      for (var i in itemNames) {
+          if (!currentState.currentInventory.includes(itemNames['['/]i])) {
+              return false;
+          }
+      }
+      return true;
+  }
+
+  
+
+  
+
+  
+  /*
+  Rooms
+  */
+
+  function displayImage(roomName) {
+      imageContainer = document.getElementById("imageContainer")
+      clearSection(imageContainer);
+      newImage = document.createElement("img");
+      newImage.src = "images/" + roomName + "_" + currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state + ".png";
+      imageContainer.appendChild(newImage);
+  }
+
+  function isCurrentRoom(roomName) {
+      return currentState.scenarioData.rooms['['/]nameToIndex(currentState.currentRoom, currentState.scenarioData.rooms)].name === roomName;
+  }
+
+  function isCurrentState(stateName) {
+      return currentState.scenarioData.rooms['['/]nameToIndex(currentState.currentRoom, currentState.scenarioData.rooms)].state === stateName;
+  }
+
+  function isCurrentRoomState(stateName) {
+      return currentState.scenarioData.rooms['['/]nameToIndex(currentState.currentRoom, currentState.scenarioData.rooms)].state === stateName;
+  }
+
+  function setState(roomName, stateName) {
+      currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state = stateName;
+  }
+
+  function updateRoomState(roomName) {
+      var foundState = false;
+      for (var i in Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states)) {
+          stateName = Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states)['['/]i];
+          if (stateName !== "default" &&
+              Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states['['/]stateName]).includes("isActive") &&
+              currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states['['/]stateName].isActive()) {
+              currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state = stateName;
+              foundState = true;
+              break;
+          }
+      }
+      if (!foundState) {
+          currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state = "default";
+      }
+
+  }
+
+  function gotoRoom(roomName) {
+      currentState.currentRoom = roomName;
+      updateRoomState(roomName);
+      displayImage(roomName);
+
+      // clear the object description area
+      var objectDescriptionsButtonContainer = document.getElementById("objectButtonContainer");
+      var objectDescriptionsTextContainer = document.getElementById("objectDescriptionTextContainer");
+      clearSection(objectDescriptionsButtonContainer);
+      clearSection(objectDescriptionsTextContainer);
+      var container = document.createElement("div");
+      container.id = "objectButtonContainer";
+      objectDescriptionsButtonContainer.appendChild(container);
+
+      // show room description
+      var texts = document.getElementById("textContainer");
+      clearSection(texts);
+      roomDescripion = document.createElement("div");
+      if (typeof currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states['['/]currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state].description === "string") {
+          roomDescripion.textContent = currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states['['/]currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state].description;
+      }
+      else if (typeof currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states['['/]currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state].description === "object") {
+          if (Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)]).includes("state")) {
+              roomDescripion.textContent = currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].states['['/]currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state].description['['/]currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].state];
+          }
+          else {
+              console.error("a room with multiple descriptions should have a state property");
+          }
+      }
+      else {
+          console.error("room description should be a string or an object");
+      }
+      texts.appendChild(roomDescripion);
+
+      // add buttons for actions
+      var buttons = document.getElementById("buttonContainer");
+      clearSection(buttons);
+      for (let actionId in currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList) {
+          var newButton = document.createElement("button");
+          newButton.textContent = currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].displayName;
+          if (!Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId]).includes("isEnabled") ||
+              currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].isEnabled()) {
+              newButton.className = "button";
+              if (Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId]).includes("isOneTime") &&
+                  currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].isOneTime) {
+                  if (!Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId]).includes("displayText")) {
+                      newButton.onclick = function () {
+                          currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].onClickFunction();
+                          currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].isVisible = function () { return false; };
+                          gotoRoom(roomName);
+                      }
+                  }
+                  else {
+                      newButton.onclick = function () {
+                          currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].onClickFunction();
+                          currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].isVisible = function () { return false; };
+                          gotoRoom(roomName);
+                          printTextCenter(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].displayText);
+                      }
+                  }
+              }
+              else {
+                  if (!Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId]).includes("displayText")) {
+                      newButton.onclick = currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].onClickFunction;
+                  }
+                  else {
+                      newButton.onclick = function () {
+                          currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].onClickFunction;
+                          printTextCenter(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].displayText);
+                      }
+                  }
+              }
+          }
+          else {
+              newButton.className = "greyButton";
+          }
+          if (!Object.keys(currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId]).includes("isVisible") ||
+              currentState.scenarioData.rooms['['/]nameToIndex(roomName, currentState.scenarioData.rooms)].actionList['['/]actionId].isVisible()) {
+              buttons.appendChild(newButton);
+          }
+      }
+  }
+
+  
+
+  
+
+  
+  /*
+  game loop
+  */
+
+  var currentState = new GameState(deepClone(data));
+
+  function startGame() {
+      currentState = new GameState(deepClone(data)); //reset game data
+      gotoRoom(currentState.currentRoom);
+      initInventoy();
+  }
+[/template]
