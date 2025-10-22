@@ -124,19 +124,6 @@
               <url>${deployURL}</url>
             </configuration>
           </execution>
-          <execution>
-            <id>deploy-file-antlr</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>deploy-file</goal>
-            </goals>
-            <configuration>
-              <file>target/lib/antlr4-runtime-${antlr-version}.jar</file>
-              <pomFile>target/lib/antlr4-runtime-${antlr-version}.pom</pomFile>
-              <generatePom>false</generatePom>
-              <url>${deployURL}</url>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
     </plugins>
