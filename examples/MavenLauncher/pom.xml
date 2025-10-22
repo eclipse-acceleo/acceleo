@@ -38,6 +38,7 @@ USAGE:
     <tycho-extras-version>4.0.8</tycho-extras-version>
     <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
     <maven-repository-p2>releng/maven/repository-p2</maven-repository-p2>
+    <acceleo-repository>https://download.eclipse.org/acceleo/updates/nightly/latest/</acceleo-repository>
   </properties>
 
   <profiles>
@@ -65,7 +66,7 @@ USAGE:
         <repository>
           <id>Acceleo 4</id>
           <layout>p2</layout>
-          <url>https://download.eclipse.org/acceleo/updates/nightly/4.1.1.202504181604/</url>
+          <url>${acceleo-repository}</url>
         </repository>
         <!-- Eclipse p2 repository for all other dependencies. -->
         <repository>
@@ -152,7 +153,7 @@ USAGE:
                 <repository>
                   <id>Acceleo 4</id>
                   <layout>p2</layout>
-                  <url>https://download.eclipse.org/acceleo/updates/nightly/4.1.1.202504181604/</url>
+                  <url>${acceleo-repository}</url>
                 </repository>
                 <!-- Eclipse repository for all other dependencies. -->
                 <repository>
@@ -223,7 +224,7 @@ USAGE:
         <!-- Acceleo 4 maven repository -->
         <repository>
           <id>Acceleo 4</id>
-          <url>https://download.eclipse.org/acceleo/updates/nightly/4.1.1.202504181604/</url>
+          <url>${acceleo-repository}</url>
         </repository>
       </repositories>
 

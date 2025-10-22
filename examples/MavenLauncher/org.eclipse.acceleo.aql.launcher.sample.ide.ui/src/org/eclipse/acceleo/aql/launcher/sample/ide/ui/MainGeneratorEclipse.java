@@ -47,6 +47,7 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -196,7 +197,7 @@ public class MainGeneratorEclipse extends MainGenerator {
 			Activator.getDefault().log(new Status(IStatus.ERROR, getClass(),
 					"The Bundle " + bundleIdentifier + " must be available in the target platform."));
 		}
-		return new OSGiQualifiedNameResolver(bundle, AcceleoParser.QUALIFIER_SEPARATOR);
+		return new OSGiQualifiedNameResolver(bundle, EPackage.Registry.INSTANCE, AcceleoParser.QUALIFIER_SEPARATOR);
 	}
 
 	/**
