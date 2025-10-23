@@ -15,7 +15,7 @@
 
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>textual-game-parent</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Acceleo Maven Test Parent</name>
 
@@ -25,7 +25,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven-surefire-plugin-version>3.5.2</maven-surefire-plugin-version>
     <acceleo-repository>https://download.eclipse.org/acceleo/updates/nightly/latest/</acceleo-repository>
-    <acceleo-version>4.2.0</acceleo-version>
+    <acceleo-version>4.2.1-SNAPSHOT</acceleo-version>
   </properties>
 
   <repositories>

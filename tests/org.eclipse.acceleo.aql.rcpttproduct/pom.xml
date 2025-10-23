@@ -16,13 +16,13 @@ Contributors:
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>4.2.0</version>
+    <version>4.2.1-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo.aql.rcpttproduct</artifactId>
-  <version>4.2.0</version>
+  <version>4.2.1-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
 
   <properties>

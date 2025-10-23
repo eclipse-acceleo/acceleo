@@ -13,12 +13,12 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>acceleo-test-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
         <relativePath>../test-parent</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.aql.rcptt</artifactId>
-  <version>4.2.0</version>
+  <version>4.2.1-SNAPSHOT</version>
 
   <packaging>rcpttTest</packaging>
 
