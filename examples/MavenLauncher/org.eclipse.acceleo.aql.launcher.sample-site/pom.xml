@@ -16,13 +16,13 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo.aql.launcher-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <relativePath>..</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.aql.launcher.sample-site</artifactId>
   <packaging>eclipse-repository</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>Acceleo Launcher Sample Repository</name>
 

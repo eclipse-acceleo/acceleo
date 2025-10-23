@@ -16,13 +16,13 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>4.2.0-SNAPSHOT</version>
+    <version>4.2.0</version>
     <relativePath>../../..</relativePath>
   </parent>
 
   <groupId>org.eclipse.acceleo.features</groupId>
   <artifactId>org.eclipse.acceleo.query.ui</artifactId>
-  <version>8.1.0-SNAPSHOT</version>
+  <version>8.1.0</version>
   <packaging>eclipse-feature</packaging>
 
 </project>

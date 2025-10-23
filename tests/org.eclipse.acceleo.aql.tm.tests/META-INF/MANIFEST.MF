@@ -5,7 +5,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.eclipse.acceleo.aql.tm.tests
-Bundle-Version: 4.2.0.qualifier
+Bundle-Version: 4.2.0
 Require-Bundle: org.junit;bundle-version="4.0.0",
  org.eclipse.acceleo.aql.tm,
  org.eclipse.tm4e.core,
