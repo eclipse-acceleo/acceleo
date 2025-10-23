@@ -24,7 +24,7 @@ GROUP="modeling.acceleo"
 
 if [[ ! ${QUALIFIER} =~ ^[0-9]\.[0-9]\.[0-9]+\.[0-9]{12}$ ]]
 then
-  echo "$QUALIFIER doesn't match the expect format x.x.x.yyyyMMddhhmm"
+  echo "$QUALIFIER doesn't match the expected format x.x.x.yyyyMMddhhmm"
   exit 1
 fi
 
