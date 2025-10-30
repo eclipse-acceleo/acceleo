@@ -28,6 +28,10 @@
         description="You enter a small room lit up by torches on the walls."
         image="images/torchRoom.png"/>
     <actions
+        xsi:type="textualgame:GotoRoom"
+        name="go back"
+        room="//@rooms.0"/>
+    <actions
         xsi:type="textualgame:AddItemsToInventory"
         name="grab a torch"
         description="You grab a torch, and take it off the wall."

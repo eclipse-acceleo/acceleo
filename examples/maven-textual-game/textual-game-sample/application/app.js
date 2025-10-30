@@ -35,6 +35,13 @@ var data = {
             "state": "default",
             "actionList": [
                 {
+                    "displayName": "go back",
+                    "onClickFunction": function () {
+                        gotoRoom("firstRoom");
+                    },
+                    "isOneTime": false
+                },
+                {
                     "displayName": "grab a torch",
                     "displayText": "You grab a torch, and take it off the wall.",
                     "onClickFunction": function () {
