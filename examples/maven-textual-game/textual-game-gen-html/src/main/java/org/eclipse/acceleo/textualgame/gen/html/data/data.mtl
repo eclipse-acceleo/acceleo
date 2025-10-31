@@ -49,7 +49,7 @@
  */]
 [template public generateStateData(state : textualgame::RoomState) post(self.trim())]
   "[state.name/]": {
-      "description": "[state.description/]"
+      "description": "[state.description/]",
       [if (state.isActive != null)]
         // TODO isActive
       [/if]
