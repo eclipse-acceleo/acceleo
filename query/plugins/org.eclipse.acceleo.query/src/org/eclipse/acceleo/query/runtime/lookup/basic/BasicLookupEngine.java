@@ -58,11 +58,7 @@ public class BasicLookupEngine implements ILookupEngine {
 		return services;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ILookupEngine#getRegisteredServices()
-	 */
+	@Override
 	public Set<IService<?>> getRegisteredServices() {
 		Set<IService<?>> result = services.getServices();
 
@@ -71,11 +67,10 @@ public class BasicLookupEngine implements ILookupEngine {
 
 	@Override
 	public IService<?> lookup(String name, IType[] argumentTypes) {
+		IService<?> result = null;
+
 		List<IService<?>> multiMethod = services.getMultiService(name, argumentTypes.length);
-		if (multiMethod == null) {
-			return null;
-		} else {
-			IService<?> result = null;
+		if (multiMethod != null) {
 			for (IService<?> service : multiMethod) {
 				if (service.matches(queryEnvironment, argumentTypes)) {
 					if (result == null || service.getPriority() > result.getPriority() || (service
@@ -85,8 +80,9 @@ public class BasicLookupEngine implements ILookupEngine {
 					}
 				}
 			}
-			return result;
 		}
+
+		return result;
 	}
 
 	/**
@@ -136,11 +132,6 @@ public class BasicLookupEngine implements ILookupEngine {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.ILookupEngine#isRegisteredService(org.eclipse.acceleo.query.runtime.IService)
-	 */
 	@Override
 	public boolean isRegisteredService(IService<?> service) {
 		return services.isRegistered(service);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2024 Obeo.
+ * Copyright (c) 2016, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,9 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 	 */
 	private final AcceleoEvaluator evaluator;
 
+	/**
+	 * The short signature.
+	 */
 	private final String shortSignature;
 
 	/**
@@ -123,21 +126,11 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 		return visibility;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getShortSignature()
-	 */
 	@Override
 	public String getShortSignature() {
 		return shortSignature;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getLongSignature()
-	 */
 	@Override
 	public String getLongSignature() {
 		String namespace = getContextQualifiedName();
@@ -147,32 +140,17 @@ public abstract class AbstractModuleElementService<O extends ModuleElement> exte
 		return getShortSignature();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#getPriority()
-	 */
 	@Override
 	public int getPriority() {
 		return 0;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof AbstractModuleElementService
 				&& getOrigin() == ((AbstractModuleElementService<?>)obj).getOrigin();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		return getOrigin().hashCode();
