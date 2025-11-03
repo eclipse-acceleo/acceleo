@@ -4,7 +4,7 @@ var data = {
             "name": "firstRoom",
             "states": {
                 "default": {
-                    "description": "You enter a room with two doors."
+                    "description": "You enter a room with two doors.",
                 }
             },
             "state": "default",
@@ -29,7 +29,7 @@ var data = {
             "name": "torchRoom",
             "states": {
                 "default": {
-                    "description": "You enter a small room lit up by torches on the walls."
+                    "description": "You enter a small room lit up by torches on the walls.",
                 }
             },
             "state": "default",
@@ -55,7 +55,7 @@ var data = {
             "name": "corridorRoom",
             "states": {
                 "default": {
-                    "description": "You enter a long corridor, with a door at the end and a door on the left side. You also notice a ladder to the left."
+                    "description": "You enter a long corridor, with a door at the end and a door on the left side. You also notice a ladder to the left.",
                 }
             },
             "state": "default",
@@ -94,14 +94,14 @@ var data = {
             "name": "exitDoorRoom",
             "states": {
                 "default": {
-                    "description": "You enter a room with a single door. The door is locked, and you can see two different keyholes in the door: a red one and a green one."
+                    "description": "You enter a room with a single door. The door is locked, and you can see two different keyholes in the door: a red one and a green one.",
                 },
                 "usedOneKey": {
-                    "description": "You enter a room with a single door. The door is locked, and you can see two different keyholes in the door: a red one and a green one. You used a key, but the door is still locked."
+                    "description": "You enter a room with a single door. The door is locked, and you can see two different keyholes in the door: a red one and a green one. You used a key, but the door is still locked.",
                     // TODO isActive
                 },
                 "usedTwoKeys": {
-                    "description": "You enter a room with a single door. Now that you used your two keys, the door is unlocked!"
+                    "description": "You enter a room with a single door. Now that you used your two keys, the door is unlocked!",
                     // TODO isActive
                 }
             },
@@ -128,7 +128,7 @@ var data = {
             "name": "chestRoom",
             "states": {
                 "default": {
-                    "description": "It's an empty room with a small blue chest."
+                    "description": "It's an empty room with a small blue chest.",
                 }
             },
             "state": "default",
@@ -146,10 +146,10 @@ var data = {
             "name": "greenKeyRoom",
             "states": {
                 "default": {
-                    "description": "The room is soo dark you cannot see anything."
+                    "description": "The room is soo dark you cannot see anything.",
                 },
                 "lit": {
-                    "description": "You can see inside the dark room with your torch, and you notice a key on the ground."
+                    "description": "You can see inside the dark room with your torch, and you notice a key on the ground.",
                     // TODO isActive
                 }
             },
@@ -177,7 +177,7 @@ var data = {
             "name": "exitRoom",
             "states": {
                 "default": {
-                    "description": "You opened the door with the two keys, and reached the exit of the maze!"
+                    "description": "You opened the door with the two keys, and reached the exit of the maze!",
                 }
             },
             "state": "default",
@@ -212,14 +212,28 @@ var data = {
             "name": "green key",
             "description": "A strange key you found on the ground.",
             "actionList": [
-                
+                {
+                    "displayName": "Use",
+                    "onClickFunction": function () {
+                        // TODO implement generateActionBody for AddItemsToInventory
+                    },
+                    // TODO is isEnabled
+                    "isOneTime": false
+                }
             ]
         },
         {
             "name": "red key",
             "description": "A shiny red key you found in a chest.",
             "actionList": [
-                
+                {
+                    "displayName": "Use",
+                    "onClickFunction": function () {
+                        // TODO implement generateActionBody for AddItemsToInventory
+                    },
+                    // TODO is isEnabled
+                    "isOneTime": false
+                }
             ]
         },
         {

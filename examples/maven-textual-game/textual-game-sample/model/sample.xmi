@@ -159,9 +159,27 @@
     </actions>
   </items>
   <items name="green key"
-      description="A strange key you found on the ground."/>
+      description="A strange key you found on the ground.">
+    <actions
+        xsi:type="textualgame:AddItemsToInventory"
+        name="Use"
+        items="//@items.1">
+      <isEnabled
+          xsi:type="textualgame:InRoom"
+          room="//@rooms.3"/>
+    </actions>
+  </items>
   <items name="red key"
-      description="A shiny red key you found in a chest."/>
+      description="A shiny red key you found in a chest.">
+    <actions
+        xsi:type="textualgame:AddItemsToInventory"
+        name="Use"
+        items="//@items.2">
+      <isEnabled
+          xsi:type="textualgame:InRoom"
+          room="//@rooms.3"/>
+    </actions>
+  </items>
   <items name="torch"
       description="A torch."/>
 </textualgame:Game>
