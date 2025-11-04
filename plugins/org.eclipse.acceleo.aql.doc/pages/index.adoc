@@ -103,7 +103,9 @@ Check that your generation is finished by opening the *Console* view.
 The console title should change to `<terminated> generate.mtl[Acceleo4]`.
 The last line in the console should be the generation summary `Files: 1, Lost Files: 0, Errors: 0, Warnings: 0, Infos: 0`.
 ====
- 
+
+If you want to get a bit further, you can have a look at the <<launching_an-acceleo_generation,Launching an Acceleo generation>> section. If you prefere to practice by yourself you can try the https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[Maven tutorial] it covers basic template writing and best practices for Acceleo.
+
 == The Acceleo Tooling
 
 === The Acceleo Editor
@@ -1162,6 +1164,10 @@ You can run the `generate-maven-main-class` profile with the following command:
 mvn clean exec:java -Pgenerate-maven-main-class
 ----
 
+=== Maven
+
+You can launch a generation in full Maven if needed. It is covered in the previous section, but if you want a pure Maven example you can have a look at this [folder]. The Maven example also comes with a https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[tutorial] that explain the project structure.
+
 == Using Acceleo 4 programmatically
 
 Acceleo 4 can be used programmatically and for instance integrated in other products. 
@@ -1281,7 +1287,7 @@ If you use the source folder for your template make sure you include them as res
 </project>
 ----
 
-The following https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as a simple example. For a more complete example with a custom metamodel you can check the [textual game tutorial](https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc).
+The following https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as a simple example. For a more complete example with a custom metamodel you can check the https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[textual game tutorial].
 
 == Migrate Acceleo 3 templates to Acceleo 4
 

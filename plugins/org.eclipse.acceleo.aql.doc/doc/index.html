@@ -525,6 +525,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#standalone-main-class">6.2.3. Standalone main class</a></li>
 </ul>
 </li>
+<li><a href="#maven">6.3. Maven</a></li>
 </ul>
 </li>
 <li><a href="#using-acceleo-4-programmatically">7. Using Acceleo 4 programmatically</a>
@@ -534,7 +535,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#completion">7.3. Completion</a></li>
 <li><a href="#generation">7.4. Generation</a></li>
 <li><a href="#unit-test-module">7.5. Unit test module</a></li>
-<li><a href="#maven">7.6. Maven</a></li>
+<li><a href="#maven-2">7.6. Maven</a></li>
 </ul>
 </li>
 <li><a href="#migrate-acceleo-3-templates-to-acceleo-4">8. Migrate Acceleo 3 templates to Acceleo 4</a>
@@ -787,6 +788,9 @@ The last line in the console should be the generation summary <code>Files: 1, Lo
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>If you want to get a bit further, you can have a look at the <a href="#launching_an-acceleo_generation">Launching an Acceleo generation</a> section. If you prefere to practice by yourself you can try the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc">Maven tutorial</a> it covers basic template writing and best practices for Acceleo.</p>
 </div>
 </div>
 </div>
@@ -2535,6 +2539,12 @@ The last line in the console should be the generation summary <code>Files: 2, Lo
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="maven">6.3. Maven</h3>
+<div class="paragraph">
+<p>You can launch a generation in full Maven if needed. It is covered in the previous section, but if you want a pure Maven example you can have a look at this [folder]. The Maven example also comes with a <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc">tutorial</a> that explain the project structure.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2627,7 +2637,7 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 </div>
 </div>
 <div class="sect2">
-<h3 id="maven">7.6. Maven</h3>
+<h3 id="maven-2">7.6. Maven</h3>
 <div class="paragraph">
 <p>You can use Acceleo 4 in your maven project with the following repository and dependency:</p>
 </div>
@@ -2667,7 +2677,7 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 </div>
 </div>
 <div class="paragraph">
-<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests">test project</a> can be used as a simple example. For a more complete example with a custom metamodel you can check the [textual game tutorial](<a href="https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc" class="bare">https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc</a>).</p>
+<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests">test project</a> can be used as a simple example. For a more complete example with a custom metamodel you can check the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc">textual game tutorial</a>.</p>
 </div>
 </div>
 </div>
@@ -3275,7 +3285,7 @@ Thus the migration tool translates each Set into an OrderedSet and each Bag into
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-22 11:12:09 +0200
+Last updated 2025-11-04 09:38:03 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
