@@ -20,9 +20,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,11 +46,11 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.engine.service.AcceleoModulePropertiesAdapter;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
@@ -64,6 +64,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -99,7 +100,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private final Set<Module> currentModules = new CompactHashSet<Module>();
 
 	/** Maps dynamic overrides as registered in the {@link AcceleoDynamicTemplatesRegistry}. */
-	private final SetMultimap<Template, Template> dynamicOverrides = AcceleoCollections
+	private final SetMultimap<Template, Template> templatesDynamicOverrides = AcceleoCollections
 			.newCompactLinkedHashSetMultimap();
 
 	/** Maps all overriding templates to their <code>super</code>. */
@@ -124,6 +125,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	private final ListMultimap<String, Object> globalVariableMap = AcceleoCollections
 			.newCircularArrayDequeMultimap();
+
+	private SetMultimap<String, Query> queries = AcceleoCollections.newCompactLinkedHashSetMultimap();
+
+	private SetMultimap<Query, Query> queriesDynamicOverrides = AcceleoCollections
+			.newCompactLinkedHashSetMultimap();
+
+	private SetMultimap<Query, Query> overridingQueries = AcceleoCollections
+			.newCompactLinkedHashSetMultimap();
 
 	/**
 	 * This constructor is needed by the factory.
@@ -361,10 +370,49 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		 * testing.
 		 */
 		final List<Template> orderedNamesakes = reorderCandidatesPriority(origin, getAllCandidateNamesakes(
-				origin, call, argumentTypes));
+				templates, origin, call, argumentTypes));
 		final List<Template> dynamicOverriding = reorderDynamicOverrides(getAllDynamicCandidateOverriding(
-				orderedNamesakes, argumentTypes));
-		final List<Template> overriding = getAllCandidateOverriding(origin, orderedNamesakes, argumentTypes);
+				templatesDynamicOverrides, orderedNamesakes, argumentTypes));
+		final List<Template> overriding = getAllCandidateOverriding(overridingTemplates, origin,
+				orderedNamesakes, argumentTypes);
+
+		// overriding templates come first, then namesakes
+		return Lists.newArrayList(Iterables.concat(dynamicOverriding, overriding, orderedNamesakes));
+	}
+
+	/**
+	 * This will return the List of all applicable candidates for the given template call with the given
+	 * arguments. These will be ordered as described on {@link #reorderCandidatesPriority(Module, Set)}.
+	 * 
+	 * @param origin
+	 *            Origin of the template call.
+	 * @param call
+	 *            The called element.
+	 * @param arguments
+	 *            Arguments of the call.
+	 * @return The set of all applicable templates for these arguments
+	 */
+	public List<Query> getAllCandidates(Module origin, Query call, Object[] arguments) {
+		final List<Object> argumentTypes = new ArrayList<Object>(arguments.length);
+		for (int i = 0; i < arguments.length; i++) {
+			if (arguments[i] instanceof EObject) {
+				argumentTypes.add(((EObject)arguments[i]).eClass());
+			} else if (arguments[i] != null) {
+				argumentTypes.add(arguments[i].getClass());
+			} else {
+				argumentTypes.add(NULL_ARGUMENT);
+			}
+		}
+
+		/*
+		 * NOTE : we depend on the ordering offered by List types. Do not change implementation without
+		 * testing.
+		 */
+		final List<Query> orderedNamesakes = reorderCandidatesPriority(origin, getAllCandidateNamesakes(
+				queries, origin, call, argumentTypes));
+		final List<Query> dynamicOverriding = new ArrayList<Query>();
+		final List<Query> overriding = getAllCandidateOverriding(overridingQueries, origin, orderedNamesakes,
+				argumentTypes);
 
 		// overriding templates come first, then namesakes
 		return Lists.newArrayList(Iterables.concat(dynamicOverriding, overriding, orderedNamesakes));
@@ -379,15 +427,15 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Arguments of the call.
 	 * @return The most specific templates for <code>arguments</code>.
 	 */
-	public Template getMostSpecificTemplate(Iterable<Template> candidates, Object[] arguments) {
-		final Iterator<Template> candidateIterator = candidates.iterator();
-		Template mostSpecific = candidateIterator.next();
+	public <T> T getMostSpecific(Iterable<T> candidates, Object[] arguments) {
+		final Iterator<T> candidateIterator = candidates.iterator();
+		T mostSpecific = candidateIterator.next();
 		if (!candidateIterator.hasNext()) {
 			return mostSpecific;
 		}
 
 		while (candidateIterator.hasNext()) {
-			mostSpecific = mostSpecificTemplate(mostSpecific, candidateIterator.next(), arguments);
+			mostSpecific = mostSpecific(mostSpecific, candidateIterator.next(), arguments);
 		}
 		return mostSpecific;
 	}
@@ -513,17 +561,33 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the arguments for the call.
 	 * @return The set of applicable templates.
 	 */
-	private Set<Template> applicableTemplates(Set<Template> candidates, final List<Object> argumentTypes) {
-		Predicate<Template> argumentSizeMatch = new Predicate<Template>() {
-			public boolean apply(Template input) {
-				final List<Variable> parameters = input.getParameter();
-				return parameters.size() == argumentTypes.size() || parameters.isEmpty()
-						&& argumentTypes.size() == 1;
+	private <T> Set<T> applicableTemplates(Set<T> candidates, final List<Object> argumentTypes) {
+		Predicate<T> argumentSizeMatch = new Predicate<T>() {
+			public boolean apply(T input) {
+				final List<Variable> parameters;
+				if (input instanceof Template) {
+					parameters = ((Template)input).getParameter();
+				} else if (input instanceof Query) {
+					parameters = ((Query)input).getParameter();
+				} else {
+					parameters = new ArrayList<Variable>();
+				}
+
+				return parameters.size() == argumentTypes.size() || parameters.isEmpty() && argumentTypes
+						.size() == 1;
 			}
 		};
-		Predicate<Template> argumentsMatch = new Predicate<Template>() {
-			public boolean apply(Template input) {
-				final List<Variable> parameters = input.getParameter();
+		Predicate<T> argumentsMatch = new Predicate<T>() {
+			public boolean apply(T input) {
+				final List<Variable> parameters;
+				if (input instanceof Template) {
+					parameters = ((Template)input).getParameter();
+				} else if (input instanceof Query) {
+					parameters = ((Query)input).getParameter();
+				} else {
+					parameters = new ArrayList<Variable>();
+				}
+
 				if (parameters.isEmpty() && argumentTypes.size() == 1) {
 					return true;
 				}
@@ -544,6 +608,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * This will return the list of all namesakes of the template <code>call</code> applicable for
 	 * <code>arguments</code>.
 	 * 
+	 * @param <T>
 	 * @param origin
 	 *            Origin of the template call.
 	 * @param call
@@ -552,17 +617,18 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the arguments of the call.
 	 * @return All of the applicable templates of this name in the current context.
 	 */
-	private Set<Template> getAllCandidateNamesakes(Module origin, Template call, List<Object> argumentTypes) {
-		final Set<Template> namesakes = new CompactLinkedHashSet<Template>();
-		final Set<Template> candidates = templates.get(call.getName());
+	private <T> Set<T> getAllCandidateNamesakes(SetMultimap<String, T> templates, Module origin,
+			ModuleElement call, List<Object> argumentTypes) {
+		final Set<T> namesakes = new CompactLinkedHashSet<T>();
+		final Set<T> candidates = templates.get(call.getName());
 		final int candidateSize = candidates.size();
 		if (candidateSize == 0) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationEnvironment.ModuleResolutionError")); //$NON-NLS-1$
 		}
 		Set<Module> scope = Sets.union(Collections.singleton(origin), getScopeOf(origin));
-		for (Template candidate : candidates) {
-			if (scope.contains(candidate.eContainer())) {
+		for (T candidate : candidates) {
+			if (scope.contains(((EObject)candidate).eContainer())) {
 				namesakes.add(candidate);
 			}
 		}
@@ -625,31 +691,33 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * applicable for <code>arguments</code>. These will be ordered as specified on
 	 * {@link #reorderCandidatesPriority(Module, Set)}.
 	 * 
+	 * @param overriding
+	 *            List of templates candidate to overriding.
 	 * @param origin
 	 *            Origin of the template call.
-	 * @param overridenTemplates
+	 * @param overriden
 	 *            List of templates we seek overriding templates of.
 	 * @param argumentTypes
 	 *            Types of the arguments of the call.
 	 * @return All of the applicable templates overriding one of <code>overridenTemplates</code> in the
 	 *         current context.
 	 */
-	private List<Template> getAllCandidateOverriding(Module origin, List<Template> overridenTemplates,
-			List<Object> argumentTypes) {
-		final List<Template> candidateOverriding = new ArrayList<Template>();
-		for (int i = 0; i < overridenTemplates.size(); i++) {
-			final Set<Template> candidates = overridingTemplates.get(overridenTemplates.get(i));
+	private <T> List<T> getAllCandidateOverriding(SetMultimap<T, T> overriding, Module origin,
+			List<T> overriden, List<Object> argumentTypes) {
+		final List<T> candidateOverriding = new ArrayList<T>();
+		for (int i = 0; i < overriden.size(); i++) {
+			final Set<T> candidates = overriding.get(overriden.get(i));
 			if (candidates != null) {
-				final Set<Template> applicableCandidates = applicableTemplates(candidates, argumentTypes);
-				for (Template template : applicableCandidates) {
-					EObject eContainer = template.eContainer();
-					if (eContainer instanceof Module
-							&& (getScopeOf(origin).contains(eContainer) || eContainer.equals(origin))) {
+				final Set<T> applicableCandidates = applicableTemplates(candidates, argumentTypes);
+				for (T template : applicableCandidates) {
+					EObject eContainer = ((EObject)template).eContainer();
+					if (eContainer instanceof Module && (getScopeOf(origin).contains(eContainer) || eContainer
+							.equals(origin))) {
 						candidateOverriding.add(template);
 					}
 				}
 				// no need to order this, it'll be ordered later on
-				candidateOverriding.addAll(getAllCandidateOverriding(origin, new ArrayList<Template>(
+				candidateOverriding.addAll(getAllCandidateOverriding(overriding, origin, new ArrayList<T>(
 						applicableCandidates), argumentTypes));
 			}
 		}
@@ -661,19 +729,21 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * This will return the list of all templates dynamically overriding one of
 	 * <code>overridenTemplates</code> that are applicable for <code>arguments</code>.
 	 * 
-	 * @param overridenTemplates
+	 * @param dynamicOverrides
+	 *            List of dynamic overriding candidates.
+	 * @param overriden
 	 *            List of templates we seek overriding templates of.
 	 * @param argumentTypes
 	 *            Types of the arguments of the call.
 	 * @return All of the applicable templates dynamically overriding one of <code>overridenTemplates</code>.
 	 */
-	private Set<Template> getAllDynamicCandidateOverriding(List<Template> overridenTemplates,
+	private <T> Set<T> getAllDynamicCandidateOverriding(SetMultimap<T, T> dynamicOverrides, List<T> overriden,
 			List<Object> argumentTypes) {
-		final Set<Template> dynamicOverriding = new CompactLinkedHashSet<Template>();
-		for (int i = 0; i < overridenTemplates.size(); i++) {
-			final Set<Template> candidates = dynamicOverrides.get(overridenTemplates.get(i));
+		final Set<T> dynamicOverriding = new CompactLinkedHashSet<T>();
+		for (int i = 0; i < overriden.size(); i++) {
+			final Set<T> candidates = dynamicOverrides.get(overriden.get(i));
 			if (candidates != null && !candidates.isEmpty()) {
-				final Set<Template> applicableCandidates = applicableTemplates(candidates, argumentTypes);
+				final Set<T> applicableCandidates = applicableTemplates(candidates, argumentTypes);
 				dynamicOverriding.addAll(applicableCandidates);
 			}
 		}
@@ -772,7 +842,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The set of loaded modules.
 	 */
 	private Set<Module> loadDynamicModules() {
-		final Set<File> dynamicModuleFiles = new CompactLinkedHashSet<File>();
+		final Set<URL> dynamicModuleFiles = new CompactLinkedHashSet<URL>();
 		final Set<Module> dynamicModules = new CompactLinkedHashSet<Module>();
 		// shortcut
 		ResourceSet resourceSet = null;
@@ -810,31 +880,45 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				// Not supposed to happen since extension point works only when deployed in eclipse
 				generatorID = uri.segment(1);
 			} else if (uri.isFile() || generatorID.startsWith("jar:file:")) { //$NON-NLS-1$
+				// lokup as osgi bundle
 				BundleURLConverter converter = new BundleURLConverter(generatorID);
 				generatorID = converter.resolveAsPlatformPlugin();
+				// lookup as plugin
+				if (generatorID == null) {
+					Iterator it = uri.segmentsList().iterator();
+					while (it.hasNext()) {
+
+						generatorID = it.next().toString();
+						if (EcorePlugin.getPlatformResourceMap().get(generatorID) != null) {
+							break;
+						}
+					}
+				}
 				// generatorID = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(generatorID);
-				if (generatorID != null
-						&& generatorID.startsWith("platform:/plugin/") && URI.createURI(generatorID).segments().length > 2) { //$NON-NLS-1$
+				if (generatorID != null && generatorID.startsWith("platform:/plugin/") && URI.createURI( //$NON-NLS-1$
+						generatorID).segments().length > 2) {
 					URI tmpURI = URI.createURI(generatorID);
 					generatorID = tmpURI.segment(1);
 				}
 			}
-			final Set<File> dynamicAcceleoModulesFiles = AcceleoDynamicTemplatesRegistry.INSTANCE
+			final Set<URL> dynamicAcceleoModulesFiles = AcceleoDynamicTemplatesRegistry.INSTANCE
 					.getRegisteredModules(generatorID);
 			dynamicModuleFiles.addAll(dynamicAcceleoModulesFiles);
 		}
-		for (File moduleFile : dynamicModuleFiles) {
-			if ((moduleFile.exists() && moduleFile.canRead()) || moduleFile.getPath().startsWith("jar:file:")) { //$NON-NLS-1$
-				try {
-					Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
-					for (EObject root : res.getContents()) {
-						if (root instanceof Module) {
-							dynamicModules.add((Module)root);
-						}
+
+		// We add the non-imported dynamic overridiing modules
+		dynamicModuleFiles.addAll(AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules());
+
+		for (URL moduleFile : dynamicModuleFiles) {
+			try {
+				Resource res = ModelUtils.load(URI.createURI(moduleFile.toString()), resourceSet).eResource();
+				for (EObject root : res.getContents()) {
+					if (root instanceof Module) {
+						dynamicModules.add((Module)root);
 					}
-				} catch (IOException e) {
-					AcceleoEnginePlugin.log(e, false);
 				}
+			} catch (IOException e) {
+				AcceleoEnginePlugin.log(e, false);
 			}
 		}
 
@@ -858,6 +942,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			if (elem instanceof Template) {
 				templates.put(elem.getName(), (Template)elem);
 				mapOverridingTemplate((Template)elem);
+			} else if (elem instanceof Query) {
+				queries.put(elem.getName(), (Query)elem);
 			}
 		}
 		for (final Module extended : module.getExtends()) {
@@ -888,6 +974,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				map = true;
 			} else {
 				unMappedRequiredModules.add(extended);
+				map = true;
 			}
 		}
 		// This module shouldn't be added to the context. Go to next.
@@ -908,7 +995,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		for (final ModuleElement elem : module.getOwnedModuleElement()) {
 			if (elem instanceof Template) {
 				final Template ownedTemplate = (Template)elem;
-				for (final Template overriden : ownedTemplate.getOverrides()) {
+				for (final Template overriden : templates.get(ownedTemplate.getName())) {
+					// Allows dynamic polyformism overriding that cannot be set because cant override another
+					// method that does not exist.
+					// choose from the accessible templates that override in static way or via dynamic
+					// overriding extension point without the need of the "overrides" declaration.
 					Template match = null;
 					final Iterator<Template> templateIterator = templates.get(overriden.getName()).iterator();
 					while (match == null && templateIterator.hasNext()) {
@@ -918,10 +1009,30 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 						}
 					}
 					if (match != null) {
-						dynamicOverrides.put(match, ownedTemplate);
+						templatesDynamicOverrides.put(match, ownedTemplate);
 					}
 				}
 				templates.put(ownedTemplate.getName(), ownedTemplate);
+			} else if (elem instanceof Query) {
+				final Query ownedQuery = (Query)elem;
+				for (final Query overriden : queries.get(ownedQuery.getName())) {
+					// Allows dynamic polyformism overriding that cannot be set because cant override another
+					// method that does not exist.
+					// choose from the accessible templates that override in static way or via dynamic
+					// overriding extension point without the need of the "overrides" declaration.
+					Query match = null;
+					final Iterator<Query> queryIterator = queries.get(overriden.getName()).iterator();
+					while (match == null && queryIterator.hasNext()) {
+						final Query query = queryIterator.next();
+						if (EcoreUtil.equals(query, overriden)) {
+							match = query;
+						}
+					}
+					if (match != null) {
+						queriesDynamicOverrides.put(match, ownedQuery);
+					}
+				}
+				queries.put(ownedQuery.getName(), ownedQuery);
 			}
 		}
 		currentModules.add(module);
@@ -931,7 +1042,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Maps dynamic overriding templates for smoother polymorphic resolution.
 	 */
 	private void mapDynamicOverrides() {
-		if (!AcceleoDynamicTemplatesEclipseUtil.hasDynamicModulesDescriptors()) {
+		if (AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules().isEmpty()) {
 			return;
 		}
 
@@ -965,19 +1076,38 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the actual arguments of the call.
 	 * @return The most specific templates for <code>actualArgumentTypes</code>.
 	 */
-	private Template mostSpecificTemplate(Template template1, Template template2, Object[] actualArgumentTypes) {
-		Template mostSpecific;
+	private <T> T mostSpecific(T template1, T template2, Object[] actualArgumentTypes) {
+		T mostSpecific;
 		// number of arguments which are more specific on template1 as compared to template2
 		int template1SpecificArgumentCount = 0;
 		// ...
 		int template2SpecificArgumentCount = 0;
 		for (int i = 0; i < actualArgumentTypes.length; i++) {
 			final Object actualArgumentType = actualArgumentTypes[i];
-			if (template1.getParameter().size() == 0 && template2.getParameter().size() == 0) {
+
+			final List<Variable> parameters1;
+			if (template1 instanceof Template) {
+				parameters1 = ((Template)template1).getParameter();
+			} else if (template1 instanceof Query) {
+				parameters1 = ((Query)template1).getParameter();
+			} else {
+				parameters1 = new ArrayList<Variable>();
+			}
+
+			final List<Variable> parameters2;
+			if (template2 instanceof Template) {
+				parameters2 = ((Template)template2).getParameter();
+			} else if (template2 instanceof Query) {
+				parameters2 = ((Query)template2).getParameter();
+			} else {
+				parameters2 = new ArrayList<Variable>();
+			}
+
+			if (parameters1.size() == 0 && parameters2.size() == 0) {
 				continue;
 			}
-			final EClassifier template1Type = template1.getParameter().get(i).getType();
-			final EClassifier template2Type = template2.getParameter().get(i).getType();
+			final EClassifier template1Type = parameters1.get(i).getType();
+			final EClassifier template2Type = parameters2.get(i).getType();
 			if (template1Type == template2Type) {
 				continue;
 			}
@@ -1014,15 +1144,15 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            List that is to be reordered.
 	 * @return The reordered list.
 	 */
-	private List<Template> reorderCandidatesPriority(Module origin, Set<Template> candidates) {
-		final List<Template> reorderedList = new ArrayList<Template>(candidates.size());
+	private <T> List<T> reorderCandidatesPriority(Module origin, Set<T> candidates) {
+		final List<T> reorderedList = new ArrayList<T>(candidates.size());
 
 		// We only support single inheritance. get(0) comes from that.
-		Iterator<Template> candidateIterator = candidates.iterator();
+		Iterator<T> candidateIterator = candidates.iterator();
 		while (candidateIterator.hasNext()) {
-			final Template candidate = candidateIterator.next();
+			final T candidate = candidateIterator.next();
 			boolean isOverridingCandidate = false;
-			Module module = (Module)candidate.eContainer();
+			Module module = (Module)((EObject)candidate).eContainer();
 			while (!isOverridingCandidate && module != null && module.getExtends().size() > 0) {
 				if (module.getExtends().get(0) == origin) {
 					reorderedList.add(candidate);
@@ -1035,8 +1165,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 
 		candidateIterator = candidates.iterator();
 		while (candidateIterator.hasNext()) {
-			final Template candidate = candidateIterator.next();
-			if (candidate.eContainer() == origin) {
+			final T candidate = candidateIterator.next();
+			if (((EObject)candidate).eContainer() == origin) {
 				reorderedList.add(candidate);
 				candidateIterator.remove();
 			}
@@ -1044,9 +1174,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 
 		candidateIterator = candidates.iterator();
 		while (candidateIterator.hasNext()) {
-			final Template candidate = candidateIterator.next();
+			final T candidate = candidateIterator.next();
 			for (final Module extended : origin.getExtends()) {
-				if (candidate.eContainer() == extended) {
+				if (((EObject)candidate).eContainer() == extended) {
 					reorderedList.add(candidate);
 					candidateIterator.remove();
 				}
@@ -1055,9 +1185,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 
 		candidateIterator = candidates.iterator();
 		while (candidateIterator.hasNext()) {
-			final Template candidate = candidateIterator.next();
+			final T candidate = candidateIterator.next();
 			for (final Module imported : origin.getImports()) {
-				if (candidate.eContainer() == imported) {
+				if (((EObject)candidate).eContainer() == imported) {
 					reorderedList.add(candidate);
 					candidateIterator.remove();
 				}
@@ -1066,13 +1196,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 
 		candidateIterator = candidates.iterator();
 		while (candidateIterator.hasNext()) {
-			final Template candidate = candidateIterator.next();
+			final T candidate = candidateIterator.next();
 			for (final Module imported : origin.getImports()) {
 				Module myImportedModule = imported;
 
 				boolean shouldBreak = false;
 				while (myImportedModule.getExtends().size() > 0) {
-					if (myImportedModule.getExtends().get(0) == candidate.eContainer()) {
+					if (myImportedModule.getExtends().get(0) == ((EObject)candidate).eContainer()) {
 						reorderedList.add(candidate);
 						candidateIterator.remove();
 						shouldBreak = true;
