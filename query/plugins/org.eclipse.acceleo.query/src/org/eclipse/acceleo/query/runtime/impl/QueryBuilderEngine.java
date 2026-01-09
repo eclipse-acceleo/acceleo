@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2025 Obeo.
+ * Copyright (c) 2015, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
+import org.antlr.v4.runtime.atn.PredictionMode;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Error;
@@ -79,6 +80,7 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 			parser.addParseListener(astBuilder);
 			parser.removeErrorListeners();
 			parser.addErrorListener(astBuilder.getErrorListener());
+			parser.getInterpreter().setPredictionMode(PredictionMode.SLL);
 			// parser.setTrace(true);
 			parser.setErrorHandler(new DefaultErrorStrategy() {
 

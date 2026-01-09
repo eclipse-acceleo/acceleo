@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.antlr.v4.runtime.CommonTokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
+import org.antlr.v4.runtime.atn.PredictionMode;
 import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
@@ -271,6 +272,7 @@ public final class AQLUtils {
 				parser.addParseListener(astBuilder);
 				parser.removeErrorListeners();
 				parser.addErrorListener(astBuilder.getErrorListener());
+				parser.getInterpreter().setPredictionMode(PredictionMode.SLL);
 				// parser.setTrace(true);
 				parser.expression();
 				result = new AcceleoAQLResult(astBuilder.getAstResult(), rewindWhiteSpaces(expression, parser
@@ -394,6 +396,7 @@ public final class AQLUtils {
 			parser.addParseListener(astBuilder);
 			parser.removeErrorListeners();
 			parser.addErrorListener(astBuilder.getErrorListener());
+			parser.getInterpreter().setPredictionMode(PredictionMode.SLL);
 			// parser.setTrace(true);
 			parser.typeLiteral();
 			result = astBuilder.getAstResult();
