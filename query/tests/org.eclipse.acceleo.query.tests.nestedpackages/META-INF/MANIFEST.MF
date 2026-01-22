@@ -6,7 +6,7 @@ Bundle-Version: 8.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.eclipse.acceleo.query.tests.nestedpackages.root,
  org.eclipse.acceleo.query.tests.nestedpackages.root.child,
  org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child,

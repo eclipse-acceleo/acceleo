@@ -6,7 +6,7 @@ Bundle-Localization: plugin
 Bundle-SymbolicName: org.eclipse.acceleo.aql.ide.tests
 Bundle-Version: 4.2.1.qualifier
 Export-Package: org.eclipse.acceleo.aql.ide.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.acceleo.aql.ide,
  org.junit;bundle-version="4.0.0",
  org.eclipse.osgi,

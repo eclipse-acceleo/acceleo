@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-Version: 4.2.1.qualifier
 Bundle-ClassPath: .
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Activator: org.eclipse.acceleo.aql.profiler.provider.ProfilerEditPlugin$Implementation
 Bundle-SymbolicName: org.eclipse.acceleo.aql.profiler.edit;singleton:=true
 Automatic-Module-Name: org.eclipse.acceleo.aql.profiler.edit

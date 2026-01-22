@@ -10,7 +10,7 @@ Bundle-Activator: org.eclipse.acceleo.query.tests.anydsl.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.eclipse.acceleo.query.tests.anydsl,
  org.eclipse.acceleo.query.tests.anydsl.impl,
  org.eclipse.acceleo.query.tests.anydsl.util,

@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.aql.tm;singleton:=true
 Bundle-Version: 4.2.1.qualifier
 Automatic-Module-Name: org.eclipse.acceleo.aql.tm
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.tm4e.languageconfiguration;bundle-version="0.3.3",
  org.eclipse.tm4e.core;bundle-version="0.3.4",
