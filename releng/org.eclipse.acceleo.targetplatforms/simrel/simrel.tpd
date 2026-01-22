@@ -1,0 +1,54 @@
+target "Acceleo Simrel Target Platform"
+
+include "../common/orbit.tpd"
+include "../common/license.tpd"
+
+with requirements
+
+location simrel "https://download.eclipse.org/releases/2026-03" {
+	org.eclipse.sdk.feature.group lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
+	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
+	
+	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.jdt.feature.group lazy
+	org.eclipse.pde.feature.group lazy
+	org.eclipse.uml2.feature.group lazy
+	
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius.specifier.feature.group lazy
+	org.eclipse.acceleo.query.feature.group [7.0.0,7.0.1)
+	
+	org.eclipse.jface lazy
+	org.eclipse.tm4e.core lazy
+	org.eclipse.tm4e.ui lazy
+	org.eclipse.tm4e.languageconfiguration lazy
+	
+	// CDO
+	org.eclipse.emf.cdo.sdk.feature.group lazy
+	org.eclipse.net4j.feature.group lazy
+
+	// LSP
+	org.eclipse.lsp4j lazy
+	org.eclipse.lsp4j.debug lazy
+	org.eclipse.lsp4j.jsonrpc lazy
+	org.eclipse.lsp4j.jsonrpc.debug lazy
+
+	org.eclipse.lsp4e lazy
+	org.eclipse.lsp4e.debug lazy
+	a.jre.javase lazy
+
+	org.eclipse.mylyn.wikitext.markdown lazy
+
+	// for maven test project
+	org.eclipse.m2e.feature.feature.group lazy
+}
+
+location "https://download.eclipse.org/rcptt/nightly/2.8.0/latest/repository/" {
+	org.eclipse.rcptt.platform.feature.group lazy
+	org.antlr.runtime lazy
+}

@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _-e8j8AiPEfC07LF6VSMd-w
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 9/5/25, 2:44 PM
+Runtime-Version: 2.8.0.202601191508
+Save-Time: 1/22/26, 2:10 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -26,6 +26,7 @@ with [get-window "Generation comparison"] {
 }
 get-view "Package Explorer" | get-tree | select "test/src\\/main\\/java/test/TestGenerator.java" | double-click
 get-editor "TestGenerator.java" | get-text-viewer | get-property text | equals "//Start of user code copyright\n"
+    + "//End of user code\n"
     + "package test;\n\n"
     + "//Start of user code imports\n\n"
     + "import java.io.File;\n\n"
@@ -504,7 +505,7 @@ get-editor "test/pom.xml" | get-text-viewer | get-property text
     + "        <dependency>\n"
     + "            <groupId>org.eclipse.acceleo</groupId>\n"
     + "            <artifactId>acceleo</artifactId>\n"
-    + "            <version>[4.1.1,5.0.0)</version>\n"
+    + "            <version>[4.2.1,5.0.0)</version>\n"
     + "        </dependency>\n"
     + "    </dependencies>\n\n\n"
     + "    <build>\n"
@@ -544,7 +545,7 @@ get-editor "test/pom.xml" | get-text-viewer | get-property text
     + "        <dependency>\n"
     + "            <groupId>org.eclipse.acceleo</groupId>\n"
     + "            <artifactId>acceleo</artifactId>\n"
-    + "            <version>[4.1.1,5.0.0)</version>\n"
+    + "            <version>[4.2.1,5.0.0)</version>\n"
     + "        </dependency>\n"
     + "    </dependencies>\n\n\n"
     + "    <build>\n"
@@ -584,7 +585,7 @@ get-editor "test/pom.xml" | get-text-viewer | get-property text
     + "        <dependency>\n"
     + "            <groupId>org.eclipse.acceleo</groupId>\n"
     + "            <artifactId>acceleo</artifactId>\n"
-    + "            <version>[4.1.1,5.0.0)</version>\n"
+    + "            <version>[4.2.1,5.0.0)</version>\n"
     + "        </dependency>\n"
     + "    </dependencies>\n\n\n"
     + "    <build>\n"
@@ -625,7 +626,7 @@ get-editor "test/pom.xml" | get-text-viewer | get-property text
     + "        <dependency>\n"
     + "            <groupId>org.eclipse.acceleo</groupId>\n"
     + "            <artifactId>acceleo</artifactId>\n"
-    + "            <version>[4.1.1,5.0.0)</version>\n"
+    + "            <version>[4.2.1,5.0.0)</version>\n"
     + "        </dependency>\n"
     + "    </dependencies>\n\n\n"
     + "    <build>\n"

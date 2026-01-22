@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _zVF3MAElEe6wCshv5RDL9g
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 6/2/23, 4:13 PM
+Runtime-Version: 2.8.0.202601191508
+Save-Time: 1/22/26, 12:54 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,7 +16,7 @@ Entry-Name: .content
 
 get-view "Package Explorer" | get-tree | select "test/src/test"
 get-view "Package Explorer" | get-tree | get-menu -path "New/Other..." | click -metaKeys ""
-with [get-window "Select a wizard"] {
+with [get-window "New"] {
     get-tree | select "Acceleo 4/Acceleo Module File"
     get-button "Next >" | click -metaKeys ""
     get-button "Add metamodels to the module definition" | click -metaKeys ""
