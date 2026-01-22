@@ -1,0 +1,20 @@
+qualified name evaluation::letStatement::reuseVariable::reuseVariable
+
+header position 0..64
+module reuseVariable
+  metamodel http://www.eclipse.org/emf/2002/Ecore (23..61)
+  [comment @main  (77..83) /] (68..85)
+  
+  public template myTemplate(myParam : EPackage (115..140))
+  @main
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (153..174) mode overwrite
+      [let 
+      myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (232..261) (198..261)
+      myOtherVariable : null = .toUpper(.aqlFeatureAccess(myVariable, 'name')) (281..306) (263..306)
+        [.aqlFeatureAccess(myVariable, 'name') (316..331)/] (newLineNeeded (315..335)
+        [myOtherVariable (342..357)/] (newLineNeeded (341..361) (307..365)
+      [/let] (193..371)
+       (newLineNeeded) (371..373) (187..375)
+    [/file] (146..382)
+     (newLineNeeded) (382..384) (142..384)
+  [/template] (87..395) (0..397)

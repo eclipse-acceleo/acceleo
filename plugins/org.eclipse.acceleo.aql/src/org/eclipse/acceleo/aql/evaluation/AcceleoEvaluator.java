@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Obeo.
+ * Copyright (c) 2016, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -696,13 +696,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String builder;
 
 		final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
+		pushVariables(variables);
 		for (Binding binding : letStatement.getVariables()) {
 			final String name = binding.getName();
 			final Object value = doSwitch(binding.getInitExpression());
 			variables.put(name, value);
 		}
 
-		pushVariables(variables);
 		final String lastLine = lastLineOfLastStatement;
 		pushIndentationContext(letStatement.getBody(), getIndentation());
 		try {
