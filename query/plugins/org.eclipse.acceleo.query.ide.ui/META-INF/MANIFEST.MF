@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.acceleo.query.ide.ui;singleton:=true
-Bundle-Version: 8.1.1.qualifier
+Bundle-Version: 8.1.1
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName

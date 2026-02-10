@@ -16,13 +16,13 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo.aql.launcher-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <relativePath>..</relativePath>
   </parent>
 
   <groupId>org.eclipse.acceleo.features</groupId>
   <artifactId>org.eclipse.acceleo.aql.launcher.sample</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>org.eclipse.acceleo.aql.launcher.sample-feature</name>
   <packaging>eclipse-feature</packaging>
 </project>

@@ -16,13 +16,13 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>4.2.1-SNAPSHOT</version>
+    <version>4.2.1</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.aql.update</artifactId>
   <packaging>eclipse-repository</packaging>
-  <version>4.2.1-SNAPSHOT</version>
+  <version>4.2.1</version>
 
   <build>
     <resources>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.acceleo.aql.launcher.sample.ide.ui
 Bundle-SymbolicName: org.eclipse.acceleo.aql.launcher.sample.ide.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.acceleo.aql.launcher.sample.ide.ui.Activator$Implementation
 Require-Bundle: org.eclipse.emf.ecore,
