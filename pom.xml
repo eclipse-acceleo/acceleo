@@ -19,7 +19,7 @@
 
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo-parent</artifactId>
-  <version>4.2.1</version>
+  <version>4.2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Acceleo Parent</name>
 
@@ -384,7 +384,7 @@
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
                   <artifactId>acceleo-2024-06</artifactId>
-                  <version>4.2.1</version>
+                  <version>4.2.2-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -428,7 +428,7 @@
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
                   <artifactId>acceleo-rcptt</artifactId>
-                  <version>4.2.1</version>
+                  <version>4.2.2-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -462,7 +462,7 @@
                 <artifact>
                   <groupId>org.eclipse.acceleo</groupId>
                   <artifactId>acceleo-simrel</artifactId>
-                  <version>4.2.1</version>
+                  <version>4.2.2-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
