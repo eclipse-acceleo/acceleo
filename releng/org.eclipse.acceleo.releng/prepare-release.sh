@@ -18,4 +18,7 @@ echo "done"
 echo -n "Removing .qualifier from feature.xml... "
 find . -name "feature.xml" -type f -exec sed -i 's/.qualifier//g' {} \;
 echo "done"
+echo -n "Removing .qualifier from *.product... "
+find . -name "*.product" -type f -exec sed -i 's/.qualifier//g' {} \;
+echo "done"
 
