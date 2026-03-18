@@ -1297,6 +1297,8 @@ This section was written to describe the behavior changes between the two versio
 
 There are two ways to launch the migration of your Acceleo 4 project. The first one is by installing the migration feature in your Acceleo 3 environment, the second one by using the migration tool in command line.
 
+The migration tool doesn't cover all migration cases and you will need to manually fix remaining problems. The tool will migrate modules and services Java classes. If will also copy other resources. If you have generated Java launcher and/or Eclipse UI plug-in launcher, you will need to <<java-launchers,generate>> them from Acceleo 4.
+
 ==== The migration from your Acceleo 3 environment
 
 First make a copy of your Acceleo 3 environment or create a new Acceleo 3 environment for the migration.
