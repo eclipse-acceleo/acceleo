@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -154,7 +154,7 @@ public class EclipseUIProjectGenerator extends AbstractGenerator {
 			final Module modelModule = loadModelModule(URI.createFileURI(moduleAbsolutePath),
 					modelModuleQualifiedName);
 			modelModules.add(modelModule);
-			final Set<String> modelNsURIs = AQLUtils.getAllNeededEPackages(resolver,
+			final Set<String> modelNsURIs = AQLUtils.getAllNeededEPackages(workspaceResolver,
 					modelModuleQualifiedName);
 			AQLUtils.registerEPackages(queryEnvironment, EPackage.Registry.INSTANCE, modelNsURIs);
 		}
