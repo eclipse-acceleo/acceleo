@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,8 +52,8 @@ public class JDTFormaterUtils {
 		final String res;
 
 		final Map<String, String> options;
-		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileURI
-				.path()));
+		final Path location = new Path(URI.decode(fileURI.devicePath()));
+		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
 		if (file != null) {
 			final IProject project = file.getProject();
 			if (project != null) {
@@ -76,8 +76,6 @@ public class JDTFormaterUtils {
 		final TextEdit edit = codeFormatter.format(CodeFormatter.K_COMPILATION_UNIT
 				| CodeFormatter.F_INCLUDE_COMMENTS, code, 0, code.length(), 0, lineSeparator);
 		if (edit != null) {
-			AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, JDTFormaterUtils.class,
-					"can't format code for: " + fileURI));
 			// apply the format edit
 			IDocument document = new Document(code);
 			try {

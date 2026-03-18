@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -186,7 +186,8 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 		for (Entry<URI, String> entry : preview.entrySet()) {
 			final URI uri = entry.getKey();
 			final String generatedContents = entry.getValue();
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(uri.path()));
+			final Path location = new Path(URI.decode(uri.devicePath()));
+			final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
 			IResource currentResource = file;
 			while (currentResource != null && !knownResources.contains(currentResource)) {
 				knownResources.add(currentResource);

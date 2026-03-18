@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020, 2025 Obeo. 
+ *  Copyright (c) 2020, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -279,8 +279,8 @@ public class QueryPlugin extends EMFPlugin {
 				res = QueryPlugin.getPlugin().createQualifiedNameResolver(classLoader, ePackageRegistry,
 						project, qualifierSeparator, forWorkspace);
 			} else if (uri.isFile()) {
-				final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(uri
-						.path()));
+				final Path location = new Path(URI.decode(uri.devicePath()));
+				final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
 				final IProject project = file.getProject();
 				res = QueryPlugin.getPlugin().createQualifiedNameResolver(classLoader, ePackageRegistry,
 						project, qualifierSeparator, forWorkspace);
