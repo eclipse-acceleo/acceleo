@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2020 Obeo. 
+ *  Copyright (c) 2018, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -38,21 +38,16 @@ public class FolderSelectionDialog extends AbstractResourceSelectionDialog {
 		super(parentShell, title, "Select a folder.", defaultResourceName, false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.aql.ide.ui.dialog.AbstractResourceSelectionDialog#findResource(java.lang.String)
-	 */
+	@Override
+	protected String getURILabel() {
+		return "Folder: ";
+	}
+
 	@Override
 	protected IResource findResource(String defaultResourceName) {
 		return ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(defaultResourceName));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.aql.ide.ui.dialog.AbstractResourceSelectionDialog#isValid(org.eclipse.core.resources.IResource)
-	 */
 	@Override
 	protected boolean isValid(IResource resource) {
 		return resource instanceof IContainer;

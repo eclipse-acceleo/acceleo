@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2020 Obeo. 
+ *  Copyright (c) 2018, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -224,8 +225,8 @@ public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 		fileComposite.setLayout(new GridLayout(2, false));
 		fileComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 
-		final Label templateURILabel = new Label(fileComposite, container.getStyle());
-		templateURILabel.setText("File: ");
+		final Label uriLabel = new Label(fileComposite, container.getStyle());
+		uriLabel.setText(getURILabel());
 
 		final Text res = new Text(fileComposite, SWT.BORDER);
 		res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -249,6 +250,15 @@ public abstract class AbstractResourceSelectionDialog extends MessageDialog {
 		});
 
 		return res;
+	}
+
+	/**
+	 * Gets the {@link URI} {@link Label} text.
+	 * 
+	 * @return the {@link URI} {@link Label} text
+	 */
+	protected String getURILabel() {
+		return "File: ";
 	}
 
 	public String getFileName() {
