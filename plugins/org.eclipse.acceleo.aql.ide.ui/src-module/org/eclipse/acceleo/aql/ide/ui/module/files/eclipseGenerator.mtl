@@ -96,10 +96,18 @@
     					.isEmpty()) {
     				final Path location = new Path(dialog.getFileName());
     				IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-    				if (location.segmentCount() == 1) {
-    					target = workspaceRoot.getProject(location.segment(0)).getLocation().toFile().getAbsolutePath();
+    				final IPath location;
+    				if (path.segmentCount() == 1) {
+    					location = workspaceRoot.getProject(path.segment(0)).getLocation();
     				} else {
-    					target = workspaceRoot.getFolder(location).getLocation().toFile().getAbsolutePath();
+    					location = workspaceRoot.getFolder(path).getLocation();
+    				}
+    				if (location != null) {
+    					target = location.toFile().getAbsolutePath();
+    				} else {
+    					Activator.getDefault().log(new Status(IStatus.ERROR, getClass(),
+    							"No location found for " + path + " (check if the project exists)."));
+    					target = null;
     				}
     			} else {
     				target = null;
