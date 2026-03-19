@@ -62,7 +62,7 @@
 [template public generateCommandMenu(module : acceleo::Module, projectUIName : String)]
   <command
         commandId="[projectUIName/].commands.[module.getCommandID()/]"
-        id="[projectUIName/].menus.[module.getCommandID()/]"
+        id="[projectUIName/].menus.[module.getCommandID()/].element"
         label="[module.getQualifiedName()/]">
      <visibleWhen
            checkEnabled="false">
@@ -80,7 +80,7 @@
   </command>
   <!--command
         commandId="[projectUIName/].commands.[module.getCommandID()/]"
-        id="[projectUIName/].menus.[module.getCommandID()/]"
+        id="[projectUIName/].menus.[module.getCommandID()/].file"
         label="[module.getQualifiedName()/]">
      <visibleWhen
            checkEnabled="false">
