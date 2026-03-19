@@ -1350,20 +1350,41 @@ The content of existing <a href="#protected-area">protected area</a> won&#8217;t
 <div class="ulist">
 <ul>
 <li>
-<p>only available if the project containing the main module file is a plug-in project</p>
+<p>Only available if the project containing the main module file is an Eclipse plug-in project</p>
 </li>
 <li>
-<p>It creates an Eclipse plugin projet next to your generator project</p>
+<p>Creates an Eclipse plug-in project alongside your generator project</p>
 </li>
 <li>
-<p>It extends the standalone class (the standalone main class will be generated)</p>
+<p>Extends the standalone class (the standalone main class is generated if needed)</p>
 </li>
 <li>
-<p>It contribute a menu to objects that can be passed to your main template</p>
+<p>Contributes a menu for objects that can be passed to your main template</p>
+</li>
+<li>
+<p>Also contributes a menu for files with the extension corresponding to the metamodel (this contribution is disabled by default, the corresponding code is commented in plugin.xml)</p>
 </li>
 </ul>
 </div>
 </li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The generated code is provided as a sample and must be manually adapted (for example, the menu names).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p><strong>Maven POM</strong> that will generate a pom file to launch the generation in standalone using the Java main class</p>
 <div class="ulist">
@@ -2694,7 +2715,7 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 <p>There are two ways to launch the migration of your Acceleo 4 project. The first one is by installing the migration feature in your Acceleo 3 environment, the second one by using the migration tool in command line.</p>
 </div>
 <div class="paragraph">
-<p>The migration tool doesn&#8217;t cover all migration cases and you will need to manually fix remaining problems. The tool will migrate modules and services Java classes. If will also copy other resources. If you have generated Java launcher and/or Eclipse UI plug-in launcher, you will need to <a href="#java-launchers">generate</a> them from Acceleo 4.</p>
+<p>The migration tool doesn&#8217;t cover all migration cases and you will need to manually fix remaining problems. The tool will migrate modules and services Java classes. It will also copy other resources. If you have generated Java launcher and/or Eclipse UI plug-in launcher, you will need to <a href="#java-launchers">generate</a> them from Acceleo 4.</p>
 </div>
 <div class="sect3">
 <h4 id="the-migration-from-your-acceleo-3-environment">8.1.1. The migration from your Acceleo 3 environment</h4>
@@ -3288,7 +3309,7 @@ Thus the migration tool translates each Set into an OrderedSet and each Bag into
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-18 17:10:24 +0100
+Last updated 2026-03-19 10:16:09 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
