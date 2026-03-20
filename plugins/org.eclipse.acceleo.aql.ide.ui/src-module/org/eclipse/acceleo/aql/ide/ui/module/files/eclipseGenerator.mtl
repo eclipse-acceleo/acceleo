@@ -39,6 +39,7 @@
       import org.eclipse.core.resources.IWorkspaceRoot;
       import org.eclipse.core.resources.ResourcesPlugin;
       import org.eclipse.core.runtime.CoreException;
+      import org.eclipse.core.runtime.IPath;
       import org.eclipse.core.runtime.IStatus;
       import org.eclipse.core.runtime.NullProgressMonitor;
       import org.eclipse.core.runtime.Path;
@@ -94,7 +95,7 @@
     			final int dialogResult = dialog.open();
     			if ((dialogResult == IDialogConstants.OK_ID) && dialog.getFileName() != null && !dialog.getFileName()
     					.isEmpty()) {
-    				final Path location = new Path(dialog.getFileName());
+    				final IPath path = new Path(dialog.getFileName());
     				IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
     				final IPath location;
     				if (path.segmentCount() == 1) {
