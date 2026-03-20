@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.aql.migration"
       label="%featureName"
-      version="4.2.2"
+      version="4.2.3.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2">
