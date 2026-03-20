@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -140,18 +140,23 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 
 	@Override
 	public String removeResource(P project, URI resource) {
-		final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
-		final String qualifiedName = resolver.getQualifiedName(resource);
-		// this resource has been resolved before
-		if (qualifiedName != null && resolver.getResolvedQualifiedNames().contains(qualifiedName)) {
-			final Object resolved = resolver.resolve(qualifiedName);
-			final Set<String> qualifiedNames = new LinkedHashSet<>();
-			qualifiedNames.add(qualifiedName);
-			if (needNewResolverOnChange(resolved)) {
-				qualifiedNames.addAll(resolver.getResolvedQualifiedNames());
-				replaceResolver(project, resolver);
+		final String qualifiedName;
+		if (project != null) {
+			final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
+			qualifiedName = resolver.getQualifiedName(resource);
+			// this resource has been resolved before
+			if (qualifiedName != null && resolver.getResolvedQualifiedNames().contains(qualifiedName)) {
+				final Object resolved = resolver.resolve(qualifiedName);
+				final Set<String> qualifiedNames = new LinkedHashSet<>();
+				qualifiedNames.add(qualifiedName);
+				if (needNewResolverOnChange(resolved)) {
+					qualifiedNames.addAll(resolver.getResolvedQualifiedNames());
+					replaceResolver(project, resolver);
+				}
+				propagateChanges(project, qualifiedNames);
 			}
-			propagateChanges(project, qualifiedNames);
+		} else {
+			qualifiedName = null;
 		}
 
 		return qualifiedName;
