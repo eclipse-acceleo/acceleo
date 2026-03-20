@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -236,9 +236,11 @@ public abstract class AbstractGenerator {
 				}
 				boolean foundInRequirement = false;
 				for (String requirement : requiredBundleString.split(",")) {
-					if (requirement.contains(dependencyBundleName)) {
-						foundInRequirement = true;
-						break;
+					for (String plugin : requirement.split(";")) {
+						if (plugin.trim().equals(dependencyBundleName)) {
+							foundInRequirement = true;
+							break;
+						}
 					}
 				}
 				if (!foundInRequirement) {
