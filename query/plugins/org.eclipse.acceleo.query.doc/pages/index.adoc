@@ -3055,7 +3055,7 @@ AQL is way smarter than MTL regarding to the types of your expressions. As a res
 AQL handles null (OclVoid) differently from ocl, a null value will not cause a failure but will be silently handled.
 For example, `null.oclIsKindOf(ecore::EClass)` would have returned true for MTL/OCL, forcing users to use `not self.oclIsUndefined() and self.oclIsKindOf(ecore::EClass)` instead. This is no longer true in AQL, where 'null' doesn't conform to any type, so `null.oclIsKindOf(ecore::EClass)` will return false. Note that it's still possible to 'cast' null in any given classifier. `null.oclAsType(ecore::EClass)` will not fail at runtime.
 
-Furthermore *oclIsUndefined() does not exist in AQL* and should be replaced by a `...  <> null` expression.
+Furthermore *oclIsUndefined() does not exist in AQL* and should be replaced by a `...  = null` expression. In MTL, expressions such as `anElement.getMyAttribute().oclIsUndefined() or anElement.getMyAttribute().oclIsInvalid()` are quite common. This kind of expression can be safely replaced by `anElement.getMyAttribute() = null`.
 
 == Migrating from Acceleo2 queries
 

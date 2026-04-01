@@ -7537,7 +7537,7 @@ receiver: 42
 For example, <code>null.oclIsKindOf(ecore::EClass)</code> would have returned true for MTL/OCL, forcing users to use <code>not self.oclIsUndefined() and self.oclIsKindOf(ecore::EClass)</code> instead. This is no longer true in AQL, where 'null' doesn&#8217;t conform to any type, so <code>null.oclIsKindOf(ecore::EClass)</code> will return false. Note that it&#8217;s still possible to 'cast' null in any given classifier. <code>null.oclAsType(ecore::EClass)</code> will not fail at runtime.</p>
 </div>
 <div class="paragraph">
-<p>Furthermore <strong>oclIsUndefined() does not exist in AQL</strong> and should be replaced by a <code>&#8230;&#8203;  &lt;&gt; null</code> expression.</p>
+<p>Furthermore <strong>oclIsUndefined() does not exist in AQL</strong> and should be replaced by a <code>&#8230;&#8203;  = null</code> expression. In MTL, expressions such as <code>anElement.getMyAttribute().oclIsUndefined() or anElement.getMyAttribute().oclIsInvalid()</code> are quite common. This kind of expression can be safely replaced by <code>anElement.getMyAttribute() = null</code>.</p>
 </div>
 </div>
 </div>
@@ -8105,7 +8105,7 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-20 17:26:56 +0100
+Last updated 2026-04-01 14:53:21 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

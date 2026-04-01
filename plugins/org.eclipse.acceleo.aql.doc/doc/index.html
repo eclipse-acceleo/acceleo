@@ -1537,7 +1537,7 @@ The content of existing <a href="#protected-area">protected area</a> won&#8217;t
 &lt;template documentation&gt;
 @param class &lt;documentation of the parameter&gt;
 /]
-[template public generate(class : ecore::EClass) post (self.trim())]
+[template public generate(class : ecore::EClass) post(self.trim())]
 [/template]</pre>
 </div>
 </div>
@@ -2120,7 +2120,7 @@ In order to keep template code indentation from interfering with the generated o
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="ebnf" class="language-ebnf hljs"><a href="#template-2">Template</a> =
 
-'[template ' <a href="#visibility">Visibility</a> <a href="#identifier">Identifier</a> '(' <a href="#parameter">Parameter</a>(',' <a href="#parameter">Parameter</a>)* ')' ('post (' <a href="#aql-expression">AQL Expression</a> ')')? ']'
+'[template ' <a href="#visibility">Visibility</a> <a href="#identifier">Identifier</a> '(' <a href="#parameter">Parameter</a>(',' <a href="#parameter">Parameter</a>)* ')' ('post(' <a href="#aql-expression">AQL Expression</a> ')')? ']'
 
 (<a href="#statement">Statement</a>)*
 
@@ -2864,7 +2864,7 @@ Then you can use the following menu on your Acceleo 3 projects:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[template public aTemplateName(...) post (trim())]</pre>
+<pre>[template public aTemplateName(...) post(trim())]</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2872,7 +2872,7 @@ Then you can use the following menu on your Acceleo 3 projects:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[template public aTemplateName(...) post (self.trim())]</pre>
+<pre>[template public aTemplateName(...) post(self.trim())]</pre>
 </div>
 </div>
 </div>
@@ -3309,7 +3309,7 @@ Thus the migration tool translates each Set into an OrderedSet and each Bag into
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-19 14:14:23 +0100
+Last updated 2026-04-01 12:17:00 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
