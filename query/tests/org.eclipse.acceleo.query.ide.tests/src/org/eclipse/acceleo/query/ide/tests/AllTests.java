@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Obeo.
+ * Copyright (c) 2015, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.ide.tests;
 
 import org.eclipse.acceleo.query.ide.tests.delegates.DelegatesRegistrationTests;
+import org.eclipse.acceleo.query.ide.tests.runtime.impl.namespace.OSGiQualifiedNameResolverTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -21,7 +22,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {AstEPackageTests.class, DelegatesRegistrationTests.class, BundleTests.class, })
+@SuiteClasses(value = {AstEPackageTests.class, DelegatesRegistrationTests.class, BundleTests.class,
+		OSGiQualifiedNameResolverTests.class, })
 public class AllTests {
 
 }

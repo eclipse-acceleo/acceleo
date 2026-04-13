@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,8 +55,8 @@ public abstract class AbstractLoader implements ILoader {
 		final String res;
 
 		if (resourceName.endsWith(DOT + fileExtension)) {
-			res = resourceName.replace(SLASH, qualifierSeparator).substring(0, resourceName.length()
-					- (fileExtension.length() + 1));
+			final String tmp = resourceName.replace(SLASH, qualifierSeparator);
+			res = tmp.substring(0, tmp.length() - (fileExtension.length() + 1));
 		} else {
 			res = null;
 		}

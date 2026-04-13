@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Obeo.
+ * Copyright (c) 2020, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,11 @@
 package org.eclipse.acceleo.query.ide.runtime.impl.namespace;
 
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.impl.namespace.CallStack;
 import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
@@ -34,7 +37,7 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 	/**
 	 * The mapping from a qualified name and its {@link BundleWiring}.
 	 */
-	private final Map<String, Bundle> qualifiedNameToBundleWiring = new HashMap<>();
+	private final Map<String, Bundle> qualifiedNameToBundle = new HashMap<>();
 
 	/**
 	 * The {@link Bundle}.
@@ -73,7 +76,7 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 		super.register(loader, qualifiedName, object);
 		final String resourceName = loader.resourceName(qualifiedName);
 		final Bundle resourceBundle = getBundle(bundle, resourceName);
-		qualifiedNameToBundleWiring.put(qualifiedName, resourceBundle);
+		qualifiedNameToBundle.put(qualifiedName, resourceBundle);
 	}
 
 	/**
@@ -125,8 +128,8 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 	@Override
 	protected ClassLoader getClassLoader() {
 		final String contextQualifiedName = getContextQualifiedName();
-		final BundleWiring contextBundleWiring = qualifiedNameToBundleWiring.getOrDefault(
-				contextQualifiedName, bundle).adapt(BundleWiring.class);
+		final BundleWiring contextBundleWiring = qualifiedNameToBundle.getOrDefault(contextQualifiedName,
+				bundle).adapt(BundleWiring.class);
 
 		return contextBundleWiring.getClassLoader();
 	}
@@ -152,4 +155,43 @@ public class OSGiQualifiedNameResolver extends ClassLoaderQualifiedNameResolver 
 
 		return res;
 	}
+
+	@Override
+	public Set<String> getAvailableQualifiedNames() {
+		final Set<String> res = new LinkedHashSet<>();
+
+		if (!loaders.isEmpty()) {
+			final Enumeration<URL> entries = bundle.findEntries("/", "*", true);
+			res.addAll(getQualifiedNamesForEntries(entries));
+		}
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Set} of qualified names for the given entries.
+	 * 
+	 * @param entries
+	 *            the entries
+	 * @return the {@link Set} of qualified names for the given entries
+	 */
+	private Set<String> getQualifiedNamesForEntries(Enumeration<URL> entries) {
+		final Set<String> res = new LinkedHashSet<>();
+
+		if (entries != null) {
+			while (entries.hasMoreElements()) {
+				final URL entry = entries.nextElement();
+				for (ILoader loader : loaders) {
+					final String resourceName = entry.getPath().substring(1);
+					final String qualifiedName = loader.qualifiedName(resourceName);
+					if (qualifiedName != null) {
+						res.add(qualifiedName);
+					}
+				}
+			}
+		}
+
+		return res;
+	}
+
 }
