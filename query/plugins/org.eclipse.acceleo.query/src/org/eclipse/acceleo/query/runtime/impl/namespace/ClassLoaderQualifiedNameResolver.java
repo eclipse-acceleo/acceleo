@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Obeo.
+ * Copyright (c) 2020, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	/**
 	 * The {@link List} of {@link ILoader}.
 	 */
-	private final List<ILoader> loaders = new ArrayList<ILoader>();
+	protected final List<ILoader> loaders = new ArrayList<ILoader>();
 
 	/**
 	 * Mapping from qualifiedName to its {@link Object}.
@@ -550,7 +550,7 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 				for (URL url : ((URLClassLoader)clsLoader).getURLs()) {
 					res.addAll(getQualifiedNamesFromURL(url));
 				}
-			} else {
+			} else if (clsLoader != null) {
 				final Enumeration<URL> rootResources = clsLoader.getResources("");
 				while (rootResources.hasMoreElements()) {
 					final URL url = rootResources.nextElement();
