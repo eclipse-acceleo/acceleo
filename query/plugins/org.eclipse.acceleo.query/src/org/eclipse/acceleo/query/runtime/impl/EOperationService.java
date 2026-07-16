@@ -233,11 +233,16 @@ public class EOperationService extends AbstractService<EOperation> {
 	public Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		final IType eClassifierType = new EClassifierType(queryEnvironment, getOrigin().getEType());
-		if (getOrigin().isMany()) {
-			result.add(new SequenceType(queryEnvironment, eClassifierType));
+		final EClassifier eType = getOrigin().getEType();
+		if (eType != null) {
+			final IType eClassifierType = new EClassifierType(queryEnvironment, eType);
+			if (getOrigin().isMany()) {
+				result.add(new SequenceType(queryEnvironment, eClassifierType));
+			} else {
+				result.add(eClassifierType);
+			}
 		} else {
-			result.add(eClassifierType);
+			result.add(new ClassType(queryEnvironment, void.class));
 		}
 
 		return result;
