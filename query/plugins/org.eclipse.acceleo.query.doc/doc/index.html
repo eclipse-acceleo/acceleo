@@ -455,21 +455,241 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#working-with-collections">3.2. Working with collections</a></li>
 <li><a href="#navigation-axes">3.3. Navigation axes</a></li>
 <li><a href="#conditions">3.4. Conditions</a></li>
-<li><a href="#walkthrough-using-an-uml-example">3.5. Walkthrough using an UML example</a></li>
+<li><a href="#walkthrough-using-an-uml-example">3.5. Walkthrough using an UML example</a>
+<ul class="sectlevel3">
+<li><a href="#econtainer">3.5.1. eContainer()</a></li>
+<li><a href="#econtents">3.5.2. eContents()</a></li>
+<li><a href="#select">3.5.3. select()</a></li>
+<li><a href="#eallcontents">3.5.4. eAllContents()</a></li>
+<li><a href="#einverse">3.5.5. eInverse()</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#language-reference">4. Language Reference</a>
 <ul class="sectlevel2">
-<li><a href="#services-available-for-all-types">4.1. Services available for all types</a></li>
-<li><a href="#services-available-for-booleans">4.2. Services available for Booleans</a></li>
-<li><a href="#services-available-for-collections">4.3. Services available for Collections</a></li>
-<li><a href="#services-available-for-comparables">4.4. Services available for Comparables</a></li>
-<li><a href="#services-available-for-eobjects">4.5. Services available for EObjects</a></li>
-<li><a href="#property-services">4.6. Property services</a></li>
-<li><a href="#services-available-for-resources-and-uris">4.7. Services available for Resources and URIs</a></li>
-<li><a href="#services-available-for-strings">4.8. Services available for Strings</a></li>
-<li><a href="#services-available-for-prompting-user-for-values-using-the-console">4.9. Services available for prompting user for values using the console.</a></li>
-<li><a href="#syntax-reference">4.10. Syntax Reference</a></li>
+<li><a href="#services-available-for-all-types">4.1. Services available for all types</a>
+<ul class="sectlevel3">
+<li><a href="#object-string-string">4.1.1. Object + String : String</a></li>
+<li><a href="#string-object-string">4.1.2. String + Object : String</a></li>
+<li><a href="#object-object-boolean">4.1.3. Object &lt;&gt; Object : Boolean</a></li>
+<li><a href="#object-object-boolean-2">4.1.4. Object = Object : Boolean</a></li>
+<li><a href="#object-oclastypeobject-object">4.1.5. Object.oclAsType(Object) : Object</a></li>
+<li><a href="#object-ocliskindofobject-boolean">4.1.6. Object.oclIsKindOf(Object) : Boolean</a></li>
+<li><a href="#object-oclistypeofobject-boolean">4.1.7. Object.oclIsTypeOf(Object) : Boolean</a></li>
+<li><a href="#object-tostring-string">4.1.8. Object.toString() : String</a></li>
+<li><a href="#object-trace-string">4.1.9. Object.trace() : String</a></li>
+</ul>
+</li>
+<li><a href="#services-available-for-booleans">4.2. Services available for Booleans</a>
+<ul class="sectlevel3">
+<li><a href="#boolean-andboolean-boolean">4.2.1. Boolean.and(Boolean) : Boolean</a></li>
+<li><a href="#boolean-impliesboolean-boolean">4.2.2. Boolean.implies(Boolean) : Boolean</a></li>
+<li><a href="#boolean-not-boolean">4.2.3. Boolean.not() : Boolean</a></li>
+<li><a href="#boolean-orboolean-boolean">4.2.4. Boolean.or(Boolean) : Boolean</a></li>
+<li><a href="#boolean-xorboolean-boolean">4.2.5. Boolean.xor(Boolean) : Boolean</a></li>
+</ul>
+</li>
+<li><a href="#services-available-for-collections">4.3. Services available for Collections</a>
+<ul class="sectlevel3">
+<li><a href="#sequence-collection-sequence">4.3.1. Sequence + Collection : Sequence</a></li>
+<li><a href="#orderedset-collection-orderedset">4.3.2. OrderedSet + Collection : OrderedSet</a></li>
+<li><a href="#collectionany-x-object">4.3.3. Collection&#8594;any( x | &#8230;&#8203; ) : Object</a></li>
+<li><a href="#sequenceappendobject-sequence">4.3.4. Sequence&#8594;append(Object) : Sequence</a></li>
+<li><a href="#orderedsetappendobject-orderedset">4.3.5. OrderedSet&#8594;append(Object) : OrderedSet</a></li>
+<li><a href="#collectionasorderedset-orderedset">4.3.6. Collection&#8594;asOrderedSet() : OrderedSet</a></li>
+<li><a href="#collectionassequence-sequence">4.3.7. Collection&#8594;asSequence() : Sequence</a></li>
+<li><a href="#collectionasset-orderedset">4.3.8. Collection&#8594;asSet() : OrderedSet</a></li>
+<li><a href="#sequenceatinteger-object">4.3.9. Sequence&#8594;at(Integer) : Object</a></li>
+<li><a href="#orderedsetatinteger-object">4.3.10. OrderedSet&#8594;at(Integer) : Object</a></li>
+<li><a href="#collectionclosure-x-orderedsetobject">4.3.11. Collection&#8594;closure( x | &#8230;&#8203; ) : OrderedSet{Object}</a></li>
+<li><a href="#sequencecollect-x-sequenceobject">4.3.12. Sequence&#8594;collect( x | &#8230;&#8203; ) : Sequence{Object}</a></li>
+<li><a href="#orderedsetcollect-x-orderedsetobject">4.3.13. OrderedSet&#8594;collect( x | &#8230;&#8203; ) : OrderedSet{Object}</a></li>
+<li><a href="#sequenceconcatcollection-sequence">4.3.14. Sequence&#8594;concat(Collection) : Sequence</a></li>
+<li><a href="#orderedsetconcatcollection-orderedset">4.3.15. OrderedSet&#8594;concat(Collection) : OrderedSet</a></li>
+<li><a href="#sequenceobjectcountobject-integer">4.3.16. Sequence{Object}&#8594;count(Object) : Integer</a></li>
+<li><a href="#orderedsetcountobject-integer">4.3.17. OrderedSet&#8594;count(Object) : Integer</a></li>
+<li><a href="#sequencedroprightinteger-sequence">4.3.18. Sequence&#8594;dropRight(Integer) : Sequence</a></li>
+<li><a href="#orderedsetdroprightinteger-orderedset">4.3.19. OrderedSet&#8594;dropRight(Integer) : OrderedSet</a></li>
+<li><a href="#sequencedropinteger-sequence">4.3.20. Sequence&#8594;drop(Integer) : Sequence</a></li>
+<li><a href="#orderedsetdropinteger-orderedset">4.3.21. OrderedSet&#8594;drop(Integer) : OrderedSet</a></li>
+<li><a href="#collectionendswithcollection-boolean">4.3.22. Collection&#8594;endsWith(Collection) : Boolean</a></li>
+<li><a href="#collectionexcludesallcollection-boolean">4.3.23. Collection&#8594;excludesAll(Collection) : Boolean</a></li>
+<li><a href="#collectionexcludesobject-boolean">4.3.24. Collection&#8594;excludes(Object) : Boolean</a></li>
+<li><a href="#sequenceexcludingobject-sequence">4.3.25. Sequence&#8594;excluding(Object) : Sequence</a></li>
+<li><a href="#orderedsetexcludingobject-orderedset">4.3.26. OrderedSet&#8594;excluding(Object) : OrderedSet</a></li>
+<li><a href="#collectionexists-x-boolean">4.3.27. Collection&#8594;exists( x | &#8230;&#8203; ) : Boolean</a></li>
+<li><a href="#sequencefilterclass-sequence">4.3.28. Sequence&#8594;filter(Class) : Sequence</a></li>
+<li><a href="#sequencefiltereclassifier-sequence">4.3.29. Sequence&#8594;filter(EClassifier) : Sequence</a></li>
+<li><a href="#sequencefilterorderedseteclassifier-sequence">4.3.30. Sequence&#8594;filter(OrderedSet{EClassifier}) : Sequence</a></li>
+<li><a href="#orderedsetfilterclass-orderedset">4.3.31. OrderedSet&#8594;filter(Class) : OrderedSet</a></li>
+<li><a href="#orderedsetfiltereclassifier-orderedset">4.3.32. OrderedSet&#8594;filter(EClassifier) : OrderedSet</a></li>
+<li><a href="#orderedsetfilterorderedseteclassifier-orderedset">4.3.33. OrderedSet&#8594;filter(OrderedSet{EClassifier}) : OrderedSet</a></li>
+<li><a href="#collectionfirst-object">4.3.34. Collection&#8594;first() : Object</a></li>
+<li><a href="#collectionforall-x-boolean">4.3.35. Collection&#8594;forAll( x | &#8230;&#8203; ) : Boolean</a></li>
+<li><a href="#collectionincludesallcollection-boolean">4.3.36. Collection&#8594;includesAll(Collection) : Boolean</a></li>
+<li><a href="#collectionincludesobject-boolean">4.3.37. Collection&#8594;includes(Object) : Boolean</a></li>
+<li><a href="#sequenceincludingobject-sequence">4.3.38. Sequence&#8594;including(Object) : Sequence</a></li>
+<li><a href="#orderedsetincludingobject-orderedset">4.3.39. OrderedSet&#8594;including(Object) : OrderedSet</a></li>
+<li><a href="#collectionindexofslicecollection-integer">4.3.40. Collection&#8594;indexOfSlice(Collection) : Integer</a></li>
+<li><a href="#sequenceindexofobject-integer">4.3.41. Sequence&#8594;indexOf(Object) : Integer</a></li>
+<li><a href="#orderedsetindexofobject-integer">4.3.42. OrderedSet&#8594;indexOf(Object) : Integer</a></li>
+<li><a href="#sequenceinsertatinteger-object-sequence">4.3.43. Sequence&#8594;insertAt(Integer, Object) : Sequence</a></li>
+<li><a href="#orderedsetinsertatinteger-object-orderedset">4.3.44. OrderedSet&#8594;insertAt(Integer, Object) : OrderedSet</a></li>
+<li><a href="#sequenceintersectioncollection-sequence">4.3.45. Sequence&#8594;intersection(Collection) : Sequence</a></li>
+<li><a href="#orderedsetintersectioncollection-orderedset">4.3.46. OrderedSet&#8594;intersection(Collection) : OrderedSet</a></li>
+<li><a href="#collectionisempty-boolean">4.3.47. Collection&#8594;isEmpty() : Boolean</a></li>
+<li><a href="#collectionisunique-x-boolean">4.3.48. Collection&#8594;isUnique( x | &#8230;&#8203; ) : Boolean</a></li>
+<li><a href="#collectionlastindexofslicecollection-integer">4.3.49. Collection&#8594;lastIndexOfSlice(Collection) : Integer</a></li>
+<li><a href="#sequencelastindexofobject-integer">4.3.50. Sequence&#8594;lastIndexOf(Object) : Integer</a></li>
+<li><a href="#orderedsetlastindexofobject-integer">4.3.51. OrderedSet&#8594;lastIndexOf(Object) : Integer</a></li>
+<li><a href="#sequencelast-object">4.3.52. Sequence&#8594;last() : Object</a></li>
+<li><a href="#orderedsetlast-object">4.3.53. OrderedSet&#8594;last() : Object</a></li>
+<li><a href="#collectionmax-number">4.3.54. Collection&#8594;max() : Number</a></li>
+<li><a href="#collectionmin-number">4.3.55. Collection&#8594;min() : Number</a></li>
+<li><a href="#collectionnotempty-boolean">4.3.56. Collection&#8594;notEmpty() : Boolean</a></li>
+<li><a href="#collectionone-x-boolean">4.3.57. Collection&#8594;one( x | &#8230;&#8203; ) : Boolean</a></li>
+<li><a href="#sequenceprependobject-sequence">4.3.58. Sequence&#8594;prepend(Object) : Sequence</a></li>
+<li><a href="#orderedsetprependobject-orderedset">4.3.59. OrderedSet&#8594;prepend(Object) : OrderedSet</a></li>
+<li><a href="#sequencereject-x-sequence">4.3.60. Sequence&#8594;reject( x | &#8230;&#8203; ) : Sequence</a></li>
+<li><a href="#orderedsetreject-x-orderedset">4.3.61. OrderedSet&#8594;reject( x | &#8230;&#8203; ) : OrderedSet</a></li>
+<li><a href="#sequencereverse-sequence">4.3.62. Sequence&#8594;reverse() : Sequence</a></li>
+<li><a href="#orderedsetreverse-orderedset">4.3.63. OrderedSet&#8594;reverse() : OrderedSet</a></li>
+<li><a href="#sequenceselect-x-sequence">4.3.64. Sequence&#8594;select( x | &#8230;&#8203; ) : Sequence</a></li>
+<li><a href="#orderedsetselect-x-orderedset">4.3.65. OrderedSet&#8594;select( x | &#8230;&#8203; ) : OrderedSet</a></li>
+<li><a href="#collectionsepobject-sequenceobject">4.3.66. Collection&#8594;sep(Object) : Sequence{Object}</a></li>
+<li><a href="#collectionsepobject-object-object-sequenceobject">4.3.67. Collection&#8594;sep(Object, Object, Object) : Sequence{Object}</a></li>
+<li><a href="#collectionsepobject-object-object-boolean-sequenceobject">4.3.68. Collection&#8594;sep(Object, Object, Object, boolean) : Sequence{Object}</a></li>
+<li><a href="#collectionsize-integer">4.3.69. Collection&#8594;size() : Integer</a></li>
+<li><a href="#sequencesortedby-x-sequence">4.3.70. Sequence&#8594;sortedBy( x | &#8230;&#8203; ) : Sequence</a></li>
+<li><a href="#orderedsetsortedby-x-orderedset">4.3.71. OrderedSet&#8594;sortedBy( x | &#8230;&#8203; ) : OrderedSet</a></li>
+<li><a href="#collectionstartswithcollection-boolean">4.3.72. Collection&#8594;startsWith(Collection) : Boolean</a></li>
+<li><a href="#orderedsetsuborderedsetinteger-integer-orderedset">4.3.73. OrderedSet&#8594;subOrderedSet(Integer, Integer) : OrderedSet</a></li>
+<li><a href="#sequencesubsequenceinteger-integer-sequence">4.3.74. Sequence&#8594;subSequence(Integer, Integer) : Sequence</a></li>
+<li><a href="#sequence-collection-sequence-2">4.3.75. Sequence - Collection : Sequence</a></li>
+<li><a href="#orderedset-collection-orderedset-2">4.3.76. OrderedSet - Collection : OrderedSet</a></li>
+<li><a href="#collectionsum-number">4.3.77. Collection&#8594;sum() : Number</a></li>
+<li><a href="#sequenceunionsequence-sequence">4.3.78. Sequence&#8594;union(Sequence) : Sequence</a></li>
+<li><a href="#orderedsetunionorderedset-orderedset">4.3.79. OrderedSet&#8594;union(OrderedSet) : OrderedSet</a></li>
+</ul>
+</li>
+<li><a href="#services-available-for-comparables">4.4. Services available for Comparables</a>
+<ul class="sectlevel3">
+<li><a href="#comparable-comparable-boolean">4.4.1. Comparable &gt;= Comparable : Boolean</a></li>
+<li><a href="#comparable-comparable-boolean-2">4.4.2. Comparable &gt; Comparable : Boolean</a></li>
+<li><a href="#comparable-comparable-boolean-3">4.4.3. Comparable &#8656; Comparable : Boolean</a></li>
+<li><a href="#comparable-comparable-boolean-4">4.4.4. Comparable &lt; Comparable : Boolean</a></li>
+</ul>
+</li>
+<li><a href="#services-available-for-eobjects">4.5. Services available for EObjects</a>
+<ul class="sectlevel3">
+<li><a href="#eclass-allinstances-sequenceeobject">4.5.1. EClass.allInstances() : Sequence{EObject}</a></li>
+<li><a href="#orderedseteclassallinstances-sequenceeobject">4.5.2. OrderedSet{EClass}&#8594;allInstances() : Sequence{EObject}</a></li>
+<li><a href="#eobject-eallcontents-sequenceeobject">4.5.3. EObject.eAllContents() : Sequence{EObject}</a></li>
+<li><a href="#eobject-eallcontentseclass-sequenceeobject">4.5.4. EObject.eAllContents(EClass) : Sequence{EObject}</a></li>
+<li><a href="#eobject-eallcontentsorderedseteclass-sequenceeobject">4.5.5. EObject.eAllContents(OrderedSet{EClass}) : Sequence{EObject}</a></li>
+<li><a href="#eobject-eclass-eclass">4.5.6. EObject.eClass() : EClass</a></li>
+<li><a href="#eobject-econtainerorselfeclass-eobject">4.5.7. EObject.eContainerOrSelf(EClass) : EObject</a></li>
+<li><a href="#eobject-econtainer-eobject">4.5.8. EObject.eContainer() : EObject</a></li>
+<li><a href="#eobject-econtainereclass-eobject">4.5.9. EObject.eContainer(EClass) : EObject</a></li>
+<li><a href="#eobject-econtainingfeature-estructuralfeature">4.5.10. EObject.eContainingFeature() : EStructuralFeature</a></li>
+<li><a href="#eobject-econtainmentfeature-ereference">4.5.11. EObject.eContainmentFeature() : EReference</a></li>
+<li><a href="#eobject-econtents-sequenceeobject">4.5.12. EObject.eContents() : Sequence{EObject}</a></li>
+<li><a href="#eobject-econtentseclass-sequenceeobject">4.5.13. EObject.eContents(EClass) : Sequence{EObject}</a></li>
+<li><a href="#eobject-econtentsorderedseteclass-sequenceeobject">4.5.14. EObject.eContents(OrderedSet{EClass}) : Sequence{EObject}</a></li>
+<li><a href="#eobject-ecrossreferences-object">4.5.15. EObject.eCrossReferences() : Object</a></li>
+<li><a href="#eobject-egetestructuralfeature-object">4.5.16. EObject.eGet(EStructuralFeature) : Object</a></li>
+<li><a href="#eobject-egetestructuralfeature-boolean-object">4.5.17. EObject.eGet(EStructuralFeature, boolean) : Object</a></li>
+<li><a href="#eobject-egetstring-object">4.5.18. EObject.eGet(String) : Object</a></li>
+<li><a href="#eobject-einverse-orderedseteobject">4.5.19. EObject.eInverse() : OrderedSet{EObject}</a></li>
+<li><a href="#eobject-einverseeclassifier-orderedseteobject">4.5.20. EObject.eInverse(EClassifier) : OrderedSet{EObject}</a></li>
+<li><a href="#eobject-einversestring-orderedseteobject">4.5.21. EObject.eInverse(String) : OrderedSet{EObject}</a></li>
+</ul>
+</li>
+<li><a href="#property-services">4.6. Property services</a>
+<ul class="sectlevel3">
+<li><a href="#string-getproperty-string">4.6.1. String.getProperty() : String</a></li>
+<li><a href="#string-getpropertysequenceobject-string">4.6.2. String.getProperty(Sequence{Object}) : String</a></li>
+</ul>
+</li>
+<li><a href="#services-available-for-resources-and-uris">4.7. Services available for Resources and URIs</a>
+<ul class="sectlevel3">
+<li><a href="#eobject-eresource-resource">4.7.1. EObject.eResource() : Resource</a></li>
+<li><a href="#uri-fileextension-string">4.7.2. URI.fileExtension() : String</a></li>
+<li><a href="#resource-getcontents-sequenceeobject">4.7.3. Resource.getContents() : Sequence{EObject}</a></li>
+<li><a href="#resource-getcontentseclass-sequenceeobject">4.7.4. Resource.getContents(EClass) : Sequence{EObject}</a></li>
+<li><a href="#resource-geteobjectstring-eobject">4.7.5. Resource.getEObject(String) : EObject</a></li>
+<li><a href="#eobject-geturifragment-string">4.7.6. EObject.getURIFragment() : String</a></li>
+<li><a href="#resource-geturi-uri">4.7.7. Resource.getURI() : URI</a></li>
+<li><a href="#uri-isplatformplugin-boolean">4.7.8. URI.isPlatformPlugin() : Boolean</a></li>
+<li><a href="#uri-isplatformresource-boolean">4.7.9. URI.isPlatformResource() : Boolean</a></li>
+<li><a href="#uri-lastsegment-string">4.7.10. URI.lastSegment() : String</a></li>
+</ul>
+</li>
+<li><a href="#services-available-for-strings">4.8. Services available for Strings</a>
+<ul class="sectlevel3">
+<li><a href="#string-string-string">4.8.1. String + String : String</a></li>
+<li><a href="#string-atinteger-string">4.8.2. String.at(Integer) : String</a></li>
+<li><a href="#string-characters-sequencestring">4.8.3. String.characters() : Sequence{String}</a></li>
+<li><a href="#string-concatstring-string">4.8.4. String.concat(String) : String</a></li>
+<li><a href="#string-containsstring-boolean">4.8.5. String.contains(String) : Boolean</a></li>
+<li><a href="#string-endswithstring-boolean">4.8.6. String.endsWith(String) : Boolean</a></li>
+<li><a href="#string-equalsignorecasestring-boolean">4.8.7. String.equalsIgnoreCase(String) : Boolean</a></li>
+<li><a href="#string-firstinteger-string">4.8.8. String.first(Integer) : String</a></li>
+<li><a href="#string-indexstring-integer">4.8.9. String.index(String) : Integer</a></li>
+<li><a href="#string-indexstring-integer-integer">4.8.10. String.index(String, Integer) : Integer</a></li>
+<li><a href="#string-isalphanum-boolean">4.8.11. String.isAlphaNum() : Boolean</a></li>
+<li><a href="#string-isalpha-boolean">4.8.12. String.isAlpha() : Boolean</a></li>
+<li><a href="#string-lastindexstring-integer">4.8.13. String.lastIndex(String) : Integer</a></li>
+<li><a href="#string-lastindexstring-integer-integer">4.8.14. String.lastIndex(String, Integer) : Integer</a></li>
+<li><a href="#string-lastinteger-string">4.8.15. String.last(Integer) : String</a></li>
+<li><a href="#object-lineseparator-string">4.8.16. Object.lineSeparator() : String</a></li>
+<li><a href="#string-matchesstring-boolean">4.8.17. String.matches(String) : Boolean</a></li>
+<li><a href="#string-prefixstring-string">4.8.18. String.prefix(String) : String</a></li>
+<li><a href="#string-removeemptylines-string">4.8.19. String.removeEmptyLines() : String</a></li>
+<li><a href="#string-removelineseparators-string">4.8.20. String.removeLineSeparators() : String</a></li>
+<li><a href="#string-replaceallstring-string-string">4.8.21. String.replaceAll(String, String) : String</a></li>
+<li><a href="#string-replacefirststring-string-string">4.8.22. String.replaceFirst(String, String) : String</a></li>
+<li><a href="#string-replacestring-string-string">4.8.23. String.replace(String, String) : String</a></li>
+<li><a href="#string-size-integer">4.8.24. String.size() : Integer</a></li>
+<li><a href="#string-startswithstring-boolean">4.8.25. String.startsWith(String) : Boolean</a></li>
+<li><a href="#string-strcmpstring-integer">4.8.26. String.strcmp(String) : Integer</a></li>
+<li><a href="#string-strstrstring-boolean">4.8.27. String.strstr(String) : Boolean</a></li>
+<li><a href="#string-substituteallstring-string-string">4.8.28. String.substituteAll(String, String) : String</a></li>
+<li><a href="#string-substitutefirststring-string-string">4.8.29. String.substituteFirst(String, String) : String</a></li>
+<li><a href="#string-substitutestring-string-string">4.8.30. String.substitute(String, String) : String</a></li>
+<li><a href="#string-substringinteger-string">4.8.31. String.substring(Integer) : String</a></li>
+<li><a href="#string-substringinteger-integer-string">4.8.32. String.substring(Integer, Integer) : String</a></li>
+<li><a href="#string-toboolean-boolean">4.8.33. String.toBoolean() : Boolean</a></li>
+<li><a href="#string-tointeger-integer">4.8.34. String.toInteger() : Integer</a></li>
+<li><a href="#string-tolowerfirst-string">4.8.35. String.toLowerFirst() : String</a></li>
+<li><a href="#string-tolower-string">4.8.36. String.toLower() : String</a></li>
+<li><a href="#string-toreal-double">4.8.37. String.toReal() : Double</a></li>
+<li><a href="#string-toupperfirst-string">4.8.38. String.toUpperFirst() : String</a></li>
+<li><a href="#string-toupper-string">4.8.39. String.toUpper() : String</a></li>
+<li><a href="#string-tokenize-sequencestring">4.8.40. String.tokenize() : Sequence{String}</a></li>
+<li><a href="#string-tokenizestring-sequencestring">4.8.41. String.tokenize(String) : Sequence{String}</a></li>
+<li><a href="#string-trim-string">4.8.42. String.trim() : String</a></li>
+</ul>
+</li>
+<li><a href="#services-available-for-prompting-user-for-values-using-the-console">4.9. Services available for prompting user for values using the console.</a>
+<ul class="sectlevel3">
+<li><a href="#string-promptdouble-double">4.9.1. String.promptDouble() : Double</a></li>
+<li><a href="#string-promptfloat-float">4.9.2. String.promptFloat() : Float</a></li>
+<li><a href="#string-promptinteger-integer">4.9.3. String.promptInteger() : Integer</a></li>
+<li><a href="#string-promptlong-long">4.9.4. String.promptLong() : Long</a></li>
+<li><a href="#string-promptstring-string">4.9.5. String.promptString() : String</a></li>
+</ul>
+</li>
+<li><a href="#syntax-reference">4.10. Syntax Reference</a>
+<ul class="sectlevel3">
+<li><a href="#references">4.10.1. References</a></li>
+<li><a href="#operators">4.10.2. Operators</a></li>
+<li><a href="#structures">4.10.3. Structures</a></li>
+<li><a href="#literals">4.10.4. Literals</a></li>
+<li><a href="#type-literals">4.10.5. Type literals</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#migrating-from-mtl-queries">5. Migrating from MTL queries</a>
@@ -7834,7 +8054,7 @@ The identifier fragments preceding (prefix) and following (remaining) the cursor
 <div class="sect2">
 <h3 id="services">8.4. Services</h3>
 <div class="paragraph">
-<p>In AQL everything is a service. Each segment of an expression is parsed as a <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src-gen/org/eclipse/acceleo/query/ast/Call.java">Call</a> and later resolved as an <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/IService.java">IService</a>.</p>
+<p>In AQL everything is a service. Each segment of an expression is parsed as a <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src-gen/org/eclipse/acceleo/query/ast/Call.java" target="_blank" rel="noopener">Call,</a> and later resolved as an <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/IService.java" target="_blank" rel="noopener">IService,</a>.</p>
 </div>
 <div class="paragraph">
 <p>AQL provides default implementations:</p>
@@ -7842,13 +8062,13 @@ The identifier fragments preceding (prefix) and following (remaining) the cursor
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodService.java">JavaMethodService</a> that takes a Java Method with at least one parameter as argument. The result of the previous part of the expression is passed as the first argument of the Java Method</p>
+<p><a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodService.java" target="_blank" rel="noopener">JavaMethodService,</a> that takes a Java Method with at least one parameter as argument. The result of the previous part of the expression is passed as the first argument of the Java Method</p>
 </li>
 <li>
-<p><a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodReceiverService.java">JavaMethodReceiverService</a> that takes a Java Method as parameter. The result of the previous part of the expression is used as the instance on which the Java Method will be called</p>
+<p><a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodReceiverService.java" target="_blank" rel="noopener">JavaMethodReceiverService,</a> that takes a Java Method as parameter. The result of the previous part of the expression is used as the instance on which the Java Method will be called</p>
 </li>
 <li>
-<p><a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/EOperationService.java">EOperationService</a> that takes an EOperation as parameter. The result of the previous part of the expression is used as the instance on which the EOperation will be called</p>
+<p><a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/EOperationService.java" target="_blank" rel="noopener">EOperationService,</a> that takes an EOperation as parameter. The result of the previous part of the expression is used as the instance on which the EOperation will be called</p>
 </li>
 </ul>
 </div>
@@ -7858,10 +8078,10 @@ The identifier fragments preceding (prefix) and following (remaining) the cursor
 <div class="ulist">
 <ul>
 <li>
-<p>Acceleo: <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/QueryService.java">QueryService</a>, <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/TemplateService.java">TemplateService</a></p>
+<p>Acceleo: <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/QueryService.java" target="_blank" rel="noopener">QueryService,</a>, <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/TemplateService.java" target="_blank" rel="noopener">TemplateService,</a></p>
 </li>
 <li>
-<p>M2Doc: <a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/M2DocTemplateService.java">M2DocTemplateService</a></p>
+<p>M2Doc: <a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/M2DocTemplateService.java" target="_blank" rel="noopener">M2DocTemplateService,</a></p>
 </li>
 </ul>
 </div>
@@ -7950,10 +8170,10 @@ The identifier fragments preceding (prefix) and following (remaining) the cursor
 </ul>
 </div>
 <div class="paragraph">
-<p>For more advanced services, you can also use lambdas as argument. In this case the service should take a collection as first argument and a <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/LambdaValue.java">LambdaValue</a> as the second argument. As an example, you can have a look at the implementation of the select <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/collection/SelectService.java">service</a> and Java <a href="https://github.com/eclipse-acceleo/acceleo/blob/8f4dbce6140045128a5c1384f1e60bac2dd95797/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/CollectionServices.java#L406">Method</a>.</p>
+<p>For more advanced services, you can also use lambdas as argument. In this case the service should take a collection as first argument and a <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/LambdaValue.java" target="_blank" rel="noopener">LambdaValue,</a> as the second argument. As an example, you can have a look at the implementation of the select <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/collection/SelectService.java" target="_blank" rel="noopener">service,</a> and Java <a href="https://github.com/eclipse-acceleo/acceleo/blob/8f4dbce6140045128a5c1384f1e60bac2dd95797/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/CollectionServices.java#L406" target="_blank" rel="noopener">Method,</a>.</p>
 </div>
 <div class="paragraph">
-<p>You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing an <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java">IServicesConfigurator</a>. It&#8217;s possible to use the following extension point to register your <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java">IServicesConfigurator</a>:</p>
+<p>You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing an <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java" target="_blank" rel="noopener">IServicesConfigurator,</a>. It&#8217;s possible to use the following extension point to register your <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java" target="_blank" rel="noopener">IServicesConfigurator,</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -8035,7 +8255,7 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 <div class="sect2">
 <h3 id="jface-viewer-configuration">8.9. JFace Viewer configuration</h3>
 <div class="paragraph">
-<p>You can easily integrate completion and syntax highlighting to your own JFace SourceViewer. You can use the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.ide.ui/src/org/eclipse/acceleo/query/ide/ui/viewer/AQLConfiguration.java">AQLConfiguration</a> class to configure your SourceViewer. A more complet example can be found in the tests.</p>
+<p>You can easily integrate completion and syntax highlighting to your own JFace SourceViewer. You can use the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.ide.ui/src/org/eclipse/acceleo/query/ide/ui/viewer/AQLConfiguration.java" target="_blank" rel="noopener">AQLConfiguration,</a> class to configure your SourceViewer. A more complet example can be found in the tests.</p>
 </div>
 </div>
 <div class="sect2">
@@ -8050,10 +8270,10 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 <div class="ulist">
 <ul>
 <li>
-<p>resolve qualified names to find services with the interface <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameResolver.java">IQualifiedNameResolver</a>. This interface is responsible for mainly two things decide where services can be loaded like a class path in Java and what can be loaded using implementations of the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java">ILoader</a> interface. It can then be used with an implementation of <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameQueryEnvironment.java">IQualifiedNameQueryEnvironment</a> that can be used as the query environment in the above examples.</p>
+<p>resolve qualified names to find services with the interface <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameResolver.java" target="_blank" rel="noopener">IQualifiedNameResolver,</a>. This interface is responsible for mainly two things decide where services can be loaded like a class path in Java and what can be loaded using implementations of the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java" target="_blank" rel="noopener">ILoader,</a> interface. It can then be used with an implementation of <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameQueryEnvironment.java" target="_blank" rel="noopener">IQualifiedNameQueryEnvironment,</a> that can be used as the query environment in the above examples.</p>
 </li>
 <li>
-<p>import and/or extends qualified names to reuse or override services. This is done with the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java">ILoader</a>.</p>
+<p>import and/or extends qualified names to reuse or override services. This is done with the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java" target="_blank" rel="noopener">ILoader,</a>.</p>
 </li>
 </ul>
 </div>
@@ -8063,10 +8283,10 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 <div class="ulist">
 <ul>
 <li>
-<p>react to changes in the workspace, the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java">IQueryWorkspace</a> will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/&#8230;&#8203; resources).</p>
+<p>react to changes in the workspace, the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java" target="_blank" rel="noopener">IQueryWorkspace,</a> will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/&#8230;&#8203; resources).</p>
 </li>
 <li>
-<p>all the above (resolve/import/extends qualified names) with the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java">IQueryWorkspaceQualifiedNameResolver</a>.</p>
+<p>all the above (resolve/import/extends qualified names) with the <a href="https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java" target="_blank" rel="noopener">IQueryWorkspaceQualifiedNameResolver,</a>.</p>
 </li>
 </ul>
 </div>
@@ -8097,7 +8317,7 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 </div>
 </div>
 <div class="paragraph">
-<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.query.maven.tests">test project</a> can be used as an example.</p>
+<p>The following <a href="https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.query.maven.tests" target="_blank" rel="noopener">test project,</a> can be used as an example.</p>
 </div>
 </div>
 </div>
@@ -8105,7 +8325,7 @@ List&lt;ICompletionProposal&gt; proposals = completionResult.getProposals(new Ba
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-04-01 14:53:21 +0200
+Last updated 2026-09-17 10:53:24 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
