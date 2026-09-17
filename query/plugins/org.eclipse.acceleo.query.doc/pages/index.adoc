@@ -3219,18 +3219,18 @@ By default the EClass is mapped to Map.Entry which is not an EObject. This preve
 
 === Services
 
-In AQL everything is a service. Each segment of an expression is parsed as a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src-gen/org/eclipse/acceleo/query/ast/Call.java[Call] and later resolved as an link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/IService.java[IService].
+In AQL everything is a service. Each segment of an expression is parsed as a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src-gen/org/eclipse/acceleo/query/ast/Call.java[Call,^] and later resolved as an link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/IService.java[IService,^].
 
 AQL provides default implementations:
 
-* link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodService.java[JavaMethodService] that takes a Java Method with at least one parameter as argument. The result of the previous part of the expression is passed as the first argument of the Java Method
-* link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodReceiverService.java[JavaMethodReceiverService] that takes a Java Method as parameter. The result of the previous part of the expression is used as the instance on which the Java Method will be called
-* link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/EOperationService.java[EOperationService] that takes an EOperation as parameter. The result of the previous part of the expression is used as the instance on which the EOperation will be called
+* link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodService.java[JavaMethodService,^] that takes a Java Method with at least one parameter as argument. The result of the previous part of the expression is passed as the first argument of the Java Method
+* link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/JavaMethodReceiverService.java[JavaMethodReceiverService,^] that takes a Java Method as parameter. The result of the previous part of the expression is used as the instance on which the Java Method will be called
+* link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/EOperationService.java[EOperationService,^] that takes an EOperation as parameter. The result of the previous part of the expression is used as the instance on which the EOperation will be called
 
 Other tools provides their own implementations to be able to call structures of their languages in AQL expressions:
 
-* Acceleo: link:https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/QueryService.java[QueryService], link:https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/TemplateService.java[TemplateService]
-* M2Doc: link:https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/M2DocTemplateService.java[M2DocTemplateService]
+* Acceleo: link:https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/QueryService.java[QueryService,^], link:https://github.com/eclipse-acceleo/acceleo/blob/master/plugins/org.eclipse.acceleo.aql/src/org/eclipse/acceleo/aql/evaluation/TemplateService.java[TemplateService,^]
+* M2Doc: link:https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/M2DocTemplateService.java[M2DocTemplateService,^]
 
 Services are responsible for:
 
@@ -3260,9 +3260,9 @@ Since everything is a service feature access and operators are also services. Th
 ** xor (exclusive or): service name 'xor' two parameters, one for each operand
 ** implies: service name 'implies' two parameters, one for each operand
 
-For more advanced services, you can also use lambdas as argument. In this case the service should take a collection as first argument and a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/LambdaValue.java[LambdaValue] as the second argument. As an example, you can have a look at the implementation of the select link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/collection/SelectService.java[service] and Java link:https://github.com/eclipse-acceleo/acceleo/blob/8f4dbce6140045128a5c1384f1e60bac2dd95797/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/CollectionServices.java#L406[Method].
+For more advanced services, you can also use lambdas as argument. In this case the service should take a collection as first argument and a link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/impl/LambdaValue.java[LambdaValue,^] as the second argument. As an example, you can have a look at the implementation of the select link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/collection/SelectService.java[service,^] and Java link:https://github.com/eclipse-acceleo/acceleo/blob/8f4dbce6140045128a5c1384f1e60bac2dd95797/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/CollectionServices.java#L406[Method,^].
 
-You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing an link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]. It's possible to use the following extension point to register your link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator]:
+You might need to initialize your services Java Class with some context. One way could be to pass an instance when you initialize your IQueryEnvironment. The other way is by implementing an link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator,^]. It's possible to use the following extension point to register your link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/services/configurator/IServicesConfigurator.java[IServicesConfigurator,^]:
 
 [source,xml]
 ----
@@ -3337,19 +3337,19 @@ Here 5 is the offset where the completion should be computed in the given expres
 
 === JFace Viewer configuration
 
-You can easily integrate completion and syntax highlighting to your own JFace SourceViewer. You can use the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.ide.ui/src/org/eclipse/acceleo/query/ide/ui/viewer/AQLConfiguration.java[AQLConfiguration] class to configure your SourceViewer. A more complet example can be found in the tests.
+You can easily integrate completion and syntax highlighting to your own JFace SourceViewer. You can use the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.ide.ui/src/org/eclipse/acceleo/query/ide/ui/viewer/AQLConfiguration.java[AQLConfiguration,^] class to configure your SourceViewer. A more complet example can be found in the tests.
 
 === Integrating in other languages
 
 You can integrate AQL to your own language. AQL provides some generic classes and interfaces to help you with the following topics:
 
 * Runtime:
-** resolve qualified names to find services with the interface link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameResolver.java[IQualifiedNameResolver]. This interface is responsible for mainly two things decide where services can be loaded like a class path in Java and what can be loaded using implementations of the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader] interface. It can then be used with an implementation of link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameQueryEnvironment.java[IQualifiedNameQueryEnvironment] that can be used as the query environment in the above examples.
-** import and/or extends qualified names to reuse or override services. This is done with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader].
+** resolve qualified names to find services with the interface link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameResolver.java[IQualifiedNameResolver,^]. This interface is responsible for mainly two things decide where services can be loaded like a class path in Java and what can be loaded using implementations of the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader,^] interface. It can then be used with an implementation of link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/IQualifiedNameQueryEnvironment.java[IQualifiedNameQueryEnvironment,^] that can be used as the query environment in the above examples.
+** import and/or extends qualified names to reuse or override services. This is done with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/ILoader.java[ILoader,^].
 
 * Development environment (workspace): In this context the resolution should be divided if you work with projects where each project is responsible for the resolution of its own resources. That will prevent loading multiple times the same resource.
-** react to changes in the workspace, the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java[IQueryWorkspace] will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/... resources).
-** all the above (resolve/import/extends qualified names) with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java[IQueryWorkspaceQualifiedNameResolver].
+** react to changes in the workspace, the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspace.java[IQueryWorkspace,^] will represent the workspace and is mainly responsible to define projects and to be notified from outside changes (file edition, removing/moving/... resources).
+** all the above (resolve/import/extends qualified names) with the link:https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query/src/org/eclipse/acceleo/query/runtime/namespace/workspace/IQueryWorkspaceQualifiedNameResolver.java[IQueryWorkspaceQualifiedNameResolver,^].
 
 === Maven
 
@@ -3373,5 +3373,5 @@ You can use AQL in your maven project with the following repository and dependen
 
 ----
 
-The following link:https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.query.maven.tests[test project] can be used as an example.
+The following link:https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.query.maven.tests[test project,^] can be used as an example.
 

@@ -104,7 +104,7 @@ The console title should change to `<terminated> generate.mtl[Acceleo4]`.
 The last line in the console should be the generation summary `Files: 1, Lost Files: 0, Errors: 0, Warnings: 0, Infos: 0`.
 ====
 
-If you want to get a bit further, you can have a look at the <<launching_an-acceleo_generation,Launching an Acceleo generation>> section. If you prefere to practice by yourself you can try the https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[Maven tutorial] it covers basic template writing and best practices for Acceleo.
+If you want to get a bit further, you can have a look at the <<launching_an-acceleo_generation,Launching an Acceleo generation>> section. If you prefere to practice by yourself you can try the https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[Maven tutorial,^] it covers basic template writing and best practices for Acceleo.
 
 == The Acceleo Tooling
 
@@ -394,7 +394,7 @@ The generated code is provided as a sample and must be manually adapted (for exa
 
 image::images/LauncherGenerators.png[Launcher Generators]
 
-All the code above is generated using Acceleo 4. You can extend and override the content of the generated files like you would with any Acceleo 4 generator. The source code is in this https://github.com/eclipse-acceleo/acceleo/tree/master/plugins/org.eclipse.acceleo.aql.ide.ui/src-module/[source folder].
+All the code above is generated using Acceleo 4. You can extend and override the content of the generated files like you would with any Acceleo 4 generator. The source code is in this https://github.com/eclipse-acceleo/acceleo/tree/master/plugins/org.eclipse.acceleo.aql.ide.ui/src-module/[source folder,^].
 
 == The Acceleo Language
 
@@ -996,11 +996,11 @@ This is any other text outside of '[' and ']'. Please see the <<white_spaces,Whi
 
 This is an Acceleo Query Language expression. It is used to navigate through models and call services. In the context of Acceleo, <<template-2,Template>> and <<query-2,Query>> can be called as services.
 
-See the https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc[AQL documentation] for more details about the language itself, the full list of standard services, and the differences with Acceleo/MTL.
+See the https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc[AQL documentation,^] for more details about the language itself, the full list of standard services, and the differences with Acceleo/MTL.
 
 ==== AQL Type Literal
 
-This is a type literal as defined in the https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#type-literals[Acceleo Query Language].
+This is a type literal as defined in the https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#type-literals[Acceleo Query Language,^].
 
 ==== Query
 
@@ -1073,7 +1073,7 @@ The last line in the console should be the generation summary `Files: 2, Lost Fi
 
 === Maven/Tycho
 
-A sample project is provided to illustrate how an Acceleo generator can be used inside of Eclipse and also in standalone (outside of Eclipse). Note that you can also use Acceleo in a pure standalone environment and without the need of a plug-in project. The source code can be found https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher[here]. All build and generation steps are in different Maven profile in the parent pom file for the purpose of the demonstration, but you can split them in different pom files and build projects if needed.
+A sample project is provided to illustrate how an Acceleo generator can be used inside of Eclipse and also in standalone (outside of Eclipse). Note that you can also use Acceleo in a pure standalone environment and without the need of a plug-in project. The source code can be found https://github.com/eclipse-acceleo/acceleo/tree/master/examples/MavenLauncher[here,^]. All build and generation steps are in different Maven profile in the parent pom file for the purpose of the demonstration, but you can split them in different pom files and build projects if needed.
 
 This example includes:
 
@@ -1173,7 +1173,7 @@ mvn clean exec:java -Pgenerate-maven-main-class
 
 === Maven
 
-You can launch a generation in full Maven if needed. It is covered in the previous section, but if you want a pure Maven example you can have a look at this [folder]. The Maven example also comes with a https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[tutorial] that explain the project structure.
+You can launch a generation in full Maven if needed. It is covered in the previous section, but if you want a pure Maven example you can have a look at this [folder]. The Maven example also comes with a https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[tutorial,^] that explain the project structure.
 
 == Using Acceleo 4 programmatically
 
@@ -1253,7 +1253,7 @@ AcceleoUtil.generate(evaluator, queryEnvironment, mainModule, resource, strategy
 
 === Unit test module
 
-You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class https://github.com/eclipse-acceleo/acceleo/blob/master/tests/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java[FileStatementTests] and the corresponding https://github.com/eclipse-acceleo/acceleo/tree/master/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement[folder].
+You can unit test your modules using the same JUnit test suite we are using for the development of Acceleo 4. You will simply need to create a class extending the class org.eclipse.acceleo.tests.utils.AbstractEvaluationTestSuite and create a folder with you test folders. Those folders need to respect a naming convention. You can find a working example with the class https://github.com/eclipse-acceleo/acceleo/blob/master/tests/org.eclipse.acceleo.aql.tests/src/org/eclipse/acceleo/tests/evaluation/FileStatementTests.java[FileStatementTests,^] and the corresponding https://github.com/eclipse-acceleo/acceleo/tree/master/tests/org.eclipse.acceleo.aql.tests/resources/evaluation/fileStatement[folder,^].
 
 === Maven
 
@@ -1294,7 +1294,7 @@ If you use the source folder for your template make sure you include them as res
 </project>
 ----
 
-The following https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests[test project] can be used as a simple example. For a more complete example with a custom metamodel you can check the https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[textual game tutorial].
+The following https://github.com/eclipse-acceleo/acceleo/tree/master/tests/maven/org.eclipse.acceleo.aql.maven.tests[test project,^] can be used as a simple example. For a more complete example with a custom metamodel you can check the https://github.com/eclipse-acceleo/acceleo/blob/master/examples/maven-textual-game/tutorial.adoc[textual game tutorial,^].
 
 == Migrate Acceleo 3 templates to Acceleo 4
 
@@ -1581,7 +1581,7 @@ Acceleo 3/OCL : The value of `self` is defined by the current Acceleo scope and 
 
 Acceleo 4/AQL : The migration tool makes the variable explicit, using the parent context
 
-You can have a look at the MTL to AQL https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#migrating-from-mtl-queries[migration guide].
+You can have a look at the MTL to AQL https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#migrating-from-mtl-queries[migration guide,^].
 
 ==== Module Element Call
 
@@ -1627,7 +1627,7 @@ Acceleo 4 only accepts qualified types for the classifiers and the above becomes
 
 ==== Expressions
 
-Acceleo 3 was using OCL as the underlying expression language, while Acceleo 4 is using AQL. Please look at the https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#migrating-from-mtl-queries[AQL Documentation] for more information on migrating OCL expressions to AQL.
+Acceleo 3 was using OCL as the underlying expression language, while Acceleo 4 is using AQL. Please look at the https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#migrating-from-mtl-queries[AQL Documentation,^] for more information on migrating OCL expressions to AQL.
 
 ==== Set and Bags
 
