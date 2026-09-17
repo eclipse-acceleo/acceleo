@@ -1,7 +1,7 @@
 = Acceleo Query Language
 Query and navigate in EMF models
 :toc:
-:toclevels: 2
+:toclevels: 3
 :toc-title: Table of Content
 :sectnums:
 :icons: font
