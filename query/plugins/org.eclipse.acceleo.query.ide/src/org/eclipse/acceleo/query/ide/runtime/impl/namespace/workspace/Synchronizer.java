@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.ide.runtime.namespace.workspace.IWorkspaceResolverProvider;
-import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryProject;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspace;
 import org.eclipse.acceleo.query.runtime.namespace.workspace.IQueryWorkspaceQualifiedNameResolver;
@@ -41,6 +40,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * Synchronizer that scan the initial state of the {@link IWorkspace} and listen to its changes.
@@ -68,9 +68,8 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			final IProject project = resource.getProject();
 			if (project == null || project.isOpen()) {
 				res = shouldInitializationSynchronize(project);
-				if (resource.getType() == IResource.FILE && extensions.contains(resource
-						.getFileExtension())) {
-					if (JavaLoader.CLASS.equals(resource.getFileExtension())) {
+				if (isFileOfInterest(resource)) {
+					if (canBeEPackageClass(resource)) {
 						// we register Java classes first to get a chance to register any EPackages generated
 						// in the workspace
 						resourcesToInitialize.add(0, resource);
@@ -85,6 +84,31 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			}
 
 			return res;
+		}
+
+		/**
+		 * Tells if the given {@link IResource} is of interest.
+		 * 
+		 * @param resource
+		 *            the {@link IResource} to check
+		 * @return <code>true</code> if the given {@link IResource} is of interest, <code>false</code>
+		 *         otherwise
+		 */
+		private boolean isFileOfInterest(IResource resource) {
+			return resource.getType() == IResource.FILE && (extensions.contains(resource.getFileExtension())
+					|| canBeEPackageClass(resource));
+		}
+
+		/**
+		 * Tells if the given {@link IResource} can be a {@link Class} implementing and {@link EPackage}.
+		 * 
+		 * @param resource
+		 *            the {@link IResource} to check
+		 * @return <code>true</code> if the given {@link IResource} can be a {@link Class} implementing and
+		 *         {@link EPackage}, <code>false</code> otherwise
+		 */
+		private boolean canBeEPackageClass(IResource resource) {
+			return resource.getName().endsWith("Package.class");
 		}
 
 		/**
@@ -228,8 +252,7 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			if (resource.getType() == IResource.PROJECT) {
 				IProject workspaceProject = (IProject)resource;
 				visitProjectDelta(delta, workspaceProject);
-			} else if (resource.getType() == IResource.FILE && extensions.contains(resource
-					.getFileExtension())) {
+			} else if (resource.getType() == IResource.FILE) {
 				final IFile file = (IFile)resource;
 				visitFileDelta(delta, file);
 			}
@@ -356,7 +379,7 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			synchronized(this) {
 				getOrCreateProject(queryWorkspace, eclipseProject);
 			}
-		} else if (resource.getType() == IResource.FILE && extensions.contains(resource.getFileExtension())) {
+		} else if (resource.getType() == IResource.FILE) {
 			final IFile file = (IFile)resource;
 			final URI uri = file.getLocationURI();
 			synchronized(this) {
