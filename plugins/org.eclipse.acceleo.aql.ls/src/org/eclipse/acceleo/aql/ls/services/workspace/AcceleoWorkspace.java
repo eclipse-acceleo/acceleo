@@ -81,7 +81,7 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	}
 
 	@Override
-	public synchronized String addResource(AcceleoProject project, URI resource) {
+	public String addResource(AcceleoProject project, URI resource) {
 		final IQueryWorkspaceQualifiedNameResolver resolver = getResolver(project);
 		final String qualifiedName = resolver.getQualifiedName(resource);
 		if (qualifiedName != null) {
