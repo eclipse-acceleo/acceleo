@@ -206,7 +206,7 @@ public class StringServices {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"regex\" is null.")
 		},
 		examples = {
-			@Example(expression = "'Hello'.matches('*llo')", result = "true")
+			@Example(expression = "'Hello'.matches('.*llo')", result = "true")
 		}
 	)
 	// @formatter:on

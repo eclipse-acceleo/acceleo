@@ -2444,7 +2444,7 @@ Parameters:
 
 |===
 | *Expression* | *Result*
-| `'Hello'.matches('*llo')` | `true`
+| `'Hello'.matches('.*llo')` | `true`
 |===
 
 
