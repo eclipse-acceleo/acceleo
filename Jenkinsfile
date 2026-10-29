@@ -10,12 +10,12 @@ pipeline {
 	
 	tools {
 		maven 'apache-maven-latest'
-		jdk 'temurin-jdk17-latest'
+		jdk 'temurin-jdk25-latest'
 	}
 	
 	environment {
 		// Target platforms and profiles to build against (must correspond to a profile in the parent pom.xml)
-		PROFILES = 'platform-2024-06,updatesite'
+		PROFILES = 'platform-2026-09,updatesite'
 	}
 	
 	stages {
@@ -32,7 +32,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M` -Psign"
+					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M` -Psign -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 					sh "mvn clean verify -f tests/maven/pom.xml"
 				}
@@ -55,7 +55,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M` -Psign"
+					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M` -Psign -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 					sh "mvn clean verify -f tests/maven/pom.xml"
 				}
@@ -73,7 +73,7 @@ pipeline {
 			}
 			steps {
 				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M`"
+					sh "mvn clean deploy -P$PROFILES -DbuildQualifier=`date +%Y%m%d%H%M` -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0"
 					sh "mvn clean deploy -f releng/maven/pom.xml"
 					sh "mvn clean verify -f tests/maven/pom.xml"
 				}

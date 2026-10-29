@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Obeo.
+ * Copyright (c) 2020, 2026 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -963,7 +963,7 @@ public class AcceleoTextDocument {
 			final VersionedTextDocumentIdentifier version = new VersionedTextDocumentIdentifier(replacement
 					.getURI().toString(), null);
 			final TextDocumentEdit textDocumentEdit = new TextDocumentEdit(version, new ArrayList<>());
-			textDocumentEdit.getEdits().add(textEdit);
+			textDocumentEdit.getEdits().add(Either.forLeft(textEdit));
 			documentChanges.add(Either.forLeft(textDocumentEdit));
 		}
 

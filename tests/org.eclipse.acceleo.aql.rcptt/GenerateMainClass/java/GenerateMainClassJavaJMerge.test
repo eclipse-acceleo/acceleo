@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _1CoCMAr6EfCsX_XF2qbZag
 Runtime-Version: 2.8.0.202601191508
-Save-Time: 3/19/26, 2:42 PM
+Save-Time: 11/3/26, 5:44 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -28,7 +28,7 @@ get-label "Left: 1 : 1, Right: 1 : 1, no diff" | get-property caption | equals "
 get-view "Package Explorer" | click
 get-editor "Compare ('test/src/test/TestGenerator.java' - 'test/src/test/TestGenerator.java-expected.txt')" | close
 get-view "Package Explorer" | get-tree | select "test/src/test/TestGenerator.java" 
-    | select "test/src/test/TestGenerator.java" | get-menu -path "Open With/Text Editor" | click -metaKeys ""
+    | select "test/src/test/TestGenerator.java" | get-menu -path "Open With/Plain Text Editor" | click -metaKeys ""
 
 with [get-editor "TestGenerator.java" | get-text-viewer] {
     select-range 92 17 92 18

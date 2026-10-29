@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _AabUMBxPEfC6RpeNKUAxlw
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 4/24/25, 10:46 AM
+Runtime-Version: 2.8.0.202601191508
+Save-Time: 10/29/26, 5:03 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -57,7 +57,7 @@ with [get-window -class WizardDialog] {
     with [get-window "Generation comparison"] {
         get-tree | select "test/pom.xml" | double-click
         get-button "Next Difference" | click -metaKeys ""
-        get-button "Copy Current Change from Left to Right" | click -metaKeys ""
+        get-button "Copy Current Change from Right to Left" | click -metaKeys ""
         get-button Commit | click -metaKeys ""
     }
 }
@@ -153,7 +153,7 @@ with [get-window -class WizardDialog] {
     with [get-window "Generation comparison"] {
         get-tree | select "test/generation/pom.xml" | double-click
         get-button "Next Difference" | click -metaKeys ""
-        get-button "Copy Current Change from Left to Right" | click -metaKeys ""
+        get-button "Copy Current Change from Right to Left" | click -metaKeys ""
         get-button Commit | click -metaKeys ""
     }
 }

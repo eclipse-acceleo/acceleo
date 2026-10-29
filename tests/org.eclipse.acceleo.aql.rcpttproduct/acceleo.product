@@ -7,7 +7,7 @@
       <text>
          Acceleo
 
-Version  4.2.1
+Version  4.3.0
       </text>
    </aboutInfo>
 
@@ -17,10 +17,9 @@ Version  4.2.1
    <launcherArgs>
       <programArgs>
       </programArgs>
-      <vmArgs>--illegal-access=permit
---add-opens java.base/java.lang=ALL-UNNAMED
---add-modules=ALL-SYSTEM
--Djava.security.manager=allow
+      <vmArgs>--add-modules=ALL-SYSTEM
+-vm
+/usr/lib/jvm/java-25-openjdk-amd64/bin
 -Duser.name=username
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts

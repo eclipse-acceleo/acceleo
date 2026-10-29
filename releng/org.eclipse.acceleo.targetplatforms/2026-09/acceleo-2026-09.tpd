@@ -1,13 +1,15 @@
-target "Acceleo 2024-06 Target Platform"
+target "Acceleo 2026-09 Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"
 include "../common/lsp.tpd"
 include "../common/cdo.tpd"
+include "../common/acceleo3.tpd"
 
+environment JavaSE-25
 with requirements
 
-location Eclipse_2024-06 "https://download.eclipse.org/releases/2024-06" {
+location Eclipse_2026-09 "https://download.eclipse.org/releases/2026-09" {
 	org.eclipse.sdk.feature.group lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
@@ -23,7 +25,6 @@ location Eclipse_2024-06 "https://download.eclipse.org/releases/2024-06" {
 	
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius.specifier.feature.group lazy
-	org.eclipse.acceleo.query.feature.group [7.0.0,7.0.1)
 	
 	org.eclipse.jface lazy
 	org.eclipse.tm4e.core lazy
@@ -34,6 +35,7 @@ location Eclipse_2024-06 "https://download.eclipse.org/releases/2024-06" {
 	org.eclipse.m2e.feature.feature.group lazy
 }
 
-location Eclipse_4.32_2024-06 "https://download.eclipse.org/eclipse/updates/4.32/" {
+location Eclipse_4.41_2026-09 "https://download.eclipse.org/eclipse/updates/4.41/" {
 	org.eclipse.ui.tests.harness lazy
+	
 }

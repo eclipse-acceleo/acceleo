@@ -25,13 +25,16 @@ import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.CompareEditorInput;
 import org.eclipse.compare.ITypedElement;
 import org.eclipse.compare.ResourceNode;
+import org.eclipse.compare.contentmergeviewer.IFlushable;
 import org.eclipse.compare.structuremergeviewer.DiffNode;
 import org.eclipse.compare.structuremergeviewer.Differencer;
+import org.eclipse.compare.structuremergeviewer.ICompareInput;
 import org.eclipse.compare.structuremergeviewer.IStructureComparator;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -39,7 +42,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
@@ -105,9 +110,9 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 	private static class CommitResourceNode extends ResourceNode {
 
 		/**
-		 * The {@link IProgressMonitor}.
+		 * Contents flushed by the viewer, awaiting commit.
 		 */
-		private final IProgressMonitor monitor;
+		private byte[] pendingContents;
 
 		/**
 		 * Constructor.
@@ -115,27 +120,35 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 		 * @param resource
 		 *            the {@link IResource}
 		 */
-		public CommitResourceNode(IResource resource, IProgressMonitor monitor) {
+		public CommitResourceNode(IResource resource) {
 			super(resource);
-			this.monitor = monitor;
 		}
 
 		@Override
 		public void setContent(byte[] contents) {
+			pendingContents = contents;
 			super.setContent(contents);
-			try {
-				final IFile file = (IFile)getResource();
-				if (file.exists()) {
-					file.setContents(new ByteArrayInputStream(contents), true, true, monitor);
-				} else {
-					file.create(new ByteArrayInputStream(contents), true, monitor);
-				}
-			} catch (CoreException e) {
-				AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
-						"Can't write the content of " + getResource().getFullPath() + ".", e));
-			}
 		}
 
+		/**
+		 * Writes buffered changes to the workspace.
+		 *
+		 * @param monitor
+		 *            the progress monitor
+		 * @throws CoreException
+		 *             if the file cannot be written
+		 */
+		public void commit(IProgressMonitor monitor) throws CoreException {
+			if (pendingContents != null) {
+				final IFile file = (IFile)getResource();
+				if (file.exists()) {
+					file.setContents(new ByteArrayInputStream(pendingContents), true, true, monitor);
+				} else {
+					file.create(new ByteArrayInputStream(pendingContents), true, monitor);
+				}
+				pendingContents = null;
+			}
+		}
 	}
 
 	/**
@@ -158,10 +171,20 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 	 */
 	private DiffNode diffRoot;
 
+	/**
+	 * Workspace nodes whose buffered changes must be committed.
+	 */
+	private final Map<IFile, CommitResourceNode> commitNodes = new LinkedHashMap<>();
+
+	/**
+	 * The active content viewer, flushed explicitly before committing resources.
+	 */
+	private Viewer contentViewer;
+
 	public GenerationCompareEditorInput(CompareConfiguration configuration, Map<URI, String> preview,
 			IContainer target) {
 		super(configuration);
-		configuration.setLeftEditable(false);
+		configuration.setLeftEditable(true);
 		final Image acceleoImage = AcceleoUIPlugin.getDefault().getImageRegistry().get(
 				AcceleoUIPlugin.ACCELEO_EDITOR);
 		configuration.setLeftImage(acceleoImage);
@@ -193,7 +216,7 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 				knownResources.add(currentResource);
 				final DiffNode diffNode;
 				final ITypedElement left = new GeneratedResourceNode(preview, currentResource);
-				final CommitResourceNode right = new CommitResourceNode(currentResource, monitor);
+				final CommitResourceNode right = new CommitResourceNode(currentResource);
 				if (currentResource instanceof IContainer) {
 					if (currentResource.exists()) {
 						diffNode = new DiffNode(Differencer.NO_CHANGE, null, left, right);
@@ -214,6 +237,7 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 						if (!generatedContents.equals(fileContent)) {
 							diffNode = new DiffNode(Differencer.CHANGE, null, left, right);
 							nodes.put(currentResource, diffNode);
+							commitNodes.put(file, right);
 							hasDifferences = true;
 							currentResource = currentResource.getParent();
 						} else {
@@ -221,6 +245,12 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 						}
 					} else {
 						right.setContent(generatedContents.getBytes());
+						try {
+							right.commit(monitor);
+						} catch (CoreException e) {
+							AcceleoUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(),
+									"Can't write the content of " + currentResource.getFullPath() + ".", e));
+						}
 						currentResource = null;
 					}
 				} else {
@@ -280,6 +310,44 @@ public class GenerationCompareEditorInput extends CompareEditorInput {
 	protected Object prepareInput(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 		return diffRoot;
+	}
+
+	@Override
+	public Viewer findContentViewer(Viewer oldViewer, ICompareInput input, Composite parent) {
+		contentViewer = super.findContentViewer(oldViewer, input, parent);
+		return contentViewer;
+	}
+
+	@Override
+	public void saveChanges(IProgressMonitor monitor) throws CoreException {
+		// Flush the active viewer directly rather than relying only on the switching pane's adapter.
+		if (contentViewer != null && !contentViewer.getControl().isDisposed()) {
+			final IFlushable flushable = Adapters.adapt(contentViewer, IFlushable.class);
+			if (flushable != null) {
+				flushable.flush(monitor);
+			}
+		}
+		super.saveChanges(monitor);
+		// Keep the input dirty until persistence succeeds, including when the viewers are already clean.
+		setDirty(isSaveNeeded());
+		ResourcesPlugin.getWorkspace().run(progress -> {
+			for (CommitResourceNode node : commitNodes.values()) {
+				node.commit(progress);
+			}
+		}, monitor);
+		setDirty(false);
+	}
+
+	@Override
+	public boolean isSaveNeeded() {
+		return super.isSaveNeeded() || commitNodes.values().stream().anyMatch(
+				node -> node.pendingContents != null);
+	}
+
+	@Override
+	protected void handleDispose() {
+		contentViewer = null;
+		super.handleDispose();
 	}
 
 	/**

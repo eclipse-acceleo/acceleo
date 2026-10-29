@@ -14,7 +14,7 @@
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>acceleo-test-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../test-parent</relativePath>
+    <relativePath>../test-parent</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.aql.rcptt</artifactId>
@@ -32,7 +32,7 @@
   </pluginRepositories>
 
   <properties>
-    <rcptt-maven-version>2.5.4</rcptt-maven-version>
+    <rcptt-maven-version>2.8.2</rcptt-maven-version>
   </properties> 
   <build>
     <plugins>

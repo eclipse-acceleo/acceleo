@@ -1,0 +1,11 @@
+target "Acceleo 3"
+
+with requirements
+
+location Acceleo3 "https://download.eclipse.org/acceleo/updates/releases/3.7/R202408201303/" {
+	org.eclipse.acceleo.model lazy
+	org.eclipse.acceleo.common lazy
+	org.eclipse.acceleo.parser lazy
+	org.eclipse.acceleo.profiler lazy
+	org.eclipse.acceleo.engine lazy
+}

@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -75,12 +76,20 @@ public class TestGeneratorEclipse extends TestGenerator {
 			final int dialogResult = dialog.open();
 			if ((dialogResult == IDialogConstants.OK_ID) && dialog.getFileName() != null
 					&& !dialog.getFileName().isEmpty()) {
-				final Path location = new Path(dialog.getFileName());
+				final IPath path = new Path(dialog.getFileName());
 				IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-				if (location.segmentCount() == 1) {
-					target = workspaceRoot.getProject(location.segment(0)).getLocation().toFile().getAbsolutePath();
+				final IPath location;
+				if (path.segmentCount() == 1) {
+					location = workspaceRoot.getProject(path.segment(0)).getLocation();
 				} else {
-					target = workspaceRoot.getFolder(location).getLocation().toFile().getAbsolutePath();
+					location = workspaceRoot.getFolder(path).getLocation();
+				}
+				if (location != null) {
+					target = location.toFile().getAbsolutePath();
+				} else {
+					Activator.getDefault().log(new Status(IStatus.ERROR, getClass(),
+							"No location found for " + path + " (check if the project exists)."));
+					target = null;
 				}
 			} else {
 				target = null;

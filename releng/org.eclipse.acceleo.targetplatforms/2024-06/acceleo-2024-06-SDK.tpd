@@ -1,5 +1,0 @@
-target "Acceleo 2024-06 Target Platform SDK"
-
-include "acceleo-2024-06.tpd"
-
-with source requirements

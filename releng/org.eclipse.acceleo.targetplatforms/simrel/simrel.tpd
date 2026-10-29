@@ -2,10 +2,12 @@ target "Acceleo Simrel Target Platform"
 
 include "../common/orbit.tpd"
 include "../common/license.tpd"
+include "../common/acceleo3.tpd"
 
+environment JavaSE-25
 with requirements
 
-location simrel "https://download.eclipse.org/releases/2026-03" {
+location simrel "https://download.eclipse.org/releases/2026-12" {
 	org.eclipse.sdk.feature.group lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
@@ -16,12 +18,12 @@ location simrel "https://download.eclipse.org/releases/2026-03" {
 	
 	org.eclipse.emf.sdk.feature.group lazy
 	org.eclipse.jdt.feature.group lazy
+	org.eclipse.jdt.launching lazy
 	org.eclipse.pde.feature.group lazy
 	org.eclipse.uml2.feature.group lazy
 	
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius.specifier.feature.group lazy
-	org.eclipse.acceleo.query.feature.group [7.0.0,7.0.1)
 	
 	org.eclipse.jface lazy
 	org.eclipse.tm4e.core lazy
@@ -48,7 +50,6 @@ location simrel "https://download.eclipse.org/releases/2026-03" {
 	org.eclipse.m2e.feature.feature.group lazy
 }
 
-location "https://download.eclipse.org/rcptt/nightly/2.8.0/latest/repository/" {
+location "https://download.eclipse.org/rcptt/release/2.8.2/repository/" {
 	org.eclipse.rcptt.platform.feature.group lazy
-	org.antlr.runtime lazy
 }

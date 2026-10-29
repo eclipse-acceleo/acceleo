@@ -29,10 +29,10 @@
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-  </pluginRepositories> 
+  </pluginRepositories>
 
   <properties>
-    <rcptt-maven-version>2.5.4</rcptt-maven-version>
+    <rcptt-maven-version>2.8.2</rcptt-maven-version>
   </properties> 
   <build>
     <plugins>

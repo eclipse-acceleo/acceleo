@@ -17,7 +17,7 @@
                label="Generators">
             <command
                   commandId="test.ide.ui.commands.testGeneratorCommand"
-                  id="test.ide.ui.menus.testGeneratorCommand"
+                  id="test.ide.ui.menus.testGeneratorCommand.element"
                   label="test::test">
                <visibleWhen
                      checkEnabled="false">
@@ -35,7 +35,7 @@
             </command>
             <!--command
                   commandId="test.ide.ui.commands.testGeneratorCommand"
-                  id="test.ide.ui.menus.testGeneratorCommand"
+                  id="test.ide.ui.menus.testGeneratorCommand.file"
                   label="test::test">
                <visibleWhen
                      checkEnabled="false">
