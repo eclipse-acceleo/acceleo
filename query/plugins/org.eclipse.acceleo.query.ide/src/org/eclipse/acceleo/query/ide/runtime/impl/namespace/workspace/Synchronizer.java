@@ -244,7 +244,7 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 
 	@Override
 	public boolean visit(IResourceDelta delta) throws CoreException {
-		if (delta.getFlags() == IResourceDelta.MARKERS) {
+		if (delta.getKind() == IResourceDelta.CHANGED && delta.getFlags() == IResourceDelta.MARKERS) {
 			// Only markers have changed.
 			// Do nothing.
 		} else {
