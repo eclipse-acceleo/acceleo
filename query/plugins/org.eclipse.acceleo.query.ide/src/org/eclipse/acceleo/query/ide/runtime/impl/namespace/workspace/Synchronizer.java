@@ -186,9 +186,6 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 								}
 							}
 
-							// Keeping up-to-date with the workspace changes.
-							eclipseWorkspace.addResourceChangeListener(Synchronizer.this);
-
 							// walk the workspace for current state
 
 							final InitialResourceCollector initialResources = new InitialResourceCollector();
@@ -217,6 +214,12 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 						}
 					}
 				});
+
+		// Register before scanning so subsequent changes cannot be missed.
+		eclipseWorkspace.addResourceChangeListener(this);
+
+		// Keep workspace changes from racing with listener registration and the initial scan.
+		synchronizeJob.setRule(eclipseWorkspace.getRoot());
 		synchronizeJob.schedule();
 	}
 
