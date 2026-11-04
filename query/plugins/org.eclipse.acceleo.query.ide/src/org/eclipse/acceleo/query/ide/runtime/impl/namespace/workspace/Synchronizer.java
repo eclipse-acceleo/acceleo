@@ -252,6 +252,10 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			if (resource.getType() == IResource.PROJECT) {
 				IProject workspaceProject = (IProject)resource;
 				visitProjectDelta(delta, workspaceProject);
+				if (delta.getKind() == IResourceDelta.REMOVED) {
+					// The project mapping has been removed, so its child deltas must not be processed.
+					return false;
+				}
 			} else if (resource.getType() == IResource.FILE) {
 				final IFile file = (IFile)resource;
 				visitFileDelta(delta, file);
