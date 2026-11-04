@@ -252,8 +252,13 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 			if (resource.getType() == IResource.PROJECT) {
 				IProject workspaceProject = (IProject)resource;
 				visitProjectDelta(delta, workspaceProject);
-				if (delta.getKind() == IResourceDelta.REMOVED) {
-					// The project mapping has been removed, so its child deltas must not be processed.
+				if (delta.getKind() == IResourceDelta.REMOVED || !workspaceProject.isOpen()) {
+					// Removed and closed projects have no mapping for processing their child deltas.
+					return false;
+				}
+				if (delta.getKind() == IResourceDelta.CHANGED && (delta.getFlags()
+						& IResourceDelta.OPEN) != 0) {
+					// Opening scans the project explicitly; closing removes its mapping.
 					return false;
 				}
 			} else if (resource.getType() == IResource.FILE) {
@@ -310,38 +315,65 @@ public abstract class Synchronizer<P extends IQueryProject> implements IResource
 	 *            the (non-{@code null}) {@link IResourceDelta}.
 	 * @param eclipseProject
 	 *            the (non-{@code null}) {@link IProject}.
+	 * @throws CoreException
+	 *             if the opened project cannot be visited
 	 */
-	private void visitProjectDelta(IResourceDelta delta, IProject eclipseProject) {
+	private void visitProjectDelta(IResourceDelta delta, IProject eclipseProject) throws CoreException {
 		if (delta.getKind() == IResourceDelta.CHANGED) {
-			if ((delta.getFlags() & IResourceDelta.ENCODING) != 0) {
-				// Changing the encoding of an IProject may affect the encoding of all its
-				// contained
-				// IFiles.
-				this.queryWorkspace.removeProject(getProject(eclipseProject));
-				this.queryWorkspace.addProject(getProject(eclipseProject));
-			}
-			if ((delta.getFlags() & IResourceDelta.MOVED_FROM) != 0) {
-				// The location of the IProject has changed
-				// TODO optimize this in QueryWorkspace like resource move
-				this.queryWorkspace.removeProject(getProject(eclipseProject));
-				this.queryWorkspace.addProject(getProject(eclipseProject));
-			}
-			if ((delta.getFlags() & IResourceDelta.MOVED_TO) != 0) {
-				// Do nothing, this is a "ghost" from a past IProject.
-			}
-			if ((delta.getFlags() & IResourceDelta.REPLACED) != 0) {
-				// Re-compute the IProject.
-				this.queryWorkspace.removeProject(getProject(eclipseProject));
-				this.queryWorkspace.addProject(getProject(eclipseProject));
+			if ((delta.getFlags() & IResourceDelta.OPEN) != 0) {
+				if (eclipseProject.isOpen()) {
+					// Register the project before synchronizing the files already present in it.
+					eclipseProject.accept(this);
+				} else {
+					removeProject(eclipseProject);
+				}
+			} else {
+				if ((delta.getFlags() & IResourceDelta.ENCODING) != 0) {
+					// Changing the encoding of an IProject may affect the encoding of all its
+					// contained
+					// IFiles.
+					this.queryWorkspace.removeProject(getProject(eclipseProject));
+					this.queryWorkspace.addProject(getProject(eclipseProject));
+				}
+				if ((delta.getFlags() & IResourceDelta.MOVED_FROM) != 0) {
+					// The location of the IProject has changed
+					// TODO optimize this in QueryWorkspace like resource move
+					this.queryWorkspace.removeProject(getProject(eclipseProject));
+					this.queryWorkspace.addProject(getProject(eclipseProject));
+				}
+				if ((delta.getFlags() & IResourceDelta.MOVED_TO) != 0) {
+					// Do nothing, this is a "ghost" from a past IProject.
+				}
+				if ((delta.getFlags() & IResourceDelta.REPLACED) != 0) {
+					// Re-compute the IProject.
+					this.queryWorkspace.removeProject(getProject(eclipseProject));
+					this.queryWorkspace.addProject(getProject(eclipseProject));
+				}
 			}
 		} else if (delta.getKind() == IResourceDelta.ADDED) {
-			synchronized(this) {
-				getOrCreateProject(queryWorkspace, eclipseProject);
+			if (eclipseProject.isOpen()) {
+				synchronized(this) {
+					getOrCreateProject(queryWorkspace, eclipseProject);
+				}
 			}
 		} else if (delta.getKind() == IResourceDelta.REMOVED) {
+			removeProject(eclipseProject);
+		}
+	}
+
+	/**
+	 * Removes a tracked project, including when it is closed before being deleted.
+	 *
+	 * @param eclipseProject
+	 *            the Eclipse project
+	 */
+	private void removeProject(IProject eclipseProject) {
+		synchronized(this) {
 			final P removedProject = eclipseToProject.remove(eclipseProject);
-			projectToEclipse.remove(removedProject);
-			this.queryWorkspace.removeProject(removedProject);
+			if (removedProject != null) {
+				projectToEclipse.remove(removedProject);
+				this.queryWorkspace.removeProject(removedProject);
+			}
 		}
 	}
 
