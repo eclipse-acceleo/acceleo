@@ -1,0 +1,59 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _UpUkMNPEEe2HOPiwgPK0BQ,_cVN2wOjqEe2z9_81fZHIXA
+Element-Name: ShowReferencesCallQueryService
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _g0YwEOKwEe2DiuG6X15Vyw
+Runtime-Version: 2.8.0.202601191508
+Save-Time: 11/4/26, 1:23 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Package Explorer" | get-tree | select "test/src/test/a.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/b.mtl" | double-click
+get-view "Package Explorer" | get-tree | select "test/src/test/c.mtl" | double-click
+
+with [get-editor "c.mtl" | get-text-viewer] {
+    select-range 26 31 26 32
+    key-type "M1+M2+g"
+}
+with [get-view Search | get-tree] {
+    with [get-item -path "test/src/test/a.mtl/16: \\[myParam.name.size\\(\\).myQueryExtends\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 41 | verify-true
+        get-property "getData().getOffset()" | equals 533 | verify-true
+        get-property "getData().getContents()" | equals "[myParam.name.size().myQueryExtends()/]" | verify-true
+    }
+    with [get-item -path "test/src/test/b.mtl/16: \\[myParam.name.size\\(\\).myQueryExtends\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 41 | verify-true
+        get-property "getData().getOffset()" | equals 533 | verify-true
+        get-property "getData().getContents()" | equals "[myParam.name.size().myQueryExtends()/]" | verify-true
+    }
+    with [get-item -path "test/src/test/c.mtl/26: \\[myParam.name.size\\(\\).myQueryExtends\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 41 | verify-true
+        get-property "getData().getOffset()" | equals 812 | verify-true
+        get-property "getData().getContents()" | equals "[myParam.name.size().myQueryExtends()/]" | verify-true
+    }
+    with [get-item -path "test/src/test/importA.mtl/20: \\[myParam.name.size\\(\\).myQueryExtends\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 41 | verify-true
+        get-property "getData().getOffset()" | equals 610 | verify-true
+        get-property "getData().getContents()" | equals "[myParam.name.size().myQueryExtends()/]" | verify-true
+    }
+    with [get-item -path "test/src/test/importB.mtl/18: \\[myParam.name.size\\(\\).myQueryExtends\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 41 | verify-true
+        get-property "getData().getOffset()" | equals 548 | verify-true
+        get-property "getData().getContents()" | equals "[myParam.name.size().myQueryExtends()/]" | verify-true
+    }
+    with [get-item -path "test/src/test/importC.mtl/18: \\[myParam.name.size\\(\\).myQueryExtends\\(\\)\\/\\]"] {
+        get-property "getData().getLength()" | equals 41 | verify-true
+        get-property "getData().getOffset()" | equals 548 | verify-true
+        get-property "getData().getContents()" | equals "[myParam.name.size().myQueryExtends()/]" | verify-true
+    }
+}
+
+get-view Search | get-button "Remove All Matches" | click -metaKeys ""
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
