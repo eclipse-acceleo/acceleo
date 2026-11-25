@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.tests.language;
 
+import org.eclipse.acceleo.tests.parser.AcceleoParserTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -24,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		TextStatementTests.class, ForStatementTests.class, IfStatementTests.class,
 		ExpressionStatementTests.class, ProtectedAreaTests.class, LetStatementTests.class,
 		ModuleDocumentationTests.class, ModuleElementDocumentationTests.class, CommentTests.class,
-		BlockCommentTests.class, })
+		BlockCommentTests.class, AcceleoParserTests.class, })
 public class LanguageTests {
 
 }

@@ -1399,7 +1399,8 @@ public class AcceleoParser {
 			final AstResult type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
 			type.addAllPositonsTo(positions, currentPosition, lines[currentPosition],
 					columns[currentPosition]);
-			currentPosition += type.getEndPosition(type.getAst());
+			// Error recovery in the type parser can report an end beyond the type slice.
+			currentPosition = Math.min(typeEndLimit, currentPosition + type.getEndPosition(type.getAst()));
 			final int missingType;
 			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 				missingType = currentPosition;
