@@ -16,6 +16,7 @@ import org.eclipse.acceleo.tests.language.LanguageTests;
 import org.eclipse.acceleo.tests.parser.AcceleoAstSerializerTests;
 import org.eclipse.acceleo.tests.quickfixes.QuickFixesTests;
 import org.eclipse.acceleo.tests.resolution.ResolutionTests;
+import org.eclipse.acceleo.tests.resolution.ServiceContextTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -27,7 +28,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {LanguageTests.class, EvaluationTests.class, CompletionTests.class,
-		ResolutionTests.class, AcceleoAstSerializerTests.class, QuickFixesTests.class, })
+		ResolutionTests.class, ServiceContextTests.class, AcceleoAstSerializerTests.class,
+		QuickFixesTests.class, })
 public class AllTests {
 
 }

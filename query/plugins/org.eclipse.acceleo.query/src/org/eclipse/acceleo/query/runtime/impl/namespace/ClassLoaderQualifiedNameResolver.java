@@ -14,6 +14,9 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +30,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -46,6 +50,38 @@ import org.eclipse.emf.ecore.EPackage.Registry;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver {
+
+	/**
+	 * A weak key for a service instance. Equal services can belong to different lookup engines.
+	 */
+	private static final class ServiceReference extends WeakReference<IService<?>> {
+
+		private final int hashCode;
+
+		private final String contextQualifiedName;
+
+		ServiceReference(IService<?> service, ReferenceQueue<IService<?>> queue,
+				String contextQualifiedName) {
+			super(service, queue);
+			hashCode = System.identityHashCode(service);
+			this.contextQualifiedName = contextQualifiedName;
+		}
+
+		@Override
+		public int hashCode() {
+			return hashCode;
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			if (other == this) {
+				return true;
+			}
+			final IService<?> service = get();
+			return service != null && other instanceof ServiceReference && ((ServiceReference)other).refersTo(
+					service);
+		}
+	}
 
 	/**
 	 * A slash.
@@ -118,14 +154,19 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 	private final Map<String, String> qualifiedNameToExtend = new HashMap<String, String>();
 
 	/**
-	 * The mapping from services to its contextual qualified name (class, module, ... qualified name).
+	 * Queue of services that are no longer in use by a lookup engine or its clients.
 	 */
-	private final Map<IService<?>, String> serviceToContextQualifiedName = new HashMap<>();
+	private final ReferenceQueue<IService<?>> collectedServices = new ReferenceQueue<>();
 
 	/**
-	 * The mapping from services to its contextual qualified name (class, module, ... qualified name).
+	 * Index of weak service keys. The value holds the registered key and its context.
 	 */
-	private final Map<String, Set<IService<?>>> contextQualifiedNameToServices = new HashMap<>();
+	private final Map<ServiceReference, ServiceReference> serviceReferences = new HashMap<>();
+
+	/**
+	 * Reverse index used to clear a context. Both indexes are guarded by {@link #serviceReferences}.
+	 */
+	private final Map<String, Set<ServiceReference>> contextQualifiedNameToServices = new HashMap<>();
 
 	/**
 	 * Mapping from qualifiedName to qualified names that import it.
@@ -443,27 +484,77 @@ public class ClassLoaderQualifiedNameResolver implements IQualifiedNameResolver 
 		final ILoader loader = getLoaderFor(object);
 		if (loader != null) {
 			res.addAll(loader.getServices(lookupEngine, object, contextQualifiedName));
-			for (IService<?> serivce : res) {
-				serviceToContextQualifiedName.put(serivce, contextQualifiedName);
+			synchronized(serviceReferences) {
+				removeCollectedServices();
+				for (IService<?> service : res) {
+					final ServiceReference reference = new ServiceReference(service, collectedServices,
+							contextQualifiedName);
+					final ServiceReference previous = serviceReferences.get(reference);
+					if (previous == null || !Objects.equals(previous.contextQualifiedName,
+							contextQualifiedName)) {
+						if (previous != null) {
+							serviceReferences.remove(previous);
+							removeFromServiceContext(previous);
+						}
+						serviceReferences.put(reference, reference);
+						contextQualifiedNameToServices.computeIfAbsent(contextQualifiedName,
+								name -> new LinkedHashSet<>()).add(reference);
+					}
+				}
 			}
 		}
-		contextQualifiedNameToServices.put(contextQualifiedName, res);
 
 		return res;
 	}
 
 	@Override
 	public String getContextQualifiedName(IService<?> service) {
-		return serviceToContextQualifiedName.get(service);
+		synchronized(serviceReferences) {
+			removeCollectedServices();
+			final ServiceReference reference = serviceReferences.get(new ServiceReference(service, null,
+					null));
+			Reference.reachabilityFence(service);
+			return reference == null ? null : reference.contextQualifiedName;
+		}
 	}
 
 	@Override
 	public void cleanContextQualifiedName(String qualifiedName) {
-		final Set<IService<?>> services = contextQualifiedNameToServices.remove(qualifiedName);
-		if (services != null) {
-			for (IService<?> service : services) {
-				serviceToContextQualifiedName.remove(service);
+		synchronized(serviceReferences) {
+			removeCollectedServices();
+			final Set<ServiceReference> services = contextQualifiedNameToServices.remove(qualifiedName);
+			if (services != null) {
+				serviceReferences.keySet().removeAll(services);
 			}
+		}
+	}
+
+	/**
+	 * Removes collected service keys from both indexes. The caller holds the service index lock.
+	 */
+	private void removeCollectedServices() {
+		Reference<? extends IService<?>> collected = collectedServices.poll();
+		while (collected != null) {
+			final ServiceReference reference = serviceReferences.remove(collected);
+			if (reference != null) {
+				removeFromServiceContext(reference);
+			}
+			collected = collectedServices.poll();
+		}
+	}
+
+	/**
+	 * Removes the service from its context. The caller holds the service index lock.
+	 *
+	 * @param reference
+	 *            the service reference
+	 */
+	private void removeFromServiceContext(ServiceReference reference) {
+		final Set<ServiceReference> services = contextQualifiedNameToServices.get(
+				reference.contextQualifiedName);
+		services.remove(reference);
+		if (services.isEmpty()) {
+			contextQualifiedNameToServices.remove(reference.contextQualifiedName);
 		}
 	}
 
