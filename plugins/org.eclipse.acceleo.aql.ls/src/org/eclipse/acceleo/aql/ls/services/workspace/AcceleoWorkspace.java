@@ -171,8 +171,8 @@ public class AcceleoWorkspace extends QueryWorkspace<AcceleoProject> {
 	protected void updateResourceContents(AcceleoProject project, IQualifiedNameResolver resolver,
 			URI resource) {
 		final AcceleoTextDocument acceleoTextDocument = uriToDocuments.get(resource);
-		if (acceleoTextDocument != null) {
-			acceleoTextDocument.setContents(context.getResourceContents(resource));
+		if (acceleoTextDocument != null && !acceleoTextDocument.isOpened()) {
+			acceleoTextDocument.updateContents(context.getResourceContents(resource));
 		}
 	}
 

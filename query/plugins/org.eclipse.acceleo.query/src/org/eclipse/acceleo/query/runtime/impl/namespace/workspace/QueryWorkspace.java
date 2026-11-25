@@ -278,16 +278,18 @@ public abstract class QueryWorkspace<P> implements IQueryWorkspace<P> {
 				qualifiedNames.addAll(resolver.getResolvedQualifiedNames());
 				replaceResolver(project, resolver);
 			}
-			updateResourceContents(project, getResolver(project), resource);
-			validate(project, resolver, qualifiedName, false);
+			// Reload the changed module before its document refreshes the AST from the resolver.
 			propagateChanges(project, qualifiedNames);
+			final IQueryWorkspaceQualifiedNameResolver updatedResolver = getResolver(project);
+			updateResourceContents(project, updatedResolver, resource);
+			validate(project, updatedResolver, qualifiedName, false);
 		}
 
 		return qualifiedName;
 	}
 
 	/**
-	 * Updates the contents for the given resource {@link URI}.
+	 * Updates the contents for the given resource {@link URI} in preparation for validation.
 	 * 
 	 * @param project
 	 *            the project

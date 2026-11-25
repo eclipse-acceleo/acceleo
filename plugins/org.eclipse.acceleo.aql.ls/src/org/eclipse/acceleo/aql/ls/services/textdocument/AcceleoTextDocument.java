@@ -734,16 +734,25 @@ public class AcceleoTextDocument {
 	}
 
 	/**
-	 * Updates the known contents of the text document, which triggers the parsing of the new contents.
+	 * Updates the known contents of the text document, then parses and validates them.
 	 * 
 	 * @param newTextDocumentContents
 	 *            the new (non-{@code null}) contents of the text document.
 	 */
 	public void setContents(String newTextDocumentContents) {
-		Objects.requireNonNull(newTextDocumentContents);
-		this.contents = newTextDocumentContents;
-		this.parseContents();
+		updateContents(newTextDocumentContents);
 		this.validateAndPublishResults();
+	}
+
+	/**
+	 * Updates the known contents and refreshes the AST. The caller controls when to validate.
+	 *
+	 * @param newTextDocumentContents
+	 *            the new (non-{@code null}) contents of the text document.
+	 */
+	public void updateContents(String newTextDocumentContents) {
+		this.contents = Objects.requireNonNull(newTextDocumentContents);
+		this.parseContents();
 	}
 
 	/**
