@@ -21,7 +21,7 @@
     </parent>
 
     <artifactId>org.eclipse.acceleo.aql.tm.tests</artifactId>
-    <version>4.2.3</version>
+    <version>4.2.4</version>
     <packaging>eclipse-test-plugin</packaging>  
 
     <build>
